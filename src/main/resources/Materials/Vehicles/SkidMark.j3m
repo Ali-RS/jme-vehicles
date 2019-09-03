@@ -1,0 +1,12 @@
+Material SkidMark : Common/MatDefs/Light/Lighting.j3md {
+
+    MaterialParameters {
+        DiffuseMap : Flip Repeat Textures/Vehicles/Skidmarks2.png
+        UseVertexColor : true
+    }
+
+    AdditionalRenderState {
+        Blend Alpha
+    }
+
+}
