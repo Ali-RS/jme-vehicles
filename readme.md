@@ -20,6 +20,8 @@ This is a work in progress of creating individual parts for a vehicle. Currently
 
 Probably a few more I can't remember.
 
+There are 3 cars to play with (see main class) and a test playground.
+
 The tyres use the pacejka formula. Currently only latitudinal forces are applied, but longitudinal code is there.
 
 Controls:
@@ -31,4 +33,4 @@ Controls:
 - E : Reverse
 - F5 : Change View
 
-The 
+![screenshot](https://i.ibb.co/JyPHdv8/image.png)
