@@ -1,11 +1,14 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
 group 'com.jayfella'
 version '1.0'
 
 sourceCompatibility = 1.8
+
+mainClassName = "com.jayfella.jme.vehicle.Main"
 
 repositories {
     jcenter()
@@ -20,20 +23,20 @@ project.ext {
 
 dependencies {
 
-    implementation "org.jmonkeyengine:jme3-core:$jmeVer"
-    implementation "org.jmonkeyengine:jme3-lwjgl3:$jmeVer"
-    implementation "org.jmonkeyengine:jme3-desktop:$jmeVer"
-    implementation "org.jmonkeyengine:jme3-jogg:$jmeVer"
-    implementation "org.jmonkeyengine:jme3-effects:$jmeVer"
-    implementation "org.jmonkeyengine:jme3-blender:$jmeVer"
+    compile "org.jmonkeyengine:jme3-core:$jmeVer"
+    compile "org.jmonkeyengine:jme3-lwjgl3:$jmeVer"
+    compile "org.jmonkeyengine:jme3-desktop:$jmeVer"
+    compile "org.jmonkeyengine:jme3-jogg:$jmeVer"
+    compile "org.jmonkeyengine:jme3-effects:$jmeVer"
+    compile "org.jmonkeyengine:jme3-blender:$jmeVer"
 
-    implementation "org.jmonkeyengine:jme3-bullet:$jmeVer"
-    implementation "org.jmonkeyengine:jme3-bullet-native:$jmeVer"
+    compile "org.jmonkeyengine:jme3-bullet:$jmeVer"
+    compile "org.jmonkeyengine:jme3-bullet-native:$jmeVer"
 
-    implementation "com.simsilica:lemur:$lemurVer"
-    implementation "org.codehaus.groovy:groovy-all:2.5.4"
-    implementation "com.simsilica:lemur-proto:$lemurProtoVer"
-    implementation "com.simsilica:lemur-props:$lemurPropsVer"
+    compile "com.simsilica:lemur:$lemurVer"
+    compile "org.codehaus.groovy:groovy-all:2.5.4"
+    compile "com.simsilica:lemur-proto:$lemurProtoVer"
+    compile "com.simsilica:lemur-props:$lemurPropsVer"
 
 }
 
@@ -49,4 +52,15 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 
 artifacts {
     archives sourcesJar, javadocJar
-} 
+}
+
+jar {
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    manifest {
+        attributes 'Main-Class': 'com.jayfella.jme.vehicle.Main'
+    }
+}
