@@ -39,15 +39,13 @@ public class Main extends SimpleApplication {
         Main main = new Main();
 
         AppSettings appSettings = new AppSettings(true);
-        appSettings.setFrameRate(120);
+        // appSettings.setFrameRate(120);
 
-        appSettings.setResolution(1920, 1080);
-
-        // appSettings.setResolution(1920, 1080);
-        appSettings.setFullscreen(true);
+        appSettings.setResolution(1280, 720);
+        appSettings.setTitle("jMonkeyEngine :: Advanced Vehicles");
 
         main.setSettings(appSettings);
-        main.setShowSettings(false);
+        main.setShowSettings(true);
         main.start();
     }
 
