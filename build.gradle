@@ -18,8 +18,10 @@ repositories {
 }
 
 project.ext {
-    jmeVer = "3.2.4-stable"
-    lemurVer = "[1.10,)"
+    // jmeVer = "3.2.4-stable"
+    jmeVer = "3.3.0-alpha5"
+    // lemurVer = "[1.10,)"
+    lemurVer = "1.13.0"
     lemurProtoVer = "1.9.1"
     lemurPropsVer = "1.0.1"
 }
