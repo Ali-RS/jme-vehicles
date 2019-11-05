@@ -29,6 +29,7 @@ import com.jme3.scene.Spatial;
 import com.jme3.shadow.DirectionalLightShadowFilter;
 import com.jme3.system.AppSettings;
 import com.jme3.texture.Texture;
+import com.jme3.util.SkyFactory;
 import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.focus.FocusManagerState;
 import com.simsilica.lemur.style.BaseStyles;
@@ -92,12 +93,16 @@ public class Main extends SimpleApplication {
 
         // Let there be light
         DirectionalLight directionalLight = new DirectionalLight(
-                new Vector3f(-1, -.35f, -0.5f).normalizeLocal(),
-                ColorRGBA.White.mult(0.6f)
+                new Vector3f(1, -.35f, 0.5f).normalizeLocal(),
+                ColorRGBA.White.clone()
         );
         rootNode.addLight(directionalLight);
 
         rootNode.addLight(new AmbientLight(ColorRGBA.White.mult(0.3f)));
+
+        Spatial sky = SkyFactory.createSky(assetManager, "Textures/Sky/quarry_03_4k.jpg", SkyFactory.EnvMapType.EquirectMap);
+        sky.setQueueBucket(RenderQueue.Bucket.Sky);
+        rootNode.attachChild(sky);
 
         // initialize physics
         BulletAppState bulletAppState = new BulletAppState();
@@ -145,12 +150,18 @@ public class Main extends SimpleApplication {
 
     private void loadPlayground(PhysicsSpace physicsSpace) {
 
-        Material material = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        // Material material = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        Material material = new Material(assetManager, "Common/MatDefs/Light/PBRLighting.j3md");
 
         Texture texture = assetManager.loadTexture("Textures/grid.png");
         texture.setWrap(Texture.WrapMode.Repeat);
 
-        material.setTexture("DiffuseMap", texture);
+        // material.setTexture("DiffuseMap", texture);
+        material.setTexture("BaseColorMap", texture);
+
+        material.setColor("BaseColor", ColorRGBA.LightGray);
+        material.setFloat("Roughness", 0.75f);
+        material.setFloat("Metallic", 0.5f);
 
         // material.setBoolean("UseFog", true);
         // material.setColor("FogColor", new ColorRGBA(0.5f, 0.6f, 0.7f, 1.0f));
