@@ -1,11 +1,10 @@
 package com.jayfella.jme.vehicle;
 
+import com.jayfella.jme.vehicle.debug.DebugTabState;
 import com.jayfella.jme.vehicle.debug.EnginePowerGraphState;
 import com.jayfella.jme.vehicle.debug.TyreDataState;
 import com.jayfella.jme.vehicle.debug.VehicleEditorState;
-import com.jayfella.jme.vehicle.examples.cars.DuneBuggy;
-import com.jayfella.jme.vehicle.examples.cars.HatchBack;
-import com.jayfella.jme.vehicle.examples.cars.PickupTruck;
+import com.jayfella.jme.vehicle.examples.cars.*;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
 import com.jme3.asset.AssetEventListener;
@@ -25,6 +24,7 @@ import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.BloomFilter;
 import com.jme3.post.ssao.SSAOFilter;
 import com.jme3.renderer.queue.RenderQueue;
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.shadow.DirectionalLightShadowFilter;
 import com.jme3.system.AppSettings;
@@ -93,12 +93,10 @@ public class Main extends SimpleApplication {
 
         // Let there be light
         DirectionalLight directionalLight = new DirectionalLight(
-                new Vector3f(1, -.35f, 0.5f).normalizeLocal(),
+                new Vector3f(1, -.45f, 0.5f).normalizeLocal(),
                 ColorRGBA.White.clone()
         );
         rootNode.addLight(directionalLight);
-
-        rootNode.addLight(new AmbientLight(ColorRGBA.White.mult(0.3f)));
 
         Spatial sky = SkyFactory.createSky(assetManager, "Textures/Sky/quarry_03_4k.jpg", SkyFactory.EnvMapType.EquirectMap);
         sky.setQueueBucket(RenderQueue.Bucket.Sky);
@@ -109,46 +107,63 @@ public class Main extends SimpleApplication {
         bulletAppState.setDebugEnabled(false);
         getStateManager().attach(bulletAppState);
 
-        loadPlayground(bulletAppState.getPhysicsSpace());
+        Node playground = (Node) loadPlayground(bulletAppState.getPhysicsSpace());
+
+        CarSelectorState carSelectorState = new CarSelectorState(playground, bulletAppState.getPhysicsSpace());
+        stateManager.attach(carSelectorState);
 
         // Choose a vehicle
         // ================
-        Car vehicle = new PickupTruck(this);
-        //Car vehicle = new HatchBack(this);
-        //Car vehicle = new DuneBuggy(this);
+        // Car vehicle = new PickupTruck(this);
+        // Car vehicle = new HatchBack(this);
+        // Car vehicle = new DuneBuggy(this);
+        // Car vehicle = new GrandTourer(this);
+        // Car vehicle = new GTRNismo(this);
 
+        /*
         vehicle.showSpeedo(Vehicle.SpeedUnit.MPH);
         vehicle.showTacho();
-        vehicle.attachToScene(rootNode, bulletAppState.getPhysicsSpace());
+        vehicle.attachToScene(playground, bulletAppState.getPhysicsSpace());
 
         // raise the vehicle a little so it doesn't spawn in the ground.
-        vehicle.getVehicleControl().setPhysicsLocation(new Vector3f(0, 2, 0));
+        vehicle.getVehicleControl().setPhysicsLocation(new Vector3f(0, 6, 0));
 
         // add some controls
         BasicVehicleInputState basicVehicleInputState = new BasicVehicleInputState(vehicle);
         getStateManager().attach(basicVehicleInputState);
 
-        // the vehicle debug.
-        VehicleEditorState vehicleEditorState = new VehicleEditorState(vehicle);
-        getStateManager().attach(vehicleEditorState);
-
-        rootNode.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
-        addPostProcessing(directionalLight);
-
-        MagicFormulaState magicFormulaState = new MagicFormulaState(vehicle);
-        stateManager.attach(magicFormulaState);
-
         // engine debugger
         EnginePowerGraphState enginePowerGraphState = new EnginePowerGraphState(vehicle);
+        enginePowerGraphState.setEnabled(false);
         stateManager.attach(enginePowerGraphState);
 
         // tyre debugger
         TyreDataState tyreDataState = new TyreDataState(vehicle);
+        tyreDataState.setEnabled(false);
         stateManager.attach(tyreDataState);
+
+        // the vehicle debug.
+        VehicleEditorState vehicleEditorState = new VehicleEditorState(vehicle);
+        getStateManager().attach(vehicleEditorState);
+
+        // vehicle debug add-on to enable/disable debug screens.
+        DebugTabState debugTabState = new DebugTabState();
+        getStateManager().attach(debugTabState);
+
+        MagicFormulaState magicFormulaState = new MagicFormulaState(vehicle);
+        stateManager.attach(magicFormulaState);
+
+         */
+
+        cam.setLocation(new Vector3f(-200, 50, -200));
+        cam.lookAt(new Vector3f(100, 10, 150), Vector3f.UNIT_Y);
+
+        rootNode.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
+        addPostProcessing(directionalLight);
 
     }
 
-    private void loadPlayground(PhysicsSpace physicsSpace) {
+    private Spatial loadPlayground(PhysicsSpace physicsSpace) {
 
         // Material material = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
         Material material = new Material(assetManager, "Common/MatDefs/Light/PBRLighting.j3md");
@@ -174,6 +189,7 @@ public class Main extends SimpleApplication {
         physicsSpace.add(rigidBodyControl);
 
         rootNode.attachChild(playground);
+        return playground;
     }
 
     private void addPostProcessing(DirectionalLight directionalLight) {
