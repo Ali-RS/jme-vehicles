@@ -1,15 +1,17 @@
 package com.jayfella.jme.vehicle.view;
 
 import com.jayfella.jme.vehicle.Vehicle;
+import com.jme3.app.SimpleApplication;
+import com.jme3.input.KeyInput;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
+import com.simsilica.lemur.Button;
+import com.simsilica.lemur.Container;
 import com.simsilica.lemur.GuiGlobals;
-import com.simsilica.lemur.input.AnalogFunctionListener;
-import com.simsilica.lemur.input.Axis;
-import com.simsilica.lemur.input.FunctionId;
-import com.simsilica.lemur.input.InputMapper;
+import com.simsilica.lemur.input.*;
+import org.lwjgl.system.CallbackI;
 
 public class VehicleThirdPersonCam implements VehicleCamera, AnalogFunctionListener {
 
@@ -17,14 +19,15 @@ public class VehicleThirdPersonCam implements VehicleCamera, AnalogFunctionListe
 
     private static final FunctionId F_ZOOM      = new FunctionId(G_FP_VEHICLE, "Camera Zoom");
     private static final FunctionId F_HEIGHT    = new FunctionId(G_FP_VEHICLE, "Camera Height");
-    private static final FunctionId F_SIDE      = new FunctionId(G_FP_VEHICLE, "Camera Size");
+    private static final FunctionId F_SIDE      = new FunctionId(G_FP_VEHICLE, "Camera Side");
+    private static final FunctionId F_RESET     = new FunctionId(G_FP_VEHICLE, "Camera Reset");
 
     private final Vehicle vehicle;
     private final Camera camera;
 
     private float zoomLevel;
-    private float zoomStep = 0.5f;
-    private float zoomLevelMin = 10;
+    private float zoomStep = 10f;
+    private float zoomLevelMin = 3;
     private float zoomLevelMax = 20;
 
     private float camHeight;
@@ -43,14 +46,21 @@ public class VehicleThirdPersonCam implements VehicleCamera, AnalogFunctionListe
         this.camHeight = camHeightMin;
     }
 
-
     @Override
     public void enableInputMappings() {
         InputMapper inputMapper = GuiGlobals.getInstance().getInputMapper();
 
-        inputMapper.map( F_ZOOM, Axis.MOUSE_WHEEL );
-        inputMapper.map( F_HEIGHT, Axis.MOUSE_Y );
-        inputMapper.map( F_SIDE, Axis.MOUSE_X );
+        // inputMapper.map( F_ZOOM, Axis.MOUSE_WHEEL );
+        inputMapper.map(F_ZOOM, KeyInput.KEY_NUMPAD9);
+        inputMapper.map(F_ZOOM, InputState.Negative, KeyInput.KEY_NUMPAD3);
+
+        // inputMapper.map( F_HEIGHT, Axis.MOUSE_Y );
+        inputMapper.map(F_HEIGHT, KeyInput.KEY_NUMPAD8);
+        inputMapper.map(F_HEIGHT, InputState.Negative, KeyInput.KEY_NUMPAD2);
+
+        // inputMapper.map( F_SIDE, Axis.MOUSE_X );
+        inputMapper.map(F_SIDE, KeyInput.KEY_NUMPAD6);
+        inputMapper.map(F_SIDE, InputState.Negative, KeyInput.KEY_NUMPAD4);
 
         inputMapper.addAnalogListener(this, F_ZOOM, F_HEIGHT, F_SIDE);
 
@@ -63,22 +73,28 @@ public class VehicleThirdPersonCam implements VehicleCamera, AnalogFunctionListe
 
         inputMapper.deactivateGroup(G_FP_VEHICLE);
 
-        inputMapper.removeMapping( F_ZOOM, Axis.MOUSE_WHEEL );
-        inputMapper.removeMapping( F_HEIGHT, Axis.MOUSE_Y );
-        inputMapper.removeMapping( F_SIDE, Axis.MOUSE_X );
+        // inputMapper.removeMapping( F_ZOOM, Axis.MOUSE_WHEEL );
+        inputMapper.removeMapping(F_ZOOM, KeyInput.KEY_NUMPAD9);
+        inputMapper.removeMapping(F_ZOOM, InputState.Negative, KeyInput.KEY_NUMPAD3);
+
+        // inputMapper.removeMapping( F_HEIGHT, Axis.MOUSE_Y );
+        inputMapper.removeMapping(F_HEIGHT, KeyInput.KEY_NUMPAD8);
+        inputMapper.removeMapping(F_HEIGHT, InputState.Negative, KeyInput.KEY_NUMPAD2);
+
+        // inputMapper.removeMapping( F_SIDE, Axis.MOUSE_X );
+        inputMapper.removeMapping(F_SIDE, KeyInput.KEY_NUMPAD6);
+        inputMapper.removeMapping(F_SIDE, InputState.Negative, KeyInput.KEY_NUMPAD4);
 
         inputMapper.removeAnalogListener(this, F_ZOOM, F_HEIGHT, F_SIDE);
     }
 
     @Override
     public void attach() {
-
         enableInputMappings();
     }
 
     @Override
     public void detach() {
-
         disableInputMappings();
     }
 
@@ -92,7 +108,6 @@ public class VehicleThirdPersonCam implements VehicleCamera, AnalogFunctionListe
         Vector3f vehicleDir = vehicle.getNode().getLocalRotation()
                 //.mult(side)
                 .getRotationColumn(2);
-
 
         Vector3f camLoc = vehicleLoc
                 .add(vehicleDir
@@ -112,15 +127,15 @@ public class VehicleThirdPersonCam implements VehicleCamera, AnalogFunctionListe
         if (func == F_ZOOM) {
 
             if (value > 0) {
-                zoomLevel = Math.max(zoomLevelMin, zoomLevel - zoomStep);
+                zoomLevel = (float) Math.max(zoomLevelMin, zoomLevel - (zoomStep * tpf));
             }
             else {
-                zoomLevel = Math.min(zoomLevelMax, zoomLevel + zoomStep);
+                zoomLevel = (float) Math.min(zoomLevelMax, zoomLevel + (zoomStep * tpf));
             }
 
         }
 
-        /*
+
         else if (func == F_HEIGHT) {
 
             float amount = (float) (tpf * 10);
@@ -136,7 +151,7 @@ public class VehicleThirdPersonCam implements VehicleCamera, AnalogFunctionListe
 
         else if (func == F_SIDE) {
 
-            float amount = (float) (tpf * 100);
+            float amount = (float) (tpf * 10);
 
             if (value > 0) {
                 camSide = Math.min(camSideMax, camSide + amount);
@@ -146,7 +161,7 @@ public class VehicleThirdPersonCam implements VehicleCamera, AnalogFunctionListe
             }
 
         }
-        */
+
 
     }
 }
