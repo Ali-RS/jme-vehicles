@@ -28,7 +28,7 @@ public class EnginePowerGraphState extends BaseAppState {
     @Override
     protected void initialize(Application app) {
 
-        Node guiNode = ((SimpleApplication)app).getGuiNode();
+
 
         EnginePowerGraph enginePowerGraph = new EnginePowerGraph(app.getAssetManager(), vehicle.getEngine(), width, height);
         node.attachChild(enginePowerGraph);
@@ -39,7 +39,7 @@ public class EnginePowerGraphState extends BaseAppState {
         node.attachChild(line);
 
         node.setLocalTranslation(0, app.getCamera().getHeight() - height, 0);
-        guiNode.attachChild(node);
+
     }
 
     @Override
@@ -61,11 +61,12 @@ public class EnginePowerGraphState extends BaseAppState {
 
     @Override
     protected void onEnable() {
-
+        Node guiNode = ((SimpleApplication)getApplication()).getGuiNode();
+        guiNode.attachChild(node);
     }
 
     @Override
     protected void onDisable() {
-
+        node.removeFromParent();
     }
 }
