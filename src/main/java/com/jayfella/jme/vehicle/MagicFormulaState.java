@@ -52,11 +52,11 @@ public class MagicFormulaState extends BaseAppState {
         centerOfGravity = new Geometry("Center of Mass", new Quad(4, 4));
         centerOfGravity.setMaterial(new Material(getApplication().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md"));
         centerOfGravity.getMaterial().setColor("Color", ColorRGBA.Yellow);
-        guiNode.attachChild(centerOfGravity);
-
-
+        // guiNode.attachChild(centerOfGravity);
 
     }
+
+
 
     private void updateCenterOfGravityControl() {
 
@@ -108,7 +108,40 @@ public class MagicFormulaState extends BaseAppState {
         vehicleDataContainer.addChild(tyreWeightLabels[2], 1, 0);
         vehicleDataContainer.addChild(tyreWeightLabels[3], 1, 1);
 
-        guiNode.attachChild(vehicleDataContainer);
+        // guiNode.attachChild(vehicleDataContainer);
+    }
+
+    private boolean centerOfGravityEnabled = false;
+    private boolean vehicleDataEnabled = false;
+
+    public boolean isCenterOfGravityEnabled() {
+        return centerOfGravityEnabled;
+    }
+
+    public void setCenterOfGravityEnabled(boolean centerOfGravityEnabled) {
+        this.centerOfGravityEnabled = centerOfGravityEnabled;
+
+        if (centerOfGravityEnabled) {
+            ((SimpleApplication)getApplication()).getGuiNode().attachChild(centerOfGravity);
+        }
+        else {
+            centerOfGravity.removeFromParent();
+        }
+    }
+
+    public boolean isVehicleDataEnabled() {
+        return vehicleDataEnabled;
+    }
+
+    public void setVehicleDataEnabled(boolean vehicleDataEnabled) {
+        this.vehicleDataEnabled = vehicleDataEnabled;
+
+        if (vehicleDataEnabled) {
+            ((SimpleApplication)getApplication()).getGuiNode().attachChild(vehicleDataContainer);
+        }
+        else {
+            vehicleDataContainer.removeFromParent();
+        }
     }
 
     @Override
@@ -244,46 +277,49 @@ public class MagicFormulaState extends BaseAppState {
     @Override
     public void update(float tpf) {
 
-        updateCenterOfGravityControl();
+        if (centerOfGravityEnabled) {
+            updateCenterOfGravityControl();
+        }
 
+        if (vehicleDataEnabled) {
+            for (int i = 0; i < vehicle.getNumWheels(); i++) {
 
-        for (int i = 0; i < vehicle.getNumWheels(); i++) {
+                Wheel wheel = vehicle.getWheel(i);
 
-            Wheel wheel = vehicle.getWheel(i);
+                // the angle between the dir of the wheel and the dir the vehicle is travelling.
+                float lateralSlip = wheel.calculateLateralSlipAngle();
 
-            // the angle between the dir of the wheel and the dir the vehicle is travelling.
-            float lateralSlip = wheel.calculateLateralSlipAngle();
+                wheel.getTireModel().setLoad(10000);
 
-            wheel.getTireModel().setLoad(10000);
+                // returns the amount of force in N on the tyre.
+                // this model allows max 10,000
+                float lateral = wheel.getTireModel().calcLateralTireForce(lateralSlip);
 
-            // returns the amount of force in N on the tyre.
-            // this model allows max 10,000
-            float lateral = wheel.getTireModel().calcLateralTireForce(lateralSlip);
+                // the slip angle for this is how much force is being applied to the tyre (acceleration force).
 
-            // the slip angle for this is how much force is being applied to the tyre (acceleration force).
+                float longSlip = wheel.calculateLongitudinalSlipAngle();
+                float longitudinal = wheel.getTireModel().calcLongtitudeTireForce(longSlip);
+                //System.out.println(longitudinal);
 
-            float longSlip = wheel.calculateLongitudinalSlipAngle();
-            float longitudinal = wheel.getTireModel().calcLongtitudeTireForce(longSlip);
-            //System.out.println(longitudinal);
+                // float friction = lateral / 10000;
 
-            // float friction = lateral / 10000;
+                // float friction = wheel.getTireModel().calculateFrictionCircle();
+                float friction = 1.0f - ((lateral / 40000) - (longitudinal / 40000));
+                wheel.setFriction(friction * 2.0f);
+                // wheel.setFriction( lateral / 5000 );
 
-            // float friction = wheel.getTireModel().calculateFrictionCircle();
-            float friction = 1.0f - ( (lateral / 40000) - (longitudinal / 40000) );
-            wheel.setFriction(friction * 2.0f);
-            // wheel.setFriction( lateral / 5000 );
+                // String format = "Weight: %.2f\nLat: %.2f\nLong: %.2f\nFriction: %.2f\nSlip: %.2f";
+                String format = "Lat: %.2f\nLong: %.2f\nFriction: %.2f\nSlip: %.2f";
 
-            // String format = "Weight: %.2f\nLat: %.2f\nLong: %.2f\nFriction: %.2f\nSlip: %.2f";
-            String format = "Lat: %.2f\nLong: %.2f\nFriction: %.2f\nSlip: %.2f";
+                tyreWeightLabels[i].setText(String.format(format,
+                        // wheel.getTireModel().getLoad(),
+                        lateral,
+                        longitudinal,
+                        wheel.getFriction(),
+                        1.0f - wheel.getVehicleWheel().getSkidInfo()
+                ));
 
-            tyreWeightLabels[i].setText(String.format(format,
-                    // wheel.getTireModel().getLoad(),
-                    lateral,
-                    longitudinal,
-                    wheel.getFriction(),
-                    1.0f - wheel.getVehicleWheel().getSkidInfo()
-            ));
-
+            }
         }
 
     }
