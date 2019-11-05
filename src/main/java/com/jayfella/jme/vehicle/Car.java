@@ -148,7 +148,7 @@ public class Car extends Vehicle {
                 512,
                 ((BoundingBox)getWheel(0).getVehicleWheel().getWheelSpatial().getWorldBound()).getZExtent() * 0.75f);
 
-        this.wheelSpinState = new WheelSpinState(this);
+        //this.wheelSpinState = new WheelSpinState(this);
     }
 
     @Override
@@ -157,7 +157,7 @@ public class Car extends Vehicle {
 
         getApplication().getStateManager().attach(smokeEmitter);
         getApplication().getStateManager().attach(skidmarks);
-        getApplication().getStateManager().attach(wheelSpinState);
+        //getApplication().getStateManager().attach(wheelSpinState);
     }
 
     @Override
@@ -166,7 +166,7 @@ public class Car extends Vehicle {
 
         getApplication().getStateManager().detach(smokeEmitter);
         getApplication().getStateManager().detach(skidmarks);
-        getApplication().getStateManager().detach(wheelSpinState);
+        //getApplication().getStateManager().detach(wheelSpinState);
     }
 
     @Override
