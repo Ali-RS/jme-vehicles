@@ -67,7 +67,8 @@ public class VehicleSkidMarks extends BaseAppState {
 
             // kind of annoying, but we can't attach a geometry that doesn't exist if the car hasn't skidded yet.
             if (skid.getManager().getGeometry() != null && skid.getManager().getGeometry().getParent() == null) {
-                ((SimpleApplication) getApplication()).getRootNode().attachChild(skid.getManager().getGeometry());
+                // ((SimpleApplication) getApplication()).getRootNode().attachChild(skid.getManager().getGeometry());
+                vehicle.getNode().getParent().attachChild(skid.getManager().getGeometry());
             }
 
             if (skidmarkEnabled) {
