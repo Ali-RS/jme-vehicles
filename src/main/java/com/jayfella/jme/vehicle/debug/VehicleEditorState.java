@@ -32,6 +32,10 @@ public class VehicleEditorState extends BaseAppState {
 
     }
 
+    public TabbedPanel getTabbedPanel() {
+        return tabbedPanel;
+    }
+
     @Override
     protected void initialize(Application app) {
 
