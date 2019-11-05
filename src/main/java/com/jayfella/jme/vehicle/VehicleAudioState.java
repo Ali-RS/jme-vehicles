@@ -44,7 +44,7 @@ public class VehicleAudioState extends BaseAppState {
 
     @Override
     protected void onDisable() {
-
+        stopEngineSound();
     }
 
     private float lastValue;
