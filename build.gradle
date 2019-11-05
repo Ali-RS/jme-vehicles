@@ -11,11 +11,14 @@ sourceCompatibility = 1.8
 mainClassName = "com.jayfella.jme.vehicle.Main"
 
 repositories {
+    maven { url 'https://dl.bintray.com/stephengold/jme3utilities' }
+    maven { url 'https://dl.bintray.com/riccardo/v-hacd' }
+
     jcenter()
 }
 
 project.ext {
-    jmeVer = "3.3.0-alpha2"
+    jmeVer = "3.2.4-stable"
     lemurVer = "[1.10,)"
     lemurProtoVer = "1.9.1"
     lemurPropsVer = "1.0.1"
@@ -30,8 +33,7 @@ dependencies {
     compile "org.jmonkeyengine:jme3-effects:$jmeVer"
     compile "org.jmonkeyengine:jme3-blender:$jmeVer"
 
-    compile "org.jmonkeyengine:jme3-bullet:$jmeVer"
-    compile "org.jmonkeyengine:jme3-bullet-native:$jmeVer"
+    compile 'jme3utilities:Minie:1.1.0for32'
 
     compile "com.simsilica:lemur:$lemurVer"
     compile "org.codehaus.groovy:groovy-all:2.5.4"
