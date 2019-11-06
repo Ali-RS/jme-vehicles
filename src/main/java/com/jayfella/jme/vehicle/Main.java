@@ -45,6 +45,9 @@ public class Main extends SimpleApplication {
         appSettings.setResolution(1280, 720);
         appSettings.setTitle("jMonkeyEngine :: Advanced Vehicles");
 
+        main.setDisplayStatView(false);
+        main.setDisplayFps(false);
+
         main.setSettings(appSettings);
         main.setShowSettings(true);
         main.start();
@@ -72,12 +75,10 @@ public class Main extends SimpleApplication {
     @Override
     public void simpleInitApp() {
 
-        getStateManager().getState(StatsAppState.class).setDisplayStatView(false);
-
         setAnistropy();
 
-        inputManager.clearMappings();
-        inputManager.clearRawInputListeners();
+        //inputManager.clearMappings();
+        //inputManager.clearRawInputListeners();
 
         // set a nice sky color
         viewPort.setBackgroundColor(new ColorRGBA(0.5f, 0.6f, 0.7f, 1.0f));
