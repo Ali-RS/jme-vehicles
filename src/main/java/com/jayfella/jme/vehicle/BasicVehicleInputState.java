@@ -1,10 +1,7 @@
 package com.jayfella.jme.vehicle;
 
 import com.jayfella.jme.vehicle.part.Wheel;
-import com.jayfella.jme.vehicle.view.VehicleCamView;
-import com.jayfella.jme.vehicle.view.VehicleCamera;
-import com.jayfella.jme.vehicle.view.VehicleFirstPersonCamera;
-import com.jayfella.jme.vehicle.view.VehicleThirdPersonCam;
+import com.jayfella.jme.vehicle.view.*;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.input.KeyInput;
@@ -337,7 +334,7 @@ public class BasicVehicleInputState extends BaseAppState implements StateFunctio
                 break;
             }
             case ThirdPerson: {
-                activeCam = new VehicleThirdPersonCam(vehicle, getApplication().getCamera());
+                activeCam = new VehicleThirdPersonCamera(vehicle, getApplication().getCamera());
                 break;
             }
 
