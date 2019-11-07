@@ -139,6 +139,10 @@ public class CarSelectorState extends BaseAppState {
         setShowVehicleSelector(false);
     }
 
+    public boolean getShowVehicleSelector() {
+        return container.getParent() != null;
+    }
+
     public void setShowVehicleSelector(boolean show) {
 
         if (show) {
