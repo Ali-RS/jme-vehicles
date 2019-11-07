@@ -12,7 +12,6 @@ import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Spatial;
-import com.simsilica.lemur.GuiGlobals;
 
 public class VehicleThirdPersonCamera implements VehicleCamera, AnalogListener, ActionListener {
 
