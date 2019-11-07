@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle.debug;
 
+import com.jayfella.jme.vehicle.CarSelectorState;
 import com.jayfella.jme.vehicle.MagicFormulaState;
 import com.jme3.app.Application;
 import com.jme3.app.StatsAppState;
@@ -30,7 +31,7 @@ public class DebugTabState extends BaseAppState {
 
         MagicFormulaState magicFormulaState = getState(MagicFormulaState.class);
 
-
+        CarSelectorState carSelectorState = getState(CarSelectorState.class);
 
         PropertyPanel propertyPanel = container.addChild(new PropertyPanel("glass"));
         propertyPanel.addBooleanProperty("Display FPS", this, "displayFps");
@@ -40,6 +41,7 @@ public class DebugTabState extends BaseAppState {
         propertyPanel.addBooleanProperty("Tyre Graph", tyreDataState, "enabled");
         propertyPanel.addBooleanProperty("Tyre Data", magicFormulaState, "vehicleDataEnabled");
         propertyPanel.addBooleanProperty("Center of Gravity", magicFormulaState, "centerOfGravityEnabled");
+        propertyPanel.addBooleanProperty("Show Vehicle Selector", carSelectorState, "showVehicleSelector");
 
         tabbedPanel.addTab("Debug", container);
 
