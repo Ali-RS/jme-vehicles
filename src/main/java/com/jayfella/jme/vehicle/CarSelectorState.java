@@ -83,6 +83,11 @@ public class CarSelectorState extends BaseAppState {
                 getStateManager().detach(debugTabState);
             }
 
+            MagicFormulaState magicFormulaState = getState(MagicFormulaState.class);
+            if (magicFormulaState != null) {
+                getStateManager().detach(magicFormulaState);
+            }
+
             vehicle.removeTacho();
             vehicle.removeSpeedo();
             vehicle.detachFromScene();
