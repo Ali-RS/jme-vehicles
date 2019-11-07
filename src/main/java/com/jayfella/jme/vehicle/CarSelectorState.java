@@ -63,6 +63,7 @@ public class CarSelectorState extends BaseAppState {
                 getStateManager().detach(basicVehicleInputState);
             }
 
+            // for debugging. Not required.
             EnginePowerGraphState enginePowerGraphState = getState(EnginePowerGraphState.class);
             if (enginePowerGraphState != null) {
                 getStateManager().detach(enginePowerGraphState);
@@ -83,10 +84,12 @@ public class CarSelectorState extends BaseAppState {
                 getStateManager().detach(debugTabState);
             }
 
+            /*
             MagicFormulaState magicFormulaState = getState(MagicFormulaState.class);
             if (magicFormulaState != null) {
                 getStateManager().detach(magicFormulaState);
             }
+             */
 
             vehicle.removeTacho();
             vehicle.removeSpeedo();
@@ -123,8 +126,10 @@ public class CarSelectorState extends BaseAppState {
         DebugTabState debugTabState = new DebugTabState();
         getStateManager().attach(debugTabState);
 
+        /*
         MagicFormulaState magicFormulaState = new MagicFormulaState(vehicle);
         getStateManager().attach(magicFormulaState);
+         */
 
         vehicle.getNode().setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
     }

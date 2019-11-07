@@ -19,6 +19,7 @@ public class Car extends Vehicle {
     private TyreSmokeEmitter smokeEmitter;
     private VehicleSkidMarks skidmarks;
     private WheelSpinState wheelSpinState;
+    private MagicFormulaState magicFormulaState;
 
 
     public Car(Application app, String name) {
@@ -148,6 +149,7 @@ public class Car extends Vehicle {
                 512,
                 ((BoundingBox)getWheel(0).getVehicleWheel().getWheelSpatial().getWorldBound()).getZExtent() * 0.75f);
 
+        this.magicFormulaState = new MagicFormulaState(this);
         //this.wheelSpinState = new WheelSpinState(this);
     }
 
@@ -157,6 +159,7 @@ public class Car extends Vehicle {
 
         getApplication().getStateManager().attach(smokeEmitter);
         getApplication().getStateManager().attach(skidmarks);
+        getApplication().getStateManager().attach(magicFormulaState);
         //getApplication().getStateManager().attach(wheelSpinState);
     }
 
@@ -166,6 +169,7 @@ public class Car extends Vehicle {
 
         getApplication().getStateManager().detach(smokeEmitter);
         getApplication().getStateManager().detach(skidmarks);
+        getApplication().getStateManager().detach(magicFormulaState);
         //getApplication().getStateManager().detach(wheelSpinState);
     }
 

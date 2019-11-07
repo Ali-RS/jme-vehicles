@@ -55,8 +55,6 @@ public class MagicFormulaState extends BaseAppState {
 
     }
 
-
-
     private void updateCenterOfGravityControl() {
 
         Vector3f newLoc = new Vector3f();
