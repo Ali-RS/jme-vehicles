@@ -36,7 +36,7 @@ public class VehicleThirdPersonCamera implements VehicleCamera, AnalogListener, 
 
     private float rotationSpeed = FastMath.TWO_PI;
 
-    private float zoomDistance = 15;
+    private float zoomDistance = 10;
     private float zoomSpeed = 1;
 
     private float minZoom = 5;
@@ -48,7 +48,7 @@ public class VehicleThirdPersonCamera implements VehicleCamera, AnalogListener, 
     private boolean rotate, translate;
 
     // we have a vehicle rotation + a custom rotation.
-    private float[] viewAngles = new float[3]; // custom rotation
+    private float[] viewAngles = new float[] { -FastMath.QUARTER_PI * 0.5f, 0, 0 }; // custom rotation
     private final float[] angles = new float[3]; // the final rotation
 
     private final Vehicle vehicle;
@@ -274,34 +274,30 @@ public class VehicleThirdPersonCamera implements VehicleCamera, AnalogListener, 
                 }
 
                 // angles[0] += dirState * (rotationSpeed * tpf);
-                angles[0] += dirState * (rotationSpeed * tpf);
+                viewAngles[0] += dirState * (rotationSpeed * tpf);
 
                 // 89 degrees. Avoid the "flip" problem.
                 float maxRotX = FastMath.HALF_PI - FastMath.DEG_TO_RAD;
 
                 // limit camera rotation.
-                if (angles[0] < -maxRotX) {
-                    angles[0] = -maxRotX;
+                if (viewAngles[0] < -maxRotX) {
+                    viewAngles[0] = -maxRotX;
                 }
 
-                if (angles[0] > maxRotX) {
-                    angles[0] = maxRotX;
+                if (viewAngles[0] > maxRotX) {
+                    viewAngles[0] = maxRotX;
                 }
             }
 
             if (MOUSE_MOVE_RIGHT.equals(name) || MOUSE_MOVE_LEFT.equals(name)) {
 
                 int dirState = MOUSE_MOVE_RIGHT.equals(name) ? 1 : -1;
-                // angles[1] += dirState * (rotationSpeed * tpf);
                 viewAngles[1] += dirState * (rotationSpeed * tpf);
 
                 // stop the angles from becoming too big.
-                // if (angles[1] > FastMath.TWO_PI) {
                 if (viewAngles[1] > FastMath.TWO_PI) {
-                    // angles[1] -= FastMath.TWO_PI;
                     viewAngles[1] -= FastMath.TWO_PI;
                 } else if (viewAngles[1] < -FastMath.TWO_PI) {
-                    // angles[1] += FastMath.TWO_PI;
                     viewAngles[1] += FastMath.TWO_PI;
                 }
             }
@@ -383,6 +379,7 @@ public class VehicleThirdPersonCamera implements VehicleCamera, AnalogListener, 
             setFocusPoint(focusPoint);
         }
 
+        angles[0] = viewAngles[0];
         angles[1] = viewAngles[1];
 
         if (followVehicleRotation) {
