@@ -1,10 +1,5 @@
 package com.jayfella.jme.vehicle;
 
-import com.jayfella.jme.vehicle.debug.DebugTabState;
-import com.jayfella.jme.vehicle.debug.EnginePowerGraphState;
-import com.jayfella.jme.vehicle.debug.TyreDataState;
-import com.jayfella.jme.vehicle.debug.VehicleEditorState;
-import com.jayfella.jme.vehicle.examples.cars.*;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
 import com.jme3.asset.AssetEventListener;
@@ -15,13 +10,11 @@ import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
-import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
-import com.jme3.post.filters.BloomFilter;
 import com.jme3.post.ssao.SSAOFilter;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
@@ -31,7 +24,6 @@ import com.jme3.system.AppSettings;
 import com.jme3.texture.Texture;
 import com.jme3.util.SkyFactory;
 import com.simsilica.lemur.GuiGlobals;
-import com.simsilica.lemur.focus.FocusManagerState;
 import com.simsilica.lemur.style.BaseStyles;
 
 public class Main extends SimpleApplication {
@@ -81,7 +73,7 @@ public class Main extends SimpleApplication {
         //inputManager.clearRawInputListeners();
 
         // set a nice sky color
-        viewPort.setBackgroundColor(new ColorRGBA(0.5f, 0.6f, 0.7f, 1.0f));
+        // viewPort.setBackgroundColor(new ColorRGBA(0.5f, 0.6f, 0.7f, 1.0f));
 
         // the "hood-cam" gets close to the bodywork, so set the near-frustum accordingly...
         float aspect = (float)cam.getWidth() / (float)cam.getHeight();
@@ -101,6 +93,7 @@ public class Main extends SimpleApplication {
 
         Spatial sky = SkyFactory.createSky(assetManager, "Textures/Sky/quarry_03_4k.jpg", SkyFactory.EnvMapType.EquirectMap);
         sky.setQueueBucket(RenderQueue.Bucket.Sky);
+        sky.setShadowMode(RenderQueue.ShadowMode.Off);
         rootNode.attachChild(sky);
 
         // initialize physics
@@ -112,49 +105,6 @@ public class Main extends SimpleApplication {
 
         CarSelectorState carSelectorState = new CarSelectorState(playground, bulletAppState.getPhysicsSpace());
         stateManager.attach(carSelectorState);
-
-        // Choose a vehicle
-        // ================
-        // Car vehicle = new PickupTruck(this);
-        // Car vehicle = new HatchBack(this);
-        // Car vehicle = new DuneBuggy(this);
-        // Car vehicle = new GrandTourer(this);
-        // Car vehicle = new GTRNismo(this);
-
-        /*
-        vehicle.showSpeedo(Vehicle.SpeedUnit.MPH);
-        vehicle.showTacho();
-        vehicle.attachToScene(playground, bulletAppState.getPhysicsSpace());
-
-        // raise the vehicle a little so it doesn't spawn in the ground.
-        vehicle.getVehicleControl().setPhysicsLocation(new Vector3f(0, 6, 0));
-
-        // add some controls
-        BasicVehicleInputState basicVehicleInputState = new BasicVehicleInputState(vehicle);
-        getStateManager().attach(basicVehicleInputState);
-
-        // engine debugger
-        EnginePowerGraphState enginePowerGraphState = new EnginePowerGraphState(vehicle);
-        enginePowerGraphState.setEnabled(false);
-        stateManager.attach(enginePowerGraphState);
-
-        // tyre debugger
-        TyreDataState tyreDataState = new TyreDataState(vehicle);
-        tyreDataState.setEnabled(false);
-        stateManager.attach(tyreDataState);
-
-        // the vehicle debug.
-        VehicleEditorState vehicleEditorState = new VehicleEditorState(vehicle);
-        getStateManager().attach(vehicleEditorState);
-
-        // vehicle debug add-on to enable/disable debug screens.
-        DebugTabState debugTabState = new DebugTabState();
-        getStateManager().attach(debugTabState);
-
-        MagicFormulaState magicFormulaState = new MagicFormulaState(vehicle);
-        stateManager.attach(magicFormulaState);
-
-         */
 
         cam.setLocation(new Vector3f(-200, 50, -200));
         cam.lookAt(new Vector3f(100, 10, 150), Vector3f.UNIT_Y);
@@ -189,6 +139,11 @@ public class Main extends SimpleApplication {
         playground.addControl(rigidBodyControl);
         physicsSpace.add(rigidBodyControl);
 
+        // playground.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
+        Node p = (Node) playground;
+        p.breadthFirstTraversal(spatial -> spatial.setShadowMode(RenderQueue.ShadowMode.CastAndReceive));
+
+
         rootNode.attachChild(playground);
         return playground;
     }
@@ -197,17 +152,33 @@ public class Main extends SimpleApplication {
 
         FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
 
-        DirectionalLightShadowFilter shadowFilter = new DirectionalLightShadowFilter(assetManager, 4096, 2);
+        DirectionalLightShadowFilter shadowFilter = new DirectionalLightShadowFilter(assetManager, 4096, 4);
         shadowFilter.setLight(directionalLight);
-        shadowFilter.setShadowIntensity(0.4f);
+        shadowFilter.setShadowIntensity(0.3f);
         shadowFilter.setShadowZExtend(256);
+        shadowFilter.setShadowZFadeLength(128);
+        // shadowFilter.setEdgeFilteringMode(EdgeFilteringMode.PCFPOISSON);
         fpp.addFilter(shadowFilter);
 
-        // SSAOFilter ssaoFilter = new SSAOFilter();
-        // fpp.addFilter(ssaoFilter);
+        SSAOFilter ssaoFilter = new SSAOFilter();
+        fpp.addFilter(ssaoFilter);
 
-        //BloomFilter bloomFilter = new BloomFilter();
-        //fpp.addFilter(bloomFilter);
+        // LightScatteringFilter lightScattering = new LightScatteringFilter();
+        // lightScattering.setLightPosition(directionalLight.getDirection());
+        // lightScattering.setLightDensity(1);
+        // lightScattering.setBlurWidth(1.1f);
+        // fpp.addFilter(lightScattering);
+
+        // DepthOfFieldFilter dof = new DepthOfFieldFilter();
+        // dof.setFocusDistance(0);
+        // dof.setFocusRange(384);
+        // dof.setEnabled(false);
+        // fpp.addFilter(dof);
+
+        // BloomFilter bloomFilter = new BloomFilter();
+        // bloomFilter.setExposurePower(55);
+        // bloomFilter.setBloomIntensity(1.2f);
+        // fpp.addFilter(bloomFilter);
 
         viewPort.addProcessor(fpp);
     }
