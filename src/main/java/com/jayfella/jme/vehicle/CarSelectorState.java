@@ -10,6 +10,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import com.simsilica.lemur.Button;
 import com.simsilica.lemur.Container;
@@ -120,6 +121,7 @@ public class CarSelectorState extends BaseAppState {
         MagicFormulaState magicFormulaState = new MagicFormulaState(vehicle);
         getStateManager().attach(magicFormulaState);
 
+        vehicle.getNode().setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
     }
 
     @Override
@@ -129,12 +131,22 @@ public class CarSelectorState extends BaseAppState {
 
     @Override
     protected void onEnable() {
-        ((SimpleApplication)getApplication()).getGuiNode().attachChild(container);
+        setShowVehicleSelector(true);
     }
 
     @Override
     protected void onDisable() {
-        container.removeFromParent();
+        setShowVehicleSelector(false);
+    }
+
+    public void setShowVehicleSelector(boolean show) {
+
+        if (show) {
+            ((SimpleApplication)getApplication()).getGuiNode().attachChild(container);
+        }
+        else {
+            container.removeFromParent();
+        }
     }
 
 }
