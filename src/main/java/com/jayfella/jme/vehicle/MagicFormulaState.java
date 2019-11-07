@@ -29,6 +29,7 @@ public class MagicFormulaState extends BaseAppState {
     // private Node vehicleDataNode;
     private Container vehicleDataContainer;
     private Geometry vehicle2D;
+    private Label crosshair;
     private Geometry centerOfGravity;
 
     // weight per wheel labels
@@ -43,13 +44,11 @@ public class MagicFormulaState extends BaseAppState {
 
     private void createCenterOfGravityControl() {
 
-        Label crosshair = new Label("+");
+        crosshair = new Label("+");
         crosshair.setColor(ColorRGBA.Pink);
         crosshair.setLocalTranslation(screenCenter.add(-crosshair.getPreferredSize().x * 0.5f, crosshair.getPreferredSize().y * 0.5f, 0));
 
-        guiNode.attachChild(crosshair);
-
-        centerOfGravity = new Geometry("Center of Mass", new Quad(4, 4));
+        centerOfGravity = new Geometry("Center of Mass", new Quad(8, 8));
         centerOfGravity.setMaterial(new Material(getApplication().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md"));
         centerOfGravity.getMaterial().setColor("Color", ColorRGBA.Yellow);
         // guiNode.attachChild(centerOfGravity);
@@ -111,30 +110,42 @@ public class MagicFormulaState extends BaseAppState {
         // guiNode.attachChild(vehicleDataContainer);
     }
 
-    private boolean centerOfGravityEnabled = false;
-    private boolean vehicleDataEnabled = false;
+    // private boolean centerOfGravityEnabled = false;
+    // private boolean vehicleDataEnabled = false;
 
     public boolean isCenterOfGravityEnabled() {
-        return centerOfGravityEnabled;
+
+        if (centerOfGravity != null) {
+            return centerOfGravity.getParent() != null;
+        }
+
+        return false;
     }
 
     public void setCenterOfGravityEnabled(boolean centerOfGravityEnabled) {
-        this.centerOfGravityEnabled = centerOfGravityEnabled;
+        // this.centerOfGravityEnabled = centerOfGravityEnabled;
 
         if (centerOfGravityEnabled) {
-            ((SimpleApplication)getApplication()).getGuiNode().attachChild(centerOfGravity);
+            guiNode.attachChild(centerOfGravity);
+            guiNode.attachChild(crosshair);
         }
         else {
             centerOfGravity.removeFromParent();
+            crosshair.removeFromParent();
         }
     }
 
     public boolean isVehicleDataEnabled() {
-        return vehicleDataEnabled;
+
+        if (vehicleDataContainer != null) {
+            return vehicleDataContainer.getParent() != null;
+        }
+
+        return false;
     }
 
     public void setVehicleDataEnabled(boolean vehicleDataEnabled) {
-        this.vehicleDataEnabled = vehicleDataEnabled;
+        // this.vehicleDataEnabled = vehicleDataEnabled;
 
         if (vehicleDataEnabled) {
             ((SimpleApplication)getApplication()).getGuiNode().attachChild(vehicleDataContainer);
@@ -176,7 +187,8 @@ public class MagicFormulaState extends BaseAppState {
 
     @Override
     protected void onDisable() {
-
+        setCenterOfGravityEnabled(false);
+        setVehicleDataEnabled(false);
     }
 
     private Geometry createArrow(Vector3f dir, ColorRGBA color) {
@@ -277,11 +289,11 @@ public class MagicFormulaState extends BaseAppState {
     @Override
     public void update(float tpf) {
 
-        if (centerOfGravityEnabled) {
+        if (isCenterOfGravityEnabled()) {
             updateCenterOfGravityControl();
         }
 
-        if (vehicleDataEnabled) {
+        if (isVehicleDataEnabled()) {
             for (int i = 0; i < vehicle.getNumWheels(); i++) {
 
                 Wheel wheel = vehicle.getWheel(i);
