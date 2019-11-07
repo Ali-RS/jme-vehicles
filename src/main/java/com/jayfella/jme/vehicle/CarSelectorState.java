@@ -54,8 +54,43 @@ public class CarSelectorState extends BaseAppState {
                 1);
     }
 
-    public void setVehicle(Car newVehicle) {
+    public void addVehicle(Car newVehicle) {
 
+        vehicle = newVehicle;
+
+        vehicle.showSpeedo(Vehicle.SpeedUnit.MPH);
+        vehicle.showTacho();
+        vehicle.attachToScene(scene, physicsSpace);
+
+        vehicle.getVehicleControl().setPhysicsLocation(new Vector3f(0, 6, 0));
+
+        // add some controls
+        BasicVehicleInputState basicVehicleInputState = new BasicVehicleInputState(vehicle);
+        getStateManager().attach(basicVehicleInputState);
+
+        // engine graph GUI for viewing torqe/power @ revs
+        EnginePowerGraphState enginePowerGraphState = new EnginePowerGraphState(vehicle);
+        enginePowerGraphState.setEnabled(false);
+        getStateManager().attach(enginePowerGraphState);
+
+        // tyre data GUI for viewing how much grip each tyre has according to the pajecka formula.
+        TyreDataState tyreDataState = new TyreDataState(vehicle);
+        tyreDataState.setEnabled(false);
+        getStateManager().attach(tyreDataState);
+
+        // the main vehicle editor to modify all areas of the vehicle real-time.
+        VehicleEditorState vehicleEditorState = new VehicleEditorState(vehicle);
+        getStateManager().attach(vehicleEditorState);
+
+        // vehicle debug add-on to enable/disable debug screens.
+        DebugTabState debugTabState = new DebugTabState();
+        getStateManager().attach(debugTabState);
+
+        vehicle.getNode().setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
+
+    }
+
+    public void removeCurrentVehicle() {
         if (vehicle != null) {
 
             BasicVehicleInputState basicVehicleInputState = getState(BasicVehicleInputState.class);
@@ -63,7 +98,6 @@ public class CarSelectorState extends BaseAppState {
                 getStateManager().detach(basicVehicleInputState);
             }
 
-            // for debugging. Not required.
             EnginePowerGraphState enginePowerGraphState = getState(EnginePowerGraphState.class);
             if (enginePowerGraphState != null) {
                 getStateManager().detach(enginePowerGraphState);
@@ -84,54 +118,15 @@ public class CarSelectorState extends BaseAppState {
                 getStateManager().detach(debugTabState);
             }
 
-            /*
-            MagicFormulaState magicFormulaState = getState(MagicFormulaState.class);
-            if (magicFormulaState != null) {
-                getStateManager().detach(magicFormulaState);
-            }
-             */
-
             vehicle.removeTacho();
             vehicle.removeSpeedo();
             vehicle.detachFromScene();
         }
+    }
 
-        vehicle = newVehicle;
-
-        vehicle.showSpeedo(Vehicle.SpeedUnit.MPH);
-        vehicle.showTacho();
-        vehicle.attachToScene(scene, physicsSpace);
-
-        vehicle.getVehicleControl().setPhysicsLocation(new Vector3f(0, 6, 0));
-
-        // add some controls
-        BasicVehicleInputState basicVehicleInputState = new BasicVehicleInputState(vehicle);
-        getStateManager().attach(basicVehicleInputState);
-
-        // engine debugger
-        EnginePowerGraphState enginePowerGraphState = new EnginePowerGraphState(vehicle);
-        enginePowerGraphState.setEnabled(false);
-        getStateManager().attach(enginePowerGraphState);
-
-        // tyre debugger
-        TyreDataState tyreDataState = new TyreDataState(vehicle);
-        tyreDataState.setEnabled(false);
-        getStateManager().attach(tyreDataState);
-
-        // the vehicle debug.
-        VehicleEditorState vehicleEditorState = new VehicleEditorState(vehicle);
-        getStateManager().attach(vehicleEditorState);
-
-        // vehicle debug add-on to enable/disable debug screens.
-        DebugTabState debugTabState = new DebugTabState();
-        getStateManager().attach(debugTabState);
-
-        /*
-        MagicFormulaState magicFormulaState = new MagicFormulaState(vehicle);
-        getStateManager().attach(magicFormulaState);
-         */
-
-        vehicle.getNode().setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
+    public void setVehicle(Car newVehicle) {
+        removeCurrentVehicle();
+        addVehicle(newVehicle);
     }
 
     @Override
