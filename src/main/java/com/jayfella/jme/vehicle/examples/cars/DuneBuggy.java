@@ -3,6 +3,8 @@ package com.jayfella.jme.vehicle.examples.cars;
 import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.examples.engines.Engine250HP;
 import com.jayfella.jme.vehicle.examples.tyres.Tyre_01;
+import com.jayfella.jme.vehicle.examples.wheels.BasicAlloyWheel;
+import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Brake;
 import com.jayfella.jme.vehicle.engine.Engine;
 import com.jayfella.jme.vehicle.part.GearBox;
@@ -13,6 +15,8 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+
+import java.util.WeakHashMap;
 
 public class DuneBuggy extends Car {
 
@@ -26,46 +30,24 @@ public class DuneBuggy extends Car {
         chassis.setMaterial(chassisMaterial);
         setChassis(chassis, 525);
 
-        Spatial wheel = assetManager.loadModel("Models/Vehicles/Wheel/Wheel_1/wheel.j3o");
-        Material wheelMaterial = assetManager.loadMaterial("Materials/Vehicles/Wheel_1.j3m");
-        wheel.setMaterial(wheelMaterial);
+        // rotate the right-sided wheels 180 degrees.
 
-        //getState(MaterializerState.class).materializeIn(wheelMaterial);
+        WheelModel wheel_fl = new BasicAlloyWheel(assetManager, 0.75f);
+        wheel_fl.getSpatial().rotate(0, FastMath.PI, 0);
 
-        Node w_fl_node = new Node("Wheel FL Node");
-        Spatial w_fl = wheel.clone();
-        w_fl.setMaterial(wheelMaterial);
-        //w_fl.rotate(0, FastMath.HALF_PI, 0);
-        w_fl_node.attachChild(w_fl);
+        WheelModel wheel_fr = new BasicAlloyWheel(assetManager, 0.75f);
 
-        Node w_fr_node = new Node("Wheel FR Node");
-        Spatial w_fr = wheel.clone();
-        w_fr.setMaterial(wheelMaterial);
-        w_fr.rotate(0, FastMath.PI, 0);
-        w_fr_node.attachChild(w_fr);
+        WheelModel wheel_rl = new BasicAlloyWheel(assetManager, 0.75f);
+        wheel_rl.getSpatial().rotate(0, FastMath.PI, 0);
 
-        Node w_rl_node = new Node("Wheel RL Node");
-        Spatial w_rl = wheel.clone();
-        w_rl.setMaterial(wheelMaterial);
-        //w_rl.rotate(0, FastMath.HALF_PI, 0);
-        w_rl_node.attachChild(w_rl);
-
-        Node w_rr_node = new Node("Wheel RR Node");
-        Spatial w_rr = wheel.clone();
-        w_rr.setMaterial(wheelMaterial);
-        w_rr.rotate(0, FastMath.PI, 0);
-        w_rr_node.attachChild(w_rr);
+        WheelModel wheel_rr = new BasicAlloyWheel(assetManager, 0.75f);
 
 
-        w_fr_node.setLocalScale(0.75f);
-        w_fl_node.setLocalScale(0.75f);
-        w_rr_node.setLocalScale(0.75f);
-        w_rl_node.setLocalScale(0.75f);
+        addWheel(wheel_fl.getWheelNode(), new Vector3f(0.75f, .25f, 1.2f), true, false, new Brake(80));
+        addWheel(wheel_fr.getWheelNode(), new Vector3f(-0.75f, .25f, 1.2f), true, false, new Brake(80));
 
-        addWheel(w_fr_node, new Vector3f(-0.75f, .25f, 1.2f), true, false, new Brake(80));
-        addWheel(w_fl_node, new Vector3f(0.75f, .25f, 1.2f), true, false, new Brake(80));
-        addWheel(w_rr_node, new Vector3f(-0.75f, .25f, -1.2f), false, false, new Brake(0));
-        addWheel(w_rl_node, new Vector3f(0.75f, .25f, -1.2f), false, false, new Brake(0));
+        addWheel(wheel_rl.getWheelNode(), new Vector3f(0.75f, .25f, -1.2f), false, false, new Brake(0));
+        addWheel(wheel_rr.getWheelNode(), new Vector3f(-0.75f, .25f, -1.2f), false, false, new Brake(0));
 
         for (int i = 0; i < getNumWheels(); i++) {
             getWheel(i).getSuspension().setRestLength(0.25f);
@@ -88,12 +70,6 @@ public class DuneBuggy extends Car {
         getWheel(2).setAccelerationForce(1);
         getWheel(3).setAccelerationForce(1);
 
-        //getWheel(0).setBrakeForce(80);
-        //getWheel(1).setBrakeForce(80);
-        //getWheel(2).setBrakeForce(0);
-        //getWheel(3).setBrakeForce(0);
-
-        // vehicle.setMaxSpeedMph(50);
         setHoodCamLocation(new Vector3f(new Vector3f(0, 1, 0.1f)));
 
         GearBox gearBox = new GearBox(6);

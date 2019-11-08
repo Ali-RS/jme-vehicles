@@ -135,7 +135,7 @@ public class SkidMarkManager {
         if (this.geometry == null) {
             this.geometry = new Geometry("SkidMark", marksMesh);
             this.geometry.setMaterial(skidmarksMaterial);
-            //this.geometry.setQueueBucket(RenderQueue.Bucket.Transparent);
+            this.geometry.setQueueBucket(RenderQueue.Bucket.Transparent);
         }
 
         geometry.updateModelBound();

@@ -4,6 +4,8 @@ import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.examples.engines.Engine180HP;
 import com.jayfella.jme.vehicle.examples.tyres.Tyre_01;
 import com.jayfella.jme.vehicle.examples.tyres.Tyre_02;
+import com.jayfella.jme.vehicle.examples.wheels.BasicAlloyWheel;
+import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Brake;
 import com.jayfella.jme.vehicle.engine.Engine;
 import com.jayfella.jme.vehicle.part.GearBox;
@@ -27,43 +29,22 @@ public class HatchBack extends Car {
         chassis.setMaterial(chassisMaterial);
         setChassis(chassis, 1140);
 
-        Spatial wheel = assetManager.loadModel("Models/Vehicles/Wheel/Wheel_1/wheel.j3o");
-        Material wheelMaterial = assetManager.loadMaterial("Materials/Vehicles/Wheel_1.j3m");
-        wheel.setMaterial(wheelMaterial);
+        WheelModel wheel_fl = new BasicAlloyWheel(assetManager, 0.8f);
 
-        Node w_fl_node = new Node("Wheel FL Node");
-        Spatial w_fl = wheel.clone();
-        w_fl.setMaterial(wheelMaterial);
-        //w_fl.rotate(0, FastMath.HALF_PI, 0);
-        w_fl_node.attachChild(w_fl);
+        WheelModel wheel_fr = new BasicAlloyWheel(assetManager, 0.8f);
+        wheel_fr.getSpatial().rotate(0, FastMath.PI, 0);
 
-        Node w_fr_node = new Node("Wheel FR Node");
-        Spatial w_fr = wheel.clone();
-        w_fr.setMaterial(wheelMaterial);
-        w_fr.rotate(0, FastMath.PI, 0);
-        w_fr_node.attachChild(w_fr);
+        WheelModel wheel_rl = new BasicAlloyWheel(assetManager, 0.8f);
 
-        Node w_rl_node = new Node("Wheel RL Node");
-        Spatial w_rl = wheel.clone();
-        w_rl.setMaterial(wheelMaterial);
-        //w_rl.rotate(0, FastMath.HALF_PI, 0);
-        w_rl_node.attachChild(w_rl);
+        WheelModel wheel_rr = new BasicAlloyWheel(assetManager, 0.8f);
+        wheel_rr.getSpatial().rotate(0, FastMath.PI, 0);
 
-        Node w_rr_node = new Node("Wheel RR Node");
-        Spatial w_rr = wheel.clone();
-        w_rr.setMaterial(wheelMaterial);
-        w_rr.rotate(0, FastMath.PI, 0);
-        w_rr_node.attachChild(w_rr);
+        addWheel(wheel_fl.getWheelNode(), new Vector3f(0.75f, 0, 1.3f), true, false, new Brake(80));
+        addWheel(wheel_fr.getWheelNode(), new Vector3f(-0.75f, 0, 1.3f), true, false, new Brake(80));
 
-        w_fr_node.setLocalScale(0.8f);
-        w_fl_node.setLocalScale(0.8f);
-        w_rr_node.setLocalScale(0.8f);
-        w_rl_node.setLocalScale(0.8f);
+        addWheel(wheel_rl.getWheelNode(), new Vector3f(0.75f, 0, -1.3f), false, false, new Brake(0));
+        addWheel(wheel_rr.getWheelNode(), new Vector3f(-0.75f, 0, -1.3f), false, false, new Brake(0));
 
-        addWheel(w_fr_node, new Vector3f(-0.75f, 0, 1.3f), true, false, new Brake(80));
-        addWheel(w_fl_node, new Vector3f(0.75f, 0, 1.3f), true, false, new Brake(80));
-        addWheel(w_rr_node, new Vector3f(-0.75f, 0, -1.3f), false, false, new Brake(0));
-        addWheel(w_rl_node, new Vector3f(0.75f, 0, -1.3f), false, false, new Brake(0));
 
         for (int i = 0; i < getNumWheels(); i++) {
             getWheel(i).getSuspension().setRestLength(0.01f);

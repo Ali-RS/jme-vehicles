@@ -76,6 +76,11 @@ public class TyreDataState extends BaseAppState {
             TireGraph tireGraph = new TireGraph(app.getAssetManager(), vehicle.getWheel(i).getTireModel(), graphWidth, graphHeight);
             graphNode.attachChild(tireGraph);
 
+            tireGraph.setBackgroundColor(ColorRGBA.DarkGray);
+            tireGraph.setLateralColor(ColorRGBA.Red);
+            tireGraph.setLongitudinalColor(ColorRGBA.Yellow);
+            tireGraph.setMomentColor(ColorRGBA.Green);
+
             Geometry lateralNeedle = createNeedle(app.getAssetManager(), tireGraph.getLateralColor());
             Geometry longitudeNeedle = createNeedle(app.getAssetManager(), tireGraph.getLongitudinalColor());
             Geometry momentNeedle = createNeedle(app.getAssetManager(), tireGraph.getMomentColor());
@@ -137,8 +142,8 @@ public class TyreDataState extends BaseAppState {
             float mnt = wheel.getTireModel().getMomentValue();
 
             needles[i][0].setLocalTranslation(lat, 0, 0);
-            //needles[i][1].setLocalTranslation(lng, 0, 0);
-            //needles[i][2].setLocalTranslation(mnt, 0, 0);
+            needles[i][1].setLocalTranslation(lng, 0, 0);
+            needles[i][2].setLocalTranslation(mnt, 0, 0);
         }
 
     }

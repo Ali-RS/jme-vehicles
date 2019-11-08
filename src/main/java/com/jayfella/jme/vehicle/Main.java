@@ -116,18 +116,35 @@ public class Main extends SimpleApplication {
 
     private Spatial loadPlayground(PhysicsSpace physicsSpace) {
 
-        // Material material = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
         Material material = new Material(assetManager, "Common/MatDefs/Light/PBRLighting.j3md");
 
-        Texture texture = assetManager.loadTexture("Textures/grid.png");
-        texture.setWrap(Texture.WrapMode.Repeat);
+        Texture baseColorMap = assetManager.loadTexture("Textures/Ground/Marble/marble_01_diff_2k.png");
+        baseColorMap.setWrap(Texture.WrapMode.Repeat);
 
-        // material.setTexture("DiffuseMap", texture);
-        material.setTexture("BaseColorMap", texture);
+        Texture roughnessMap = assetManager.loadTexture("Textures/Ground/Marble/marble_01_rough_2k.png");
+        roughnessMap.setWrap(Texture.WrapMode.Repeat);
 
-        material.setColor("BaseColor", ColorRGBA.LightGray);
-        material.setFloat("Roughness", 0.75f);
-        material.setFloat("Metallic", 0.5f);
+        Texture aoMap = assetManager.loadTexture("Textures/Ground/Marble/marble_01_AO_2k.png");
+        aoMap.setWrap(Texture.WrapMode.Repeat);
+
+        //Texture dispMap = assetManager.loadTexture("Textures/Ground/Marble/marble_01_disp_2k.png");
+        //dispMap.setWrap(Texture.WrapMode.Repeat);
+
+        Texture normalMap = assetManager.loadTexture("Textures/Ground/Marble/marble_01_nor_2k.png");
+        normalMap.setWrap(Texture.WrapMode.Repeat);
+
+        material.setTexture("BaseColorMap", baseColorMap);
+        material.setTexture("RoughnessMap", roughnessMap);
+        material.setTexture("LightMap", aoMap);
+        material.setBoolean("LightMapAsAOMap", true);
+        //material.setTexture("ParallaxMap", dispMap);
+        material.setTexture("NormalMap", normalMap);
+        material.setFloat("NormalType", 1.0f);
+
+
+        // material.setColor("BaseColor", ColorRGBA.LightGray);
+        // material.setFloat("Roughness", 0.75f);
+        material.setFloat("Metallic", 0.001f);
 
         // material.setBoolean("UseFog", true);
         // material.setColor("FogColor", new ColorRGBA(0.5f, 0.6f, 0.7f, 1.0f));

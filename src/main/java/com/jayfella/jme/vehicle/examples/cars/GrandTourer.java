@@ -4,10 +4,14 @@ import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.engine.Engine;
 import com.jayfella.jme.vehicle.examples.engines.Engine450HP;
 import com.jayfella.jme.vehicle.examples.tyres.Tyre_01;
+import com.jayfella.jme.vehicle.examples.wheels.CruiserWheel;
+import com.jayfella.jme.vehicle.examples.wheels.DarkAlloyWheel;
+import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Brake;
 import com.jayfella.jme.vehicle.part.GearBox;
 import com.jme3.app.Application;
 import com.jme3.asset.AssetManager;
+import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.SceneGraphVisitorAdapter;
@@ -15,67 +19,47 @@ import com.jme3.scene.Spatial;
 
 public class GrandTourer extends Car {
 
-    Node w_fl_node = new Node("Wheel FL Node");
-    Node w_fr_node = new Node("Wheel FR Node");
-    Node w_rl_node = new Node("Wheel RL Node");
-    Node w_rr_node = new Node("Wheel RR Node");
-
-    private class WheelVisitor extends SceneGraphVisitorAdapter {
-        public void visit(Node geom) {
-            if (geom.getName().equals("lWheelGroup")) {
-                w_fl_node.attachChild(geom);
-                geom.setLocalTranslation(0, 0, 0);
-                geom.center();
-            }
-            else if (geom.getName().equals("rWheelGroup")) {
-                w_fr_node.attachChild(geom);
-                geom.setLocalTranslation(0, 0, 0);
-                geom.center();
-            }
-            else if (geom.getName().equals("slick1")) {
-                w_rl_node.attachChild(geom);
-                geom.setLocalTranslation(0, 0, 0);
-                geom.center();
-            }
-            else if (geom.getName().equals("slick2")) {
-                w_rr_node.attachChild(geom);
-                geom.setLocalTranslation(0, 0, 0);
-                geom.center();
-            }
-        }
-    }
-
-
     public GrandTourer(Application app) {
-        super(app, "Dune Buggy");
+        super(app, "Grand Tourer");
 
         AssetManager assetManager = app.getAssetManager();
 
         Spatial chassis = assetManager.loadModel("Models/GT/scene.gltf.j3o");
         chassis.setLocalScale(0.2f);
-        chassis.breadthFirstTraversal(new WheelVisitor());
         setChassis(chassis, 1525);
 
-        w_fl_node.setLocalScale(0.2f);
-        w_fr_node.setLocalScale(0.2f);
-        w_rl_node.setLocalScale(0.2f);
-        w_rr_node.setLocalScale(0.2f);
+        WheelModel wheel_fl = new CruiserWheel(assetManager, 0.85f);
+        wheel_fl.getSpatial().rotate(0, FastMath.PI, 0);
+
+        WheelModel wheel_fr = new CruiserWheel(assetManager, 0.85f);
+
+        WheelModel wheel_rl = new CruiserWheel(assetManager, 0.85f);
+        wheel_rl.getSpatial().rotate(0, FastMath.PI, 0);
+
+        WheelModel wheel_rr = new CruiserWheel(assetManager, 0.85f);
 
 
-        addWheel(w_fr_node, new Vector3f(-0.85f, .35f, 1.65f), true, false, new Brake(140));
-        addWheel(w_fl_node, new Vector3f(0.85f, .35f, 1.65f), true, false, new Brake(140));
-        addWheel(w_rr_node, new Vector3f(-0.85f, .45f, -1.6f), false, false, new Brake(0));
-        addWheel(w_rl_node, new Vector3f(0.85f, .45f, -1.6f), false, false, new Brake(0));
+        addWheel(wheel_fl.getWheelNode(), new Vector3f(0.85f, .35f, 1.6f), true, false, new Brake(140));
+        addWheel(wheel_fr.getWheelNode(), new Vector3f(-0.85f, .35f, 1.6f), true, false, new Brake(140));
+
+        addWheel(wheel_rl.getWheelNode(), new Vector3f(0.85f, .45f, -1.6f), false, false, new Brake(0));
+        addWheel(wheel_rr.getWheelNode(), new Vector3f(-0.85f, .45f, -1.6f), false, false, new Brake(0));
+
 
         for (int i = 0; i < getNumWheels(); i++) {
-            getWheel(i).getSuspension().setRestLength(0.05f);
+            // getWheel(i).getSuspension().setRestLength(0.285f);
 
-            getWheel(i).getSuspension().setStiffness(32);
-            getWheel(i).getSuspension().setMaxForce(12000);
-            getWheel(i).getSuspension().setCompression(0.5f);
-            getWheel(i).getSuspension().setDampness(0.65f);
+            getWheel(i).getSuspension().setStiffness(10);
+            getWheel(i).getSuspension().setMaxForce(8000);
+            getWheel(i).getSuspension().setCompression(0.33f);
+            getWheel(i).getSuspension().setDampness(0.45f);
             getWheel(i).setFriction(1.6f);
         }
+
+        getWheel(0).getSuspension().setRestLength(0.225f);
+        getWheel(1).getSuspension().setRestLength(0.225f);
+        getWheel(2).getSuspension().setRestLength(0.285f);
+        getWheel(3).getSuspension().setRestLength(0.285f);
 
         // give each wheel a tyre.
         getWheel(0).setTireModel(new Tyre_01());

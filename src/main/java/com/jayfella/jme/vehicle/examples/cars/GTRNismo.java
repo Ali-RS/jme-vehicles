@@ -4,45 +4,19 @@ import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.engine.Engine;
 import com.jayfella.jme.vehicle.examples.engines.Engine450HP;
 import com.jayfella.jme.vehicle.examples.tyres.Tyre_01;
+import com.jayfella.jme.vehicle.examples.wheels.DarkAlloyWheel;
+import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Brake;
 import com.jayfella.jme.vehicle.part.GearBox;
 import com.jme3.app.Application;
 import com.jme3.asset.AssetManager;
+import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Node;
-import com.jme3.scene.SceneGraphVisitorAdapter;
 import com.jme3.scene.Spatial;
 
 public class GTRNismo extends Car {
 
     private final float scale = 0.01f;
-
-    Node w_fl_node = new Node("Wheel FL Node");
-    Node w_fr_node = new Node("Wheel FR Node");
-    Node w_rl_node = new Node("Wheel RL Node");
-    Node w_rr_node = new Node("Wheel RR Node");
-
-    private class WheelVisitor extends SceneGraphVisitorAdapter {
-        public void visit(Node geom) {
-            if (geom.getName().equals("ty")) {
-                w_fl_node.attachChild(geom);
-                geom.setLocalTranslation(-2.2f, 0, 0);
-            }
-            else if (geom.getName().equals("ty.001")) {
-                w_fr_node.attachChild(geom);
-                geom.setLocalTranslation(.2f, 0, 0);
-            }
-            else if (geom.getName().equals("ty.003")) {
-                w_rl_node.attachChild(geom);
-                geom.setLocalTranslation(0, 0, 0);
-            }
-            else if (geom.getName().equals("ty.002")) {
-                w_rr_node.attachChild(geom);
-                geom.setLocalTranslation(0, 0, 0);
-            }
-        }
-    }
-
 
     public GTRNismo(Application app) {
         super(app, "Dune Buggy");
@@ -51,19 +25,24 @@ public class GTRNismo extends Car {
 
         Spatial chassis = assetManager.loadModel("Models/gtr_nismo/scene.gltf.j3o");
         chassis.setLocalScale(scale);
-        chassis.breadthFirstTraversal(new WheelVisitor());
+        // chassis.breadthFirstTraversal(new WheelVisitor());
         setChassis(chassis, 1525);
 
-        w_fl_node.setLocalScale(scale);
-        w_fr_node.setLocalScale(scale);
-        w_rl_node.setLocalScale(scale);
-        w_rr_node.setLocalScale(scale);
+        WheelModel wheel_fl = new DarkAlloyWheel(assetManager, 0.75f);
+        wheel_fl.getSpatial().rotate(0, FastMath.PI, 0);
 
+        WheelModel wheel_fr = new DarkAlloyWheel(assetManager, 0.75f);
 
-        addWheel(w_fr_node, new Vector3f(-0.84f, 0.1f, 1.4f), true, false, new Brake(140));
-        addWheel(w_fl_node, new Vector3f(0.84f, 0.1f, 1.4f), true, false, new Brake(140));
-        addWheel(w_rr_node, new Vector3f(-0.84f, 0.1f, -1.4f), false, false, new Brake(0));
-        addWheel(w_rl_node, new Vector3f(0.84f, 0.1f, -1.4f), false, false, new Brake(0));
+        WheelModel wheel_rl = new DarkAlloyWheel(assetManager, 0.75f);
+        wheel_rl.getSpatial().rotate(0, FastMath.PI, 0);
+
+        WheelModel wheel_rr = new DarkAlloyWheel(assetManager, 0.75f);
+
+        addWheel(wheel_fl.getWheelNode(), new Vector3f(0.8f, 0.1f, 1.4f), true, false, new Brake(140));
+        addWheel(wheel_fr.getWheelNode(), new Vector3f(-0.8f, 0.1f, 1.4f), true, false, new Brake(140));
+
+        addWheel(wheel_rl.getWheelNode(), new Vector3f(0.8f, 0.1f, -1.4f), false, false, new Brake(0));
+        addWheel(wheel_rr.getWheelNode(), new Vector3f(-0.8f, 0.1f, -1.4f), false, false, new Brake(0));
 
         for (int i = 0; i < getNumWheels(); i++) {
             getWheel(i).getSuspension().setRestLength(0.01f);

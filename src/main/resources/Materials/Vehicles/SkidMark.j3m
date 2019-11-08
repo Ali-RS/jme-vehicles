@@ -5,7 +5,7 @@ Material SkidMark : Common/MatDefs/Light/PBRLighting.j3md {
         // DiffuseMap : Flip Repeat Textures/Vehicles/Skidmarks2.png
         BaseColorMap : Flip Repeat Textures/Vehicles/Skidmarks2.png
         BaseColor: 0.0 0.0 0.0 1.0
-        // UseVertexColor : true
+        UseVertexColor : true
         Roughness: 0.75f
         Metallic: 0.01
     }

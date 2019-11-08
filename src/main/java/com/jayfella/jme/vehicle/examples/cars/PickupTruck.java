@@ -3,6 +3,8 @@ package com.jayfella.jme.vehicle.examples.cars;
 import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.examples.engines.Engine450HP;
 import com.jayfella.jme.vehicle.examples.tyres.Tyre_01;
+import com.jayfella.jme.vehicle.examples.wheels.BasicAlloyWheel;
+import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Brake;
 import com.jayfella.jme.vehicle.engine.Engine;
 import com.jayfella.jme.vehicle.part.Gear;
@@ -31,11 +33,6 @@ public class PickupTruck extends Car {
         Material chassisMaterial = assetManager.loadMaterial("Materials/Vehicles/Pickup.j3m");
         chassis.setMaterial(chassisMaterial);
 
-        //Node chassisNode = new Node("Chassis");
-        //chassis.setLocalTranslation(0, 0.5f, 0);
-        //chassisNode.setLocalTranslation(0, -1, 0);
-        //chassisNode.attachChild(chassis);
-
         // Set the mass of the chassis. This is the overall weight.
         setChassis(chassis, 1758);
 
@@ -50,44 +47,24 @@ public class PickupTruck extends Car {
         // In this vehicle we're just going to clone the wheel above for every wheel.
         // We're NOT going to clone the material, but if you're implementing damage, you might want to.
 
-        Node w_fl_node = new Node("Wheel FL Node");
-        Spatial w_fl = wheel.clone(false);
-        w_fl.setMaterial(wheelMaterial);
-        w_fl.rotate(0, 0, 0);
-        w_fl_node.attachChild(w_fl);
+        WheelModel wheel_fl = new BasicAlloyWheel(assetManager, 1.1f);
 
-        Node w_fr_node = new Node("Wheel FR Node");
-        Spatial w_fr = wheel.clone(false);
-        w_fr.setMaterial(wheelMaterial);
-        w_fr.rotate(0, FastMath.PI, 0);
-        w_fr_node.attachChild(w_fr);
+        WheelModel wheel_fr = new BasicAlloyWheel(assetManager, 1.1f);
+        wheel_fr.getSpatial().rotate(0, FastMath.PI, 0);
 
-        Node w_rl_node = new Node("Wheel RL Node");
-        Spatial w_rl = wheel.clone(false);
-        w_rl.setMaterial(wheelMaterial);
-        w_rl.rotate(0, 0, 0);
-        w_rl_node.attachChild(w_rl);
+        WheelModel wheel_rl = new BasicAlloyWheel(assetManager, 1.1f);
 
-        Node w_rr_node = new Node("Wheel RR Node");
-        Spatial w_rr = wheel.clone(false);
-        w_rr.setMaterial(wheelMaterial);
-        w_rr.rotate(0, FastMath.PI, 0);
-        w_rr_node.attachChild(w_rr);
-
-        // set the scale of the wheels.
-        w_fr_node.setLocalScale(1.1f);
-        w_fl_node.setLocalScale(1.1f);
-        w_rr_node.setLocalScale(1.1f);
-        w_rl_node.setLocalScale(1.1f);
+        WheelModel wheel_rr = new BasicAlloyWheel(assetManager, 1.1f);
+        wheel_rr.getSpatial().rotate(0, FastMath.PI, 0);
 
         // add the wheels, setting the position, whether or not they steer, and a brake with force.
         // if you want rear-wheel steering, you will also want to "flip" the steering.
 
-        addWheel(w_fl_node, new Vector3f(0.8f, .5f, 1.7f), true, false, new Brake(90));
-        addWheel(w_fr_node, new Vector3f(-.8f, .5f, 1.7f), true, false, new Brake(90));
+        addWheel(wheel_fl.getWheelNode(), new Vector3f(0.8f, .5f, 1.7f), true, false, new Brake(90));
+        addWheel(wheel_fr.getWheelNode(), new Vector3f(-.8f, .5f, 1.7f), true, false, new Brake(90));
 
-        addWheel(w_rl_node, new Vector3f(0.8f, .5f, -1.7f), false, false, new Brake(90));
-        addWheel(w_rr_node, new Vector3f(-.8f, .5f, -1.7f), false, false, new Brake(90));
+        addWheel(wheel_rl.getWheelNode(), new Vector3f(0.8f, .5f, -1.7f), false, false, new Brake(90));
+        addWheel(wheel_rr.getWheelNode(), new Vector3f(-.8f, .5f, -1.7f), false, false, new Brake(90));
 
         // configure the suspension.
         // In this car we're setting the same settings for each wheel, but you don't have to.

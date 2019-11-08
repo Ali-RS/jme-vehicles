@@ -7,6 +7,7 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 
 public class WheelSpinState extends BaseAppState {
 
@@ -84,9 +85,16 @@ public class WheelSpinState extends BaseAppState {
                 angles[i][0] += FastMath.PI;
             }
 
-            rot[i].fromAngles(angles[i]);
             Node wheelNode = (Node) wheel.getVehicleWheel().getWheelSpatial();
-            Geometry wheelGeom = (Geometry) wheelNode.getChild("wheel");
+            Spatial wheelGeom = wheelNode.getChild("wheel");
+
+            float[] existingAngles = wheelGeom.getLocalRotation().toAngles(null);
+
+            angles[i][1] = existingAngles[1];
+            angles[i][2] = existingAngles[2];
+
+            rot[i].fromAngles(angles[i]);
+
             wheelGeom.setLocalRotation(rot[i]);
             // wheel.getVehicleWheel().addExtRotation(rot[i]);
         }

@@ -7,6 +7,7 @@ import com.jme3.bullet.objects.VehicleWheel;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Spatial;
 
 public class Wheel {
 
@@ -151,13 +152,13 @@ public class Wheel {
     }
 
     public float getSize() {
-        return vehicleWheel.getWheelSpatial().getLocalScale().x; // they should all be the same.
+        return vehicleWheel.getWheelSpatial().getLocalScale().y; // they should all be the same.
     }
 
     public void setSize(float scale) {
         vehicleWheel.getWheelSpatial().setLocalScale(scale);
-        Vector3f bounds = ((BoundingBox)vehicleWheel.getWheelSpatial().getWorldBound()).getExtent(null);
-        vehicleWheel.setRadius(bounds.x);
+        // Vector3f bounds = ((BoundingBox)vehicleWheel.getWheelSpatial().getWorldBound()).getExtent(null);
+        vehicleWheel.setRadius(scale * 0.5f);
     }
 
     public Suspension getSuspension() { return suspension; }
@@ -228,7 +229,7 @@ public class Wheel {
         // slip *= FastMath.QUARTER_PI;
         //return slip;
 
-        angle = FastMath.clamp(angle, 0, FastMath.QUARTER_PI);
+        angle = FastMath.clamp(angle, 0, FastMath.HALF_PI);
         return angle;
     }
 
@@ -239,5 +240,6 @@ public class Wheel {
     public void setRotationDelta(float rotationDelta) {
         this.rotationDelta = rotationDelta;
     }
+
 
 }

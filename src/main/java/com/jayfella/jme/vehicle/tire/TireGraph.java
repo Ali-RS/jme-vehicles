@@ -123,7 +123,7 @@ public class TireGraph extends Geometry {
             imageRaster.setPixel(x, pixelY, lateralColor);
         }
 
-        /*
+
         // longitudinal
         for (int x = 0; x < width; x++) {
 
@@ -149,7 +149,7 @@ public class TireGraph extends Geometry {
 
             imageRaster.setPixel(x, pixelY, momentColor);
         }
-        */
+
     }
 
     private float map(float value, float oldMin, float oldMax, float newMin, float newMax) {
