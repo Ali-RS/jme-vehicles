@@ -80,7 +80,13 @@ public class Car extends Vehicle {
 
                     float power = (getEngine().getPowerOutputAtRevs() * strength);
 
-                    wheel.accelerate(power);
+                    // so the faster we go, the less force the vehicle can apply.
+                    // this simulates making it harder to accelerate at higher speeds
+                    // realistically this makes it difficult to achieve the max speed.
+                    float speedRatio = 1.0f - (getSpeed(SpeedUnit.KMH) / getGearBox().getMaxSpeed(SpeedUnit.KMH));
+                    speedRatio = Math.max(0.25f, speedRatio);
+
+                    wheel.accelerate(power * speedRatio);
                 }
                 else {
 
