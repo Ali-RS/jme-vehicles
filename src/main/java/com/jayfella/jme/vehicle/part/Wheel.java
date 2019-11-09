@@ -34,6 +34,9 @@ public class Wheel {
 
     private float rotationDelta;
 
+    // simulates degradation. 1.0 = full grip the tyre allows, 0.0 = the tyre is dead.
+    private float grip = 1.0f;
+
     public Wheel(VehicleControl vehicleControl, int wheelIndex, boolean isSteering, boolean steeringFlipped, Suspension suspension, Brake brake) {
 
         this.vehicleControl = vehicleControl;
@@ -56,6 +59,14 @@ public class Wheel {
 
     public void setTireModel(PajeckaTireModel tireModel) {
         this.tireModel = tireModel;
+    }
+
+    public float getGrip() {
+        return grip;
+    }
+
+    public void setGrip(float grip) {
+        this.grip = grip;
     }
 
     public float getFriction() {
