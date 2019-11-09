@@ -16,7 +16,7 @@ public class WheelSkid {
         this.manager = new SkidMarkManager(assetManager, maxDistance, tyreWidth);
     }
 
-	final float SKID_FX_SPEED = 0.75f; // Min side slip speed in m/s to start showing a skid
+	final float SKID_FX_SPEED = 0.25f; // Min side slip speed in m/s to start showing a skid
     int lastSkid = -1; // Array index for the skidmarks controller. Index of last skidmark piece this wheel used
 
     public SkidMarkManager getManager() {
