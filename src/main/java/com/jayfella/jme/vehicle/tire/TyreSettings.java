@@ -3,8 +3,9 @@ package com.jayfella.jme.vehicle.tire;
 public class TyreSettings {
 
     // LATERAL: default settings
-    // public static float DEFAULT_COEFF_B = 15.2f;
+
     // public static float DEFAULT_COEFF_C = 1.3f;
+    // public static float DEFAULT_COEFF_B = 15.2f;
     // public static float DEFAULT_COEFF_E = -1.6f;
     // public static float DEFAULT_COEFF_KA = 2.0f;
     // public static float DEFAULT_COEFF_KB = 0.000055f;

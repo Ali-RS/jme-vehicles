@@ -304,11 +304,10 @@ public class MagicFormulaState extends BaseAppState {
                 wheel.getTireModel().setLoad(load);
 
                 // returns the amount of force in N on the tyre.
-                // this model allows max 10,000
+                // this model allows max 10,000 (this is determined by the tyre).
                 float lateral = wheel.getTireModel().calcLateralTireForce(lateralSlip);
 
                 // the slip angle for this is how much force is being applied to the tyre (acceleration force).
-
                 float longSlip = wheel.calculateLongitudinalSlipAngle();
                 float longitudinal = wheel.getTireModel().calcLongtitudeTireForce(longSlip);
 
@@ -316,19 +315,34 @@ public class MagicFormulaState extends BaseAppState {
                 // float friction = lateral / 10000;
 
                 // float friction = wheel.getTireModel().calculateFrictionCircle();
+
+                // float friction = 1.0f - ((lateral / 120000) - (longitudinal / 120000));
+                // wheel.setFriction(friction);
+
                 float friction = 1.0f - ((lateral / 10000) - (longitudinal / 10000));
-                wheel.setFriction(friction * 2.0f);
+                friction *= 2.0;
+                friction = wheel.getGrip() * friction;
+                wheel.setFriction(friction);
+                // wheel.setFriction(friction * 2.0f);
                 // wheel.setFriction( lateral / 5000 );
+                // wheel.setFriction(friction * 2.0f);
+
+
+
+                // wheel.setFriction(friction / 3000);
+
+
 
                 // String format = "Weight: %.2f\nLat: %.2f\nLong: %.2f\nFriction: %.2f\nSlip: %.2f";
-                String format = "Lat: %.2f\nLong: %.2f\nFriction: %.2f\nSlip: %.2f";
+                String format = "Lat: %.2f\nLong: %.2f\nFriction: %.2f\nSlip: %.2f\nWheelspin: %.2f";
 
                 tyreWeightLabels[i].setText(String.format(format,
                         // wheel.getTireModel().getLoad(),
                         lateral / 10000,
                         longitudinal / 10000,
                         wheel.getFriction(),
-                        1.0f - wheel.getVehicleWheel().getSkidInfo()
+                        1.0f - wheel.getVehicleWheel().getSkidInfo(),
+                        wheel.getRotationDelta()
                 ));
 
             }

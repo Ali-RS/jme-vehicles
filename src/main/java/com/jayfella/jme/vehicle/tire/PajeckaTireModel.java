@@ -136,7 +136,12 @@ public class PajeckaTireModel {
             This method favors longitudinal forces over lateral ones (cuts down the lateral force and leaves Fx intact).
              */
 
-        this.frictionCircle = lateralValue * FastMath.sqrt( 1.0f - (longitudinalValue / maxLoad) );
+        this.frictionCircle = lateralValue * FastMath.sqrt(
+                1.0f - FastMath.pow((longitudinalValue / 7800), 2)
+        );
+
+        this.frictionCircle = Math.max(0.1f, this.frictionCircle);
+
         return frictionCircle;
     }
 
