@@ -3,6 +3,7 @@ package com.jayfella.jme.vehicle.examples.cars;
 import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.engine.Engine;
 import com.jayfella.jme.vehicle.examples.engines.Engine450HP;
+import com.jayfella.jme.vehicle.examples.engines.Engine600HP;
 import com.jayfella.jme.vehicle.examples.tyres.Tyre_01;
 import com.jayfella.jme.vehicle.examples.wheels.DarkAlloyWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
@@ -38,11 +39,11 @@ public class GTRNismo extends Car {
 
         WheelModel wheel_rr = new DarkAlloyWheel(assetManager, 0.75f);
 
-        addWheel(wheel_fl.getWheelNode(), new Vector3f(0.8f, 0.1f, 1.4f), true, false, new Brake(140));
-        addWheel(wheel_fr.getWheelNode(), new Vector3f(-0.8f, 0.1f, 1.4f), true, false, new Brake(140));
+        addWheel(wheel_fl.getWheelNode(), new Vector3f(0.8f, 0.1f, 1.4f), true, false, new Brake(675));
+        addWheel(wheel_fr.getWheelNode(), new Vector3f(-0.8f, 0.1f, 1.4f), true, false, new Brake(675));
 
-        addWheel(wheel_rl.getWheelNode(), new Vector3f(0.8f, 0.1f, -1.4f), false, false, new Brake(0));
-        addWheel(wheel_rr.getWheelNode(), new Vector3f(-0.8f, 0.1f, -1.4f), false, false, new Brake(0));
+        addWheel(wheel_rl.getWheelNode(), new Vector3f(0.8f, 0.1f, -1.4f), false, false, new Brake(300));
+        addWheel(wheel_rr.getWheelNode(), new Vector3f(-0.8f, 0.1f, -1.4f), false, false, new Brake(300));
 
         for (int i = 0; i < getNumWheels(); i++) {
             getWheel(i).getSuspension().setRestLength(0.01f);
@@ -65,26 +66,20 @@ public class GTRNismo extends Car {
         getWheel(2).setAccelerationForce(1);
         getWheel(3).setAccelerationForce(1);
 
-        //getWheel(0).setBrakeForce(80);
-        //getWheel(1).setBrakeForce(80);
-        //getWheel(2).setBrakeForce(0);
-        //getWheel(3).setBrakeForce(0);
-
-        // vehicle.setMaxSpeedMph(50);
         setHoodCamLocation(new Vector3f(new Vector3f(0, 1.5f, 0.5f)));
 
-        GearBox gearBox = new GearBox(5);
+        GearBox gearBox = new GearBox(6);
         gearBox.setGear(0, 0, 30);
-        gearBox.setGear(1, 30, 70);
-        gearBox.setGear(2, 70, 130);
-        gearBox.setGear(3, 130, 190);
-        gearBox.setGear(4, 190, 255);
-        // gearBox.setGear(5, 140, 220);
+        gearBox.setGear(1, 15, 70);
+        gearBox.setGear(2, 50, 130);
+        gearBox.setGear(3, 120, 190);
+        gearBox.setGear(4, 180, 255);
+        gearBox.setGear(5, 250, 320);
 
         setGearBox(gearBox);
 
-        Engine engine = new Engine450HP(this);
-        engine.setEngineAudio(assetManager, "Audio/engine-1.ogg");
+        Engine engine = new Engine600HP(this);
+        engine.setEngineAudio(assetManager, "Audio/engine-2.ogg");
         setEngine(engine);
 
         setHornAudio(assetManager, "Audio/horn-1.ogg");
