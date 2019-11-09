@@ -27,7 +27,7 @@ The tyres use the pacejka formula. Currently only latitudinal forces are applied
 Controls:
 
 - WASD : forward, left, brake, right
-- T : Start Vehicle
+- Y : Start Vehicle
 - R : Reset Vehicle
 - H : Horn
 - E : Reverse
