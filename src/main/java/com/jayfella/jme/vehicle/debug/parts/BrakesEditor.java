@@ -21,7 +21,7 @@ public class BrakesEditor extends VehicleEditor {
         PropertyPanel propertyPanel = new PropertyPanel("glass");
 
         for (int i = 0; i < vehicle.getNumWheels(); i++) {
-            propertyPanel.addFloatProperty("Wheel " + i, vehicle.getWheel(i).getBrake(), "strength", 0, 200, 0.1f);
+            propertyPanel.addFloatProperty("Wheel " + i, vehicle.getWheel(i).getBrake(), "strength", 0, 1000, 0.1f);
         }
 
         return new RollupPanel("Strength", propertyPanel, "glass");
