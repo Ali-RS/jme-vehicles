@@ -39,8 +39,8 @@ public class GrandTourer extends Car {
         WheelModel wheel_rr = new CruiserWheel(assetManager, 0.85f);
 
 
-        addWheel(wheel_fl.getWheelNode(), new Vector3f(0.85f, .35f, 1.6f), true, false, new Brake(140));
-        addWheel(wheel_fr.getWheelNode(), new Vector3f(-0.85f, .35f, 1.6f), true, false, new Brake(140));
+        addWheel(wheel_fl.getWheelNode(), new Vector3f(0.85f, .35f, 1.6f), true, false, new Brake(700));
+        addWheel(wheel_fr.getWheelNode(), new Vector3f(-0.85f, .35f, 1.6f), true, false, new Brake(700));
 
         addWheel(wheel_rl.getWheelNode(), new Vector3f(0.85f, .45f, -1.6f), false, false, new Brake(0));
         addWheel(wheel_rr.getWheelNode(), new Vector3f(-0.85f, .45f, -1.6f), false, false, new Brake(0));
@@ -72,20 +72,14 @@ public class GrandTourer extends Car {
         getWheel(2).setAccelerationForce(1);
         getWheel(3).setAccelerationForce(1);
 
-        //getWheel(0).setBrakeForce(80);
-        //getWheel(1).setBrakeForce(80);
-        //getWheel(2).setBrakeForce(0);
-        //getWheel(3).setBrakeForce(0);
-
-        // vehicle.setMaxSpeedMph(50);
         setHoodCamLocation(new Vector3f(new Vector3f(0, 1.5f, 0.5f)));
 
         GearBox gearBox = new GearBox(5);
         gearBox.setGear(0, 0, 15);
-        gearBox.setGear(1, 15, 40);
-        gearBox.setGear(2, 40, 75);
-        gearBox.setGear(3, 75, 130);
-        gearBox.setGear(4, 130, 190);
+        gearBox.setGear(1, 5, 40);
+        gearBox.setGear(2, 25, 75);
+        gearBox.setGear(3, 55, 130);
+        gearBox.setGear(4, 120, 190);
         // gearBox.setGear(5, 140, 220);
 
         setGearBox(gearBox);
