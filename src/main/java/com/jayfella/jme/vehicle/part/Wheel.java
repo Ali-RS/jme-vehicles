@@ -215,10 +215,11 @@ public class Wheel {
     public float calculateLongitudinalSlipAngle() {
 
         // the rotation of the wheel as if it were just following a moving vehicle.
-        float normalRot = vehicleWheel.getDeltaRotation() * 0.5f;
+        // that is to say a wheel that is rolling without slip.
+        float normalRot = vehicleWheel.getDeltaRotation();// * 0.5f;
 
         // the rotation applied via wheelspin
-        float wheelSpinRot = getRotationDelta() * 1.5f;
+        float wheelSpinRot = getRotationDelta();// * 1.5f;
 
         // combined rotation of normal roll + wheelspin
         float rot = wheelSpinRot + normalRot;
