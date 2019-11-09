@@ -8,17 +8,17 @@ public class Tyre_01 extends PajeckaTireModel {
     public Tyre_01() {
         super("Tyre 01",
                 new TyreSettings(
-                        2.50f,
-                        7.34f,
-                        1.05f,
+                        1.54f,
+                        18.86f,
+                        0.27f,
                         2.0f,
-                        0.000055f
+                        0.000058f
                 ),
                 new TyreSettings(
-                        1.41f,
+                        1.52f,
                         30.0f,
                         -1.6f,
-                        2.0f,
+                        2.14f,
                         0.000055f
                 ),
                 new TyreSettings(
