@@ -49,32 +49,31 @@ public class WheelSpinState extends BaseAppState {
 
     }
 
-    // returns how many revolutions per second a wheel should be spinning at
-    // based on the gear and revs of the engine.
-    private float calcWheelspin(Wheel wheel) {
+    /**
+     * Calculates how many radians per second the wheel should rotate at the speed the vehicle is travelling.
+     * @param wheel the wheel in question.
+     * @return the amount in radians the wheel rotates in one second at the speed the vehicle is travelling.
+     */
+    private float calcWheelRotation(Wheel wheel) {
 
         // https://sciencing.com/calculate-wheel-speed-7448165.html
-
-        Gear gear  = car.getGearBox().getActiveGear();
-
-        // should be between 0 and 1.
-        float revs = car.getEngine().getRevs();
-
-        // should give us the speed the vehicle should travel at these revs.
-        float mphRevs = FastMath.interpolateLinear(revs, gear.getStart(), gear.getEnd());
+        float speed = car.getSpeed(Vehicle.SpeedUnit.MPH);
 
         // convert mph to meters per minute
-        float metersPerHour = mphRevs * 1609;
+        float metersPerHour = speed * 1609;
         float metersPerMin = metersPerHour / 60;
 
         // calculate the circumference of the wheel.
-        float c = (wheel.getSize() * 0.5f) * FastMath.PI * 2;
+        float c = wheel.getSize() * FastMath.PI;
 
         // calc the wheel speed in revs per min
         float revsPerMin = metersPerMin / c;
         float revsPerSec = revsPerMin / 60;
 
-        return revsPerSec;
+        // convert revolutions per second to radians.
+        float radPerSec = revsPerSec * FastMath.TWO_PI;
+
+        return radPerSec;
     }
 
     @Override
@@ -106,55 +105,115 @@ public class WheelSpinState extends BaseAppState {
 
             Wheel wheel = car.getWheel(i);
 
-            // the acceleration force this wheel can apply. 0 = it doesnt give power, 1 = it gives full power.
-            float wheelforce = wheel.getAccelerationForce();
+            // only calculate wheelspin when the vehicle is actually accelerating.
+            if (car.getAccelerationForce() > 0) {
 
-            // the acceleration force of the accelerator pedal in 0-1 range.
-            float acceleration = car.getAccelerationForce();
 
-            // how much this wheel is "skidding".
-            float skid = 1.0f - wheel.getVehicleWheel().getSkidInfo();
+                // the acceleration force this wheel can apply. 0 = it doesnt give power, 1 = it gives full power.
+                float wheelforce = wheel.getAccelerationForce();
 
-            // would equal at most 57 degrees in one frame (one radian).
-            float skidForce = (acceleration * wheelforce) * skid;
+                // the acceleration force of the accelerator pedal in 0-1 range.
+                float acceleration = car.getAccelerationForce();
 
-            //System.out.println(wheel.getVehicleWheel().getWheelSpatial().getName() + ": " + skidForce);
+                // how much this wheel is "skidding".
+                float skid = 1.0f - wheel.getVehicleWheel().getSkidInfo();
 
-            // set this before we do any "scene" modifications to make it look better.
-            wheel.setRotationDelta(skidForce);
+                // would equal at most 57 degrees in one frame (one radian).
+                float skidForce = (acceleration * wheelforce) * skid;
 
-            // the numbers below alter the scene only. they have no relation to any calculations.
-            // These calculations will add an additional rotation to the wheel to simulate wheelspin.
+                //System.out.println(wheel.getVehicleWheel().getWheelSpatial().getName() + ": " + skidForce);
 
-            // so if we mult this by say 10(?) for 570 degrees and then mult it by tpf, we should be about right.
-            // this means if we are slipping 100% it will add ( 57 * x ) degrees per second.
+                // set this before we do any "scene" modifications to make it look better.
+                wheel.setRotationDelta(skidForce);
 
-            // actually we can work this out. get the max revs.
+                // the numbers below alter the scene only. they have no relation to any calculations.
+                // These calculations will add an additional rotation to the wheel to simulate wheelspin.
 
-            skidForce *= 10;
-            skidForce *= tpf;
+                // so if we mult this by say 10(?) for 570 degrees and then mult it by tpf, we should be about right.
+                // this means if we are slipping 100% it will add ( 57 * x ) degrees per second.
 
-            // the angle is negative due to the way the wheels rotate. negative is forward.
-            angles[i][0] += skidForce;
-            //angles[i][1] = 0.2f;
+                // actually we can work this out. get the max revs.
 
-            // around and around we go...
-            if (angles[i][0] < -FastMath.PI) {
-                angles[i][0] += FastMath.PI;
+                skidForce *= 10;
+                skidForce *= tpf;
+
+
+
+                Node wheelNode = (Node) wheel.getVehicleWheel().getWheelSpatial();
+                Spatial wheelGeom = wheelNode.getChild("wheel");
+
+                float[] existingAngles = wheelGeom.getLocalRotation().toAngles(null);
+
+                // add the additional rotation for wheelspin.
+
+                // the wheel model is rotated 180 on the Y axis for the left-side of the vehicle.
+                float[] wheelRot = wheelNode.getChild(0).getLocalRotation().toAngles(null);
+                // - for left
+                // + for right
+                if (wheelRot[1] == 0) {
+                    angles[i][0] += skidForce;
+                }
+                else {
+                    angles[i][0] -= skidForce;
+                }
+
+
+                // around and around we go...
+                if (angles[i][0] < -FastMath.PI) {
+                    angles[i][0] += FastMath.PI;
+                }
+
+                angles[i][1] = existingAngles[1];
+                angles[i][2] = existingAngles[2];
+
+                rot[i].fromAngles(angles[i]);
+
+                wheelGeom.setLocalRotation(rot[i]);
             }
 
-            Node wheelNode = (Node) wheel.getVehicleWheel().getWheelSpatial();
-            Spatial wheelGeom = wheelNode.getChild("wheel");
 
-            float[] existingAngles = wheelGeom.getLocalRotation().toAngles(null);
+            else if (wheel.getBrakeStrength() > 0) {
 
-            angles[i][1] = existingAngles[1];
-            angles[i][2] = existingAngles[2];
+                // calculate how fast this wheel should be rotating at the speed it's travelling.
+                // multiply it by how much slip the wheel is experiencing
+                // and use that rotation as a counter-rotation to simulate wheel stopping spinning.
+                // at full slip with brakes applied, the wheel should stop spinning completely.
+                // if the wheel it slipping 50% the wheel reduces rotation by 50%.
+                float slip = 1.0f - wheel.getVehicleWheel().getFrictionSlip();
+                float rotation = calcWheelRotation(wheel) * tpf;
+                rotation *= slip;
 
-            rot[i].fromAngles(angles[i]);
+                Node wheelNode = (Node) wheel.getVehicleWheel().getWheelSpatial();
+                Spatial wheelGeom = wheelNode.getChild("wheel");
 
-            wheelGeom.setLocalRotation(rot[i]);
+                float[] existingAngles = wheelGeom.getLocalRotation().toAngles(null);
 
+                // add the additional rotation for skidding.
+
+                // the wheel model is rotated 180 on the Y axis for the left-side of the vehicle.
+                float[] wheelRot = wheelNode.getChild(0).getLocalRotation().toAngles(null);
+                // + for left
+                // - for right
+                if (wheelRot[1] == 0) {
+                    angles[i][0] -= rotation;
+                }
+                else {
+                    angles[i][0] += rotation;
+                }
+
+                // around and around we go...
+                if (angles[i][0] < -FastMath.PI) {
+                    angles[i][0] += FastMath.PI;
+                }
+
+                angles[i][1] = existingAngles[1];
+                angles[i][2] = existingAngles[2];
+
+                rot[i].fromAngles(angles[i]);
+
+                wheelGeom.setLocalRotation(rot[i]);
+
+            }
 
         }
 
