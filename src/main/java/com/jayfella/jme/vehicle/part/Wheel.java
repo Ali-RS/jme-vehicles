@@ -37,6 +37,9 @@ public class Wheel {
     // simulates degradation. 1.0 = full grip the tyre allows, 0.0 = the tyre is dead.
     private float grip = 1.0f;
 
+    // the amount of braking strength being applied. Between 0 and 1
+    private float brakeStrength = 0;
+
     public Wheel(VehicleControl vehicleControl, int wheelIndex, boolean isSteering, boolean steeringFlipped, Suspension suspension, Brake brake) {
 
         this.vehicleControl = vehicleControl;
@@ -116,8 +119,14 @@ public class Wheel {
      * @param strength the strength of the braking force from 0 - 1.
      */
     public void brake(float strength) {
+        this.brakeStrength = strength;
         vehicleControl.brake(wheelIndex, brake.getStrength() * strength);
     }
+
+    public float getBrakeStrength() {
+        return this.brakeStrength;
+    }
+
 
     /**
      * Causes the wheel to slow down. This method is usually used for a handbrake. It overrides the specified brake strength.
@@ -212,6 +221,8 @@ public class Wheel {
 
     }
 
+    // the slip angle for this is how much force is being applied to the tyre (acceleration force).
+    // how much rotation has been applied as a result of acceleration.
     public float calculateLongitudinalSlipAngle() {
 
         // the rotation of the wheel as if it were just following a moving vehicle.
@@ -241,7 +252,7 @@ public class Wheel {
         // slip *= FastMath.QUARTER_PI;
         //return slip;
 
-        angle = FastMath.clamp(angle, 0, FastMath.HALF_PI);
+        angle = FastMath.clamp(angle, 0, FastMath.TWO_PI);
         return angle;
     }
 
