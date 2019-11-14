@@ -6,11 +6,13 @@ import com.jme3.asset.AssetEventListener;
 import com.jme3.asset.AssetKey;
 import com.jme3.asset.TextureKey;
 import com.jme3.audio.AudioListenerState;
+import com.jme3.bounding.BoundingSphere;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.light.DirectionalLight;
+import com.jme3.light.LightProbe;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -51,13 +53,22 @@ public class Main extends SimpleApplication {
 
     private void setAnistropy() {
         assetManager.addAssetEventListener(new AssetEventListener() {
+
+            private String[] extensions = {
+                    "png", "jpg", "gif", "dds"
+            };
+
             @Override public void assetLoaded(AssetKey key) { }
 
             public void assetRequested(AssetKey key) {
-                if (key.getExtension().equals("png") || key.getExtension().equals("jpg") || key.getExtension().equals("dds")) {
-                    TextureKey tkey = (TextureKey) key;
-                    tkey.setAnisotropy(16);
+
+                for (String ext : extensions) {
+                    if (key.getExtension().equalsIgnoreCase(ext)) {
+                        TextureKey tkey = (TextureKey) key;
+                        tkey.setAnisotropy(16);
+                    }
                 }
+
             }
 
             @Override public void assetDependencyNotFound(AssetKey parentKey, AssetKey dependentAssetKey) { }
@@ -149,7 +160,9 @@ public class Main extends SimpleApplication {
         // material.setBoolean("UseFog", true);
         // material.setColor("FogColor", new ColorRGBA(0.5f, 0.6f, 0.7f, 1.0f));
         // material.setFloat("ExpSqFog", 0.002f);
+
         Spatial playground = assetManager.loadModel("Models/vehicle-playground/vehicle-playground.j3o");
+        //Spatial playground = assetManager.loadModel("Models/track/test-track.gltf.j3o");
         playground.setMaterial(material);
 
         RigidBodyControl rigidBodyControl = new RigidBodyControl(CollisionShapeFactory.createMeshShape(playground), 0);
