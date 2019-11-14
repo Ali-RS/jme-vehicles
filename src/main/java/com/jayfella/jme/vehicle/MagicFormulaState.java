@@ -236,6 +236,7 @@ public class MagicFormulaState extends BaseAppState {
     }
 
     // calculate the amount of weight on the wheel.
+    // this would be great, but it doesn't remove world rotation. We only need the rotation of the chassis
     private float calculateWheelLoad(int i) {
 
         float[] chassisAngles = new float[3];
@@ -250,13 +251,14 @@ public class MagicFormulaState extends BaseAppState {
         float zAngle = chassisAngles[2];
 
         // the load starts by sharing it with each wheel. One quarter per wheel.
-        float load = vehicle.getVehicleControl().getMass();// * 0.25f;
+        int wheelCount = vehicle.getNumWheels();
+        float load = vehicle.getVehicleControl().getMass() / wheelCount;// * 0.25f;
 
         // front-back
 
         // so the angle is in radians. at 90 degrees it should take full load.
 
-        if (i < 2) {
+        if (i < 2) { // if it's the front wheels
             if (xAngle > 0) {
                 load += (vehicle.getVehicleControl().getMass()) * (xAngle / FastMath.QUARTER_PI);
             }
@@ -300,6 +302,7 @@ public class MagicFormulaState extends BaseAppState {
                 float lateralSlip = wheel.calculateLateralSlipAngle();
 
                 float load = 10000; // * (wheel.getAccelerationForce() * vehicle.getAccelerationForce());
+                // float load = calculateWheelLoad(i);
 
                 wheel.getTireModel().setLoad(load);
 
@@ -326,12 +329,7 @@ public class MagicFormulaState extends BaseAppState {
                 // wheel.setFriction(friction * 2.0f);
                 // wheel.setFriction( lateral / 5000 );
                 // wheel.setFriction(friction * 2.0f);
-
-
-
                 // wheel.setFriction(friction / 3000);
-
-
 
                 // String format = "Weight: %.2f\nLat: %.2f\nLong: %.2f\nFriction: %.2f\nSlip: %.2f";
                 String format = "Lat: %.2f\nLong: %.2f\nFriction: %.2f\nSlip: %.2f\nWheelspin: %.2f";
