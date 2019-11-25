@@ -5,6 +5,8 @@ import com.jayfella.jme.vehicle.debug.EnginePowerGraphState;
 import com.jayfella.jme.vehicle.debug.TyreDataState;
 import com.jayfella.jme.vehicle.debug.VehicleEditorState;
 import com.jayfella.jme.vehicle.examples.cars.*;
+import com.jayfella.jme.vehicle.gui.LoadingState;
+import com.jayfella.jme.vehicle.input.XBoxJoystickVehicleInputState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
@@ -14,6 +16,10 @@ import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import com.simsilica.lemur.Button;
 import com.simsilica.lemur.Container;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.CompletableFuture;
 
 public class CarSelectorState extends BaseAppState {
 
@@ -35,12 +41,14 @@ public class CarSelectorState extends BaseAppState {
 
         Button gtTourer = container.addChild(new Button("Grand Tourer"));
         gtTourer.addClickCommands(source -> setVehicle(new GrandTourer(getApplication())));
+        // gtTourer.addClickCommands(source -> setVehicleAsync(GrandTourer.class));
 
         Button gtrNismo = container.addChild(new Button("GTR Nismo"));
         gtrNismo.addClickCommands(source -> setVehicle(new GTRNismo(getApplication())));
 
         Button pickup = container.addChild(new Button("Pickup Truck"));
         pickup.addClickCommands(source -> setVehicle(new PickupTruck(getApplication())));
+        // pickup.addClickCommands(source -> setVehicleAsync(PickupTruck.class));
 
         Button hatchback = container.addChild(new Button("Hatchback"));
         hatchback.addClickCommands(source -> setVehicle(new HatchBack(getApplication())));
@@ -65,8 +73,9 @@ public class CarSelectorState extends BaseAppState {
         vehicle.getVehicleControl().setPhysicsLocation(new Vector3f(0, 6, 0));
 
         // add some controls
-        BasicVehicleInputState basicVehicleInputState = new BasicVehicleInputState(vehicle);
-        getStateManager().attach(basicVehicleInputState);
+        // KeyboardVehicleInputState inputState = new KeyboardVehicleInputState(vehicle);
+        XBoxJoystickVehicleInputState inputState = new XBoxJoystickVehicleInputState(vehicle);
+        getStateManager().attach(inputState);
 
         // engine graph GUI for viewing torqe/power @ revs
         EnginePowerGraphState enginePowerGraphState = new EnginePowerGraphState(vehicle);
@@ -86,6 +95,8 @@ public class CarSelectorState extends BaseAppState {
         DebugTabState debugTabState = new DebugTabState();
         getStateManager().attach(debugTabState);
 
+
+
         vehicle.getNode().setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
 
     }
@@ -93,9 +104,10 @@ public class CarSelectorState extends BaseAppState {
     public void removeCurrentVehicle() {
         if (vehicle != null) {
 
-            BasicVehicleInputState basicVehicleInputState = getState(BasicVehicleInputState.class);
-            if (basicVehicleInputState != null) {
-                getStateManager().detach(basicVehicleInputState);
+            // KeyboardVehicleInputState inputState = getState(KeyboardVehicleInputState.class);
+            XBoxJoystickVehicleInputState inputState = getState(XBoxJoystickVehicleInputState.class);
+            if (inputState != null) {
+                getStateManager().detach(inputState);
             }
 
             EnginePowerGraphState enginePowerGraphState = getState(EnginePowerGraphState.class);
@@ -122,6 +134,46 @@ public class CarSelectorState extends BaseAppState {
             vehicle.removeSpeedo();
             vehicle.detachFromScene();
         }
+    }
+
+    public void setVehicleAsync(Class<? extends Car> clazz) {
+
+        getApplication().getStateManager().getState(LoadingState.class).setEnabled(true);
+        removeCurrentVehicle();
+
+        CompletableFuture
+                .supplyAsync(() -> {
+
+                    try {
+
+                        Constructor constructor = null;
+
+                        if (clazz.isAssignableFrom(GrandTourer.class)) {
+                            constructor = GrandTourer.class.getConstructor(Application.class);
+                        }
+                        else if (clazz.isAssignableFrom(PickupTruck.class)) {
+                            constructor = PickupTruck.class.getConstructor(Application.class);
+                        }
+
+                        Car car = (Car) constructor.newInstance(getApplication());
+                        return car;
+                    } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+
+                    return null;
+                })
+                .whenComplete((car, ex) -> {
+                    if (car != null) {
+                        getApplication().enqueue(() -> {
+                            addVehicle(car);
+                            getApplication().getStateManager().getState(LoadingState.class).setEnabled(false);
+                        });
+
+                    }
+                });
+
+
     }
 
     public void setVehicle(Car newVehicle) {
