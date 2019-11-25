@@ -1,18 +1,19 @@
 package com.jayfella.jme.vehicle;
 
+import com.jayfella.jme.vehicle.gui.LoadingState;
+import com.jayfella.jme.vehicle.gui.MainMenuState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
 import com.jme3.asset.AssetEventListener;
 import com.jme3.asset.AssetKey;
 import com.jme3.asset.TextureKey;
 import com.jme3.audio.AudioListenerState;
-import com.jme3.bounding.BoundingSphere;
 import com.jme3.bullet.BulletAppState;
-import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
+import com.jme3.input.Joystick;
+import com.jme3.input.JoystickConnectionListener;
 import com.jme3.light.DirectionalLight;
-import com.jme3.light.LightProbe;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -26,7 +27,10 @@ import com.jme3.system.AppSettings;
 import com.jme3.texture.Texture;
 import com.jme3.util.SkyFactory;
 import com.simsilica.lemur.GuiGlobals;
+import com.simsilica.lemur.focus.FocusNavigationState;
 import com.simsilica.lemur.style.BaseStyles;
+
+import java.util.concurrent.CompletableFuture;
 
 public class Main extends SimpleApplication {
 
@@ -39,6 +43,8 @@ public class Main extends SimpleApplication {
         appSettings.setResolution(1280, 720);
         appSettings.setTitle("jMonkeyEngine :: Advanced Vehicles");
 
+        appSettings.setUseJoysticks(true);
+
         main.setDisplayStatView(false);
         main.setDisplayFps(false);
 
@@ -48,7 +54,7 @@ public class Main extends SimpleApplication {
     }
 
     private Main() {
-        super(new StatsAppState(), new AudioListenerState());
+        super(new StatsAppState(), new AudioListenerState(), new LoadingState());
     }
 
     private void setAnistropy() {
@@ -79,16 +85,24 @@ public class Main extends SimpleApplication {
     public void simpleInitApp() {
 
         setAnistropy();
+        getInputManager().addJoystickConnectionListener(new JoystickConnectionListener() {
+            @Override
+            public void onConnected(Joystick joystick) {
+                System.out.println("Joystick connected: " + joystick);
+            }
 
-        //inputManager.clearMappings();
-        //inputManager.clearRawInputListeners();
+            @Override
+            public void onDisconnected(Joystick joystick) {
+                System.out.println("Joystick disconnected: " + joystick);
+            }
+        });
 
-        // set a nice sky color
-        // viewPort.setBackgroundColor(new ColorRGBA(0.5f, 0.6f, 0.7f, 1.0f));
+        inputManager.clearMappings();
+        inputManager.clearRawInputListeners();
 
         // the "hood-cam" gets close to the bodywork, so set the near-frustum accordingly...
         float aspect = (float)cam.getWidth() / (float)cam.getHeight();
-        cam.setFrustumPerspective(60, aspect, 0.01f, 1000);
+        cam.setFrustumPerspective(60, aspect, 0.1f, 1000);
 
         // the speedo uses Lemur labels.
         GuiGlobals.initialize(this);
@@ -102,20 +116,41 @@ public class Main extends SimpleApplication {
         );
         rootNode.addLight(directionalLight);
 
-        Spatial sky = SkyFactory.createSky(assetManager, "Textures/Sky/quarry_03_4k.jpg", SkyFactory.EnvMapType.EquirectMap);
-        sky.setQueueBucket(RenderQueue.Bucket.Sky);
-        sky.setShadowMode(RenderQueue.ShadowMode.Off);
-        rootNode.attachChild(sky);
-
         // initialize physics
         BulletAppState bulletAppState = new BulletAppState();
         bulletAppState.setDebugEnabled(false);
         getStateManager().attach(bulletAppState);
 
-        Node playground = (Node) loadPlayground(bulletAppState.getPhysicsSpace());
+        // load the sky async.
+        CompletableFuture
+                .supplyAsync(() -> {
+                    Spatial sky = SkyFactory.createSky(assetManager, "Textures/Sky/quarry_03_4k.jpg", SkyFactory.EnvMapType.EquirectMap);
+                    sky.setQueueBucket(RenderQueue.Bucket.Sky);
+                    sky.setShadowMode(RenderQueue.ShadowMode.Off);
+                    return sky;
+                })
+                .whenComplete((spatial, ex) -> {
+                    enqueue( () -> rootNode.attachChild(spatial) );
+                });
 
-        CarSelectorState carSelectorState = new CarSelectorState(playground, bulletAppState.getPhysicsSpace());
-        stateManager.attach(carSelectorState);
+        // load the playground async.
+        CompletableFuture
+                .supplyAsync(() -> {
+                    Node node =  (Node) loadPlayground();
+                    RigidBodyControl rigidBodyControl = new RigidBodyControl(CollisionShapeFactory.createMeshShape(node), 0);
+                    node.addControl(rigidBodyControl);
+                    return node;
+                })
+                .whenComplete((node, ex) -> {
+                    enqueue( () -> {
+                        rootNode.attachChild(node);
+                        RigidBodyControl rigidBodyControl = node.getControl(RigidBodyControl.class);
+                        bulletAppState.getPhysicsSpace().add(rigidBodyControl);
+
+                        getStateManager().getState(LoadingState.class).setEnabled(false);
+                        getStateManager().attach(new MainMenuState());
+                    });
+                });
 
         cam.setLocation(new Vector3f(-200, 50, -200));
         cam.lookAt(new Vector3f(100, 10, 150), Vector3f.UNIT_Y);
@@ -123,9 +158,11 @@ public class Main extends SimpleApplication {
         rootNode.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         addPostProcessing(directionalLight);
 
+        // this consumes joystick input. I'll have to investigate why.
+        stateManager.getState(FocusNavigationState.class).setEnabled(false);
     }
 
-    private Spatial loadPlayground(PhysicsSpace physicsSpace) {
+    private Spatial loadPlayground() {
 
         Material material = new Material(assetManager, "Common/MatDefs/Light/PBRLighting.j3md");
 
@@ -165,16 +202,17 @@ public class Main extends SimpleApplication {
         //Spatial playground = assetManager.loadModel("Models/track/test-track.gltf.j3o");
         playground.setMaterial(material);
 
-        RigidBodyControl rigidBodyControl = new RigidBodyControl(CollisionShapeFactory.createMeshShape(playground), 0);
-        playground.addControl(rigidBodyControl);
-        physicsSpace.add(rigidBodyControl);
+        // RigidBodyControl rigidBodyControl = new RigidBodyControl(CollisionShapeFactory.createMeshShape(playground), 0);
+        // playground.addControl(rigidBodyControl);
+        // physicsSpace.add(rigidBodyControl);
 
         // playground.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         Node p = (Node) playground;
         p.breadthFirstTraversal(spatial -> spatial.setShadowMode(RenderQueue.ShadowMode.CastAndReceive));
 
 
-        rootNode.attachChild(playground);
+        // rootNode.attachChild(playground);
+        playground.setName("playground");
         return playground;
     }
 
@@ -212,6 +250,5 @@ public class Main extends SimpleApplication {
 
         viewPort.addProcessor(fpp);
     }
-
 
 }
