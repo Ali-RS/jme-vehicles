@@ -13,7 +13,7 @@ mainClassName = "com.jayfella.jme.vehicle.Main"
 repositories {
     maven { url 'https://dl.bintray.com/stephengold/jme3utilities' }
     maven { url 'https://dl.bintray.com/riccardo/v-hacd' }
-
+    maven { url 'https://dl.bintray.com/stephengold/org.jmonkeyengine' } // for jme3-testdata
     jcenter()
 }
 
@@ -35,12 +35,16 @@ dependencies {
     compile "org.jmonkeyengine:jme3-effects:$jmeVer"
     compile "org.jmonkeyengine:jme3-blender:$jmeVer"
 
+    compile "org.jmonkeyengine:jme3-testdata:3.3.0-alpha2"
+
     compile 'jme3utilities:Minie:1.1.0for32'
 
     compile "com.simsilica:lemur:$lemurVer"
     compile "org.codehaus.groovy:groovy-all:2.5.4"
     compile "com.simsilica:lemur-proto:$lemurProtoVer"
     compile "com.simsilica:lemur-props:$lemurPropsVer"
+
+    compile "com.jayfella:jme-easing:1.0"
 
 }
 
