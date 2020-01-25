@@ -19,7 +19,7 @@ repositories {
 
 project.ext {
     // jmeVer = "3.2.4-stable"
-    jmeVer = "3.3.0-alpha5"
+    jmeVer = "3.3.0-beta1"
     // lemurVer = "[1.10,)"
     lemurVer = "1.13.0"
     lemurProtoVer = "1.9.1"
@@ -37,7 +37,7 @@ dependencies {
 
     compile "org.jmonkeyengine:jme3-testdata:3.3.0-alpha2"
 
-    compile 'jme3utilities:Minie:1.2.0for33'
+    compile 'jme3utilities:Minie:1.3.0for33'
 
     compile "com.simsilica:lemur:$lemurVer"
     compile "org.codehaus.groovy:groovy-all:2.5.4"
