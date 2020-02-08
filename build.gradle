@@ -12,8 +12,6 @@ mainClassName = "com.jayfella.jme.vehicle.Main"
 jar.manifest.attributes('Main-Class': mainClassName)
 
 repositories {
-    maven { url 'https://dl.bintray.com/stephengold/jme3utilities' }
-    maven { url 'https://dl.bintray.com/stephengold/v-hacd' }
     maven { url 'https://dl.bintray.com/stephengold/org.jmonkeyengine' } // for jme3-testdata
     jcenter()
 }
@@ -38,7 +36,7 @@ dependencies {
 
     implementation "org.jmonkeyengine:jme3-testdata:3.3.0-alpha2"
 
-    implementation 'jme3utilities:Minie:1.3.0for33'
+    implementation 'com.github.stephengold:Minie:1.4.0for33'
 
     implementation "com.simsilica:lemur:$lemurVer"
     implementation "org.codehaus.groovy:groovy-all:2.5.4"
