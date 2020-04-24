@@ -18,7 +18,7 @@ repositories {
 
 project.ext {
     // jmeVer = "3.2.4-stable"
-    jmeVer = "3.3.0-beta1"
+    jmeVer = "3.3.0-stable"
     // lemurVer = "[1.10,)"
     lemurVer = "1.13.0"
     lemurProtoVer = "1.9.1"
@@ -36,7 +36,7 @@ dependencies {
 
     implementation "org.jmonkeyengine:jme3-testdata:3.3.0-alpha2"
 
-    implementation 'com.github.stephengold:Minie:1.5.0for33'
+    implementation 'com.github.stephengold:Minie:1.6.0'
 
     implementation "com.simsilica:lemur:$lemurVer"
     implementation "org.codehaus.groovy:groovy-all:2.5.4"
