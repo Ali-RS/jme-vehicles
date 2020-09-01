@@ -36,7 +36,7 @@ dependencies {
 
     implementation "org.jmonkeyengine:jme3-testdata:3.3.0-alpha2"
 
-    implementation 'com.github.stephengold:Minie:2.0.0'
+    implementation 'com.github.stephengold:Minie:3.0.0'
 
     implementation "com.simsilica:lemur:$lemurVer"
     implementation "org.codehaus.groovy:groovy-all:2.5.4"
