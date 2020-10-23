@@ -3,60 +3,28 @@ plugins {
     id 'application'
 }
 
-group 'com.jayfella'
-version '1.0.1'
-
 sourceCompatibility = 1.8
 
-mainClassName = "com.jayfella.jme.vehicle.Main"
+mainClassName = 'com.jayfella.jme.vehicle.Main'
 jar.manifest.attributes('Main-Class': mainClassName)
 
 repositories {
-    maven { url 'https://dl.bintray.com/stephengold/org.jmonkeyengine' } // for jme3-testdata
     jcenter()
 }
 
 project.ext {
-    // jmeVer = "3.2.4-stable"
-    jmeVer = "3.3.2-stable"
-    // lemurVer = "[1.10,)"
-    lemurVer = "1.13.0"
-    lemurProtoVer = "1.9.1"
-    lemurPropsVer = "1.0.1"
+    jmeVer = '3.3.2-stable'
 }
 
 dependencies {
-
     implementation "org.jmonkeyengine:jme3-core:$jmeVer"
     implementation "org.jmonkeyengine:jme3-lwjgl3:$jmeVer"
     implementation "org.jmonkeyengine:jme3-desktop:$jmeVer"
-    implementation "org.jmonkeyengine:jme3-jogg:$jmeVer"
+    runtimeOnly "org.jmonkeyengine:jme3-jogg:$jmeVer"
     implementation "org.jmonkeyengine:jme3-effects:$jmeVer"
-    implementation "org.jmonkeyengine:jme3-blender:$jmeVer"
-
-    implementation "org.jmonkeyengine:jme3-testdata:3.3.0-alpha2"
+    runtimeOnly "org.jmonkeyengine:jme3-blender:$jmeVer"
 
     implementation 'com.github.stephengold:Minie:3.0.0'
-
-    implementation "com.simsilica:lemur:$lemurVer"
-    implementation "org.codehaus.groovy:groovy-all:2.5.4"
-    implementation "com.simsilica:lemur-proto:$lemurProtoVer"
-    implementation "com.simsilica:lemur-props:$lemurPropsVer"
-
-    implementation "com.jayfella:jme-easing:1.0"
-
-}
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives sourcesJar, javadocJar
+    implementation 'com.jayfella:jme-easing:1.0'
+    implementation 'com.simsilica:lemur:1.13.0'
 }
