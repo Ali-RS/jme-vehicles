@@ -33,10 +33,10 @@ project.ext {
 
 dependencies {
     implementation "org.jmonkeyengine:jme3-core:$jmeVer"
-    implementation "org.jmonkeyengine:jme3-desktop:$jmeVer"
+    runtimeOnly "org.jmonkeyengine:jme3-desktop:$jmeVer"
     implementation "org.jmonkeyengine:jme3-effects:$jmeVer"
     runtimeOnly "org.jmonkeyengine:jme3-jogg:$jmeVer"
-    implementation "org.jmonkeyengine:jme3-lwjgl3:$jmeVer"
+    runtimeOnly "org.jmonkeyengine:jme3-lwjgl3:$jmeVer"
 
     // Jme-vehicles doesn't use jme3-blender or jme3-plugins
     //  -- they are added solely to avoid warnings from AssetConfig
