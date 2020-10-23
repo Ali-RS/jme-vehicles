@@ -100,7 +100,7 @@ public class VehicleThirdPersonCamera implements VehicleCamera, AnalogListener, 
 
     /**
      * Returns the spatial that the camera is focused on.
-     * @return
+     * @return the pre-existing Spatial
      */
     public Spatial getFocusPoint() {
         return focusPoint;
@@ -108,7 +108,7 @@ public class VehicleThirdPersonCamera implements VehicleCamera, AnalogListener, 
 
     /**
      * Set the spatial to focus the camera on.
-     * @param focusPoint
+     * @param focusPoint the desired focus point
      */
     public void setFocusPoint(Spatial focusPoint) {
         this.focusPoint = focusPoint;
