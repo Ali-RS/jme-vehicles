@@ -1,6 +1,6 @@
 plugins {
-    id 'java'
     id 'application'
+    id 'java'
 }
 
 sourceCompatibility = 1.8
@@ -18,10 +18,10 @@ project.ext {
 
 dependencies {
     implementation "org.jmonkeyengine:jme3-core:$jmeVer"
-    implementation "org.jmonkeyengine:jme3-lwjgl3:$jmeVer"
     implementation "org.jmonkeyengine:jme3-desktop:$jmeVer"
-    runtimeOnly "org.jmonkeyengine:jme3-jogg:$jmeVer"
     implementation "org.jmonkeyengine:jme3-effects:$jmeVer"
+    runtimeOnly "org.jmonkeyengine:jme3-jogg:$jmeVer"
+    implementation "org.jmonkeyengine:jme3-lwjgl3:$jmeVer"
     runtimeOnly "org.jmonkeyengine:jme3-blender:$jmeVer"
 
     implementation 'com.github.stephengold:Minie:3.0.0'
