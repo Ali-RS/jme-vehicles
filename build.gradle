@@ -4,6 +4,21 @@ plugins {
 }
 
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+tasks.withType(JavaCompile) { // compile-time options:
+    options.compilerArgs << '-Xdiags:verbose'
+    //options.compilerArgs << '-Xlint:unchecked'
+    options.deprecation = true
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(JavaExec) { // runtime options:
+    enableAssertions true
+    //jvmArgs '-verbose:gc'
+    jvmArgs '-Xms256m', '-Xmx256m'
+    jvmArgs '-XX:+UseG1GC', '-XX:MaxGCPauseMillis=10'
+}
 
 mainClassName = 'com.jayfella.jme.vehicle.Main'
 jar.manifest.attributes('Main-Class': mainClassName)
@@ -27,4 +42,19 @@ dependencies {
     implementation 'com.github.stephengold:Minie:3.0.0'
     implementation 'com.jayfella:jme-easing:1.0'
     implementation 'com.simsilica:lemur:1.13.0'
+}
+
+// cleanup tasks
+clean.dependsOn('cleanDLLs', 'cleanDyLibs', 'cleanLogs', 'cleanSOs')
+task cleanDLLs(type: Delete) {
+    delete fileTree(dir: '.', include: '*.dll')
+}
+task cleanDyLibs(type: Delete) {
+    delete fileTree(dir: '.', include: '*.dylib')
+}
+task cleanLogs(type: Delete) {
+    delete fileTree(dir: '.', include: 'hs_err_pid*.log')
+}
+task cleanSOs(type: Delete) {
+    delete fileTree(dir: '.', include: '*.so')
 }
