@@ -1,36 +1,49 @@
-WIP: jme-vehicles
-===
+The Advanced Vehicles Project demonstrates
+vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
 
-An advanced implementation of vehicles for jMonkeyEngine.
+### Features
 
-This is a work in progress of creating individual parts for a vehicle. Currently implemented (but may not be fully implemented) are:
++ playground environment
++ 5 vehicle models:
+  + Grand Tourer
+  + GTR Nismo
+  + pickup truck
+  + hatchback
+  + dune buggy
++ vehicle customization:
+  + engine
+  + brakes
+  + automatic gearbox
+  + wheels
+  + tires with Pacejka model for friction (only the latitudinal forces are applied)
+  + suspension
++ graphical user interface using [the Lemur UI Toolkit][lemur]:
+  + menus
+  + speedometer
+  + tachometer
+  + edit vehicle parameters
++ effects:
+  + skid marks
+  + tire smoke
+  + engine/horn sounds
 
-- Engine
-- Brakes
-- Automatic GearBox
-- Wheel
-- Tyres
-- Suspension
-- Speedometer
-- Tachometer (rev counter)
-- Skid marks
-- Tyre Smoke
-- Engine Audio
-- Vehicle Editor
+### Controls
 
-Probably a few more I can't remember.
-
-There are 3 cars to play with (see main class) and a test playground.
-
-The tyres use the pacejka formula. Currently only latitudinal forces are applied, but longitudinal code is there.
-
-Controls:
-
-- WASD : forward, left, brake, right
-- Y : Start Vehicle
-- R : Reset Vehicle
-- H : Horn
-- E : Reverse
-- F5 : Change View
++ F5 : toggle viewpoints between driver and chase camera
++ Y : toggle the engine on/off
++ W : accelerate forward
++ S : apply brakes
++ E : accelerate in reverse
++ A : steer left
++ D : steer right
++ H : sound the horn
++ R : reset the vehicle to a parked state
 
 ![screenshot](https://i.ibb.co/JyPHdv8/image.png)
+
+[jme]: http://jmonkeyengine.org  "jMonkeyEngine Project"
+[lemur]: https://github.com/jMonkeyEngine-Contributions/Lemur "Lemur UI Toolkit"
+
+### Acknowledgments
+
+James Khan initiated the Advanced Vehicles Project.
