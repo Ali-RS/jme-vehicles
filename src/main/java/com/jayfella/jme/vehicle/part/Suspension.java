@@ -7,18 +7,18 @@ public class Suspension {
 
     private float stiffness;
     private float compression;
-    private float dampness;
+    private float damping;
     private float maxForce;
     private float restLength;
 
     private final VehicleWheel vehicleWheel;
 
-    public Suspension(VehicleWheel vehicleWheel, float compression, float dampness) {
+    public Suspension(VehicleWheel vehicleWheel, float compression, float damping) {
         this.vehicleWheel = vehicleWheel;
 
-        // we can't get compression and dampness because they use a formula.
+        // we can't get compression and damping because they use a formula.
         this.compression = compression;
-        this.dampness = dampness;
+        this.damping = damping;
 
         this.stiffness = 25; // vehicleWheel.getSuspensionStiffness();
         this.maxForce = 10000;
@@ -26,7 +26,7 @@ public class Suspension {
 
         setStiffness(this.stiffness);
         setCompression(this.compression);
-        setDampness(this.dampness);
+        setDamping(this.damping);
         setMaxForce(10000);
     }
 
@@ -39,7 +39,7 @@ public class Suspension {
         this.vehicleWheel.setSuspensionStiffness(stiffness);
 
         setCompression(compression);
-        setDampness(dampness);
+        setDamping(damping);
     }
 
     public float getCompression() {
@@ -51,13 +51,13 @@ public class Suspension {
         this.vehicleWheel.setWheelsDampingCompression(this.compression * 2.0f * FastMath.sqrt(stiffness));
     }
 
-    public float getDampness() {
-        return dampness;
+    public float getDamping() {
+        return damping;
     }
 
-    public void setDampness(float dampness) {
-        this.dampness = dampness;
-        this.vehicleWheel.setWheelsDampingRelaxation(this.dampness * 2.0f * FastMath.sqrt(stiffness));
+    public void setDamping(float damping) {
+        this.damping = damping;
+        this.vehicleWheel.setWheelsDampingRelaxation(this.damping * 2.0f * FastMath.sqrt(stiffness));
     }
 
     public float getMaxForce() {

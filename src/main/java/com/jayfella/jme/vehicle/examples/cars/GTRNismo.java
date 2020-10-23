@@ -50,7 +50,7 @@ public class GTRNismo extends Car {
             getWheel(i).getSuspension().setStiffness(12.5f);
             getWheel(i).getSuspension().setMaxForce(7000);
             getWheel(i).getSuspension().setCompression(0.3f);
-            getWheel(i).getSuspension().setDampness(0.4f);
+            getWheel(i).getSuspension().setDamping(0.4f);
             getWheel(i).setFriction(1.6f);
         }
 

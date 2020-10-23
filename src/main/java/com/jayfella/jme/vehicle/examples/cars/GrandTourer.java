@@ -49,7 +49,7 @@ public class GrandTourer extends Car {
             getWheel(i).getSuspension().setStiffness(10);
             getWheel(i).getSuspension().setMaxForce(8000);
             getWheel(i).getSuspension().setCompression(0.33f);
-            getWheel(i).getSuspension().setDampness(0.45f);
+            getWheel(i).getSuspension().setDamping(0.45f);
             getWheel(i).setFriction(1.6f);
         }
 

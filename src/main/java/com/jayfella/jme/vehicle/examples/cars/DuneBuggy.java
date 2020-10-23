@@ -52,7 +52,7 @@ public class DuneBuggy extends Car {
             getWheel(i).getSuspension().setStiffness(24);
             getWheel(i).getSuspension().setMaxForce(12000);
             getWheel(i).getSuspension().setCompression(0.5f);
-            getWheel(i).getSuspension().setDampness(0.65f);
+            getWheel(i).getSuspension().setDamping(0.65f);
             getWheel(i).setFriction(1.3f);
         }
 

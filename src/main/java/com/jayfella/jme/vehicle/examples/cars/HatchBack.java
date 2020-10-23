@@ -48,7 +48,7 @@ public class HatchBack extends Car {
             getWheel(i).getSuspension().setRestLength(0.01f);
             getWheel(i).getSuspension().setStiffness(20);
             getWheel(i).getSuspension().setCompression(0.6f);
-            getWheel(i).getSuspension().setDampness(0.8f);
+            getWheel(i).getSuspension().setDamping(0.8f);
             getWheel(i).setFriction(0.9f);
         }
 

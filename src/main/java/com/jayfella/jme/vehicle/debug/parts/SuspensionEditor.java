@@ -17,7 +17,7 @@ public class SuspensionEditor extends VehicleEditor {
         addChild(createMaxForceRollup());
         addChild(createStiffnessRollup());
         addChild(createCompressionRollup());
-        addChild(createDampnessRollup());
+        addChild(createDampingRollup());
     }
 
     private RollupPanel createRestLengthRollup() {
@@ -64,15 +64,15 @@ public class SuspensionEditor extends VehicleEditor {
         return new RollupPanel("Compression", propertyPanel, "glass");
     }
 
-    private RollupPanel createDampnessRollup() {
+    private RollupPanel createDampingRollup() {
 
         PropertyPanel propertyPanel = new PropertyPanel("glass");
 
         for (int i = 0; i < vehicle.getNumWheels(); i++) {
-            propertyPanel.addFloatProperty("Wheel " + i, vehicle.getWheel(i).getSuspension(), "dampness", 0.01f, 1.0f, 0.01f);
+            propertyPanel.addFloatProperty("Wheel " + i, vehicle.getWheel(i).getSuspension(), "damping", 0.01f, 1.0f, 0.01f);
         }
 
-        return new RollupPanel("Dampness", propertyPanel, "glass");
+        return new RollupPanel("Damping", propertyPanel, "glass");
     }
 
     @Override

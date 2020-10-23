@@ -88,7 +88,7 @@ public class PickupTruck extends Car {
 
             // how quickly the suspension will rebound back to height.
             // 1 = slow, 0 = fast.
-            getWheel(i).getSuspension().setDampness(0.3f);
+            getWheel(i).getSuspension().setDamping(0.3f);
         }
 
         // give each wheel a tyre.
