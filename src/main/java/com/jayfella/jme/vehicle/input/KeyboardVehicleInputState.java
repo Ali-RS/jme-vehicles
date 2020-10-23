@@ -1,12 +1,9 @@
 package com.jayfella.jme.vehicle.input;
 
 import com.jayfella.jme.vehicle.Vehicle;
-import com.jayfella.jme.vehicle.part.Wheel;
 import com.jayfella.jme.vehicle.view.*;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.input.JoyInput;
-import com.jme3.input.JoystickButton;
 import com.jme3.input.KeyInput;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;

@@ -2,7 +2,6 @@ package com.jayfella.jme.vehicle.examples.cars;
 
 import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.examples.engines.Engine180HP;
-import com.jayfella.jme.vehicle.examples.tyres.Tyre_01;
 import com.jayfella.jme.vehicle.examples.tyres.Tyre_02;
 import com.jayfella.jme.vehicle.examples.wheels.BasicAlloyWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
@@ -14,7 +13,6 @@ import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
 public class HatchBack extends Car {

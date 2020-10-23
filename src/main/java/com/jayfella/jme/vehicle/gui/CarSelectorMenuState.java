@@ -14,7 +14,6 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import com.simsilica.lemur.Button;
-import com.simsilica.lemur.Command;
 import com.simsilica.lemur.component.TbtQuadBackgroundComponent;
 
 public class CarSelectorMenuState extends AnimatedMenuState {

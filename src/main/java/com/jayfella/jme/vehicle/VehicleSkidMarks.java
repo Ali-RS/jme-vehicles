@@ -2,7 +2,6 @@ package com.jayfella.jme.vehicle;
 
 import com.jayfella.jme.vehicle.skid.WheelSkid;
 import com.jme3.app.Application;
-import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
 
 public class VehicleSkidMarks extends BaseAppState {

@@ -2,7 +2,6 @@ package com.jayfella.jme.vehicle.examples.cars;
 
 import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.engine.Engine;
-import com.jayfella.jme.vehicle.examples.engines.Engine450HP;
 import com.jayfella.jme.vehicle.examples.engines.Engine600HP;
 import com.jayfella.jme.vehicle.examples.tyres.Tyre_01;
 import com.jayfella.jme.vehicle.examples.wheels.DarkAlloyWheel;

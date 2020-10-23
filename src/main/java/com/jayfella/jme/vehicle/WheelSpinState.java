@@ -1,12 +1,10 @@
 package com.jayfella.jme.vehicle;
 
-import com.jayfella.jme.vehicle.part.Gear;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 

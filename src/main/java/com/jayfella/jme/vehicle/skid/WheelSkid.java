@@ -2,7 +2,6 @@ package com.jayfella.jme.vehicle.skid;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.objects.VehicleWheel;
-import com.jme3.math.FastMath;
 
 public class WheelSkid {
 

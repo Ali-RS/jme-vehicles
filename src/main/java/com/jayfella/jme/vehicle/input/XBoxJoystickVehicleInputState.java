@@ -7,8 +7,6 @@ import com.jayfella.jme.vehicle.view.VehicleFirstPersonCamera;
 import com.jayfella.jme.vehicle.view.VehicleThirdPersonCamera;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.input.DefaultJoystickAxis;
-import com.jme3.input.JoystickAxis;
 import com.jme3.input.KeyInput;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;

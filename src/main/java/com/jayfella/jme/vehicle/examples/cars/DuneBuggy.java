@@ -13,10 +13,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-
-import java.util.WeakHashMap;
 
 public class DuneBuggy extends Car {
 

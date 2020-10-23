@@ -1,6 +1,5 @@
 package com.jayfella.jme.vehicle;
 
-import com.jayfella.jme.vehicle.part.Wheel;
 import com.jayfella.jme.vehicle.view.*;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;

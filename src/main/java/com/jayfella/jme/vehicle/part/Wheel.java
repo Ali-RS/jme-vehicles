@@ -1,13 +1,11 @@
 package com.jayfella.jme.vehicle.part;
 
 import com.jayfella.jme.vehicle.tire.PajeckaTireModel;
-import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.objects.VehicleWheel;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Spatial;
 
 public class Wheel {
 

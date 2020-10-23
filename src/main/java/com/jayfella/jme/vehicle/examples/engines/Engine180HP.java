@@ -2,8 +2,6 @@ package com.jayfella.jme.vehicle.examples.engines;
 
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.engine.Engine;
-import com.jayfella.jme.vehicle.part.GearBox;
-import com.jme3.math.FastMath;
 import com.jme3.math.Spline;
 import com.jme3.math.Vector3f;
 

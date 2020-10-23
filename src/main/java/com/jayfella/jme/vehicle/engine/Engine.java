@@ -1,7 +1,6 @@
 package com.jayfella.jme.vehicle.engine;
 
 import com.jayfella.jme.vehicle.Vehicle;
-import com.jayfella.jme.vehicle.part.GearBox;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioData;
 import com.jme3.audio.AudioNode;
