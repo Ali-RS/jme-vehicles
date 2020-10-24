@@ -39,6 +39,10 @@ public class Main extends SimpleApplication {
      */
     final private static Logger logger = Logger.getLogger(Main.class.getName());
 
+    private Main() {
+        super(new StatsAppState(), new AudioListenerState(), new LoadingState());
+    }
+
     /**
      * Main entry point for the Advanced Vehicles application.
      *
@@ -75,10 +79,6 @@ public class Main extends SimpleApplication {
         main.setSettings(appSettings);
         main.setShowSettings(forceDialog);
         main.start();
-    }
-
-    private Main() {
-        super(new StatsAppState(), new AudioListenerState(), new LoadingState());
     }
 
     @Override
@@ -162,6 +162,39 @@ public class Main extends SimpleApplication {
         stateManager.getState(FocusNavigationState.class).setEnabled(false);
     }
 
+    private void addPostProcessing(DirectionalLight directionalLight) {
+        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+
+        DirectionalLightShadowFilter shadowFilter = new DirectionalLightShadowFilter(assetManager, 4096, 4);
+        shadowFilter.setLight(directionalLight);
+        shadowFilter.setShadowIntensity(0.3f);
+        shadowFilter.setShadowZExtend(256);
+        shadowFilter.setShadowZFadeLength(128);
+        // shadowFilter.setEdgeFilteringMode(EdgeFilteringMode.PCFPOISSON);
+        fpp.addFilter(shadowFilter);
+
+        SSAOFilter ssaoFilter = new SSAOFilter();
+        fpp.addFilter(ssaoFilter);
+
+        // LightScatteringFilter lightScattering = new LightScatteringFilter();
+        // lightScattering.setLightPosition(directionalLight.getDirection());
+        // lightScattering.setLightDensity(1);
+        // lightScattering.setBlurWidth(1.1f);
+        // fpp.addFilter(lightScattering);
+
+        // DepthOfFieldFilter dof = new DepthOfFieldFilter();
+        // dof.setFocusDistance(0);
+        // dof.setFocusRange(384);
+        // dof.setEnabled(false);
+        // fpp.addFilter(dof);
+
+        // BloomFilter bloomFilter = new BloomFilter();
+        // bloomFilter.setExposurePower(55);
+        // bloomFilter.setBloomIntensity(1.2f);
+        // fpp.addFilter(bloomFilter);
+        viewPort.addProcessor(fpp);
+    }
+
     private Spatial loadPlayground() {
         Material material = new Material(assetManager, "Common/MatDefs/Light/PBRLighting.j3md");
 
@@ -207,39 +240,5 @@ public class Main extends SimpleApplication {
 
         playground.setName("playground");
         return playground;
-    }
-
-    private void addPostProcessing(DirectionalLight directionalLight) {
-        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
-
-        DirectionalLightShadowFilter shadowFilter = new DirectionalLightShadowFilter(assetManager, 4096, 4);
-        shadowFilter.setLight(directionalLight);
-        shadowFilter.setShadowIntensity(0.3f);
-        shadowFilter.setShadowZExtend(256);
-        shadowFilter.setShadowZFadeLength(128);
-        // shadowFilter.setEdgeFilteringMode(EdgeFilteringMode.PCFPOISSON);
-        fpp.addFilter(shadowFilter);
-
-        SSAOFilter ssaoFilter = new SSAOFilter();
-        fpp.addFilter(ssaoFilter);
-
-        // LightScatteringFilter lightScattering = new LightScatteringFilter();
-        // lightScattering.setLightPosition(directionalLight.getDirection());
-        // lightScattering.setLightDensity(1);
-        // lightScattering.setBlurWidth(1.1f);
-        // fpp.addFilter(lightScattering);
-
-        // DepthOfFieldFilter dof = new DepthOfFieldFilter();
-        // dof.setFocusDistance(0);
-        // dof.setFocusRange(384);
-        // dof.setEnabled(false);
-        // fpp.addFilter(dof);
-
-        // BloomFilter bloomFilter = new BloomFilter();
-        // bloomFilter.setExposurePower(55);
-        // bloomFilter.setBloomIntensity(1.2f);
-        // fpp.addFilter(bloomFilter);
-
-        viewPort.addProcessor(fpp);
     }
 }

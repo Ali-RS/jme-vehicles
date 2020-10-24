@@ -13,14 +13,19 @@ import com.simsilica.lemur.Insets3f;
 import com.simsilica.lemur.Panel;
 import com.simsilica.lemur.component.TbtQuadBackgroundComponent;
 
-public abstract class AnimatedMenuState extends BaseAppState {
+abstract public class AnimatedMenuState extends BaseAppState {
 
-    private final Node node = new Node("Menu");
-    private Panel[] items;
-    private float maxWidth;
     private AnimCompleteEvent animComplete;
-
-    protected abstract Button[] createItems();
+    private boolean animsComplete = false;
+    private boolean in = true;
+    final private float delay = 0.1f; // the delay between each button animating in.
+    final private float duration = 0.5f; // the duration of the animation
+    private float maxWidth;
+    private float startDuration = 0; // start time elapsed
+    final private float startTime = 0.5f; // a delay before the animations begin.
+    private float time = 0; // time passed.
+    final private Node node = new Node("Menu");
+    private Panel[] items;
 
     protected void animateOut(AnimCompleteEvent animComplete) {
         time = 0;
@@ -29,11 +34,11 @@ public abstract class AnimatedMenuState extends BaseAppState {
         this.animComplete = animComplete;
     }
 
-    private void formatButton(Button item) {
-        item.setTextHAlignment(HAlignment.Center);
-        ((TbtQuadBackgroundComponent) item.getBackground()).setMargin(10, 5);
-        item.setFontSize(16);
-        item.setInsets(new Insets3f(0, 0, 5, 0));
+    protected abstract Button[] createItems();
+
+    @Override
+    protected void cleanup(Application app) {
+
     }
 
     @Override
@@ -64,29 +69,14 @@ public abstract class AnimatedMenuState extends BaseAppState {
     }
 
     @Override
-    protected void cleanup(Application app) {
-
+    protected void onDisable() {
+        node.removeFromParent();
     }
 
     @Override
     protected void onEnable() {
         ((SimpleApplication) getApplication()).getGuiNode().attachChild(node);
     }
-
-    @Override
-    protected void onDisable() {
-        node.removeFromParent();
-    }
-
-    private float time = 0; // time passed.
-    private final float duration = 0.5f; // the duration of the animation
-    private final float delay = 0.1f; // the delay between each button animating in.
-
-    private final float startTime = 0.5f; // a delay before the animations begin.
-    private float startDuration = 0; // start time elapsed
-
-    private boolean in = true;
-    private boolean animsComplete = false;
 
     @Override
     public void update(float tpf) {
@@ -131,5 +121,12 @@ public abstract class AnimatedMenuState extends BaseAppState {
                 }
             }
         }
+    }
+
+    private void formatButton(Button item) {
+        item.setTextHAlignment(HAlignment.Center);
+        ((TbtQuadBackgroundComponent) item.getBackground()).setMargin(10, 5);
+        item.setFontSize(16);
+        item.setInsets(new Insets3f(0, 0, 5, 0));
     }
 }
