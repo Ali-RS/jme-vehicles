@@ -18,10 +18,10 @@ abstract public class AnimatedMenuState extends BaseAppState {
     private AnimCompleteEvent completeEvent;
     private boolean allComplete = false;
     private boolean in = true;
-    final private float buttonDelay = 0.1f; // delay between successive button animations (in seconds)
-    final private float duration = 0.5f; // duration of each button animation (in seconds)
+    final private float buttonDelay = 0.05f; // delay between successive button animations (in seconds)
+    final private float duration = 0.2f; // duration of each button animation (in seconds)
     private float maxWidth; // width of the widest button
-    final private float startupDelay = 0.5f; // delay before the first animation starts (in seconds)
+    final private float startupDelay = 0.1f; // delay before the first animation starts (in seconds)
     private float startupTime = 0; // elapsed startup delay (in seconds)
     private float time = 0; // elapsed time since the animation started (in seconds)
     final private Node node = new Node("Menu");
