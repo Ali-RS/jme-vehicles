@@ -35,6 +35,7 @@ public class Engine450HP extends Engine {
         return getTorqueAtSpeed(vehicle);
     }
 
+    @Override
     public float evaluateSpline(float range) {
         return evaluateSpline(powerGraph, range);
     }

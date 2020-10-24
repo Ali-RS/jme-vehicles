@@ -64,8 +64,10 @@ public class Main extends SimpleApplication {
                     "png", "jpg", "gif", "dds"
             };
 
-            @Override public void assetLoaded(AssetKey key) { }
+            @Override
+            public void assetLoaded(AssetKey key) { }
 
+            @Override
             public void assetRequested(AssetKey key) {
 
                 for (String ext : extensions) {
