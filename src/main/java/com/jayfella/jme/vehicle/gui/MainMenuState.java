@@ -15,7 +15,6 @@ public class MainMenuState extends AnimatedMenuState {
     protected Button[] createItems() {
         Button[] buttons = new Button[] {
                 new Button("Select Vehicle"),
-                new Button("Options"),
                 new Button("Exit Game")
         };
 
@@ -32,17 +31,8 @@ public class MainMenuState extends AnimatedMenuState {
             });
         });
 
-        // options button
-        buttons[1].addClickCommands(source -> {
-            animateOut(() -> {
-                getStateManager().attach(new OptionsMenuState());
-                getStateManager().detach(this);
-            });
-
-        });
-
         // exit button
-        buttons[2].addClickCommands(source -> {
+        buttons[1].addClickCommands(source -> {
             animateOut(() -> getApplication().stop());
         });
 
