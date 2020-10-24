@@ -15,30 +15,30 @@ import com.simsilica.lemur.component.TbtQuadBackgroundComponent;
 
 abstract public class AnimatedMenuState extends BaseAppState {
 
-    private AnimCompleteEvent animComplete;
-    private boolean animsComplete = false;
+    private AnimCompleteEvent completeEvent;
+    private boolean allComplete = false;
     private boolean in = true;
-    final private float delay = 0.1f; // the delay between each button animating in.
-    final private float duration = 0.5f; // the duration of the animation
-    private float maxWidth;
-    private float startDuration = 0; // start time elapsed
-    final private float startTime = 0.5f; // a delay before the animations begin.
-    private float time = 0; // time passed.
+    final private float buttonDelay = 0.1f; // delay between successive button animations (in seconds)
+    final private float duration = 0.5f; // duration of each button animation (in seconds)
+    private float maxWidth; // width of the widest button
+    final private float startupDelay = 0.5f; // delay before the first animation starts (in seconds)
+    private float startupTime = 0; // elapsed startup delay (in seconds)
+    private float time = 0; // elapsed time since the animation started (in seconds)
     final private Node node = new Node("Menu");
     private Panel[] items;
 
     protected void animateOut(AnimCompleteEvent animComplete) {
         time = 0;
-        animsComplete = false;
+        allComplete = false;
         in = false;
-        this.animComplete = animComplete;
+        this.completeEvent = animComplete;
     }
 
     protected abstract Button[] createItems();
 
     @Override
     protected void cleanup(Application app) {
-
+        // do nothing
     }
 
     @Override
@@ -53,8 +53,7 @@ abstract public class AnimatedMenuState extends BaseAppState {
 
             node.attachChild(item);
 
-            // find the longest button so we can set them all to -maxSize so they are all offscreen
-            // then animate them in to something like x = 20
+            // find the widest button so we can move them all offscreen
             if (item.getPreferredSize().x > maxWidth) {
                 maxWidth = item.getPreferredSize().x;
             }
@@ -80,28 +79,27 @@ abstract public class AnimatedMenuState extends BaseAppState {
 
     @Override
     public void update(float tpf) {
-        if (animsComplete) {
+        if (allComplete) {
             return;
         }
 
-        // add a delay before the menu animates in. It just looks nicer.
-        startDuration += tpf;
-        if (startDuration < startTime) {
+        // There's a delay before the first button starts moving. It looks nicer.
+        startupTime += tpf;
+        if (startupTime < startupDelay) {
             return;
         }
 
-        // stop the time from continuously growing.
+        // prevent time from growing endlessly
         time = FastMath.clamp(time + tpf, 0, 100);
 
         for (int i = 0; i < items.length; i++) {
-            float currentDelay = delay * i;
-            // make each button wait their turn.
+            float currentDelay = buttonDelay * i;
+            // make each button wait its turn
             if (time < currentDelay) {
                 continue;
             }
 
             float currentTime = FastMath.clamp(time - currentDelay, 0, duration);
-
             Panel item = items[i];
 
             if (in) {
@@ -113,11 +111,11 @@ abstract public class AnimatedMenuState extends BaseAppState {
             }
 
             if (i == items.length - 1 && currentTime == duration) {
-                animsComplete = true;
+                allComplete = true;
 
-                if (animComplete != null) {
-                    animComplete.completed();
-                    animComplete = null;
+                if (completeEvent != null) {
+                    completeEvent.completed();
+                    completeEvent = null;
                 }
             }
         }
