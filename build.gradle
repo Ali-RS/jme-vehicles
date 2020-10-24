@@ -51,6 +51,12 @@ dependencies {
     runtimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl:2.13.3'
 }
 
+task runForceDialog(type: JavaExec) {
+    args = ['--forceDialog']
+    classpath sourceSets.main.runtimeClasspath
+    main mainClassName
+}
+
 // cleanup tasks
 clean.dependsOn('cleanDLLs', 'cleanDyLibs', 'cleanLogs', 'cleanSOs')
 task cleanDLLs(type: Delete) {

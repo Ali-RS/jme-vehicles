@@ -27,26 +27,53 @@ import com.jme3.util.SkyFactory;
 import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.focus.FocusNavigationState;
 import com.simsilica.lemur.style.BaseStyles;
-
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import jme3utilities.MyString;
 
 public class Main extends SimpleApplication {
 
+    /**
+     * message logger for this class
+     */
+    final private static Logger logger = Logger.getLogger(Main.class.getName());
+
+    /**
+     * Main entry point for the Advanced Vehicles application.
+     *
+     * @param arguments array of command-line arguments (not null)
+     */
     public static void main(String... args) {
-        Main main = new Main();
+        boolean forceDialog = false;
+        /*
+         * Process any command-line arguments.
+         */
+        for (String arg : args) {
+            switch (arg) {
+                case "-f":
+                case "--forceDialog":
+                    forceDialog = true;
+                    break;
+
+                default:
+                    logger.log(Level.WARNING,
+                            "Unknown command-line argument {0}",
+                            MyString.quote(arg));
+            }
+        }
 
         AppSettings appSettings = new AppSettings(true);
-
         appSettings.setResolution(1280, 720);
         appSettings.setTitle("jMonkeyEngine :: Advanced Vehicles");
         appSettings.setUseJoysticks(true);
         appSettings.setVSync(true);
 
+        Main main = new Main();
         main.setDisplayStatView(false);
         main.setDisplayFps(false);
-
         main.setSettings(appSettings);
-        main.setShowSettings(true);
+        main.setShowSettings(forceDialog);
         main.start();
     }
 
