@@ -4,9 +4,6 @@ import com.jayfella.jme.vehicle.gui.LoadingState;
 import com.jayfella.jme.vehicle.gui.MainMenuState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
-import com.jme3.asset.AssetEventListener;
-import com.jme3.asset.AssetKey;
-import com.jme3.asset.TextureKey;
 import com.jme3.audio.AudioListenerState;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.control.RigidBodyControl;
@@ -57,36 +54,10 @@ public class Main extends SimpleApplication {
         super(new StatsAppState(), new AudioListenerState(), new LoadingState());
     }
 
-    private void setAnistropy() {
-        assetManager.addAssetEventListener(new AssetEventListener() {
-
-            private String[] extensions = {
-                    "png", "jpg", "gif", "dds"
-            };
-
-            @Override
-            public void assetLoaded(AssetKey key) { }
-
-            @Override
-            public void assetRequested(AssetKey key) {
-
-                for (String ext : extensions) {
-                    if (key.getExtension().equalsIgnoreCase(ext)) {
-                        TextureKey tkey = (TextureKey) key;
-                        tkey.setAnisotropy(16);
-                    }
-                }
-
-            }
-
-            @Override public void assetDependencyNotFound(AssetKey parentKey, AssetKey dependentAssetKey) { }
-        });
-    }
-
     @Override
     public void simpleInitApp() {
+        renderer.setDefaultAnisotropicFilter(4);
 
-        setAnistropy();
         getInputManager().addJoystickConnectionListener(new JoystickConnectionListener() {
             @Override
             public void onConnected(Joystick joystick) {
