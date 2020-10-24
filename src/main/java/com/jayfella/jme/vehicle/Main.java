@@ -12,6 +12,7 @@ import com.jme3.input.Joystick;
 import com.jme3.input.JoystickConnectionListener;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
+import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
@@ -170,20 +171,15 @@ public class Main extends SimpleApplication {
         // material.setColor("FogColor", new ColorRGBA(0.5f, 0.6f, 0.7f, 1.0f));
         // material.setFloat("ExpSqFog", 0.002f);
 
+        RenderState additional = material.getAdditionalRenderState();
+        additional.setFaceCullMode(RenderState.FaceCullMode.Off);
+
         Spatial playground = assetManager.loadModel("Models/vehicle-playground/vehicle-playground.j3o");
-        //Spatial playground = assetManager.loadModel("Models/track/test-track.gltf.j3o");
         playground.setMaterial(material);
 
-        // RigidBodyControl rigidBodyControl = new RigidBodyControl(CollisionShapeFactory.createMeshShape(playground), 0);
-        // playground.addControl(rigidBodyControl);
-        // physicsSpace.add(rigidBodyControl);
-
-        // playground.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         Node p = (Node) playground;
         p.breadthFirstTraversal(spatial -> spatial.setShadowMode(RenderQueue.ShadowMode.CastAndReceive));
 
-
-        // rootNode.attachChild(playground);
         playground.setName("playground");
         return playground;
     }
