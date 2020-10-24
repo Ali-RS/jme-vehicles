@@ -113,7 +113,7 @@ public class TireGraph extends Geometry {
         // lateral
         for (int x = 0; x < width; x++) {
 
-            float xUnit = (float) x / (float) width;
+            float xUnit = x / (float) width;
             float slipAngle = map(xUnit, 0, 1, 0, maxSlipAngle);
 
             float lat = tireModel.calcLateralTireForce(slipAngle);
@@ -127,7 +127,7 @@ public class TireGraph extends Geometry {
         // longitudinal
         for (int x = 0; x < width; x++) {
 
-            float xUnit = (float) x / (float) width;
+            float xUnit = x / (float) width;
             float slipAngle = map(xUnit, 0, 1, 0, maxSlipAngle);
 
             float lng = tireModel.calcLongtitudeTireForce(slipAngle);
@@ -140,7 +140,7 @@ public class TireGraph extends Geometry {
         // align moment
         for (int x = 0; x < width; x++) {
 
-            float xUnit = (float) x / (float) width;
+            float xUnit = x / (float) width;
             float slipAngle = map(xUnit, 0, 1, 0, maxSlipAngle);
 
             float mnt = tireModel.calcAlignMoment(slipAngle);

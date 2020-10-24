@@ -1,7 +1,6 @@
 package com.jayfella.jme.vehicle.tire;
 
 import com.simsilica.lemur.Button;
-import com.simsilica.lemur.Command;
 import com.simsilica.lemur.Container;
 import com.simsilica.lemur.TabbedPanel;
 import com.simsilica.lemur.props.PropertyPanel;
@@ -23,7 +22,7 @@ public class TireEditor extends Container {
         tireProps.addFloatProperty("Load", tireModel, "load", 0, tireModel.getMaxLoad(), 0.1f);
 
         Button printButton = new Button("Print Data");
-        printButton.addClickCommands((Command<Button>) source -> {
+        printButton.addClickCommands(source -> {
             System.out.println(tireModel.toString());
         });
 

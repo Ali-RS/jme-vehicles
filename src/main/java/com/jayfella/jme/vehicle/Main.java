@@ -103,7 +103,7 @@ public class Main extends SimpleApplication {
         inputManager.clearRawInputListeners();
 
         // the "hood-cam" gets close to the bodywork, so set the near-frustum accordingly...
-        float aspect = (float)cam.getWidth() / (float)cam.getHeight();
+        float aspect = cam.getWidth() / (float) cam.getHeight();
         cam.setFrustumPerspective(60, aspect, 0.1f, 1000);
 
         // the speedo uses Lemur labels.
