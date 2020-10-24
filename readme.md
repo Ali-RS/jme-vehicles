@@ -43,7 +43,9 @@ vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
 
 [jme]: http://jmonkeyengine.org  "jMonkeyEngine Project"
 [lemur]: https://github.com/jMonkeyEngine-Contributions/Lemur "Lemur UI Toolkit"
+[sergej]: https://hdrihaven.com/hdris/?a=Sergej%20Majboroda "HDRIs by Sergej Majboroda"
 
 ### Acknowledgments
 
-James Khan initiated the Advanced Vehicles Project.
++ James Khan (aka "jayfella") initiated the Advanced Vehicles Project.
++ [Sergej Majboroda][sergej] created the quarry_03 texture.
