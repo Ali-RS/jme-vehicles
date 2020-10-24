@@ -130,19 +130,19 @@ public class Main extends SimpleApplication {
                     return sky;
                 })
                 .whenComplete((spatial, ex) -> {
-                    enqueue( () -> rootNode.attachChild(spatial) );
+                    enqueue(() -> rootNode.attachChild(spatial));
                 });
 
         // load the playground async.
         CompletableFuture
                 .supplyAsync(() -> {
-                    Node node =  (Node) loadPlayground();
+                    Node node = (Node) loadPlayground();
                     RigidBodyControl rigidBodyControl = new RigidBodyControl(CollisionShapeFactory.createMeshShape(node), 0);
                     node.addControl(rigidBodyControl);
                     return node;
                 })
                 .whenComplete((node, ex) -> {
-                    enqueue( () -> {
+                    enqueue(() -> {
                         rootNode.attachChild(node);
                         RigidBodyControl rigidBodyControl = node.getControl(RigidBodyControl.class);
                         bulletAppState.getPhysicsSpace().add(rigidBodyControl);
@@ -163,7 +163,6 @@ public class Main extends SimpleApplication {
     }
 
     private Spatial loadPlayground() {
-
         Material material = new Material(assetManager, "Common/MatDefs/Light/PBRLighting.j3md");
 
         Texture baseColorMap = assetManager.loadTexture("Textures/Ground/Marble/marble_01_diff_2k.png");
@@ -189,7 +188,6 @@ public class Main extends SimpleApplication {
         material.setTexture("NormalMap", normalMap);
         material.setFloat("NormalType", 1.0f);
 
-
         // material.setColor("BaseColor", ColorRGBA.LightGray);
         // material.setFloat("Roughness", 0.75f);
         material.setFloat("Metallic", 0.001f);
@@ -212,7 +210,6 @@ public class Main extends SimpleApplication {
     }
 
     private void addPostProcessing(DirectionalLight directionalLight) {
-
         FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
 
         DirectionalLightShadowFilter shadowFilter = new DirectionalLightShadowFilter(assetManager, 4096, 4);
@@ -245,5 +242,4 @@ public class Main extends SimpleApplication {
 
         viewPort.addProcessor(fpp);
     }
-
 }

@@ -16,39 +16,32 @@ import com.simsilica.lemur.component.TbtQuadBackgroundComponent;
 public abstract class AnimatedMenuState extends BaseAppState {
 
     private final Node node = new Node("Menu");
-
     private Panel[] items;
     private float maxWidth;
-
     private AnimCompleteEvent animComplete;
 
     protected abstract Button[] createItems();
-
 
     protected void animateOut(AnimCompleteEvent animComplete) {
         time = 0;
         animsComplete = false;
         in = false;
-
         this.animComplete = animComplete;
     }
 
     private void formatButton(Button item) {
         item.setTextHAlignment(HAlignment.Center);
-        ((TbtQuadBackgroundComponent)item.getBackground()).setMargin(10, 5);
+        ((TbtQuadBackgroundComponent) item.getBackground()).setMargin(10, 5);
         item.setFontSize(16);
         item.setInsets(new Insets3f(0, 0, 5, 0));
     }
 
     @Override
     protected void initialize(Application app) {
-
         items = createItems();
-
         int height = app.getCamera().getHeight() - 20;
 
         for (Panel item : items) {
-
             if (item instanceof Button) {
                 formatButton((Button) item);
             }
@@ -68,7 +61,6 @@ public abstract class AnimatedMenuState extends BaseAppState {
             item.setLocalTranslation(-maxWidth, height, 1);
             height -= (item.getPreferredSize().y);
         }
-
     }
 
     @Override
@@ -78,7 +70,7 @@ public abstract class AnimatedMenuState extends BaseAppState {
 
     @Override
     protected void onEnable() {
-        ((SimpleApplication)getApplication()).getGuiNode().attachChild(node);
+        ((SimpleApplication) getApplication()).getGuiNode().attachChild(node);
     }
 
     @Override
@@ -98,7 +90,6 @@ public abstract class AnimatedMenuState extends BaseAppState {
 
     @Override
     public void update(float tpf) {
-
         if (animsComplete) {
             return;
         }
@@ -113,7 +104,6 @@ public abstract class AnimatedMenuState extends BaseAppState {
         time = FastMath.clamp(time + tpf, 0, 100);
 
         for (int i = 0; i < items.length; i++) {
-
             float currentDelay = delay * i;
             // make each button wait their turn.
             if (time < currentDelay) {
@@ -127,8 +117,7 @@ public abstract class AnimatedMenuState extends BaseAppState {
             if (in) {
                 float x = Easings.Function.Quart.easeOut(currentTime, 0, maxWidth + 20, duration);
                 item.setLocalTranslation(-maxWidth + x, item.getLocalTranslation().y, item.getLocalTranslation().z);
-            }
-            else {
+            } else {
                 float x = Easings.Function.Quart.easeOut(currentTime, 0, -maxWidth, duration);
                 item.setLocalTranslation(x, item.getLocalTranslation().y, item.getLocalTranslation().z);
             }
@@ -140,9 +129,7 @@ public abstract class AnimatedMenuState extends BaseAppState {
                     animComplete.completed();
                     animComplete = null;
                 }
-
             }
         }
     }
-
 }
