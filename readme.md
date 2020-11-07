@@ -3,7 +3,7 @@ vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
 
 ### Features
 
-+ playground environment
++ Vehicle Playground environment
 + 5 vehicle models:
   + Grand Tourer
   + GTR Nismo
@@ -48,4 +48,5 @@ vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
 ### Acknowledgments
 
 + James Khan (aka "jayfella") initiated the Advanced Vehicles Project.
++ Lennart Demes created the marble_01 textures.
 + [Sergej Majboroda][sergej] created the quarry_03 texture.
