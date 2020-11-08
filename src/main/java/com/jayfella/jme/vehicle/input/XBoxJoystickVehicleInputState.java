@@ -72,14 +72,13 @@ public class XBoxJoystickVehicleInputState extends BaseAppState implements State
         inputMapper.map( F_HANDBRAKE, KeyInput.KEY_Q );
 
         inputMapper.map( F_RESET, KeyInput.KEY_R );
-        //inputMapper.map( F_LEAVE, KeyInput.KEY_P);
 
         inputMapper.map( F_CAMVIEW, KeyInput.KEY_F5);
 
         inputMapper.map( F_HORN, KeyInput.KEY_H );
 
         inputMapper.addStateListener(this,
-                F_START_ENGINE, F_REVERSE, F_HANDBRAKE, F_RESET, //F_LEAVE,
+                F_START_ENGINE, F_REVERSE, F_HANDBRAKE, F_RESET,
                 F_HORN,
                 F_CAMVIEW
         );
@@ -106,14 +105,13 @@ public class XBoxJoystickVehicleInputState extends BaseAppState implements State
         inputMapper.removeMapping( F_HANDBRAKE, KeyInput.KEY_SPACE );
 
         inputMapper.removeMapping( F_RESET, KeyInput.KEY_R );
-        //inputMapper.removeMapping( F_LEAVE, KeyInput.KEY_P);
 
         inputMapper.removeMapping( F_CAMVIEW, KeyInput.KEY_F5);
 
         inputMapper.removeMapping( F_HORN, KeyInput.KEY_H );
 
         inputMapper.removeStateListener(this,
-                F_START_ENGINE, F_REVERSE, F_HANDBRAKE, F_RESET, //F_LEAVE,
+                F_START_ENGINE, F_REVERSE, F_HANDBRAKE, F_RESET,
                 F_HORN,
                 F_CAMVIEW
         );
