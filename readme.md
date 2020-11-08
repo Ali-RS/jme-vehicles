@@ -27,12 +27,13 @@ vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
   + tire smoke
   + engine/horn sounds
 
-### Controls
+### Keyboard controls
 
 + F5 : toggle viewpoints between driver and chase camera
 + Y : toggle the engine on/off
 + W : accelerate forward
 + S : apply brakes
++ Space : apply handbrake
 + E : accelerate in reverse
 + A : steer left
 + D : steer right
