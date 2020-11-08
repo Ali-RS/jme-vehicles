@@ -4,11 +4,15 @@ import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.view.*;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
+import com.jme3.bullet.BulletAppState;
 import com.jme3.input.KeyInput;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.ViewPort;
 import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.input.*;
+import jme3utilities.debug.Dumper;
+import jme3utilities.minie.PhysicsDumper;
 
 public class KeyboardVehicleInputState
         extends BaseAppState
@@ -27,6 +31,11 @@ public class KeyboardVehicleInputState
     private static final FunctionId F_RESET = new FunctionId(G_VEHICLE, "Vehicle Reset");
     private static final FunctionId F_CAMVIEW = new FunctionId(G_VEHICLE, "Camera View");
     private static final FunctionId F_HORN = new FunctionId(G_VEHICLE, "Vehicle Horn");
+
+    private static final FunctionId F_DUMP_PHYSICS
+            = new FunctionId(G_VEHICLE, "Dump Physics");
+    private static final FunctionId F_DUMP_VIEWPORT
+            = new FunctionId(G_VEHICLE, "Dump Viewport");
 
     private final Vehicle vehicle;
 
@@ -70,9 +79,12 @@ public class KeyboardVehicleInputState
         inputMapper.map(F_CAMVIEW, KeyInput.KEY_F5);
         inputMapper.map(F_HORN, KeyInput.KEY_H);
 
+        inputMapper.map(F_DUMP_PHYSICS, KeyInput.KEY_O);
+        inputMapper.map(F_DUMP_VIEWPORT, KeyInput.KEY_P);
+
         inputMapper.addStateListener(this,
                 F_START_ENGINE, F_MOVE, F_TURN, F_REVERSE, F_HANDBRAKE, F_RESET,
-                F_HORN, F_CAMVIEW
+                F_HORN, F_CAMVIEW, F_DUMP_PHYSICS, F_DUMP_VIEWPORT
         );
 
         // activeCam = new VehicleFirstPersonCamera(vehicle, app.getCamera());
@@ -95,9 +107,12 @@ public class KeyboardVehicleInputState
         inputMapper.removeMapping(F_CAMVIEW, KeyInput.KEY_F5);
         inputMapper.removeMapping(F_HORN, KeyInput.KEY_H);
 
+        inputMapper.removeMapping(F_DUMP_PHYSICS, KeyInput.KEY_O);
+        inputMapper.removeMapping(F_DUMP_VIEWPORT, KeyInput.KEY_P);
+
         inputMapper.removeStateListener(this,
                 F_START_ENGINE, F_MOVE, F_TURN, F_REVERSE, F_HANDBRAKE, F_RESET,
-                F_HORN, F_CAMVIEW
+                F_HORN, F_CAMVIEW, F_DUMP_VIEWPORT
         );
     }
 
@@ -243,6 +258,14 @@ public class KeyboardVehicleInputState
 
             vehicle.getVehicleControl().setAngularVelocity(new Vector3f());
             vehicle.getVehicleControl().setLinearVelocity(new Vector3f());
+
+        } else if (func == F_DUMP_PHYSICS) {
+            BulletAppState bas = getStateManager().getState(BulletAppState.class);
+            new PhysicsDumper().dump(bas);
+
+        } else if (func == F_DUMP_VIEWPORT) {
+            ViewPort vp = getApplication().getViewPort();
+            new Dumper().dump(vp);
         }
 
         if (func == F_CAMVIEW && value == InputState.Positive) {
