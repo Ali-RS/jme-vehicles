@@ -61,8 +61,6 @@ public class VehicleThirdPersonCamera implements VehicleCamera, AnalogListener, 
     }
 
     private void registerInput() {
-
-
         inputManager.addMapping(TOGGLE_ROTATE, new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         inputManager.addMapping(TOGGLE_TRANSLATE, new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
 
@@ -86,6 +84,8 @@ public class VehicleThirdPersonCamera implements VehicleCamera, AnalogListener, 
     private void unregisterInput() {
         inputManager.deleteMapping(TOGGLE_ROTATE);
         inputManager.deleteMapping(TOGGLE_TRANSLATE);
+
+        inputManager.deleteMapping(RESET_OFFSET);
 
         inputManager.deleteMapping(MOUSE_MOVE_RIGHT);
         inputManager.deleteMapping(MOUSE_MOVE_LEFT);
