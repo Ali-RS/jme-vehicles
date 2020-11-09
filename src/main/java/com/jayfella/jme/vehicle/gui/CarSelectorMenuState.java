@@ -21,7 +21,6 @@ public class CarSelectorMenuState extends AnimatedMenuState {
     private final Node scene;
     private final PhysicsSpace physicsSpace;
 
-
     public CarSelectorMenuState(Node scene, PhysicsSpace physicsSpace) {
         this.scene = scene;
         this.physicsSpace = physicsSpace;
@@ -29,13 +28,13 @@ public class CarSelectorMenuState extends AnimatedMenuState {
 
     @Override
     protected Button[] createItems() {
-        Button[] buttons = new Button[] {
-                new Button("Grand Tourer"),
-                new Button("GTR Nismo"),
-                new Button("Pickup Truck"),
-                new Button("Hatchback"),
-                new Button("Dune Buggy"),
-                new Button("<< Back")
+        Button[] buttons = new Button[]{
+            new Button("Grand Tourer"),
+            new Button("GTR Nismo"),
+            new Button("Pickup Truck"),
+            new Button("Hatchback"),
+            new Button("Dune Buggy"),
+            new Button("<< Back")
         };
 
         buttons[0].addClickCommands(source -> setVehicle(new GrandTourer(getApplication())));
@@ -55,7 +54,6 @@ public class CarSelectorMenuState extends AnimatedMenuState {
     }
 
     private void addVehicle(Car vehicle) {
-
         vehicle.showSpeedo(Vehicle.SpeedUnit.MPH);
         vehicle.showTacho();
         vehicle.attachToScene(scene, physicsSpace);
@@ -67,44 +65,41 @@ public class CarSelectorMenuState extends AnimatedMenuState {
         // XBoxJoystickVehicleInputState inputState = new XBoxJoystickVehicleInputState(vehicle);
         getStateManager().attach(inputState);
 
-        // engine graph GUI for viewing torqe/power @ revs
+        // engine graph GUI for viewing torque/power @ revs
         EnginePowerGraphState enginePowerGraphState = new EnginePowerGraphState(vehicle);
         enginePowerGraphState.setEnabled(false);
         getStateManager().attach(enginePowerGraphState);
 
-        // tyre data GUI for viewing how much grip each tyre has according to the pajecka formula.
+        // tyre data GUI for viewing how much grip each tyre has according to the Pacejka formula
         TyreDataState tyreDataState = new TyreDataState(vehicle);
         tyreDataState.setEnabled(false);
         getStateManager().attach(tyreDataState);
 
-        // the main vehicle editor to modify all areas of the vehicle real-time.
+        // the main vehicle editor to modify aspects of the vehicle in real time
         VehicleEditorState vehicleEditorState = new VehicleEditorState(vehicle);
         getStateManager().attach(vehicleEditorState);
 
-        // vehicle debug add-on to enable/disable debug screens.
+        // vehicle debug add-on to enable/disable debug screens
         DebugTabState debugTabState = new DebugTabState();
         getStateManager().attach(debugTabState);
 
         // the return to menu button.
         Button returnToMenuButton = new Button("Return to Main Menu");
         returnToMenuButton.setFontSize(16);
-        ((TbtQuadBackgroundComponent)returnToMenuButton.getBackground()).setMargin(10, 5);
+        ((TbtQuadBackgroundComponent) returnToMenuButton.getBackground()).setMargin(10, 5);
         returnToMenuButton.addClickCommands(new ReturnToMenuClickCommand(vehicle));
         returnToMenuButton.setLocalTranslation(
                 getApplication().getCamera().getWidth() - returnToMenuButton.getPreferredSize().x - 40,
                 getApplication().getCamera().getHeight() - 20,
                 1
         );
-        ((SimpleApplication)getApplication()).getGuiNode().attachChild(returnToMenuButton);
+        ((SimpleApplication) getApplication()).getGuiNode().attachChild(returnToMenuButton);
 
         vehicle.getNode().setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
-
     }
 
     private void setVehicle(Car newVehicle) {
         addVehicle(newVehicle);
         getStateManager().detach(this);
     }
-
-
 }

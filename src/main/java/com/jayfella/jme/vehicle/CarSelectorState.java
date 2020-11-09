@@ -16,7 +16,6 @@ import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import com.simsilica.lemur.Button;
 import com.simsilica.lemur.Container;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.CompletableFuture;
@@ -36,19 +35,16 @@ public class CarSelectorState extends BaseAppState {
 
     @Override
     protected void initialize(Application app) {
-
         this.container = new Container();
 
         Button gtTourer = container.addChild(new Button("Grand Tourer"));
         gtTourer.addClickCommands(source -> setVehicle(new GrandTourer(getApplication())));
-        // gtTourer.addClickCommands(source -> setVehicleAsync(GrandTourer.class));
 
         Button gtrNismo = container.addChild(new Button("GTR Nismo"));
         gtrNismo.addClickCommands(source -> setVehicle(new GTRNismo(getApplication())));
 
         Button pickup = container.addChild(new Button("Pickup Truck"));
         pickup.addClickCommands(source -> setVehicle(new PickupTruck(getApplication())));
-        // pickup.addClickCommands(source -> setVehicleAsync(PickupTruck.class));
 
         Button hatchback = container.addChild(new Button("Hatchback"));
         hatchback.addClickCommands(source -> setVehicle(new HatchBack(getApplication())));
@@ -63,7 +59,6 @@ public class CarSelectorState extends BaseAppState {
     }
 
     public void addVehicle(Car newVehicle) {
-
         vehicle = newVehicle;
 
         vehicle.showSpeedo(Vehicle.SpeedUnit.MPH);
@@ -77,28 +72,25 @@ public class CarSelectorState extends BaseAppState {
         XBoxJoystickVehicleInputState inputState = new XBoxJoystickVehicleInputState(vehicle);
         getStateManager().attach(inputState);
 
-        // engine graph GUI for viewing torqe/power @ revs
+        // engine graph GUI for viewing torque/power @ revs
         EnginePowerGraphState enginePowerGraphState = new EnginePowerGraphState(vehicle);
         enginePowerGraphState.setEnabled(false);
         getStateManager().attach(enginePowerGraphState);
 
-        // tyre data GUI for viewing how much grip each tyre has according to the pajecka formula.
+        // tyre data GUI for viewing how much grip each tyre has according to the Pacejka formula
         TyreDataState tyreDataState = new TyreDataState(vehicle);
         tyreDataState.setEnabled(false);
         getStateManager().attach(tyreDataState);
 
-        // the main vehicle editor to modify all areas of the vehicle real-time.
+        // the main vehicle editor to modify aspects of the vehicle in real time
         VehicleEditorState vehicleEditorState = new VehicleEditorState(vehicle);
         getStateManager().attach(vehicleEditorState);
 
-        // vehicle debug add-on to enable/disable debug screens.
+        // vehicle debug add-on to enable/disable debug screens
         DebugTabState debugTabState = new DebugTabState();
         getStateManager().attach(debugTabState);
 
-
-
         vehicle.getNode().setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
-
     }
 
     public void removeCurrentVehicle() {
@@ -137,21 +129,17 @@ public class CarSelectorState extends BaseAppState {
     }
 
     public void setVehicleAsync(Class<? extends Car> clazz) {
-
         getApplication().getStateManager().getState(LoadingState.class).setEnabled(true);
         removeCurrentVehicle();
 
         CompletableFuture
                 .supplyAsync(() -> {
-
                     try {
-
                         Constructor constructor = null;
 
                         if (clazz.isAssignableFrom(GrandTourer.class)) {
                             constructor = GrandTourer.class.getConstructor(Application.class);
-                        }
-                        else if (clazz.isAssignableFrom(PickupTruck.class)) {
+                        } else if (clazz.isAssignableFrom(PickupTruck.class)) {
                             constructor = PickupTruck.class.getConstructor(Application.class);
                         }
 
@@ -169,11 +157,8 @@ public class CarSelectorState extends BaseAppState {
                             addVehicle(car);
                             getApplication().getStateManager().getState(LoadingState.class).setEnabled(false);
                         });
-
                     }
                 });
-
-
     }
 
     public void setVehicle(Car newVehicle) {
@@ -201,13 +186,10 @@ public class CarSelectorState extends BaseAppState {
     }
 
     public void setShowVehicleSelector(boolean show) {
-
         if (show) {
-            ((SimpleApplication)getApplication()).getGuiNode().attachChild(container);
-        }
-        else {
+            ((SimpleApplication) getApplication()).getGuiNode().attachChild(container);
+        } else {
             container.removeFromParent();
         }
     }
-
 }
