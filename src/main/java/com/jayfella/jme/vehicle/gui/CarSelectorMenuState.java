@@ -8,9 +8,11 @@ import com.jayfella.jme.vehicle.debug.TyreDataState;
 import com.jayfella.jme.vehicle.debug.VehicleEditorState;
 import com.jayfella.jme.vehicle.examples.cars.*;
 import com.jayfella.jme.vehicle.input.KeyboardVehicleInputState;
+import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import com.simsilica.lemur.Button;
@@ -37,11 +39,12 @@ public class CarSelectorMenuState extends AnimatedMenuState {
             new Button("<< Back")
         };
 
-        buttons[0].addClickCommands(source -> setVehicle(new GrandTourer(getApplication())));
-        buttons[1].addClickCommands(source -> setVehicle(new GTRNismo(getApplication())));
-        buttons[2].addClickCommands(source -> setVehicle(new PickupTruck(getApplication())));
-        buttons[3].addClickCommands(source -> setVehicle(new HatchBack(getApplication())));
-        buttons[4].addClickCommands(source -> setVehicle(new DuneBuggy(getApplication())));
+        Application app = getApplication();
+        buttons[0].addClickCommands(source -> setVehicle(new GrandTourer(app)));
+        buttons[1].addClickCommands(source -> setVehicle(new GTRNismo(app)));
+        buttons[2].addClickCommands(source -> setVehicle(new PickupTruck(app)));
+        buttons[3].addClickCommands(source -> setVehicle(new HatchBack(app)));
+        buttons[4].addClickCommands(source -> setVehicle(new DuneBuggy(app)));
 
         buttons[5].addClickCommands(source -> {
             animateOut(() -> {
@@ -88,12 +91,14 @@ public class CarSelectorMenuState extends AnimatedMenuState {
         returnToMenuButton.setFontSize(16);
         ((TbtQuadBackgroundComponent) returnToMenuButton.getBackground()).setMargin(10, 5);
         returnToMenuButton.addClickCommands(new ReturnToMenuClickCommand(vehicle));
+        SimpleApplication app = (SimpleApplication) getApplication();
+        Camera cam = app.getCamera();
         returnToMenuButton.setLocalTranslation(
-                getApplication().getCamera().getWidth() - returnToMenuButton.getPreferredSize().x - 40,
-                getApplication().getCamera().getHeight() - 20,
+                cam.getWidth() - returnToMenuButton.getPreferredSize().x - 40,
+                cam.getHeight() - 20,
                 1
         );
-        ((SimpleApplication) getApplication()).getGuiNode().attachChild(returnToMenuButton);
+        app.getGuiNode().attachChild(returnToMenuButton);
 
         vehicle.getNode().setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
     }
