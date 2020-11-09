@@ -27,10 +27,7 @@ public class DebugTabState extends BaseAppState {
 
         EnginePowerGraphState enginePowerGraphState = getState(EnginePowerGraphState.class);
         TyreDataState tyreDataState = getState(TyreDataState.class);
-
         MagicFormulaState magicFormulaState = getState(MagicFormulaState.class);
-
-        // CarSelectorState carSelectorState = getState(CarSelectorState.class);
 
         PropertyPanel propertyPanel = container.addChild(new PropertyPanel("glass"));
         propertyPanel.addBooleanProperty("Display FPS", this, "displayFps");
@@ -40,7 +37,6 @@ public class DebugTabState extends BaseAppState {
         propertyPanel.addBooleanProperty("Tyre Graph", tyreDataState, "enabled");
         propertyPanel.addBooleanProperty("Tyre Data", magicFormulaState, "vehicleDataEnabled");
         propertyPanel.addBooleanProperty("Center of Gravity", magicFormulaState, "centerOfGravityEnabled");
-        // propertyPanel.addBooleanProperty("Show Vehicle Selector", carSelectorState, "showVehicleSelector");
 
         tabbedPanel.addTab("Debug", container);
 
