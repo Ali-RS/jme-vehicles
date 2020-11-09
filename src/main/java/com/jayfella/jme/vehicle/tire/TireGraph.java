@@ -13,7 +13,7 @@ import com.jme3.util.BufferUtils;
 
 public class TireGraph extends Geometry {
 
-    private final PajeckaTireModel tireModel;
+    private final PacejkaTireModel tireModel;
     private final int width, height;
 
     private final ImageRaster imageRaster;
@@ -27,7 +27,7 @@ public class TireGraph extends Geometry {
     private ColorRGBA longitudinalColor = ColorRGBA.Black;
     private ColorRGBA momentColor = ColorRGBA.Green;
 
-    public TireGraph(AssetManager assetManager, PajeckaTireModel tireModel, int width, int height) {
+    public TireGraph(AssetManager assetManager, PacejkaTireModel tireModel, int width, int height) {
         super("Tyre Graph");
 
         this.tireModel = tireModel;

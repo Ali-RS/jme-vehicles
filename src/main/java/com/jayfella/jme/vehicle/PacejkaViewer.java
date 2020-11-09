@@ -1,7 +1,7 @@
 package com.jayfella.jme.vehicle;
 
 import com.jayfella.jme.vehicle.examples.tyres.Tyre_01;
-import com.jayfella.jme.vehicle.tire.PajeckaTireModel;
+import com.jayfella.jme.vehicle.tire.PacejkaTireModel;
 import com.jayfella.jme.vehicle.tire.TireEditor;
 import com.jayfella.jme.vehicle.tire.TireGraph;
 import com.jayfella.jme.vehicle.tire.TyreSettings;
@@ -14,7 +14,7 @@ import com.simsilica.lemur.style.BaseStyles;
 public class PacejkaViewer extends SimpleApplication {
 
 
-    private PajeckaTireModel tireModel;
+    private PacejkaTireModel tireModel;
 
     public static void main(String... args) {
         PacejkaViewer pacejkaViewer = new PacejkaViewer();

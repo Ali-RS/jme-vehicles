@@ -1,6 +1,6 @@
 package com.jayfella.jme.vehicle.part;
 
-import com.jayfella.jme.vehicle.tire.PajeckaTireModel;
+import com.jayfella.jme.vehicle.tire.PacejkaTireModel;
 import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.objects.VehicleWheel;
 import com.jme3.math.FastMath;
@@ -28,7 +28,7 @@ public class Wheel {
 
     private final Brake brake;
 
-    private PajeckaTireModel tireModel;
+    private PacejkaTireModel tireModel;
 
     private float rotationDelta;
 
@@ -54,11 +54,11 @@ public class Wheel {
         setFriction(1f);
     }
 
-    public PajeckaTireModel getTireModel() {
+    public PacejkaTireModel getTireModel() {
         return tireModel;
     }
 
-    public void setTireModel(PajeckaTireModel tireModel) {
+    public void setTireModel(PacejkaTireModel tireModel) {
         this.tireModel = tireModel;
     }
 

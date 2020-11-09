@@ -3,8 +3,7 @@ package com.jayfella.jme.vehicle.tire;
 import com.jme3.math.FastMath;
 
 // https://github.com/chrisoco/M120/blob/master/RaceCar/RCAS/src/rcas/model/MagicFormulaTireModel.java
-
-public class PajeckaTireModel {
+public class PacejkaTireModel {
 
     private TyreSettings.ChangeListener changeListener;
 
@@ -14,9 +13,9 @@ public class PajeckaTireModel {
     private TyreSettings longitudinal;
     private TyreSettings alignMoment;
 
-    // the maximun load the tire can handle.
+    // the maximum load the tire can handle
     private float maxLoad;
-    // the amount of load on the tire.
+    // the amount of load on the tire
     private float load;
 
     private float lateralValue;
@@ -27,17 +26,15 @@ public class PajeckaTireModel {
     // a method of combining Fx and Fy together.
     private float frictionCircle;
 
-
-    public PajeckaTireModel(String name,
-                            TyreSettings lateral, TyreSettings longitudinal, TyreSettings alignMoment,
-                            float maxLoad) {
+    public PacejkaTireModel(String name,
+            TyreSettings lateral, TyreSettings longitudinal, TyreSettings alignMoment,
+            float maxLoad) {
 
         this.name = name;
         this.lateral = lateral;
         this.longitudinal = longitudinal;
         this.alignMoment = alignMoment;
         this.maxLoad = maxLoad;
-
     }
 
     public String getName() {
@@ -88,7 +85,7 @@ public class PajeckaTireModel {
 
         return FastMath.sin(settings.getSlipAngleCoefficientC()
                 * FastMath.atan(settings.getSlipAngleCoefficientB() * slipAngle - settings.getSlipAngleCoefficientE()
-                * (settings.getSlipAngleCoefficientB() * slipAngle - FastMath.atan(settings.getSlipAngleCoefficientB() * slipAngle))));
+                        * (settings.getSlipAngleCoefficientB() * slipAngle - FastMath.atan(settings.getSlipAngleCoefficientB() * slipAngle))));
     }
 
     private float calcLoadForce(float load, TyreSettings settings) {
@@ -100,8 +97,7 @@ public class PajeckaTireModel {
      * <br>
      * <b>CAUTION:</b> this function returns a value in Newton N!
      *
-     * @param slipAngle
-     *            - the slip angle in degrees (°).
+     * @param slipAngle - the slip angle in degrees (°).
      *
      * @return - lateral tire force in N.
      */
@@ -134,8 +130,7 @@ public class PajeckaTireModel {
                 - Fx0 is the MAXIMUM longitudinal force possible (calculated as D+Sv in the Pacejka Fx formula).
 
             This method favors longitudinal forces over lateral ones (cuts down the lateral force and leaves Fx intact).
-             */
-
+         */
         this.frictionCircle = lateralValue * FastMath.sqrt(
                 1.0f - FastMath.pow((longitudinalValue / 7800), 2)
         );
@@ -163,7 +158,6 @@ public class PajeckaTireModel {
 
     @Override
     public String toString() {
-
         String format = "%s: \"%s\" : %s (C=%.2f, B=%.2f, E=%.2f, KA=%.2f, KB=%.6f)";
 
         String lat = String.format(format, this.getClass().toString(),
@@ -201,7 +195,5 @@ public class PajeckaTireModel {
         if (changeListener != null) {
             changeListener.valueChanged();
         }
-
     }
-
 }

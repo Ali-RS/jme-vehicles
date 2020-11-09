@@ -7,7 +7,7 @@ import com.simsilica.lemur.props.PropertyPanel;
 
 public class TireEditor extends Container {
 
-    public TireEditor(PajeckaTireModel tireModel) {
+    public TireEditor(PacejkaTireModel tireModel) {
 
         PropertyPanel latProps = createPropertyPanel(tireModel.getLateral());
         PropertyPanel lngProps = createPropertyPanel(tireModel.getLongitudinal());
