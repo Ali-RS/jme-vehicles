@@ -195,18 +195,13 @@ public class KeyboardVehicleInputState
 
     @Override
     public void valueChanged(FunctionId func, InputState value, double tpf) {
-        boolean pressed = value == InputState.Positive;
+        boolean pressed = (value == InputState.Positive);
 
-        if (func == F_HORN) {
-            if (pressed) {
-                // vehicle.setEngineStarted(!vehicle.getEngine().isStarted());
-                vehicle.pressHorn();
-            }
+        if (func == F_HORN && pressed) {
+            vehicle.pressHorn();
 
-        } else if (func == F_START_ENGINE) {
-            if (!pressed) {
-                vehicle.setEngineStarted(!vehicle.getEngine().isStarted());
-            }
+        } else if (func == F_START_ENGINE && !pressed) {
+            vehicle.setEngineStarted(!vehicle.getEngine().isStarted());
 
         } else if (func == F_MOVE) {
             if (value == InputState.Positive) {
@@ -222,7 +217,7 @@ public class KeyboardVehicleInputState
             }
 
         } else if (func == F_REVERSE) {
-            reversing = value == InputState.Positive;
+            reversing = pressed;
 
         } else if (func == F_HANDBRAKE) {
             // if (pressed) {
@@ -245,11 +240,7 @@ public class KeyboardVehicleInputState
                 turningRight = false;
             }
 
-        } else if (func == F_RESET) {
-            if (!pressed) {
-                return;
-            }
-
+        } else if (func == F_RESET && pressed) {
             float[] angles = new float[3];
             vehicle.getVehicleControl().getPhysicsRotation().toAngles(angles);
 
@@ -259,16 +250,15 @@ public class KeyboardVehicleInputState
             vehicle.getVehicleControl().setAngularVelocity(new Vector3f());
             vehicle.getVehicleControl().setLinearVelocity(new Vector3f());
 
-        } else if (func == F_DUMP_PHYSICS) {
+        } else if (func == F_DUMP_PHYSICS && pressed) {
             BulletAppState bas = getStateManager().getState(BulletAppState.class);
             new PhysicsDumper().dump(bas);
 
-        } else if (func == F_DUMP_VIEWPORT) {
+        } else if (func == F_DUMP_VIEWPORT && pressed) {
             ViewPort vp = getApplication().getViewPort();
-            new Dumper().dump(vp);
-        }
+            new Dumper().setDumpShadow(true).dump(vp);
 
-        if (func == F_CAMVIEW && value == InputState.Positive) {
+        } else if (func == F_CAMVIEW && pressed) {
             currentCam = currentCam.next();
             setCamera(currentCam);
         }
