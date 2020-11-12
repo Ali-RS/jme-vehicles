@@ -22,11 +22,11 @@ public class SkidMarkManager {
 
     // END INSPECTOR SETTINGS
 
-	final int MAX_MARKS; // = 128;//2048; // Max number of marks total for everyone together
-    final float MARK_WIDTH;// = 0.4f; // Width of the skidmarks. Should match the width of the wheels
-    final float GROUND_OFFSET = 0.02f;  // Distance above surface in metres
-    final float MIN_DISTANCE = 0.5f; // Distance between skid texture sections in metres. Bigger = better performance, less smooth
-    final float MIN_SQR_DISTANCE = MIN_DISTANCE * MIN_DISTANCE;
+	final private int MAX_MARKS; // = 128;//2048; // Max number of marks total for everyone together
+    final private float MARK_WIDTH;// = 0.4f; // Width of the skidmarks. Should match the width of the wheels
+    final private float GROUND_OFFSET = 0.02f;  // Distance above surface in metres
+    final private float MIN_DISTANCE = 0.5f; // Distance between skid texture sections in metres. Bigger = better performance, less smooth
+    final private float MIN_SQR_DISTANCE = MIN_DISTANCE * MIN_DISTANCE;
 
     // Info for each mark created. Needed to generate the correct mesh
     class MarkSection {
@@ -40,21 +40,21 @@ public class SkidMarkManager {
 
     }
 
-    int markIndex;
-    MarkSection[] skidmarks;
-    Mesh marksMesh;
+    private int markIndex;
+    private MarkSection[] skidmarks;
+    private Mesh marksMesh;
     // MeshRenderer mr;
     // MeshFilter mf;
 
-    Vector3f[] vertices;
-    Vector3f[] normals;
-    Vector4f[] tangents;
-    ColorRGBA[] colors;
-    Vector2f[] uvs;
-    int[] triangles;
+    private Vector3f[] vertices;
+    private Vector3f[] normals;
+    private Vector4f[] tangents;
+    private ColorRGBA[] colors;
+    private Vector2f[] uvs;
+    private int[] triangles;
 
-    boolean meshUpdated;
-    boolean haveSetBounds;
+    private boolean meshUpdated;
+    private boolean haveSetBounds;
 
     // #### UNITY INTERNAL METHODS ####
 
