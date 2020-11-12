@@ -4,6 +4,7 @@ import com.jayfella.jme.vehicle.part.Brake;
 import com.jayfella.jme.vehicle.part.Suspension;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.app.Application;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.objects.VehicleWheel;
 import com.jme3.math.Vector3f;
@@ -162,20 +163,22 @@ public class Car extends Vehicle {
     protected void enable() {
         super.enable();
 
-        getApplication().getStateManager().attach(smokeEmitter);
-        getApplication().getStateManager().attach(skidmarks);
-        getApplication().getStateManager().attach(magicFormulaState);
-        getApplication().getStateManager().attach(wheelSpinState);
+        AppStateManager manager = getApplication().getStateManager();
+        manager.attach(smokeEmitter);
+        manager.attach(skidmarks);
+        manager.attach(magicFormulaState);
+        manager.attach(wheelSpinState);
     }
 
     @Override
     protected void disable() {
         super.disable();
 
-        getApplication().getStateManager().detach(smokeEmitter);
-        getApplication().getStateManager().detach(skidmarks);
-        getApplication().getStateManager().detach(magicFormulaState);
-        getApplication().getStateManager().detach(wheelSpinState);
+        AppStateManager manager = getApplication().getStateManager();
+        manager.detach(smokeEmitter);
+        manager.detach(skidmarks);
+        manager.detach(magicFormulaState);
+        manager.detach(wheelSpinState);
     }
 
     @Override
