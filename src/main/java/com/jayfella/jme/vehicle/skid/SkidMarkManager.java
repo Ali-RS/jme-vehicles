@@ -17,7 +17,7 @@ import java.nio.IntBuffer;
 
 public class SkidMarkManager {
 
-    private Material skidmarksMaterial; // Material for the skidmarks to use
+    final private Material skidmarksMaterial; // Material for the skidmarks to use
     private Geometry geometry;
 
     // END INSPECTOR SETTINGS
@@ -41,17 +41,17 @@ public class SkidMarkManager {
     }
 
     private int markIndex;
-    private MarkSection[] skidmarks;
-    private Mesh marksMesh;
+    final private MarkSection[] skidmarks;
+    final private Mesh marksMesh;
     // MeshRenderer mr;
     // MeshFilter mf;
 
-    private Vector3f[] vertices;
-    private Vector3f[] normals;
-    private Vector4f[] tangents;
-    private ColorRGBA[] colors;
-    private Vector2f[] uvs;
-    private int[] triangles;
+    final private Vector3f[] vertices;
+    final private Vector3f[] normals;
+    final private Vector4f[] tangents;
+    final private ColorRGBA[] colors;
+    final private Vector2f[] uvs;
+    final private int[] triangles;
 
     private boolean meshUpdated;
     private boolean haveSetBounds;
