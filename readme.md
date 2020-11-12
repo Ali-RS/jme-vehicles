@@ -47,6 +47,18 @@ vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
 [lemur]: https://github.com/jMonkeyEngine-Contributions/Lemur "Lemur UI Toolkit"
 [sergej]: https://hdrihaven.com/hdris/?a=Sergej%20Majboroda "HDRIs by Sergej Majboroda"
 
+### Licensing
+
++ The source code has
+  [a BSD 3-Clause license](https://github.com/stephengold/jme-vehicles/blob/master/license.txt).
++ Resources/assets:
+++ The [GT model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/GT)
+   has a CC Attribution-NonCommercial-ShareAlike license.
+++ The [gtr_nismo model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/gtr_nismo)
+   has a CC Attribution-NoDerivs license.
+++ The [vehicle-playground model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/vehicle-playground)
+   has a CC Zero Universal license.
+
 ### Acknowledgments
 
 + James Khan (aka "jayfella") initiated the Advanced Vehicles Project.
