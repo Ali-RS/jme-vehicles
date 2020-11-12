@@ -36,6 +36,8 @@ public class KeyboardVehicleInputState
             = new FunctionId(G_VEHICLE, "Dump Physics");
     private static final FunctionId F_DUMP_VIEWPORT
             = new FunctionId(G_VEHICLE, "Dump Viewport");
+    private static final FunctionId F_PAUSE
+            = new FunctionId(G_VEHICLE, "Pause Simulation");
 
     private final Vehicle vehicle;
 
@@ -81,10 +83,12 @@ public class KeyboardVehicleInputState
 
         inputMapper.map(F_DUMP_PHYSICS, KeyInput.KEY_O);
         inputMapper.map(F_DUMP_VIEWPORT, KeyInput.KEY_P);
+        inputMapper.map(F_PAUSE, KeyInput.KEY_PAUSE);
+        inputMapper.map(F_PAUSE, KeyInput.KEY_PERIOD);
 
         inputMapper.addStateListener(this,
                 F_START_ENGINE, F_MOVE, F_TURN, F_REVERSE, F_HANDBRAKE, F_RESET,
-                F_HORN, F_CAMVIEW, F_DUMP_PHYSICS, F_DUMP_VIEWPORT
+                F_HORN, F_CAMVIEW, F_DUMP_PHYSICS, F_DUMP_VIEWPORT, F_PAUSE
         );
 
         // activeCam = new VehicleFirstPersonCamera(vehicle, app.getCamera());
@@ -109,10 +113,12 @@ public class KeyboardVehicleInputState
 
         inputMapper.removeMapping(F_DUMP_PHYSICS, KeyInput.KEY_O);
         inputMapper.removeMapping(F_DUMP_VIEWPORT, KeyInput.KEY_P);
+        inputMapper.removeMapping(F_PAUSE, KeyInput.KEY_PAUSE);
+        inputMapper.removeMapping(F_PAUSE, KeyInput.KEY_PERIOD);
 
         inputMapper.removeStateListener(this,
                 F_START_ENGINE, F_MOVE, F_TURN, F_REVERSE, F_HANDBRAKE, F_RESET,
-                F_HORN, F_CAMVIEW, F_DUMP_VIEWPORT
+                F_HORN, F_CAMVIEW, F_DUMP_VIEWPORT, F_PAUSE
         );
     }
 
@@ -257,6 +263,15 @@ public class KeyboardVehicleInputState
         } else if (func == F_DUMP_VIEWPORT && pressed) {
             ViewPort vp = getApplication().getViewPort();
             new Dumper().setDumpShadow(true).dump(vp);
+
+        } else if (func == F_PAUSE && pressed) {
+            BulletAppState bas = getStateManager().getState(BulletAppState.class);
+            float speed = bas.getSpeed();
+            if (speed > 0f) { // was running
+                bas.setSpeed(0f);
+            } else {
+                bas.setSpeed(1f);
+            }
 
         } else if (func == F_CAMVIEW && pressed) {
             currentCam = currentCam.next();

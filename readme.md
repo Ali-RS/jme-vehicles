@@ -39,6 +39,7 @@ vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
 + D : steer right
 + H : sound the horn
 + R : reset the vehicle to a parked state
++ Pause or . : toggle the simulation paused/running
 
 ![screenshot](https://i.ibb.co/JyPHdv8/image.png)
 
