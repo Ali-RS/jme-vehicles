@@ -118,7 +118,7 @@ public class KeyboardVehicleInputState
 
         inputMapper.removeStateListener(this,
                 F_START_ENGINE, F_MOVE, F_TURN, F_REVERSE, F_HANDBRAKE, F_RESET,
-                F_HORN, F_CAMVIEW, F_DUMP_VIEWPORT, F_PAUSE
+                F_HORN, F_CAMVIEW, F_DUMP_PHYSICS, F_DUMP_VIEWPORT, F_PAUSE
         );
     }
 
