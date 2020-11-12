@@ -55,7 +55,7 @@ public class ReturnToMenuClickCommand implements Command<Button> {
         vehicle.detachFromScene();
 
         stateManager.attach(new MainMenuState());
-        source.removeFromParent();
+        vehicle.removeRtmmButton();
 
         vehicle.getApplication().getCamera().setLocation(new Vector3f(-200, 50, -200));
         vehicle.getApplication().getCamera().lookAt(new Vector3f(100, 10, 150), Vector3f.UNIT_Y);

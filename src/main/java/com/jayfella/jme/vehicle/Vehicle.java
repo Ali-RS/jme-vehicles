@@ -1,20 +1,25 @@
 package com.jayfella.jme.vehicle;
 
 import com.jayfella.jme.vehicle.engine.Engine;
+import com.jayfella.jme.vehicle.gui.ReturnToMenuClickCommand;
 import com.jayfella.jme.vehicle.part.GearBox;
 import com.jme3.app.Application;
+import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioData;
 import com.jme3.audio.AudioNode;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.CollisionShape;
-//import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.simsilica.lemur.Button;
+import com.simsilica.lemur.component.TbtQuadBackgroundComponent;
+import com.simsilica.lemur.core.GuiComponent;
 
 /**
  * A vehicle that may contain wheels and other propellants.
@@ -37,6 +42,7 @@ public abstract class Vehicle {
     private Engine engine;
     private GearBox gearBox;
 
+    private Button rtmmButton;
     private SpeedometerState speedo;
     private TachometerState tacho;
     private AutomaticGearboxState gearboxState;
@@ -189,6 +195,36 @@ public abstract class Vehicle {
             case KMH: return this.vehicleControl.getCurrentVehicleSpeedKmHour();
             case MPH: return this.vehicleControl.getCurrentVehicleSpeedKmHour() * KMH_TO_MPH;
             default: return -1;
+        }
+    }
+
+    /**
+     * Show the "Return to Main Menu" button.
+     */
+    public void showRtmmButton() {
+        removeRtmmButton();
+
+        rtmmButton = new Button("Return to Main Menu");
+        rtmmButton.setFontSize(16f);
+        GuiComponent background = rtmmButton.getBackground();
+        ((TbtQuadBackgroundComponent) background).setMargin(10f, 5f);
+        rtmmButton.addClickCommands(new ReturnToMenuClickCommand((Car) this));
+        SimpleApplication simpleApp = (SimpleApplication) getApplication();
+        Camera cam = simpleApp.getCamera();
+        rtmmButton.setLocalTranslation(
+                cam.getWidth() - rtmmButton.getPreferredSize().x - 40f,
+                cam.getHeight() - 20f,
+                1f
+        );
+        simpleApp.getGuiNode().attachChild(rtmmButton);
+    }
+
+    /**
+     * Hide the "Return to Main Menu" button.
+     */
+    public void removeRtmmButton() {
+        if (rtmmButton != null) {
+            rtmmButton.removeFromParent();
         }
     }
 

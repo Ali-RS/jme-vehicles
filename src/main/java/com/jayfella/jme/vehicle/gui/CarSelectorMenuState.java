@@ -86,19 +86,8 @@ public class CarSelectorMenuState extends AnimatedMenuState {
         DebugTabState debugTabState = new DebugTabState();
         getStateManager().attach(debugTabState);
 
-        // the return to menu button.
-        Button returnToMenuButton = new Button("Return to Main Menu");
-        returnToMenuButton.setFontSize(16);
-        ((TbtQuadBackgroundComponent) returnToMenuButton.getBackground()).setMargin(10, 5);
-        returnToMenuButton.addClickCommands(new ReturnToMenuClickCommand(vehicle));
-        SimpleApplication app = (SimpleApplication) getApplication();
-        Camera cam = app.getCamera();
-        returnToMenuButton.setLocalTranslation(
-                cam.getWidth() - returnToMenuButton.getPreferredSize().x - 40,
-                cam.getHeight() - 20,
-                1
-        );
-        app.getGuiNode().attachChild(returnToMenuButton);
+        // the "Return to Main Menu" button.
+        vehicle.showRtmmButton();
 
         vehicle.getNode().setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
     }
