@@ -42,7 +42,7 @@ vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
 + Pause or . : toggle the simulation paused/running
 + F12 : capture a screenshot to the current working directory
 
-![screenshot](https://i.ibb.co/JyPHdv8/image.png)
+<img height="150" src="https://i.imgur.com/n7iyCF8.png">
 
 [jme]: http://jmonkeyengine.org  "jMonkeyEngine Project"
 [lemur]: https://github.com/jMonkeyEngine-Contributions/Lemur "Lemur UI Toolkit"
