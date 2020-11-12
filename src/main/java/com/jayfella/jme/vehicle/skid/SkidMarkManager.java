@@ -11,24 +11,20 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.VertexBuffer;
 import com.jme3.util.BufferUtils;
-
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 public class SkidMarkManager {
 
-    final private Material skidmarksMaterial; // Material for the skidmarks to use
+    final private Material skidmarksMaterial;
     private Geometry geometry;
-
-    // END INSPECTOR SETTINGS
-
-	final private int MAX_MARKS; // = 128;//2048; // Max number of marks total for everyone together
-    final private float MARK_WIDTH;// = 0.4f; // Width of the skidmarks. Should match the width of the wheels
+    final private int MAX_MARKS; // Max number of marks total for everyone together
+    final private float MARK_WIDTH; // Width of the skidmarks. Should match the width of the wheels
     final private float GROUND_OFFSET = 0.02f;  // Distance above surface in metres
     final private float MIN_DISTANCE = 0.5f; // Distance between skid texture sections in metres. Bigger = better performance, less smooth
     final private float MIN_SQR_DISTANCE = MIN_DISTANCE * MIN_DISTANCE;
 
-    // Info for each mark created. Needed to generate the correct mesh
+    // Info for each mark. Needed to generate the correct mesh
     class MarkSection {
         public Vector3f Pos = new Vector3f();
         public Vector3f Normal = new Vector3f();
@@ -37,14 +33,11 @@ public class SkidMarkManager {
         public Vector3f Posr = new Vector3f();
         public float Intensity;
         public int LastIndex;
-
     }
 
     private int markIndex;
     final private MarkSection[] skidmarks;
     final private Mesh marksMesh;
-    // MeshRenderer mr;
-    // MeshFilter mf;
 
     final private Vector3f[] vertices;
     final private Vector3f[] normals;
@@ -55,8 +48,6 @@ public class SkidMarkManager {
 
     private boolean meshUpdated;
     private boolean haveSetBounds;
-
-    // #### UNITY INTERNAL METHODS ####
 
     public SkidMarkManager(AssetManager assetManager, int maxSkidDistance, float tyreWidth) {
         // Generate a fixed array of skidmarks
@@ -69,7 +60,6 @@ public class SkidMarkManager {
             skidmarks[i] = new MarkSection();
         }
 
-
         marksMesh = new Mesh();
         marksMesh.setDynamic();
 
@@ -80,19 +70,6 @@ public class SkidMarkManager {
         uvs = new Vector2f[MAX_MARKS * 4];
         triangles = new int[MAX_MARKS * 6];
 
-        // mr.shadowCastingMode = ShadowCastingMode.Off;
-        // mr.receiveShadows = false;
-        // mr.material = skidmarksMaterial;
-        // mr.lightProbeUsage = LightProbeUsage.Off;
-        /*
-        this.skidmarksMaterial = new Material(assetManager, Materials.LIGHTING);
-        this.skidmarksMaterial.setTexture("DiffuseMap", assetManager.loadTexture("Textures/SkidMarks/Skidmarks2.png"));
-        this.skidmarksMaterial.setBoolean("UseVertexColor", true);
-        this.skidmarksMaterial.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-        this.skidmarksMaterial.setTexture("NormalMap", assetManager.loadTexture("Textures/SkidMarks/skid_normal.png"));
-        //this.skidmarksMaterial.getAdditionalRenderState().setFaceCullMode(RenderState.FaceCullMode.Off);
-        */
-        // this.geometry = new Geometry("SkidMark", marksMesh);
         this.skidmarksMaterial = assetManager.loadMaterial("Materials/Vehicles/SkidMark.j3m");
     }
 
@@ -103,14 +80,6 @@ public class SkidMarkManager {
     protected void update() {
         if (!meshUpdated) return;
         meshUpdated = false;
-
-        // Reassign the mesh if it's changed this frame
-        // marksMesh.vertices = vertices;
-        // marksMesh.normals = normals;
-        // marksMesh.tangents = tangents;
-        // marksMesh.triangles = triangles;
-        // marksMesh.colors32 = colors;
-        // marksMesh.uv = uvs;
 
         FloatBuffer pb = BufferUtils.createFloatBuffer(vertices);
         marksMesh.setBuffer(VertexBuffer.Type.Position, 3, pb);
@@ -148,11 +117,7 @@ public class SkidMarkManager {
             // haveSetBounds = true;
             //marksMesh.updateBound();
         }
-
-        // mf.sharedMesh = marksMesh;
-
     }
-
 
     // Function called by the wheel that's skidding. Sets the intensity of the skidmark section
     // by setting the alpha of the vertex color
@@ -161,10 +126,7 @@ public class SkidMarkManager {
         else if (intensity < 0) return -1;
 
         if (lastIndex > 0) {
-            // float sqrDistance = (pos - skidmarks[lastIndex].Pos).sqrMagnitude;
             float sqrDistance = pos.subtract(skidmarks[lastIndex].Pos).length();
-
-
             if (sqrDistance < MIN_SQR_DISTANCE) return lastIndex;
         }
 
@@ -172,7 +134,6 @@ public class SkidMarkManager {
 
         curSection.Pos = pos.add(normal.mult(GROUND_OFFSET));
         curSection.Normal = normal;
-        // curSection.Intensity = (byte)(intensity * 255f);
         curSection.Intensity = intensity;
         curSection.LastIndex = lastIndex;
 
@@ -205,7 +166,6 @@ public class SkidMarkManager {
     }
 
     // #### PROTECTED/PRIVATE METHODS ####
-
     // Update part of the mesh for the current markIndex
     private void updateSkidMarksMesh() {
         MarkSection curr = skidmarks[markIndex];
@@ -254,5 +214,4 @@ public class SkidMarkManager {
 
         meshUpdated = true;
     }
-
 }
