@@ -47,6 +47,7 @@ vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
 [jme]: http://jmonkeyengine.org  "jMonkeyEngine Project"
 [lemur]: https://github.com/jMonkeyEngine-Contributions/Lemur "Lemur UI Toolkit"
 [sergej]: https://hdrihaven.com/hdris/?a=Sergej%20Majboroda "HDRIs by Sergej Majboroda"
+[tgt]: https://www.tgthorne.com/contact "Thomas Glenn Thorne"
 
 ### Licensing
 
@@ -71,3 +72,5 @@ Resources/assets:
 + James Khan (aka "jayfella") initiated the Advanced Vehicles Project.
 + Lennart Demes created the marble_01 textures.
 + [Sergej Majboroda][sergej] created the quarry_03 texture.
++ [Thomas Glenn Thorne (aka "systmh")][tgt] created the GT model.
++ "isteven" created the gtr_nismo model.
