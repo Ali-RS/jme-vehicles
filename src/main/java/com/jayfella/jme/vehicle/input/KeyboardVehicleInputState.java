@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle.input;
 
 import com.jayfella.jme.vehicle.Vehicle;
+import com.jayfella.jme.vehicle.gui.ReturnToMenuClickCommand;
 import com.jayfella.jme.vehicle.view.*;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
@@ -39,6 +40,8 @@ public class KeyboardVehicleInputState
             = new FunctionId(G_VEHICLE, "Dump Viewport");
     private static final FunctionId F_PAUSE
             = new FunctionId(G_VEHICLE, "Pause Simulation");
+    private static final FunctionId F_RETURN
+            = new FunctionId(G_VEHICLE, "Return to Main Menu");
     private static final FunctionId F_SCREEN_SHOT
             = new FunctionId(G_VEHICLE, "ScreenShot");
 
@@ -88,14 +91,14 @@ public class KeyboardVehicleInputState
         inputMapper.map(F_DUMP_VIEWPORT, KeyInput.KEY_P);
         inputMapper.map(F_PAUSE, KeyInput.KEY_PAUSE);
         inputMapper.map(F_PAUSE, KeyInput.KEY_PERIOD);
-
+        inputMapper.map(F_RETURN, KeyInput.KEY_ESCAPE);
         // Some Linux window managers block SYSRQ/PrtSc, so we map F12 instead.
         inputMapper.map(F_SCREEN_SHOT, KeyInput.KEY_F12);
 
         inputMapper.addStateListener(this,
                 F_START_ENGINE, F_MOVE, F_TURN, F_REVERSE, F_HANDBRAKE, F_RESET,
                 F_HORN, F_CAMVIEW, F_DUMP_PHYSICS, F_DUMP_VIEWPORT, F_PAUSE,
-                F_SCREEN_SHOT
+                F_RETURN, F_SCREEN_SHOT
         );
 
         // activeCam = new VehicleFirstPersonCamera(vehicle, app.getCamera());
@@ -122,13 +125,13 @@ public class KeyboardVehicleInputState
         inputMapper.removeMapping(F_DUMP_VIEWPORT, KeyInput.KEY_P);
         inputMapper.removeMapping(F_PAUSE, KeyInput.KEY_PAUSE);
         inputMapper.removeMapping(F_PAUSE, KeyInput.KEY_PERIOD);
-
+        inputMapper.removeMapping(F_RETURN, KeyInput.KEY_ESCAPE);
         inputMapper.removeMapping(F_SCREEN_SHOT, KeyInput.KEY_F12);
 
         inputMapper.removeStateListener(this,
                 F_START_ENGINE, F_MOVE, F_TURN, F_REVERSE, F_HANDBRAKE, F_RESET,
                 F_HORN, F_CAMVIEW, F_DUMP_PHYSICS, F_DUMP_VIEWPORT, F_PAUSE,
-                F_SCREEN_SHOT
+                F_RETURN, F_SCREEN_SHOT
         );
     }
 
@@ -282,6 +285,10 @@ public class KeyboardVehicleInputState
             } else {
                 bas.setSpeed(1f);
             }
+
+        } else if (func == F_RETURN && !pressed) {
+            // can't use InputState.Positive for this purpose
+            ReturnToMenuClickCommand.returnToMenu(vehicle);
 
         } else if (func == F_SCREEN_SHOT && pressed) {
             ScreenshotAppState screenshotAppState
