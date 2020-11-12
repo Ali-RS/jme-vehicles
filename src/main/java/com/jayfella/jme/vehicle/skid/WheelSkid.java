@@ -33,7 +33,7 @@ public class WheelSkid {
                 wheelspin = smoothstep(SKID_FX_SPEED, 1.0f, wheelspin);
 
 
-                lastSkid = manager.AddSkidMark(wheel.getCollisionLocation(), wheel.getCollisionNormal(), wheelspin, lastSkid);
+                lastSkid = manager.addSkidMark(wheel.getCollisionLocation(), wheel.getCollisionNormal(), wheelspin, lastSkid);
             } else {
                 lastSkid = -1;
             }

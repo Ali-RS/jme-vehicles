@@ -156,7 +156,7 @@ public class SkidMarkManager {
 
     // Function called by the wheel that's skidding. Sets the intensity of the skidmark section
     // by setting the alpha of the vertex color
-    public int AddSkidMark(Vector3f pos, Vector3f normal, float intensity, int lastIndex) {
+    public int addSkidMark(Vector3f pos, Vector3f normal, float intensity, int lastIndex) {
         if (intensity > 1) intensity = 1.0f;
         else if (intensity < 0) return -1;
 
@@ -195,7 +195,7 @@ public class SkidMarkManager {
             }
         }
 
-        UpdateSkidmarksMesh();
+        updateSkidMarksMesh();
 
         int curIndex = markIndex;
         // Update circular index
@@ -207,7 +207,7 @@ public class SkidMarkManager {
     // #### PROTECTED/PRIVATE METHODS ####
 
     // Update part of the mesh for the current markIndex
-    private void UpdateSkidmarksMesh() {
+    private void updateSkidMarksMesh() {
         MarkSection curr = skidmarks[markIndex];
 
         // Nothing to connect to yet
