@@ -49,15 +49,21 @@ vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
 
 ### Licensing
 
-+ The source code has
-  [a BSD 3-Clause license](https://github.com/stephengold/jme-vehicles/blob/master/license.txt).
-+ Resources/assets:
-++ The [GT model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/GT)
-   has a CC Attribution-NonCommercial-ShareAlike license.
-++ The [gtr_nismo model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/gtr_nismo)
-   has a CC Attribution-NoDerivs license.
-++ The [vehicle-playground model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/vehicle-playground)
-   has a CC Zero Universal license.
+The source code has
+[a BSD 3-Clause license](https://github.com/stephengold/jme-vehicles/blob/master/license.txt).
+
+Resources/assets:
+
++ The [GT model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/GT)
+  has a CC Attribution-NonCommercial-ShareAlike license.
++ The [gtr_nismo model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/gtr_nismo)
+  has a CC Attribution-NoDerivs license.
++ The [vehicle-playground model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/vehicle-playground)
+  has a CC Zero Universal license.
++ The [marble_01 textures](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Textures/Ground/Marble)
+  have a Creative Commons CC0 License.
++ The [quarry_03 texture](https://github.com/stephengold/jme-vehicles/blob/master/src/main/resources/Textures/Sky/quarry_03_4k.jpg)
+  has a CC0 1.0 Universal license.
 
 ### Acknowledgments
 
