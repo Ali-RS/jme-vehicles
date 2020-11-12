@@ -4,6 +4,7 @@ import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.view.*;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
+import com.jme3.app.state.ScreenshotAppState;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.input.KeyInput;
 import com.jme3.math.Quaternion;
@@ -38,6 +39,8 @@ public class KeyboardVehicleInputState
             = new FunctionId(G_VEHICLE, "Dump Viewport");
     private static final FunctionId F_PAUSE
             = new FunctionId(G_VEHICLE, "Pause Simulation");
+    private static final FunctionId F_SCREEN_SHOT
+            = new FunctionId(G_VEHICLE, "ScreenShot");
 
     private final Vehicle vehicle;
 
@@ -86,9 +89,13 @@ public class KeyboardVehicleInputState
         inputMapper.map(F_PAUSE, KeyInput.KEY_PAUSE);
         inputMapper.map(F_PAUSE, KeyInput.KEY_PERIOD);
 
+        // Some Linux window managers block SYSRQ/PrtSc, so we map F12 instead.
+        inputMapper.map(F_SCREEN_SHOT, KeyInput.KEY_F12);
+
         inputMapper.addStateListener(this,
                 F_START_ENGINE, F_MOVE, F_TURN, F_REVERSE, F_HANDBRAKE, F_RESET,
-                F_HORN, F_CAMVIEW, F_DUMP_PHYSICS, F_DUMP_VIEWPORT, F_PAUSE
+                F_HORN, F_CAMVIEW, F_DUMP_PHYSICS, F_DUMP_VIEWPORT, F_PAUSE,
+                F_SCREEN_SHOT
         );
 
         // activeCam = new VehicleFirstPersonCamera(vehicle, app.getCamera());
@@ -116,9 +123,12 @@ public class KeyboardVehicleInputState
         inputMapper.removeMapping(F_PAUSE, KeyInput.KEY_PAUSE);
         inputMapper.removeMapping(F_PAUSE, KeyInput.KEY_PERIOD);
 
+        inputMapper.removeMapping(F_SCREEN_SHOT, KeyInput.KEY_F12);
+
         inputMapper.removeStateListener(this,
                 F_START_ENGINE, F_MOVE, F_TURN, F_REVERSE, F_HANDBRAKE, F_RESET,
-                F_HORN, F_CAMVIEW, F_DUMP_PHYSICS, F_DUMP_VIEWPORT, F_PAUSE
+                F_HORN, F_CAMVIEW, F_DUMP_PHYSICS, F_DUMP_VIEWPORT, F_PAUSE,
+                F_SCREEN_SHOT
         );
     }
 
@@ -272,6 +282,11 @@ public class KeyboardVehicleInputState
             } else {
                 bas.setSpeed(1f);
             }
+
+        } else if (func == F_SCREEN_SHOT && pressed) {
+            ScreenshotAppState screenshotAppState
+                    = getStateManager().getState(ScreenshotAppState.class);
+            screenshotAppState.takeScreenshot();
 
         } else if (func == F_CAMVIEW && pressed) {
             currentCam = currentCam.next();

@@ -4,6 +4,7 @@ import com.jayfella.jme.vehicle.gui.LoadingState;
 import com.jayfella.jme.vehicle.gui.MainMenuState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
+import com.jme3.app.state.ScreenshotAppState;
 import com.jme3.audio.AudioListenerState;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.control.RigidBodyControl;
@@ -121,7 +122,12 @@ public class Main extends SimpleApplication {
         bulletAppState.setDebugEnabled(false);
         getStateManager().attach(bulletAppState);
 
-        // load the sky async.
+        // enable screenshots
+        ScreenshotAppState screenshotAppState
+                = new ScreenshotAppState("./", "screen_shot");
+        getStateManager().attach(screenshotAppState);
+
+        // load the sky asyncronously
         CompletableFuture
                 .supplyAsync(() -> {
                     Spatial sky = SkyFactory.createSky(assetManager, "Textures/Sky/quarry_03_4k.jpg", SkyFactory.EnvMapType.EquirectMap);

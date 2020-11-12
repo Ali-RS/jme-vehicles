@@ -40,6 +40,7 @@ vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
 + H : sound the horn
 + R : reset the vehicle to a parked state
 + Pause or . : toggle the simulation paused/running
++ F12 : capture a screenshot to the current working directory
 
 ![screenshot](https://i.ibb.co/JyPHdv8/image.png)
 

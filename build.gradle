@@ -60,6 +60,7 @@ task runForceDialog(type: JavaExec) {
 
 // cleanup tasks
 clean.dependsOn('cleanDLLs', 'cleanDyLibs', 'cleanLogs', 'cleanSOs')
+clean.dependsOn('cleanScreenShots')
 task cleanDLLs(type: Delete) {
     delete fileTree(dir: '.', include: '*.dll')
 }
@@ -71,4 +72,7 @@ task cleanLogs(type: Delete) {
 }
 task cleanSOs(type: Delete) {
     delete fileTree(dir: '.', include: '*.so')
+}
+task cleanScreenShots(type: Delete) {
+    delete fileTree(dir: '.', include: 'screen_shot*.png')
 }
