@@ -9,14 +9,11 @@ import com.jayfella.jme.vehicle.debug.VehicleEditorState;
 import com.jayfella.jme.vehicle.examples.cars.*;
 import com.jayfella.jme.vehicle.input.KeyboardVehicleInputState;
 import com.jme3.app.Application;
-import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.math.Vector3f;
-import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import com.simsilica.lemur.Button;
-import com.simsilica.lemur.component.TbtQuadBackgroundComponent;
 
 public class CarSelectorMenuState extends AnimatedMenuState {
 
@@ -57,6 +54,7 @@ public class CarSelectorMenuState extends AnimatedMenuState {
     }
 
     private void addVehicle(Car vehicle) {
+        vehicle.showPowerButton(false);
         vehicle.showSpeedo(Vehicle.SpeedUnit.MPH);
         vehicle.showTacho();
         vehicle.attachToScene(scene, physicsSpace);

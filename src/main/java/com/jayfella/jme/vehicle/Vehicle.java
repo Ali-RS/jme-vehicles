@@ -12,14 +12,24 @@ import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
+import com.jme3.input.event.MouseButtonEvent;
+import com.jme3.input.event.MouseMotionEvent;
+import com.jme3.material.Material;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.texture.Texture;
 import com.simsilica.lemur.Button;
 import com.simsilica.lemur.component.TbtQuadBackgroundComponent;
 import com.simsilica.lemur.core.GuiComponent;
+import com.simsilica.lemur.event.MouseEventControl;
+import com.simsilica.lemur.event.MouseListener;
+import jme3utilities.MyAsset;
+import jme3utilities.mesh.DiscMesh;
 
 /**
  * A vehicle that may contain wheels and other propellants.
@@ -43,6 +53,7 @@ public abstract class Vehicle {
     private GearBox gearBox;
 
     private Button rtmmButton;
+    private Geometry powerButton;
     private SpeedometerState speedo;
     private TachometerState tacho;
     private AutomaticGearboxState gearboxState;
@@ -117,6 +128,7 @@ public abstract class Vehicle {
         else {
             stopEngine();
         }
+        showPowerButton(started);
     }
 
     public void startEngine() {
@@ -195,6 +207,86 @@ public abstract class Vehicle {
             case KMH: return this.vehicleControl.getCurrentVehicleSpeedKmHour();
             case MPH: return this.vehicleControl.getCurrentVehicleSpeedKmHour() * KMH_TO_MPH;
             default: return -1;
+        }
+    }
+
+    /**
+     * Show the power button.
+     *
+     * @param on true &rarr; show it in the "on" state, false &rarr; show it in
+     * the "off" state
+     */
+    public void showPowerButton(boolean on) {
+        removePowerButton();
+
+        SimpleApplication simpleApp = (SimpleApplication) getApplication();
+        Camera cam = simpleApp.getCamera();
+
+        float radius = 0.05f * cam.getHeight();
+        int numVertices = 25;
+        Mesh mesh = new DiscMesh(radius, numVertices);
+        powerButton = new Geometry("power button", mesh);
+        Node guiNode = simpleApp.getGuiNode();
+        guiNode.attachChild(powerButton);
+
+        AssetManager assetManager = simpleApp.getAssetManager();
+        String assetPath;
+        if (on) {
+            assetPath = "Textures/power-on.png";
+        } else {
+            assetPath = "Textures/power-off.png";
+        }
+        Texture texture = assetManager.loadTexture(assetPath);
+
+        Material mat = MyAsset.createUnshadedMaterial(assetManager, texture);
+        powerButton.setMaterial(mat);
+        /*
+         * Position the button in the viewport.
+         */
+        float x = 0.63f * cam.getWidth();
+        float y = 0.07f * cam.getHeight();
+        float z = 1f;
+        powerButton.setLocalTranslation(x, y, z);
+        /*
+         * Add a MouseListener to toggle the engine on/off.
+         */
+        MouseListener listener = new MouseListener() {
+            @Override
+            public void mouseButtonEvent(MouseButtonEvent event, Spatial s1,
+                    Spatial s2) {
+                if (event.isPressed()) {
+                    setEngineStarted(!getEngine().isStarted());
+                }
+                event.setConsumed();
+            }
+
+            @Override
+            public void mouseEntered(MouseMotionEvent e, Spatial s1,
+                    Spatial s2) {
+                // do nothing
+            }
+
+            @Override
+            public void mouseExited(MouseMotionEvent e, Spatial s1,
+                    Spatial s2) {
+                // do nothing
+            }
+
+            @Override
+            public void mouseMoved(MouseMotionEvent e, Spatial s1, Spatial s2) {
+                // do nothing
+            }
+        };
+        MouseEventControl control = new MouseEventControl(listener);
+        powerButton.addControl(control);
+    }
+
+    /**
+     * Hide the power button.
+     */
+    public void removePowerButton() {
+        if (powerButton != null) {
+            powerButton.removeFromParent();
         }
     }
 

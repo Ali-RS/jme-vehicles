@@ -44,6 +44,7 @@ dependencies {
     runtimeOnly "org.jmonkeyengine:jme3-blender:$jmeVer"
     runtimeOnly "org.jmonkeyengine:jme3-plugins:$jmeVer"
 
+    implementation 'com.github.stephengold:Heart:6.1.0'
     implementation 'com.github.stephengold:Minie:3.0.0'
     implementation 'com.jayfella:jme-easing:1.0'
     implementation 'com.simsilica:lemur:1.14.0'
