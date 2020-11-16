@@ -9,6 +9,8 @@ import com.jayfella.jme.vehicle.debug.VehicleEditorState;
 import com.jayfella.jme.vehicle.examples.cars.*;
 import com.jayfella.jme.vehicle.input.KeyboardVehicleInputState;
 import com.jme3.app.Application;
+import com.jme3.app.state.AppStateManager;
+import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue;
@@ -54,6 +56,11 @@ public class CarSelectorMenuState extends AnimatedMenuState {
     }
 
     private void addVehicle(Car vehicle) {
+        AppStateManager stateManager = getApplication().getStateManager();
+        BulletAppState bas = stateManager.getState(BulletAppState.class);
+        boolean isPaused = (bas.getSpeed() == 0f);
+        vehicle.showPauseButton(isPaused);
+
         vehicle.showPowerButton(false);
         vehicle.showSpeedo(Vehicle.SpeedUnit.MPH);
         vehicle.showTacho();

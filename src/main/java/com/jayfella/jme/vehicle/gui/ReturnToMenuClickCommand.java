@@ -55,6 +55,7 @@ public class ReturnToMenuClickCommand implements Command<Button> {
             stateManager.detach(debugTabState);
         }
 
+        v.removePauseButton();
         v.removePowerButton();
         v.removeTacho();
         v.removeSpeedo();

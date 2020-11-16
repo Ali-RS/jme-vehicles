@@ -278,13 +278,7 @@ public class KeyboardVehicleInputState
             new Dumper().setDumpShadow(true).dump(vp);
 
         } else if (func == F_PAUSE && pressed) {
-            BulletAppState bas = getStateManager().getState(BulletAppState.class);
-            float speed = bas.getSpeed();
-            if (speed > 0f) { // was running
-                bas.setSpeed(0f);
-            } else {
-                bas.setSpeed(1f);
-            }
+            vehicle.togglePause();
 
         } else if (func == F_RETURN && !pressed) {
             // can't use InputState.Positive for this purpose

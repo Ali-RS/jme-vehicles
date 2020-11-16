@@ -8,6 +8,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioData;
 import com.jme3.audio.AudioNode;
+import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.VehicleControl;
@@ -26,6 +27,7 @@ import com.jme3.texture.Texture;
 import com.simsilica.lemur.Button;
 import com.simsilica.lemur.component.TbtQuadBackgroundComponent;
 import com.simsilica.lemur.core.GuiComponent;
+import com.simsilica.lemur.event.DefaultMouseListener;
 import com.simsilica.lemur.event.MouseEventControl;
 import com.simsilica.lemur.event.MouseListener;
 import jme3utilities.MyAsset;
@@ -53,6 +55,7 @@ public abstract class Vehicle {
     private GearBox gearBox;
 
     private Button rtmmButton;
+    private Geometry pauseButton;
     private Geometry powerButton;
     private SpeedometerState speedo;
     private TachometerState tacho;
@@ -207,6 +210,81 @@ public abstract class Vehicle {
             case KMH: return this.vehicleControl.getCurrentVehicleSpeedKmHour();
             case MPH: return this.vehicleControl.getCurrentVehicleSpeedKmHour() * KMH_TO_MPH;
             default: return -1;
+        }
+    }
+
+    /**
+     * Show the pause/run button.
+     */
+    public void showPauseButton(boolean paused) {
+        removePauseButton();
+
+        Camera cam = app.getCamera();
+        float radius = 0.025f * cam.getHeight();
+        int numVertices = 25;
+        Mesh mesh = new DiscMesh(radius, numVertices);
+        pauseButton = new Geometry("pause button", mesh);
+        SimpleApplication simpleApp = (SimpleApplication) app;
+        Node guiNode = simpleApp.getGuiNode();
+        guiNode.attachChild(pauseButton);
+
+        String assetPath;
+        if (paused) {
+            assetPath = "Textures/pause.png";
+        } else {
+            assetPath = "Textures/run.png";
+        }
+        AssetManager assetManager = app.getAssetManager();
+        Texture texture = assetManager.loadTexture(assetPath);
+
+        Material mat = MyAsset.createUnshadedMaterial(assetManager, texture);
+        pauseButton.setMaterial(mat);
+        /*
+         * Position the button in the viewport.
+         */
+        float x = 0.8f * cam.getWidth();
+        float y = 0.95f * cam.getHeight();
+        float z = 1f;
+        pauseButton.setLocalTranslation(x, y, z);
+        /*
+         * Add a MouseListener to toggle the simulation running/paused.
+         */
+        MouseListener listener = new DefaultMouseListener() {
+            @Override
+            public void mouseButtonEvent(MouseButtonEvent event, Spatial s1,
+                    Spatial s2) {
+                if (event.isPressed()) {
+                    togglePause();
+                }
+                event.setConsumed();
+            }
+        };
+        MouseEventControl control = new MouseEventControl(listener);
+        pauseButton.addControl(control);
+    }
+
+    /**
+     * Hide the pause button.
+     */
+    public void removePauseButton() {
+        if (pauseButton != null) {
+            pauseButton.removeFromParent();
+        }
+    }
+
+    /**
+     * Toggle the simulation between running and paused.
+     */
+    public void togglePause() {
+        BulletAppState bas
+                = app.getStateManager().getState(BulletAppState.class);
+        float speed = bas.getSpeed();
+        if (speed > 0f) { // was running
+            bas.setSpeed(0f);
+            showPauseButton(true);
+        } else {
+            bas.setSpeed(1f);
+            showPauseButton(false);
         }
     }
 
