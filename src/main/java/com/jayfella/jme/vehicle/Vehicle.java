@@ -14,7 +14,6 @@ import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.input.event.MouseButtonEvent;
-import com.jme3.input.event.MouseMotionEvent;
 import com.jme3.material.Material;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
@@ -38,7 +37,9 @@ import jme3utilities.mesh.DiscMesh;
  */
 public abstract class Vehicle {
 
-    public enum SpeedUnit { KMH, MPH }
+    public enum SpeedUnit {
+        KMH, MPH
+    }
 
     public static final float KMH_TO_MPH = 0.62137f;
     public static final float MPH_TO_KMH = 1.60934f;
@@ -71,7 +72,7 @@ public abstract class Vehicle {
     public Vehicle(Application app, String name) {
         this.app = app;
         this.name = name;
-        this.node = new Node("Vehicle: " + name);
+        node = new Node("Vehicle: " + name);
     }
 
     public Application getApplication() {
@@ -84,7 +85,7 @@ public abstract class Vehicle {
 
     public void setName(String name) {
         this.name = name;
-        this.node.setName("Vehicle: " + name);
+        node.setName("Vehicle: " + name);
     }
 
     public AudioNode getHornAudio() {
@@ -92,11 +93,12 @@ public abstract class Vehicle {
     }
 
     public void setHornAudio(AssetManager assetManager, String audioFile) {
-        this.hornAudio = new AudioNode(assetManager, audioFile, AudioData.DataType.Stream);
-        this.hornAudio.setLooping(false);
-        this.hornAudio.setPositional(true);
-        this.hornAudio.setDirectional(false);
-        this.node.attachChild(this.hornAudio);
+        hornAudio = new AudioNode(assetManager, audioFile,
+                AudioData.DataType.Stream);
+        hornAudio.setLooping(false);
+        hornAudio.setPositional(true);
+        hornAudio.setDirectional(false);
+        node.attachChild(hornAudio);
     }
 
     public void pressHorn() {
@@ -109,9 +111,10 @@ public abstract class Vehicle {
 
     public void setChassis(Spatial chassis, float mass) {
         this.chassis = chassis;
-        CollisionShape chassisCollisionShape = CollisionShapeFactory.createDynamicMeshShape(chassis);
-        this.vehicleControl = new VehicleControl(chassisCollisionShape, mass);
-        this.node.addControl(this.vehicleControl);
+        CollisionShape chassisCollisionShape
+                = CollisionShapeFactory.createDynamicMeshShape(chassis);
+        vehicleControl = new VehicleControl(chassisCollisionShape, mass);
+        node.addControl(vehicleControl);
         node.attachChild(chassis);
     }
 
@@ -121,14 +124,13 @@ public abstract class Vehicle {
 
     public void setEngine(Engine engine) {
         this.engine = engine;
-        this.node.attachChild(this.engine.getEngineAudio());
+        node.attachChild(this.engine.getEngineAudio());
     }
 
     public void setEngineStarted(boolean started) {
         if (started) {
             startEngine();
-        }
-        else {
+        } else {
             stopEngine();
         }
         showPowerButton(started);
@@ -160,18 +162,21 @@ public abstract class Vehicle {
 
     /**
      * Accelerate the vehicle with the given power.
-     * @param strength a unit value between 0.0 - 1.0. Essentially how "hard" you want to accelerate.
+     *
+     * @param strength a unit value between 0.0 - 1.0. Essentially how "hard"
+     * you want to accelerate.
      */
     public void accelerate(float strength) {
-        this.accelerationForce = strength;
+        accelerationForce = strength;
     }
 
     public float getAccelerationForce() {
-        return this.accelerationForce;
+        return accelerationForce;
     }
 
     /**
      * Apply the vehicle brakes at the given strength.
+     *
      * @param strength a unit value between 0.0 - 1.0.
      */
     public abstract void brake(float strength);
@@ -204,17 +209,23 @@ public abstract class Vehicle {
         return vehicleControl;
     }
 
-
     public float getSpeed(SpeedUnit speedUnit) {
+        float kph = vehicleControl.getCurrentVehicleSpeedKmHour();
         switch (speedUnit) {
-            case KMH: return this.vehicleControl.getCurrentVehicleSpeedKmHour();
-            case MPH: return this.vehicleControl.getCurrentVehicleSpeedKmHour() * KMH_TO_MPH;
-            default: return -1;
+            case KMH:
+                return kph;
+            case MPH:
+                return kph * KMH_TO_MPH;
+            default:
+                return -1;
         }
     }
 
     /**
      * Show the pause/run button.
+     *
+     * @param paused true &rarr; show it in the "paused" state, false &rarr;
+     * show it in the "running" state
      */
     public void showPauseButton(boolean paused) {
         removePauseButton();
@@ -297,17 +308,16 @@ public abstract class Vehicle {
     public void showPowerButton(boolean on) {
         removePowerButton();
 
-        SimpleApplication simpleApp = (SimpleApplication) getApplication();
-        Camera cam = simpleApp.getCamera();
-
+        Camera cam = app.getCamera();
         float radius = 0.05f * cam.getHeight();
         int numVertices = 25;
         Mesh mesh = new DiscMesh(radius, numVertices);
         powerButton = new Geometry("power button", mesh);
+        SimpleApplication simpleApp = (SimpleApplication) app;
         Node guiNode = simpleApp.getGuiNode();
         guiNode.attachChild(powerButton);
 
-        AssetManager assetManager = simpleApp.getAssetManager();
+        AssetManager assetManager = app.getAssetManager();
         String assetPath;
         if (on) {
             assetPath = "Textures/power-on.png";
@@ -328,7 +338,7 @@ public abstract class Vehicle {
         /*
          * Add a MouseListener to toggle the engine on/off.
          */
-        MouseListener listener = new MouseListener() {
+        MouseListener listener = new DefaultMouseListener() {
             @Override
             public void mouseButtonEvent(MouseButtonEvent event, Spatial s1,
                     Spatial s2) {
@@ -336,23 +346,6 @@ public abstract class Vehicle {
                     setEngineStarted(!getEngine().isStarted());
                 }
                 event.setConsumed();
-            }
-
-            @Override
-            public void mouseEntered(MouseMotionEvent e, Spatial s1,
-                    Spatial s2) {
-                // do nothing
-            }
-
-            @Override
-            public void mouseExited(MouseMotionEvent e, Spatial s1,
-                    Spatial s2) {
-                // do nothing
-            }
-
-            @Override
-            public void mouseMoved(MouseMotionEvent e, Spatial s1, Spatial s2) {
-                // do nothing
             }
         };
         MouseEventControl control = new MouseEventControl(listener);
@@ -379,13 +372,13 @@ public abstract class Vehicle {
         GuiComponent background = rtmmButton.getBackground();
         ((TbtQuadBackgroundComponent) background).setMargin(10f, 5f);
         rtmmButton.addClickCommands(new ReturnToMenuClickCommand((Car) this));
-        SimpleApplication simpleApp = (SimpleApplication) getApplication();
-        Camera cam = simpleApp.getCamera();
+        Camera cam = app.getCamera();
         rtmmButton.setLocalTranslation(
                 cam.getWidth() - rtmmButton.getPreferredSize().x - 40f,
                 cam.getHeight() - 20f,
                 1f
         );
+        SimpleApplication simpleApp = (SimpleApplication) app;
         simpleApp.getGuiNode().attachChild(rtmmButton);
     }
 
@@ -401,46 +394,46 @@ public abstract class Vehicle {
     public void showSpeedo(SpeedUnit speedUnit) {
         removeSpeedo();
 
-        this.speedo = new SpeedometerState(this, speedUnit);
-        app.getStateManager().attach(this.speedo);
+        speedo = new SpeedometerState(this, speedUnit);
+        app.getStateManager().attach(speedo);
     }
 
     public void removeSpeedo() {
-        if (this.speedo != null) {
-            app.getStateManager().detach(this.speedo);
-            this.speedo = null;
+        if (speedo != null) {
+            app.getStateManager().detach(speedo);
+            speedo = null;
         }
     }
 
     public void showTacho() {
         removeTacho();
 
-        this.tacho = new TachometerState(this);
-        app.getStateManager().attach(this.tacho);
+        tacho = new TachometerState(this);
+        app.getStateManager().attach(tacho);
     }
 
     public void removeTacho() {
-        if (this.tacho != null) {
-            app.getStateManager().detach(this.tacho);
-            this.tacho = null;
+        if (tacho != null) {
+            app.getStateManager().detach(tacho);
+            tacho = null;
         }
     }
 
     // I feel like camera positions shouln't be part of this...
     public Vector3f getHoodCamLocation() {
-        return this.hoodCamLoc;
+        return hoodCamLoc;
     }
 
     protected void setHoodCamLocation(Vector3f loc) {
-        this.hoodCamLoc.set(loc);
+        hoodCamLoc.set(loc);
     }
 
     public boolean isParkingBrakeApplied() {
-        return this.parkingBrakeApplied;
+        return parkingBrakeApplied;
     }
 
     public void setParkingBrakeApplied(boolean applied) {
-        this.parkingBrakeApplied = applied;
+        parkingBrakeApplied = applied;
     }
 
     public void attachToScene(Node parent, PhysicsSpace physicsSpace) {
@@ -461,8 +454,8 @@ public abstract class Vehicle {
      * Should be called last when all vehicle parts have been built and added.
      */
     protected void build() {
-        this.gearboxState = new AutomaticGearboxState(this);
-        this.vehicleAudioState = new VehicleAudioState(this);
+        gearboxState = new AutomaticGearboxState(this);
+        vehicleAudioState = new VehicleAudioState(this);
 
         app.getStateManager().attach(gearboxState);
         app.getStateManager().attach(vehicleAudioState);
@@ -480,6 +473,6 @@ public abstract class Vehicle {
     }
 
     public abstract void applyEngineBraking();
-    public abstract void removeEngineBraking();
 
+    public abstract void removeEngineBraking();
 }
