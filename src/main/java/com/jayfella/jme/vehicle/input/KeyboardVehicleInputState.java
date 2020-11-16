@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle.input;
 
 import com.jayfella.jme.vehicle.Vehicle;
+import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.gui.ReturnToMenuClickCommand;
 import com.jayfella.jme.vehicle.view.*;
 import com.jme3.app.Application;
@@ -215,12 +216,13 @@ public class KeyboardVehicleInputState
     @Override
     public void valueChanged(FunctionId func, InputState value, double tpf) {
         boolean pressed = (value == InputState.Positive);
+        DriverHud driverHud = getStateManager().getState(DriverHud.class);
 
         if (func == F_HORN && pressed) {
             vehicle.pressHorn();
 
         } else if (func == F_START_ENGINE && !pressed) {
-            vehicle.setEngineStarted(!vehicle.getEngine().isStarted());
+            driverHud.toggleEngineStarted();
 
         } else if (func == F_MOVE) {
             if (value == InputState.Positive) {
@@ -278,7 +280,7 @@ public class KeyboardVehicleInputState
             new Dumper().setDumpShadow(true).dump(vp);
 
         } else if (func == F_PAUSE && pressed) {
-            vehicle.togglePause();
+            driverHud.togglePhysicsPaused();
 
         } else if (func == F_RETURN && !pressed) {
             // can't use InputState.Positive for this purpose

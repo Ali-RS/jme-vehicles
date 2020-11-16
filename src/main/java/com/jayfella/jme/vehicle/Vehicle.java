@@ -1,36 +1,19 @@
 package com.jayfella.jme.vehicle;
 
 import com.jayfella.jme.vehicle.engine.Engine;
-import com.jayfella.jme.vehicle.gui.ReturnToMenuClickCommand;
 import com.jayfella.jme.vehicle.part.GearBox;
 import com.jme3.app.Application;
-import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioData;
 import com.jme3.audio.AudioNode;
-import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
-import com.jme3.input.event.MouseButtonEvent;
-import com.jme3.material.Material;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
-import com.jme3.renderer.Camera;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.texture.Texture;
-import com.simsilica.lemur.Button;
-import com.simsilica.lemur.component.TbtQuadBackgroundComponent;
-import com.simsilica.lemur.core.GuiComponent;
-import com.simsilica.lemur.event.DefaultMouseListener;
-import com.simsilica.lemur.event.MouseEventControl;
-import com.simsilica.lemur.event.MouseListener;
-import jme3utilities.MyAsset;
-import jme3utilities.mesh.DiscMesh;
 
 /**
  * A vehicle that may contain wheels and other propellants.
@@ -55,11 +38,6 @@ public abstract class Vehicle {
     private Engine engine;
     private GearBox gearBox;
 
-    private Button rtmmButton;
-    private Geometry pauseButton;
-    private Geometry powerButton;
-    private SpeedometerState speedo;
-    private TachometerState tacho;
     private AutomaticGearboxState gearboxState;
     private VehicleAudioState vehicleAudioState;
 
@@ -125,15 +103,6 @@ public abstract class Vehicle {
     public void setEngine(Engine engine) {
         this.engine = engine;
         node.attachChild(this.engine.getEngineAudio());
-    }
-
-    public void setEngineStarted(boolean started) {
-        if (started) {
-            startEngine();
-        } else {
-            stopEngine();
-        }
-        showPowerButton(started);
     }
 
     public void startEngine() {
@@ -221,204 +190,6 @@ public abstract class Vehicle {
         }
     }
 
-    /**
-     * Show the pause/run button.
-     *
-     * @param paused true &rarr; show it in the "paused" state, false &rarr;
-     * show it in the "running" state
-     */
-    public void showPauseButton(boolean paused) {
-        removePauseButton();
-
-        Camera cam = app.getCamera();
-        float radius = 0.025f * cam.getHeight();
-        int numVertices = 25;
-        Mesh mesh = new DiscMesh(radius, numVertices);
-        pauseButton = new Geometry("pause button", mesh);
-        SimpleApplication simpleApp = (SimpleApplication) app;
-        Node guiNode = simpleApp.getGuiNode();
-        guiNode.attachChild(pauseButton);
-
-        String assetPath;
-        if (paused) {
-            assetPath = "Textures/pause.png";
-        } else {
-            assetPath = "Textures/run.png";
-        }
-        AssetManager assetManager = app.getAssetManager();
-        Texture texture = assetManager.loadTexture(assetPath);
-
-        Material mat = MyAsset.createUnshadedMaterial(assetManager, texture);
-        pauseButton.setMaterial(mat);
-        /*
-         * Position the button in the viewport.
-         */
-        float x = 0.8f * cam.getWidth();
-        float y = 0.95f * cam.getHeight();
-        float z = 1f;
-        pauseButton.setLocalTranslation(x, y, z);
-        /*
-         * Add a MouseListener to toggle the simulation running/paused.
-         */
-        MouseListener listener = new DefaultMouseListener() {
-            @Override
-            public void mouseButtonEvent(MouseButtonEvent event, Spatial s1,
-                    Spatial s2) {
-                if (event.isPressed()) {
-                    togglePause();
-                }
-                event.setConsumed();
-            }
-        };
-        MouseEventControl control = new MouseEventControl(listener);
-        pauseButton.addControl(control);
-    }
-
-    /**
-     * Hide the pause button.
-     */
-    public void removePauseButton() {
-        if (pauseButton != null) {
-            pauseButton.removeFromParent();
-        }
-    }
-
-    /**
-     * Toggle the simulation between running and paused.
-     */
-    public void togglePause() {
-        BulletAppState bas
-                = app.getStateManager().getState(BulletAppState.class);
-        float speed = bas.getSpeed();
-        if (speed > 0f) { // was running
-            bas.setSpeed(0f);
-            showPauseButton(true);
-        } else {
-            bas.setSpeed(1f);
-            showPauseButton(false);
-        }
-    }
-
-    /**
-     * Show the power button.
-     *
-     * @param on true &rarr; show it in the "on" state, false &rarr; show it in
-     * the "off" state
-     */
-    public void showPowerButton(boolean on) {
-        removePowerButton();
-
-        Camera cam = app.getCamera();
-        float radius = 0.05f * cam.getHeight();
-        int numVertices = 25;
-        Mesh mesh = new DiscMesh(radius, numVertices);
-        powerButton = new Geometry("power button", mesh);
-        SimpleApplication simpleApp = (SimpleApplication) app;
-        Node guiNode = simpleApp.getGuiNode();
-        guiNode.attachChild(powerButton);
-
-        AssetManager assetManager = app.getAssetManager();
-        String assetPath;
-        if (on) {
-            assetPath = "Textures/power-on.png";
-        } else {
-            assetPath = "Textures/power-off.png";
-        }
-        Texture texture = assetManager.loadTexture(assetPath);
-
-        Material mat = MyAsset.createUnshadedMaterial(assetManager, texture);
-        powerButton.setMaterial(mat);
-        /*
-         * Position the button in the viewport.
-         */
-        float x = 0.63f * cam.getWidth();
-        float y = 0.07f * cam.getHeight();
-        float z = 1f;
-        powerButton.setLocalTranslation(x, y, z);
-        /*
-         * Add a MouseListener to toggle the engine on/off.
-         */
-        MouseListener listener = new DefaultMouseListener() {
-            @Override
-            public void mouseButtonEvent(MouseButtonEvent event, Spatial s1,
-                    Spatial s2) {
-                if (event.isPressed()) {
-                    setEngineStarted(!getEngine().isStarted());
-                }
-                event.setConsumed();
-            }
-        };
-        MouseEventControl control = new MouseEventControl(listener);
-        powerButton.addControl(control);
-    }
-
-    /**
-     * Hide the power button.
-     */
-    public void removePowerButton() {
-        if (powerButton != null) {
-            powerButton.removeFromParent();
-        }
-    }
-
-    /**
-     * Show the "Return to Main Menu" button.
-     */
-    public void showRtmmButton() {
-        removeRtmmButton();
-
-        rtmmButton = new Button("Return to Main Menu");
-        rtmmButton.setFontSize(16f);
-        GuiComponent background = rtmmButton.getBackground();
-        ((TbtQuadBackgroundComponent) background).setMargin(10f, 5f);
-        rtmmButton.addClickCommands(new ReturnToMenuClickCommand((Car) this));
-        Camera cam = app.getCamera();
-        rtmmButton.setLocalTranslation(
-                cam.getWidth() - rtmmButton.getPreferredSize().x - 40f,
-                cam.getHeight() - 20f,
-                1f
-        );
-        SimpleApplication simpleApp = (SimpleApplication) app;
-        simpleApp.getGuiNode().attachChild(rtmmButton);
-    }
-
-    /**
-     * Hide the "Return to Main Menu" button.
-     */
-    public void removeRtmmButton() {
-        if (rtmmButton != null) {
-            rtmmButton.removeFromParent();
-        }
-    }
-
-    public void showSpeedo(SpeedUnit speedUnit) {
-        removeSpeedo();
-
-        speedo = new SpeedometerState(this, speedUnit);
-        app.getStateManager().attach(speedo);
-    }
-
-    public void removeSpeedo() {
-        if (speedo != null) {
-            app.getStateManager().detach(speedo);
-            speedo = null;
-        }
-    }
-
-    public void showTacho() {
-        removeTacho();
-
-        tacho = new TachometerState(this);
-        app.getStateManager().attach(tacho);
-    }
-
-    public void removeTacho() {
-        if (tacho != null) {
-            app.getStateManager().detach(tacho);
-            tacho = null;
-        }
-    }
-
     // I feel like camera positions shouln't be part of this...
     public Vector3f getHoodCamLocation() {
         return hoodCamLoc;
@@ -469,7 +240,6 @@ public abstract class Vehicle {
     protected void disable() {
         app.getStateManager().detach(gearboxState);
         app.getStateManager().detach(vehicleAudioState);
-        removeSpeedo();
     }
 
     public abstract void applyEngineBraking();

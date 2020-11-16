@@ -1,7 +1,6 @@
 package com.jayfella.jme.vehicle.gui;
 
 import com.jayfella.jme.vehicle.Car;
-import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.debug.DebugTabState;
 import com.jayfella.jme.vehicle.debug.EnginePowerGraphState;
 import com.jayfella.jme.vehicle.debug.TyreDataState;
@@ -9,8 +8,6 @@ import com.jayfella.jme.vehicle.debug.VehicleEditorState;
 import com.jayfella.jme.vehicle.examples.cars.*;
 import com.jayfella.jme.vehicle.input.KeyboardVehicleInputState;
 import com.jme3.app.Application;
-import com.jme3.app.state.AppStateManager;
-import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue;
@@ -56,14 +53,9 @@ public class CarSelectorMenuState extends AnimatedMenuState {
     }
 
     private void addVehicle(Car vehicle) {
-        AppStateManager stateManager = getApplication().getStateManager();
-        BulletAppState bas = stateManager.getState(BulletAppState.class);
-        boolean isPaused = (bas.getSpeed() == 0f);
-        vehicle.showPauseButton(isPaused);
-
-        vehicle.showPowerButton(false);
-        vehicle.showSpeedo(Vehicle.SpeedUnit.MPH);
-        vehicle.showTacho();
+        DriverHud hud = getStateManager().getState(DriverHud.class);
+        hud.setCar(vehicle);
+        hud.setEnabled(true);
         vehicle.attachToScene(scene, physicsSpace);
 
         vehicle.getVehicleControl().setPhysicsLocation(new Vector3f(0, 6, 0));
@@ -90,9 +82,6 @@ public class CarSelectorMenuState extends AnimatedMenuState {
         // vehicle debug add-on to enable/disable debug screens
         DebugTabState debugTabState = new DebugTabState();
         getStateManager().attach(debugTabState);
-
-        // the "Return to Main Menu" button.
-        vehicle.showRtmmButton();
 
         vehicle.getNode().setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
     }

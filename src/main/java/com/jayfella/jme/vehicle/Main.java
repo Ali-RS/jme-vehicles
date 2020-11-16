@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle;
 
+import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.gui.LoadingState;
 import com.jayfella.jme.vehicle.gui.MainMenuState;
 import com.jme3.app.SimpleApplication;
@@ -121,6 +122,9 @@ public class Main extends SimpleApplication {
         BulletAppState bulletAppState = new BulletAppState();
         bulletAppState.setDebugEnabled(false);
         getStateManager().attach(bulletAppState);
+
+        DriverHud driverHud = new DriverHud();
+        stateManager.attach(driverHud);
 
         // enable screenshots
         ScreenshotAppState screenshotAppState

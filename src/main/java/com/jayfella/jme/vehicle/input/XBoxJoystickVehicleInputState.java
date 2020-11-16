@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle.input;
 
 import com.jayfella.jme.vehicle.Vehicle;
+import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.view.VehicleCamView;
 import com.jayfella.jme.vehicle.view.VehicleCamera;
 import com.jayfella.jme.vehicle.view.VehicleFirstPersonCamera;
@@ -239,7 +240,8 @@ public class XBoxJoystickVehicleInputState extends BaseAppState implements State
         else if (func == F_START_ENGINE) {
 
             if (!pressed) {
-                vehicle.setEngineStarted(!vehicle.getEngine().isStarted());
+                DriverHud hud = getStateManager().getState(DriverHud.class);
+                hud.toggleEngineStarted();
             }
         }
 

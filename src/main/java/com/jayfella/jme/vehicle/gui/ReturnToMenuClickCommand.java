@@ -55,14 +55,11 @@ public class ReturnToMenuClickCommand implements Command<Button> {
             stateManager.detach(debugTabState);
         }
 
-        v.removePauseButton();
-        v.removePowerButton();
-        v.removeTacho();
-        v.removeSpeedo();
-        v.detachFromScene();
+        DriverHud hud = stateManager.getState(DriverHud.class);
+        hud.setEnabled(false);
 
+        v.detachFromScene();
         stateManager.attach(new MainMenuState());
-        v.removeRtmmButton();
 
         Camera camera = v.getApplication().getCamera();
         camera.setLocation(new Vector3f(-200f, 50f, -200f));
