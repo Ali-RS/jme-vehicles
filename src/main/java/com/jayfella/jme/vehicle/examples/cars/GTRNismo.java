@@ -81,7 +81,7 @@ public class GTRNismo extends Car {
         engine.setEngineAudio(assetManager, "Audio/engine-2.ogg");
         setEngine(engine);
 
-        setHornAudio(assetManager, "Audio/horn-1.ogg");
+        super.setHornAudio("Audio/horn-1.ogg");
 
         build();
 

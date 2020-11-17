@@ -230,11 +230,7 @@ public class XBoxJoystickVehicleInputState extends BaseAppState implements State
         boolean pressed = value == InputState.Positive;
 
         if (func == F_HORN) {
-
-            if (pressed) {
-                // vehicle.setEngineStarted(!vehicle.getEngine().isStarted());
-                vehicle.pressHorn();
-            }
+            vehicle.setHornInput(1, pressed);
         }
 
         else if (func == F_START_ENGINE) {

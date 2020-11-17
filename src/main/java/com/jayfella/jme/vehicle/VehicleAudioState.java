@@ -1,6 +1,5 @@
 package com.jayfella.jme.vehicle;
 
-import com.jayfella.jme.vehicle.part.Gear;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.math.FastMath;
@@ -19,12 +18,6 @@ public class VehicleAudioState extends BaseAppState {
 
     public void stopEngineSound() {
         vehicle.getEngine().getEngineAudio().stop();
-    }
-
-    public void playHornSound() {
-        if (vehicle.getHornAudio() != null) {
-            vehicle.getHornAudio().play();
-        }
     }
 
     @Override
@@ -51,11 +44,6 @@ public class VehicleAudioState extends BaseAppState {
 
     @Override
     public void update(float tpf) {
-
-        float speed = vehicle.getSpeed(Vehicle.SpeedUnit.KMH);
-        Gear gear = vehicle.getGearBox().getActiveGear();
-
-        // float value = unInterpolateLinear(speed, gear.getStart(), gear.getEnd());
         float value = vehicle.getEngine().getRevs();
 
         // add a bit of interpolation for when we change gears.
@@ -68,10 +56,4 @@ public class VehicleAudioState extends BaseAppState {
 
         lastValue = value;
     }
-
-    private float unInterpolateLinear(float value, float min, float max) {
-        return (value - min) / (max - min);
-    }
-
-
 }

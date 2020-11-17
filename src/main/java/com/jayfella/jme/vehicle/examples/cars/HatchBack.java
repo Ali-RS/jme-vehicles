@@ -80,7 +80,7 @@ public class HatchBack extends Car {
         engine.setEngineAudio(assetManager, "Audio/engine-4.ogg");
         setEngine(engine);
 
-        setHornAudio(assetManager, "Audio/horn-1.ogg");
+        super.setHornAudio("Audio/horn-1.ogg");
 
         build();
 

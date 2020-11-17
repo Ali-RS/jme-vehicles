@@ -6,6 +6,7 @@ import com.jme3.app.Application;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioData;
 import com.jme3.audio.AudioNode;
+import com.jme3.audio.AudioSource;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.VehicleControl;
@@ -14,6 +15,7 @@ import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import jme3utilities.math.MyArray;
 
 /**
  * A vehicle that may contain wheels and other propellants.
@@ -29,6 +31,9 @@ public abstract class Vehicle {
 
     private final Application app;
 
+    private AudioNode hornAudio;
+    final private boolean hornInputs[] = new boolean[3];
+
     private final Node node;
     private VehicleControl vehicleControl;
 
@@ -42,8 +47,6 @@ public abstract class Vehicle {
     private VehicleAudioState vehicleAudioState;
 
     private final Vector3f hoodCamLoc = new Vector3f();
-
-    private AudioNode hornAudio;
 
     private boolean parkingBrakeApplied;
 
@@ -66,21 +69,40 @@ public abstract class Vehicle {
         node.setName("Vehicle: " + name);
     }
 
-    public AudioNode getHornAudio() {
-        return hornAudio;
-    }
-
-    public void setHornAudio(AssetManager assetManager, String audioFile) {
-        hornAudio = new AudioNode(assetManager, audioFile,
+    /**
+     * Create and attach an audio node for the vehicle's horn.
+     *
+     * @param assetPath the path to the OGG asset (not null, not empty)
+     */
+    public void setHornAudio(String assetPath) {
+        AssetManager assetManager = app.getAssetManager();
+        hornAudio = new AudioNode(assetManager, assetPath,
                 AudioData.DataType.Stream);
-        hornAudio.setLooping(false);
+        hornAudio.setLooping(true);
         hornAudio.setPositional(true);
         hornAudio.setDirectional(false);
         node.attachChild(hornAudio);
     }
 
-    public void pressHorn() {
-        vehicleAudioState.playHornSound();
+    /**
+     * Update the status of a single horn input.
+     *
+     * @param inputIndex which horn input (0, 1, or 2)
+     * @param newState true &rarr; pressed, false &rarr; not pressed
+     */
+    public void setHornInput(int inputIndex, boolean newState) {
+        hornInputs[inputIndex] = newState;
+        int index = MyArray.first(hornInputs);
+        boolean isRequested = (index >= 0);
+
+        AudioSource.Status status = hornAudio.getStatus();
+        boolean isSounding = (status == AudioSource.Status.Playing);
+
+        if (isSounding && !isRequested) {
+            hornAudio.stop();
+        } else if (isRequested && !isSounding) {
+            hornAudio.play();
+        }
     }
 
     public Spatial getChassis() {
@@ -190,7 +212,6 @@ public abstract class Vehicle {
         }
     }
 
-    // I feel like camera positions shouln't be part of this...
     public Vector3f getHoodCamLocation() {
         return hoodCamLoc;
     }

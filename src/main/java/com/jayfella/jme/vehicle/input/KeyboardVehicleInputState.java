@@ -218,8 +218,8 @@ public class KeyboardVehicleInputState
         boolean pressed = (value == InputState.Positive);
         DriverHud driverHud = getStateManager().getState(DriverHud.class);
 
-        if (func == F_HORN && pressed) {
-            vehicle.pressHorn();
+        if (func == F_HORN) {
+            vehicle.setHornInput(0, pressed);
 
         } else if (func == F_START_ENGINE && !pressed) {
             driverHud.toggleEngineStarted();

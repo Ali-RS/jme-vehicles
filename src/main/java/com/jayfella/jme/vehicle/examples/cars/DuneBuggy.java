@@ -83,7 +83,7 @@ public class DuneBuggy extends Car {
         engine.setEngineAudio(assetManager, "Audio/engine-5.ogg");
         setEngine(engine);
 
-        setHornAudio(assetManager, "Audio/horn-1.ogg");
+        super.setHornAudio("Audio/horn-1.ogg");
 
         build();
 

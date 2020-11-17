@@ -134,8 +134,7 @@ public class PickupTruck extends Car {
         engine.setEngineAudio(assetManager, "Audio/engine-1.ogg");
         setEngine(engine);
 
-        // set the horn audio file. beep beep, richie.
-        setHornAudio(assetManager, "Audio/horn-1.ogg");
+        super.setHornAudio("Audio/horn-1.ogg");
 
         // this MUST be called last.
         // in the car implementation it initializes the skidmarks and smoke emitters for each wheel.
