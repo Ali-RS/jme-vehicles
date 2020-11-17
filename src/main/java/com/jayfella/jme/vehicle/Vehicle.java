@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle;
 
 import com.jayfella.jme.vehicle.engine.Engine;
+import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.part.GearBox;
 import com.jme3.app.Application;
 import com.jme3.asset.AssetManager;
@@ -98,10 +99,13 @@ public abstract class Vehicle {
         AudioSource.Status status = hornAudio.getStatus();
         boolean isSounding = (status == AudioSource.Status.Playing);
 
+        DriverHud hud = app.getStateManager().getState(DriverHud.class);
         if (isSounding && !isRequested) {
             hornAudio.stop();
+            hud.showHornButton(false);
         } else if (isRequested && !isSounding) {
             hornAudio.play();
+            hud.showHornButton(true);
         }
     }
 

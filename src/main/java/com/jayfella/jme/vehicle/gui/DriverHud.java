@@ -36,6 +36,7 @@ import jme3utilities.mesh.DiscMesh;
  * <ul>
  * <li>the "Return to Main Menu" button</li>
  * <li>the pause button</li>
+ * <li>the horn button</li>
  * <li>the power button</li>
  * <li>the speedometer</li>
  * <li>the tachometer</li>
@@ -55,13 +56,14 @@ public class DriverHud extends BaseAppState {
 
     private Button returnButton;
     private Car car;
+    private Geometry hornButton;
     private Geometry pauseButton;
     private Geometry powerButton;
     /**
      * pre-loaded materials for buttons
      */
-    private Material pauseMaterial, powerOffMaterial, powerOnMaterial;
-    private Material runMaterial;
+    private Material hornSilentMaterial, hornSoundMaterial, pauseMaterial;
+    private Material powerOffMaterial, powerOnMaterial, runMaterial;
     private SpeedometerState speedometer;
     private TachometerState tachometer;
     // *************************************************************************
@@ -84,6 +86,49 @@ public class DriverHud extends BaseAppState {
      */
     public void setCar(Car car) {
         this.car = car;
+    }
+
+    /**
+     * Display the horn button.
+     *
+     * @param sounding true &rarr; show it in the "sounding" state, false &rarr;
+     * show it in the "silent" state
+     */
+    public void showHornButton(boolean sounding) {
+        hideHornButton();
+
+        float radius = 0.05f * viewPortHeight();
+        int numVertices = 25;
+        Mesh mesh = new DiscMesh(radius, numVertices);
+        hornButton = new Geometry("horn button", mesh);
+        attachToGui(hornButton);
+
+        if (sounding) {
+            hornButton.setMaterial(hornSoundMaterial);
+        } else {
+            hornButton.setMaterial(hornSilentMaterial);
+        }
+        /*
+         * Position the button in the viewport.
+         */
+        float x = 0.63f * viewPortWidth();
+        float y = 0.23f * viewPortHeight();
+        float z = 1f;
+        hornButton.setLocalTranslation(x, y, z);
+        /*
+         * Add a MouseListener to toggle the horn sounding/silent.
+         */
+        MouseListener listener = new DefaultMouseListener() {
+            @Override
+            public void mouseButtonEvent(MouseButtonEvent event, Spatial s1,
+                    Spatial s2) {
+                boolean pressed = event.isPressed();
+                car.setHornInput(2, pressed);
+                event.setConsumed();
+            }
+        };
+        MouseEventControl control = new MouseEventControl(listener);
+        hornButton.addControl(control);
     }
 
     /**
@@ -138,10 +183,16 @@ public class DriverHud extends BaseAppState {
     @Override
     protected void initialize(Application app) {
         /*
-         * pre-load materials for buttons
+         * pre-load unshaded materials for buttons
          */
         AssetManager manager = app.getAssetManager();
-        Texture texture = manager.loadTexture("Textures/pause.png");
+        Texture texture = manager.loadTexture("Textures/horn-silent.png");
+        hornSilentMaterial = MyAsset.createUnshadedMaterial(manager, texture);
+
+        texture = manager.loadTexture("Textures/horn-sound.png");
+        hornSoundMaterial = MyAsset.createUnshadedMaterial(manager, texture);
+
+        texture = manager.loadTexture("Textures/pause.png");
         pauseMaterial = MyAsset.createUnshadedMaterial(manager, texture);
 
         texture = manager.loadTexture("Textures/run.png");
@@ -161,6 +212,7 @@ public class DriverHud extends BaseAppState {
      */
     @Override
     protected void onDisable() {
+        hideHornButton();
         hidePauseButton();
         hidePowerButton();
         hideReturnButton();
@@ -180,6 +232,7 @@ public class DriverHud extends BaseAppState {
         boolean isPaused = (bas.getSpeed() == 0f);
         showPauseButton(isPaused);
 
+        showHornButton(false);
         showPowerButton(false);
         showReturnButton();
         showSpeedo(Vehicle.SpeedUnit.MPH);
@@ -197,6 +250,16 @@ public class DriverHud extends BaseAppState {
         SimpleApplication simpleApp = (SimpleApplication) getApplication();
         Node guiNode = simpleApp.getGuiNode();
         guiNode.attachChild(spatial);
+    }
+
+    /**
+     * Hide the horn button.
+     */
+    private void hideHornButton() {
+        if (hornButton != null) {
+            hornButton.removeFromParent();
+            hornButton = null;
+        }
     }
 
     /**
@@ -317,7 +380,7 @@ public class DriverHud extends BaseAppState {
          * Position the button in the viewport.
          */
         float x = 0.63f * viewPortWidth();
-        float y = 0.07f * viewPortHeight();
+        float y = 0.11f * viewPortHeight();
         float z = 1f;
         powerButton.setLocalTranslation(x, y, z);
         /*
