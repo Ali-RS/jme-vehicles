@@ -47,6 +47,10 @@ public class DriverHud extends BaseAppState {
     // constants and loggers
 
     /**
+     * Z-coordinate for most GUI geometries
+     */
+    final private static float guiZ = 1f;
+    /**
      * message logger for this class
      */
     final public static Logger logger
@@ -56,6 +60,11 @@ public class DriverHud extends BaseAppState {
 
     private Button returnButton;
     private Car car;
+    /**
+     * dimensions of the GUI viewport (in pixels)
+     */
+    private float viewPortHeight, viewPortWidth;
+
     private Geometry hornButton;
     private Geometry pauseButton;
     private Geometry powerButton;
@@ -64,6 +73,7 @@ public class DriverHud extends BaseAppState {
      */
     private Material hornSilentMaterial, hornSoundMaterial, pauseMaterial;
     private Material powerOffMaterial, powerOnMaterial, runMaterial;
+
     private SpeedometerState speedometer;
     private TachometerState tachometer;
     // *************************************************************************
@@ -97,7 +107,7 @@ public class DriverHud extends BaseAppState {
     public void showHornButton(boolean sounding) {
         hideHornButton();
 
-        float radius = 0.05f * viewPortHeight();
+        float radius = 0.05f * viewPortHeight;
         int numVertices = 25;
         Mesh mesh = new DiscMesh(radius, numVertices);
         hornButton = new Geometry("horn button", mesh);
@@ -111,10 +121,9 @@ public class DriverHud extends BaseAppState {
         /*
          * Position the button in the viewport.
          */
-        float x = 0.63f * viewPortWidth();
-        float y = 0.23f * viewPortHeight();
-        float z = 1f;
-        hornButton.setLocalTranslation(x, y, z);
+        float x = 0.63f * viewPortWidth;
+        float y = 0.23f * viewPortHeight;
+        hornButton.setLocalTranslation(x, y, guiZ);
         /*
          * Add a MouseListener to toggle the horn sounding/silent.
          */
@@ -182,6 +191,9 @@ public class DriverHud extends BaseAppState {
      */
     @Override
     protected void initialize(Application app) {
+        Camera camera = app.getCamera();
+        viewPortHeight = camera.getHeight();
+        viewPortWidth = camera.getWidth();
         /*
          * pre-load unshaded materials for buttons
          */
@@ -321,7 +333,7 @@ public class DriverHud extends BaseAppState {
     private void showPauseButton(boolean paused) {
         hidePauseButton();
 
-        float radius = 0.025f * viewPortHeight();
+        float radius = 0.025f * viewPortHeight;
         int numVertices = 25;
         Mesh mesh = new DiscMesh(radius, numVertices);
         pauseButton = new Geometry("pause button", mesh);
@@ -335,10 +347,9 @@ public class DriverHud extends BaseAppState {
         /*
          * Position the button in the viewport.
          */
-        float x = 0.8f * viewPortWidth();
-        float y = 0.95f * viewPortHeight();
-        float z = 1f;
-        pauseButton.setLocalTranslation(x, y, z);
+        float x = 0.8f * viewPortWidth;
+        float y = 0.95f * viewPortHeight;
+        pauseButton.setLocalTranslation(x, y, guiZ);
         /*
          * Add a MouseListener to toggle the simulation running/paused.
          */
@@ -365,7 +376,7 @@ public class DriverHud extends BaseAppState {
     private void showPowerButton(boolean on) {
         hidePowerButton();
 
-        float radius = 0.05f * viewPortHeight();
+        float radius = 0.05f * viewPortHeight;
         int numVertices = 25;
         Mesh mesh = new DiscMesh(radius, numVertices);
         powerButton = new Geometry("power button", mesh);
@@ -379,10 +390,9 @@ public class DriverHud extends BaseAppState {
         /*
          * Position the button in the viewport.
          */
-        float x = 0.63f * viewPortWidth();
-        float y = 0.11f * viewPortHeight();
-        float z = 1f;
-        powerButton.setLocalTranslation(x, y, z);
+        float x = 0.63f * viewPortWidth;
+        float y = 0.11f * viewPortHeight;
+        powerButton.setLocalTranslation(x, y, guiZ);
         /*
          * Add a MouseListener to toggle the engine on/off.
          */
@@ -417,10 +427,9 @@ public class DriverHud extends BaseAppState {
         /*
          * Position the button in the viewport.
          */
-        float x = viewPortWidth() - returnButton.getPreferredSize().x - 40f;
-        float y = viewPortHeight() - 20f;
-        float z = 1f;
-        returnButton.setLocalTranslation(x, y, z);
+        float x = viewPortWidth - returnButton.getPreferredSize().x - 40f;
+        float y = viewPortHeight - 20f;
+        returnButton.setLocalTranslation(x, y, guiZ);
     }
 
     /**
@@ -443,33 +452,5 @@ public class DriverHud extends BaseAppState {
 
         tachometer = new TachometerState(car);
         getStateManager().attach(tachometer);
-    }
-
-    /**
-     * Determine the viewport height.
-     *
-     * @return the height (in pixels, &gt;0)
-     */
-    private float viewPortHeight() {
-        Application application = getApplication();
-        Camera camera = application.getCamera();
-        float result = camera.getHeight();
-
-        assert result > 0f : result;
-        return result;
-    }
-
-    /**
-     * Determine the viewport width.
-     *
-     * @return the width (in pixels, &gt;0)
-     */
-    private float viewPortWidth() {
-        Application application = getApplication();
-        Camera camera = application.getCamera();
-        float result = camera.getWidth();
-
-        assert result > 0f : result;
-        return result;
     }
 }
