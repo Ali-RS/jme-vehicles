@@ -102,12 +102,17 @@ public class KeyboardVehicleInputState
                 F_RETURN, F_SCREEN_SHOT
         );
 
-        // activeCam = new VehicleFirstPersonCamera(vehicle, app.getCamera());
         setCamera(currentCam);
     }
 
     @Override
     protected void cleanup(Application app) {
+        /*
+         * Select the 1st person camera, since it doesn't have any keyboard
+         * mappings to be cleaned up.
+         */
+        setCamera(VehicleCamView.FirstPerson);
+
         inputMapper.removeMapping(F_START_ENGINE, KeyInput.KEY_Y);
 
         inputMapper.removeMapping(F_MOVE, KeyInput.KEY_W);
