@@ -1,8 +1,6 @@
 package com.jayfella.jme.vehicle.gui;
 
 import com.jayfella.jme.vehicle.Car;
-import com.jayfella.jme.vehicle.SpeedometerState;
-import com.jayfella.jme.vehicle.TachometerState;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;

@@ -1,5 +1,6 @@
-package com.jayfella.jme.vehicle;
+package com.jayfella.jme.vehicle.gui;
 
+import com.jayfella.jme.vehicle.Vehicle;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
@@ -22,22 +23,27 @@ import com.jme3.texture.Texture;
 import com.jme3.texture.Texture2D;
 import com.simsilica.lemur.Label;
 
-public class TachometerState extends BaseAppState {
+public class SpeedometerState extends BaseAppState {
 
-    private final Vehicle vehicle;
     private final Node node;
+    private final Vehicle vehicle;
 
     private Node guiNode;
 
-    private final Node needleNode = new Node("Needle");
-    private Label revsLabel;
+    private Node speedoNeedleNode;
+    private Label speedLabel;
 
-    public TachometerState(Vehicle vehicle) {
+    private Label gearLabel;
+
+    private final Vehicle.SpeedUnit outputType;
+
+    public SpeedometerState(Vehicle vehicle, Vehicle.SpeedUnit outputType) {
+
+        this.node = new Node("Speedometer: " + vehicle.getName());
+        this.node.setQueueBucket(RenderQueue.Bucket.Gui);
         this.vehicle = vehicle;
 
-        this.node = new Node("Tachometer: " + vehicle.getName());
-        this.node.setQueueBucket(RenderQueue.Bucket.Gui);
-
+        this.outputType = outputType;
     }
 
     private void setProjectionHeight(Camera camera, float factor) {
@@ -107,7 +113,7 @@ public class TachometerState extends BaseAppState {
             float x = reducedRad * FastMath.cos(theta);
             float y = reducedRad * FastMath.sin(theta);
 
-            Label label = new Label("" + num / 1000);
+            Label label = new Label("" + num);
             label.setColor(ColorRGBA.White);
 
             label.setLocalTranslation(
@@ -129,7 +135,6 @@ public class TachometerState extends BaseAppState {
 
     private Geometry createSpeedoGeom(AssetManager assetManager) {
 
-
         Texture speedoBgTex = assetManager.loadTexture("Textures/Vehicles/Speedometer/speedo_bg_2.png");
 
         Geometry speedoBgGeom = new Geometry("Speedometer Background Geometry",
@@ -139,14 +144,12 @@ public class TachometerState extends BaseAppState {
         speedoBgGeom.getMaterial().setTexture("ColorMap", speedoBgTex);
         speedoBgGeom.getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
 
-        // Node numbers = buildRadialNumbers((int) vehicle.getGearBox().getMaxSpeed(outputType), 10, speedoBgTex.getImage().getWidth() / 2f, 20);
-        Node numbers = buildRadialNumbers((int) vehicle.getEngine().getMaxRevs(), 1000, speedoBgTex.getImage().getWidth() / 2f, 20);
+        Node numbers = buildRadialNumbers((int) vehicle.getGearBox().getMaxSpeed(outputType), 10, speedoBgTex.getImage().getWidth() / 2f, 20);
 
         speedoBgGeom.setLocalTranslation(
                 -speedoBgTex.getImage().getWidth() / 2f,
                 -speedoBgTex.getImage().getHeight() / 2f,
                 -1
-
         );
 
         numbers.attachChild(speedoBgGeom);
@@ -166,10 +169,13 @@ public class TachometerState extends BaseAppState {
     @Override
     protected void initialize(Application app) {
 
-        this.guiNode = ((SimpleApplication)app).getGuiNode();
+        this.guiNode = ((SimpleApplication) app).getGuiNode();
 
         Geometry speedoGeometry = createSpeedoGeom(app.getAssetManager());
+
         node.attachChild(speedoGeometry);
+
+        speedoNeedleNode = new Node("Speedo Needle Node");
 
         Texture speedoNeedleTex = app.getAssetManager().loadTexture("Textures/Vehicles/Speedometer/speedo_needle_2.png");
         Geometry speedoNeedleGeom = new Geometry("Speedometer Needle Geometry",
@@ -184,27 +190,34 @@ public class TachometerState extends BaseAppState {
                 -(speedoNeedleTex.getImage().getWidth() * 0.5f) - 7,
                 0);
 
-        needleNode.setLocalTranslation(100, 100, 1);
-        needleNode.attachChild(speedoNeedleGeom);
+        speedoNeedleNode.setLocalTranslation(100, 100, 1);
+        speedoNeedleNode.attachChild(speedoNeedleGeom);
 
-        node.attachChild(needleNode);
+        node.attachChild(speedoNeedleNode);
 
-        revsLabel = new Label("8888");
-        revsLabel.setColor(new ColorRGBA(66 / 255f, 244 / 255f, 241 / 255f, 1.0f));
+        speedLabel = new Label("888");
+        speedLabel.setColor(new ColorRGBA(66 / 255f, 244 / 255f, 241 / 255f, 1.0f));
 
-        revsLabel.setLocalTranslation(
-                100 - (revsLabel.getPreferredSize().x * 0.5f),
-                revsLabel.getPreferredSize().y + 15,
+        speedLabel.setLocalTranslation(
+                100 - (speedLabel.getPreferredSize().x * 0.5f),
+                speedLabel.getPreferredSize().y + 15,
                 1
         );
-        node.attachChild(revsLabel);
+        node.attachChild(speedLabel);
 
         node.setLocalTranslation(
-                app.getCamera().getWidth() - 400 - 40,
+                app.getCamera().getWidth() - 200 - 20,
                 20, 0
         );
 
-
+        this.gearLabel = new Label("N");
+        gearLabel.setColor(new ColorRGBA(66 / 255f, 244 / 255f, 241 / 255f, 1.0f));
+        gearLabel.setLocalTranslation(
+                100 - (gearLabel.getPreferredSize().x * 0.5f),
+                speedLabel.getPreferredSize().y + 45,
+                1
+        );
+        node.attachChild(gearLabel);
 
     }
 
@@ -225,28 +238,27 @@ public class TachometerState extends BaseAppState {
 
     private final Quaternion speedoRot = new Quaternion();
     private float[] speedoAngles = new float[3];
-    private final String revsFormat = "%.0f";
+
+    private String speedFormatMph = "%03.0f";
 
     @Override
     public void update(float tpf) {
 
         float startStopAngle = 155;
 
-        float speedUnit = vehicle.getEngine().getRevs();
+        // if we just deal with speed based on a positive integer from the start, everything works the same if we are reversing.
+        float speed = Math.abs(vehicle.getSpeed(outputType));
+        float speedUnit = speed / vehicle.getGearBox().getMaxSpeed(outputType);
 
         float rot = startStopAngle - ((startStopAngle * 2) * speedUnit);
         rot = FastMath.clamp(rot, -startStopAngle, startStopAngle);
         rot = rot * FastMath.DEG_TO_RAD;
 
-
-        // speedoAngles[2] = rot;
-        speedoAngles[2] = FastMath.interpolateLinear(tpf * 5, speedoAngles[2], rot);
-
+        speedoAngles[2] = rot;
         speedoRot.fromAngles(speedoAngles);
-
-
-        needleNode.setLocalRotation(speedoRot);
-        revsLabel.setText(String.format(revsFormat, speedUnit * vehicle.getEngine().getMaxRevs()));
+        speedoNeedleNode.setLocalRotation(speedoRot);
+        speedLabel.setText(String.format(speedFormatMph, speed));
+        gearLabel.setText("" + (vehicle.getGearBox().getActiveGearNum() + 1));
 
     }
 
