@@ -120,6 +120,19 @@ public class Car extends Vehicle {
         }
     }
 
+    /**
+     * Determine the rotation angle for the steering wheel.
+     *
+     * @return the angle (in radians, negative = left, 0 = neutral, positive =
+     * right)
+     */
+    public float steeringWheelAngle() {
+        float steeringAngle = wheels.get(0).getSteeringAngle();
+        float result = 2f * steeringAngle;
+
+        return result;
+    }
+
     public void setTyreSmokeEnabled(boolean enabled) {
         this.smokeEmitter.setEnabled(enabled);
     }

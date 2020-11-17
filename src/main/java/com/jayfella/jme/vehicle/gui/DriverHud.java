@@ -10,6 +10,8 @@ import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.material.Material;
+import com.jme3.material.RenderState;
+import com.jme3.math.Quaternion;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
@@ -26,6 +28,7 @@ import com.simsilica.lemur.event.MouseListener;
 import java.util.logging.Logger;
 import jme3utilities.MyAsset;
 import jme3utilities.mesh.DiscMesh;
+import jme3utilities.mesh.RectangleMesh;
 
 /**
  * Heads-up display (HUD) for driving a vehicle. This AppState should be
@@ -36,6 +39,7 @@ import jme3utilities.mesh.DiscMesh;
  * <li>the pause button</li>
  * <li>the horn button</li>
  * <li>the power button</li>
+ * <li>the steering-wheel indicator</li>
  * <li>the speedometer</li>
  * <li>the tachometer</li>
  * </ul>
@@ -66,12 +70,15 @@ public class DriverHud extends BaseAppState {
     private Geometry hornButton;
     private Geometry pauseButton;
     private Geometry powerButton;
+    private Geometry steering;
     /**
      * pre-loaded materials for buttons
      */
     private Material hornSilentMaterial, hornSoundMaterial, pauseMaterial;
     private Material powerOffMaterial, powerOnMaterial, runMaterial;
-
+    /**
+     * appstates for indicators
+     */
     private SpeedometerState speedometer;
     private TachometerState tachometer;
     // *************************************************************************
@@ -119,8 +126,8 @@ public class DriverHud extends BaseAppState {
         /*
          * Position the button in the viewport.
          */
-        float x = 0.63f * viewPortWidth;
-        float y = 0.23f * viewPortHeight;
+        float x = 0.5f * viewPortWidth;
+        float y = 0.18f * viewPortHeight;
         hornButton.setLocalTranslation(x, y, guiZ);
         /*
          * Add a MouseListener to toggle the horn sounding/silent.
@@ -213,6 +220,18 @@ public class DriverHud extends BaseAppState {
 
         texture = manager.loadTexture("Textures/power-on.png");
         powerOnMaterial = MyAsset.createUnshadedMaterial(manager, texture);
+        /*
+         * Construct a Geometry for the steering-wheel indicator.
+         */
+        float radius = 120f;
+        Mesh mesh = new RectangleMesh(-radius, +radius, -radius, +radius, +1f);
+        steering = new Geometry("steering wheel", mesh);
+
+        texture = manager.loadTexture("Textures/steering.png");
+        Material material = MyAsset.createUnshadedMaterial(manager, texture);
+        RenderState ars = material.getAdditionalRenderState();
+        ars.setBlendMode(RenderState.BlendMode.Alpha);
+        steering.setMaterial(material);
     }
 
     /**
@@ -227,6 +246,7 @@ public class DriverHud extends BaseAppState {
         hidePowerButton();
         hideReturnButton();
         hideSpeedometer();
+        hideSteering();
         hideTachometer();
     }
 
@@ -246,7 +266,19 @@ public class DriverHud extends BaseAppState {
         showPowerButton(false);
         showReturnButton();
         showSpeedo(Vehicle.SpeedUnit.MPH);
+        showSteeringWheel();
         showTacho();
+    }
+
+    @Override
+    public void update(float tpf) {
+        super.update(tpf);
+
+        // Re-orient the steering-wheel indicator.
+        float angle = car.steeringWheelAngle();
+        Quaternion orientation = new Quaternion();
+        orientation.fromAngles(0f, 0f, angle);
+        steering.setLocalRotation(orientation);
     }
     // *************************************************************************
     // private methods
@@ -300,6 +332,13 @@ public class DriverHud extends BaseAppState {
             returnButton.removeFromParent();
             returnButton = null;
         }
+    }
+
+    /**
+     * Hide the steering-wheel indicator.
+     */
+    private void hideSteering() {
+        steering.removeFromParent();
     }
 
     /**
@@ -374,7 +413,7 @@ public class DriverHud extends BaseAppState {
     private void showPowerButton(boolean on) {
         hidePowerButton();
 
-        float radius = 0.05f * viewPortHeight;
+        float radius = 0.035f * viewPortHeight;
         int numVertices = 25;
         Mesh mesh = new DiscMesh(radius, numVertices);
         powerButton = new Geometry("power button", mesh);
@@ -388,8 +427,8 @@ public class DriverHud extends BaseAppState {
         /*
          * Position the button in the viewport.
          */
-        float x = 0.63f * viewPortWidth;
-        float y = 0.11f * viewPortHeight;
+        float x = 0.625f * viewPortWidth;
+        float y = 0.07f * viewPortHeight;
         powerButton.setLocalTranslation(x, y, guiZ);
         /*
          * Add a MouseListener to toggle the engine on/off.
@@ -440,6 +479,19 @@ public class DriverHud extends BaseAppState {
 
         speedometer = new SpeedometerState(car, speedUnit);
         getStateManager().attach(speedometer);
+    }
+
+    /**
+     * Display the steering-wheel indicator.
+     */
+    private void showSteeringWheel() {
+        attachToGui(steering);
+        /*
+         * Position the indicator in the viewport.
+         */
+        float x = 0.5f * viewPortWidth;
+        float y = 0.18f * viewPortHeight;
+        steering.setLocalTranslation(x, y, 0.9f);
     }
 
     /**
