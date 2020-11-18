@@ -18,9 +18,10 @@ vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
   + tires with Pacejka model for friction (only the latitudinal forces are applied)
   + suspension
 + graphical user interface using [the Lemur UI Toolkit][lemur]:
-  + menus
+  + menus and buttons
   + speedometer
   + tachometer
+  + steering-wheel indicator
   + edit vehicle parameters
 + effects:
   + skid marks
@@ -29,7 +30,9 @@ vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
 
 ### Keyboard controls
 
-+ F5 : toggle viewpoints between driver and chase camera
+When a vehicle is loaded:
+
++ F5 : toggle viewpoints between hood camera and chase camera
 + Y : toggle the engine on/off
 + W : accelerate forward
 + S : apply brakes
@@ -49,6 +52,40 @@ vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
 [lemur]: https://github.com/jMonkeyEngine-Contributions/Lemur "Lemur UI Toolkit"
 [sergej]: https://hdrihaven.com/hdris/?a=Sergej%20Majboroda "HDRIs by Sergej Majboroda"
 [tgt]: https://www.tgthorne.com/contact "Thomas Glenn Thorne"
+
+### Wish list
+
++ More alternatives for:
+  + Camera controllers, such as FlyCam and plan view
+  + Environments, such as: off-road, urban, and parking garage
+  + Vehicle physics, such as that used in RallyGame
+  + Vehicle types, such as: hovertanks, motorcycles, speedboats, and airplanes
++ Obstacles:
+  + Other vehicles (parked or AI-controlled)
+  + Animated non-vehicles, such as: gates, drawbridges, deer, and pedestrians
+  + Passive non-vehicles, such as: traffic cones, portable barricades, and loose tires
++ More vehicle equipment:
+  + Artificial horizon
+  + Clock
+  + Compass
+  + Cruise control
+  + Fuel gauge
+  + Manual transmission
+  + Maps
+  + Mirrors
+  + Odometer
+  + Siren
+  + Trailer
+  + Weaponry
++ More scenarios:
+  + Crazy taxi
+  + Demolition derby
+  + Night driving with headlamps
+  + Player-vs-player
+  + Time trial
+
+See also
+[the project's issue tracker](https://github.com/stephengold/jme-vehicles/issues).
 
 ### Licensing
 
