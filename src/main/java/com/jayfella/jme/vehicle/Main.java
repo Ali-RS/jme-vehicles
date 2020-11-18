@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle;
 
+import com.atr.jme.font.asset.TrueTypeLoader;
 import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.gui.LoadingState;
 import com.jayfella.jme.vehicle.gui.MainMenuState;
@@ -85,9 +86,10 @@ public class Main extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
+        assetManager.registerLoader(TrueTypeLoader.class, "ttf");
         renderer.setDefaultAnisotropicFilter(4);
 
-        getInputManager().addJoystickConnectionListener(new JoystickConnectionListener() {
+        inputManager.addJoystickConnectionListener(new JoystickConnectionListener() {
             @Override
             public void onConnected(Joystick joystick) {
                 System.out.println("Joystick connected: " + joystick);
@@ -106,7 +108,7 @@ public class Main extends SimpleApplication {
         float aspect = cam.getWidth() / (float) cam.getHeight();
         cam.setFrustumPerspective(60, aspect, 0.1f, 1000);
 
-        // the speedo uses Lemur labels.
+        // initialize Lemur with the "glass" style
         GuiGlobals.initialize(this);
         BaseStyles.loadGlassStyle();
         GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");

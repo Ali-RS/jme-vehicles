@@ -51,6 +51,8 @@ dependencies {
 
     runtimeOnly "org.apache.logging.log4j:log4j-core:$log4jVer"
     runtimeOnly "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVer"
+    
+    implementation 'com.atr:jme-ttf:2.2.2'
 }
 
 task runForceDialog(type: JavaExec) {
