@@ -25,6 +25,10 @@ public class KeyboardVehicleInputState
     // *************************************************************************
     // constants and loggers
 
+    final private float maxSteeringAngle = 1f; // radians
+    final private float returnRate = 2f; // radians per second
+    final private float turnRate = 0.5f; // radians per second
+
     public static final String G_VEHICLE = "GROUP_VEHICLE";
     /**
      * keyboard function IDs
@@ -53,8 +57,10 @@ public class KeyboardVehicleInputState
             = new FunctionId(G_VEHICLE, "ScreenShot");
     private static final FunctionId F_START_ENGINE
             = new FunctionId(G_VEHICLE, "Vehicle Start Engine");
-    private static final FunctionId F_TURN
-            = new FunctionId(G_VEHICLE, "Vehicle Turn");
+    private static final FunctionId F_TURN_LEFT
+            = new FunctionId(G_VEHICLE, "Vehicle Turn Left");
+    private static final FunctionId F_TURN_RIGHT
+            = new FunctionId(G_VEHICLE, "Vehicle Turn Right");
     /**
      * message logger for this class
      */
@@ -66,9 +72,7 @@ public class KeyboardVehicleInputState
     private boolean accelerating, braking, reversing;
     private boolean turningLeft, turningRight;
 
-    private float maxSteerForce = 1.0f;
-    private float steeringForce = 0f;
-    private float turnSpeed = 0.5f;
+    private float steeringAngle = 0f;
 
     private InputMapper inputMapper;
     private final Vehicle vehicle;
@@ -101,8 +105,8 @@ public class KeyboardVehicleInputState
         inputMapper.removeMapping(F_MOVE, KeyInput.KEY_W);
         inputMapper.removeMapping(F_MOVE, InputState.Negative, KeyInput.KEY_S);
 
-        inputMapper.removeMapping(F_TURN, KeyInput.KEY_A);
-        inputMapper.removeMapping(F_TURN, InputState.Negative, KeyInput.KEY_D);
+        inputMapper.removeMapping(F_TURN_LEFT, KeyInput.KEY_A);
+        inputMapper.removeMapping(F_TURN_RIGHT, KeyInput.KEY_D);
 
         inputMapper.removeMapping(F_REVERSE, KeyInput.KEY_E);
         inputMapper.removeMapping(F_HANDBRAKE, KeyInput.KEY_SPACE);
@@ -118,7 +122,8 @@ public class KeyboardVehicleInputState
         inputMapper.removeMapping(F_SCREEN_SHOT, KeyInput.KEY_F12);
 
         inputMapper.removeStateListener(this,
-                F_START_ENGINE, F_MOVE, F_TURN, F_REVERSE, F_HANDBRAKE, F_RESET,
+                F_START_ENGINE, F_MOVE, F_TURN_LEFT, F_TURN_RIGHT,
+                F_REVERSE, F_HANDBRAKE, F_RESET,
                 F_HORN, F_CAMVIEW, F_DUMP_PHYSICS, F_DUMP_VIEWPORT, F_PAUSE,
                 F_RETURN, F_SCREEN_SHOT
         );
@@ -133,8 +138,8 @@ public class KeyboardVehicleInputState
         inputMapper.map(F_MOVE, KeyInput.KEY_W);
         inputMapper.map(F_MOVE, InputState.Negative, KeyInput.KEY_S);
 
-        inputMapper.map(F_TURN, KeyInput.KEY_A);
-        inputMapper.map(F_TURN, InputState.Negative, KeyInput.KEY_D);
+        inputMapper.map(F_TURN_LEFT, KeyInput.KEY_A);
+        inputMapper.map(F_TURN_RIGHT, KeyInput.KEY_D);
 
         inputMapper.map(F_REVERSE, KeyInput.KEY_E);
         inputMapper.map(F_HANDBRAKE, KeyInput.KEY_Q);
@@ -151,7 +156,8 @@ public class KeyboardVehicleInputState
         inputMapper.map(F_SCREEN_SHOT, KeyInput.KEY_F12);
 
         inputMapper.addStateListener(this,
-                F_START_ENGINE, F_MOVE, F_TURN, F_REVERSE, F_HANDBRAKE, F_RESET,
+                F_START_ENGINE, F_MOVE, F_TURN_LEFT, F_TURN_RIGHT,
+                F_REVERSE, F_HANDBRAKE, F_RESET,
                 F_HORN, F_CAMVIEW, F_DUMP_PHYSICS, F_DUMP_VIEWPORT, F_PAUSE,
                 F_RETURN, F_SCREEN_SHOT
         );
@@ -217,19 +223,11 @@ public class KeyboardVehicleInputState
             // vehicle.setParkingBrakeApplied(pressed);
             vehicle.handbrake(pressed ? 1f : 0f);
 
-        } else if (func == F_TURN) {
-            if (value == InputState.Positive) {
-                turningLeft = true;
-                turningRight = false;
+        } else if (func == F_TURN_LEFT) {
+            turningLeft = pressed;
 
-            } else if (value == InputState.Negative) {
-                turningRight = true;
-                turningLeft = false;
-
-            } else {
-                turningLeft = false;
-                turningRight = false;
-            }
+        } else if (func == F_TURN_RIGHT) {
+            turningRight = pressed;
 
         } else if (func == F_RESET && pressed) {
             float[] angles = new float[3];
@@ -332,16 +330,27 @@ public class KeyboardVehicleInputState
     }
 
     private void updateTurn(float tpf) {
-        if (turningLeft) {
-            steeringForce += tpf * turnSpeed;
-            steeringForce = Math.min(steeringForce, maxSteerForce);
-        } else if (turningRight) {
-            steeringForce -= tpf * turnSpeed;
-            steeringForce = Math.max(steeringForce, -maxSteerForce);
-        } else {
-            steeringForce = 0f;
+        if (turningLeft && !turningRight && steeringAngle >= 0f) {
+            // turn more to the left
+            steeringAngle += turnRate * tpf;
+            steeringAngle = Math.min(steeringAngle, maxSteeringAngle);
+
+        } else if (turningRight && !turningLeft && steeringAngle <= 0f) {
+            // turn more to the right
+            steeringAngle -= turnRate * tpf;
+            steeringAngle = Math.max(steeringAngle, -maxSteeringAngle);
+
+        } else if (steeringAngle > 0f) {
+            // return from turning left
+            steeringAngle -= returnRate * tpf;
+            steeringAngle = Math.max(steeringAngle, 0f);
+
+        } else if (steeringAngle < 0f) {
+            // return from turning right
+            steeringAngle += returnRate * tpf;
+            steeringAngle = Math.min(steeringAngle, 0f);
         }
 
-        vehicle.steer(steeringForce);
+        vehicle.steer(steeringAngle);
     }
 }
