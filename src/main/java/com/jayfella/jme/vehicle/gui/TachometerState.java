@@ -34,12 +34,12 @@ public class TachometerState extends BaseAppState {
     // *************************************************************************
     // fields
 
-    private float[] speedoAngles = new float[3];
+    final private float[] eulerAngles = new float[3];
     private Label revsLabel;
     private Node guiNode;
     private final Node needleNode = new Node("Needle");
     private final Node node;
-    private final Quaternion speedoRot = new Quaternion();
+    private final Quaternion quat = new Quaternion();
     private final Vehicle vehicle;
     // *************************************************************************
     // constructors
@@ -80,24 +80,24 @@ public class TachometerState extends BaseAppState {
     protected void initialize(Application app) {
         this.guiNode = ((SimpleApplication) app).getGuiNode();
 
-        Geometry speedoGeometry = createSpeedoGeom(app.getAssetManager());
-        node.attachChild(speedoGeometry);
+        Geometry fixedGeometry = createFixedGeometry(app.getAssetManager());
+        node.attachChild(fixedGeometry);
 
-        Texture speedoNeedleTex = app.getAssetManager().loadTexture("Textures/Vehicles/Speedometer/speedo_needle_2.png");
-        Geometry speedoNeedleGeom = new Geometry("Speedometer Needle Geometry",
-                new Quad(speedoNeedleTex.getImage().getWidth(), speedoNeedleTex.getImage().getHeight()));
+        Texture needleTexture = app.getAssetManager().loadTexture("Textures/Vehicles/Speedometer/speedo_needle_2.png");
+        Geometry needleGeometry = new Geometry("Tachometer Needle",
+                new Quad(needleTexture.getImage().getWidth(), needleTexture.getImage().getHeight()));
 
-        speedoNeedleGeom.setMaterial(new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md"));
-        speedoNeedleGeom.getMaterial().setTexture("ColorMap", speedoNeedleTex);
-        speedoNeedleGeom.getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+        needleGeometry.setMaterial(new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md"));
+        needleGeometry.getMaterial().setTexture("ColorMap", needleTexture);
+        needleGeometry.getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
 
-        speedoNeedleGeom.setLocalTranslation(
-                -(speedoNeedleTex.getImage().getWidth() * 0.5f),
-                -(speedoNeedleTex.getImage().getWidth() * 0.5f) - 7,
+        needleGeometry.setLocalTranslation(
+                -(needleTexture.getImage().getWidth() * 0.5f),
+                -(needleTexture.getImage().getWidth() * 0.5f) - 7,
                 0);
 
         needleNode.setLocalTranslation(100, 100, 1);
-        needleNode.attachChild(speedoNeedleGeom);
+        needleNode.attachChild(needleGeometry);
 
         node.attachChild(needleNode);
 
@@ -147,19 +147,17 @@ public class TachometerState extends BaseAppState {
     public void update(float tpf) {
         float startStopAngle = 155;
 
-        float speedUnit = vehicle.getEngine().getRevs();
+        float rpmFraction = vehicle.getEngine().getRevs();
 
-        float rot = startStopAngle - ((startStopAngle * 2) * speedUnit);
+        float rot = startStopAngle - ((startStopAngle * 2) * rpmFraction);
         rot = FastMath.clamp(rot, -startStopAngle, startStopAngle);
         rot = rot * FastMath.DEG_TO_RAD;
 
-        // speedoAngles[2] = rot;
-        speedoAngles[2] = FastMath.interpolateLinear(tpf * 5, speedoAngles[2], rot);
+        eulerAngles[2] = FastMath.interpolateLinear(tpf * 5, eulerAngles[2], rot);
+        quat.fromAngles(eulerAngles);
 
-        speedoRot.fromAngles(speedoAngles);
-
-        needleNode.setLocalRotation(speedoRot);
-        revsLabel.setText(String.format(revsFormat, speedUnit * vehicle.getEngine().getMaxRevs()));
+        needleNode.setLocalRotation(quat);
+        revsLabel.setText(String.format(revsFormat, rpmFraction * vehicle.getEngine().getMaxRevs()));
     }
     // *************************************************************************
     // private methods
@@ -199,31 +197,30 @@ public class TachometerState extends BaseAppState {
         return node;
     }
 
-    private Geometry createSpeedoGeom(AssetManager assetManager) {
-        Texture speedoBgTex = assetManager.loadTexture("Textures/Vehicles/Speedometer/speedo_bg_2.png");
+    private Geometry createFixedGeometry(AssetManager assetManager) {
+        Texture backgroundTexture = assetManager.loadTexture("Textures/Vehicles/Speedometer/speedo_bg_2.png");
 
-        Geometry speedoBgGeom = new Geometry("Speedometer Background Geometry",
-                new Quad(speedoBgTex.getImage().getWidth(), speedoBgTex.getImage().getHeight()));
+        Geometry backgroundGeom = new Geometry("Tachometer Background",
+                new Quad(backgroundTexture.getImage().getWidth(), backgroundTexture.getImage().getHeight()));
 
-        speedoBgGeom.setMaterial(new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
-        speedoBgGeom.getMaterial().setTexture("ColorMap", speedoBgTex);
-        speedoBgGeom.getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+        backgroundGeom.setMaterial(new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
+        backgroundGeom.getMaterial().setTexture("ColorMap", backgroundTexture);
+        backgroundGeom.getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
 
-        // Node numbers = buildRadialNumbers((int) vehicle.getGearBox().getMaxSpeed(outputType), 10, speedoBgTex.getImage().getWidth() / 2f, 20);
-        Node numbers = buildRadialNumbers((int) vehicle.getEngine().getMaxRevs(), 1000, speedoBgTex.getImage().getWidth() / 2f, 20);
+        Node numbers = buildRadialNumbers((int) vehicle.getEngine().getMaxRevs(), 1000, backgroundTexture.getImage().getWidth() / 2f, 20);
 
-        speedoBgGeom.setLocalTranslation(
-                -speedoBgTex.getImage().getWidth() / 2f,
-                -speedoBgTex.getImage().getHeight() / 2f,
+        backgroundGeom.setLocalTranslation(
+                -backgroundTexture.getImage().getWidth() / 2f,
+                -backgroundTexture.getImage().getHeight() / 2f,
                 -1
         );
 
-        numbers.attachChild(speedoBgGeom);
+        numbers.attachChild(backgroundGeom);
 
-        Texture2D numberTexture = generateImpostor(numbers, speedoBgTex.getImage().getWidth());
+        Texture2D numberTexture = generateImpostor(numbers, backgroundTexture.getImage().getWidth());
 
-        Geometry numbersGeom = new Geometry("Speedo Numbers",
-                new Quad(speedoBgTex.getImage().getWidth(), speedoBgTex.getImage().getHeight()));
+        Geometry numbersGeom = new Geometry("Tachometer Numbers",
+                new Quad(backgroundTexture.getImage().getWidth(), backgroundTexture.getImage().getHeight()));
 
         numbersGeom.setMaterial(new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
         numbersGeom.getMaterial().setTexture("ColorMap", numberTexture);
