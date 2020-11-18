@@ -6,6 +6,7 @@ import static com.jayfella.jme.vehicle.Vehicle.KMH_TO_MPH;
 
 public class GearBox {
 
+    private boolean isInReverse;
     private int activeGear;
     private Gear[] gears;
 
@@ -28,6 +29,14 @@ public class GearBox {
 
     public void setGears(Gear[] gears) {
         this.gears = gears;
+    }
+
+    public boolean isReversing() {
+        return isInReverse;
+    }
+
+    public void setReversing(boolean setting) {
+        isInReverse = setting;
     }
 
     public Gear getGear(int gearNum) {

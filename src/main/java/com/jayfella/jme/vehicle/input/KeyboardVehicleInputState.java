@@ -69,7 +69,7 @@ public class KeyboardVehicleInputState
     // *************************************************************************
     // fields
 
-    private boolean accelerating, braking, reversing;
+    private boolean accelerating, braking;
     private boolean turningLeft, turningRight;
 
     private float steeringAngle = 0f;
@@ -214,7 +214,7 @@ public class KeyboardVehicleInputState
             }
 
         } else if (func == F_REVERSE) {
-            reversing = pressed;
+            vehicle.getGearBox().setReversing(pressed);
 
         } else if (func == F_HANDBRAKE) {
             // if (pressed) {
@@ -320,7 +320,7 @@ public class KeyboardVehicleInputState
             vehicle.accelerate(0f);
         }
 
-        if (reversing) {
+        if (vehicle.getGearBox().isReversing()) {
             if (vehicle.getSpeed(Vehicle.SpeedUnit.KMH) > -40f) {
                 vehicle.accelerate(-1f);
             } else {
