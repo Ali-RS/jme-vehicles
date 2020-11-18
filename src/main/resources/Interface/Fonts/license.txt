@@ -1,0 +1,5 @@
+Filename: DroidSerifBold-aMPE.ttf
+Source URL: https://www.fontspace.com/droid-serif-font-f13519
+Copyright: Digitized data copyright © 2007, Google Corporation.
+License: Apache License, Version 2.0
+License URL: http://www.apache.org/licenses/LICENSE-2.0 

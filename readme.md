@@ -48,8 +48,10 @@ When a vehicle is loaded:
 
 <img height="150" src="https://i.imgur.com/n7iyCF8.png">
 
+[atryder]: https://github.com/ATryder "Adam T. Ryder"
 [jme]: http://jmonkeyengine.org  "jMonkeyEngine Project"
 [lemur]: https://github.com/jMonkeyEngine-Contributions/Lemur "Lemur UI Toolkit"
+[pspeed]: https://github.com/pspeed42 "Paul Speed"
 [sergej]: https://hdrihaven.com/hdris/?a=Sergej%20Majboroda "HDRIs by Sergej Majboroda"
 [tgt]: https://www.tgthorne.com/contact "Thomas Glenn Thorne"
 
@@ -94,6 +96,8 @@ The source code has
 
 Resources/assets:
 
++ The [Droid font](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Interface/Fonts)
+  has an Apache License, Version 2.0.
 + The [GT model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/GT)
   has a CC Attribution-NonCommercial-ShareAlike license.
 + The [gtr_nismo model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/gtr_nismo)
@@ -108,7 +112,9 @@ Resources/assets:
 ### Acknowledgments
 
 + James Khan (aka "jayfella") initiated the Advanced Vehicles Project.
++ [Paul Speed](aka "pspeed42")][pspeed] created the Lemur libraries.
 + Lennart Demes created the marble_01 textures.
 + [Sergej Majboroda][sergej] created the quarry_03 texture.
 + [Thomas Glenn Thorne (aka "systmh")][tgt] created the GT model.
 + "isteven" created the gtr_nismo model.
++ [Adam T. Ryder (aka "ATryder")][atryder] created the jME-TTF library.
