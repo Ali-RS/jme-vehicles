@@ -25,20 +25,18 @@ import com.simsilica.lemur.Label;
 
 public class SpeedometerState extends BaseAppState {
 
+    private float[] speedoAngles = new float[3];
+    private Label gearLabel;
+    private Label speedLabel;
+    private Node guiNode;
     private final Node node;
+    private Node speedoNeedleNode;
+    private final Quaternion speedoRot = new Quaternion();
+    private String speedFormatMph = "%03.0f";
+    private final Vehicle.SpeedUnit outputType;
     private final Vehicle vehicle;
 
-    private Node guiNode;
-
-    private Node speedoNeedleNode;
-    private Label speedLabel;
-
-    private Label gearLabel;
-
-    private final Vehicle.SpeedUnit outputType;
-
     public SpeedometerState(Vehicle vehicle, Vehicle.SpeedUnit outputType) {
-
         this.node = new Node("Speedometer: " + vehicle.getName());
         this.node.setQueueBucket(RenderQueue.Bucket.Gui);
         this.vehicle = vehicle;
@@ -46,133 +44,15 @@ public class SpeedometerState extends BaseAppState {
         this.outputType = outputType;
     }
 
-    private void setProjectionHeight(Camera camera, float factor) {
-        float bottom = camera.getFrustumBottom();
-        camera.setFrustumBottom(bottom * factor);
-        float left = camera.getFrustumLeft();
-        camera.setFrustumLeft(left * factor);
-        float right = camera.getFrustumRight();
-        camera.setFrustumRight(right * factor);
-        float top = camera.getFrustumTop();
-        camera.setFrustumTop(top * factor);
-    }
-
-    private Texture2D generateImpostor(Node scene, int size) {
-
-        Camera newCam = new Camera(size, size);
-        newCam.setFrustumPerspective(45f, 1f, 1f, 2f);
-        newCam.setParallelProjection(true);
-        setProjectionHeight(newCam, size + 40);
-        newCam.lookAtDirection(new Vector3f(0, 0, -1), Vector3f.UNIT_Y);
-
-        ViewPort vp = getApplication().getRenderManager().createPreView("Offscreen View", newCam);
-        vp.setClearFlags(true, true, true);
-        vp.setBackgroundColor(ColorRGBA.BlackNoAlpha);
-
-        FrameBuffer offBuffer = new FrameBuffer(size, size, 1);
-
-        Texture2D offTex = new Texture2D(size, size, Image.Format.ABGR8);
-        offTex.setMinFilter(Texture.MinFilter.Trilinear);
-        offTex.setMagFilter(Texture.MagFilter.Bilinear);
-
-        offBuffer.setDepthBuffer(Image.Format.Depth);
-        offBuffer.setColorTexture(offTex);
-
-        vp.setOutputFrameBuffer(offBuffer);
-
-        //scene.updateLogicalState(0);
-        scene.updateGeometricState();
-
-        vp.attachScene(scene);
-
-        getApplication().getRenderManager().removeMainView(vp);
-
-        return offTex;
-
-    }
-
-    private Node buildRadialNumbers(int max, int step, float radius, float border) {
-
-        int count = (max / step) + 1;
-
-        Node node = new Node("Numbers Node");
-        node.setLocalTranslation(radius, radius, 1);
-
-        float reducedRad = radius - border;
-
-        int num = 0;
-
-        int startAngle = 245;
-
-        float angleStep = ((155 * 2f) / count) * FastMath.DEG_TO_RAD;
-
-        float theta = startAngle * FastMath.DEG_TO_RAD;
-
-        for (int i = 0; i <= count; i++) {
-
-            float x = reducedRad * FastMath.cos(theta);
-            float y = reducedRad * FastMath.sin(theta);
-
-            Label label = new Label("" + num);
-            label.setColor(ColorRGBA.White);
-
-            label.setLocalTranslation(
-                    x - (label.getPreferredSize().x * .5f),
-                    y + (label.getPreferredSize().y * .5f),
-                    0);
-
-            node.attachChild(label);
-
-            num += step;
-            theta -= angleStep;
-
-        }
-
-        node.setLocalTranslation(0, 0, -1);
-
-        return node;
-    }
-
-    private Geometry createSpeedoGeom(AssetManager assetManager) {
-
-        Texture speedoBgTex = assetManager.loadTexture("Textures/Vehicles/Speedometer/speedo_bg_2.png");
-
-        Geometry speedoBgGeom = new Geometry("Speedometer Background Geometry",
-                new Quad(speedoBgTex.getImage().getWidth(), speedoBgTex.getImage().getHeight()));
-
-        speedoBgGeom.setMaterial(new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
-        speedoBgGeom.getMaterial().setTexture("ColorMap", speedoBgTex);
-        speedoBgGeom.getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-
-        Node numbers = buildRadialNumbers((int) vehicle.getGearBox().getMaxSpeed(outputType), 10, speedoBgTex.getImage().getWidth() / 2f, 20);
-
-        speedoBgGeom.setLocalTranslation(
-                -speedoBgTex.getImage().getWidth() / 2f,
-                -speedoBgTex.getImage().getHeight() / 2f,
-                -1
-        );
-
-        numbers.attachChild(speedoBgGeom);
-
-        Texture2D numberTexture = generateImpostor(numbers, speedoBgTex.getImage().getWidth());
-
-        Geometry numbersGeom = new Geometry("Speedo Numbers",
-                new Quad(speedoBgTex.getImage().getWidth(), speedoBgTex.getImage().getHeight()));
-
-        numbersGeom.setMaterial(new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
-        numbersGeom.getMaterial().setTexture("ColorMap", numberTexture);
-        numbersGeom.getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-
-        return numbersGeom;
+    @Override
+    protected void cleanup(Application app) {
     }
 
     @Override
     protected void initialize(Application app) {
-
         this.guiNode = ((SimpleApplication) app).getGuiNode();
 
         Geometry speedoGeometry = createSpeedoGeom(app.getAssetManager());
-
         node.attachChild(speedoGeometry);
 
         speedoNeedleNode = new Node("Speedo Needle Node");
@@ -218,12 +98,11 @@ public class SpeedometerState extends BaseAppState {
                 1
         );
         node.attachChild(gearLabel);
-
     }
 
     @Override
-    protected void cleanup(Application app) {
-
+    protected void onDisable() {
+        node.removeFromParent();
     }
 
     @Override
@@ -232,18 +111,7 @@ public class SpeedometerState extends BaseAppState {
     }
 
     @Override
-    protected void onDisable() {
-        node.removeFromParent();
-    }
-
-    private final Quaternion speedoRot = new Quaternion();
-    private float[] speedoAngles = new float[3];
-
-    private String speedFormatMph = "%03.0f";
-
-    @Override
     public void update(float tpf) {
-
         float startStopAngle = 155;
 
         // if we just deal with speed based on a positive integer from the start, everything works the same if we are reversing.
@@ -259,7 +127,115 @@ public class SpeedometerState extends BaseAppState {
         speedoNeedleNode.setLocalRotation(speedoRot);
         speedLabel.setText(String.format(speedFormatMph, speed));
         gearLabel.setText("" + (vehicle.getGearBox().getActiveGearNum() + 1));
-
     }
 
+    private Node buildRadialNumbers(int max, int step, float radius, float border) {
+        int count = (max / step) + 1;
+
+        Node node = new Node("Numbers Node");
+        node.setLocalTranslation(radius, radius, 1);
+
+        float reducedRad = radius - border;
+        int num = 0;
+        int startAngle = 245;
+        float angleStep = ((155 * 2f) / count) * FastMath.DEG_TO_RAD;
+        float theta = startAngle * FastMath.DEG_TO_RAD;
+
+        for (int i = 0; i <= count; i++) {
+            float x = reducedRad * FastMath.cos(theta);
+            float y = reducedRad * FastMath.sin(theta);
+
+            Label label = new Label("" + num);
+            label.setColor(ColorRGBA.White);
+
+            label.setLocalTranslation(
+                    x - (label.getPreferredSize().x * .5f),
+                    y + (label.getPreferredSize().y * .5f),
+                    0);
+
+            node.attachChild(label);
+
+            num += step;
+            theta -= angleStep;
+        }
+
+        node.setLocalTranslation(0, 0, -1);
+
+        return node;
+    }
+
+    private Geometry createSpeedoGeom(AssetManager assetManager) {
+        Texture speedoBgTex = assetManager.loadTexture("Textures/Vehicles/Speedometer/speedo_bg_2.png");
+
+        Geometry speedoBgGeom = new Geometry("Speedometer Background Geometry",
+                new Quad(speedoBgTex.getImage().getWidth(), speedoBgTex.getImage().getHeight()));
+
+        speedoBgGeom.setMaterial(new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
+        speedoBgGeom.getMaterial().setTexture("ColorMap", speedoBgTex);
+        speedoBgGeom.getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+
+        Node numbers = buildRadialNumbers((int) vehicle.getGearBox().getMaxSpeed(outputType), 10, speedoBgTex.getImage().getWidth() / 2f, 20);
+
+        speedoBgGeom.setLocalTranslation(
+                -speedoBgTex.getImage().getWidth() / 2f,
+                -speedoBgTex.getImage().getHeight() / 2f,
+                -1
+        );
+
+        numbers.attachChild(speedoBgGeom);
+
+        Texture2D numberTexture = generateImpostor(numbers, speedoBgTex.getImage().getWidth());
+
+        Geometry numbersGeom = new Geometry("Speedo Numbers",
+                new Quad(speedoBgTex.getImage().getWidth(), speedoBgTex.getImage().getHeight()));
+
+        numbersGeom.setMaterial(new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
+        numbersGeom.getMaterial().setTexture("ColorMap", numberTexture);
+        numbersGeom.getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+
+        return numbersGeom;
+    }
+
+    private Texture2D generateImpostor(Node scene, int size) {
+        Camera newCam = new Camera(size, size);
+        newCam.setFrustumPerspective(45f, 1f, 1f, 2f);
+        newCam.setParallelProjection(true);
+        setProjectionHeight(newCam, size + 40);
+        newCam.lookAtDirection(new Vector3f(0, 0, -1), Vector3f.UNIT_Y);
+
+        ViewPort vp = getApplication().getRenderManager().createPreView("Offscreen View", newCam);
+        vp.setClearFlags(true, true, true);
+        vp.setBackgroundColor(ColorRGBA.BlackNoAlpha);
+
+        FrameBuffer offBuffer = new FrameBuffer(size, size, 1);
+
+        Texture2D offTex = new Texture2D(size, size, Image.Format.ABGR8);
+        offTex.setMinFilter(Texture.MinFilter.Trilinear);
+        offTex.setMagFilter(Texture.MagFilter.Bilinear);
+
+        offBuffer.setDepthBuffer(Image.Format.Depth);
+        offBuffer.setColorTexture(offTex);
+
+        vp.setOutputFrameBuffer(offBuffer);
+
+        //scene.updateLogicalState(0);
+        scene.updateGeometricState();
+
+        vp.attachScene(scene);
+
+        getApplication().getRenderManager().removeMainView(vp);
+
+        return offTex;
+    }
+
+    private void setProjectionHeight(Camera camera, float factor) {
+        float bottom = camera.getFrustumBottom();
+        camera.setFrustumBottom(bottom * factor);
+        float left = camera.getFrustumLeft();
+        camera.setFrustumLeft(left * factor);
+        float right = camera.getFrustumRight();
+        camera.setFrustumRight(right * factor);
+        float top = camera.getFrustumTop();
+        camera.setFrustumTop(top * factor);
+    }
 }
