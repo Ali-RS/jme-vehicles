@@ -23,28 +23,59 @@ import com.jme3.texture.Texture;
 import com.jme3.texture.Texture2D;
 import com.simsilica.lemur.Label;
 
+/**
+ * Appstate to manage an analog tachometer in the DriverHud.
+ */
 public class TachometerState extends BaseAppState {
+    // *************************************************************************
+    // constants and loggers
+
+    private final String revsFormat = "%.0f";
+    // *************************************************************************
+    // fields
 
     private float[] speedoAngles = new float[3];
+    private Label revsLabel;
     private Node guiNode;
     private final Node needleNode = new Node("Needle");
     private final Node node;
-    private Label revsLabel;
     private final Quaternion speedoRot = new Quaternion();
-    private final String revsFormat = "%.0f";
     private final Vehicle vehicle;
+    // *************************************************************************
+    // constructors
 
+    /**
+     * Instantiate an enabled tachometer for the specified Vehicle.
+     *
+     * @param vehicle the corresponding Vehicle (not null)
+     */
     public TachometerState(Vehicle vehicle) {
         this.vehicle = vehicle;
 
         this.node = new Node("Tachometer: " + vehicle.getName());
         this.node.setQueueBucket(RenderQueue.Bucket.Gui);
     }
+    // *************************************************************************
+    // BaseAppState methods
 
+    /**
+     * Callback invoked after this AppState is detached or during application
+     * shutdown if the state is still attached. onDisable() is called before
+     * this cleanup() method if the state is enabled at the time of cleanup.
+     *
+     * @param app the application instance (not null)
+     */
     @Override
     protected void cleanup(Application app) {
+        // do nothing
     }
 
+    /**
+     * Callback invoked during initialization once this AppState is attached but
+     * before onEnable() is called.
+     *
+     * @param app the application instance (not null)
+     */
     @Override
     protected void initialize(Application app) {
         this.guiNode = ((SimpleApplication) app).getGuiNode();
@@ -86,16 +117,32 @@ public class TachometerState extends BaseAppState {
         );
     }
 
+    /**
+     * Callback invoked when this AppState was previously enabled but is now
+     * disabled either because setEnabled(false) was called or the state is
+     * being cleaned up.
+     */
     @Override
     protected void onDisable() {
         node.removeFromParent();
     }
 
+    /**
+     * Callback invoked when this AppState becomes fully enabled, ie: is
+     * attached and isEnabled() is true or when the setEnabled() status changes
+     * after the state is attached.
+     */
     @Override
     protected void onEnable() {
         guiNode.attachChild(node);
     }
 
+    /**
+     * Called to update this AppState, invoked once per frame when the AppState
+     * is both attached and enabled.
+     *
+     * @param tpf the time interval between frames (in seconds, &ge;0)
+     */
     @Override
     public void update(float tpf) {
         float startStopAngle = 155;
@@ -114,6 +161,8 @@ public class TachometerState extends BaseAppState {
         needleNode.setLocalRotation(speedoRot);
         revsLabel.setText(String.format(revsFormat, speedUnit * vehicle.getEngine().getMaxRevs()));
     }
+    // *************************************************************************
+    // private methods
 
     private Node buildRadialNumbers(int max, int step, float radius, float border) {
         int count = (max / step) + 1;
