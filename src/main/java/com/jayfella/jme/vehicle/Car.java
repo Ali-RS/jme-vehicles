@@ -163,10 +163,12 @@ public class Car extends Vehicle {
     public void build() {
         super.build();
         this.smokeEmitter = new TyreSmokeEmitter(this);
-        this.skidmarks = new VehicleSkidMarks(
-                this,
-                512,
-                ((BoundingBox)getWheel(0).getVehicleWheel().getWheelSpatial().getWorldBound()).getZExtent() * 0.75f);
+
+        Spatial wheelSpatial = getWheel(0).getVehicleWheel().getWheelSpatial();
+        BoundingBox bounds = (BoundingBox) wheelSpatial.getWorldBound();
+        float markWidth = 0.75f * bounds.getZExtent();
+        int numMarksPerWheel = 128;
+        skidmarks = new VehicleSkidMarks(this, numMarksPerWheel, markWidth);
 
         this.magicFormulaState = new MagicFormulaState(this);
         this.wheelSpinState = new WheelSpinState(this);
