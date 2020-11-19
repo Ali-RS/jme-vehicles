@@ -23,15 +23,24 @@ import com.jme3.texture.Image;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture2D;
 import com.simsilica.lemur.Label;
+import jme3utilities.math.MyMath;
 
 /**
  * Appstate to manage an analog speedometer in the DriverHud.
  */
 public class SpeedometerState extends BaseAppState {
     // *************************************************************************
+    // constants and loggers
+
+    /**
+     * important needle rotations (measured CCW from +X, in radians)
+     */
+    final private static float thetaMin = -1f; // "pegged" to the right
+    final private static float theta0 = FastMath.PI - thetaMin; // speed=0
+    // *************************************************************************
     // fields
 
-    final private float[] speedoAngles = new float[3];
+    private float prevTheta = theta0;
     private Label gearLabel;
     private Label speedLabel;
     private Node guiNode;
@@ -115,14 +124,10 @@ public class SpeedometerState extends BaseAppState {
                 -(width / 2f) - 7f,
                 0f);
 
-        speedLabel = new Label("888");
+        speedLabel = new Label(speedUnit.toString());
         node.attachChild(speedLabel);
         speedLabel.setColor(TachometerState.labelColor);
-        speedLabel.setLocalTranslation(
-                100f - (speedLabel.getPreferredSize().x * 0.5f),
-                speedLabel.getPreferredSize().y + 15f,
-                1f
-        );
+        speedLabel.setLocalTranslation(70f, 30f, 1f);
 
         node.setLocalTranslation(
                 app.getCamera().getWidth() - 200f - 20f,
@@ -168,53 +173,50 @@ public class SpeedometerState extends BaseAppState {
      */
     @Override
     public void update(float tpf) {
-        float startStopAngle = 155f;
+        float speed = vehicle.getSpeed(speedUnit);
+        float maxSpeed = vehicle.getGearBox().getMaxSpeed(speedUnit);
+        float speedFraction = speed / maxSpeed;
+        float theta = MyMath.lerp(speedFraction, theta0, thetaMin);
+        /*
+         * a slight lag, because a physical needle cannot pivot instantly
+         */
+        prevTheta = FastMath.interpolateLinear(0.5f, prevTheta, theta);
 
-        // if we just deal with speed based on a positive integer from the start, everything works the same if we are reversing.
-        float speed = Math.abs(vehicle.getSpeed(speedUnit));
-        speed = speed / vehicle.getGearBox().getMaxSpeed(speedUnit);
-
-        float rot = startStopAngle - ((startStopAngle * 2f) * speed);
-        rot = FastMath.clamp(rot, -startStopAngle, startStopAngle);
-        rot = rot * FastMath.DEG_TO_RAD;
-
-        speedoAngles[2] = rot;
-        tmpRotation.fromAngles(speedoAngles);
+        prevTheta = FastMath.clamp(prevTheta, thetaMin, theta0);
+        tmpRotation.fromAngles(0f, 0f, prevTheta - FastMath.HALF_PI);
         needleNode.setLocalRotation(tmpRotation);
-
-        speedLabel.setText(String.format("%03.0f", speed));
-        gearLabel.setText("" + (vehicle.getGearBox().getActiveGearNum() + 1));
+        /*
+         * update the Lemur labels, which are mainly for testing
+         */
+        String unit = speedUnit.toString().toLowerCase();
+        String labelText = String.format("%.0f %s", FastMath.abs(speed), unit);
+        speedLabel.setText(labelText);
+        int gearNum = vehicle.getGearBox().getActiveGearNum();
+        labelText = Integer.toString(gearNum + 1);
+        gearLabel.setText(labelText);
     }
     // *************************************************************************
     // private methods
 
-    private Node buildNumNode(int maxSpeed, int stepSpeed, float radius) {
-        int count = (maxSpeed / stepSpeed) + 1;
-
+    private Node buildNumNode(float maxSpeed, int stepSpeed, float radius) {
         Node numNode = new Node("Speedometer Numbers");
         numNode.setLocalTranslation(0f, 0f, -1f);
 
-        int num = 0;
-        int startAngle = 245;
-        float angleStep = ((155 * 2f) / count) * FastMath.DEG_TO_RAD;
-        float theta = startAngle * FastMath.DEG_TO_RAD;
-
-        for (int i = 0; i <= count; i++) {
-            float x = radius * FastMath.cos(theta);
-            float y = radius * FastMath.sin(theta);
-
-            Label label = new Label("" + num);
+        for (int intSpeed = 0;; intSpeed += stepSpeed) {
+            float fraction = intSpeed / maxSpeed;
+            float theta = MyMath.lerp(fraction, theta0, thetaMin);
+            if (theta < thetaMin) {
+                break;
+            }
+            String text = Integer.toString(intSpeed);
+            Label label = new Label(text);
+            numNode.attachChild(label);
             label.setColor(ColorRGBA.White);
 
-            label.setLocalTranslation(
-                    x - (label.getPreferredSize().x * .5f),
-                    y + (label.getPreferredSize().y * .5f),
-                    0);
-
-            numNode.attachChild(label);
-
-            num += stepSpeed;
-            theta -= angleStep;
+            Vector3f size = label.getPreferredSize();
+            float x = radius * FastMath.cos(theta) - size.x / 2f;
+            float y = radius * FastMath.sin(theta) + size.y / 2f;
+            label.setLocalTranslation(x, y, 0f);
         }
 
         return numNode;
