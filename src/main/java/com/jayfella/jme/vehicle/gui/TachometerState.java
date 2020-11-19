@@ -24,6 +24,7 @@ import com.jme3.texture.Image;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture2D;
 import com.simsilica.lemur.Label;
+import jme3utilities.math.MyMath;
 
 /**
  * Appstate to manage an analog tachometer in the DriverHud.
@@ -33,15 +34,20 @@ public class TachometerState extends BaseAppState {
     // constants and loggers
 
     /**
+     * important needle rotations (measured CCW from +X, in radians)
+     */
+    final private static float thetaMin = -1f; // "pegged" to the right
+    final private static float theta0 = FastMath.PI - thetaMin; // 0 rpms
+    final private static float thetaRedline = 0f;
+    /**
      * color for Lemur labels
      */
     final public static ColorRGBA labelColor
             = new ColorRGBA(66 / 255f, 244 / 255f, 241 / 255f, 1f);
-    private final String revsFormat = "%.0f";
     // *************************************************************************
     // fields
 
-    final private float[] eulerAngles = new float[3];
+    private float prevTheta = theta0;
     private Label revsLabel;
     private Node guiNode;
     private final Node needleNode = new Node("Tachometer Needle");
@@ -120,14 +126,10 @@ public class TachometerState extends BaseAppState {
                 -(width * 0.5f) - 7f,
                 0f);
 
-        revsLabel = new Label("8888");
+        revsLabel = new Label("RPM");
         node.attachChild(revsLabel);
         revsLabel.setColor(labelColor);
-        revsLabel.setLocalTranslation(
-                100 - (revsLabel.getPreferredSize().x * 0.5f),
-                revsLabel.getPreferredSize().y + 15,
-                1f
-        );
+        revsLabel.setLocalTranslation(70f, 30f, 1f);
 
         node.setLocalTranslation(
                 app.getCamera().getWidth() - 400f - 40f,
@@ -163,20 +165,15 @@ public class TachometerState extends BaseAppState {
      */
     @Override
     public void update(float tpf) {
-        float startStopAngle = 155f;
-
         Engine engine = vehicle.getEngine();
         float rpmFraction = engine.getRevs();
-
-        float rot = startStopAngle - ((startStopAngle * 2) * rpmFraction);
-        rot = FastMath.clamp(rot, -startStopAngle, startStopAngle);
-        rot = rot * FastMath.DEG_TO_RAD;
+        float theta = MyMath.lerp(rpmFraction, theta0, thetaRedline);
         /*
          * a slight lag, because a physical needle cannot pivot instantly
          */
-        eulerAngles[2] = FastMath.interpolateLinear(tpf * 5, eulerAngles[2], rot);
+        prevTheta = FastMath.interpolateLinear(0.1f, prevTheta, theta);
 
-        tmpRotation.fromAngles(eulerAngles);
+        tmpRotation.fromAngles(0f, 0f, prevTheta - FastMath.HALF_PI);
         needleNode.setLocalRotation(tmpRotation);
         /*
          * update the Lemur label, which is mainly for testing
@@ -189,43 +186,32 @@ public class TachometerState extends BaseAppState {
     // *************************************************************************
     // private methods
 
-    private Node buildNumNode(int max, int step, float radius, float border) {
-        int count = (max / step) + 1;
+    private Node buildNumNode(float redlineRpm, int stepRpm, float radius) {
+        Node numNode = new Node("Tachometer Numbers");
+        numNode.setLocalTranslation(0f, 0f, -1f);
 
-        Node numNode = new Node("Numbers Node");
-        numNode.setLocalTranslation(radius, radius, 1f);
-
-        float reducedRad = radius - border;
-        int num = 0;
-        int startAngle = 245;
-        float angleStep = ((155 * 2f) / count) * FastMath.DEG_TO_RAD;
-        float theta = startAngle * FastMath.DEG_TO_RAD;
-
-        for (int i = 0; i <= count; i++) {
-            float x = reducedRad * FastMath.cos(theta);
-            float y = reducedRad * FastMath.sin(theta);
-
-            Label label = new Label("" + num / 1000);
+        for (int intRpm = 0;; intRpm += stepRpm) {
+            float rpmFraction = intRpm / redlineRpm;
+            float theta = MyMath.lerp(rpmFraction, theta0, thetaRedline);
+            if (theta < thetaMin) {
+                break;
+            }
+            String text = Integer.toString(intRpm / 1000);
+            Label label = new Label(text);
+            numNode.attachChild(label);
             label.setColor(ColorRGBA.White);
 
-            label.setLocalTranslation(
-                    x - (label.getPreferredSize().x * .5f),
-                    y + (label.getPreferredSize().y * .5f),
-                    0f);
-
-            numNode.attachChild(label);
-
-            num += step;
-            theta -= angleStep;
+            Vector3f size = label.getPreferredSize();
+            float x = radius * FastMath.cos(theta) - size.x / 2f;
+            float y = radius * FastMath.sin(theta) + size.y / 2f;
+            label.setLocalTranslation(x, y, 0f);
         }
-
-        numNode.setLocalTranslation(0f, 0f, -1f);
 
         return numNode;
     }
 
     private Geometry createFixedGeometry(AssetManager assetManager) {
-        String path = "Textures/Vehicles/Speedometer/speedo_bg_2.png";
+        String path = "Textures/Vehicles/Speedometer/tachometer_bg.png";
         Texture backgroundTexture = assetManager.loadTexture(path);
         Image image = backgroundTexture.getImage();
         int height = image.getHeight();
@@ -241,7 +227,7 @@ public class TachometerState extends BaseAppState {
         material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
 
         int maxRevs = (int) vehicle.getEngine().getMaxRevs();
-        Node numbers = buildNumNode(maxRevs, 1000, width / 2f, 20f);
+        Node numbers = buildNumNode(maxRevs, 1000, width / 2f - 20f);
 
         backgroundGeom.setLocalTranslation(
                 -backgroundTexture.getImage().getWidth() / 2f,
