@@ -17,6 +17,10 @@ public class Car extends Vehicle {
 
     // wheel-related stuff. This isn't really "vehicle" related since a vehicle can be a boat or a helicopter.
     private final List<Wheel> wheels = new ArrayList<>();
+    /**
+     * all available modes in the automatic transmission
+     */
+    final private String[] atModes = new String[]{"R", "D"};
     private TyreSmokeEmitter smokeEmitter;
     private VehicleSkidMarks skidmarks;
     private WheelSpinState wheelSpinState;
@@ -64,6 +68,15 @@ public class Car extends Vehicle {
         getNode().attachChild(model);
 
         return wheel;
+    }
+
+    /**
+     * Enumerate all available modes in the automatic transmission.
+     *
+     * @return the pre-existing array (not null)
+     */
+    public String[] listAtModes() {
+        return atModes;
     }
 
     public void removeWheel(int index) {
