@@ -50,16 +50,16 @@ public class TachometerState extends BaseAppState {
     private float prevTheta = theta0;
     private Label revsLabel;
     private Node guiNode;
-    private final Node needleNode = new Node("Tachometer Needle");
-    private final Node node;
+    final private Node needleNode = new Node("Tachometer Needle");
+    final private Node node;
     /**
      * reusable temporary Quaternion
      */
-    private final Quaternion tmpRotation = new Quaternion();
+    final private Quaternion tmpRotation = new Quaternion();
     /**
      * corresponding Vehicle
      */
-    private final Vehicle vehicle;
+    final private Vehicle vehicle;
     // *************************************************************************
     // constructors
 
@@ -122,8 +122,8 @@ public class TachometerState extends BaseAppState {
         material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
 
         needleGeometry.setLocalTranslation(
-                -(width * 0.5f),
-                -(width * 0.5f) - 7f,
+                -(width / 2f),
+                -(width / 2f) - 7f,
                 0f);
 
         revsLabel = new Label("RPM");
@@ -133,7 +133,8 @@ public class TachometerState extends BaseAppState {
 
         node.setLocalTranslation(
                 app.getCamera().getWidth() - 400f - 40f,
-                20f, 0f
+                20f,
+                0f
         );
     }
 
@@ -230,8 +231,8 @@ public class TachometerState extends BaseAppState {
         Node numbers = buildNumNode(maxRevs, 1000, width / 2f - 20f);
 
         backgroundGeom.setLocalTranslation(
-                -backgroundTexture.getImage().getWidth() / 2f,
-                -backgroundTexture.getImage().getHeight() / 2f,
+                -width / 2f,
+                -height / 2f,
                 -1f
         );
 
