@@ -30,6 +30,25 @@ vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
 
 <img height="150" src="https://i.imgur.com/WNVXH1E.png">
 
+## How to build and run More Advanced Vehicles from source
+
+ 1. Install build software:
+   + a Java Development Kit and
+   + [Gradle]
+ 2. Download and extract the source code from GitHub:
+   + using Git:
+     + `git clone https://github.com/stephengold/jme-vehicles.git`
+     + `cd jme-vehicles`
+ 3. Set the `JAVA_HOME` environment variable:
+   + using Bash:  `export JAVA_HOME="` *path to your JDK* `"`
+   + using Windows Command Prompt:  `set JAVA_HOME="` *path to your JDK* `"`
+ 4. Build the application:
+   + using Bash:  `./gradlew build`
+   + using Windows Command Prompt:  `.\gradlew build`
+ 5. Run the application:
+   + using Bash:  `./gradlew run`
+   + using Windows Command Prompt:  `.\gradlew run`
+
 ### Keyboard controls
 
 When a vehicle is loaded:
@@ -49,6 +68,7 @@ When a vehicle is loaded:
 + Esc : return to the Main Menu
 
 [atryder]: https://github.com/ATryder "Adam T. Ryder"
+[gradle]: https://gradle.org "Gradle Project"
 [jme]: http://jmonkeyengine.org  "jMonkeyEngine Project"
 [lemur]: https://github.com/jMonkeyEngine-Contributions/Lemur "Lemur UI Toolkit"
 [pspeed]: https://github.com/pspeed42 "Paul Speed"
