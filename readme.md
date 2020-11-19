@@ -28,6 +28,8 @@ vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
   + tire smoke
   + engine/horn sounds
 
+<img height="150" src="https://i.imgur.com/WNVXH1E.png">
+
 ### Keyboard controls
 
 When a vehicle is loaded:
@@ -45,8 +47,6 @@ When a vehicle is loaded:
 + Pause or . : toggle the simulation paused/running
 + F12 : capture a screenshot to the current working directory
 + Esc : return to the Main Menu
-
-<img height="150" src="https://i.imgur.com/n7iyCF8.png">
 
 [atryder]: https://github.com/ATryder "Adam T. Ryder"
 [jme]: http://jmonkeyengine.org  "jMonkeyEngine Project"
