@@ -1,16 +1,22 @@
 package com.jayfella.jme.vehicle.gui;
 
+import com.atr.jme.font.TrueTypeMesh;
+import com.atr.jme.font.asset.TrueTypeKeyMesh;
+import com.atr.jme.font.shape.TrueTypeNode;
+import com.atr.jme.font.util.Style;
 import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
+import com.jme3.asset.AssetKey;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Quaternion;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Geometry;
@@ -29,6 +35,8 @@ import java.util.logging.Logger;
 import jme3utilities.MyAsset;
 import jme3utilities.mesh.DiscMesh;
 import jme3utilities.mesh.RectangleMesh;
+import jme3utilities.mesh.RectangleOutlineMesh;
+import jme3utilities.mesh.RoundedRectangle;
 
 /**
  * Heads-up display (HUD) for driving a vehicle. This AppState should be
@@ -37,6 +45,7 @@ import jme3utilities.mesh.RectangleMesh;
  * <ul>
  * <li>the "Return to Main Menu" button</li>
  * <li>the pause button</li>
+ * <li>the automatic-transmision mode indicator</li>
  * <li>the horn button</li>
  * <li>the power button</li>
  * <li>the steering-wheel indicator</li>
@@ -63,24 +72,39 @@ public class DriverHud extends BaseAppState {
     private Button returnButton;
     private Car car;
     /**
+     * vertical spacing between ATM indicator positions (in pixels)
+     */
+    private float atmiSpacingY;
+    /**
      * dimensions of the GUI viewport (in pixels)
      */
     private float viewPortHeight, viewPortWidth;
 
+    private Geometry atmiIndicatorGeometry;
     private Geometry hornButton;
     private Geometry pauseButton;
     private Geometry powerButton;
     private Geometry steering;
+    /**
+     * pre-loaded materials for the ATM indicator
+     */
+    private Material atmiBackgroundMaterial, atmiIndicatorMaterial;
     /**
      * pre-loaded materials for buttons
      */
     private Material hornSilentMaterial, hornSoundMaterial, pauseMaterial;
     private Material powerOffMaterial, powerOnMaterial, runMaterial;
     /**
+     * Node that represents the ATM indicator
+     */
+    private Node atmiNode;
+    /**
      * appstates for indicators
      */
     private SpeedometerState speedometer;
     private TachometerState tachometer;
+
+    private TrueTypeMesh droidFont;
     // *************************************************************************
     // constructors
 
@@ -232,15 +256,28 @@ public class DriverHud extends BaseAppState {
         RenderState ars = material.getAdditionalRenderState();
         ars.setBlendMode(RenderState.BlendMode.Alpha);
         steering.setMaterial(material);
+        /*
+         * pre-load the Droid font
+         */
+        AssetKey<TrueTypeMesh> assetKey = new TrueTypeKeyMesh(
+                "Interface/Fonts/DroidSerifBold-aMPE.ttf", Style.Plain, 18);
+        droidFont = manager.loadAsset(assetKey);
+        /*
+         * pre-load unshaded materials for the mode indicator
+         */
+        atmiBackgroundMaterial
+                = MyAsset.createUnshadedMaterial(manager, ColorRGBA.Black);
+        atmiIndicatorMaterial
+                = MyAsset.createUnshadedMaterial(manager, ColorRGBA.Green);
     }
 
     /**
-     * Callback invoked when this AppState was previously enabled but is now
-     * disabled either because setEnabled(false) was called or the state is
-     * being cleaned up.
+     * Callback invoked when this AppState ceases to be both attached and
+     * enabled.
      */
     @Override
     protected void onDisable() {
+        hideAtmi();
         hideHornButton();
         hidePauseButton();
         hidePowerButton();
@@ -251,9 +288,7 @@ public class DriverHud extends BaseAppState {
     }
 
     /**
-     * Callback invoked when this AppState is fully enabled, ie: is attached and
-     * isEnabled() is true or when the setEnabled() status changes after the
-     * state is attached.
+     * Callback invoked when this AppState becomes both attached and enabled.
      */
     @Override
     protected void onEnable() {
@@ -262,6 +297,8 @@ public class DriverHud extends BaseAppState {
         boolean isPaused = (bas.getSpeed() == 0f);
         showPauseButton(isPaused);
 
+        String[] atModes = car.listAtModes();
+        showAtmi(atModes);
         showHornButton(false);
         showPowerButton(false);
         showReturnButton();
@@ -279,6 +316,16 @@ public class DriverHud extends BaseAppState {
         Quaternion orientation = new Quaternion();
         orientation.fromAngles(0f, 0f, angle);
         steering.setLocalRotation(orientation);
+
+        // Indicate the mode of the automatic transmission.
+        String mode;
+        if (car.getGearBox().isReversing()) {
+            mode = "R";
+        } else {
+            mode = "D";
+        }
+        String[] atModes = car.listAtModes();
+        setAtmi(atModes, mode);
     }
     // *************************************************************************
     // private methods
@@ -292,6 +339,16 @@ public class DriverHud extends BaseAppState {
         SimpleApplication simpleApp = (SimpleApplication) getApplication();
         Node guiNode = simpleApp.getGuiNode();
         guiNode.attachChild(spatial);
+    }
+
+    /**
+     * Hide the automatic-transmission mode indicator.
+     */
+    private void hideAtmi() {
+        if (atmiNode != null) {
+            atmiNode.removeFromParent();
+            atmiNode = null;
+        }
     }
 
     /**
@@ -359,6 +416,88 @@ public class DriverHud extends BaseAppState {
             getStateManager().detach(tachometer);
             tachometer = null;
         }
+    }
+
+    /**
+     * Indicate the specified automatic-transmission mode.
+     *
+     * @param modes the array of modes, in top-to-bottom order
+     * @param selectedMode which mode to indicate (not null)
+     */
+    private void setAtmi(String modes[], String selectedMode) {
+        for (int i = 0; i < modes.length; ++i) {
+            if (selectedMode.equals(modes[i])) {
+                float y = (modes.length - i) * atmiSpacingY;
+                atmiIndicatorGeometry.setLocalTranslation(0f, y, 0f);
+                atmiIndicatorGeometry.setCullHint(Spatial.CullHint.Never);
+                return;
+            }
+        }
+
+        atmiIndicatorGeometry.setCullHint(Spatial.CullHint.Always);
+    }
+
+    /**
+     * Display the automatic-transmission mode indicator.
+     *
+     * @param modes an array of modes, in top-to-bottom order
+     */
+    private void showAtmi(String[] modes) {
+        hideAtmi();
+
+        atmiNode = new Node("Automatic-Transmission Mode Indicator");
+        attachToGui(atmiNode);
+        float centerX = 0.625f * viewPortWidth;
+        float bottomY = 0.15f * viewPortHeight;
+        atmiNode.setLocalTranslation(centerX, bottomY, guiZ);
+
+        atmiSpacingY = 0.032f * viewPortHeight;
+        float yModeCenter = modes.length * atmiSpacingY;
+        float maxWidth = 0f;
+        int kerning = 0;
+        ColorRGBA textColor = ColorRGBA.White.clone();
+        /*
+         * Attach a TrueTypeNode for each mode.
+         */
+        for (String mode : modes) {
+            TrueTypeNode ttNode = droidFont.getText(mode, kerning, textColor);
+            atmiNode.attachChild(ttNode);
+            float width = ttNode.getWidth();
+            float x = -width / 2f;
+            float height = ttNode.getHeight();
+            float y = yModeCenter + height / 2f;
+            ttNode.setLocalTranslation(x, y, guiZ);
+
+            if (width > maxWidth) {
+                maxWidth = width;
+            }
+            yModeCenter -= atmiSpacingY;
+        }
+        /*
+         * Attach a rounded-rectangle Geometry for the background.
+         */
+        float bgHeight = (modes.length + 1) * atmiSpacingY;
+        float cornerRadius = 0.01f * viewPortWidth;
+        float bgWidth = maxWidth + 2f * cornerRadius;
+        Mesh bgMesh = new RoundedRectangle(-bgWidth / 2f, bgWidth / 2f, 0f,
+                bgHeight, cornerRadius, 1f);
+        Geometry bgGeometry = new Geometry("bg", bgMesh);
+        atmiNode.attachChild(bgGeometry);
+        bgGeometry.setLocalTranslation(0f, 0f, -0.1f);
+        bgGeometry.setMaterial(atmiBackgroundMaterial);
+        /*
+         * Attach a rectangular outline Geometry for the indicator.
+         */
+        float indWidth = maxWidth + cornerRadius;
+        float x1 = -indWidth / 2f;
+        float x2 = indWidth / 2f;
+        float y1 = -atmiSpacingY / 2f;
+        float y2 = atmiSpacingY / 2f;
+        Mesh indMesh = new RectangleOutlineMesh(x1, x2, y1, y2);
+        atmiIndicatorGeometry = new Geometry("ind", indMesh);
+        atmiNode.attachChild(atmiIndicatorGeometry);
+        atmiIndicatorGeometry.setCullHint(Spatial.CullHint.Always);
+        atmiIndicatorGeometry.setMaterial(atmiIndicatorMaterial);
     }
 
     /**
