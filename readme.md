@@ -1,4 +1,4 @@
-The Advanced Vehicles Project demonstrates
+The More Advanced Vehicles Project demonstrates
 vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
 
 ### Features
@@ -57,12 +57,14 @@ When a vehicle is loaded:
 
 ### Wish list
 
++ Eliminate the initial drop
 + More alternatives for:
-  + Camera controllers, such as FlyCam and plan view
   + Environments, such as: off-road, urban, and parking garage
+  + Propulsion, such as: four-wheel drive, front-wheel drive, and jets
   + Vehicle physics, such as that used in RallyGame
-  + Vehicle types, such as: hovertanks, motorcycles, speedboats, and airplanes
-+ Obstacles:
+  + Vehicle types, such as: hovertanks, motorcycles, speedboats, airplanes, and helicopters
+  + Viewpoints, such as: FlyCam and plan view
++ More obstacles:
   + Other vehicles (parked or AI-controlled)
   + Animated non-vehicles, such as: gates, drawbridges, deer, and pedestrians
   + Passive non-vehicles, such as: traffic cones, portable barricades, and loose tires
@@ -72,19 +74,26 @@ When a vehicle is loaded:
   + Compass
   + Cruise control
   + Fuel gauge
-  + Manual transmission
+  + Headlamps
+  + Manual transmission with clutch
   + Maps
-  + Mirrors
+  + Mirrors and backup assist
+  + Nitrous oxide
   + Odometer
-  + Siren
-  + Trailer
+  + Oil-temperature gauge
+  + Sirens
+  + Trailers
   + Weaponry
 + More scenarios:
   + Crazy taxi
   + Demolition derby
   + Night driving with headlamps
-  + Player-vs-player
+  + Player-vs-player over a network
   + Time trial
++ More details:
+  + Scoring for stunts
+  + Simulate damage and tire wear
+  + Sound effects for crashes
 
 See also
 [the project's issue tracker](https://github.com/stephengold/jme-vehicles/issues).
