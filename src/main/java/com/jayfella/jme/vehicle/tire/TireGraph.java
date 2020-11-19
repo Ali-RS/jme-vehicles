@@ -28,7 +28,7 @@ public class TireGraph extends Geometry {
     private ColorRGBA momentColor = ColorRGBA.Green;
 
     public TireGraph(AssetManager assetManager, PacejkaTireModel tireModel, int width, int height) {
-        super("Tyre Graph");
+        super("Tire Graph");
 
         this.tireModel = tireModel;
         this.width = width;

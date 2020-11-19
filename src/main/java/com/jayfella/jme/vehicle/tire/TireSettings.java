@@ -1,6 +1,6 @@
 package com.jayfella.jme.vehicle.tire;
 
-public class TyreSettings {
+public class TireSettings {
 
     // LATERAL: default settings
 
@@ -42,7 +42,7 @@ public class TyreSettings {
      * @param loadCoefficientKB
      *            - coefficient KB in the load curve function f2.
      */
-    public TyreSettings(float slipAngleCoefficientC, float slipAngleCoefficientB, float slipAngleCoefficientE, float loadCoefficientKA, float loadCoefficientKB) {
+    public TireSettings(float slipAngleCoefficientC, float slipAngleCoefficientB, float slipAngleCoefficientE, float loadCoefficientKA, float loadCoefficientKB) {
         this.slipAngleCoefficientC = slipAngleCoefficientC;
         this.slipAngleCoefficientB = slipAngleCoefficientB;
         this.slipAngleCoefficientE = slipAngleCoefficientE;

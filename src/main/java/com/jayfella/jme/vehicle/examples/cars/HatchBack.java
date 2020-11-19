@@ -2,7 +2,7 @@ package com.jayfella.jme.vehicle.examples.cars;
 
 import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.examples.engines.Engine180HP;
-import com.jayfella.jme.vehicle.examples.tyres.Tyre_02;
+import com.jayfella.jme.vehicle.examples.tires.Tire_02;
 import com.jayfella.jme.vehicle.examples.wheels.BasicAlloyWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Brake;
@@ -52,11 +52,11 @@ public class HatchBack extends Car {
             getWheel(i).setFriction(0.9f);
         }
 
-        // give each wheel a tyre.
-        getWheel(0).setTireModel(new Tyre_02());
-        getWheel(1).setTireModel(new Tyre_02());
-        getWheel(2).setTireModel(new Tyre_02());
-        getWheel(3).setTireModel(new Tyre_02());
+        // give each wheel a tire.
+        getWheel(0).setTireModel(new Tire_02());
+        getWheel(1).setTireModel(new Tire_02());
+        getWheel(2).setTireModel(new Tire_02());
+        getWheel(3).setTireModel(new Tire_02());
 
         getWheel(0).setAccelerationForce(1);
         getWheel(1).setAccelerationForce(1);

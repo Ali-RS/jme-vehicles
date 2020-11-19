@@ -5,13 +5,13 @@ import com.jme3.math.FastMath;
 // https://github.com/chrisoco/M120/blob/master/RaceCar/RCAS/src/rcas/model/MagicFormulaTireModel.java
 public class PacejkaTireModel {
 
-    private TyreSettings.ChangeListener changeListener;
+    private TireSettings.ChangeListener changeListener;
 
     private String name;
 
-    private TyreSettings lateral;
-    private TyreSettings longitudinal;
-    private TyreSettings alignMoment;
+    private TireSettings lateral;
+    private TireSettings longitudinal;
+    private TireSettings alignMoment;
 
     // the maximum load the tire can handle
     private float maxLoad;
@@ -27,7 +27,7 @@ public class PacejkaTireModel {
     private float frictionCircle;
 
     public PacejkaTireModel(String name,
-            TyreSettings lateral, TyreSettings longitudinal, TyreSettings alignMoment,
+            TireSettings lateral, TireSettings longitudinal, TireSettings alignMoment,
             float maxLoad) {
 
         this.name = name;
@@ -45,27 +45,27 @@ public class PacejkaTireModel {
         this.name = name;
     }
 
-    public TyreSettings getLateral() {
+    public TireSettings getLateral() {
         return lateral;
     }
 
-    public void setLateral(TyreSettings lateral) {
+    public void setLateral(TireSettings lateral) {
         this.lateral = lateral;
     }
 
-    public TyreSettings getLongitudinal() {
+    public TireSettings getLongitudinal() {
         return longitudinal;
     }
 
-    public void setLongitudinal(TyreSettings longitudinal) {
+    public void setLongitudinal(TireSettings longitudinal) {
         this.longitudinal = longitudinal;
     }
 
-    public TyreSettings getAlignMoment() {
+    public TireSettings getAlignMoment() {
         return alignMoment;
     }
 
-    public void setAlignMoment(TyreSettings alignMoment) {
+    public void setAlignMoment(TireSettings alignMoment) {
         this.alignMoment = alignMoment;
     }
 
@@ -79,7 +79,7 @@ public class PacejkaTireModel {
     }
 
     // slipAngle is in RADIANS
-    private float calcSlipAngleFactor(float slipAngle, TyreSettings settings) {
+    private float calcSlipAngleFactor(float slipAngle, TireSettings settings) {
         // float x = slipAngle * FastMath.DEG_TO_RAD;
         // float x = slipAngle;
 
@@ -88,7 +88,7 @@ public class PacejkaTireModel {
                         * (settings.getSlipAngleCoefficientB() * slipAngle - FastMath.atan(settings.getSlipAngleCoefficientB() * slipAngle))));
     }
 
-    private float calcLoadForce(float load, TyreSettings settings) {
+    private float calcLoadForce(float load, TireSettings settings) {
         return settings.getLoadCoefficientKA() * (1 - settings.getLoadCoefficientKB() * load) * load;
     }
 
@@ -178,11 +178,11 @@ public class PacejkaTireModel {
         return lat + System.lineSeparator() + lng + System.lineSeparator() + mnt;
     }
 
-    public TyreSettings.ChangeListener getChangeListener() {
+    public TireSettings.ChangeListener getChangeListener() {
         return changeListener;
     }
 
-    public void setChangeListener(TyreSettings.ChangeListener changeListener) {
+    public void setChangeListener(TireSettings.ChangeListener changeListener) {
         this.changeListener = changeListener;
     }
 

@@ -3,7 +3,7 @@ package com.jayfella.jme.vehicle.examples.cars;
 import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.engine.Engine;
 import com.jayfella.jme.vehicle.examples.engines.Engine600HP;
-import com.jayfella.jme.vehicle.examples.tyres.Tyre_01;
+import com.jayfella.jme.vehicle.examples.tires.Tire_01;
 import com.jayfella.jme.vehicle.examples.wheels.DarkAlloyWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Brake;
@@ -54,11 +54,11 @@ public class GTRNismo extends Car {
             getWheel(i).setFriction(1.6f);
         }
 
-        // give each wheel a tyre.
-        getWheel(0).setTireModel(new Tyre_01());
-        getWheel(1).setTireModel(new Tyre_01());
-        getWheel(2).setTireModel(new Tyre_01());
-        getWheel(3).setTireModel(new Tyre_01());
+        // give each wheel a tire.
+        getWheel(0).setTireModel(new Tire_01());
+        getWheel(1).setTireModel(new Tire_01());
+        getWheel(2).setTireModel(new Tire_01());
+        getWheel(3).setTireModel(new Tire_01());
 
         getWheel(0).setAccelerationForce(1);
         getWheel(1).setAccelerationForce(1);

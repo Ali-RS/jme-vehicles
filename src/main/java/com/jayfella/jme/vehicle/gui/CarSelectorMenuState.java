@@ -3,7 +3,7 @@ package com.jayfella.jme.vehicle.gui;
 import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.debug.DebugTabState;
 import com.jayfella.jme.vehicle.debug.EnginePowerGraphState;
-import com.jayfella.jme.vehicle.debug.TyreDataState;
+import com.jayfella.jme.vehicle.debug.TireDataState;
 import com.jayfella.jme.vehicle.debug.VehicleEditorState;
 import com.jayfella.jme.vehicle.examples.cars.*;
 import com.jayfella.jme.vehicle.input.KeyboardVehicleInputState;
@@ -70,10 +70,10 @@ public class CarSelectorMenuState extends AnimatedMenuState {
         enginePowerGraphState.setEnabled(false);
         getStateManager().attach(enginePowerGraphState);
 
-        // tyre data GUI for viewing how much grip each tyre has according to the Pacejka formula
-        TyreDataState tyreDataState = new TyreDataState(vehicle);
-        tyreDataState.setEnabled(false);
-        getStateManager().attach(tyreDataState);
+        // tire data GUI for viewing how much grip each tire has according to the Pacejka formula
+        TireDataState tireDataState = new TireDataState(vehicle);
+        tireDataState.setEnabled(false);
+        getStateManager().attach(tireDataState);
 
         // the main vehicle editor to modify aspects of the vehicle in real time
         VehicleEditorState vehicleEditorState = new VehicleEditorState(vehicle);

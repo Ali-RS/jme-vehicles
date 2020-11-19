@@ -2,7 +2,7 @@ package com.jayfella.jme.vehicle.examples.cars;
 
 import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.examples.engines.Engine450HP;
-import com.jayfella.jme.vehicle.examples.tyres.Tyre_01;
+import com.jayfella.jme.vehicle.examples.tires.Tire_01;
 import com.jayfella.jme.vehicle.examples.wheels.BasicAlloyWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Brake;
@@ -91,13 +91,13 @@ public class PickupTruck extends Car {
             getWheel(i).getSuspension().setDamping(0.3f);
         }
 
-        // give each wheel a tyre.
-        getWheel(0).setTireModel(new Tyre_01());
-        getWheel(1).setTireModel(new Tyre_01());
-        getWheel(2).setTireModel(new Tyre_01());
-        getWheel(3).setTireModel(new Tyre_01());
+        // give each wheel a tire.
+        getWheel(0).setTireModel(new Tire_01());
+        getWheel(1).setTireModel(new Tire_01());
+        getWheel(2).setTireModel(new Tire_01());
+        getWheel(3).setTireModel(new Tire_01());
 
-        // the friction of the tyre.
+        // the friction of the tire.
         getWheel(0).setFriction(1f);
         getWheel(1).setFriction(1f);
         getWheel(2).setFriction(1f);

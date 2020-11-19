@@ -2,7 +2,7 @@ package com.jayfella.jme.vehicle.examples.cars;
 
 import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.examples.engines.Engine250HP;
-import com.jayfella.jme.vehicle.examples.tyres.Tyre_01;
+import com.jayfella.jme.vehicle.examples.tires.Tire_01;
 import com.jayfella.jme.vehicle.examples.wheels.BasicAlloyWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Brake;
@@ -56,11 +56,11 @@ public class DuneBuggy extends Car {
             getWheel(i).setFriction(1.3f);
         }
 
-        // give each wheel a tyre.
-        getWheel(0).setTireModel(new Tyre_01());
-        getWheel(1).setTireModel(new Tyre_01());
-        getWheel(2).setTireModel(new Tyre_01());
-        getWheel(3).setTireModel(new Tyre_01());
+        // give each wheel a tire.
+        getWheel(0).setTireModel(new Tire_01());
+        getWheel(1).setTireModel(new Tire_01());
+        getWheel(2).setTireModel(new Tire_01());
+        getWheel(3).setTireModel(new Tire_01());
 
         getWheel(0).setAccelerationForce(0);
         getWheel(1).setAccelerationForce(0);

@@ -49,11 +49,11 @@ public class SkidMarkManager {
     private boolean meshUpdated;
     private boolean haveSetBounds;
 
-    public SkidMarkManager(AssetManager assetManager, int maxSkidDistance, float tyreWidth) {
+    public SkidMarkManager(AssetManager assetManager, int maxSkidDistance, float tireWidth) {
         // Generate a fixed array of skidmarks
 
         this.MAX_MARKS = maxSkidDistance;
-        this.MARK_WIDTH = tyreWidth;
+        this.MARK_WIDTH = tireWidth;
 
         skidmarks = new MarkSection[MAX_MARKS];
         for (int i = 0; i < MAX_MARKS; i++) {

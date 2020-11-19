@@ -13,7 +13,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 
-public class TyreSmokeEmitter extends BaseAppState {
+public class TireSmokeEmitter extends BaseAppState {
 
     private Node rootNode;
 
@@ -22,7 +22,7 @@ public class TyreSmokeEmitter extends BaseAppState {
     private int wheelCount;
     private ParticleEmitter[] emitters;
 
-    public TyreSmokeEmitter(Vehicle vehicle) {
+    public TireSmokeEmitter(Vehicle vehicle) {
         this.vehicle = vehicle;
 
     }

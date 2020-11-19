@@ -4,7 +4,7 @@ import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.debug.DebugTabState;
 import com.jayfella.jme.vehicle.debug.EnginePowerGraphState;
-import com.jayfella.jme.vehicle.debug.TyreDataState;
+import com.jayfella.jme.vehicle.debug.TireDataState;
 import com.jayfella.jme.vehicle.debug.VehicleEditorState;
 import com.jayfella.jme.vehicle.input.KeyboardVehicleInputState;
 import com.jme3.app.state.AppStateManager;
@@ -40,9 +40,9 @@ public class ReturnToMenuClickCommand implements Command<Button> {
             stateManager.detach(enginePowerGraphState);
         }
 
-        TyreDataState tyreDataState = stateManager.getState(TyreDataState.class);
-        if (tyreDataState != null) {
-            stateManager.detach(tyreDataState);
+        TireDataState tireDataState = stateManager.getState(TireDataState.class);
+        if (tireDataState != null) {
+            stateManager.detach(tireDataState);
         }
 
         VehicleEditorState vehicleEditorState = stateManager.getState(VehicleEditorState.class);

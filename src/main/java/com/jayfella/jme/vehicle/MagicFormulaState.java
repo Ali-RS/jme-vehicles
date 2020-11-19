@@ -32,7 +32,7 @@ public class MagicFormulaState extends BaseAppState {
     private Geometry centerOfGravity;
 
     // weight per wheel labels
-    private Label[] tyreWeightLabels;
+    private Label[] tireWeightLabels;
 
 
     public MagicFormulaState(Car vehicle) {
@@ -79,11 +79,11 @@ public class MagicFormulaState extends BaseAppState {
         centerOfGravity.setLocalTranslation(screenCenter.add(newLoc).subtract(2,2, 0));
     }
 
-    private void createTyreWeightLabels() {
+    private void createTireWeightLabels() {
 
-        tyreWeightLabels = new Label[vehicle.getNumWheels()];
+        tireWeightLabels = new Label[vehicle.getNumWheels()];
 
-        for (int i = 0; i < tyreWeightLabels.length; i++) {
+        for (int i = 0; i < tireWeightLabels.length; i++) {
 
             Label label = new Label("wheel");
 
@@ -96,13 +96,13 @@ public class MagicFormulaState extends BaseAppState {
 
             label.setInsets(new Insets3f(10, 10, 10, 10));
 
-            tyreWeightLabels[i] = label;
+            tireWeightLabels[i] = label;
         }
 
-        vehicleDataContainer.addChild(tyreWeightLabels[0], 0, 0);
-        vehicleDataContainer.addChild(tyreWeightLabels[1], 0, 1);
-        vehicleDataContainer.addChild(tyreWeightLabels[2], 1, 0);
-        vehicleDataContainer.addChild(tyreWeightLabels[3], 1, 1);
+        vehicleDataContainer.addChild(tireWeightLabels[0], 0, 0);
+        vehicleDataContainer.addChild(tireWeightLabels[1], 0, 1);
+        vehicleDataContainer.addChild(tireWeightLabels[2], 1, 0);
+        vehicleDataContainer.addChild(tireWeightLabels[3], 1, 1);
 
         // guiNode.attachChild(vehicleDataContainer);
     }
@@ -162,7 +162,7 @@ public class MagicFormulaState extends BaseAppState {
         vehicleDataContainer = new Container();
         vehicleDataContainer.setLocalTranslation(20, getApplication().getCamera().getHeight() - 250, 1);
         createCenterOfGravityControl();
-        createTyreWeightLabels();
+        createTireWeightLabels();
 
 
     }
@@ -305,11 +305,11 @@ public class MagicFormulaState extends BaseAppState {
 
                 wheel.getTireModel().setLoad(load);
 
-                // returns the amount of force in N on the tyre.
-                // this model allows max 10,000 (this is determined by the tyre).
+                // returns the amount of force in N on the tire.
+                // this model allows max 10,000 (this is determined by the tire).
                 float lateral = wheel.getTireModel().calcLateralTireForce(lateralSlip);
 
-                // the slip angle for this is how much force is being applied to the tyre (acceleration force).
+                // the slip angle for this is how much force is being applied to the tire (acceleration force).
                 float longSlip = wheel.calculateLongitudinalSlipAngle();
                 float longitudinal = wheel.getTireModel().calcLongtitudeTireForce(longSlip);
 
@@ -333,7 +333,7 @@ public class MagicFormulaState extends BaseAppState {
                 // String format = "Weight: %.2f\nLat: %.2f\nLong: %.2f\nFriction: %.2f\nSlip: %.2f";
                 String format = "Lat: %.2f\nLong: %.2f\nFriction: %.2f\nSlip: %.2f\nWheelspin: %.2f";
 
-                tyreWeightLabels[i].setText(String.format(format,
+                tireWeightLabels[i].setText(String.format(format,
                         // wheel.getTireModel().getLoad(),
                         lateral / 10000,
                         longitudinal / 10000,

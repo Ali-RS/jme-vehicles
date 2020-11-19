@@ -32,7 +32,7 @@ public class Wheel {
 
     private float rotationDelta;
 
-    // simulates degradation. 1.0 = full grip the tyre allows, 0.0 = the tyre is dead.
+    // simulates degradation. 1.0 = full grip the tire allows, 0.0 = the tire is dead.
     private float grip = 1.0f;
 
     // the amount of braking strength being applied. Between 0 and 1
@@ -219,7 +219,7 @@ public class Wheel {
 
     }
 
-    // the slip angle for this is how much force is being applied to the tyre (acceleration force).
+    // the slip angle for this is how much force is being applied to the tire (acceleration force).
     // how much rotation has been applied as a result of acceleration.
     public float calculateLongitudinalSlipAngle() {
 

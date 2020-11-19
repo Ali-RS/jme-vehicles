@@ -14,7 +14,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Quad;
 
-public class TyreDataState extends BaseAppState {
+public class TireDataState extends BaseAppState {
 
     private final Car vehicle;
 
@@ -28,13 +28,13 @@ public class TyreDataState extends BaseAppState {
     // 3 needles per wheel.
     private Geometry[][] needles;
 
-    public TyreDataState(Car vehicle) {
+    public TireDataState(Car vehicle) {
 
         this.vehicle = vehicle;
         this.tireGraphs = new TireGraph[vehicle.getNumWheels()];
         this.needles = new Geometry[vehicle.getNumWheels()][3];
 
-        this.node = new Node("Tyre Data Node");
+        this.node = new Node("Tire Data Node");
     }
 
     private Geometry createNeedle(AssetManager assetManager, ColorRGBA color) {

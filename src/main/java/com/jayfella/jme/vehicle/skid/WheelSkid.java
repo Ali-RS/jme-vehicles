@@ -9,10 +9,10 @@ public class WheelSkid {
     VehicleWheel wheel;
     SkidMarkManager manager;
 
-    public WheelSkid(VehicleWheel wheel, AssetManager assetManager, int maxDistance, float tyreWidth) {
+    public WheelSkid(VehicleWheel wheel, AssetManager assetManager, int maxDistance, float tireWidth) {
         // this.vehicleControl = vehicle.getVehicleControl();
         this.wheel = wheel;
-        this.manager = new SkidMarkManager(assetManager, maxDistance, tyreWidth);
+        this.manager = new SkidMarkManager(assetManager, maxDistance, tireWidth);
     }
 
 	final float SKID_FX_SPEED = 0.25f; // Min side slip speed in m/s to start showing a skid

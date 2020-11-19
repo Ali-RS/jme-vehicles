@@ -1,10 +1,10 @@
 package com.jayfella.jme.vehicle;
 
-import com.jayfella.jme.vehicle.examples.tyres.Tyre_01;
+import com.jayfella.jme.vehicle.examples.tires.Tire_01;
 import com.jayfella.jme.vehicle.tire.PacejkaTireModel;
 import com.jayfella.jme.vehicle.tire.TireEditor;
 import com.jayfella.jme.vehicle.tire.TireGraph;
-import com.jayfella.jme.vehicle.tire.TyreSettings;
+import com.jayfella.jme.vehicle.tire.TireSettings;
 import com.jme3.app.SimpleApplication;
 import com.jme3.math.ColorRGBA;
 import com.jme3.system.AppSettings;
@@ -39,13 +39,13 @@ public class PacejkaViewer extends SimpleApplication {
         BaseStyles.loadGlassStyle();
         GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
 
-        tireModel = new Tyre_01();
+        tireModel = new Tire_01();
 
         TireGraph tireGraph = new TireGraph(assetManager, tireModel, cam.getWidth(), cam.getHeight());
         tireGraph.setBackgroundColor(ColorRGBA.DarkGray);
         tireGraph.setLineColor(ColorRGBA.LightGray);
 
-        TyreSettings.ChangeListener changeListener = new TyreSettings.ChangeListener() {
+        TireSettings.ChangeListener changeListener = new TireSettings.ChangeListener() {
             @Override
             public void valueChanged() {
                 tireGraph.drawGraph();

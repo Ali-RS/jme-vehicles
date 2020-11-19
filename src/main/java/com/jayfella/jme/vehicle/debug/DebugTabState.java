@@ -26,7 +26,7 @@ public class DebugTabState extends BaseAppState {
         TabbedPanel tabbedPanel = editorState.getTabbedPanel();
 
         EnginePowerGraphState enginePowerGraphState = getState(EnginePowerGraphState.class);
-        TyreDataState tyreDataState = getState(TyreDataState.class);
+        TireDataState tireDataState = getState(TireDataState.class);
         MagicFormulaState magicFormulaState = getState(MagicFormulaState.class);
 
         PropertyPanel propertyPanel = container.addChild(new PropertyPanel("glass"));
@@ -34,8 +34,8 @@ public class DebugTabState extends BaseAppState {
         propertyPanel.addBooleanProperty("Display Stats", this, "displayStats");
         propertyPanel.addBooleanProperty("Bullet Debug", bulletAppState, "debugEnabled");
         propertyPanel.addBooleanProperty("Engine Graph", enginePowerGraphState, "enabled");
-        propertyPanel.addBooleanProperty("Tyre Graph", tyreDataState, "enabled");
-        propertyPanel.addBooleanProperty("Tyre Data", magicFormulaState, "vehicleDataEnabled");
+        propertyPanel.addBooleanProperty("Tire Graph", tireDataState, "enabled");
+        propertyPanel.addBooleanProperty("Tire Data", magicFormulaState, "vehicleDataEnabled");
         propertyPanel.addBooleanProperty("Center of Gravity", magicFormulaState, "centerOfGravityEnabled");
 
         tabbedPanel.addTab("Debug", container);

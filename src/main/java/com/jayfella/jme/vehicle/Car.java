@@ -21,7 +21,7 @@ public class Car extends Vehicle {
      * all available modes in the automatic transmission
      */
     final private String[] atModes = new String[]{"R", "D"};
-    private TyreSmokeEmitter smokeEmitter;
+    private TireSmokeEmitter smokeEmitter;
     private VehicleSkidMarks skidmarks;
     private WheelSpinState wheelSpinState;
     private MagicFormulaState magicFormulaState;
@@ -146,15 +146,15 @@ public class Car extends Vehicle {
         return result;
     }
 
-    public void setTyreSmokeEnabled(boolean enabled) {
+    public void setTireSmokeEnabled(boolean enabled) {
         this.smokeEmitter.setEnabled(enabled);
     }
 
-    public void setTyreSkidMarksVisible(boolean enabled) {
+    public void setTireSkidMarksVisible(boolean enabled) {
         this.skidmarks.setEnabled(enabled);
     }
 
-    public void setTyreSkidMarksEnabled(boolean enabled) {
+    public void setTireSkidMarksEnabled(boolean enabled) {
         this.skidmarks.setSkidmarkEnabled(enabled);
     }
 
@@ -175,7 +175,7 @@ public class Car extends Vehicle {
     @Override
     public void build() {
         super.build();
-        this.smokeEmitter = new TyreSmokeEmitter(this);
+        this.smokeEmitter = new TireSmokeEmitter(this);
 
         Spatial wheelSpatial = getWheel(0).getVehicleWheel().getWheelSpatial();
         BoundingBox bounds = (BoundingBox) wheelSpatial.getWorldBound();
