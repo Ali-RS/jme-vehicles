@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle.gui;
 
 import com.jayfella.jme.vehicle.Vehicle;
+import com.jayfella.jme.vehicle.engine.Engine;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
@@ -12,6 +13,7 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
+import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
@@ -30,6 +32,11 @@ public class TachometerState extends BaseAppState {
     // *************************************************************************
     // constants and loggers
 
+    /**
+     * color for Lemur labels
+     */
+    final public static ColorRGBA labelColor
+            = new ColorRGBA(66 / 255f, 244 / 255f, 241 / 255f, 1f);
     private final String revsFormat = "%.0f";
     // *************************************************************************
     // fields
@@ -37,9 +44,15 @@ public class TachometerState extends BaseAppState {
     final private float[] eulerAngles = new float[3];
     private Label revsLabel;
     private Node guiNode;
-    private final Node needleNode = new Node("Needle");
+    private final Node needleNode = new Node("Tachometer Needle");
     private final Node node;
-    private final Quaternion quat = new Quaternion();
+    /**
+     * reusable temporary Quaternion
+     */
+    private final Quaternion tmpRotation = new Quaternion();
+    /**
+     * corresponding Vehicle
+     */
     private final Vehicle vehicle;
     // *************************************************************************
     // constructors
@@ -52,8 +65,8 @@ public class TachometerState extends BaseAppState {
     public TachometerState(Vehicle vehicle) {
         this.vehicle = vehicle;
 
-        this.node = new Node("Tachometer: " + vehicle.getName());
-        this.node.setQueueBucket(RenderQueue.Bucket.Gui);
+        node = new Node("Tachometer for " + vehicle.getName());
+        node.setQueueBucket(RenderQueue.Bucket.Gui);
     }
     // *************************************************************************
     // BaseAppState methods
@@ -78,42 +91,47 @@ public class TachometerState extends BaseAppState {
      */
     @Override
     protected void initialize(Application app) {
-        this.guiNode = ((SimpleApplication) app).getGuiNode();
-
-        Geometry fixedGeometry = createFixedGeometry(app.getAssetManager());
-        node.attachChild(fixedGeometry);
-
-        Texture needleTexture = app.getAssetManager().loadTexture("Textures/Vehicles/Speedometer/speedo_needle_2.png");
-        Geometry needleGeometry = new Geometry("Tachometer Needle",
-                new Quad(needleTexture.getImage().getWidth(), needleTexture.getImage().getHeight()));
-
-        needleGeometry.setMaterial(new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md"));
-        needleGeometry.getMaterial().setTexture("ColorMap", needleTexture);
-        needleGeometry.getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-
-        needleGeometry.setLocalTranslation(
-                -(needleTexture.getImage().getWidth() * 0.5f),
-                -(needleTexture.getImage().getWidth() * 0.5f) - 7,
-                0);
-
-        needleNode.setLocalTranslation(100, 100, 1);
-        needleNode.attachChild(needleGeometry);
+        guiNode = ((SimpleApplication) app).getGuiNode();
+        AssetManager assetManager = app.getAssetManager();
 
         node.attachChild(needleNode);
+        needleNode.setLocalTranslation(100f, 100f, 1f);
+
+        Geometry fixedGeometry = createFixedGeometry(assetManager);
+        node.attachChild(fixedGeometry);
+
+        String needlePath = "Textures/Vehicles/Speedometer/speedo_needle_2.png";
+        Texture needleTexture = assetManager.loadTexture(needlePath);
+        Image image = needleTexture.getImage();
+        int width = image.getWidth();
+        int height = image.getHeight();
+        Quad needleMesh = new Quad(width, height);
+        Geometry needleGeometry = new Geometry("Tachometer Needle", needleMesh);
+        needleNode.attachChild(needleGeometry);
+
+        Material material
+                = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        needleGeometry.setMaterial(material);
+        material.setTexture("ColorMap", needleTexture);
+        material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+
+        needleGeometry.setLocalTranslation(
+                -(width * 0.5f),
+                -(width * 0.5f) - 7f,
+                0f);
 
         revsLabel = new Label("8888");
-        revsLabel.setColor(new ColorRGBA(66 / 255f, 244 / 255f, 241 / 255f, 1.0f));
-
+        node.attachChild(revsLabel);
+        revsLabel.setColor(labelColor);
         revsLabel.setLocalTranslation(
                 100 - (revsLabel.getPreferredSize().x * 0.5f),
                 revsLabel.getPreferredSize().y + 15,
-                1
+                1f
         );
-        node.attachChild(revsLabel);
 
         node.setLocalTranslation(
-                app.getCamera().getWidth() - 400 - 40,
-                20, 0
+                app.getCamera().getWidth() - 400f - 40f,
+                20f, 0f
         );
     }
 
@@ -145,28 +163,37 @@ public class TachometerState extends BaseAppState {
      */
     @Override
     public void update(float tpf) {
-        float startStopAngle = 155;
+        float startStopAngle = 155f;
 
-        float rpmFraction = vehicle.getEngine().getRevs();
+        Engine engine = vehicle.getEngine();
+        float rpmFraction = engine.getRevs();
 
         float rot = startStopAngle - ((startStopAngle * 2) * rpmFraction);
         rot = FastMath.clamp(rot, -startStopAngle, startStopAngle);
         rot = rot * FastMath.DEG_TO_RAD;
-
+        /*
+         * a slight lag, because a physical needle cannot pivot instantly
+         */
         eulerAngles[2] = FastMath.interpolateLinear(tpf * 5, eulerAngles[2], rot);
-        quat.fromAngles(eulerAngles);
 
-        needleNode.setLocalRotation(quat);
-        revsLabel.setText(String.format(revsFormat, rpmFraction * vehicle.getEngine().getMaxRevs()));
+        tmpRotation.fromAngles(eulerAngles);
+        needleNode.setLocalRotation(tmpRotation);
+        /*
+         * update the Lemur label, which is mainly for testing
+         */
+        float redlineRpm = engine.getMaxRevs();
+        float rpm = rpmFraction * redlineRpm;
+        String labelText = String.format("%.0f rpm", rpm);
+        revsLabel.setText(labelText);
     }
     // *************************************************************************
     // private methods
 
-    private Node buildRadialNumbers(int max, int step, float radius, float border) {
+    private Node buildNumNode(int max, int step, float radius, float border) {
         int count = (max / step) + 1;
 
-        Node node = new Node("Numbers Node");
-        node.setLocalTranslation(radius, radius, 1);
+        Node numNode = new Node("Numbers Node");
+        numNode.setLocalTranslation(radius, radius, 1f);
 
         float reducedRad = radius - border;
         int num = 0;
@@ -184,47 +211,55 @@ public class TachometerState extends BaseAppState {
             label.setLocalTranslation(
                     x - (label.getPreferredSize().x * .5f),
                     y + (label.getPreferredSize().y * .5f),
-                    0);
+                    0f);
 
-            node.attachChild(label);
+            numNode.attachChild(label);
 
             num += step;
             theta -= angleStep;
         }
 
-        node.setLocalTranslation(0, 0, -1);
+        numNode.setLocalTranslation(0f, 0f, -1f);
 
-        return node;
+        return numNode;
     }
 
     private Geometry createFixedGeometry(AssetManager assetManager) {
-        Texture backgroundTexture = assetManager.loadTexture("Textures/Vehicles/Speedometer/speedo_bg_2.png");
+        String path = "Textures/Vehicles/Speedometer/speedo_bg_2.png";
+        Texture backgroundTexture = assetManager.loadTexture(path);
+        Image image = backgroundTexture.getImage();
+        int height = image.getHeight();
+        int width = image.getWidth();
 
         Geometry backgroundGeom = new Geometry("Tachometer Background",
-                new Quad(backgroundTexture.getImage().getWidth(), backgroundTexture.getImage().getHeight()));
+                new Quad(width, height));
 
-        backgroundGeom.setMaterial(new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
-        backgroundGeom.getMaterial().setTexture("ColorMap", backgroundTexture);
-        backgroundGeom.getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+        Material material = new Material(assetManager,
+                "Common/MatDefs/Misc/Unshaded.j3md");
+        backgroundGeom.setMaterial(material);
+        material.setTexture("ColorMap", backgroundTexture);
+        material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
 
-        Node numbers = buildRadialNumbers((int) vehicle.getEngine().getMaxRevs(), 1000, backgroundTexture.getImage().getWidth() / 2f, 20);
+        int maxRevs = (int) vehicle.getEngine().getMaxRevs();
+        Node numbers = buildNumNode(maxRevs, 1000, width / 2f, 20f);
 
         backgroundGeom.setLocalTranslation(
                 -backgroundTexture.getImage().getWidth() / 2f,
                 -backgroundTexture.getImage().getHeight() / 2f,
-                -1
+                -1f
         );
 
         numbers.attachChild(backgroundGeom);
 
-        Texture2D numberTexture = generateImpostor(numbers, backgroundTexture.getImage().getWidth());
+        Texture2D numberTexture = generateImpostor(numbers, width);
 
         Geometry numbersGeom = new Geometry("Tachometer Numbers",
-                new Quad(backgroundTexture.getImage().getWidth(), backgroundTexture.getImage().getHeight()));
+                new Quad(width, height));
 
-        numbersGeom.setMaterial(new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
-        numbersGeom.getMaterial().setTexture("ColorMap", numberTexture);
-        numbersGeom.getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+        material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        numbersGeom.setMaterial(material);
+        material.setTexture("ColorMap", numberTexture);
+        material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
 
         return numbersGeom;
     }
@@ -233,10 +268,11 @@ public class TachometerState extends BaseAppState {
         Camera newCam = new Camera(size, size);
         newCam.setFrustumPerspective(45f, 1f, 1f, 2f);
         newCam.setParallelProjection(true);
-        setProjectionHeight(newCam, size + 40);
-        newCam.lookAtDirection(new Vector3f(0, 0, -1), Vector3f.UNIT_Y);
+        setProjectionHeight(newCam, size + 40f);
+        newCam.lookAtDirection(new Vector3f(0f, 0f, -1f), Vector3f.UNIT_Y);
 
-        ViewPort vp = getApplication().getRenderManager().createPreView("Offscreen View", newCam);
+        RenderManager renderManager = getApplication().getRenderManager();
+        ViewPort vp = renderManager.createPreView("Offscreen View", newCam);
         vp.setClearFlags(true, true, true);
         vp.setBackgroundColor(ColorRGBA.BlackNoAlpha);
 
@@ -256,7 +292,7 @@ public class TachometerState extends BaseAppState {
 
         vp.attachScene(scene);
 
-        getApplication().getRenderManager().removeMainView(vp);
+        renderManager.removeMainView(vp);
 
         return offTex;
     }
