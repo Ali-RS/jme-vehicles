@@ -12,6 +12,7 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
+import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
@@ -23,127 +24,184 @@ import com.jme3.texture.Texture;
 import com.jme3.texture.Texture2D;
 import com.simsilica.lemur.Label;
 
+/**
+ * Appstate to manage an analog speedometer in the DriverHud.
+ */
 public class SpeedometerState extends BaseAppState {
+    // *************************************************************************
+    // fields
 
-    private float[] speedoAngles = new float[3];
+    final private float[] speedoAngles = new float[3];
     private Label gearLabel;
     private Label speedLabel;
     private Node guiNode;
-    private final Node node;
-    private Node speedoNeedleNode;
-    private final Quaternion speedoRot = new Quaternion();
-    private String speedFormatMph = "%03.0f";
-    private final Vehicle.SpeedUnit outputType;
-    private final Vehicle vehicle;
+    final private Node needleNode = new Node("Speedometer Needle");
+    final private Node node;
+    /**
+     * reusable temporary Quaternion
+     */
+    final private Quaternion tmpRotation = new Quaternion();
 
-    public SpeedometerState(Vehicle vehicle, Vehicle.SpeedUnit outputType) {
-        this.node = new Node("Speedometer: " + vehicle.getName());
-        this.node.setQueueBucket(RenderQueue.Bucket.Gui);
+    final private Vehicle.SpeedUnit speedUnit;
+    /**
+     * corresponding Vehicle
+     */
+    final private Vehicle vehicle;
+    // *************************************************************************
+    // constructors
+
+    /**
+     * Instantiate an enabled speedometer for the specified Vehicle.
+     *
+     * @param vehicle the corresponding Vehicle (not null)
+     * @param speedUnit the units to display (not null)
+     */
+    public SpeedometerState(Vehicle vehicle, Vehicle.SpeedUnit speedUnit) {
         this.vehicle = vehicle;
+        this.speedUnit = speedUnit;
 
-        this.outputType = outputType;
+        node = new Node("Speedometer for " + vehicle.getName());
+        node.setQueueBucket(RenderQueue.Bucket.Gui);
     }
+    // *************************************************************************
+    // BaseAppState methods
 
+    /**
+     * Callback invoked after this AppState is detached or during application
+     * shutdown if the state is still attached. onDisable() is called before
+     * this cleanup() method if the state is enabled at the time of cleanup.
+     *
+     * @param app the application instance (not null)
+     */
     @Override
     protected void cleanup(Application app) {
+        // do nothing
     }
 
+    /**
+     * Callback invoked during initialization once this AppState is attached but
+     * before onEnable() is called.
+     *
+     * @param app the application instance (not null)
+     */
     @Override
     protected void initialize(Application app) {
-        this.guiNode = ((SimpleApplication) app).getGuiNode();
+        guiNode = ((SimpleApplication) app).getGuiNode();
+        AssetManager assetManager = app.getAssetManager();
 
-        Geometry speedoGeometry = createSpeedoGeom(app.getAssetManager());
-        node.attachChild(speedoGeometry);
+        node.attachChild(needleNode);
+        needleNode.setLocalTranslation(100f, 100f, 1f);
 
-        speedoNeedleNode = new Node("Speedo Needle Node");
+        Geometry fixedGeometry = createFixedGeometry(assetManager);
+        node.attachChild(fixedGeometry);
 
-        Texture speedoNeedleTex = app.getAssetManager().loadTexture("Textures/Vehicles/Speedometer/speedo_needle_2.png");
-        Geometry speedoNeedleGeom = new Geometry("Speedometer Needle Geometry",
-                new Quad(speedoNeedleTex.getImage().getWidth(), speedoNeedleTex.getImage().getHeight()));
+        String needlePath = "Textures/Vehicles/Speedometer/speedo_needle_2.png";
+        Texture needleTexture = assetManager.loadTexture(needlePath);
+        Image image = needleTexture.getImage();
+        int width = image.getWidth();
+        int height = image.getHeight();
+        Quad needleMesh = new Quad(width, height);
+        Geometry needleGeometry = new Geometry("Speedometer Needle", needleMesh);
+        needleNode.attachChild(needleGeometry);
 
-        speedoNeedleGeom.setMaterial(new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md"));
-        speedoNeedleGeom.getMaterial().setTexture("ColorMap", speedoNeedleTex);
-        speedoNeedleGeom.getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+        Material material
+                = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        needleGeometry.setMaterial(material);
+        material.setTexture("ColorMap", needleTexture);
+        material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
 
-        speedoNeedleGeom.setLocalTranslation(
-                -(speedoNeedleTex.getImage().getWidth() * 0.5f),
-                -(speedoNeedleTex.getImage().getWidth() * 0.5f) - 7,
-                0);
-
-        speedoNeedleNode.setLocalTranslation(100, 100, 1);
-        speedoNeedleNode.attachChild(speedoNeedleGeom);
-
-        node.attachChild(speedoNeedleNode);
+        needleGeometry.setLocalTranslation(
+                -(width / 2f),
+                -(width / 2f) - 7f,
+                0f);
 
         speedLabel = new Label("888");
-        speedLabel.setColor(new ColorRGBA(66 / 255f, 244 / 255f, 241 / 255f, 1.0f));
-
-        speedLabel.setLocalTranslation(
-                100 - (speedLabel.getPreferredSize().x * 0.5f),
-                speedLabel.getPreferredSize().y + 15,
-                1
-        );
         node.attachChild(speedLabel);
+        speedLabel.setColor(TachometerState.labelColor);
+        speedLabel.setLocalTranslation(
+                100f - (speedLabel.getPreferredSize().x * 0.5f),
+                speedLabel.getPreferredSize().y + 15f,
+                1f
+        );
 
         node.setLocalTranslation(
-                app.getCamera().getWidth() - 200 - 20,
-                20, 0
+                app.getCamera().getWidth() - 200f - 20f,
+                20f,
+                0f
         );
 
-        this.gearLabel = new Label("N");
-        gearLabel.setColor(new ColorRGBA(66 / 255f, 244 / 255f, 241 / 255f, 1.0f));
+        gearLabel = new Label("N");
+        gearLabel.setColor(TachometerState.labelColor);
         gearLabel.setLocalTranslation(
-                100 - (gearLabel.getPreferredSize().x * 0.5f),
-                speedLabel.getPreferredSize().y + 45,
-                1
+                100f - (gearLabel.getPreferredSize().x * 0.5f),
+                speedLabel.getPreferredSize().y + 45f,
+                1f
         );
         node.attachChild(gearLabel);
     }
 
+    /**
+     * Callback invoked when this AppState was previously enabled but is now
+     * disabled either because setEnabled(false) was called or the state is
+     * being cleaned up.
+     */
     @Override
     protected void onDisable() {
         node.removeFromParent();
     }
 
+    /**
+     * Callback invoked when this AppState becomes fully enabled, ie: is
+     * attached and isEnabled() is true or when the setEnabled() status changes
+     * after the state is attached.
+     */
     @Override
     protected void onEnable() {
         guiNode.attachChild(node);
     }
 
+    /**
+     * Called to update this AppState, invoked once per frame when the AppState
+     * is both attached and enabled.
+     *
+     * @param tpf the time interval between frames (in seconds, &ge;0)
+     */
     @Override
     public void update(float tpf) {
-        float startStopAngle = 155;
+        float startStopAngle = 155f;
 
         // if we just deal with speed based on a positive integer from the start, everything works the same if we are reversing.
-        float speed = Math.abs(vehicle.getSpeed(outputType));
-        float speedUnit = speed / vehicle.getGearBox().getMaxSpeed(outputType);
+        float speed = Math.abs(vehicle.getSpeed(speedUnit));
+        speed = speed / vehicle.getGearBox().getMaxSpeed(speedUnit);
 
-        float rot = startStopAngle - ((startStopAngle * 2) * speedUnit);
+        float rot = startStopAngle - ((startStopAngle * 2f) * speed);
         rot = FastMath.clamp(rot, -startStopAngle, startStopAngle);
         rot = rot * FastMath.DEG_TO_RAD;
 
         speedoAngles[2] = rot;
-        speedoRot.fromAngles(speedoAngles);
-        speedoNeedleNode.setLocalRotation(speedoRot);
-        speedLabel.setText(String.format(speedFormatMph, speed));
+        tmpRotation.fromAngles(speedoAngles);
+        needleNode.setLocalRotation(tmpRotation);
+
+        speedLabel.setText(String.format("%03.0f", speed));
         gearLabel.setText("" + (vehicle.getGearBox().getActiveGearNum() + 1));
     }
+    // *************************************************************************
+    // private methods
 
-    private Node buildRadialNumbers(int max, int step, float radius, float border) {
-        int count = (max / step) + 1;
+    private Node buildNumNode(int maxSpeed, int stepSpeed, float radius) {
+        int count = (maxSpeed / stepSpeed) + 1;
 
-        Node node = new Node("Numbers Node");
-        node.setLocalTranslation(radius, radius, 1);
+        Node numNode = new Node("Speedometer Numbers");
+        numNode.setLocalTranslation(0f, 0f, -1f);
 
-        float reducedRad = radius - border;
         int num = 0;
         int startAngle = 245;
         float angleStep = ((155 * 2f) / count) * FastMath.DEG_TO_RAD;
         float theta = startAngle * FastMath.DEG_TO_RAD;
 
         for (int i = 0; i <= count; i++) {
-            float x = reducedRad * FastMath.cos(theta);
-            float y = reducedRad * FastMath.sin(theta);
+            float x = radius * FastMath.cos(theta);
+            float y = radius * FastMath.sin(theta);
 
             Label label = new Label("" + num);
             label.setColor(ColorRGBA.White);
@@ -153,45 +211,51 @@ public class SpeedometerState extends BaseAppState {
                     y + (label.getPreferredSize().y * .5f),
                     0);
 
-            node.attachChild(label);
+            numNode.attachChild(label);
 
-            num += step;
+            num += stepSpeed;
             theta -= angleStep;
         }
 
-        node.setLocalTranslation(0, 0, -1);
-
-        return node;
+        return numNode;
     }
 
-    private Geometry createSpeedoGeom(AssetManager assetManager) {
-        Texture speedoBgTex = assetManager.loadTexture("Textures/Vehicles/Speedometer/speedo_bg_2.png");
+    private Geometry createFixedGeometry(AssetManager assetManager) {
+        String path = "Textures/Vehicles/Speedometer/speedo_bg_2.png";
+        Texture backgroundTexture = assetManager.loadTexture(path);
+        Image image = backgroundTexture.getImage();
+        int height = image.getHeight();
+        int width = image.getWidth();
 
-        Geometry speedoBgGeom = new Geometry("Speedometer Background Geometry",
-                new Quad(speedoBgTex.getImage().getWidth(), speedoBgTex.getImage().getHeight()));
+        Geometry backgroundGeom = new Geometry("Speedometer Background",
+                new Quad(width, height));
 
-        speedoBgGeom.setMaterial(new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
-        speedoBgGeom.getMaterial().setTexture("ColorMap", speedoBgTex);
-        speedoBgGeom.getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+        Material material = new Material(assetManager,
+                "Common/MatDefs/Misc/Unshaded.j3md");
+        backgroundGeom.setMaterial(material);
+        material.setTexture("ColorMap", backgroundTexture);
+        material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
 
-        Node numbers = buildRadialNumbers((int) vehicle.getGearBox().getMaxSpeed(outputType), 10, speedoBgTex.getImage().getWidth() / 2f, 20);
+        int maxSpeed = (int) vehicle.getGearBox().getMaxSpeed(speedUnit);
+        Node numbers = buildNumNode(maxSpeed, 10, width / 2f - 20f);
 
-        speedoBgGeom.setLocalTranslation(
-                -speedoBgTex.getImage().getWidth() / 2f,
-                -speedoBgTex.getImage().getHeight() / 2f,
-                -1
+        backgroundGeom.setLocalTranslation(
+                -width / 2f,
+                -height / 2f,
+                -1f
         );
 
-        numbers.attachChild(speedoBgGeom);
+        numbers.attachChild(backgroundGeom);
 
-        Texture2D numberTexture = generateImpostor(numbers, speedoBgTex.getImage().getWidth());
+        Texture2D numberTexture = generateImpostor(numbers, width);
 
-        Geometry numbersGeom = new Geometry("Speedo Numbers",
-                new Quad(speedoBgTex.getImage().getWidth(), speedoBgTex.getImage().getHeight()));
+        Geometry numbersGeom = new Geometry("Speedometer Numbers",
+                new Quad(width, height));
 
-        numbersGeom.setMaterial(new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
-        numbersGeom.getMaterial().setTexture("ColorMap", numberTexture);
-        numbersGeom.getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+        material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        numbersGeom.setMaterial(material);
+        material.setTexture("ColorMap", numberTexture);
+        material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
 
         return numbersGeom;
     }
@@ -200,10 +264,11 @@ public class SpeedometerState extends BaseAppState {
         Camera newCam = new Camera(size, size);
         newCam.setFrustumPerspective(45f, 1f, 1f, 2f);
         newCam.setParallelProjection(true);
-        setProjectionHeight(newCam, size + 40);
-        newCam.lookAtDirection(new Vector3f(0, 0, -1), Vector3f.UNIT_Y);
+        setProjectionHeight(newCam, size + 40f);
+        newCam.lookAtDirection(new Vector3f(0f, 0f, -1f), Vector3f.UNIT_Y);
 
-        ViewPort vp = getApplication().getRenderManager().createPreView("Offscreen View", newCam);
+        RenderManager renderManager = getApplication().getRenderManager();
+        ViewPort vp = renderManager.createPreView("Offscreen View", newCam);
         vp.setClearFlags(true, true, true);
         vp.setBackgroundColor(ColorRGBA.BlackNoAlpha);
 
@@ -223,7 +288,7 @@ public class SpeedometerState extends BaseAppState {
 
         vp.attachScene(scene);
 
-        getApplication().getRenderManager().removeMainView(vp);
+        renderManager.removeMainView(vp);
 
         return offTex;
     }
