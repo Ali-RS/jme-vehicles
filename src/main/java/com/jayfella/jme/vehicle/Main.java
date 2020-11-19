@@ -47,7 +47,7 @@ public class Main extends SimpleApplication {
     }
 
     /**
-     * Main entry point for the Advanced Vehicles application.
+     * Main entry point for the More Advanced Vehicles application.
      *
      * @param arguments array of command-line arguments (not null)
      */
@@ -72,7 +72,7 @@ public class Main extends SimpleApplication {
 
         AppSettings appSettings = new AppSettings(true);
         appSettings.setResolution(1280, 720);
-        appSettings.setTitle("jMonkeyEngine :: Advanced Vehicles");
+        appSettings.setTitle("More Advanced Vehicles");
         appSettings.setUseJoysticks(true);
         appSettings.setVSync(true);
 
@@ -193,13 +193,11 @@ public class Main extends SimpleApplication {
         // lightScattering.setLightDensity(1);
         // lightScattering.setBlurWidth(1.1f);
         // fpp.addFilter(lightScattering);
-
         // DepthOfFieldFilter dof = new DepthOfFieldFilter();
         // dof.setFocusDistance(0);
         // dof.setFocusRange(384);
         // dof.setEnabled(false);
         // fpp.addFilter(dof);
-
         // BloomFilter bloomFilter = new BloomFilter();
         // bloomFilter.setExposurePower(55);
         // bloomFilter.setBloomIntensity(1.2f);
@@ -221,7 +219,6 @@ public class Main extends SimpleApplication {
 
         //Texture dispMap = assetManager.loadTexture("Textures/Ground/Marble/marble_01_disp_2k.png");
         //dispMap.setWrap(Texture.WrapMode.Repeat);
-
         Texture normalMap = assetManager.loadTexture("Textures/Ground/Marble/marble_01_nor_2k.png");
         normalMap.setWrap(Texture.WrapMode.Repeat);
 
@@ -240,7 +237,6 @@ public class Main extends SimpleApplication {
         // material.setBoolean("UseFog", true);
         // material.setColor("FogColor", new ColorRGBA(0.5f, 0.6f, 0.7f, 1.0f));
         // material.setFloat("ExpSqFog", 0.002f);
-
         RenderState additional = material.getAdditionalRenderState();
         additional.setFaceCullMode(RenderState.FaceCullMode.Off);
 

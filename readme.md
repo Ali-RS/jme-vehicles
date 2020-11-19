@@ -140,7 +140,8 @@ Resources/assets:
 
 ### Acknowledgments
 
-+ James Khan (aka "jayfella") initiated the Advanced Vehicles Project.
++ James Khan (aka "jayfella") initiated the Advanced Vehicles Project,
+  on which this project is based.
 + [Paul Speed (aka "pspeed42")][pspeed] created the Lemur libraries.
 + Lennart Demes created the marble_01 textures.
 + [Sergej Majboroda][sergej] created the quarry_03 texture.
