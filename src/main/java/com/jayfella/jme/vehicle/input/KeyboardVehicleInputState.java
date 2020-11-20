@@ -35,6 +35,8 @@ public class KeyboardVehicleInputState
      */
     private static final FunctionId F_CAMVIEW
             = new FunctionId(G_VEHICLE, "Camera View");
+    private static final FunctionId F_DUMP_CAMERA
+            = new FunctionId(G_VEHICLE, "Dump Camera");
     private static final FunctionId F_DUMP_PHYSICS
             = new FunctionId(G_VEHICLE, "Dump Physics");
     private static final FunctionId F_DUMP_VIEWPORT
@@ -114,8 +116,10 @@ public class KeyboardVehicleInputState
         inputMapper.removeMapping(F_CAMVIEW, KeyInput.KEY_F5);
         inputMapper.removeMapping(F_HORN, KeyInput.KEY_H);
 
+        inputMapper.removeMapping(F_DUMP_CAMERA, KeyInput.KEY_C);
         inputMapper.removeMapping(F_DUMP_PHYSICS, KeyInput.KEY_O);
         inputMapper.removeMapping(F_DUMP_VIEWPORT, KeyInput.KEY_P);
+
         inputMapper.removeMapping(F_PAUSE, KeyInput.KEY_PAUSE);
         inputMapper.removeMapping(F_PAUSE, KeyInput.KEY_PERIOD);
         inputMapper.removeMapping(F_RETURN, KeyInput.KEY_ESCAPE);
@@ -124,7 +128,8 @@ public class KeyboardVehicleInputState
         inputMapper.removeStateListener(this,
                 F_START_ENGINE, F_MOVE, F_TURN_LEFT, F_TURN_RIGHT,
                 F_REVERSE, F_HANDBRAKE, F_RESET,
-                F_HORN, F_CAMVIEW, F_DUMP_PHYSICS, F_DUMP_VIEWPORT, F_PAUSE,
+                F_HORN, F_CAMVIEW,
+                F_DUMP_CAMERA, F_DUMP_PHYSICS, F_DUMP_VIEWPORT, F_PAUSE,
                 F_RETURN, F_SCREEN_SHOT
         );
     }
@@ -147,8 +152,10 @@ public class KeyboardVehicleInputState
         inputMapper.map(F_CAMVIEW, KeyInput.KEY_F5);
         inputMapper.map(F_HORN, KeyInput.KEY_H);
 
+        inputMapper.map(F_DUMP_CAMERA, KeyInput.KEY_C);
         inputMapper.map(F_DUMP_PHYSICS, KeyInput.KEY_O);
         inputMapper.map(F_DUMP_VIEWPORT, KeyInput.KEY_P);
+
         inputMapper.map(F_PAUSE, KeyInput.KEY_PAUSE);
         inputMapper.map(F_PAUSE, KeyInput.KEY_PERIOD);
         inputMapper.map(F_RETURN, KeyInput.KEY_ESCAPE);
@@ -158,7 +165,8 @@ public class KeyboardVehicleInputState
         inputMapper.addStateListener(this,
                 F_START_ENGINE, F_MOVE, F_TURN_LEFT, F_TURN_RIGHT,
                 F_REVERSE, F_HANDBRAKE, F_RESET,
-                F_HORN, F_CAMVIEW, F_DUMP_PHYSICS, F_DUMP_VIEWPORT, F_PAUSE,
+                F_HORN, F_CAMVIEW,
+                F_DUMP_CAMERA, F_DUMP_PHYSICS, F_DUMP_VIEWPORT, F_PAUSE,
                 F_RETURN, F_SCREEN_SHOT
         );
 
@@ -239,6 +247,13 @@ public class KeyboardVehicleInputState
 
             vehicle.getVehicleControl().setAngularVelocity(Vector3f.ZERO);
             vehicle.getVehicleControl().setLinearVelocity(Vector3f.ZERO);
+
+        } else if (func == F_DUMP_CAMERA && pressed) {
+            Camera camera = getApplication().getCamera();
+            Vector3f location = camera.getLocation();
+            System.out.println("cam.setLocation(new Vector3f("
+                    + location.x + "f, " + location.y + "f, " + location.z
+                    + "f));");
 
         } else if (func == F_DUMP_PHYSICS && pressed) {
             BulletAppState bas
