@@ -8,30 +8,48 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Spline;
 import com.jme3.math.Vector3f;
 
+/**
+ * Model a single engine in a Vehicle.
+ */
 abstract public class Engine {
+    // *************************************************************************
+    // fields
 
     private AudioNode engineAudio;
+    /*
+     * true when on/running, false when off/stopped
+     */
     private boolean started;
-
-    // the amount of engine braking when coasting.
-    // this can be manipulated to simulate damage.
+    /*
+     * amount of engine braking when coasting (alter to simulate damage, &ge;0)
+     */
     private float braking;
-
-    private float maxRevs; // max revs - e.g. 7000 - used as a VISUAL multiplier.
-
-    // the total power of the engine. This will be distributed to the propellant(s).
+    /*
+     * revolutions per minute (RPMs) at the redline (&gt;0)
+     */
+    private float maxRevs;
+    /*
+     * maximum power output (total across all axles, &gt;0)
+     */
     private float power;
-
-    private float revs; // revolutions in a 0 - 1 range.
+    /*
+     * current RPMs as a fraction of the redline (&ge;0)
+     */
+    private float revs;
+    /*
+     * descriptive name
+     */
     final private String name;
+    // *************************************************************************
+    // constructors
 
     /**
-     * Defines an engine
+     * Instantiate an Engine without audio.
      *
-     * @param name the name of the engine.
-     * @param power the power it can produce.
-     * @param maxRevs the maximum revolutions the engine can work at.
-     * @param braking the amount of engine braking when coasting.
+     * @param name a descriptive name
+     * @param power the desired maximum power output (&gt;0)
+     * @param maxRevs the desired RPMs at the redline (&gt;0)
+     * @param braking the desired amount of engine braking when coasting (&ge;0)
      */
     public Engine(String name, float power, float maxRevs, float braking) {
         this.name = name;
@@ -39,9 +57,11 @@ abstract public class Engine {
         this.maxRevs = maxRevs;
         this.braking = braking;
     }
+    // *************************************************************************
+    // new methods exposed
 
     /**
-     * Evaluate the power graph
+     * Evaluate this engine's power graph.
      *
      * @param range a value from 0-maxRevs
      * @return the power at this rev-range, from 0 to getPower().
@@ -65,31 +85,56 @@ abstract public class Engine {
         return powerGraph.interpolate(interp, index, null).y;
     }
 
+    /**
+     * Determine the amount of engine braking.
+     *
+     * @return the braking strength (&ge;0)
+     */
     public float getBraking() {
         return braking;
     }
 
+    /**
+     * Access the sound of this Engine.
+     *
+     * @return the pre-existing AudioNode
+     */
     public AudioNode getEngineAudio() {
         return engineAudio;
     }
 
+    /**
+     * Determine this engine's redline.
+     *
+     * @return the rate (in revolutions per minute, &gt;0)
+     */
     public float getMaxRevs() {
         return maxRevs;
     }
 
+    /**
+     * Access this engine's descriptive name.
+     *
+     * @return the name
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Determine this engine's maximum power output.
+     *
+     * @return the amount of power (&gt;0)
+     */
     public float getPower() {
         return power;
     }
 
     /**
-     * Gets the power output at the current RPM. This is essentially the "power
-     * graph" of the engine.
+     * Determine the power output at the current RPM. This determines the
+     * Engine's "power graph".
      *
-     * @return the power of the engine at the current RPM.
+     * @return the amount of power (&gt;0)
      */
     public float getPowerOutputAtRevs() {
         float revs = getRevs() * getMaxRevs();
@@ -99,6 +144,11 @@ abstract public class Engine {
         return power * getPower();
     }
 
+    /**
+     * Determine the current RPMs as a fraction of the redline.
+     *
+     * @return the fraction (&ge;0)
+     */
     public float getRevs() {
         return revs;
     }
@@ -112,14 +162,30 @@ abstract public class Engine {
      */
     public abstract float getTorqueAtSpeed();
 
+    /**
+     * Test whether this Engine is running.
+     *
+     * @return true if running, otherwise false
+     */
     public boolean isStarted() {
         return started;
     }
 
+    /**
+     * Alter the amount of engine braking.
+     *
+     * @param braking the desired braking strength (&ge;0)
+     */
     public void setBraking(float braking) {
         this.braking = braking;
     }
 
+    /**
+     * Alter the sound of this Engine.
+     *
+     * @param assetManager (not null)
+     * @param audioFile
+     */
     public void setEngineAudio(AssetManager assetManager, String audioFile) {
         this.engineAudio = new AudioNode(assetManager, audioFile,
                 AudioData.DataType.Buffer);
@@ -128,23 +194,43 @@ abstract public class Engine {
         this.engineAudio.setDirectional(false);
     }
 
+    /**
+     * Alter this engine's redline.
+     *
+     * @param maxRevs the desired rate (in revolutions per minute, &gt;0)
+     */
     public void setMaxRevs(float maxRevs) {
         this.maxRevs = maxRevs;
     }
 
+    /**
+     * Alter this engine's maximum power output.
+     *
+     * @param power the desired amount of power (&gt;0)
+     */
     public void setPower(float power) {
         this.power = power;
     }
 
+    /**
+     * Alter the current RPMs as a fraction of the redline.
+     *
+     * @param revs the desired fraction (&ge;0)
+     */
     public void setRevs(float revs) {
-        // this.revs = FastMath.clamp(revs, 0, 1);
-        // we're not going to clamp it because it exposes bad math if it's set wrong.
         this.revs = revs;
     }
 
+    /**
+     * Alter whether this Engine is started.
+     *
+     * @param started the desired setting
+     */
     public void setStarted(boolean started) {
         this.started = started;
     }
+    // *************************************************************************
+    // new protected methods
 
     protected float getTorqueAtSpeed(Vehicle vehicle) {
         // the maximum this vehicle can go is 135mph or 216kmh.
@@ -156,6 +242,8 @@ abstract public class Engine {
                 = vehicle.getSpeed(Vehicle.SpeedUnit.KMH) / engineMaxSpeed;
         return 1.0f - FastMath.interpolateLinear(speedUnit, 0, speedUnit);
     }
+    // *************************************************************************
+    // private methods
 
     private float map(float value, float oldMin, float oldMax, float newMin,
             float newMax) {

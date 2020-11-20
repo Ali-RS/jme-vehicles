@@ -1,7 +1,7 @@
 package com.jayfella.jme.vehicle.part;
 
 /**
- * Defines a break component, for example on a vehicle wheel or propellant.
+ * Model a single brake, for example on a Wheel.
  */
 public class Brake {
 
