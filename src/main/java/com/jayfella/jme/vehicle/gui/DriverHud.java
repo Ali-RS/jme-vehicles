@@ -17,12 +17,16 @@ import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
+import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.VertexBuffer;
+import com.jme3.scene.shape.Cylinder;
 import com.jme3.texture.Texture;
 import com.simsilica.lemur.Button;
 import com.simsilica.lemur.Command;
@@ -31,6 +35,7 @@ import com.simsilica.lemur.core.GuiComponent;
 import com.simsilica.lemur.event.DefaultMouseListener;
 import com.simsilica.lemur.event.MouseEventControl;
 import com.simsilica.lemur.event.MouseListener;
+import java.nio.FloatBuffer;
 import java.util.logging.Logger;
 import jme3utilities.MyAsset;
 import jme3utilities.mesh.DiscMesh;
@@ -43,6 +48,7 @@ import jme3utilities.mesh.RoundedRectangle;
  * instantiated once and then enabled/disabled as needed. It manages portions of
  * the graphical user interface, namely:
  * <ul>
+ * <li>the compass</li>
  * <li>the "Return to Main Menu" button</li>
  * <li>the pause button</li>
  * <li>the automatic-transmision mode indicator</li>
@@ -81,6 +87,7 @@ public class DriverHud extends BaseAppState {
     private float viewPortHeight, viewPortWidth;
 
     private Geometry atmiIndicatorGeometry;
+    private Geometry compass;
     private Geometry hornButton;
     private Geometry pauseButton;
     private Geometry powerButton;
@@ -98,6 +105,10 @@ public class DriverHud extends BaseAppState {
      * Node that represents the ATM indicator
      */
     private Node atmiNode;
+    /**
+     * reusable temporary Quaternion
+     */
+    final private Quaternion tmpRotation = new Quaternion();
     /**
      * appstates for indicators
      */
@@ -244,6 +255,8 @@ public class DriverHud extends BaseAppState {
 
         texture = manager.loadTexture("Textures/power-on.png");
         powerOnMaterial = MyAsset.createUnshadedMaterial(manager, texture);
+
+        initCompass(manager);
         /*
          * Construct a Geometry for the steering-wheel indicator.
          */
@@ -272,12 +285,13 @@ public class DriverHud extends BaseAppState {
     }
 
     /**
-     * Callback invoked when this AppState ceases to be both attached and
+     * Callback invoked whenever this AppState ceases to be both attached and
      * enabled.
      */
     @Override
     protected void onDisable() {
         hideAtmi();
+        hideCompass();
         hideHornButton();
         hidePauseButton();
         hidePowerButton();
@@ -288,7 +302,8 @@ public class DriverHud extends BaseAppState {
     }
 
     /**
-     * Callback invoked when this AppState becomes both attached and enabled.
+     * Callback invoked whenever this AppState becomes both attached and
+     * enabled.
      */
     @Override
     protected void onEnable() {
@@ -299,6 +314,8 @@ public class DriverHud extends BaseAppState {
 
         String[] atModes = car.listAtModes();
         showAtmi(atModes);
+
+        showCompass();
         showHornButton(false);
         showPowerButton(false);
         showReturnButton();
@@ -319,7 +336,10 @@ public class DriverHud extends BaseAppState {
         hornButton.setLocalRotation(orientation);
         steering.setLocalRotation(orientation);
 
-        // Indicate the mode of the automatic transmission.
+        updateCompass();
+        /*
+         * Indicate the mode of the automatic transmission.
+         */
         String mode;
         if (car.getGearBox().isReversing()) {
             mode = "R";
@@ -351,6 +371,13 @@ public class DriverHud extends BaseAppState {
             atmiNode.removeFromParent();
             atmiNode = null;
         }
+    }
+
+    /**
+     * Hide the compass.
+     */
+    private void hideCompass() {
+        compass.removeFromParent();
     }
 
     /**
@@ -418,6 +445,33 @@ public class DriverHud extends BaseAppState {
             getStateManager().detach(tachometer);
             tachometer = null;
         }
+    }
+
+    /**
+     * Construct the Geometry for the compass.
+     */
+    private void initCompass(AssetManager assetManager) {
+        int circumferenceSamples = 40;
+        float radius = 180f / FastMath.PI; // in pixels
+        float height = 40f; // in pixels
+        Mesh mesh = new Cylinder(2, circumferenceSamples, radius, height);
+        /*
+         * Rewrite the 2nd texture coordinate so that it ranges from 0 to 1.
+         */
+        int numVertices = mesh.getVertexCount();
+        FloatBuffer texCoords = mesh.getFloatBuffer(VertexBuffer.Type.TexCoord);
+        FloatBuffer positions = mesh.getFloatBuffer(VertexBuffer.Type.Position);
+        for (int vertexIndex = 0; vertexIndex < numVertices; ++vertexIndex) {
+            float z = positions.get(3 * vertexIndex + 2);
+            float v = 0.5f + z / height;
+            texCoords.put(2 * vertexIndex + 1, v);
+        }
+
+        compass = new Geometry("compass", mesh);
+        Texture texture = assetManager.loadTexture("Textures/compass.png");
+        Material material
+                = MyAsset.createUnshadedMaterial(assetManager, texture);
+        compass.setMaterial(material);
     }
 
     /**
@@ -500,6 +554,19 @@ public class DriverHud extends BaseAppState {
         atmiNode.attachChild(atmiIndicatorGeometry);
         atmiIndicatorGeometry.setCullHint(Spatial.CullHint.Always);
         atmiIndicatorGeometry.setMaterial(atmiIndicatorMaterial);
+    }
+
+    /**
+     * Display the compass.
+     */
+    private void showCompass() {
+        attachToGui(compass);
+        /*
+         * Position the compass in the viewport.
+         */
+        float x = 0.5f * viewPortWidth;
+        float y = 0.95f * viewPortHeight;
+        compass.setLocalTranslation(x, y, 0f);
     }
 
     /**
@@ -643,5 +710,22 @@ public class DriverHud extends BaseAppState {
 
         tachometer = new TachometerState(car);
         getStateManager().attach(tachometer);
+    }
+
+    /**
+     * Re-orient the compass.
+     */
+    private void updateCompass() {
+        Camera camera = getApplication().getCamera();
+        Vector3f direction = camera.getDirection();
+        // +X is north and +Z is east
+        float azimuth = FastMath.atan2(direction.z, direction.x);
+        float yRotation = -azimuth - FastMath.HALF_PI;
+        tmpRotation.fromAngles(-FastMath.HALF_PI, yRotation, 0f);
+        compass.setLocalRotation(tmpRotation);
+
+        //float azimuthDegrees = MyMath.toDegrees(azimuth);
+        //azimuthDegrees = MyMath.modulo(azimuthDegrees, 360f);
+        //System.out.printf("azimuth = %.0f%n", azimuthDegrees);
     }
 }
