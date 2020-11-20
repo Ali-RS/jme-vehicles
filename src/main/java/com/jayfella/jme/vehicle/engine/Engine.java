@@ -15,27 +15,27 @@ abstract public class Engine {
     // *************************************************************************
     // fields
 
-    private AudioNode engineAudio;
+    private AudioNode audioNode;
     /*
      * true when on/running, false when off/stopped
      */
-    private boolean started;
+    private boolean isRunning;
     /*
      * amount of engine braking when coasting (alter to simulate damage, &ge;0)
      */
     private float braking;
     /*
-     * revolutions per minute (RPMs) at the redline (&gt;0)
-     */
-    private float maxRevs;
-    /*
      * maximum power output (total across all axles, &gt;0)
      */
-    private float power;
+    private float maxPower;
+    /*
+     * revolutions per minute (RPMs) at the redline (&gt;0)
+     */
+    private float redline;
     /*
      * current RPMs as a fraction of the redline (&ge;0)
      */
-    private float revs;
+    private float rpmFraction;
     /*
      * descriptive name
      */
@@ -53,8 +53,8 @@ abstract public class Engine {
      */
     public Engine(String name, float power, float maxRevs, float braking) {
         this.name = name;
-        this.power = power;
-        this.maxRevs = maxRevs;
+        this.maxPower = power;
+        this.redline = maxRevs;
         this.braking = braking;
     }
     // *************************************************************************
@@ -100,7 +100,7 @@ abstract public class Engine {
      * @return the pre-existing AudioNode
      */
     public AudioNode getEngineAudio() {
-        return engineAudio;
+        return audioNode;
     }
 
     /**
@@ -109,7 +109,7 @@ abstract public class Engine {
      * @return the rate (in revolutions per minute, &gt;0)
      */
     public float getMaxRevs() {
-        return maxRevs;
+        return redline;
     }
 
     /**
@@ -127,7 +127,7 @@ abstract public class Engine {
      * @return the amount of power (&gt;0)
      */
     public float getPower() {
-        return power;
+        return maxPower;
     }
 
     /**
@@ -150,7 +150,7 @@ abstract public class Engine {
      * @return the fraction (&ge;0)
      */
     public float getRevs() {
-        return revs;
+        return rpmFraction;
     }
 
     /**
@@ -168,7 +168,7 @@ abstract public class Engine {
      * @return true if running, otherwise false
      */
     public boolean isStarted() {
-        return started;
+        return isRunning;
     }
 
     /**
@@ -187,11 +187,11 @@ abstract public class Engine {
      * @param audioFile
      */
     public void setEngineAudio(AssetManager assetManager, String audioFile) {
-        this.engineAudio = new AudioNode(assetManager, audioFile,
+        audioNode = new AudioNode(assetManager, audioFile,
                 AudioData.DataType.Buffer);
-        this.engineAudio.setLooping(true);
-        this.engineAudio.setPositional(true);
-        this.engineAudio.setDirectional(false);
+        audioNode.setLooping(true);
+        audioNode.setPositional(true);
+        audioNode.setDirectional(false);
     }
 
     /**
@@ -200,7 +200,7 @@ abstract public class Engine {
      * @param maxRevs the desired rate (in revolutions per minute, &gt;0)
      */
     public void setMaxRevs(float maxRevs) {
-        this.maxRevs = maxRevs;
+        redline = maxRevs;
     }
 
     /**
@@ -209,7 +209,7 @@ abstract public class Engine {
      * @param power the desired amount of power (&gt;0)
      */
     public void setPower(float power) {
-        this.power = power;
+        maxPower = power;
     }
 
     /**
@@ -218,7 +218,7 @@ abstract public class Engine {
      * @param revs the desired fraction (&ge;0)
      */
     public void setRevs(float revs) {
-        this.revs = revs;
+        rpmFraction = revs;
     }
 
     /**
@@ -227,7 +227,7 @@ abstract public class Engine {
      * @param started the desired setting
      */
     public void setStarted(boolean started) {
-        this.started = started;
+        isRunning = started;
     }
     // *************************************************************************
     // new protected methods
