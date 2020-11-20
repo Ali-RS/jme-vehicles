@@ -1,7 +1,20 @@
 The More Advanced Vehicles Project demonstrates
 vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
 
-### Features
+<a name="toc"/>
+
+## Contents of this document
+
++ [Important features](#features)
++ [How to build and run More Advanced Vehicles from source](#build)
++ [Controls](#controls)
++ [Wish list](#wishlist)
++ [Licensing](#licensing)
++ [Acknowledgments](#acks)
+
+<a name="features"/>
+
+## Important features
 
 + Vehicle Playground environment
 + 5 vehicle models:
@@ -18,17 +31,21 @@ vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
   + tires with Pacejka model for friction (only the latitudinal forces are applied)
   + suspension
 + graphical user interface using [the Lemur UI Toolkit][lemur]:
-  + menus and buttons
+  + buttons and animated menus
   + speedometer
   + tachometer
   + steering-wheel indicator
   + edit vehicle parameters
-+ effects:
++ special effects:
   + skid marks
   + tire smoke
   + engine/horn sounds
 
 <img height="150" src="https://i.imgur.com/WNVXH1E.png">
+
+[Jump to table of contents](#toc)
+
+<a name="build"/>
 
 ## How to build and run More Advanced Vehicles from source
 
@@ -49,7 +66,11 @@ vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
    + using Bash:  `./gradlew run`
    + using Windows Command Prompt:  `.\gradlew run`
 
-### Keyboard controls
+[Jump to table of contents](#toc)
+
+<a name="controls"/>
+
+## Controls
 
 When a vehicle is loaded:
 
@@ -67,6 +88,8 @@ When a vehicle is loaded:
 + F12 : capture a screenshot to the current working directory
 + Esc : return to the Main Menu
 
+[Jump to table of contents](#toc)
+
 [atryder]: https://github.com/ATryder "Adam T. Ryder"
 [gradle]: https://gradle.org "Gradle Project"
 [jme]: http://jmonkeyengine.org  "jMonkeyEngine Project"
@@ -75,7 +98,11 @@ When a vehicle is loaded:
 [sergej]: https://hdrihaven.com/hdris/?a=Sergej%20Majboroda "HDRIs by Sergej Majboroda"
 [tgt]: https://www.tgthorne.com/contact "Thomas Glenn Thorne"
 
-### Wish list
+<a name="wishlist"/>
+
+## Wish list
+
+This project is a work in progress.  Some ideas for future development:
 
 + Eliminate the initial drop
 + More alternatives for:
@@ -118,7 +145,11 @@ When a vehicle is loaded:
 See also
 [the project's issue tracker](https://github.com/stephengold/jme-vehicles/issues).
 
-### Licensing
+[Jump to table of contents](#toc)
+
+<a name="licensing"/>
+
+## Licensing
 
 The source code has
 [a BSD 3-Clause license](https://github.com/stephengold/jme-vehicles/blob/master/license.txt).
@@ -151,7 +182,11 @@ Resources/assets/media:
   + steering.png
   + tachometer_bg.png
 
-### Acknowledgments
+[Jump to table of contents](#toc)
+
+<a name="acks"/>
+
+## Acknowledgments
 
 + James Khan (aka "jayfella") initiated the Advanced Vehicles Project,
   on which this project is based.
@@ -161,3 +196,8 @@ Resources/assets/media:
 + [Thomas Glenn Thorne (aka "systmh")][tgt] created the GT model.
 + "isteven" created the gtr_nismo model.
 + [Adam T. Ryder (aka "ATryder")][atryder] created the jME-TTF library.
+
+If I've misattributed anything or left anyone out, please let me know so I can
+correct the situation: sgold@sonic.net
+
+[Jump to table of contents](#toc)
