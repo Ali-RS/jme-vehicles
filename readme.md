@@ -123,7 +123,7 @@ See also
 The source code has
 [a BSD 3-Clause license](https://github.com/stephengold/jme-vehicles/blob/master/license.txt).
 
-Resources/assets:
+Resources/assets/media:
 
 + The [Droid font](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Interface/Fonts)
   has an Apache License, Version 2.0.
@@ -137,6 +137,19 @@ Resources/assets:
   have a Creative Commons CC0 License.
 + The [quarry_03 texture](https://github.com/stephengold/jme-vehicles/blob/master/src/main/resources/Textures/Sky/quarry_03_4k.jpg)
   has a CC0 1.0 Universal license.
++ The following textures were generated procedurally by
+  [the Shapes Project](https://github.com/stephengold/Shapes), which has a BSD 3-Clause license:
+  + horn-silent.png
+  + horn-sound.png
+  + loading.png
+  + pause.png
+  + power-off.png
+  + power-on.png
+  + run.png
+  + speedo_bg_2.png
+  + speedo_needle_2.png
+  + steering.png
+  + tachometer_bg.png
 
 ### Acknowledgments
 
