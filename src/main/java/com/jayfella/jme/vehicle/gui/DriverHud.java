@@ -310,11 +310,13 @@ public class DriverHud extends BaseAppState {
     @Override
     public void update(float tpf) {
         super.update(tpf);
-
-        // Re-orient the steering-wheel indicator.
+        /*
+         * Re-orient the horn button and the steering-wheel indicator.
+         */
         float angle = car.steeringWheelAngle();
         Quaternion orientation = new Quaternion();
         orientation.fromAngles(0f, 0f, angle);
+        hornButton.setLocalRotation(orientation);
         steering.setLocalRotation(orientation);
 
         // Indicate the mode of the automatic transmission.
