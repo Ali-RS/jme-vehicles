@@ -33,6 +33,7 @@ import com.simsilica.lemur.style.BaseStyles;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jme3utilities.MyCamera;
 import jme3utilities.MyString;
 
 public class Main extends SimpleApplication {
@@ -103,10 +104,13 @@ public class Main extends SimpleApplication {
 
         inputManager.clearMappings();
         inputManager.clearRawInputListeners();
-
-        // the "hood-cam" gets close to the bodywork, so set the near-frustum accordingly...
-        float aspect = cam.getWidth() / (float) cam.getHeight();
-        cam.setFrustumPerspective(60, aspect, 0.1f, 1000);
+        /*
+         * The hood camera sits close to the bodywork, so set its near clipping
+         * plane accordingly.
+         */
+        float near = 0.1f;
+        float far = 1800f;
+        MyCamera.setNearFar(cam, near, far);
 
         // initialize Lemur with the "glass" style
         GuiGlobals.initialize(this);
