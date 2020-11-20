@@ -29,7 +29,6 @@ repositories {
 
 project.ext {
     jmeVer = '3.3.2-stable'
-    log4jVer = '2.13.3'
 }
 
 dependencies {
@@ -49,8 +48,7 @@ dependencies {
     implementation 'com.jayfella:jme-easing:1.0'
     implementation 'com.simsilica:lemur:1.14.0'
 
-    runtimeOnly "org.apache.logging.log4j:log4j-core:$log4jVer"
-    runtimeOnly "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVer"
+    runtimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl:2.14.0'
     
     implementation 'com.atr:jme-ttf:2.2.2'
 }
