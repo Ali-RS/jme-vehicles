@@ -11,7 +11,7 @@ public class Engine600HP extends Engine {
     private final Spline powerGraph;
 
     public Engine600HP(Vehicle vehicle) {
-        super("Basic 600", 6000, 9000, 20f);
+        super("Basic 600", 6000f, 600f, 9000f, 20f);
         this.vehicle = vehicle;
 
         Vector3f[] points = new Vector3f[] {

@@ -7,6 +7,7 @@ import com.jme3.audio.AudioNode;
 import com.jme3.math.FastMath;
 import com.jme3.math.Spline;
 import com.jme3.math.Vector3f;
+import jme3utilities.Validate;
 
 /**
  * Model a single engine in a Vehicle.
@@ -25,11 +26,15 @@ abstract public class Engine {
      */
     private float braking;
     /*
+     * crankshaft revolutions per minute (RPMs) when idling (&ge;0)
+     */
+    private float idleRpm;
+    /*
      * maximum power output (total across all axles, &gt;0)
      */
     private float maxPower;
     /*
-     * revolutions per minute (RPMs) at the redline (&gt;0)
+     * revolutions per minute (RPMs) at the redline (&ge;idleRpm)
      */
     private float redline;
     /*
@@ -44,16 +49,22 @@ abstract public class Engine {
     // constructors
 
     /**
-     * Instantiate an Engine without audio.
+     * Instantiate an Engine in the "off" state, without audio.
      *
      * @param name a descriptive name
      * @param power the desired maximum power output (&gt;0)
+     * @param idleSpeed the desired idle speed (in RPMs, &ge;0)
      * @param maxRevs the desired RPMs at the redline (&gt;0)
      * @param braking the desired amount of engine braking when coasting (&ge;0)
      */
-    public Engine(String name, float power, float maxRevs, float braking) {
+    public Engine(String name, float power, float idleSpeed, float maxRevs,
+            float braking) {
+        Validate.positive(maxRevs, "redline");
+        Validate.inRange(idleSpeed, "idle speed", 0f, maxRevs);
+
         this.name = name;
         this.maxPower = power;
+        this.idleRpm = idleSpeed;
         this.redline = maxRevs;
         this.braking = braking;
     }
@@ -101,6 +112,16 @@ abstract public class Engine {
      */
     public AudioNode getEngineAudio() {
         return audioNode;
+    }
+
+    /**
+     * Determine this engine's idle speed.
+     *
+     * @return the rotational speed (in RPMs, &ge;0)
+     */
+    public float getIdleRpm() {
+        assert idleRpm >= 0f : idleRpm;
+        return idleRpm;
     }
 
     /**
@@ -197,9 +218,10 @@ abstract public class Engine {
     /**
      * Alter this engine's redline.
      *
-     * @param maxRevs the desired rate (in revolutions per minute, &gt;0)
+     * @param maxRevs the desired speed (in RPMs, &ge;idleRpm)
      */
     public void setMaxRevs(float maxRevs) {
+        Validate.inRange(maxRevs, "max revs", idleRpm, Float.MAX_VALUE);
         redline = maxRevs;
     }
 

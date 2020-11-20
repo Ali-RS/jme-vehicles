@@ -1,11 +1,11 @@
 package com.jayfella.jme.vehicle;
 
+import com.jayfella.jme.vehicle.engine.Engine;
 import com.jayfella.jme.vehicle.part.Gear;
 import com.jayfella.jme.vehicle.part.GearBox;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.math.FastMath;
 
 public class AutomaticGearboxState extends BaseAppState {
 
@@ -47,6 +47,12 @@ public class AutomaticGearboxState extends BaseAppState {
 
     @Override
     public void update(float tpf) {
+        Engine engine = vehicle.getEngine();
+        boolean isEngineRunning = engine.isStarted();
+        if (!isEngineRunning) {
+            engine.setRevs(0f);
+            return;
+        }
 
         // gearboxes speeds are in km/h.
 
@@ -104,12 +110,13 @@ public class AutomaticGearboxState extends BaseAppState {
             }
 
             revs += revIncrease;
-
             // System.out.println("revs: " + revs + " / " + revIncrease);
-            // we should probably figure out why it's exceeding 1.0 than clamp it.
-            revs = FastMath.clamp(revs, 0, 1);
-            vehicle.getEngine().setRevs(revs);
 
+            float idlingFraction = engine.getIdleRpm() / engine.getMaxRevs();
+            if (revs < idlingFraction) {
+                revs = idlingFraction;
+            }
+            engine.setRevs(revs);
         }
 
 
