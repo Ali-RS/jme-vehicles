@@ -28,8 +28,9 @@ public abstract class Engine {
 
     /**
      * Defines an engine
-     * @param name    the name of the engine.
-     * @param power   the power it can produce.
+     *
+     * @param name the name of the engine.
+     * @param power the power it can produce.
      * @param maxRevs the maximum revolutions the engine can work at.
      * @param braking the amount of engine braking when coasting.
      */
@@ -45,7 +46,8 @@ public abstract class Engine {
     }
 
     public void setEngineAudio(AssetManager assetManager, String audioFile) {
-        this.engineAudio = new AudioNode(assetManager, audioFile, AudioData.DataType.Buffer);
+        this.engineAudio = new AudioNode(assetManager, audioFile,
+                AudioData.DataType.Buffer);
         this.engineAudio.setLooping(true);
         this.engineAudio.setPositional(true);
         this.engineAudio.setDirectional(false);
@@ -89,16 +91,17 @@ public abstract class Engine {
         this.maxRevs = maxRevs;
     }
 
-
     /**
-     * Gets the power output at the current RPM.
-     * This is essentially the "power graph" of the engine.
+     * Gets the power output at the current RPM. This is essentially the "power
+     * graph" of the engine.
+     *
      * @return the power of the engine at the current RPM.
      */
     public float getPowerOutputAtRevs() {
         float revs = getRevs() * getMaxRevs();
         revs = FastMath.clamp(revs, 0, getMaxRevs() - 0.01f);
         float power = evaluateSpline(revs);
+
         return power * getPower();
     }
 
@@ -106,20 +109,25 @@ public abstract class Engine {
         // the maximum this vehicle can go is 135mph or 216kmh.
 
         // float engineMaxSpeed = 192.0f;
-        float engineMaxSpeed = vehicle.getGearBox().getMaxSpeed(Vehicle.SpeedUnit.KMH);
-        float speedUnit = vehicle.getSpeed(Vehicle.SpeedUnit.KMH) / engineMaxSpeed;
+        float engineMaxSpeed
+                = vehicle.getGearBox().getMaxSpeed(Vehicle.SpeedUnit.KMH);
+        float speedUnit
+                = vehicle.getSpeed(Vehicle.SpeedUnit.KMH) / engineMaxSpeed;
         return 1.0f - FastMath.interpolateLinear(speedUnit, 0, speedUnit);
     }
 
     /**
-     * Get the amount of torque the engine produces at speed.
-     * This is a kind of speed limiter that slows down acceleration as the vehicle increases in speed.
+     * Get the amount of torque the engine produces at speed. This is a kind of
+     * speed limiter that slows down acceleration as the vehicle increases in
+     * speed.
+     *
      * @return the amount of torque applied at the current speed.
      */
     public abstract float getTorqueAtSpeed();
 
     /**
      * Evaluate the power graph
+     *
      * @param range a value from 0-maxRevs
      * @return the power at this rev-range, from 0 to getPower().
      */
@@ -134,9 +142,7 @@ public abstract class Engine {
     }
 
     public float evaluateSpline(Spline powerGraph, float range) {
-
         int index = powerGraph.getControlPoints().size() - 1;
-
         Vector3f point = powerGraph.getControlPoints().get(index);
 
         while (point.x > range) {
@@ -145,17 +151,15 @@ public abstract class Engine {
         }
 
         //System.out.println("index: " + index + " - range: " + range);
-
         float start = point.x;
         float end = powerGraph.getControlPoints().get(index + 1).x;
-
         float interp = map(range, start, end, 0, 1);
 
         return powerGraph.interpolate(interp, index, null).y;
     }
 
-    private float map(float value, float oldMin, float oldMax, float newMin, float newMax) {
+    private float map(float value, float oldMin, float oldMax, float newMin,
+            float newMax) {
         return (((value - oldMin) * (newMax - newMin)) / (oldMax - oldMin)) + newMin;
     }
-
 }
