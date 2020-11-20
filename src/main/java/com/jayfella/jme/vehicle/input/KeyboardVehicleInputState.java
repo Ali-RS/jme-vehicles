@@ -41,11 +41,13 @@ public class KeyboardVehicleInputState
             = new FunctionId(G_VEHICLE, "Dump Physics");
     private static final FunctionId F_DUMP_VIEWPORT
             = new FunctionId(G_VEHICLE, "Dump Viewport");
+    private static final FunctionId F_FOOTBRAKE
+            = new FunctionId(G_VEHICLE, "Vehicle Footbrake");
     private static final FunctionId F_HANDBRAKE
             = new FunctionId(G_VEHICLE, "Vehicle Handbrake");
     private static final FunctionId F_HORN
             = new FunctionId(G_VEHICLE, "Vehicle Horn");
-    private static final FunctionId F_MOVE
+    private static final FunctionId F_FORWARD
             = new FunctionId(G_VEHICLE, "Vehicle Move");
     private static final FunctionId F_PAUSE
             = new FunctionId(G_VEHICLE, "Pause Simulation");
@@ -104,8 +106,8 @@ public class KeyboardVehicleInputState
 
         inputMapper.removeMapping(F_START_ENGINE, KeyInput.KEY_Y);
 
-        inputMapper.removeMapping(F_MOVE, KeyInput.KEY_W);
-        inputMapper.removeMapping(F_MOVE, InputState.Negative, KeyInput.KEY_S);
+        inputMapper.removeMapping(F_FORWARD, KeyInput.KEY_W);
+        inputMapper.removeMapping(F_FOOTBRAKE, KeyInput.KEY_S);
 
         inputMapper.removeMapping(F_TURN_LEFT, KeyInput.KEY_A);
         inputMapper.removeMapping(F_TURN_RIGHT, KeyInput.KEY_D);
@@ -126,8 +128,8 @@ public class KeyboardVehicleInputState
         inputMapper.removeMapping(F_SCREEN_SHOT, KeyInput.KEY_F12);
 
         inputMapper.removeStateListener(this,
-                F_START_ENGINE, F_MOVE, F_TURN_LEFT, F_TURN_RIGHT,
-                F_REVERSE, F_HANDBRAKE, F_RESET,
+                F_START_ENGINE, F_FORWARD, F_TURN_LEFT, F_TURN_RIGHT,
+                F_REVERSE, F_FOOTBRAKE, F_HANDBRAKE, F_RESET,
                 F_HORN, F_CAMVIEW,
                 F_DUMP_CAMERA, F_DUMP_PHYSICS, F_DUMP_VIEWPORT, F_PAUSE,
                 F_RETURN, F_SCREEN_SHOT
@@ -140,8 +142,8 @@ public class KeyboardVehicleInputState
 
         inputMapper.map(F_START_ENGINE, KeyInput.KEY_Y);
 
-        inputMapper.map(F_MOVE, KeyInput.KEY_W);
-        inputMapper.map(F_MOVE, InputState.Negative, KeyInput.KEY_S);
+        inputMapper.map(F_FORWARD, KeyInput.KEY_W);
+        inputMapper.map(F_FOOTBRAKE, KeyInput.KEY_S);
 
         inputMapper.map(F_TURN_LEFT, KeyInput.KEY_A);
         inputMapper.map(F_TURN_RIGHT, KeyInput.KEY_D);
@@ -163,8 +165,8 @@ public class KeyboardVehicleInputState
         inputMapper.map(F_SCREEN_SHOT, KeyInput.KEY_F12);
 
         inputMapper.addStateListener(this,
-                F_START_ENGINE, F_MOVE, F_TURN_LEFT, F_TURN_RIGHT,
-                F_REVERSE, F_HANDBRAKE, F_RESET,
+                F_START_ENGINE, F_FORWARD, F_TURN_LEFT, F_TURN_RIGHT,
+                F_REVERSE, F_FOOTBRAKE, F_HANDBRAKE, F_RESET,
                 F_HORN, F_CAMVIEW,
                 F_DUMP_CAMERA, F_DUMP_PHYSICS, F_DUMP_VIEWPORT, F_PAUSE,
                 F_RETURN, F_SCREEN_SHOT
@@ -208,18 +210,11 @@ public class KeyboardVehicleInputState
         } else if (func == F_START_ENGINE && !pressed) {
             driverHud.toggleEngineStarted();
 
-        } else if (func == F_MOVE) {
-            if (value == InputState.Positive) {
-                accelerating = true;
-            } else if (value == InputState.Negative) {
-                braking = true;
-            } else {
-                accelerating = false;
-                braking = false;
+        } else if (func == F_FORWARD) {
+            accelerating = pressed;
 
-                // we are coasting. engine braking comes into force.
-                // braking applies to the wheels that are connected to the engine.
-            }
+        } else if (func == F_FOOTBRAKE) {
+            braking = pressed;
 
         } else if (func == F_REVERSE) {
             vehicle.getGearBox().setReversing(pressed);
