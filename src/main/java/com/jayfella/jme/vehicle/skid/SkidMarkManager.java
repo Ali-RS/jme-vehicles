@@ -14,43 +14,106 @@ import com.jme3.util.BufferUtils;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
+/**
+ * A single continuous skid mark, split into sections and rendered using a
+ * single Mesh.
+ */
 public class SkidMarkManager {
+    // *************************************************************************
+    // classes and enums
 
-    // Info for each mark. Needed to generate the correct mesh
+    /*
+     * A single section within a continuous skid mark.
+     */
     class MarkSection {
 
         public float Intensity;
         public int LastIndex;
-        public Vector3f Normal = new Vector3f();
+        public Vector3f Normal = new Vector3f(); // TODO use FloatBuffers
         public Vector3f Pos = new Vector3f();
         public Vector3f Posl = new Vector3f();
         public Vector3f Posr = new Vector3f();
         public Vector4f Tangent = new Vector4f();
     }
+    // *************************************************************************
+    // constants and loggers
 
-    final private float GROUND_OFFSET = 0.02f;  // Distance above surface in metres
-    final private float MIN_DISTANCE = 0.5f; // Distance between skid texture sections in metres. Bigger = better performance, less smooth
+    /**
+     * height of the skid above the pavement (in meters)
+     */
+    final private float GROUND_OFFSET = 0.02f;
+    /**
+     * minimum distance travelled before starting a new section (in meters),
+     * bigger means better performance but less smooth
+     */
+    final private float MIN_DISTANCE = 0.5f;
     final private float MIN_SQR_DISTANCE = MIN_DISTANCE * MIN_DISTANCE;
+    // *************************************************************************
+    // fields
 
     private boolean haveSetBounds;
+    /**
+     * true if an update() is needed (a section has been added since the
+     * previous update)
+     */
     private boolean meshUpdated;
+    /**
+     * array used to initialize color buffer in the Mesh
+     */
     final private ColorRGBA[] colors;
-    final private float MARK_WIDTH; // Width of the skidmarks. Should match the width of the wheels
+    /**
+     * width of this skid mark (in meters), should match the width of the tire
+     */
+    final private float MARK_WIDTH;
+    /**
+     * Geometry used to visualize this skid mark
+     */
     private Geometry geometry;
+    /**
+     * cyclic index into the array of sections
+     */
     private int markIndex;
-    final private int MAX_MARKS; // Max number of marks total for everyone together
+    /**
+     * maximum number of sections in this skid mark
+     */
+    final private int MAX_MARKS;
+    /**
+     * array used to initialize the index buffer of the Mesh
+     */
     final private int[] triangles;
+    /**
+     * circular buffer of sections
+     */
     final private MarkSection[] skidmarks;
+    /**
+     * Material used to visualize this skid mark
+     */
     final private Material skidmarksMaterial;
+    /**
+     * Mesh used to visualize this skid mark
+     */
     final private Mesh marksMesh;
+    /**
+     * arrays used to initialize mesh buffers
+     */
     final private Vector3f[] normals;
     final private Vector4f[] tangents;
     final private Vector2f[] uvs;
     final private Vector3f[] vertices;
+    // *************************************************************************
+    // constructors
 
+    /**
+     * Instantiate a continuous skid mark with the specified width.
+     *
+     * @param assetManager
+     * @param maxSkidDistance
+     * @param tireWidth
+     */
     public SkidMarkManager(AssetManager assetManager, int maxSkidDistance, float tireWidth) {
-        // Generate a fixed array of skidmarks
-
+        /*
+         * Generate a fixed array of sections.
+         */
         this.MAX_MARKS = maxSkidDistance;
         this.MARK_WIDTH = tireWidth;
 
@@ -71,15 +134,27 @@ public class SkidMarkManager {
 
         this.skidmarksMaterial = assetManager.loadMaterial("Materials/Vehicles/SkidMark.j3m");
     }
+    // *************************************************************************
+    // new methods exposed
 
-    // Function called by the wheel that's skidding. Sets the intensity of the skidmark section
-    // by setting the alpha of the vertex color
+    /**
+     * Add a section to this skid mark. The alpha component of the vertex color
+     * indicates the skid intensity.
+     *
+     * @param pos the final location for the new section (in world coordinates,
+     * not null, unaffected)
+     * @param normal the final normal for the new section (in world coordinates,
+     * not null, unaffected)
+     * @param intensity the final intensity for the new section
+     * @param lastIndex the index of the previous section (&ge;0, &lt;MAX_MARKS)
+     * @return the index of the new section (&ge;0, &lt;MAX_MARKS)
+     */
     public int addSkidMark(Vector3f pos, Vector3f normal, float intensity, int lastIndex) {
         if (intensity > 1) intensity = 1.0f;
         else if (intensity < 0) return -1;
 
         if (lastIndex > 0) {
-            float sqrDistance = pos.subtract(skidmarks[lastIndex].Pos).length();
+            float sqrDistance = pos.subtract(skidmarks[lastIndex].Pos).length(); // TODO oops
             if (sqrDistance < MIN_SQR_DISTANCE) return lastIndex;
         }
 
@@ -92,10 +167,7 @@ public class SkidMarkManager {
 
         if (lastIndex != -1) {
             MarkSection lastSection = skidmarks[lastIndex];
-
             Vector3f dir = curSection.Pos.subtract(lastSection.Pos);
-
-            // Vector3f xDir = Vector3f.Cross(dir, normal).normalized;
             Vector3f xDir = dir.cross(normal).normalizeLocal();
 
             curSection.Posl = curSection.Pos.add(xDir.mult(MARK_WIDTH * 0.5f));
@@ -118,11 +190,17 @@ public class SkidMarkManager {
         return curIndex;
     }
 
+    /**
+     * Access the Geometry used to render the marks.
+     *
+     * @return the pre-existing instance
+     */
     public Geometry getGeometry() {
         return geometry;
     }
+    // *************************************************************************
+    // new protected methods
 
-    // #### PROTECTED/PRIVATE METHODS ####
     protected void update() {
         if (!meshUpdated) return;
         meshUpdated = false;
@@ -164,8 +242,13 @@ public class SkidMarkManager {
             //marksMesh.updateBound();
         }
     }
+    // *************************************************************************
+    // private methods
 
-    // Update part of the mesh for the current markIndex
+    /**
+     * Add 4 mesh vertices (2 triangles) in order to connect the current
+     * MarkSection to the previous one.
+     */
     private void updateSkidMarksMesh() {
         MarkSection curr = skidmarks[markIndex];
 
