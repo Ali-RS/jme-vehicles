@@ -33,7 +33,7 @@ public class VehicleFirstPersonCamera implements VehicleCamera {
     @Override
     public void attach() {
 
-        cameraNode.setLocalTranslation(vehicle.getHoodCamLocation());
+        cameraNode.setLocalTranslation(vehicle.getHoodCamLocation(null));
         vehicle.getNode().attachChild(cameraNode);
 
         enableInputMappings();

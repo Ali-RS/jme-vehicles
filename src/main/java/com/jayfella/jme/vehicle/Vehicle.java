@@ -19,7 +19,7 @@ import com.jme3.scene.Spatial;
 import jme3utilities.math.MyArray;
 
 /**
- * A vehicle that may contain wheels and other propellants.
+ * A vehicle with a single Engine and a single GearBox.
  */
 public abstract class Vehicle {
 
@@ -216,8 +216,19 @@ public abstract class Vehicle {
         }
     }
 
-    public Vector3f getHoodCamLocation() {
-        return hoodCamLoc;
+    /**
+     * Determine the location of the hood camera.
+     *
+     * @param storeResult storage for the result (modified if not null)
+     * @return a location vector in local coordinates (either storeResult or a
+     * new instance)
+     */
+    public Vector3f getHoodCamLocation(Vector3f storeResult) {
+        if (storeResult == null) {
+            return hoodCamLoc.clone();
+        } else {
+            return storeResult.set(hoodCamLoc);
+        }
     }
 
     protected void setHoodCamLocation(Vector3f loc) {
