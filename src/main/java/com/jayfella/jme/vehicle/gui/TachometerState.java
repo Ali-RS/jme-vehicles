@@ -12,17 +12,12 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
-import com.jme3.renderer.Camera;
-import com.jme3.renderer.RenderManager;
-import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Quad;
-import com.jme3.texture.FrameBuffer;
 import com.jme3.texture.Image;
 import com.jme3.texture.Texture;
-import com.jme3.texture.Texture2D;
 import com.simsilica.lemur.Label;
 import jme3utilities.math.MyMath;
 
@@ -103,8 +98,8 @@ public class TachometerState extends BaseAppState {
         node.attachChild(needleNode);
         needleNode.setLocalTranslation(100f, 100f, 1f);
 
-        Geometry fixedGeometry = createFixedGeometry(assetManager);
-        node.attachChild(fixedGeometry);
+        Node fixedNode = buildFixedNode(assetManager);
+        node.attachChild(fixedNode);
 
         String needlePath = "Textures/Vehicles/Speedometer/speedo_needle_2.png";
         Texture needleTexture = assetManager.loadTexture(needlePath);
@@ -189,7 +184,6 @@ public class TachometerState extends BaseAppState {
 
     private Node buildNumNode(float redlineRpm, int stepRpm, float radius) {
         Node numNode = new Node("Tachometer Numbers");
-        numNode.setLocalTranslation(0f, 0f, -1f);
 
         for (int intRpm = 0;; intRpm += stepRpm) {
             float rpmFraction = intRpm / redlineRpm;
@@ -211,7 +205,11 @@ public class TachometerState extends BaseAppState {
         return numNode;
     }
 
-    private Geometry createFixedGeometry(AssetManager assetManager) {
+    /**
+     * Build the Node for the fixed parts of the tachometer, including the
+     * background and numbers.
+     */
+    private Node buildFixedNode(AssetManager assetManager) {
         String path = "Textures/Vehicles/Speedometer/tachometer_bg.png";
         Texture backgroundTexture = assetManager.loadTexture(path);
         Image image = backgroundTexture.getImage();
@@ -220,6 +218,7 @@ public class TachometerState extends BaseAppState {
 
         Geometry backgroundGeom = new Geometry("Tachometer Background",
                 new Quad(width, height));
+        backgroundGeom.setLocalTranslation(-width / 2f, -height / 2f, -1f);
 
         Material material = new Material(assetManager,
                 "Common/MatDefs/Misc/Unshaded.j3md");
@@ -228,70 +227,10 @@ public class TachometerState extends BaseAppState {
         material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
 
         int maxRevs = (int) vehicle.getEngine().getMaxRevs();
-        Node numbers = buildNumNode(maxRevs, 1000, width / 2f - 20f);
+        Node numNode = buildNumNode(maxRevs, 1000, width / 2f - 20f);
+        numNode.attachChild(backgroundGeom);
+        numNode.setLocalTranslation(width / 2f, height / 2f, -1f);
 
-        backgroundGeom.setLocalTranslation(
-                -width / 2f,
-                -height / 2f,
-                -1f
-        );
-
-        numbers.attachChild(backgroundGeom);
-
-        Texture2D numberTexture = generateImpostor(numbers, width);
-
-        Geometry numbersGeom = new Geometry("Tachometer Numbers",
-                new Quad(width, height));
-
-        material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        numbersGeom.setMaterial(material);
-        material.setTexture("ColorMap", numberTexture);
-        material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-
-        return numbersGeom;
-    }
-
-    private Texture2D generateImpostor(Node scene, int size) {
-        Camera newCam = new Camera(size, size);
-        newCam.setFrustumPerspective(45f, 1f, 1f, 2f);
-        newCam.setParallelProjection(true);
-        setProjectionHeight(newCam, size + 40f);
-        newCam.lookAtDirection(new Vector3f(0f, 0f, -1f), Vector3f.UNIT_Y);
-
-        RenderManager renderManager = getApplication().getRenderManager();
-        ViewPort vp = renderManager.createPreView("Offscreen View", newCam);
-        vp.setClearFlags(true, true, true);
-        vp.setBackgroundColor(ColorRGBA.BlackNoAlpha);
-
-        FrameBuffer offBuffer = new FrameBuffer(size, size, 1);
-
-        Texture2D offTex = new Texture2D(size, size, Image.Format.ABGR8);
-        offTex.setMinFilter(Texture.MinFilter.Trilinear);
-        offTex.setMagFilter(Texture.MagFilter.Bilinear);
-
-        offBuffer.setDepthBuffer(Image.Format.Depth);
-        offBuffer.setColorTexture(offTex);
-
-        vp.setOutputFrameBuffer(offBuffer);
-
-        //scene.updateLogicalState(0);
-        scene.updateGeometricState();
-
-        vp.attachScene(scene);
-
-        renderManager.removeMainView(vp);
-
-        return offTex;
-    }
-
-    private void setProjectionHeight(Camera camera, float factor) {
-        float bottom = camera.getFrustumBottom();
-        camera.setFrustumBottom(bottom * factor);
-        float left = camera.getFrustumLeft();
-        camera.setFrustumLeft(left * factor);
-        float right = camera.getFrustumRight();
-        camera.setFrustumRight(right * factor);
-        float top = camera.getFrustumTop();
-        camera.setFrustumTop(top * factor);
+        return numNode;
     }
 }
