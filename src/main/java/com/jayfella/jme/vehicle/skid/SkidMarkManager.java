@@ -16,38 +16,37 @@ import java.nio.IntBuffer;
 
 public class SkidMarkManager {
 
-    final private Material skidmarksMaterial;
-    private Geometry geometry;
-    final private int MAX_MARKS; // Max number of marks total for everyone together
-    final private float MARK_WIDTH; // Width of the skidmarks. Should match the width of the wheels
+    // Info for each mark. Needed to generate the correct mesh
+    class MarkSection {
+
+        public float Intensity;
+        public int LastIndex;
+        public Vector3f Normal = new Vector3f();
+        public Vector3f Pos = new Vector3f();
+        public Vector3f Posl = new Vector3f();
+        public Vector3f Posr = new Vector3f();
+        public Vector4f Tangent = new Vector4f();
+    }
+
     final private float GROUND_OFFSET = 0.02f;  // Distance above surface in metres
     final private float MIN_DISTANCE = 0.5f; // Distance between skid texture sections in metres. Bigger = better performance, less smooth
     final private float MIN_SQR_DISTANCE = MIN_DISTANCE * MIN_DISTANCE;
 
-    // Info for each mark. Needed to generate the correct mesh
-    class MarkSection {
-        public Vector3f Pos = new Vector3f();
-        public Vector3f Normal = new Vector3f();
-        public Vector4f Tangent = new Vector4f();
-        public Vector3f Posl = new Vector3f();
-        public Vector3f Posr = new Vector3f();
-        public float Intensity;
-        public int LastIndex;
-    }
-
+    private boolean haveSetBounds;
+    private boolean meshUpdated;
+    final private ColorRGBA[] colors;
+    final private float MARK_WIDTH; // Width of the skidmarks. Should match the width of the wheels
+    private Geometry geometry;
     private int markIndex;
+    final private int MAX_MARKS; // Max number of marks total for everyone together
+    final private int[] triangles;
     final private MarkSection[] skidmarks;
+    final private Material skidmarksMaterial;
     final private Mesh marksMesh;
-
-    final private Vector3f[] vertices;
     final private Vector3f[] normals;
     final private Vector4f[] tangents;
-    final private ColorRGBA[] colors;
     final private Vector2f[] uvs;
-    final private int[] triangles;
-
-    private boolean meshUpdated;
-    private boolean haveSetBounds;
+    final private Vector3f[] vertices;
 
     public SkidMarkManager(AssetManager assetManager, int maxSkidDistance, float tireWidth) {
         // Generate a fixed array of skidmarks
@@ -71,52 +70,6 @@ public class SkidMarkManager {
         triangles = new int[MAX_MARKS * 6];
 
         this.skidmarksMaterial = assetManager.loadMaterial("Materials/Vehicles/SkidMark.j3m");
-    }
-
-    public Geometry getGeometry() {
-        return geometry;
-    }
-
-    protected void update() {
-        if (!meshUpdated) return;
-        meshUpdated = false;
-
-        FloatBuffer pb = BufferUtils.createFloatBuffer(vertices);
-        marksMesh.setBuffer(VertexBuffer.Type.Position, 3, pb);
-
-        FloatBuffer nb = BufferUtils.createFloatBuffer(normals);
-        marksMesh.setBuffer(VertexBuffer.Type.Normal, 3, nb);
-
-        IntBuffer ib = BufferUtils.createIntBuffer(triangles);
-        marksMesh.setBuffer(VertexBuffer.Type.Index, 3, ib);
-
-        FloatBuffer ub = BufferUtils.createFloatBuffer(uvs);
-        marksMesh.setBuffer(VertexBuffer.Type.TexCoord, 2, ub);
-
-        FloatBuffer tb = BufferUtils.createFloatBuffer(tangents);
-        marksMesh.setBuffer(VertexBuffer.Type.Tangent, 4, tb);
-
-        FloatBuffer cb = BufferUtils.createFloatBuffer(colors);
-        marksMesh.setBuffer(VertexBuffer.Type.Color, 4, cb);
-
-        marksMesh.updateBound();
-
-        if (this.geometry == null) {
-            this.geometry = new Geometry("SkidMark", marksMesh);
-            this.geometry.setMaterial(skidmarksMaterial);
-            this.geometry.setQueueBucket(RenderQueue.Bucket.Transparent);
-        }
-
-        geometry.updateModelBound();
-
-        if (!haveSetBounds) {
-            // Could use RecalculateBounds here each frame instead, but it uses about 0.1-0.2ms each time
-            // Save time by just making the mesh bounds huge, so the skidmarks will always draw
-            // Not sure why I only need to do this once, yet can't do it in Start (it resets to zero)
-            // marksMesh.bounds = new Bounds(new Vector3(0, 0, 0), new Vector3(10000, 10000, 10000));
-            // haveSetBounds = true;
-            //marksMesh.updateBound();
-        }
     }
 
     // Function called by the wheel that's skidding. Sets the intensity of the skidmark section
@@ -165,7 +118,53 @@ public class SkidMarkManager {
         return curIndex;
     }
 
+    public Geometry getGeometry() {
+        return geometry;
+    }
+
     // #### PROTECTED/PRIVATE METHODS ####
+    protected void update() {
+        if (!meshUpdated) return;
+        meshUpdated = false;
+
+        FloatBuffer pb = BufferUtils.createFloatBuffer(vertices);
+        marksMesh.setBuffer(VertexBuffer.Type.Position, 3, pb);
+
+        FloatBuffer nb = BufferUtils.createFloatBuffer(normals);
+        marksMesh.setBuffer(VertexBuffer.Type.Normal, 3, nb);
+
+        IntBuffer ib = BufferUtils.createIntBuffer(triangles);
+        marksMesh.setBuffer(VertexBuffer.Type.Index, 3, ib);
+
+        FloatBuffer ub = BufferUtils.createFloatBuffer(uvs);
+        marksMesh.setBuffer(VertexBuffer.Type.TexCoord, 2, ub);
+
+        FloatBuffer tb = BufferUtils.createFloatBuffer(tangents);
+        marksMesh.setBuffer(VertexBuffer.Type.Tangent, 4, tb);
+
+        FloatBuffer cb = BufferUtils.createFloatBuffer(colors);
+        marksMesh.setBuffer(VertexBuffer.Type.Color, 4, cb);
+
+        marksMesh.updateBound();
+
+        if (this.geometry == null) {
+            this.geometry = new Geometry("SkidMark", marksMesh);
+            this.geometry.setMaterial(skidmarksMaterial);
+            this.geometry.setQueueBucket(RenderQueue.Bucket.Transparent);
+        }
+
+        geometry.updateModelBound();
+
+        if (!haveSetBounds) {
+            // Could use RecalculateBounds here each frame instead, but it uses about 0.1-0.2ms each time
+            // Save time by just making the mesh bounds huge, so the skidmarks will always draw
+            // Not sure why I only need to do this once, yet can't do it in Start (it resets to zero)
+            // marksMesh.bounds = new Bounds(new Vector3(0, 0, 0), new Vector3(10000, 10000, 10000));
+            // haveSetBounds = true;
+            //marksMesh.updateBound();
+        }
+    }
+
     // Update part of the mesh for the current markIndex
     private void updateSkidMarksMesh() {
         MarkSection curr = skidmarks[markIndex];
