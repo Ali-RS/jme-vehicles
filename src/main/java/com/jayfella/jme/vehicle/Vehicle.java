@@ -204,6 +204,13 @@ public abstract class Vehicle {
         return vehicleControl;
     }
 
+    /**
+     * Determine the forward component of this vehicle's airspeed as of the
+     * previous time step.
+     *
+     * @param speedUnit the unit of measurement to use (not null)
+     * @return the speed (may be negative)
+     */
     public float getSpeed(SpeedUnit speedUnit) {
         float kph = vehicleControl.getCurrentVehicleSpeedKmHour();
         switch (speedUnit) {
@@ -212,7 +219,7 @@ public abstract class Vehicle {
             case MPH:
                 return kph * KMH_TO_MPH;
             default:
-                return -1;
+                throw new IllegalArgumentException("speedUnit = " + speedUnit);
         }
     }
 
