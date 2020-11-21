@@ -15,31 +15,52 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 /**
- * A single continuous skid mark, split into sections and rendered using a
- * single Mesh.
+ * A single continuous skid mark, composed of straight sections and rendered
+ * using a single Geometry. TODO de-publicize
  */
 public class SkidMarkManager {
     // *************************************************************************
     // classes and enums
 
     /*
-     * A single section within a continuous skid mark.
+     * A single straight section within a skid mark.
      */
     private class MarkSection {
 
+        /**
+         * final intensity of the section (&ge;0, &lt;1)
+         */
         float intensity;
+        /**
+         * index of the previous section (&ge;0) or -1 for the first section
+         */
         int prevIndex;
-        Vector3f normal = new Vector3f(); // TODO use FloatBuffers
+        /**
+         * final normal (a unit vector in world coordinates)
+         */
+        Vector3f normal = new Vector3f();
+        /**
+         * final center location (in world coordinates)
+         */
         Vector3f position = new Vector3f();
+        /**
+         * final location of the left edge (in world coordinates)
+         */
         Vector3f positionLeft = new Vector3f();
+        /**
+         * final location of the right edge (in world coordinates)
+         */
         Vector3f positionRight = new Vector3f();
+        /**
+         * final tangent
+         */
         Vector4f tangent = new Vector4f();
     }
     // *************************************************************************
     // constants and loggers
 
     /**
-     * height of the skid above the pavement (in meters)
+     * height of the skid above the pavement (in meters) TODO randomize
      */
     final private static float height = 0.02f;
     /**
@@ -81,7 +102,7 @@ public class SkidMarkManager {
      */
     final private int[] indices;
     /**
-     * circular buffer of sections
+     * circular buffer of sections TODO use an ArrayList
      */
     final private MarkSection[] sections;
     /**
@@ -89,7 +110,7 @@ public class SkidMarkManager {
      */
     final private Material material;
     /**
-     * Mesh used to visualize this skid mark
+     * dynamic Mesh used to visualize this skid mark
      */
     final private Mesh mesh;
     /**
@@ -103,11 +124,13 @@ public class SkidMarkManager {
     // constructors
 
     /**
-     * Instantiate a continuous skid mark with the specified width.
+     * Instantiate a continuous skid mark with the specified width. TODO
+     * de-publicize
      *
-     * @param assetManager
-     * @param maxSkidDistance
-     * @param tireWidth
+     * @param assetManager for loading assets (not null)
+     * @param maxSkidDistance the desired maximum number of sections in this
+     * skid mark (&gt;0)
+     * @param tireWidth the desired width of this skid mark (in meters, &gt;0)
      */
     public SkidMarkManager(AssetManager assetManager, int maxSkidDistance,
             float tireWidth) {
@@ -132,8 +155,7 @@ public class SkidMarkManager {
         uvs = new Vector2f[maxSections * 4];
         indices = new int[maxSections * 6];
 
-        material
-                = assetManager.loadMaterial("Materials/Vehicles/SkidMark.j3m");
+        material = assetManager.loadMaterial("Materials/Vehicles/SkidMark.j3m");
     }
     // *************************************************************************
     // new methods exposed
@@ -144,11 +166,12 @@ public class SkidMarkManager {
      *
      * @param pos the final location for the new section (in world coordinates,
      * not null, unaffected)
-     * @param normal the final normal for the new section (in world coordinates,
-     * not null, unaffected)
-     * @param intensity the final intensity for the new section
+     * @param normal the final normal for the new section (a unit vector in
+     * world coordinates, not null, unaffected)
+     * @param intensity the final intensity for the new section (typically
+     * between 0 and 1)
      * @param lastIndex the index of the previous section (&ge;0,
-     * &lt;maxSections)
+     * &lt;maxSections) or -1 to start a new skid mark
      * @return the index of the new section (&ge;0, &lt;maxSections)
      */
     public int addSection(Vector3f pos, Vector3f normal, float intensity,
@@ -279,7 +302,7 @@ public class SkidMarkManager {
         tangents[sectionIndex * 4 + 2] = curr.tangent;
         tangents[sectionIndex * 4 + 3] = curr.tangent;
 
-        // dirt
+        // color of the skid mark
         float r = 43 / 255f;
         float g = 29 / 255f;
         float b = 14 / 255f;
