@@ -42,9 +42,9 @@ vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
   + tire smoke
   + engine/horn sounds
 
-<img height="150" src="https://i.imgur.com/WNVXH1E.png">
-
 [Jump to table of contents](#toc)
+
+<img height="400" src="https://i.imgur.com/WNVXH1E.png">
 
 <a name="build"/>
 
