@@ -25,15 +25,15 @@ public class SkidMarkManager {
     /*
      * A single section within a continuous skid mark.
      */
-    class MarkSection {
+    private class MarkSection {
 
-        public float Intensity;
-        public int LastIndex;
-        public Vector3f Normal = new Vector3f(); // TODO use FloatBuffers
-        public Vector3f Pos = new Vector3f();
-        public Vector3f Posl = new Vector3f();
-        public Vector3f Posr = new Vector3f();
-        public Vector4f Tangent = new Vector4f();
+        float Intensity;
+        int LastIndex;
+        Vector3f Normal = new Vector3f(); // TODO use FloatBuffers
+        Vector3f Pos = new Vector3f();
+        Vector3f Posl = new Vector3f();
+        Vector3f Posr = new Vector3f();
+        Vector4f Tangent = new Vector4f();
     }
     // *************************************************************************
     // constants and loggers
@@ -41,17 +41,16 @@ public class SkidMarkManager {
     /**
      * height of the skid above the pavement (in meters)
      */
-    final private float GROUND_OFFSET = 0.02f;
+    final private static float GROUND_OFFSET = 0.02f;
     /**
      * minimum distance travelled before starting a new section (in meters),
      * bigger means better performance but less smooth
      */
-    final private float MIN_DISTANCE = 0.5f;
-    final private float MIN_SQR_DISTANCE = MIN_DISTANCE * MIN_DISTANCE;
+    final private static float MIN_DISTANCE = 0.5f;
+    final private static float MIN_SQR_DISTANCE = MIN_DISTANCE * MIN_DISTANCE;
     // *************************************************************************
     // fields
 
-    private boolean haveSetBounds;
     /**
      * true if an update() is needed (a section has been added since the
      * previous update)
@@ -110,12 +109,13 @@ public class SkidMarkManager {
      * @param maxSkidDistance
      * @param tireWidth
      */
-    public SkidMarkManager(AssetManager assetManager, int maxSkidDistance, float tireWidth) {
+    public SkidMarkManager(AssetManager assetManager, int maxSkidDistance,
+            float tireWidth) {
         /*
          * Generate a fixed array of sections.
          */
-        this.MAX_MARKS = maxSkidDistance;
-        this.MARK_WIDTH = tireWidth;
+        MAX_MARKS = maxSkidDistance;
+        MARK_WIDTH = tireWidth;
 
         skidmarks = new MarkSection[MAX_MARKS];
         for (int i = 0; i < MAX_MARKS; i++) {
@@ -132,7 +132,8 @@ public class SkidMarkManager {
         uvs = new Vector2f[MAX_MARKS * 4];
         triangles = new int[MAX_MARKS * 6];
 
-        this.skidmarksMaterial = assetManager.loadMaterial("Materials/Vehicles/SkidMark.j3m");
+        skidmarksMaterial
+                = assetManager.loadMaterial("Materials/Vehicles/SkidMark.j3m");
     }
     // *************************************************************************
     // new methods exposed
@@ -149,13 +150,20 @@ public class SkidMarkManager {
      * @param lastIndex the index of the previous section (&ge;0, &lt;MAX_MARKS)
      * @return the index of the new section (&ge;0, &lt;MAX_MARKS)
      */
-    public int addSkidMark(Vector3f pos, Vector3f normal, float intensity, int lastIndex) {
-        if (intensity > 1) intensity = 1.0f;
-        else if (intensity < 0) return -1;
+    public int addSkidMark(Vector3f pos, Vector3f normal, float intensity,
+            int lastIndex) {
+        if (intensity > 1f) {
+            intensity = 1f;
+        } else if (intensity < 0f) {
+            return -1;
+        }
 
         if (lastIndex > 0) {
-            float sqrDistance = pos.subtract(skidmarks[lastIndex].Pos).length(); // TODO oops
-            if (sqrDistance < MIN_SQR_DISTANCE) return lastIndex;
+            float sqrDistance
+                    = pos.subtract(skidmarks[lastIndex].Pos).length(); // TODO oops
+            if (sqrDistance < MIN_SQR_DISTANCE) {
+                return lastIndex;
+            }
         }
 
         MarkSection curSection = skidmarks[markIndex];
@@ -170,14 +178,18 @@ public class SkidMarkManager {
             Vector3f dir = curSection.Pos.subtract(lastSection.Pos);
             Vector3f xDir = dir.cross(normal).normalizeLocal();
 
-            curSection.Posl = curSection.Pos.add(xDir.mult(MARK_WIDTH * 0.5f));
-            curSection.Posr = curSection.Pos.subtract(xDir.mult(MARK_WIDTH * 0.5f));
-            curSection.Tangent = new Vector4f(xDir.x, xDir.y, xDir.z, 1);
+            curSection.Posl
+                    = curSection.Pos.add(xDir.mult(MARK_WIDTH / 2f));
+            curSection.Posr
+                    = curSection.Pos.subtract(xDir.mult(MARK_WIDTH / 2f));
+            curSection.Tangent = new Vector4f(xDir.x, xDir.y, xDir.z, 1f);
 
             if (lastSection.LastIndex == -1) {
                 lastSection.Tangent = curSection.Tangent;
-                lastSection.Posl = curSection.Pos.add(xDir.mult(MARK_WIDTH * 0.5f));
-                lastSection.Posr = curSection.Pos.subtract(xDir.mult(MARK_WIDTH * 0.5f));
+                lastSection.Posl
+                        = curSection.Pos.add(xDir.mult(MARK_WIDTH / 2f));
+                lastSection.Posr
+                        = curSection.Pos.subtract(xDir.mult(MARK_WIDTH / 2f));
             }
         }
 
@@ -202,7 +214,9 @@ public class SkidMarkManager {
     // new protected methods
 
     protected void update() {
-        if (!meshUpdated) return;
+        if (!meshUpdated) {
+            return;
+        }
         meshUpdated = false;
 
         FloatBuffer pb = BufferUtils.createFloatBuffer(vertices);
@@ -225,22 +239,13 @@ public class SkidMarkManager {
 
         marksMesh.updateBound();
 
-        if (this.geometry == null) {
-            this.geometry = new Geometry("SkidMark", marksMesh);
-            this.geometry.setMaterial(skidmarksMaterial);
-            this.geometry.setQueueBucket(RenderQueue.Bucket.Transparent);
+        if (geometry == null) {
+            geometry = new Geometry("SkidMark", marksMesh);
+            geometry.setMaterial(skidmarksMaterial);
+            geometry.setQueueBucket(RenderQueue.Bucket.Transparent);
         }
 
         geometry.updateModelBound();
-
-        if (!haveSetBounds) {
-            // Could use RecalculateBounds here each frame instead, but it uses about 0.1-0.2ms each time
-            // Save time by just making the mesh bounds huge, so the skidmarks will always draw
-            // Not sure why I only need to do this once, yet can't do it in Start (it resets to zero)
-            // marksMesh.bounds = new Bounds(new Vector3(0, 0, 0), new Vector3(10000, 10000, 10000));
-            // haveSetBounds = true;
-            //marksMesh.updateBound();
-        }
     }
     // *************************************************************************
     // private methods
@@ -252,21 +257,23 @@ public class SkidMarkManager {
     private void updateSkidMarksMesh() {
         MarkSection curr = skidmarks[markIndex];
 
-        // Nothing to connect to yet
-        if (curr.LastIndex == -1) return;
+        if (curr.LastIndex == -1) {
+            // There's nothing to connect to yet.
+            return;
+        }
 
         MarkSection last = skidmarks[curr.LastIndex];
-        vertices[markIndex * 4 + 0] = last.Posl;
+        vertices[markIndex * 4] = last.Posl;
         vertices[markIndex * 4 + 1] = last.Posr;
         vertices[markIndex * 4 + 2] = curr.Posl;
         vertices[markIndex * 4 + 3] = curr.Posr;
 
-        normals[markIndex * 4 + 0] = last.Normal;
+        normals[markIndex * 4] = last.Normal;
         normals[markIndex * 4 + 1] = last.Normal;
         normals[markIndex * 4 + 2] = curr.Normal;
         normals[markIndex * 4 + 3] = curr.Normal;
 
-        tangents[markIndex * 4 + 0] = last.Tangent;
+        tangents[markIndex * 4] = last.Tangent;
         tangents[markIndex * 4 + 1] = last.Tangent;
         tangents[markIndex * 4 + 2] = curr.Tangent;
         tangents[markIndex * 4 + 3] = curr.Tangent;
@@ -276,17 +283,17 @@ public class SkidMarkManager {
         float g = 29 / 255f;
         float b = 14 / 255f;
 
-        colors[markIndex * 4 + 0] = new ColorRGBA(r, g, b, last.Intensity);
+        colors[markIndex * 4] = new ColorRGBA(r, g, b, last.Intensity);
         colors[markIndex * 4 + 1] = new ColorRGBA(r, g, b, last.Intensity);
         colors[markIndex * 4 + 2] = new ColorRGBA(r, g, b, curr.Intensity);
         colors[markIndex * 4 + 3] = new ColorRGBA(r, g, b, curr.Intensity);
 
-        uvs[markIndex * 4 + 0] = new Vector2f(0, 0);
-        uvs[markIndex * 4 + 1] = new Vector2f(1, 0);
-        uvs[markIndex * 4 + 2] = new Vector2f(0, 1);
-        uvs[markIndex * 4 + 3] = new Vector2f(1, 1);
+        uvs[markIndex * 4] = new Vector2f(0f, 0f);
+        uvs[markIndex * 4 + 1] = new Vector2f(1f, 0f);
+        uvs[markIndex * 4 + 2] = new Vector2f(0f, 1f);
+        uvs[markIndex * 4 + 3] = new Vector2f(1f, 1f);
 
-        triangles[markIndex * 6 + 0] = markIndex * 4 + 0;
+        triangles[markIndex * 6] = markIndex * 4;
         triangles[markIndex * 6 + 2] = markIndex * 4 + 1;
         triangles[markIndex * 6 + 1] = markIndex * 4 + 2;
 
