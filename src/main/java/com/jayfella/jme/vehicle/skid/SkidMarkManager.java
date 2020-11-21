@@ -151,7 +151,7 @@ public class SkidMarkManager {
      * &lt;maxSections)
      * @return the index of the new section (&ge;0, &lt;maxSections)
      */
-    public int addSkidMark(Vector3f pos, Vector3f normal, float intensity,
+    public int addSection(Vector3f pos, Vector3f normal, float intensity,
             int lastIndex) {
         if (intensity > 1f) {
             intensity = 1f;
