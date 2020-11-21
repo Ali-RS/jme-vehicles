@@ -46,7 +46,7 @@ public class SkidMarkManager {
      * minimum distance travelled before starting a new section (in meters),
      * bigger means better performance but less smooth
      */
-    final private static float minLength = 0.5f;
+    final private static float minLength = 0.25f;
     final private static float minLengthSquared = minLength * minLength;
     // *************************************************************************
     // fields
@@ -147,7 +147,8 @@ public class SkidMarkManager {
      * @param normal the final normal for the new section (in world coordinates,
      * not null, unaffected)
      * @param intensity the final intensity for the new section
-     * @param lastIndex the index of the previous section (&ge;0, &lt;maxSections)
+     * @param lastIndex the index of the previous section (&ge;0,
+     * &lt;maxSections)
      * @return the index of the new section (&ge;0, &lt;maxSections)
      */
     public int addSkidMark(Vector3f pos, Vector3f normal, float intensity,
@@ -158,10 +159,10 @@ public class SkidMarkManager {
             return -1;
         }
 
-        if (lastIndex > 0) {
-            float sqrDistance
-                    = pos.subtract(sections[lastIndex].position).length(); // TODO oops
-            if (sqrDistance < minLengthSquared) {
+        if (lastIndex >= 0) {
+            Vector3f lastPosition = sections[lastIndex].position;
+            float lengthSquared = pos.distanceSquared(lastPosition);
+            if (lengthSquared < minLengthSquared) {
                 return lastIndex;
             }
         }
