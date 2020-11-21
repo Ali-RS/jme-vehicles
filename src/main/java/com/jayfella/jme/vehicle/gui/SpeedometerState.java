@@ -238,7 +238,8 @@ public class SpeedometerState extends BaseAppState {
         material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
 
         int maxSpeed = (int) vehicle.getGearBox().getMaxSpeed(speedUnit);
-        Node numNode = buildNumNode(maxSpeed, 10, width / 2f - 20f);
+        int stepSpeed = 10 * (1 + maxSpeed / 160);
+        Node numNode = buildNumNode(maxSpeed, stepSpeed, width / 2f - 20f);
         numNode.attachChild(backgroundGeom);
         numNode.setLocalTranslation(width / 2f, height / 2f, -1f);
 
