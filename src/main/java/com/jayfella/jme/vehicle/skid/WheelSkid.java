@@ -5,9 +5,11 @@ import com.jme3.bullet.objects.VehicleWheel;
 
 public class WheelSkid {
 
+    final float SKID_FX_SPEED = 0.25f; // Min side slip speed in m/s to start showing a skid
+    int lastSkid = -1; // Array index for the skidmarks controller. Index of last skidmark piece this wheel used
+    SkidMarkManager manager;
     // VehicleControl vehicleControl;
     VehicleWheel wheel;
-    SkidMarkManager manager;
 
     public WheelSkid(VehicleWheel wheel, AssetManager assetManager, int maxDistance, float tireWidth) {
         // this.vehicleControl = vehicle.getVehicleControl();
@@ -15,24 +17,16 @@ public class WheelSkid {
         this.manager = new SkidMarkManager(assetManager, maxDistance, tireWidth);
     }
 
-	final float SKID_FX_SPEED = 0.25f; // Min side slip speed in m/s to start showing a skid
-    int lastSkid = -1; // Array index for the skidmarks controller. Index of last skidmark piece this wheel used
-
     public SkidMarkManager getManager() {
         return manager;
     }
 
     public void update(float tpf) {
-
         if (wheel.getSkidInfo() < 1) {
-
             float wheelspin = 1.0f - wheel.getSkidInfo();
 
             if (wheelspin > SKID_FX_SPEED) {
-
                 wheelspin = smoothstep(SKID_FX_SPEED, 1.0f, wheelspin);
-
-
                 lastSkid = manager.addSkidMark(wheel.getCollisionLocation(), wheel.getCollisionNormal(), wheelspin, lastSkid);
             } else {
                 lastSkid = -1;
@@ -41,7 +35,6 @@ public class WheelSkid {
         } else {
             lastSkid = -1;
         }
-
 
         manager.update();
     }
@@ -55,5 +48,4 @@ public class WheelSkid {
         float xx = (x - a) / (b - a);
         return xx * xx * (3 - 2 * xx);
     }
-
 }
