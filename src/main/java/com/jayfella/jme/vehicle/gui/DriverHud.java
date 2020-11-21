@@ -1,32 +1,22 @@
 package com.jayfella.jme.vehicle.gui;
 
-import com.atr.jme.font.TrueTypeMesh;
-import com.atr.jme.font.asset.TrueTypeKeyMesh;
-import com.atr.jme.font.shape.TrueTypeNode;
-import com.atr.jme.font.util.Style;
 import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.asset.AssetKey;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
-import com.jme3.math.ColorRGBA;
-import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
-import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.VertexBuffer;
-import com.jme3.scene.shape.Cylinder;
 import com.jme3.texture.Texture;
 import com.simsilica.lemur.Button;
 import com.simsilica.lemur.Command;
@@ -35,27 +25,27 @@ import com.simsilica.lemur.core.GuiComponent;
 import com.simsilica.lemur.event.DefaultMouseListener;
 import com.simsilica.lemur.event.MouseEventControl;
 import com.simsilica.lemur.event.MouseListener;
-import java.nio.FloatBuffer;
 import java.util.logging.Logger;
 import jme3utilities.MyAsset;
 import jme3utilities.mesh.DiscMesh;
 import jme3utilities.mesh.RectangleMesh;
-import jme3utilities.mesh.RectangleOutlineMesh;
-import jme3utilities.mesh.RoundedRectangle;
 
 /**
  * Heads-up display (HUD) for driving a vehicle. This AppState should be
- * instantiated once and then enabled/disabled as needed. It manages portions of
- * the graphical user interface, namely:
+ * instantiated once and then enabled/disabled as needed. It directly manages
+ * portions of the graphical user interface, namely:
  * <ul>
- * <li>the compass</li>
  * <li>the "Return to Main Menu" button</li>
  * <li>the pause button</li>
- * <li>the automatic-transmision mode indicator</li>
  * <li>the horn button</li>
  * <li>the power button</li>
  * <li>the steering-wheel indicator</li>
+ * </ul>
+ * It indirectly manages:
+ * <ul>
+ * <li>the automatic-transmision mode indicator</li>
  * <li>the speedometer</li>
+ * <li>the compass</li>
  * <li>the tachometer</li>
  * </ul>
  */
@@ -75,47 +65,32 @@ public class DriverHud extends BaseAppState {
     // *************************************************************************
     // fields
 
+    /**
+     * Appstate to manage the automatic-transmission mode indicator
+     */
+    final private AtmiState atmiState = new AtmiState();
     private Button returnButton;
     private Car car;
-    /**
-     * vertical spacing between ATM indicator positions (in pixels)
-     */
-    private float atmiSpacingY;
+    final private CompassState compassState = new CompassState();
     /**
      * dimensions of the GUI viewport (in pixels)
      */
     private float viewPortHeight, viewPortWidth;
 
-    private Geometry atmiIndicatorGeometry;
-    private Geometry compass;
     private Geometry hornButton;
     private Geometry pauseButton;
     private Geometry powerButton;
     private Geometry steering;
-    /**
-     * pre-loaded materials for the ATM indicator
-     */
-    private Material atmiBackgroundMaterial, atmiIndicatorMaterial;
     /**
      * pre-loaded materials for buttons
      */
     private Material hornSilentMaterial, hornSoundMaterial, pauseMaterial;
     private Material powerOffMaterial, powerOnMaterial, runMaterial;
     /**
-     * Node that represents the ATM indicator
-     */
-    private Node atmiNode;
-    /**
-     * reusable temporary Quaternion
-     */
-    final private Quaternion tmpRotation = new Quaternion();
-    /**
      * appstates for indicators
      */
     private SpeedometerState speedometer;
     private TachometerState tachometer;
-
-    private TrueTypeMesh droidFont;
     // *************************************************************************
     // constructors
 
@@ -136,6 +111,7 @@ public class DriverHud extends BaseAppState {
      */
     public void setCar(Car car) {
         this.car = car;
+        atmiState.setCar(car);
     }
 
     /**
@@ -220,7 +196,9 @@ public class DriverHud extends BaseAppState {
      */
     @Override
     protected void cleanup(Application app) {
-        // do nothing
+        AppStateManager stateManager = getApplication().getStateManager();
+        stateManager.detach(atmiState);
+        stateManager.detach(compassState);
     }
 
     /**
@@ -256,7 +234,9 @@ public class DriverHud extends BaseAppState {
         texture = manager.loadTexture("Textures/power-on.png");
         powerOnMaterial = MyAsset.createUnshadedMaterial(manager, texture);
 
-        initCompass(manager);
+        AppStateManager stateManager = getApplication().getStateManager();
+        stateManager.attach(atmiState);
+        stateManager.attach(compassState);
         /*
          * Construct a Geometry for the steering-wheel indicator.
          */
@@ -269,19 +249,6 @@ public class DriverHud extends BaseAppState {
         RenderState ars = material.getAdditionalRenderState();
         ars.setBlendMode(RenderState.BlendMode.Alpha);
         steering.setMaterial(material);
-        /*
-         * pre-load the Droid font
-         */
-        AssetKey<TrueTypeMesh> assetKey = new TrueTypeKeyMesh(
-                "Interface/Fonts/DroidSerifBold-aMPE.ttf", Style.Plain, 18);
-        droidFont = manager.loadAsset(assetKey);
-        /*
-         * pre-load unshaded materials for the mode indicator
-         */
-        atmiBackgroundMaterial
-                = MyAsset.createUnshadedMaterial(manager, ColorRGBA.Black);
-        atmiIndicatorMaterial
-                = MyAsset.createUnshadedMaterial(manager, ColorRGBA.Green);
     }
 
     /**
@@ -290,8 +257,8 @@ public class DriverHud extends BaseAppState {
      */
     @Override
     protected void onDisable() {
-        hideAtmi();
-        hideCompass();
+        atmiState.setEnabled(false);
+        compassState.setEnabled(false);
         hideHornButton();
         hidePauseButton();
         hidePowerButton();
@@ -312,10 +279,8 @@ public class DriverHud extends BaseAppState {
         boolean isPaused = (bas.getSpeed() == 0f);
         showPauseButton(isPaused);
 
-        String[] atModes = car.listAtModes();
-        showAtmi(atModes);
-
-        showCompass();
+        atmiState.setEnabled(true);
+        compassState.setEnabled(true);
         showHornButton(false);
         showPowerButton(false);
         showReturnButton();
@@ -335,19 +300,6 @@ public class DriverHud extends BaseAppState {
         orientation.fromAngles(0f, 0f, angle);
         hornButton.setLocalRotation(orientation);
         steering.setLocalRotation(orientation);
-
-        updateCompass();
-        /*
-         * Indicate the mode of the automatic transmission.
-         */
-        String mode;
-        if (car.getGearBox().isReversing()) {
-            mode = "R";
-        } else {
-            mode = "D";
-        }
-        String[] atModes = car.listAtModes();
-        setAtmi(atModes, mode);
     }
     // *************************************************************************
     // private methods
@@ -361,23 +313,6 @@ public class DriverHud extends BaseAppState {
         SimpleApplication simpleApp = (SimpleApplication) getApplication();
         Node guiNode = simpleApp.getGuiNode();
         guiNode.attachChild(spatial);
-    }
-
-    /**
-     * Hide the automatic-transmission mode indicator.
-     */
-    private void hideAtmi() {
-        if (atmiNode != null) {
-            atmiNode.removeFromParent();
-            atmiNode = null;
-        }
-    }
-
-    /**
-     * Hide the compass.
-     */
-    private void hideCompass() {
-        compass.removeFromParent();
     }
 
     /**
@@ -445,128 +380,6 @@ public class DriverHud extends BaseAppState {
             getStateManager().detach(tachometer);
             tachometer = null;
         }
-    }
-
-    /**
-     * Construct the Geometry for the compass.
-     */
-    private void initCompass(AssetManager assetManager) {
-        int circumferenceSamples = 40;
-        float radius = 180f / FastMath.PI; // in pixels
-        float height = 40f; // in pixels
-        Mesh mesh = new Cylinder(2, circumferenceSamples, radius, height);
-        /*
-         * Rewrite the 2nd texture coordinate so that it ranges from 0 to 1.
-         */
-        int numVertices = mesh.getVertexCount();
-        FloatBuffer texCoords = mesh.getFloatBuffer(VertexBuffer.Type.TexCoord);
-        FloatBuffer positions = mesh.getFloatBuffer(VertexBuffer.Type.Position);
-        for (int vertexIndex = 0; vertexIndex < numVertices; ++vertexIndex) {
-            float z = positions.get(3 * vertexIndex + 2);
-            float v = 0.5f + z / height;
-            texCoords.put(2 * vertexIndex + 1, v);
-        }
-
-        compass = new Geometry("compass", mesh);
-        Texture texture = assetManager.loadTexture("Textures/compass.png");
-        Material material
-                = MyAsset.createUnshadedMaterial(assetManager, texture);
-        compass.setMaterial(material);
-    }
-
-    /**
-     * Indicate the specified automatic-transmission mode.
-     *
-     * @param modes the array of modes, in top-to-bottom order
-     * @param selectedMode which mode to indicate (not null)
-     */
-    private void setAtmi(String modes[], String selectedMode) {
-        for (int i = 0; i < modes.length; ++i) {
-            if (selectedMode.equals(modes[i])) {
-                float y = (modes.length - i) * atmiSpacingY;
-                atmiIndicatorGeometry.setLocalTranslation(0f, y, 0f);
-                atmiIndicatorGeometry.setCullHint(Spatial.CullHint.Never);
-                return;
-            }
-        }
-
-        atmiIndicatorGeometry.setCullHint(Spatial.CullHint.Always);
-    }
-
-    /**
-     * Display the automatic-transmission mode indicator.
-     *
-     * @param modes an array of modes, in top-to-bottom order
-     */
-    private void showAtmi(String[] modes) {
-        hideAtmi();
-
-        atmiNode = new Node("Automatic-Transmission Mode Indicator");
-        attachToGui(atmiNode);
-        float centerX = 0.625f * viewPortWidth;
-        float bottomY = 0.15f * viewPortHeight;
-        atmiNode.setLocalTranslation(centerX, bottomY, guiZ);
-
-        atmiSpacingY = 0.032f * viewPortHeight;
-        float yModeCenter = modes.length * atmiSpacingY;
-        float maxWidth = 0f;
-        int kerning = 0;
-        ColorRGBA textColor = ColorRGBA.White.clone();
-        /*
-         * Attach a TrueTypeNode for each mode.
-         */
-        for (String mode : modes) {
-            TrueTypeNode ttNode = droidFont.getText(mode, kerning, textColor);
-            atmiNode.attachChild(ttNode);
-            float width = ttNode.getWidth();
-            float x = -width / 2f;
-            float height = ttNode.getHeight();
-            float y = yModeCenter + height / 2f;
-            ttNode.setLocalTranslation(x, y, guiZ);
-
-            if (width > maxWidth) {
-                maxWidth = width;
-            }
-            yModeCenter -= atmiSpacingY;
-        }
-        /*
-         * Attach a rounded-rectangle Geometry for the background.
-         */
-        float bgHeight = (modes.length + 1) * atmiSpacingY;
-        float cornerRadius = 0.01f * viewPortWidth;
-        float bgWidth = maxWidth + 2f * cornerRadius;
-        Mesh bgMesh = new RoundedRectangle(-bgWidth / 2f, bgWidth / 2f, 0f,
-                bgHeight, cornerRadius, 1f);
-        Geometry bgGeometry = new Geometry("bg", bgMesh);
-        atmiNode.attachChild(bgGeometry);
-        bgGeometry.setLocalTranslation(0f, 0f, -0.1f);
-        bgGeometry.setMaterial(atmiBackgroundMaterial);
-        /*
-         * Attach a rectangular outline Geometry for the indicator.
-         */
-        float indWidth = maxWidth + cornerRadius;
-        float x1 = -indWidth / 2f;
-        float x2 = indWidth / 2f;
-        float y1 = -atmiSpacingY / 2f;
-        float y2 = atmiSpacingY / 2f;
-        Mesh indMesh = new RectangleOutlineMesh(x1, x2, y1, y2);
-        atmiIndicatorGeometry = new Geometry("ind", indMesh);
-        atmiNode.attachChild(atmiIndicatorGeometry);
-        atmiIndicatorGeometry.setCullHint(Spatial.CullHint.Always);
-        atmiIndicatorGeometry.setMaterial(atmiIndicatorMaterial);
-    }
-
-    /**
-     * Display the compass.
-     */
-    private void showCompass() {
-        attachToGui(compass);
-        /*
-         * Position the compass in the viewport.
-         */
-        float x = 0.5f * viewPortWidth;
-        float y = 0.95f * viewPortHeight;
-        compass.setLocalTranslation(x, y, 0f);
     }
 
     /**
@@ -710,22 +523,5 @@ public class DriverHud extends BaseAppState {
 
         tachometer = new TachometerState(car);
         getStateManager().attach(tachometer);
-    }
-
-    /**
-     * Re-orient the compass.
-     */
-    private void updateCompass() {
-        Camera camera = getApplication().getCamera();
-        Vector3f direction = camera.getDirection();
-        // +X is north and +Z is east
-        float azimuth = FastMath.atan2(direction.z, direction.x);
-        float yRotation = -azimuth - FastMath.HALF_PI;
-        tmpRotation.fromAngles(-FastMath.HALF_PI, yRotation, 0f);
-        compass.setLocalRotation(tmpRotation);
-
-        //float azimuthDegrees = MyMath.toDegrees(azimuth);
-        //azimuthDegrees = MyMath.modulo(azimuthDegrees, 360f);
-        //System.out.printf("azimuth = %.0f%n", azimuthDegrees);
     }
 }
