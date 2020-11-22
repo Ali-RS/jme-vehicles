@@ -180,8 +180,7 @@ public class Car extends Vehicle {
         Spatial wheelSpatial = getWheel(0).getVehicleWheel().getWheelSpatial();
         BoundingBox bounds = (BoundingBox) wheelSpatial.getWorldBound();
         float markWidth = 0.75f * bounds.getZExtent();
-        int numMarksPerWheel = 128;
-        skidmarks = new VehicleSkidMarks(this, numMarksPerWheel, markWidth);
+        skidmarks = new VehicleSkidMarks(this, markWidth);
 
         this.magicFormulaState = new MagicFormulaState(this);
         this.wheelSpinState = new WheelSpinState(this);

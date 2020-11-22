@@ -68,11 +68,9 @@ public class SkidMarkManager {
      * Instantiate a continuous skid mark with the specified width.
      *
      * @param assetManager for loading assets (not null)
-     * @param maxSkidDistance unused
      * @param tireWidth the desired width of this skid mark (in meters, &gt;0)
      */
-    public SkidMarkManager(AssetManager assetManager, int maxSkidDistance,
-            float tireWidth) {
+    public SkidMarkManager(AssetManager assetManager, float tireWidth) {
         width = tireWidth;
         sections = new ArrayList<>(33);
         geometry = createGeometry(assetManager, 32);
@@ -149,13 +147,6 @@ public class SkidMarkManager {
      */
     public Geometry getGeometry() {
         return geometry;
-    }
-
-    /**
-     * TODO delete
-     */
-    public void update() {
-
     }
     // *************************************************************************
     // private methods

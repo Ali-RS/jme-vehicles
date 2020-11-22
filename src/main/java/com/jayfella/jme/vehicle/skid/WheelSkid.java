@@ -11,10 +11,10 @@ public class WheelSkid {
     // VehicleControl vehicleControl;
     VehicleWheel wheel;
 
-    public WheelSkid(VehicleWheel wheel, AssetManager assetManager, int maxDistance, float tireWidth) {
+    public WheelSkid(VehicleWheel wheel, AssetManager assetManager, float tireWidth) {
         // this.vehicleControl = vehicle.getVehicleControl();
         this.wheel = wheel;
-        this.manager = new SkidMarkManager(assetManager, maxDistance, tireWidth);
+        this.manager = new SkidMarkManager(assetManager, tireWidth);
     }
 
     public SkidMarkManager getManager() {
@@ -35,8 +35,6 @@ public class WheelSkid {
         } else {
             lastSkid = -1;
         }
-
-        manager.update();
     }
 
     private float smoothstep(final float a, final float b, final float x) {

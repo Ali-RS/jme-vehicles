@@ -11,13 +11,10 @@ public class VehicleSkidMarks extends BaseAppState {
     private WheelSkid[] skids;
     private int numWheels;
 
-    private final int maxDistance;
     private final float tireWidth;
 
-    public VehicleSkidMarks(Car vehicle, int maxDistance, float tireWidth) {
+    public VehicleSkidMarks(Car vehicle, float tireWidth) {
         this.vehicle = vehicle;
-
-        this.maxDistance = maxDistance;
         this.tireWidth = tireWidth;
     }
 
@@ -28,7 +25,7 @@ public class VehicleSkidMarks extends BaseAppState {
         this.skids = new WheelSkid[numWheels];
 
         for (int i = 0; i < numWheels; i++) {
-            skids[i] = new WheelSkid(vehicle.getWheel(i).getVehicleWheel(), app.getAssetManager(), maxDistance, tireWidth);
+            skids[i] = new WheelSkid(vehicle.getWheel(i).getVehicleWheel(), app.getAssetManager(), tireWidth);
         }
 
     }
