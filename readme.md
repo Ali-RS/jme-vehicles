@@ -107,10 +107,11 @@ This project is a work in progress.  Some ideas for future development:
 
 + Eliminate the initial drop
 + More alternatives for:
-  + Environments, such as: off-road, urban, and parking garage
+  + Environments, such as: racetrack, off-road, urban, and parking garage
+  + Surface conditions, such as: wet, dirt, grass
   + Propulsion, such as: four-wheel drive, front-wheel drive, and jets
   + Vehicle physics, such as that used in RallyGame
-  + Vehicle types, such as: hovertanks, motorcycles, speedboats, airplanes, and helicopters
+  + Vehicle types, such as: hovertanks, motorcycles, motorized tricycles, speedboats, airplanes, and helicopters
   + Viewpoints, such as: FlyCam and plan view
 + More obstacles:
   + Other vehicles (parked or AI-controlled)
@@ -134,13 +135,14 @@ This project is a work in progress.  Some ideas for future development:
 + More scenarios:
   + Crazy taxi
   + Demolition derby
-  + Night driving with headlamps
+  + Night driving
   + Player-vs-player over a network
   + Time trial
+  + Career mode
 + More details:
   + Scoring for stunts
   + Simulate damage and tire wear
-  + Sound effects for crashes
+  + Sound effects for crashes and squealing tires
 
 See also
 [the project's issue tracker](https://github.com/stephengold/jme-vehicles/issues).
