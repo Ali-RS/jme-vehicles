@@ -13,15 +13,6 @@ import jme3utilities.math.MyVector3f;
  */
 class SkidMarkSection {
     // *************************************************************************
-    // constants and loggers
-
-    /**
-     * The basic color of a skid mark. TODO necessary?
-     */
-    final private static float red = 43 / 255f;
-    final private static float green = 29 / 255f;
-    final private static float blue = 14 / 255f;
-    // *************************************************************************
     // fields
 
     /**
@@ -148,10 +139,10 @@ class SkidMarkSection {
         FloatBuffer colorBuffer = mesh.getFloatBuffer(VertexBuffer.Type.Color);
         colorBuffer.limit(colorBuffer.capacity());
         colorBuffer.position(vertexIndex * 4);
-        colorBuffer.put(red).put(green).put(blue).put(previous.opacity);
-        colorBuffer.put(red).put(green).put(blue).put(previous.opacity);
-        colorBuffer.put(red).put(green).put(blue).put(opacity);
-        colorBuffer.put(red).put(green).put(blue).put(opacity);
+        colorBuffer.put(0f).put(0f).put(0f).put(previous.opacity);
+        colorBuffer.put(0f).put(0f).put(0f).put(previous.opacity);
+        colorBuffer.put(0f).put(0f).put(0f).put(opacity);
+        colorBuffer.put(0f).put(0f).put(0f).put(opacity);
         colorBuffer.flip();
 
         FloatBuffer normalBuffer
