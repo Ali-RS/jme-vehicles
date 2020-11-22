@@ -25,14 +25,14 @@ class SkidMarkManager {
     // constants and loggers
 
     /**
-     * height of the skid above the pavement (in meters) TODO randomize
+     * height of the skid above the pavement (in meters)
      */
     final private static float height = 0.02f;
     /**
      * minimum distance travelled before starting a new section (in meters),
      * bigger means better performance but less smooth
      */
-    final private static float minLength = 0.25f;
+    final private static float minLength = 0.5f;
     final private static float minLengthSquared = minLength * minLength;
     /**
      * number of axes in the coordinate system
