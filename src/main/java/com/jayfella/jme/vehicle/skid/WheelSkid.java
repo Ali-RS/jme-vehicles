@@ -6,7 +6,7 @@ import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.objects.VehicleWheel;
 import com.jme3.math.Vector3f;
 
-public class WheelSkid {
+class WheelSkid {
 
     final private static float SKID_FX_SPEED = 0.25f; // Min side slip speed in m/s to start showing a skid
     private int lastSkid = -1; // Array index for the skidmarks controller. Index of last skidmark piece this wheel used
@@ -14,18 +14,18 @@ public class WheelSkid {
     final private VehicleControl vehicleControl;
     final private VehicleWheel wheel;
 
-    public WheelSkid(Car car, int wheelIndex, AssetManager assetManager,
+    WheelSkid(Car car, int wheelIndex, AssetManager assetManager,
             float tireWidth) {
         vehicleControl = car.getVehicleControl();
         wheel = car.getWheel(wheelIndex).getVehicleWheel();
         manager = new SkidMarkManager(assetManager, tireWidth);
     }
 
-    public SkidMarkManager getManager() {
+    SkidMarkManager getManager() {
         return manager;
     }
 
-    public void update(float tpf) {
+    void update(float tpf) {
         int wheelIndex = wheel.getIndex();
         float distance = vehicleControl.castRay(wheelIndex);
         if (distance < 0f) {
