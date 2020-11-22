@@ -2,60 +2,25 @@ package com.jayfella.jme.vehicle.skid;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
-import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
-import com.jme3.math.Vector4f;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.VertexBuffer;
+import com.jme3.scene.mesh.IndexBuffer;
 import com.jme3.util.BufferUtils;
+import java.nio.Buffer;
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.List;
+import jme3utilities.math.MyBuffer;
 
 /**
- * A single continuous skid mark, composed of straight sections and rendered
- * using a single Geometry. TODO de-publicize
+ * A single continuous skid mark, composed of straight sections and rendered by
+ * a single Geometry.
  */
 public class SkidMarkManager {
-    // *************************************************************************
-    // classes and enums
-
-    /*
-     * A single straight section within a skid mark.
-     */
-    private class MarkSection {
-
-        /**
-         * final intensity of the section (&ge;0, &lt;1)
-         */
-        float intensity;
-        /**
-         * index of the previous section (&ge;0) or -1 for the first section
-         */
-        int prevIndex;
-        /**
-         * final normal (a unit vector in world coordinates)
-         */
-        Vector3f normal = new Vector3f();
-        /**
-         * final center location (in world coordinates)
-         */
-        Vector3f position = new Vector3f();
-        /**
-         * final location of the left edge (in world coordinates)
-         */
-        Vector3f positionLeft = new Vector3f();
-        /**
-         * final location of the right edge (in world coordinates)
-         */
-        Vector3f positionRight = new Vector3f();
-        /**
-         * final tangent
-         */
-        Vector4f tangent = new Vector4f();
-    }
     // *************************************************************************
     // constants and loggers
 
@@ -69,93 +34,48 @@ public class SkidMarkManager {
      */
     final private static float minLength = 0.25f;
     final private static float minLengthSquared = minLength * minLength;
+    /**
+     * number of axes in the coordinate system
+     */
+    final private static int numAxes = 3;
+    /**
+     * number of vertices per triangle
+     */
+    final public static int vpt = 3;
     // *************************************************************************
     // fields
 
-    /**
-     * true if an update() is needed (a section has been added since the
-     * previous update)
-     */
-    private boolean needsUpdate;
-    /**
-     * array used to initialize color buffer in the Mesh
-     */
-    final private ColorRGBA[] colors;
     /**
      * width of this skid mark (in meters), should match the width of the tire
      */
     final private float width;
     /**
-     * Geometry used to visualize this skid mark
+     * Geometry to visualize this skid mark
      */
-    private Geometry geometry;
+    final private Geometry geometry;
     /**
-     * maximum number of sections in this skid mark
+     * capacity of the Mesh in terms of sections
      */
-    final private int maxSections;
+    private int meshSize;
     /**
-     * cyclic index into the array of sections
+     * list of sections
      */
-    private int sectionIndex;
-    /**
-     * array used to initialize the index buffer of the Mesh
-     */
-    final private int[] indices;
-    /**
-     * circular buffer of sections TODO use an ArrayList
-     */
-    final private MarkSection[] sections;
-    /**
-     * Material used to visualize this skid mark
-     */
-    final private Material material;
-    /**
-     * dynamic Mesh used to visualize this skid mark
-     */
-    final private Mesh mesh;
-    /**
-     * arrays used to initialize mesh buffers
-     */
-    final private Vector3f[] normals;
-    final private Vector3f[] positions;
-    final private Vector4f[] tangents;
-    final private Vector2f[] uvs;
+    final private List<SkidMarkSection> sections;
     // *************************************************************************
     // constructors
 
     /**
-     * Instantiate a continuous skid mark with the specified width. TODO
-     * de-publicize
+     * Instantiate a continuous skid mark with the specified width.
      *
      * @param assetManager for loading assets (not null)
-     * @param maxSkidDistance the desired maximum number of sections in this
-     * skid mark (&gt;0)
+     * @param maxSkidDistance unused
      * @param tireWidth the desired width of this skid mark (in meters, &gt;0)
      */
     public SkidMarkManager(AssetManager assetManager, int maxSkidDistance,
             float tireWidth) {
-        /*
-         * Generate a fixed array of sections.
-         */
-        maxSections = maxSkidDistance;
         width = tireWidth;
-
-        sections = new MarkSection[maxSections];
-        for (int i = 0; i < maxSections; i++) {
-            sections[i] = new MarkSection();
-        }
-
-        mesh = new Mesh();
-        mesh.setDynamic();
-
-        positions = new Vector3f[maxSections * 4];
-        normals = new Vector3f[maxSections * 4];
-        tangents = new Vector4f[maxSections * 4];
-        colors = new ColorRGBA[maxSections * 4];
-        uvs = new Vector2f[maxSections * 4];
-        indices = new int[maxSections * 6];
-
-        material = assetManager.loadMaterial("Materials/Vehicles/SkidMark.j3m");
+        sections = new ArrayList<>(33);
+        geometry = createGeometry(assetManager, 32);
     }
     // *************************************************************************
     // new methods exposed
@@ -164,167 +84,128 @@ public class SkidMarkManager {
      * Add a section to this skid mark. The alpha component of the vertex color
      * indicates the skid intensity.
      *
-     * @param pos the final location for the new section (in world coordinates,
-     * not null, unaffected)
+     * @param pavementLocation the final pavement location for the new section
+     * (in world coordinates, not null, unaffected)
      * @param normal the final normal for the new section (a unit vector in
      * world coordinates, not null, unaffected)
-     * @param intensity the final intensity for the new section (typically
-     * between 0 and 1)
-     * @param lastIndex the index of the previous section (&ge;0,
+     * @param opacity the final intensity for the new section (typically between
+     * 0 and 1)
+     * @param prevIndex the index of the previous final section (&ge;0,
      * &lt;maxSections) or -1 to start a new skid mark
-     * @return the index of the new section (&ge;0, &lt;maxSections)
+     * @return the index of the final section (&ge;0, &lt;maxSections) or -1 if
+     * the skid has ended
      */
-    public int addSection(Vector3f pos, Vector3f normal, float intensity,
-            int lastIndex) {
-        if (intensity > 1f) {
-            intensity = 1f;
-        } else if (intensity < 0f) {
+    public int addSection(Vector3f pavementLocation, Vector3f normal,
+            float opacity, int prevIndex) {
+        if (opacity < 0f) {
             return -1;
         }
+        if (opacity > 1f) {
+            opacity = 1f;
+        }
 
-        if (lastIndex >= 0) {
-            Vector3f lastPosition = sections[lastIndex].position;
-            float lengthSquared = pos.distanceSquared(lastPosition);
+        SkidMarkSection previous;
+        if (prevIndex == -1) {
+            sections.clear();
+            previous = null;
+        } else {
+            previous = sections.get(prevIndex);
+            float lengthSquared = previous.distanceSquared(pavementLocation);
             if (lengthSquared < minLengthSquared) {
-                return lastIndex;
+                return prevIndex;
             }
         }
 
-        MarkSection curSection = sections[sectionIndex];
-
-        curSection.position = pos.add(normal.mult(height));
-        curSection.normal = normal;
-        curSection.intensity = intensity;
-        curSection.prevIndex = lastIndex;
-
-        if (lastIndex != -1) {
-            MarkSection lastSection = sections[lastIndex];
-            Vector3f dir = curSection.position.subtract(lastSection.position);
-            Vector3f xDir = dir.cross(normal).normalizeLocal();
-
-            curSection.positionLeft
-                    = curSection.position.add(xDir.mult(width / 2f));
-            curSection.positionRight
-                    = curSection.position.subtract(xDir.mult(width / 2f));
-            curSection.tangent = new Vector4f(xDir.x, xDir.y, xDir.z, 1f);
-
-            if (lastSection.prevIndex == -1) {
-                lastSection.tangent = curSection.tangent;
-                lastSection.positionLeft
-                        = curSection.position.add(xDir.mult(width / 2f));
-                lastSection.positionRight
-                        = curSection.position.subtract(xDir.mult(width / 2f));
+        SkidMarkSection section = new SkidMarkSection(pavementLocation, normal,
+                height, opacity, previous, width / 2f);
+        sections.add(section);
+        int numSections = sections.size();
+        int sectionIndex = numSections - 1;
+        if (numSections - 1 > meshSize) {
+            /*
+             * Recreate the Mesh from sections, making each buffer 4x larger.
+             */
+            Mesh mesh = createMesh(4 * meshSize);
+            geometry.setMesh(mesh);
+            for (int i = 0; i < sectionIndex; ++i) {
+                SkidMarkSection s = sections.get(i);
+                s.appendToMesh(mesh, i);
             }
         }
+        /**
+         * Add 4 mesh vertices (2 triangles) in order to connect the new section
+         * to its predecessor.
+         */
+        Mesh mesh = geometry.getMesh();
+        section.appendToMesh(mesh, sectionIndex);
 
-        updateSkidMarksMesh();
-
-        int curIndex = sectionIndex;
-        // Update circular index
-        sectionIndex = ++sectionIndex % maxSections;
-
-        return curIndex;
+        return sectionIndex;
     }
 
     /**
      * Access the Geometry used to render the marks.
      *
-     * @return the pre-existing instance
+     * @return the pre-existing instance (not null)
      */
     public Geometry getGeometry() {
         return geometry;
     }
-    // *************************************************************************
-    // new protected methods
 
-    protected void update() {
-        if (!needsUpdate) {
-            return;
-        }
-        needsUpdate = false;
+    /**
+     * TODO delete
+     */
+    public void update() {
 
-        FloatBuffer pb = BufferUtils.createFloatBuffer(positions);
-        mesh.setBuffer(VertexBuffer.Type.Position, 3, pb);
-
-        FloatBuffer nb = BufferUtils.createFloatBuffer(normals);
-        mesh.setBuffer(VertexBuffer.Type.Normal, 3, nb);
-
-        IntBuffer ib = BufferUtils.createIntBuffer(indices);
-        mesh.setBuffer(VertexBuffer.Type.Index, 3, ib);
-
-        FloatBuffer ub = BufferUtils.createFloatBuffer(uvs);
-        mesh.setBuffer(VertexBuffer.Type.TexCoord, 2, ub);
-
-        FloatBuffer tb = BufferUtils.createFloatBuffer(tangents);
-        mesh.setBuffer(VertexBuffer.Type.Tangent, 4, tb);
-
-        FloatBuffer cb = BufferUtils.createFloatBuffer(colors);
-        mesh.setBuffer(VertexBuffer.Type.Color, 4, cb);
-
-        mesh.updateBound();
-
-        if (geometry == null) {
-            geometry = new Geometry("SkidMark", mesh);
-            geometry.setMaterial(material);
-            geometry.setQueueBucket(RenderQueue.Bucket.Transparent);
-        }
-
-        geometry.updateModelBound();
     }
     // *************************************************************************
     // private methods
 
-    /**
-     * Add 4 mesh vertices (2 triangles) in order to connect the current
-     * MarkSection to the previous one.
-     */
-    private void updateSkidMarksMesh() {
-        MarkSection curr = sections[sectionIndex];
+    private Geometry createGeometry(AssetManager assetManager, int numSections) {
+        Mesh mesh = createMesh(numSections);
+        Geometry result = new Geometry("Skid Mark", mesh);
+        /*
+         * Disable culling so we can skip updating the mesh bounds.
+         */
+        result.setCullHint(Spatial.CullHint.Never);
 
-        if (curr.prevIndex == -1) {
-            // There's nothing to connect to yet.
-            return;
-        }
+        Material material
+                = assetManager.loadMaterial("Materials/Vehicles/SkidMark.j3m");
+        result.setMaterial(material);
+        result.setQueueBucket(RenderQueue.Bucket.Transparent);
 
-        MarkSection last = sections[curr.prevIndex];
-        positions[sectionIndex * 4] = last.positionLeft;
-        positions[sectionIndex * 4 + 1] = last.positionRight;
-        positions[sectionIndex * 4 + 2] = curr.positionLeft;
-        positions[sectionIndex * 4 + 3] = curr.positionRight;
+        return result;
+    }
 
-        normals[sectionIndex * 4] = last.normal;
-        normals[sectionIndex * 4 + 1] = last.normal;
-        normals[sectionIndex * 4 + 2] = curr.normal;
-        normals[sectionIndex * 4 + 3] = curr.normal;
+    private Mesh createMesh(int numSections) {
+        int numTriangles = numSections * 2;
+        int numVertices = numSections * 4;
+        int numIndices = numTriangles * vpt;
+        IndexBuffer indexBuffer
+                = IndexBuffer.createIndexBuffer(numVertices, numIndices);
+        VertexBuffer.Format ibFormat = MyBuffer.getFormat(indexBuffer);
+        Buffer ibData = indexBuffer.getBuffer();
 
-        tangents[sectionIndex * 4] = last.tangent;
-        tangents[sectionIndex * 4 + 1] = last.tangent;
-        tangents[sectionIndex * 4 + 2] = curr.tangent;
-        tangents[sectionIndex * 4 + 3] = curr.tangent;
+        FloatBuffer colorBuffer
+                = BufferUtils.createFloatBuffer(numVertices * 4);
+        FloatBuffer normalBuffer
+                = BufferUtils.createFloatBuffer(numVertices * numAxes);
+        FloatBuffer positionBuffer
+                = BufferUtils.createFloatBuffer(numVertices * numAxes);
+        FloatBuffer tangentBuffer
+                = BufferUtils.createFloatBuffer(numVertices * 4);
+        FloatBuffer uvBuffer = BufferUtils.createFloatBuffer(numVertices * 2);
 
-        // color of the skid mark
-        float r = 43 / 255f;
-        float g = 29 / 255f;
-        float b = 14 / 255f;
+        Mesh result = new Mesh();
+        result.setBuffer(VertexBuffer.Type.Index, vpt, ibFormat, ibData);
+        result.setBuffer(VertexBuffer.Type.Color, 4, colorBuffer);
+        result.setBuffer(VertexBuffer.Type.Normal, numAxes, normalBuffer);
+        result.setBuffer(VertexBuffer.Type.Position, numAxes, positionBuffer);
+        result.setBuffer(VertexBuffer.Type.Tangent, 4, tangentBuffer);
+        result.setBuffer(VertexBuffer.Type.TexCoord, 2, uvBuffer);
+        result.setDynamic();
 
-        colors[sectionIndex * 4] = new ColorRGBA(r, g, b, last.intensity);
-        colors[sectionIndex * 4 + 1] = new ColorRGBA(r, g, b, last.intensity);
-        colors[sectionIndex * 4 + 2] = new ColorRGBA(r, g, b, curr.intensity);
-        colors[sectionIndex * 4 + 3] = new ColorRGBA(r, g, b, curr.intensity);
+        meshSize = numSections;
 
-        uvs[sectionIndex * 4] = new Vector2f(0f, 0f);
-        uvs[sectionIndex * 4 + 1] = new Vector2f(1f, 0f);
-        uvs[sectionIndex * 4 + 2] = new Vector2f(0f, 1f);
-        uvs[sectionIndex * 4 + 3] = new Vector2f(1f, 1f);
-
-        indices[sectionIndex * 6] = sectionIndex * 4;
-        indices[sectionIndex * 6 + 2] = sectionIndex * 4 + 1;
-        indices[sectionIndex * 6 + 1] = sectionIndex * 4 + 2;
-
-        indices[sectionIndex * 6 + 3] = sectionIndex * 4 + 2;
-        indices[sectionIndex * 6 + 5] = sectionIndex * 4 + 1;
-        indices[sectionIndex * 6 + 4] = sectionIndex * 4 + 3;
-
-        needsUpdate = true;
+        return result;
     }
 }
