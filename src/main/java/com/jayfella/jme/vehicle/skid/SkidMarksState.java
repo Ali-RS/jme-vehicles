@@ -1,26 +1,24 @@
-package com.jayfella.jme.vehicle;
+package com.jayfella.jme.vehicle.skid;
 
-import com.jayfella.jme.vehicle.skid.WheelSkid;
+import com.jayfella.jme.vehicle.Car;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 
-public class VehicleSkidMarks extends BaseAppState {
+public class SkidMarksState extends BaseAppState {
 
+    private boolean skidmarkEnabled = true;
     private Car vehicle;
-
     private WheelSkid[] skids;
     private int numWheels;
-
     private final float tireWidth;
 
-    public VehicleSkidMarks(Car vehicle, float tireWidth) {
+    public SkidMarksState(Car vehicle, float tireWidth) {
         this.vehicle = vehicle;
         this.tireWidth = tireWidth;
     }
 
     @Override
     protected void initialize(Application app) {
-
         numWheels = vehicle.getNumWheels();
         this.skids = new WheelSkid[numWheels];
 
@@ -28,7 +26,6 @@ public class VehicleSkidMarks extends BaseAppState {
             skids[i] = new WheelSkid(vehicle, i, app.getAssetManager(),
                     tireWidth);
         }
-
     }
 
     @Override
@@ -43,7 +40,6 @@ public class VehicleSkidMarks extends BaseAppState {
 
     @Override
     protected void onDisable() {
-
         for (int i = 0; i < numWheels; i++) {
 
             WheelSkid skid = skids[i];
@@ -52,12 +48,10 @@ public class VehicleSkidMarks extends BaseAppState {
                 skid.getManager().getGeometry().removeFromParent();
             }
         }
-
     }
 
     @Override
     public void update(float tpf) {
-
         for (int i = 0; i < numWheels; i++) {
 
             WheelSkid skid = skids[i];
@@ -71,19 +65,15 @@ public class VehicleSkidMarks extends BaseAppState {
             if (skidmarkEnabled) {
                 skid.update(tpf);
             }
-
         }
-
     }
-
-    private boolean skidmarkEnabled = true;
 
     /**
      * Stop adding more skidmarks.
+     *
      * @param enabled whether or not to show more skidmarks.
      */
     public void setSkidmarkEnabled(boolean enabled) {
         skidmarkEnabled = enabled;
     }
-
 }

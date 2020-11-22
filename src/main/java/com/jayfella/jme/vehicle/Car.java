@@ -3,6 +3,7 @@ package com.jayfella.jme.vehicle;
 import com.jayfella.jme.vehicle.part.Brake;
 import com.jayfella.jme.vehicle.part.Suspension;
 import com.jayfella.jme.vehicle.part.Wheel;
+import com.jayfella.jme.vehicle.skid.SkidMarksState;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bounding.BoundingBox;
@@ -22,7 +23,7 @@ public class Car extends Vehicle {
      */
     final private String[] atModes = new String[]{"R", "D"};
     private TireSmokeEmitter smokeEmitter;
-    private VehicleSkidMarks skidmarks;
+    private SkidMarksState skidmarks;
     private WheelSpinState wheelSpinState;
     private MagicFormulaState magicFormulaState;
 
@@ -180,7 +181,7 @@ public class Car extends Vehicle {
         Spatial wheelSpatial = getWheel(0).getVehicleWheel().getWheelSpatial();
         BoundingBox bounds = (BoundingBox) wheelSpatial.getWorldBound();
         float markWidth = 0.75f * bounds.getZExtent();
-        skidmarks = new VehicleSkidMarks(this, markWidth);
+        skidmarks = new SkidMarksState(this, markWidth);
 
         this.magicFormulaState = new MagicFormulaState(this);
         this.wheelSpinState = new WheelSpinState(this);

@@ -20,7 +20,7 @@ import jme3utilities.math.MyBuffer;
  * A single continuous skid mark, composed of straight sections and rendered by
  * a single Geometry.
  */
-public class SkidMarkManager {
+class SkidMarkManager {
     // *************************************************************************
     // constants and loggers
 
@@ -70,7 +70,7 @@ public class SkidMarkManager {
      * @param assetManager for loading assets (not null)
      * @param tireWidth the desired width of this skid mark (in meters, &gt;0)
      */
-    public SkidMarkManager(AssetManager assetManager, float tireWidth) {
+    SkidMarkManager(AssetManager assetManager, float tireWidth) {
         width = tireWidth;
         sections = new ArrayList<>(33);
         geometry = createGeometry(assetManager, 32);
@@ -93,8 +93,8 @@ public class SkidMarkManager {
      * @return the index of the final section (&ge;0, &lt;maxSections) or -1 if
      * the skid has ended
      */
-    public int addSection(Vector3f pavementLocation, Vector3f normal,
-            float opacity, int prevIndex) {
+    int addSection(Vector3f pavementLocation, Vector3f normal, float opacity,
+            int prevIndex) {
         if (opacity < 0f) {
             return -1;
         }
@@ -145,7 +145,7 @@ public class SkidMarkManager {
      *
      * @return the pre-existing instance (not null)
      */
-    public Geometry getGeometry() {
+    Geometry getGeometry() {
         return geometry;
     }
     // *************************************************************************
