@@ -21,28 +21,14 @@ public class VehicleFirstPersonCamera implements VehicleCamera {
     }
 
     @Override
-    public void enableInputMappings() {
-
-    }
-
-    @Override
-    public void disableInputMappings() {
-
-    }
-
-    @Override
     public void attach() {
-
         cameraNode.setLocalTranslation(vehicle.getHoodCamLocation(null));
         vehicle.getNode().attachChild(cameraNode);
-
-        enableInputMappings();
     }
 
     @Override
     public void detach() {
         cameraNode.removeFromParent();
-        disableInputMappings();
     }
 
     @Override

@@ -347,18 +347,8 @@ public class VehicleThirdPersonCamera implements VehicleCamera, AnalogListener, 
     }
 
     @Override
-    public void enableInputMappings() {
-        registerInput();
-    }
-
-    @Override
-    public void disableInputMappings() {
-        unregisterInput();
-    }
-
-    @Override
     public void attach() {
-        enableInputMappings();
+        registerInput();
 
         // if we set the focus point before the state was initialized, set the focus now.
         if (focusPoint != null) {
@@ -368,7 +358,7 @@ public class VehicleThirdPersonCamera implements VehicleCamera, AnalogListener, 
 
     @Override
     public void detach() {
-        disableInputMappings();
+        unregisterInput();
     }
 
     @Override
