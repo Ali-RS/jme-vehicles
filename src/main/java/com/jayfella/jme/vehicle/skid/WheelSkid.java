@@ -18,7 +18,7 @@ public class WheelSkid {
             float tireWidth) {
         vehicleControl = car.getVehicleControl();
         wheel = car.getWheel(wheelIndex).getVehicleWheel();
-        this.manager = new SkidMarkManager(assetManager, tireWidth);
+        manager = new SkidMarkManager(assetManager, tireWidth);
     }
 
     public SkidMarkManager getManager() {
@@ -26,23 +26,33 @@ public class WheelSkid {
     }
 
     public void update(float tpf) {
-        float distance = vehicleControl.castRay(wheel.getIndex());
+        int wheelIndex = wheel.getIndex();
+        float distance = vehicleControl.castRay(wheelIndex);
         if (distance < 0f) {
-            lastSkid = -1;  // The tire isn't touching pavement!
+            /*
+             * There's nothing supporting the wheel.
+             */
+            lastSkid = -1;
+            return;
+        }
 
-        } else if (wheel.getSkidInfo() < 1f) {
-            float wheelspin = 1f - wheel.getSkidInfo();
+        float traction = wheel.getSkidInfo();
+        if (traction >= 1f) {
+            /*
+             * The tire has full traction.
+             */
+            lastSkid = -1;
+            return;
+        }
 
-            if (wheelspin > SKID_FX_SPEED) {
-                wheelspin = smoothstep(SKID_FX_SPEED, 1.0f, wheelspin);
-                Vector3f normal = wheel.getCollisionNormal();
-                assert normal.isUnitVector() : normal;
-                lastSkid = manager.addSection(wheel.getCollisionLocation(),
-                        normal, wheelspin, lastSkid);
-            } else {
-                lastSkid = -1;
-            }
-
+        float wheelspin = 1f - traction;
+        if (wheelspin > SKID_FX_SPEED) {
+            wheelspin = smoothstep(SKID_FX_SPEED, 1f, wheelspin);
+            Vector3f normal = wheel.getCollisionNormal();
+            assert normal.isUnitVector() : normal;
+            Vector3f location = wheel.getCollisionLocation();
+            lastSkid = manager.addSection(location, normal, wheelspin,
+                    lastSkid);
         } else {
             lastSkid = -1;
         }
