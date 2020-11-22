@@ -105,6 +105,7 @@ class SkidMarkManager {
         SkidMarkSection previous;
         if (prevIndex == -1) {
             sections.clear();
+            clearMesh();
             previous = null;
         } else {
             previous = sections.get(prevIndex);
@@ -151,6 +152,47 @@ class SkidMarkManager {
     // *************************************************************************
     // private methods
 
+    /**
+     * Reset the Mesh so that it can be reused for a new skid mark.
+     */
+    private void clearMesh() {
+        Mesh mesh = geometry.getMesh();
+
+        IndexBuffer indexBuffer = mesh.getIndexBuffer();
+        Buffer buffer = indexBuffer.getBuffer();
+        buffer.clear();
+        buffer.flip();
+
+        FloatBuffer colorBuffer = mesh.getFloatBuffer(VertexBuffer.Type.Color);
+        colorBuffer.clear();
+        colorBuffer.flip();
+
+        FloatBuffer normalBuffer
+                = mesh.getFloatBuffer(VertexBuffer.Type.Normal);
+        normalBuffer.clear();
+        normalBuffer.flip();
+
+        FloatBuffer positionBuffer
+                = mesh.getFloatBuffer(VertexBuffer.Type.Position);
+        positionBuffer.clear();
+        positionBuffer.flip();
+
+        FloatBuffer tangentBuffer
+                = mesh.getFloatBuffer(VertexBuffer.Type.Tangent);
+        tangentBuffer.clear();
+        tangentBuffer.flip();
+
+        FloatBuffer uvBuffer = mesh.getFloatBuffer(VertexBuffer.Type.TexCoord);
+        uvBuffer.clear();
+        uvBuffer.flip();
+
+        mesh.setDynamic();
+        mesh.updateCounts();
+
+        assert mesh.getTriangleCount() == 0 : mesh.getTriangleCount();
+        assert mesh.getVertexCount() == 0 : mesh.getVertexCount();
+    }
+
     private Geometry createGeometry(AssetManager assetManager, int numSections) {
         Mesh mesh = createMesh(numSections);
         Geometry result = new Geometry("Skid Mark", mesh);
@@ -173,27 +215,36 @@ class SkidMarkManager {
         int numIndices = numTriangles * vpt;
         IndexBuffer indexBuffer
                 = IndexBuffer.createIndexBuffer(numVertices, numIndices);
-        VertexBuffer.Format ibFormat = MyBuffer.getFormat(indexBuffer);
-        Buffer ibData = indexBuffer.getBuffer();
+        Buffer buffer = indexBuffer.getBuffer();
+        buffer.flip();
 
         FloatBuffer colorBuffer
                 = BufferUtils.createFloatBuffer(numVertices * 4);
+        colorBuffer.flip();
+
         FloatBuffer normalBuffer
                 = BufferUtils.createFloatBuffer(numVertices * numAxes);
+        normalBuffer.flip();
+
         FloatBuffer positionBuffer
                 = BufferUtils.createFloatBuffer(numVertices * numAxes);
+        positionBuffer.flip();
+
         FloatBuffer tangentBuffer
                 = BufferUtils.createFloatBuffer(numVertices * 4);
+        tangentBuffer.flip();
+
         FloatBuffer uvBuffer = BufferUtils.createFloatBuffer(numVertices * 2);
+        uvBuffer.flip();
 
         Mesh result = new Mesh();
-        result.setBuffer(VertexBuffer.Type.Index, vpt, ibFormat, ibData);
+        VertexBuffer.Format ibFormat = MyBuffer.getFormat(indexBuffer);
+        result.setBuffer(VertexBuffer.Type.Index, vpt, ibFormat, buffer);
         result.setBuffer(VertexBuffer.Type.Color, 4, colorBuffer);
         result.setBuffer(VertexBuffer.Type.Normal, numAxes, normalBuffer);
         result.setBuffer(VertexBuffer.Type.Position, numAxes, positionBuffer);
         result.setBuffer(VertexBuffer.Type.Tangent, 4, tangentBuffer);
         result.setBuffer(VertexBuffer.Type.TexCoord, 2, uvBuffer);
-        result.setDynamic();
 
         meshSize = numSections;
 

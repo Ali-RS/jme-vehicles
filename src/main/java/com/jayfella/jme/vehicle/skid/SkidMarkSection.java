@@ -16,7 +16,7 @@ class SkidMarkSection {
     // constants and loggers
 
     /**
-     * The basic color of a skid mark.
+     * The basic color of a skid mark. TODO necessary?
      */
     final private static float red = 43 / 255f;
     final private static float green = 29 / 255f;
@@ -126,14 +126,15 @@ class SkidMarkSection {
             assert sectionIndex == 0 : sectionIndex;
             /*
              * The first section is ignored,
-            since there isn't anything to connect to yet.
+             * since there isn't anything to connect to yet.
              */
             return;
         }
 
         IndexBuffer indexBuffer = mesh.getIndexBuffer();
         Buffer buffer = indexBuffer.getBuffer();
-        buffer.limit(buffer.capacity());
+        int capacity = buffer.capacity();
+        buffer.limit(capacity);
         buffer.position((sectionIndex - 1) * 6);
         int vertexIndex = (sectionIndex - 1) * 4;
         indexBuffer.put(vertexIndex)
@@ -201,6 +202,7 @@ class SkidMarkSection {
         uvBuffer.flip();
 
         mesh.setDynamic();
+        mesh.updateCounts();
     }
 
     /**
