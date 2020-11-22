@@ -25,7 +25,8 @@ public class VehicleSkidMarks extends BaseAppState {
         this.skids = new WheelSkid[numWheels];
 
         for (int i = 0; i < numWheels; i++) {
-            skids[i] = new WheelSkid(vehicle.getWheel(i).getVehicleWheel(), app.getAssetManager(), tireWidth);
+            skids[i] = new WheelSkid(vehicle, i, app.getAssetManager(),
+                    tireWidth);
         }
 
     }
