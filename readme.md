@@ -1,4 +1,4 @@
-The More Advanced Vehicles Project demonstrates
+[The More Advanced Vehicles Project][mav] demonstrates
 vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
 
 <a name="toc"/>
@@ -10,6 +10,7 @@ vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
 + [Controls](#controls)
 + [Wish list](#wishlist)
 + [Licensing](#licensing)
++ [Conventions](#conventions)
 + [Acknowledgments](#acks)
 
 <a name="features"/>
@@ -187,6 +188,22 @@ Resources/assets/media:
 
 [Jump to table of contents](#toc)
 
+<a name="conventions"/>
+
+## Conventions
+
+Package names begin with `com.jayfella.jme.vehicle`
+
+The source code is compatible with JDK 8.
+
+World coordinate system:
+
+ + the `+X` axis points toward the northern horizon
+ + the `+Y` axis points up (toward the zenith)
+ + the `+Z` axis points toward the eastern horizon
+
+[Jump to table of contents](#toc)
+
 <a name="acks"/>
 
 ## Acknowledgments
@@ -194,11 +211,15 @@ Resources/assets/media:
 + James Khan (aka "jayfella") initiated the Advanced Vehicles Project,
   on which this project is based.
 + [Paul Speed (aka "pspeed42")][pspeed] created the Lemur libraries.
++ [Adam T. Ryder (aka "ATryder")][atryder] created the jME-TTF library.
 + Lennart Demes created the marble_01 textures.
 + [Sergej Majboroda][sergej] created the quarry_03 texture.
 + [Thomas Glenn Thorne (aka "systmh")][tgt] created the GT model.
 + "isteven" created the gtr_nismo model.
-+ [Adam T. Ryder (aka "ATryder")][atryder] created the jME-TTF library.
+
+I am grateful to [Github] and Imgur
+for providing free hosting for this project
+and many other open-source projects.
 
 If I've misattributed anything or left anyone out, please let me know so I can
 correct the situation: sgold@sonic.net
