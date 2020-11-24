@@ -93,6 +93,7 @@ When a vehicle is loaded:
 [Jump to table of contents](#toc)
 
 [atryder]: https://github.com/ATryder "Adam T. Ryder"
+[github]: https://github.com "GitHub"
 [gradle]: https://gradle.org "Gradle Project"
 [jme]: http://jmonkeyengine.org  "jMonkeyEngine Project"
 [lemur]: https://github.com/jMonkeyEngine-Contributions/Lemur "Lemur UI Toolkit"
