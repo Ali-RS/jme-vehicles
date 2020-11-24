@@ -3,6 +3,7 @@ plugins {
     id 'java'
 }
 
+description = 'a tech demo for jMonkeyEngine vehicles'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
