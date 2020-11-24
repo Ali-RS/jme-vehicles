@@ -96,6 +96,7 @@ When a vehicle is loaded:
 [gradle]: https://gradle.org "Gradle Project"
 [jme]: http://jmonkeyengine.org  "jMonkeyEngine Project"
 [lemur]: https://github.com/jMonkeyEngine-Contributions/Lemur "Lemur UI Toolkit"
+[mav]: https://github.com/stephengold/jme-vehicles "More Advanced Vehicles Project"
 [pspeed]: https://github.com/pspeed42 "Paul Speed"
 [sergej]: https://hdrihaven.com/hdris/?a=Sergej%20Majboroda "HDRIs by Sergej Majboroda"
 [tgt]: https://www.tgthorne.com/contact "Thomas Glenn Thorne"
