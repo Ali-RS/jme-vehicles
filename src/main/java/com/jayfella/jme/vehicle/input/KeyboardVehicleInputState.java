@@ -17,6 +17,7 @@ import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.input.*;
 import java.util.Set;
 import java.util.logging.Logger;
+import jme3utilities.SignalTracker;
 import jme3utilities.debug.Dumper;
 import jme3utilities.minie.PhysicsDumper;
 
@@ -80,6 +81,7 @@ public class KeyboardVehicleInputState
     private float steeringAngle = 0f;
 
     private InputMapper inputMapper;
+    final private SignalTracker signalTracker;
     private final Vehicle vehicle;
     private VehicleCamera activeCam;
     private VehicleCamView currentCam = VehicleCamView.FirstPerson;
@@ -93,6 +95,20 @@ public class KeyboardVehicleInputState
      */
     public KeyboardVehicleInputState(Vehicle vehicle) {
         this.vehicle = vehicle;
+
+        signalTracker = new SignalTracker();
+        signalTracker.add("horn");
+    }
+    // *************************************************************************
+    // public methods
+
+    /**
+     * Access the SignalTracker.
+     *
+     * @return the pre-existing instance (not null)
+     */
+    public SignalTracker getSignalTracker() {
+        return signalTracker;
     }
     // *************************************************************************
     // BaseAppState methods
@@ -179,6 +195,9 @@ public class KeyboardVehicleInputState
 
         activeCam.update(tpf);
 
+        boolean hornIsRequested = signalTracker.test("horn");
+        vehicle.setHornStatus(hornIsRequested);
+
         //if (vehicle.getDriver() != null) {
         //vehicle.getDriver().getPlayerNode().setLocalTranslation(vehicle.getLocation());
         //}
@@ -192,7 +211,7 @@ public class KeyboardVehicleInputState
         DriverHud driverHud = getStateManager().getState(DriverHud.class);
 
         if (func == F_HORN) {
-            vehicle.setHornInput(0, pressed);
+            signalTracker.setActive("horn", KeyInput.KEY_H, pressed);
 
         } else if (func == F_START_ENGINE && !pressed) {
             driverHud.toggleEngineStarted();

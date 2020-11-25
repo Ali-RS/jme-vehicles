@@ -16,7 +16,6 @@ import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import jme3utilities.math.MyArray;
 
 /**
  * A vehicle with a single Engine and a single GearBox.
@@ -33,8 +32,6 @@ public abstract class Vehicle {
     private final Application app;
 
     private AudioNode hornAudio;
-    final private boolean hornInputs[] = new boolean[3];
-
     private final Node node;
     private VehicleControl vehicleControl;
 
@@ -86,16 +83,11 @@ public abstract class Vehicle {
     }
 
     /**
-     * Update the status of a single horn input.
+     * Update the status of the horn.
      *
-     * @param inputIndex which horn input (0, 1, or 2)
-     * @param newState true &rarr; pressed, false &rarr; not pressed
+     * @param isRequested true &rarr; requested, false &rarr; not requested
      */
-    public void setHornInput(int inputIndex, boolean newState) {
-        hornInputs[inputIndex] = newState;
-        int index = MyArray.first(hornInputs);
-        boolean isRequested = (index >= 0);
-
+    public void setHornStatus(boolean isRequested) {
         AudioSource.Status status = hornAudio.getStatus();
         boolean isSounding = (status == AudioSource.Status.Playing);
 

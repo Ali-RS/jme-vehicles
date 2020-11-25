@@ -13,6 +13,7 @@ import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.input.*;
+import jme3utilities.SignalTracker;
 
 public class XBoxJoystickVehicleInputState extends BaseAppState implements StateFunctionListener, AnalogFunctionListener {
 
@@ -35,6 +36,7 @@ public class XBoxJoystickVehicleInputState extends BaseAppState implements State
     private final Vehicle vehicle;
 
     private InputMapper inputMapper;
+    final private SignalTracker signalTracker;
 
     // private VehicleFirstPersonCamera firstPersonCam;
     private VehicleCamera activeCam;
@@ -42,6 +44,9 @@ public class XBoxJoystickVehicleInputState extends BaseAppState implements State
 
     public XBoxJoystickVehicleInputState(Vehicle vehicle) {
         this.vehicle = vehicle;
+
+        signalTracker = new SignalTracker();
+        signalTracker.add("horn");
     }
 
     public InputMapper getInputMapper() {
@@ -134,6 +139,9 @@ public class XBoxJoystickVehicleInputState extends BaseAppState implements State
     public void update(float tpf) {
         //updateTurn(tpf);
         //updateMovement(tpf);
+
+        boolean hornIsRequested = signalTracker.test("horn");
+        vehicle.setHornStatus(hornIsRequested);
 
         activeCam.update(tpf);
 
@@ -230,7 +238,7 @@ public class XBoxJoystickVehicleInputState extends BaseAppState implements State
         boolean pressed = value == InputState.Positive;
 
         if (func == F_HORN) {
-            vehicle.setHornInput(1, pressed);
+            signalTracker.setActive("horn", KeyInput.KEY_H, pressed);
         }
 
         else if (func == F_START_ENGINE) {

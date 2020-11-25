@@ -2,6 +2,7 @@ package com.jayfella.jme.vehicle.gui;
 
 import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Vehicle;
+import com.jayfella.jme.vehicle.input.KeyboardVehicleInputState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
@@ -27,6 +28,7 @@ import com.simsilica.lemur.event.MouseEventControl;
 import com.simsilica.lemur.event.MouseListener;
 import java.util.logging.Logger;
 import jme3utilities.MyAsset;
+import jme3utilities.SignalTracker;
 import jme3utilities.mesh.DiscMesh;
 import jme3utilities.mesh.RectangleMesh;
 
@@ -147,8 +149,12 @@ public class DriverHud extends BaseAppState {
             @Override
             public void mouseButtonEvent(MouseButtonEvent event, Spatial s1,
                     Spatial s2) {
+                AppStateManager manager = getApplication().getStateManager();
+                KeyboardVehicleInputState kvis
+                        = manager.getState(KeyboardVehicleInputState.class);
+                SignalTracker signalTracker = kvis.getSignalTracker();
                 boolean pressed = event.isPressed();
-                car.setHornInput(2, pressed);
+                signalTracker.setActive("horn", 999, pressed);
                 event.setConsumed();
             }
         };
