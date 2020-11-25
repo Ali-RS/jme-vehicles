@@ -51,10 +51,8 @@ vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
 
 ## How to build and run More Advanced Vehicles from source
 
- 1. Install build software:
-   + a Java Development Kit and
-   + [Gradle]
- 2. Download and extract the source code from GitHub:
+ 1. Install a Java Development Kit (JDK), if you don't already have one.
+ 2. Download and extract the More Advanced Vehicles source code from GitHub:
    + using Git:
      + `git clone https://github.com/stephengold/jme-vehicles.git`
      + `cd jme-vehicles`
