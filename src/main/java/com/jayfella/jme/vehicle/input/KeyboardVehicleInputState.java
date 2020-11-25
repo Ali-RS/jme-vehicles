@@ -15,6 +15,7 @@ import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
 import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.input.*;
+import java.util.Set;
 import java.util.logging.Logger;
 import jme3utilities.debug.Dumper;
 import jme3utilities.minie.PhysicsDumper;
@@ -104,36 +105,19 @@ public class KeyboardVehicleInputState
          */
         setCamera(VehicleCamView.FirstPerson);
 
-        inputMapper.removeMapping(F_START_ENGINE, KeyInput.KEY_Y);
-
-        inputMapper.removeMapping(F_FORWARD, KeyInput.KEY_W);
-        inputMapper.removeMapping(F_FOOTBRAKE, KeyInput.KEY_S);
-
-        inputMapper.removeMapping(F_TURN_LEFT, KeyInput.KEY_A);
-        inputMapper.removeMapping(F_TURN_RIGHT, KeyInput.KEY_D);
-
-        inputMapper.removeMapping(F_REVERSE, KeyInput.KEY_E);
-        inputMapper.removeMapping(F_HANDBRAKE, KeyInput.KEY_SPACE);
-        inputMapper.removeMapping(F_RESET, KeyInput.KEY_R);
-        inputMapper.removeMapping(F_CAMVIEW, KeyInput.KEY_F5);
-        inputMapper.removeMapping(F_HORN, KeyInput.KEY_H);
-
-        inputMapper.removeMapping(F_DUMP_CAMERA, KeyInput.KEY_C);
-        inputMapper.removeMapping(F_DUMP_PHYSICS, KeyInput.KEY_O);
-        inputMapper.removeMapping(F_DUMP_VIEWPORT, KeyInput.KEY_P);
-
-        inputMapper.removeMapping(F_PAUSE, KeyInput.KEY_PAUSE);
-        inputMapper.removeMapping(F_PAUSE, KeyInput.KEY_PERIOD);
-        inputMapper.removeMapping(F_RETURN, KeyInput.KEY_ESCAPE);
-        inputMapper.removeMapping(F_SCREEN_SHOT, KeyInput.KEY_F12);
-
-        inputMapper.removeStateListener(this,
-                F_START_ENGINE, F_FORWARD, F_TURN_LEFT, F_TURN_RIGHT,
-                F_REVERSE, F_FOOTBRAKE, F_HANDBRAKE, F_RESET,
-                F_HORN, F_CAMVIEW,
-                F_DUMP_CAMERA, F_DUMP_PHYSICS, F_DUMP_VIEWPORT, F_PAUSE,
-                F_RETURN, F_SCREEN_SHOT
-        );
+        Set<FunctionId> functions = inputMapper.getFunctionIds();
+        for (FunctionId function : functions) {
+            String group = function.getGroup();
+            switch (group) {
+                case G_VEHICLE:
+                    Set<InputMapper.Mapping> mappings
+                            = inputMapper.getMappings(function);
+                    for (InputMapper.Mapping mp : mappings) {
+                        inputMapper.removeMapping(mp);
+                    }
+                    inputMapper.removeStateListener(this, function);
+            }
+        }
     }
 
     @Override
@@ -163,14 +147,17 @@ public class KeyboardVehicleInputState
         inputMapper.map(F_RETURN, KeyInput.KEY_ESCAPE);
         // Some Linux window managers block SYSRQ/PrtSc, so we map F12 instead.
         inputMapper.map(F_SCREEN_SHOT, KeyInput.KEY_F12);
-
-        inputMapper.addStateListener(this,
-                F_START_ENGINE, F_FORWARD, F_TURN_LEFT, F_TURN_RIGHT,
-                F_REVERSE, F_FOOTBRAKE, F_HANDBRAKE, F_RESET,
-                F_HORN, F_CAMVIEW,
-                F_DUMP_CAMERA, F_DUMP_PHYSICS, F_DUMP_VIEWPORT, F_PAUSE,
-                F_RETURN, F_SCREEN_SHOT
-        );
+        /*
+         * Add listeners for all functions in G_VEHICLE.
+         */
+        Set<FunctionId> functions = inputMapper.getFunctionIds();
+        for (FunctionId function : functions) {
+            String group = function.getGroup();
+            switch (group) {
+                case G_VEHICLE:
+                    inputMapper.addStateListener(this, function);
+            }
+        }
 
         setCamera(currentCam);
     }
