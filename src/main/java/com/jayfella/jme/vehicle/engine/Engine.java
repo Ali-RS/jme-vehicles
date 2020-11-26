@@ -205,7 +205,7 @@ abstract public class Engine {
      * Alter the sound of this Engine.
      *
      * @param assetManager (not null)
-     * @param audioFile
+     * @param audioFile an asset path to the desired sound (not null)
      */
     public void setEngineAudio(AssetManager assetManager, String audioFile) {
         audioNode = new AudioNode(assetManager, audioFile,

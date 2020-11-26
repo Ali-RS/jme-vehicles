@@ -164,7 +164,7 @@ public class ChaseCamera implements AnalogListener, VehicleCamera {
     /**
      * Alter the offset.
      *
-     * @param range the offset from the target vehicle (in world coordintes)
+     * @param desiredOffset the offset from the target vehicle (in world coordintes)
      */
     public void setOffset(Vector3f desiredOffset) {
         Validate.finite(desiredOffset, "offset");

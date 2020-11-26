@@ -51,7 +51,7 @@ public class Main extends SimpleApplication {
     /**
      * Main entry point for the More Advanced Vehicles application.
      *
-     * @param arguments array of command-line arguments (not null)
+     * @param args array of command-line arguments (not null)
      */
     public static void main(String... args) {
         boolean forceDialog = false;
