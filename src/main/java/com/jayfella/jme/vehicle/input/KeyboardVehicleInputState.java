@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import jme3utilities.MyCamera;
 import jme3utilities.SignalTracker;
 import jme3utilities.debug.Dumper;
+import jme3utilities.math.MyMath;
 import jme3utilities.minie.FilterAll;
 import jme3utilities.minie.PhysicsDumper;
 
@@ -325,11 +326,7 @@ public class KeyboardVehicleInputState
             signalTracker.setActive(CcFunctions.ZoomOut.toString(), 1, pressed);
 
         } else if (func == F_DUMP_CAMERA && pressed) {
-            Camera camera = getApplication().getCamera();
-            Vector3f location = camera.getLocation();
-            System.out.println("cam.setLocation(new Vector3f("
-                    + location.x + "f, " + location.y + "f, " + location.z
-                    + "f));");
+            dumpCamera();
 
         } else if (func == F_DUMP_PHYSICS && pressed) {
             BulletAppState bas
@@ -359,6 +356,19 @@ public class KeyboardVehicleInputState
     }
     // *************************************************************************
     // private methods
+
+    private void dumpCamera() {
+        Camera camera = getApplication().getCamera();
+        String desc1 = MyCamera.describe(camera);
+        System.out.println(desc1);
+
+        String desc2 = MyCamera.describeMore(camera);
+        System.out.println(desc2);
+
+        float radians = MyCamera.fovY(camera);
+        float degrees = MyMath.toDegrees(radians);
+        System.out.printf("fovY=%.1f deg%n", degrees);
+    }
 
     private void resetCameraOffset() {
         if (activeCam instanceof ChaseCamera) {
