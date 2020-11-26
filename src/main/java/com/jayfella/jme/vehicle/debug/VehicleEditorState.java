@@ -1,7 +1,13 @@
 package com.jayfella.jme.vehicle.debug;
 
 import com.jayfella.jme.vehicle.Car;
-import com.jayfella.jme.vehicle.debug.parts.*;
+import com.jayfella.jme.vehicle.debug.parts.BrakesEditor;
+import com.jayfella.jme.vehicle.debug.parts.ChassisEditor;
+import com.jayfella.jme.vehicle.debug.parts.EngineEditor;
+import com.jayfella.jme.vehicle.debug.parts.GearboxEditor;
+import com.jayfella.jme.vehicle.debug.parts.SuspensionEditor;
+import com.jayfella.jme.vehicle.debug.parts.VehicleEditor;
+import com.jayfella.jme.vehicle.debug.parts.WheelsEditor;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;

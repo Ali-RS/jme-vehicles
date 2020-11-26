@@ -13,7 +13,12 @@ import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.simsilica.lemur.GuiGlobals;
-import com.simsilica.lemur.input.*;
+import com.simsilica.lemur.input.AnalogFunctionListener;
+import com.simsilica.lemur.input.Axis;
+import com.simsilica.lemur.input.FunctionId;
+import com.simsilica.lemur.input.InputMapper;
+import com.simsilica.lemur.input.InputState;
+import com.simsilica.lemur.input.StateFunctionListener;
 import jme3utilities.SignalTracker;
 import jme3utilities.minie.FilterAll;
 
