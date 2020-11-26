@@ -131,7 +131,7 @@ class SkidMarkManager {
                 s.appendToMesh(mesh, i);
             }
         }
-        /**
+        /*
          * Add 4 mesh vertices (2 triangles) in order to connect the new section
          * to its predecessor.
          */
