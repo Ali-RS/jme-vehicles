@@ -365,8 +365,7 @@ public class KeyboardVehicleInputState
         String desc2 = MyCamera.describeMore(camera);
         System.out.println(desc2);
 
-        float radians = MyCamera.fovY(camera);
-        float degrees = MyMath.toDegrees(radians);
+        float degrees = MyCamera.yDegrees(camera);
         System.out.printf("fovY=%.1f deg%n", degrees);
     }
 
