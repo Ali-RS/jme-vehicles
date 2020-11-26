@@ -67,7 +67,7 @@ public class DuneBuggy extends Car {
         getWheel(2).setAccelerationForce(1);
         getWheel(3).setAccelerationForce(1);
 
-        setHoodCamLocation(new Vector3f(new Vector3f(0, 1, 0.1f)));
+        setDashCamLocation(new Vector3f(new Vector3f(0, 1, 0.1f)));
 
         GearBox gearBox = new GearBox(6);
         gearBox.setGear(0, 0, 15);

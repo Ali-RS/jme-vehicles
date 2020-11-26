@@ -45,7 +45,7 @@ public abstract class Vehicle {
     private AutomaticGearboxState gearboxState;
     private VehicleAudioState vehicleAudioState;
 
-    private final Vector3f hoodCamLoc = new Vector3f();
+    final private Vector3f dashCamLocation = new Vector3f();
 
     private boolean parkingBrakeApplied;
 
@@ -217,22 +217,22 @@ public abstract class Vehicle {
     }
 
     /**
-     * Determine the location of the hood camera.
+     * Determine the location of the dash camera.
      *
      * @param storeResult storage for the result (modified if not null)
      * @return a location vector in local coordinates (either storeResult or a
      * new instance)
      */
-    public Vector3f getHoodCamLocation(Vector3f storeResult) {
+    public Vector3f getDashCamLocation(Vector3f storeResult) {
         if (storeResult == null) {
-            return hoodCamLoc.clone();
+            return dashCamLocation.clone();
         } else {
-            return storeResult.set(hoodCamLoc);
+            return storeResult.set(dashCamLocation);
         }
     }
 
-    protected void setHoodCamLocation(Vector3f loc) {
-        hoodCamLoc.set(loc);
+    protected void setDashCamLocation(Vector3f loc) {
+        dashCamLocation.set(loc);
     }
 
     public boolean isParkingBrakeApplied() {

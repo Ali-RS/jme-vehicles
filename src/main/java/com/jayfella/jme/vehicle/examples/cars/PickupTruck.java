@@ -111,8 +111,8 @@ public class PickupTruck extends Car {
         getWheel(2).setAccelerationForce(1);
         getWheel(3).setAccelerationForce(1);
 
-        // set the "hood" cam of the vehicle. I'm not happy with this. It shouldn't really be here....
-        setHoodCamLocation(new Vector3f(0, 1.7f, 1.3f));
+        // set the DashCamera location of the vehicle
+        setDashCamLocation(new Vector3f(0, 1.7f, 1.3f));
 
         // define a gearbox. Each gear does NOT need to begin where the last one ends.
         // the "end" value of the last gear will dictate the maximum speed this vehicle can go.

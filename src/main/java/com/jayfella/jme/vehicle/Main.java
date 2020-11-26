@@ -107,7 +107,7 @@ public class Main extends SimpleApplication {
         inputManager.clearMappings();
         inputManager.clearRawInputListeners();
         /*
-         * The hood camera sits close to the bodywork, so set its near clipping
+         * The dash camera sits close to the bodywork, so set its near clipping
          * plane accordingly.
          */
         float near = 0.1f;

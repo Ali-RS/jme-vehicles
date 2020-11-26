@@ -22,7 +22,7 @@ public class DashCamera implements VehicleCamera {
 
     @Override
     public void attach() {
-        cameraNode.setLocalTranslation(vehicle.getHoodCamLocation(null));
+        cameraNode.setLocalTranslation(vehicle.getDashCamLocation(null));
         vehicle.getNode().attachChild(cameraNode);
     }
 

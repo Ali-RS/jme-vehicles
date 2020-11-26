@@ -338,7 +338,7 @@ public class XBoxJoystickVehicleInputState extends BaseAppState implements State
                 FilterAll obstructionFilter = new FilterAll(true);
                 ChaseCamera oc = new ChaseCamera(vehicle, cam, signalTracker,
                         obstructionFilter);
-                Vector3f startLocation = vehicle.getHoodCamLocation(null);
+                Vector3f startLocation = vehicle.getDashCamLocation(null);
                 startLocation.y += 10f;
                 cam.setLocation(startLocation);
                 activeCam = oc;

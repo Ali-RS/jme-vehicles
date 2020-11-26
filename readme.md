@@ -74,7 +74,7 @@ vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
 
 When a vehicle is loaded:
 
-+ F5 : toggle viewpoints between hood camera and chase camera
++ F5 : toggle viewpoints between dash camera and chase camera
 + Y : toggle the engine on/off
 + W : accelerate forward
 + S : apply brakes
