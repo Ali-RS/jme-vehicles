@@ -111,7 +111,7 @@ public class KeyboardVehicleInputState
     final private SignalTracker signalTracker;
     private final Vehicle vehicle;
     private VehicleCamera activeCam;
-    private VehicleCamView currentCam = VehicleCamView.FirstPerson;
+    private VehicleCamView currentCam = VehicleCamView.DashCam;
     // *************************************************************************
     // constructors
 
@@ -378,11 +378,7 @@ public class KeyboardVehicleInputState
         Camera cam = getApplication().getCamera();
         MyCamera.setYTangent(cam, 1f);
         switch (camView) {
-            case FirstPerson:
-                activeCam = new DashCamera(vehicle, cam);
-                break;
-
-            case ThirdPerson:
+            case ChaseCam:
                 FilterAll obstructionFilter = new FilterAll(true);
                 ChaseCamera chaseCam = new ChaseCamera(vehicle, cam,
                         signalTracker, obstructionFilter);
@@ -391,6 +387,10 @@ public class KeyboardVehicleInputState
                     String signalName = function.toString();
                     chaseCam.setSignalName(function, signalName);
                 }
+                break;
+
+            case DashCam:
+                activeCam = new DashCamera(vehicle, cam);
                 break;
 
             default:

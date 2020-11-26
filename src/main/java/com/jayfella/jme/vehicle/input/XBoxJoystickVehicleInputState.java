@@ -42,7 +42,7 @@ public class XBoxJoystickVehicleInputState extends BaseAppState implements State
 
     // private VehicleFirstPersonCamera firstPersonCam;
     private VehicleCamera activeCam;
-    private VehicleCamView currentCam = VehicleCamView.FirstPerson;
+    private VehicleCamView currentCam = VehicleCamView.DashCam;
 
     public XBoxJoystickVehicleInputState(Vehicle vehicle) {
         this.vehicle = vehicle;
@@ -330,11 +330,11 @@ public class XBoxJoystickVehicleInputState extends BaseAppState implements State
         Camera cam = getApplication().getCamera();
         switch (camView) {
 
-            case FirstPerson: {
+            case DashCam: {
                 activeCam = new DashCamera(vehicle, getApplication().getCamera());
                 break;
             }
-            case ThirdPerson: {
+            case ChaseCam: {
                 FilterAll obstructionFilter = new FilterAll(true);
                 ChaseCamera oc = new ChaseCamera(vehicle, cam, signalTracker,
                         obstructionFilter);

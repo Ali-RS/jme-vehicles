@@ -2,8 +2,8 @@ package com.jayfella.jme.vehicle.view;
 
 public enum VehicleCamView {
 
-    FirstPerson,
-    ThirdPerson;
+    ChaseCam,
+    DashCam;
 
     public VehicleCamView next() {
 
