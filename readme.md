@@ -172,7 +172,7 @@ Resources/assets/media:
 + The [quarry_03 texture](https://github.com/stephengold/jme-vehicles/blob/master/src/main/resources/Textures/Sky/quarry_03_4k.jpg)
   has a CC0 1.0 Universal license.
 + The following 12 textures were generated procedurally by
-  [the Shapes Project](https://github.com/stephengold/Shapes), which has a BSD 3-Clause license:
+  [the Georg Project](https://github.com/stephengold/Georg), which has a BSD 3-Clause license:
   + compass.png
   + horn-silent.png
   + horn-sound.png
