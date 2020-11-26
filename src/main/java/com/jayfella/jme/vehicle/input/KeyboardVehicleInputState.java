@@ -379,7 +379,7 @@ public class KeyboardVehicleInputState
         MyCamera.setYTangent(cam, 1f);
         switch (camView) {
             case FirstPerson:
-                activeCam = new VehicleFirstPersonCamera(vehicle, cam);
+                activeCam = new DashCamera(vehicle, cam);
                 break;
 
             case ThirdPerson:

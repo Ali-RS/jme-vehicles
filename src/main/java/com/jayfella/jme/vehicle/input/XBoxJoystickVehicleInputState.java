@@ -3,9 +3,9 @@ package com.jayfella.jme.vehicle.input;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.view.ChaseCamera;
+import com.jayfella.jme.vehicle.view.DashCamera;
 import com.jayfella.jme.vehicle.view.VehicleCamView;
 import com.jayfella.jme.vehicle.view.VehicleCamera;
-import com.jayfella.jme.vehicle.view.VehicleFirstPersonCamera;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.input.KeyInput;
@@ -331,7 +331,7 @@ public class XBoxJoystickVehicleInputState extends BaseAppState implements State
         switch (camView) {
 
             case FirstPerson: {
-                activeCam = new VehicleFirstPersonCamera(vehicle, getApplication().getCamera());
+                activeCam = new DashCamera(vehicle, getApplication().getCamera());
                 break;
             }
             case ThirdPerson: {
