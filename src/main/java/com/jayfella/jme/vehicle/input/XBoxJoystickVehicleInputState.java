@@ -2,18 +2,20 @@ package com.jayfella.jme.vehicle.input;
 
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.gui.DriverHud;
+import com.jayfella.jme.vehicle.view.ChaseCamera;
 import com.jayfella.jme.vehicle.view.VehicleCamView;
 import com.jayfella.jme.vehicle.view.VehicleCamera;
 import com.jayfella.jme.vehicle.view.VehicleFirstPersonCamera;
-import com.jayfella.jme.vehicle.view.VehicleThirdPersonCamera;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.input.KeyInput;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.Camera;
 import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.input.*;
 import jme3utilities.SignalTracker;
+import jme3utilities.minie.FilterAll;
 
 public class XBoxJoystickVehicleInputState extends BaseAppState implements StateFunctionListener, AnalogFunctionListener {
 
@@ -325,6 +327,7 @@ public class XBoxJoystickVehicleInputState extends BaseAppState implements State
             activeCam.detach();
         }
 
+        Camera cam = getApplication().getCamera();
         switch (camView) {
 
             case FirstPerson: {
@@ -332,7 +335,13 @@ public class XBoxJoystickVehicleInputState extends BaseAppState implements State
                 break;
             }
             case ThirdPerson: {
-                activeCam = new VehicleThirdPersonCamera(vehicle, getApplication().getCamera());
+                FilterAll obstructionFilter = new FilterAll(true);
+                ChaseCamera oc = new ChaseCamera(vehicle, cam, signalTracker,
+                        obstructionFilter);
+                Vector3f startLocation = vehicle.getHoodCamLocation(null);
+                startLocation.y += 10f;
+                cam.setLocation(startLocation);
+                activeCam = oc;
                 break;
             }
 

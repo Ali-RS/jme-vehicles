@@ -12,6 +12,7 @@ import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
+import com.jme3.math.Matrix3f;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
@@ -254,6 +255,35 @@ public abstract class Vehicle {
 
         node.removeFromParent();
         vehicleControl.getPhysicsSpace().remove(vehicleControl);
+    }
+
+    /**
+     * Determine the forward direction.
+     *
+     * @param storeResult storage for the result (modified if not null)
+     * @return a unit vector in physics-space coordinates (either storeResult or
+     * a new instance)
+     */
+    public Vector3f forwardDirection(Vector3f storeResult) {
+        Vector3f result = vehicleControl.getForwardVector(storeResult);
+        return result;
+    }
+
+    /**
+     * Determine the location of the ChaseCamera target.
+     *
+     * @param storeResult storage for the result (modified if not null)
+     * @return a location vector (in physics-space coordinates, either
+     * storeResult or a new instance)
+     */
+    public Vector3f targetLocation(Vector3f storeResult) {
+        Vector3f offset = new Vector3f(0f, 1f, -3f); // TODO tune
+        Matrix3f orientation = vehicleControl.getPhysicsRotationMatrix(null);
+        orientation.mult(offset, offset);
+        Vector3f result = vehicleControl.getPhysicsLocation(storeResult);
+        result.addLocal(offset);
+
+        return result;
     }
 
     /**

@@ -17,8 +17,10 @@ import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.input.*;
 import java.util.Set;
 import java.util.logging.Logger;
+import jme3utilities.MyCamera;
 import jme3utilities.SignalTracker;
 import jme3utilities.debug.Dumper;
+import jme3utilities.minie.FilterAll;
 import jme3utilities.minie.PhysicsDumper;
 
 public class KeyboardVehicleInputState
@@ -27,13 +29,16 @@ public class KeyboardVehicleInputState
     // *************************************************************************
     // constants and loggers
 
-    final private float maxSteeringAngle = 1f; // radians
-    final private float returnRate = 2f; // radians per second
-    final private float turnRate = 0.5f; // radians per second
+    /**
+     * message logger for this class
+     */
+    final public static Logger logger
+            = Logger.getLogger(KeyboardVehicleInputState.class.getName());
 
+    public static final String G_CAMERA = "GROUP_CAMERA";
     public static final String G_VEHICLE = "GROUP_VEHICLE";
     /**
-     * keyboard function IDs
+     * Vehicle function IDs
      */
     private static final FunctionId F_CAMVIEW
             = new FunctionId(G_VEHICLE, "Camera View");
@@ -68,12 +73,34 @@ public class KeyboardVehicleInputState
     private static final FunctionId F_TURN_RIGHT
             = new FunctionId(G_VEHICLE, "Vehicle Turn Right");
     /**
-     * message logger for this class
+     * ChaseCamera function IDs
      */
-    final public static Logger logger
-            = Logger.getLogger(KeyboardVehicleInputState.class.getName());
+    private static final FunctionId F_CAMERA_BACK1
+            = new FunctionId(G_CAMERA, CcFunctions.Back.toString());
+    private static final FunctionId F_CAMERA_DOWN1
+            = new FunctionId(G_CAMERA, CcFunctions.OrbitDown.toString());
+    private static final FunctionId F_CAMERA_DRAG_TO_ORBIT1
+            = new FunctionId(G_CAMERA, CcFunctions.DragToOrbit.toString());
+    private static final FunctionId F_CAMERA_FORWARD1
+            = new FunctionId(G_CAMERA, CcFunctions.Forward.toString());
+    private static final FunctionId F_CAMERA_RESET_OFFSET
+            = new FunctionId(G_CAMERA, "Camera Reset Offset");
+    private static final FunctionId F_CAMERA_RESET_FOV
+            = new FunctionId(G_CAMERA, "Camera Reset FOV");
+    private static final FunctionId F_CAMERA_UP1
+            = new FunctionId(G_CAMERA, CcFunctions.OrbitUp.toString());
+    private static final FunctionId F_CAMERA_XRAY1
+            = new FunctionId(G_CAMERA, CcFunctions.Xray.toString());
+    private static final FunctionId F_CAMERA_ZOOM_IN1
+            = new FunctionId(G_CAMERA, CcFunctions.ZoomIn.toString());
+    private static final FunctionId F_CAMERA_ZOOM_OUT1
+            = new FunctionId(G_CAMERA, CcFunctions.ZoomOut.toString());
     // *************************************************************************
     // fields
+
+    final private float maxSteeringAngle = 1f; // radians
+    final private float returnRate = 2f; // radians per second
+    final private float turnRate = 0.5f; // radians per second
 
     private boolean accelerating, braking;
     private boolean turningLeft, turningRight;
@@ -98,6 +125,10 @@ public class KeyboardVehicleInputState
 
         signalTracker = new SignalTracker();
         signalTracker.add("horn");
+        for (CcFunctions function : CcFunctions.values()) {
+            String signalName = function.toString();
+            signalTracker.add(signalName);
+        }
     }
     // *************************************************************************
     // public methods
@@ -115,16 +146,15 @@ public class KeyboardVehicleInputState
 
     @Override
     protected void cleanup(Application app) {
+        activeCam.detach();
         /*
-         * Select the 1st person camera, since it doesn't have any keyboard
-         * mappings to be cleaned up.
+         * Remove all input mappings/listeners in G_CAMERA and G_VEHICLE.
          */
-        setCamera(VehicleCamView.FirstPerson);
-
         Set<FunctionId> functions = inputMapper.getFunctionIds();
         for (FunctionId function : functions) {
             String group = function.getGroup();
             switch (group) {
+                case G_CAMERA:
                 case G_VEHICLE:
                     Set<InputMapper.Mapping> mappings
                             = inputMapper.getMappings(function);
@@ -154,6 +184,17 @@ public class KeyboardVehicleInputState
         inputMapper.map(F_CAMVIEW, KeyInput.KEY_F5);
         inputMapper.map(F_HORN, KeyInput.KEY_H);
 
+        inputMapper.map(F_CAMERA_BACK1, KeyInput.KEY_NUMPAD1);
+        inputMapper.map(F_CAMERA_DOWN1, KeyInput.KEY_NUMPAD2);
+        inputMapper.map(F_CAMERA_DRAG_TO_ORBIT1, Button.MOUSE_BUTTON3);
+        inputMapper.map(F_CAMERA_FORWARD1, KeyInput.KEY_NUMPAD7);
+        inputMapper.map(F_CAMERA_RESET_FOV, KeyInput.KEY_NUMPAD6);
+        inputMapper.map(F_CAMERA_RESET_OFFSET, KeyInput.KEY_NUMPAD5);
+        inputMapper.map(F_CAMERA_UP1, KeyInput.KEY_NUMPAD8);
+        inputMapper.map(F_CAMERA_XRAY1, KeyInput.KEY_NUMPAD0);
+        inputMapper.map(F_CAMERA_ZOOM_IN1, KeyInput.KEY_NUMPAD9);
+        inputMapper.map(F_CAMERA_ZOOM_OUT1, KeyInput.KEY_NUMPAD3);
+
         inputMapper.map(F_DUMP_CAMERA, KeyInput.KEY_C);
         inputMapper.map(F_DUMP_PHYSICS, KeyInput.KEY_O);
         inputMapper.map(F_DUMP_VIEWPORT, KeyInput.KEY_P);
@@ -164,12 +205,13 @@ public class KeyboardVehicleInputState
         // Some Linux window managers block SYSRQ/PrtSc, so we map F12 instead.
         inputMapper.map(F_SCREEN_SHOT, KeyInput.KEY_F12);
         /*
-         * Add listeners for all functions in G_VEHICLE.
+         * Add listeners for all functions in G_CAMERA and G_VEHICLE.
          */
         Set<FunctionId> functions = inputMapper.getFunctionIds();
         for (FunctionId function : functions) {
             String group = function.getGroup();
             switch (group) {
+                case G_CAMERA:
                 case G_VEHICLE:
                     inputMapper.addStateListener(this, function);
             }
@@ -249,6 +291,39 @@ public class KeyboardVehicleInputState
             vehicle.getVehicleControl().setAngularVelocity(Vector3f.ZERO);
             vehicle.getVehicleControl().setLinearVelocity(Vector3f.ZERO);
 
+        } else if (func == F_CAMERA_BACK1) {
+            signalTracker.setActive(CcFunctions.Back.toString(), 1, pressed);
+
+        } else if (func == F_CAMERA_DOWN1) {
+            signalTracker.setActive(
+                    CcFunctions.OrbitDown.toString(), 1, pressed);
+
+        } else if (func == F_CAMERA_DRAG_TO_ORBIT1) {
+            signalTracker.setActive(
+                    CcFunctions.DragToOrbit.toString(), 1, pressed);
+
+        } else if (func == F_CAMERA_FORWARD1) {
+            signalTracker.setActive(CcFunctions.Forward.toString(), 1, pressed);
+
+        } else if (func == F_CAMERA_RESET_OFFSET && pressed) {
+            resetCameraOffset();
+
+        } else if (func == F_CAMERA_RESET_FOV && pressed) {
+            Camera cam = getApplication().getCamera();
+            MyCamera.setYTangent(cam, 1f);
+
+        } else if (func == F_CAMERA_UP1) {
+            signalTracker.setActive(CcFunctions.OrbitUp.toString(), 1, pressed);
+
+        } else if (func == F_CAMERA_XRAY1) {
+            signalTracker.setActive(CcFunctions.Xray.toString(), 1, pressed);
+
+        } else if (func == F_CAMERA_ZOOM_IN1) {
+            signalTracker.setActive(CcFunctions.ZoomIn.toString(), 1, pressed);
+
+        } else if (func == F_CAMERA_ZOOM_OUT1) {
+            signalTracker.setActive(CcFunctions.ZoomOut.toString(), 1, pressed);
+
         } else if (func == F_DUMP_CAMERA && pressed) {
             Camera camera = getApplication().getCamera();
             Vector3f location = camera.getLocation();
@@ -285,19 +360,37 @@ public class KeyboardVehicleInputState
     // *************************************************************************
     // private methods
 
+    private void resetCameraOffset() {
+        if (activeCam instanceof ChaseCamera) {
+            ChaseCamera chaseCam = (ChaseCamera) activeCam;
+            Vector3f offset = vehicle.forwardDirection(null);
+            offset.multLocal(-20f);
+            offset.y += 5f;
+            chaseCam.setOffset(offset);
+        }
+    }
+
     private void setCamera(VehicleCamView camView) {
         if (activeCam != null) {
             activeCam.detach();
         }
 
         Camera cam = getApplication().getCamera();
+        MyCamera.setYTangent(cam, 1f);
         switch (camView) {
             case FirstPerson:
                 activeCam = new VehicleFirstPersonCamera(vehicle, cam);
                 break;
 
             case ThirdPerson:
-                activeCam = new VehicleThirdPersonCamera(vehicle, cam);
+                FilterAll obstructionFilter = new FilterAll(true);
+                ChaseCamera chaseCam = new ChaseCamera(vehicle, cam,
+                        signalTracker, obstructionFilter);
+                activeCam = chaseCam;
+                for (CcFunctions function : CcFunctions.values()) {
+                    String signalName = function.toString();
+                    chaseCam.setSignalName(function, signalName);
+                }
                 break;
 
             default:
@@ -306,6 +399,7 @@ public class KeyboardVehicleInputState
         }
 
         activeCam.attach();
+        resetCameraOffset();
     }
 
     private void updateMovement(float tpf) {
