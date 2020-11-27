@@ -389,6 +389,17 @@ public class DriverHud extends BaseAppState {
     }
 
     /**
+     * Exit the car and return to the main menu.
+     */
+    private void returnToMainMenu() {
+        Application app = car.getApplication();
+        AppStateManager stateManager = app.getStateManager();
+        KeyboardVehicleInputState kvis
+                = stateManager.getState(KeyboardVehicleInputState.class);
+        kvis.returnToMainMenu();
+    }
+
+    /**
      * Display the exit button.
      */
     private void showExitButton() {
@@ -415,7 +426,7 @@ public class DriverHud extends BaseAppState {
             public void mouseButtonEvent(MouseButtonEvent event, Spatial s1,
                     Spatial s2) {
                 if (event.isPressed()) {
-                    ReturnToMenuClickCommand.returnToMenu(car);
+                    returnToMainMenu();
                 }
                 event.setConsumed();
             }

@@ -1,14 +1,19 @@
 package com.jayfella.jme.vehicle.input;
 
 import com.jayfella.jme.vehicle.Vehicle;
+import com.jayfella.jme.vehicle.debug.DebugTabState;
+import com.jayfella.jme.vehicle.debug.EnginePowerGraphState;
+import com.jayfella.jme.vehicle.debug.TireDataState;
+import com.jayfella.jme.vehicle.debug.VehicleEditorState;
 import com.jayfella.jme.vehicle.gui.DriverHud;
-import com.jayfella.jme.vehicle.gui.ReturnToMenuClickCommand;
+import com.jayfella.jme.vehicle.gui.MainMenuState;
 import com.jayfella.jme.vehicle.view.CcFunctions;
 import com.jayfella.jme.vehicle.view.ChaseCamera;
 import com.jayfella.jme.vehicle.view.DashCamera;
 import com.jayfella.jme.vehicle.view.VehicleCamView;
 import com.jayfella.jme.vehicle.view.VehicleCamera;
 import com.jme3.app.Application;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.app.state.ScreenshotAppState;
 import com.jme3.bullet.BulletAppState;
@@ -148,6 +153,49 @@ public class KeyboardVehicleInputState
      */
     public SignalTracker getSignalTracker() {
         return signalTracker;
+    }
+
+    /**
+     * Unload the vehicle and return to the main menu.
+     */
+    public void returnToMainMenu() {
+        Application app = vehicle.getApplication();
+        AppStateManager stateManager = app.getStateManager();
+        stateManager.detach(this);
+
+        EnginePowerGraphState enginePowerGraphState
+                = stateManager.getState(EnginePowerGraphState.class);
+        if (enginePowerGraphState != null) {
+            stateManager.detach(enginePowerGraphState);
+        }
+
+        TireDataState tireDataState
+                = stateManager.getState(TireDataState.class);
+        if (tireDataState != null) {
+            stateManager.detach(tireDataState);
+        }
+
+        VehicleEditorState vehicleEditorState
+                = stateManager.getState(VehicleEditorState.class);
+        if (vehicleEditorState != null) {
+            stateManager.detach(vehicleEditorState);
+        }
+
+        DebugTabState debugTabState
+                = stateManager.getState(DebugTabState.class);
+        if (debugTabState != null) {
+            stateManager.detach(debugTabState);
+        }
+
+        DriverHud hud = stateManager.getState(DriverHud.class);
+        hud.setEnabled(false);
+
+        vehicle.detachFromScene();
+        stateManager.attach(new MainMenuState());
+
+        Camera camera = app.getCamera();
+        camera.setLocation(new Vector3f(-200f, 50f, -200f));
+        camera.lookAt(new Vector3f(100f, 10f, 150f), Vector3f.UNIT_Y);
     }
     // *************************************************************************
     // BaseAppState methods
@@ -349,7 +397,7 @@ public class KeyboardVehicleInputState
 
         } else if (func == F_RETURN && !pressed) {
             // can't use InputState.Positive for this purpose
-            ReturnToMenuClickCommand.returnToMenu(vehicle);
+            returnToMainMenu();
 
         } else if (func == F_SCREEN_SHOT && pressed) {
             ScreenshotAppState screenshotAppState
