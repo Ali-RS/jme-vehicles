@@ -5,6 +5,7 @@ import com.atr.jme.font.asset.TrueTypeKeyMesh;
 import com.atr.jme.font.shape.TrueTypeNode;
 import com.atr.jme.font.util.Style;
 import com.jayfella.jme.vehicle.Car;
+import com.jayfella.jme.vehicle.Main;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
@@ -171,7 +172,7 @@ public class AtmiState extends BaseAppState {
      * @param spatial (not null, alias created)
      */
     private void attachToGui(Spatial spatial) {
-        SimpleApplication simpleApp = (SimpleApplication) getApplication();
+        SimpleApplication simpleApp = Main.getApplication();
         Node guiNode = simpleApp.getGuiNode();
         guiNode.attachChild(spatial);
     }

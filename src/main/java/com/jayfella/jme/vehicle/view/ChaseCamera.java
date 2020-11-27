@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle.view;
 
+import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.input.KeyboardVehicleInputState;
 import com.jme3.bullet.CollisionSpace;
@@ -154,7 +155,7 @@ public class ChaseCamera implements AnalogListener, VehicleCamera {
 
         this.targetVehicle = vehicle;
         this.camera = camera;
-        this.inputManager = vehicle.getApplication().getInputManager();
+        this.inputManager = Main.getApplication().getInputManager();
         this.signalTracker = tracker;
         this.obstructionFilter = obstructionFilter;
     }

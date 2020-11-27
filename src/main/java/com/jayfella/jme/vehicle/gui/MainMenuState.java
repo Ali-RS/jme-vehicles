@@ -1,6 +1,6 @@
 package com.jayfella.jme.vehicle.gui;
 
-import com.jme3.app.SimpleApplication;
+import com.jayfella.jme.vehicle.Main;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.scene.Node;
 import com.simsilica.lemur.Button;
@@ -23,7 +23,7 @@ public class MainMenuState extends AnimatedMenuState {
             animateOut(() -> {
 
                 BulletAppState bulletAppState = getState(BulletAppState.class);
-                Node playground = (Node) ((SimpleApplication)getApplication()).getRootNode().getChild("playground");
+                Node playground = (Node) Main.getApplication().getRootNode().getChild("playground");
 
                 getStateManager().attach(new CarSelectorMenuState(playground, bulletAppState.getPhysicsSpace()));
 

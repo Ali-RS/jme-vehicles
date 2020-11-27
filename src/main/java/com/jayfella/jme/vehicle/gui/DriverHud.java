@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle.gui;
 
 import com.jayfella.jme.vehicle.Car;
+import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.input.KeyboardVehicleInputState;
 import com.jme3.app.Application;
@@ -146,9 +147,8 @@ public class DriverHud extends BaseAppState {
             @Override
             public void mouseButtonEvent(MouseButtonEvent event, Spatial s1,
                     Spatial s2) {
-                AppStateManager manager = getApplication().getStateManager();
                 KeyboardVehicleInputState kvis
-                        = manager.getState(KeyboardVehicleInputState.class);
+                        = Main.findAppState(KeyboardVehicleInputState.class);
                 SignalTracker signalTracker = kvis.getSignalTracker();
                 boolean pressed = event.isPressed();
                 signalTracker.setActive("horn", 999, pressed);
@@ -177,7 +177,7 @@ public class DriverHud extends BaseAppState {
      * Toggle the physics simulation between running and paused.
      */
     public void togglePhysicsPaused() {
-        BulletAppState bas = getStateManager().getState(BulletAppState.class);
+        BulletAppState bas = Main.findAppState(BulletAppState.class);
         float physicsSpeed = bas.getSpeed();
         if (physicsSpeed > 0f) { // was running
             bas.setSpeed(0f);
@@ -280,8 +280,7 @@ public class DriverHud extends BaseAppState {
      */
     @Override
     protected void onEnable() {
-        AppStateManager stateManager = getStateManager();
-        BulletAppState bas = stateManager.getState(BulletAppState.class);
+        BulletAppState bas = Main.findAppState(BulletAppState.class);
         boolean isPaused = (bas.getSpeed() == 0f);
         showPauseButton(isPaused);
 
@@ -316,7 +315,7 @@ public class DriverHud extends BaseAppState {
      * @param spatial (not null, alias created)
      */
     private void attachToGui(Spatial spatial) {
-        SimpleApplication simpleApp = (SimpleApplication) getApplication();
+        SimpleApplication simpleApp = Main.getApplication();
         Node guiNode = simpleApp.getGuiNode();
         guiNode.attachChild(spatial);
     }
@@ -392,10 +391,8 @@ public class DriverHud extends BaseAppState {
      * Exit the car and return to the main menu.
      */
     private void returnToMainMenu() {
-        Application app = car.getApplication();
-        AppStateManager stateManager = app.getStateManager();
         KeyboardVehicleInputState kvis
-                = stateManager.getState(KeyboardVehicleInputState.class);
+                = Main.findAppState(KeyboardVehicleInputState.class);
         kvis.returnToMainMenu();
     }
 

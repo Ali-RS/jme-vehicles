@@ -1,8 +1,8 @@
 package com.jayfella.jme.vehicle.gui;
 
 import com.jayfella.easing.Easings;
+import com.jayfella.jme.vehicle.Main;
 import com.jme3.app.Application;
-import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
@@ -74,7 +74,7 @@ abstract public class AnimatedMenuState extends BaseAppState {
 
     @Override
     protected void onEnable() {
-        ((SimpleApplication) getApplication()).getGuiNode().attachChild(node);
+        Main.getApplication().getGuiNode().attachChild(node);
     }
 
     @Override

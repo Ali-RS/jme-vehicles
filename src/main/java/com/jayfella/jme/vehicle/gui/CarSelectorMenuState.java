@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle.gui;
 
 import com.jayfella.jme.vehicle.Car;
+import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.debug.DebugTabState;
 import com.jayfella.jme.vehicle.debug.EnginePowerGraphState;
 import com.jayfella.jme.vehicle.debug.TireDataState;
@@ -57,7 +58,7 @@ public class CarSelectorMenuState extends AnimatedMenuState {
     }
 
     private void addVehicle(Car vehicle) {
-        DriverHud hud = getStateManager().getState(DriverHud.class);
+        DriverHud hud = Main.findAppState(DriverHud.class);
         hud.setCar(vehicle);
         hud.setEnabled(true);
         vehicle.attachToScene(scene, physicsSpace);

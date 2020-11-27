@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle.input;
 
+import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.debug.DebugTabState;
 import com.jayfella.jme.vehicle.debug.EnginePowerGraphState;
@@ -159,35 +160,33 @@ public class KeyboardVehicleInputState
      * Unload the vehicle and return to the main menu.
      */
     public void returnToMainMenu() {
-        Application app = vehicle.getApplication();
+        Application app = Main.getApplication();
         AppStateManager stateManager = app.getStateManager();
         stateManager.detach(this);
 
         EnginePowerGraphState enginePowerGraphState
-                = stateManager.getState(EnginePowerGraphState.class);
+                = Main.findAppState(EnginePowerGraphState.class);
         if (enginePowerGraphState != null) {
             stateManager.detach(enginePowerGraphState);
         }
 
-        TireDataState tireDataState
-                = stateManager.getState(TireDataState.class);
+        TireDataState tireDataState = Main.findAppState(TireDataState.class);
         if (tireDataState != null) {
             stateManager.detach(tireDataState);
         }
 
         VehicleEditorState vehicleEditorState
-                = stateManager.getState(VehicleEditorState.class);
+                = Main.findAppState(VehicleEditorState.class);
         if (vehicleEditorState != null) {
             stateManager.detach(vehicleEditorState);
         }
 
-        DebugTabState debugTabState
-                = stateManager.getState(DebugTabState.class);
+        DebugTabState debugTabState = Main.findAppState(DebugTabState.class);
         if (debugTabState != null) {
             stateManager.detach(debugTabState);
         }
 
-        DriverHud hud = stateManager.getState(DriverHud.class);
+        DriverHud hud = Main.findAppState(DriverHud.class);
         hud.setEnabled(false);
 
         vehicle.detachFromScene();
@@ -306,7 +305,7 @@ public class KeyboardVehicleInputState
     @Override
     public void valueChanged(FunctionId func, InputState value, double tpf) {
         boolean pressed = (value == InputState.Positive);
-        DriverHud driverHud = getStateManager().getState(DriverHud.class);
+        DriverHud driverHud = Main.findAppState(DriverHud.class);
 
         if (func == F_HORN) {
             signalTracker.setActive("horn", KeyInput.KEY_H, pressed);
@@ -384,8 +383,7 @@ public class KeyboardVehicleInputState
             dumpCamera();
 
         } else if (func == F_DUMP_PHYSICS && pressed) {
-            BulletAppState bas
-                    = getStateManager().getState(BulletAppState.class);
+            BulletAppState bas = Main.findAppState(BulletAppState.class);
             new PhysicsDumper().dump(bas);
 
         } else if (func == F_DUMP_VIEWPORT && pressed) {
@@ -401,7 +399,7 @@ public class KeyboardVehicleInputState
 
         } else if (func == F_SCREEN_SHOT && pressed) {
             ScreenshotAppState screenshotAppState
-                    = getStateManager().getState(ScreenshotAppState.class);
+                    = Main.findAppState(ScreenshotAppState.class);
             screenshotAppState.takeScreenshot();
 
         } else if (func == F_CAMVIEW && pressed) {

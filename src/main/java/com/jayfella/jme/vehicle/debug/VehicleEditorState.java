@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle.debug;
 
 import com.jayfella.jme.vehicle.Car;
+import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.debug.parts.BrakesEditor;
 import com.jayfella.jme.vehicle.debug.parts.ChassisEditor;
 import com.jayfella.jme.vehicle.debug.parts.EngineEditor;
@@ -9,7 +10,6 @@ import com.jayfella.jme.vehicle.debug.parts.SuspensionEditor;
 import com.jayfella.jme.vehicle.debug.parts.VehicleEditor;
 import com.jayfella.jme.vehicle.debug.parts.WheelsEditor;
 import com.jme3.app.Application;
-import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
 import com.simsilica.lemur.Axis;
 import com.simsilica.lemur.FillMode;
@@ -66,7 +66,7 @@ public class VehicleEditorState extends BaseAppState {
 
     @Override
     protected void onEnable() {
-        ((SimpleApplication)getApplication()).getGuiNode().attachChild(this.tabbedPanel);
+        Main.getApplication().getGuiNode().attachChild(this.tabbedPanel);
     }
 
     @Override

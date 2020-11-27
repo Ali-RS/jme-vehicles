@@ -191,7 +191,7 @@ public class Car extends Vehicle {
     protected void enable() {
         super.enable();
 
-        AppStateManager manager = getApplication().getStateManager();
+        AppStateManager manager = Main.getApplication().getStateManager();
         manager.attach(smokeEmitter);
         manager.attach(skidmarks);
         manager.attach(magicFormulaState);
@@ -202,7 +202,7 @@ public class Car extends Vehicle {
     protected void disable() {
         super.disable();
 
-        AppStateManager manager = getApplication().getStateManager();
+        AppStateManager manager = Main.getApplication().getStateManager();
         manager.detach(smokeEmitter);
         manager.detach(skidmarks);
         manager.detach(magicFormulaState);

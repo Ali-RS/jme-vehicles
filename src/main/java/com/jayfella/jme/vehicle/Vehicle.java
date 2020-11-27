@@ -55,10 +55,6 @@ public abstract class Vehicle {
         node = new Node("Vehicle: " + name);
     }
 
-    public Application getApplication() {
-        return app;
-    }
-
     public String getName() {
         return name;
     }
@@ -92,7 +88,7 @@ public abstract class Vehicle {
         AudioSource.Status status = hornAudio.getStatus();
         boolean isSounding = (status == AudioSource.Status.Playing);
 
-        DriverHud hud = app.getStateManager().getState(DriverHud.class);
+        DriverHud hud = Main.findAppState(DriverHud.class);
         if (isSounding && !isRequested) {
             hornAudio.stop();
             hud.showHornButton(false);

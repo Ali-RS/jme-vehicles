@@ -191,7 +191,7 @@ public class MagicFormulaState extends BaseAppState {
     private Geometry createArrow(Vector3f dir, ColorRGBA color) {
         Arrow arrow = new Arrow(dir);
         Geometry geometry = new Geometry("arrow", arrow);
-        geometry.setMaterial(new Material(vehicle.getApplication().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md"));
+        geometry.setMaterial(new Material(Main.getApplication().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md"));
         geometry.getMaterial().getAdditionalRenderState().setWireframe(true);
         geometry.getMaterial().getAdditionalRenderState().setLineWidth(4);
         geometry.getMaterial().setColor("Color", color);
