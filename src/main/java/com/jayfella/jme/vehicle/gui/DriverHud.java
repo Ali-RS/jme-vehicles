@@ -19,10 +19,6 @@ import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.texture.Texture;
-import com.simsilica.lemur.Button;
-import com.simsilica.lemur.Command;
-import com.simsilica.lemur.component.TbtQuadBackgroundComponent;
-import com.simsilica.lemur.core.GuiComponent;
 import com.simsilica.lemur.event.DefaultMouseListener;
 import com.simsilica.lemur.event.MouseEventControl;
 import com.simsilica.lemur.event.MouseListener;
@@ -37,7 +33,7 @@ import jme3utilities.mesh.RectangleMesh;
  * instantiated once and then enabled/disabled as needed. It directly manages
  * portions of the graphical user interface, namely:
  * <ul>
- * <li>the "Return to Main Menu" button</li>
+ * <li>the exit button</li>
  * <li>the pause button</li>
  * <li>the horn button</li>
  * <li>the power button</li>
@@ -71,7 +67,6 @@ public class DriverHud extends BaseAppState {
      * Appstate to manage the automatic-transmission mode indicator
      */
     final private AtmiState atmiState = new AtmiState();
-    private Button returnButton;
     private Car car;
     final private CompassState compassState = new CompassState();
     /**
@@ -79,6 +74,7 @@ public class DriverHud extends BaseAppState {
      */
     private float viewPortHeight, viewPortWidth;
 
+    private Geometry exitButton;
     private Geometry hornButton;
     private Geometry pauseButton;
     private Geometry powerButton;
@@ -86,6 +82,7 @@ public class DriverHud extends BaseAppState {
     /**
      * pre-loaded materials for buttons
      */
+    private Material exitMaterial;
     private Material hornSilentMaterial, hornSoundMaterial, pauseMaterial;
     private Material powerOffMaterial, powerOnMaterial, runMaterial;
     /**
@@ -222,7 +219,10 @@ public class DriverHud extends BaseAppState {
          * pre-load unshaded materials for buttons
          */
         AssetManager manager = app.getAssetManager();
-        Texture texture = manager.loadTexture("Textures/horn-silent.png");
+        Texture texture = manager.loadTexture("Textures/exit.png");
+        exitMaterial = MyAsset.createUnshadedMaterial(manager, texture);
+
+        texture = manager.loadTexture("Textures/horn-silent.png");
         hornSilentMaterial = MyAsset.createUnshadedMaterial(manager, texture);
 
         texture = manager.loadTexture("Textures/horn-sound.png");
@@ -265,10 +265,10 @@ public class DriverHud extends BaseAppState {
     protected void onDisable() {
         atmiState.setEnabled(false);
         compassState.setEnabled(false);
+        hideExitButton();
         hideHornButton();
         hidePauseButton();
         hidePowerButton();
-        hideReturnButton();
         hideSpeedometer();
         hideSteering();
         hideTachometer();
@@ -287,9 +287,9 @@ public class DriverHud extends BaseAppState {
 
         atmiState.setEnabled(true);
         compassState.setEnabled(true);
+        showExitButton();
         showHornButton(false);
         showPowerButton(false);
-        showReturnButton();
         showSpeedo(Vehicle.SpeedUnit.MPH);
         showSteeringWheel();
         showTacho();
@@ -319,6 +319,16 @@ public class DriverHud extends BaseAppState {
         SimpleApplication simpleApp = (SimpleApplication) getApplication();
         Node guiNode = simpleApp.getGuiNode();
         guiNode.attachChild(spatial);
+    }
+
+    /**
+     * Hide the exit button.
+     */
+    private void hideExitButton() {
+        if (exitButton != null) {
+            exitButton.removeFromParent();
+            exitButton = null;
+        }
     }
 
     /**
@@ -352,16 +362,6 @@ public class DriverHud extends BaseAppState {
     }
 
     /**
-     * Hide the "Return to Main Menu" button.
-     */
-    private void hideReturnButton() {
-        if (returnButton != null) {
-            returnButton.removeFromParent();
-            returnButton = null;
-        }
-    }
-
-    /**
      * Hide the steering-wheel indicator.
      */
     private void hideSteering() {
@@ -386,6 +386,42 @@ public class DriverHud extends BaseAppState {
             getStateManager().detach(tachometer);
             tachometer = null;
         }
+    }
+
+    /**
+     * Display the exit button.
+     */
+    private void showExitButton() {
+        hideExitButton();
+
+        float radius = 0.035f * viewPortHeight;
+        int numVertices = 25;
+        Mesh mesh = new DiscMesh(radius, numVertices);
+        exitButton = new Geometry("exit button", mesh);
+        attachToGui(exitButton);
+
+        exitButton.setMaterial(exitMaterial);
+        /*
+         * Position the button in the viewport.
+         */
+        float x = 0.975f * viewPortWidth;
+        float y = 0.955f * viewPortHeight;
+        exitButton.setLocalTranslation(x, y, guiZ);
+        /*
+         * Add a MouseListener to return to the main menu.
+         */
+        MouseListener listener = new DefaultMouseListener() {
+            @Override
+            public void mouseButtonEvent(MouseButtonEvent event, Spatial s1,
+                    Spatial s2) {
+                if (event.isPressed()) {
+                    ReturnToMenuClickCommand.returnToMenu(car);
+                }
+                event.setConsumed();
+            }
+        };
+        MouseEventControl control = new MouseEventControl(listener);
+        exitButton.addControl(control);
     }
 
     /**
@@ -472,28 +508,6 @@ public class DriverHud extends BaseAppState {
         };
         MouseEventControl control = new MouseEventControl(listener);
         powerButton.addControl(control);
-    }
-
-    /**
-     * Display the "Return to Main Menu" button.
-     */
-    private void showReturnButton() {
-        hideReturnButton();
-
-        returnButton = new Button("Return to Main Menu");
-        attachToGui(returnButton);
-
-        returnButton.setFontSize(16f);
-        GuiComponent background = returnButton.getBackground();
-        ((TbtQuadBackgroundComponent) background).setMargin(10f, 5f);
-        Command<Button> returnCmd = new ReturnToMenuClickCommand(car);
-        returnButton.addClickCommands(returnCmd);
-        /*
-         * Position the button in the viewport.
-         */
-        float x = viewPortWidth - returnButton.getPreferredSize().x - 40f;
-        float y = viewPortHeight - 20f;
-        returnButton.setLocalTranslation(x, y, guiZ);
     }
 
     /**

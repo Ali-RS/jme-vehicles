@@ -182,6 +182,8 @@ Resources/assets/media:
   have a Creative Commons CC0 License.
 + The [quarry_03 texture](https://github.com/stephengold/jme-vehicles/blob/master/src/main/resources/Textures/Sky/quarry_03_4k.jpg)
   has a CC0 1.0 Universal license.
++ The [exit texture](https://github.com/stephengold/jme-vehicles/blob/master/src/main/resources/Textures/exit.png)
+  has a CC0 1.0 Universal license.
 + The following 12 textures were generated procedurally by
   [the Georg Project](https://github.com/stephengold/Georg), which has a BSD 3-Clause license:
   + compass.png
