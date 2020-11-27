@@ -6,6 +6,8 @@ import com.jayfella.jme.vehicle.gui.LoadingState;
 import com.jayfella.jme.vehicle.gui.MainMenuState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
+import com.jme3.app.state.AppState;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.ScreenshotAppState;
 import com.jme3.audio.AudioListenerState;
 import com.jme3.bullet.BulletAppState;
@@ -43,9 +45,46 @@ public class Main extends SimpleApplication {
      * message logger for this class
      */
     final private static Logger logger = Logger.getLogger(Main.class.getName());
+    // *************************************************************************
+    // fields
+
+    /**
+     * application instance
+     */
+    private static Main application;
+    // *************************************************************************
+    // constructors
 
     private Main() {
         super(new StatsAppState(), new AudioListenerState(), new LoadingState());
+    }
+    // *************************************************************************
+    // new methods exposed
+
+    /**
+     * Find the first attached AppState that's an instance of the specified
+     * class.
+     *
+     * @param <T>
+     * @param subclass the kind of AppState to search for (not null)
+     * @return the pre-existing instance (not null)
+     */
+    public static <T extends AppState> T findAppState(Class<T> subclass) {
+        AppStateManager manager = application.getStateManager();
+        T appState = manager.getState(subclass);
+
+        assert appState != null;
+        return appState;
+    }
+
+    /**
+     * Access the application instance from a static context.
+     *
+     * @return the pre-existing instance (not null)
+     */
+    public static Main getApplication() {
+        assert application != null;
+        return application;
     }
 
     /**
@@ -79,13 +118,15 @@ public class Main extends SimpleApplication {
         appSettings.setUseJoysticks(true);
         appSettings.setVSync(true);
 
-        Main main = new Main();
-        main.setDisplayStatView(false);
-        main.setDisplayFps(false);
-        main.setSettings(appSettings);
-        main.setShowSettings(forceDialog);
-        main.start();
+        application = new Main();
+        application.setDisplayStatView(false);
+        application.setDisplayFps(false);
+        application.setSettings(appSettings);
+        application.setShowSettings(forceDialog);
+        application.start();
     }
+    // *************************************************************************
+    // SimpleApplication methods
 
     @Override
     public void simpleInitApp() {
@@ -165,7 +206,7 @@ public class Main extends SimpleApplication {
                         RigidBodyControl rigidBodyControl = node.getControl(RigidBodyControl.class);
                         bulletAppState.getPhysicsSpace().add(rigidBodyControl);
 
-                        getStateManager().getState(LoadingState.class).setEnabled(false);
+                        findAppState(LoadingState.class).setEnabled(false);
                         getStateManager().attach(new MainMenuState());
                     });
                 });
@@ -179,6 +220,8 @@ public class Main extends SimpleApplication {
         // this consumes joystick input. I'll have to investigate why.
         stateManager.getState(FocusNavigationState.class).setEnabled(false);
     }
+    // *************************************************************************
+    // private methods
 
     private void addPostProcessing(DirectionalLight directionalLight) {
         FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
