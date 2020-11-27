@@ -337,7 +337,8 @@ public class XBoxJoystickVehicleInputState extends BaseAppState implements State
         switch (camView) {
 
             case DashCam: {
-                activeCam = new DashCamera(vehicle, getApplication().getCamera());
+                activeCam = new DashCamera(vehicle,
+                        getApplication().getCamera(), signalTracker);
                 break;
             }
             case ChaseCam: {

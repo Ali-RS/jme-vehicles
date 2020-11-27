@@ -17,7 +17,6 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.input.InputMapper;
-import java.util.EnumMap;
 import java.util.List;
 import java.util.logging.Logger;
 import jme3utilities.MyCamera;
@@ -32,7 +31,9 @@ import jme3utilities.math.MyVector3f;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-public class ChaseCamera implements AnalogListener, VehicleCamera {
+public class ChaseCamera
+        extends VehicleCamera
+        implements AnalogListener {
     // *************************************************************************
     // constants and loggers
 
@@ -42,21 +43,9 @@ public class ChaseCamera implements AnalogListener, VehicleCamera {
      */
     final private static double maxAbsDot = Math.cos(0.3);
     /**
-     * frustum's Y tangent ratio at lowest magnification (&gt;minYTangent)
-     */
-    final private static float maxYTangent = 2f;
-    /**
-     * frustum's Y tangent ratio at highest magnification (&gt;0)
-     */
-    final private static float minYTangent = 0.01f;
-    /**
      * orbiting rate (in radians per second, &ge;0, default=0.5)
      */
     final private static float orbitRate = 0.5f;
-    /**
-     * analog zoom input multiplier (in log units per click)
-     */
-    final private static float zoomMultiplier = 0.3f;
     /**
      * message logger for this class
      */
@@ -67,8 +56,6 @@ public class ChaseCamera implements AnalogListener, VehicleCamera {
      */
     final private static String analogOrbitDown = "orbit down";
     final private static String analogOrbitUp = "orbit up";
-    final private static String analogZoomIn = "zoom in";
-    final private static String analogZoomOut = "zoom out";
     /**
      * camera's preferred "up" direction (unit vector in world coordinates)
      */
@@ -78,19 +65,10 @@ public class ChaseCamera implements AnalogListener, VehicleCamera {
     // fields
 
     /**
-     * Camera being controlled (not null)
-     */
-    final private Camera camera;
-    /**
      * test whether a collision object can obstruct the line of sight, or null
      * to treat all non-target PCOs as obstructions
      */
     final private BulletDebugAppState.DebugAppStateFilter obstructionFilter;
-    /**
-     * map functions to signal names
-     */
-    final private EnumMap<CcFunctions, String> signalNames
-            = new EnumMap<>(CcFunctions.class);
     /**
      * accumulated analog pitch input since the last update (in 1024-pixel
      * units, measured downward from the look direction)
@@ -105,17 +83,9 @@ public class ChaseCamera implements AnalogListener, VehicleCamera {
      */
     private float zoomAnalogSum = 0f;
     /**
-     * JME's input manager
-     */
-    final private InputManager inputManager;
-    /**
      * reusable Quaternion
      */
     final private static Quaternion tmpRotation = new Quaternion();
-    /**
-     * status of named signals
-     */
-    final private SignalTracker signalTracker;
     /**
      * camera's offset relative to the target vehicle (in world coordinates)
      */
@@ -130,10 +100,6 @@ public class ChaseCamera implements AnalogListener, VehicleCamera {
     final private static Vector3f tmpRej = new Vector3f();
     final private static Vector3f tmpTargetLocation = new Vector3f();
     final private static Vector3f tmpUp = new Vector3f();
-    /**
-     * Vehicle being chased
-     */
-    final private Vehicle targetVehicle;
     // *************************************************************************
     // constructors
 
@@ -150,13 +116,7 @@ public class ChaseCamera implements AnalogListener, VehicleCamera {
      */
     public ChaseCamera(Vehicle vehicle, Camera camera, SignalTracker tracker,
             BulletDebugAppState.DebugAppStateFilter obstructionFilter) {
-        Validate.nonNull(vehicle, "vehicle");
-        Validate.nonNull(camera, "camera");
-
-        this.targetVehicle = vehicle;
-        this.camera = camera;
-        this.inputManager = Main.getApplication().getInputManager();
-        this.signalTracker = tracker;
+        super(vehicle, camera, tracker);
         this.obstructionFilter = obstructionFilter;
     }
     // *************************************************************************
@@ -165,22 +125,12 @@ public class ChaseCamera implements AnalogListener, VehicleCamera {
     /**
      * Alter the offset.
      *
-     * @param desiredOffset the offset from the target vehicle (in world coordintes)
+     * @param desiredOffset the offset from the target vehicle (in world
+     * coordintes)
      */
     public void setOffset(Vector3f desiredOffset) {
         Validate.finite(desiredOffset, "offset");
         offset.set(desiredOffset);
-    }
-
-    /**
-     * Alter which signal is assigned to the specified function.
-     *
-     * @param function which function to alter (not null)
-     * @param signalName the desired signal name (may be null)
-     */
-    public void setSignalName(CcFunctions function, String signalName) {
-        Validate.nonNull(function, "function");
-        signalNames.put(function, signalName);
     }
     // *************************************************************************
     // AnalogListener methods
@@ -255,6 +205,7 @@ public class ChaseCamera implements AnalogListener, VehicleCamera {
          * Hide the cursor if dragging.
          */
         boolean cursorVisible = !isActive(CcFunctions.DragToOrbit);
+        InputManager inputManager = Main.getApplication().getInputManager();
         inputManager.setCursorVisible(cursorVisible);
         /*
          * Sum the discrete inputs (signals).
@@ -353,7 +304,7 @@ public class ChaseCamera implements AnalogListener, VehicleCamera {
         /*
          * Rotate the "look" direction to stay behind the Vehicle.
          */
-        targetVehicle.forwardDirection(tmpRej);
+        vehicle.forwardDirection(tmpRej);
         assert preferredUpDirection.equals(Vector3f.UNIT_Y) : preferredUpDirection;
         float thetaForward = FastMath.atan2(tmpRej.x, tmpRej.z);
         float thetaLook = FastMath.atan2(tmpLook.x, tmpLook.z);
@@ -385,13 +336,13 @@ public class ChaseCamera implements AnalogListener, VehicleCamera {
             range = maxRange;
         }
 
-        targetVehicle.targetLocation(tmpTargetLocation);
+        vehicle.targetLocation(tmpTargetLocation);
         if (!xrayVision) {
             /*
              * Test the sightline for obstructions, from target to camera.
              */
             PhysicsCollisionObject targetPco
-                    = targetVehicle.getVehicleControl();
+                    = vehicle.getVehicleControl();
             CollisionSpace collisionSpace = targetPco.getCollisionSpace();
             float rayRange = Math.max(range, preferredRange);
             tmpLook.mult(-rayRange, offset);
@@ -447,6 +398,7 @@ public class ChaseCamera implements AnalogListener, VehicleCamera {
         /*
          * Configure the analog inputs.
          */
+        InputManager inputManager = Main.getApplication().getInputManager();
         inputManager.deleteMapping(analogOrbitDown);
         inputManager.deleteMapping(analogOrbitUp);
         inputManager.deleteMapping(analogZoomIn);
@@ -465,7 +417,7 @@ public class ChaseCamera implements AnalogListener, VehicleCamera {
          * Initialize the camera offset and preferred range.
          */
         tmpCameraLocation.set(camera.getLocation());
-        targetVehicle.targetLocation(tmpTargetLocation);
+        vehicle.targetLocation(tmpTargetLocation);
         tmpCameraLocation.subtract(tmpTargetLocation, offset);
         preferredRange = offset.length();
 
@@ -483,6 +435,7 @@ public class ChaseCamera implements AnalogListener, VehicleCamera {
         /*
          * Configure the analog inputs.
          */
+        InputManager inputManager = Main.getApplication().getInputManager();
         inputManager.addMapping(analogOrbitDown,
                 new MouseAxisTrigger(MouseInput.AXIS_Y, true));
         inputManager.addMapping(analogOrbitUp,
@@ -494,32 +447,5 @@ public class ChaseCamera implements AnalogListener, VehicleCamera {
 
         inputManager.addListener(this, analogOrbitDown, analogOrbitUp,
                 analogZoomIn, analogZoomOut);
-    }
-
-    /**
-     * Test whether the specified camera function (signal) is active.
-     */
-    private boolean isActive(CcFunctions function) {
-        String signalName = signalNames.get(function);
-        if (signalName != null && signalTracker.test(signalName)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Magnify the view by the specified factor.
-     *
-     * @param factor the factor to increase magnification (&gt;0)
-     */
-    private void magnify(float factor) {
-        assert factor > 0f : factor;
-
-        float frustumYTangent = MyCamera.yTangent(camera);
-        frustumYTangent /= factor;
-        frustumYTangent
-                = FastMath.clamp(frustumYTangent, minYTangent, maxYTangent);
-        MyCamera.setYTangent(camera, frustumYTangent);
     }
 }

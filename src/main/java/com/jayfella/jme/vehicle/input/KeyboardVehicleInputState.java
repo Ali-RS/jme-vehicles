@@ -54,6 +54,12 @@ public class KeyboardVehicleInputState
     /**
      * Vehicle function IDs
      */
+    private static final FunctionId F_CAMERA_RESET_FOV
+            = new FunctionId(G_VEHICLE, "Camera Reset FOV");
+    private static final FunctionId F_CAMERA_ZOOM_IN1
+            = new FunctionId(G_VEHICLE, CcFunctions.ZoomIn.toString());
+    private static final FunctionId F_CAMERA_ZOOM_OUT1
+            = new FunctionId(G_VEHICLE, CcFunctions.ZoomOut.toString());
     private static final FunctionId F_CAMVIEW
             = new FunctionId(G_VEHICLE, "Camera View");
     private static final FunctionId F_DUMP_CAMERA
@@ -99,16 +105,10 @@ public class KeyboardVehicleInputState
             = new FunctionId(G_CAMERA, CcFunctions.Forward.toString());
     private static final FunctionId F_CAMERA_RESET_OFFSET
             = new FunctionId(G_CAMERA, "Camera Reset Offset");
-    private static final FunctionId F_CAMERA_RESET_FOV
-            = new FunctionId(G_CAMERA, "Camera Reset FOV");
     private static final FunctionId F_CAMERA_UP1
             = new FunctionId(G_CAMERA, CcFunctions.OrbitUp.toString());
     private static final FunctionId F_CAMERA_XRAY1
             = new FunctionId(G_CAMERA, CcFunctions.Xray.toString());
-    private static final FunctionId F_CAMERA_ZOOM_IN1
-            = new FunctionId(G_CAMERA, CcFunctions.ZoomIn.toString());
-    private static final FunctionId F_CAMERA_ZOOM_OUT1
-            = new FunctionId(G_CAMERA, CcFunctions.ZoomOut.toString());
     // *************************************************************************
     // fields
 
@@ -452,7 +452,13 @@ public class KeyboardVehicleInputState
                 break;
 
             case DashCam:
-                activeCam = new DashCamera(vehicle, cam);
+                DashCamera dashCam
+                        = new DashCamera(vehicle, cam, signalTracker);
+                activeCam = dashCam;
+                dashCam.setSignalName(CcFunctions.ZoomIn,
+                        CcFunctions.ZoomIn.toString());
+                dashCam.setSignalName(CcFunctions.ZoomOut,
+                        CcFunctions.ZoomOut.toString());
                 break;
 
             default:

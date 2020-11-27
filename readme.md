@@ -85,19 +85,19 @@ When a vehicle is loaded:
 + H : sound the horn
 + R : reset the vehicle to a parked state
 + Pause or . : toggle the simulation paused/running
++ Numpad9 or wheel up : zoom in (narrow the field of view)
++ Numpad3 or wheel down : zoom out (widen the field of view)
++ Numpad6 : reset the field of view (to 90 degrees vertical angle)
 + F12 : capture a screenshot to the current working directory
 + Esc : return to the Main Menu
 
-When the chase-camera viewpoint is active:
+Additional controls when the chase camera is active:
 
  + Numpad7 : dolly forward (toward the vehicle)
  + Numpad1 : dolly back (away from the vehicle)
  + Numpad8 or drag upward with MMB : orbit upward (to look down on the vehicle)
  + Numpad2 or drag downward with MMB : orbit downward (to look up at the vehicle)
  + Numpad5 : reset the viewpoint location relative to the vehicle
- + Numpad9 or wheel up : zoom in (narrow the field of view)
- + Numpad3 or wheel down : zoom out (widen the field of view)
- + Numpad6 : reset the field of view (to 90 degrees vertically)
 
 [Jump to table of contents](#toc)
 
