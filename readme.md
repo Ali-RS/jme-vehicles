@@ -184,17 +184,19 @@ Resources/assets/media:
   has a CC0 1.0 Universal license.
 + The [exit texture](https://github.com/stephengold/jme-vehicles/blob/master/src/main/resources/Textures/exit.png)
   has a CC0 1.0 Universal license.
-+ The following 13 textures were generated procedurally by
++ The following 15 textures were generated procedurally by
   [the Georg Project](https://github.com/stephengold/Georg), which has a BSD 3-Clause license:
   + compass.png
   + horn-silent.png
   + horn-sound.png
   + loading.png
+  + mute.png
   + pause.png
   + power-off.png
   + power-on.png
   + run.png
   + single-step.png
+  + sound.png
   + speedo_bg_2.png
   + speedo_needle_2.png
   + steering.png
