@@ -37,10 +37,14 @@ public class TachometerState extends BaseAppState {
     final private static float theta0 = FastMath.PI - thetaMin; // 0 rpms
     final private static float thetaRedline = 0f;
     /**
-     * color for Lemur labels
+     * color for Lemur debug labels
      */
     final public static ColorRGBA labelColor
             = new ColorRGBA(66 / 255f, 244 / 255f, 241 / 255f, 1f);
+    /**
+     * color for dial markings
+     */
+    final private static ColorRGBA markingColor = ColorRGBA.White.clone();
     // *************************************************************************
     // fields
 
@@ -125,8 +129,9 @@ public class TachometerState extends BaseAppState {
 
         revsLabel = new Label("RPM");
         node.attachChild(revsLabel);
-        revsLabel.setColor(labelColor);
-        revsLabel.setLocalTranslation(70f, 30f, 1f);
+        revsLabel.setColor(markingColor);
+        float labelWidth = revsLabel.getPreferredSize().x;
+        revsLabel.setLocalTranslation(100f - labelWidth / 2, 30f, 1f);
 
         node.setLocalTranslation(
                 app.getCamera().getWidth() - 400f - 40f,
@@ -176,10 +181,10 @@ public class TachometerState extends BaseAppState {
         /*
          * update the Lemur label, which is mainly for testing
          */
-        float redlineRpm = engine.getMaxRevs();
-        float rpm = rpmFraction * redlineRpm;
-        String labelText = String.format("%.0f rpm", rpm);
-        revsLabel.setText(labelText);
+        //float redlineRpm = engine.getMaxRevs();
+        //float rpm = rpmFraction * redlineRpm;
+        //String labelText = String.format("%.0f rpm", rpm);
+        //revsLabel.setText(labelText);
     }
     // *************************************************************************
     // private methods
@@ -187,7 +192,6 @@ public class TachometerState extends BaseAppState {
     private Node buildNumNode(float redlineRpm, int stepRpm, float radius) {
         Node numNode = new Node("Tachometer Numbers");
 
-        ColorRGBA markingColor = ColorRGBA.White.clone();
         AssetManager assetManager = getApplication().getAssetManager();
         Material markingMaterial
                 = MyAsset.createUnshadedMaterial(assetManager, markingColor);

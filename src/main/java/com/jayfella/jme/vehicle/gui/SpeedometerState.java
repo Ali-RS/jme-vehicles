@@ -34,6 +34,10 @@ public class SpeedometerState extends BaseAppState {
      */
     final private static float thetaMin = -1f; // "pegged" to the right
     final private static float theta0 = FastMath.PI - thetaMin; // speed=0
+    /**
+     * color for dial markings
+     */
+    final private static ColorRGBA markingColor = ColorRGBA.White.clone();
     // *************************************************************************
     // fields
 
@@ -123,8 +127,9 @@ public class SpeedometerState extends BaseAppState {
 
         speedLabel = new Label(speedUnit.toString());
         node.attachChild(speedLabel);
-        speedLabel.setColor(TachometerState.labelColor);
-        speedLabel.setLocalTranslation(70f, 30f, 1f);
+        speedLabel.setColor(markingColor);
+        float labelWidth = speedLabel.getPreferredSize().x;
+        speedLabel.setLocalTranslation(100f - labelWidth / 2, 30f, 1f);
 
         node.setLocalTranslation(
                 app.getCamera().getWidth() - 200f - 20f,
@@ -139,7 +144,7 @@ public class SpeedometerState extends BaseAppState {
                 speedLabel.getPreferredSize().y + 45f,
                 1f
         );
-        node.attachChild(gearLabel);
+        //node.attachChild(gearLabel);
     }
 
     /**
@@ -185,12 +190,12 @@ public class SpeedometerState extends BaseAppState {
         /*
          * update the Lemur labels, which are mainly for testing
          */
-        String unit = speedUnit.toString().toLowerCase();
-        String labelText = String.format("%.0f %s", FastMath.abs(speed), unit);
-        speedLabel.setText(labelText);
-        int gearNum = vehicle.getGearBox().getActiveGearNum();
-        labelText = Integer.toString(gearNum + 1);
-        gearLabel.setText(labelText);
+        //String unit = speedUnit.toString().toLowerCase();
+        //String labelText = String.format("%.0f %s", FastMath.abs(speed), unit);
+        //speedLabel.setText(labelText);
+        //int gearNum = vehicle.getGearBox().getActiveGearNum();
+        //labelText = Integer.toString(gearNum + 1);
+        //gearLabel.setText(labelText);
     }
     // *************************************************************************
     // private methods
