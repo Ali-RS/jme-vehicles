@@ -25,7 +25,7 @@ import jme3utilities.mesh.RoundedRectangle;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-public class CameraNameState extends BaseAppState {
+class CameraNameState extends BaseAppState {
     // *************************************************************************
     // constants and loggers
 
@@ -59,7 +59,7 @@ public class CameraNameState extends BaseAppState {
     /**
      * Instantiate a disabled AppState.
      */
-    public CameraNameState() {
+    CameraNameState() {
         super("Camera Name");
         setEnabled(false);
     }

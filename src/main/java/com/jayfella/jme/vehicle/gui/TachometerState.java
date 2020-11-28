@@ -26,7 +26,7 @@ import jme3utilities.math.MyMath;
 /**
  * Appstate to manage an analog tachometer in the DriverHud.
  */
-public class TachometerState extends BaseAppState {
+class TachometerState extends BaseAppState {
     // *************************************************************************
     // constants and loggers
 
@@ -69,7 +69,7 @@ public class TachometerState extends BaseAppState {
      *
      * @param vehicle the corresponding Vehicle (not null)
      */
-    public TachometerState(Vehicle vehicle) {
+    TachometerState(Vehicle vehicle) {
         this.vehicle = vehicle;
 
         node = new Node("Tachometer for " + vehicle.getName());

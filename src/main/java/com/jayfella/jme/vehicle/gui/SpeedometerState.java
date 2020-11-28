@@ -25,7 +25,7 @@ import jme3utilities.math.MyMath;
 /**
  * Appstate to manage an analog speedometer in the DriverHud.
  */
-public class SpeedometerState extends BaseAppState {
+class SpeedometerState extends BaseAppState {
     // *************************************************************************
     // constants and loggers
 
@@ -66,7 +66,7 @@ public class SpeedometerState extends BaseAppState {
      * @param vehicle the corresponding Vehicle (not null)
      * @param speedUnit the units to display (not null)
      */
-    public SpeedometerState(Vehicle vehicle, Vehicle.SpeedUnit speedUnit) {
+    SpeedometerState(Vehicle vehicle, Vehicle.SpeedUnit speedUnit) {
         this.vehicle = vehicle;
         this.speedUnit = speedUnit;
 
