@@ -9,7 +9,10 @@ import com.jme3.app.StatsAppState;
 import com.jme3.app.state.AppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.ScreenshotAppState;
+import com.jme3.asset.AssetManager;
+import com.jme3.asset.TextureKey;
 import com.jme3.audio.AudioListenerState;
+import com.jme3.bounding.BoundingSphere;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
@@ -23,12 +26,12 @@ import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.ssao.SSAOFilter;
 import com.jme3.renderer.queue.RenderQueue;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.shadow.DirectionalLightShadowFilter;
 import com.jme3.system.AppSettings;
 import com.jme3.texture.Texture;
-import com.jme3.util.SkyFactory;
 import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.focus.FocusNavigationState;
 import com.simsilica.lemur.style.BaseStyles;
@@ -36,8 +39,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jme3utilities.MyCamera;
+import jme3utilities.MyMesh;
 import jme3utilities.MyString;
 import jme3utilities.SignalTracker;
+import jme3utilities.mesh.Octasphere;
 
 public class Main extends SimpleApplication {
 
@@ -183,7 +188,8 @@ public class Main extends SimpleApplication {
         // load the sky asyncronously
         CompletableFuture
                 .supplyAsync(() -> {
-                    Spatial sky = SkyFactory.createSky(assetManager, "Textures/Sky/quarry_03_4k.jpg", SkyFactory.EnvMapType.EquirectMap);
+                    Spatial sky = createSky(assetManager,
+                            "Textures/Sky/quarry_03_4k.jpg");
                     sky.setQueueBucket(RenderQueue.Bucket.Sky);
                     sky.setShadowMode(RenderQueue.ShadowMode.Off);
                     return sky;
@@ -252,6 +258,42 @@ public class Main extends SimpleApplication {
         // bloomFilter.setBloomIntensity(1.2f);
         // fpp.addFilter(bloomFilter);
         viewPort.addProcessor(fpp);
+    }
+
+    /**
+     * Generate a sky Geometry from an Equirectangular texture asset.
+     *
+     * @param assetManager (not null)
+     * @param assetPath the asset path to the texture (not null, not empty)
+     * @return a new Geometry
+     */
+    private Spatial createSky(AssetManager assetManager, String assetPath) {
+        boolean flipY = true;
+        TextureKey textureKey = new TextureKey(assetPath, flipY);
+        Texture texture = assetManager.loadTexture(textureKey);
+        texture.setAnisotropicFilter(1);
+
+        Material skyMat = new Material(assetManager, "MatDefs/SkyEquirec.j3md");
+        skyMat.setTexture("Texture", texture);
+        skyMat.setVector3("NormalScale", new Vector3f(1f, 1f, 1f));
+
+        int numRefineSteps = 1;
+        float meshRadius = 10f;
+        Octasphere sphereMesh = new Octasphere(numRefineSteps, meshRadius);
+        MyMesh.reverseNormals(sphereMesh);
+        MyMesh.reverseWinding(sphereMesh);
+
+        Geometry result = new Geometry("Sky", sphereMesh);
+        result.setCullHint(Spatial.CullHint.Never);
+        result.setMaterial(skyMat);
+        result.setQueueBucket(RenderQueue.Bucket.Sky);
+        result.setShadowMode(RenderQueue.ShadowMode.Off);
+
+        float boundRadius = Float.POSITIVE_INFINITY;
+        BoundingSphere bound = new BoundingSphere(boundRadius, Vector3f.ZERO);
+        result.setModelBound(bound);
+
+        return result;
     }
 
     private Spatial loadPlayground() {
