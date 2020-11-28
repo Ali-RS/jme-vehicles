@@ -14,10 +14,12 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.shape.Line;
 import com.jme3.scene.shape.Quad;
 import com.jme3.texture.Image;
 import com.jme3.texture.Texture;
 import com.simsilica.lemur.Label;
+import jme3utilities.MyAsset;
 import jme3utilities.math.MyMath;
 
 /**
@@ -196,6 +198,14 @@ public class SpeedometerState extends BaseAppState {
     private Node buildNumNode(float maxSpeed, int stepSpeed, float radius) {
         Node numNode = new Node("Speedometer Numbers");
 
+        ColorRGBA markingColor = ColorRGBA.White.clone();
+        AssetManager assetManager = getApplication().getAssetManager();
+        Material markingMaterial
+                = MyAsset.createUnshadedMaterial(assetManager, markingColor);
+
+        Vector3f innerOffset = new Vector3f();
+        Vector3f outerOffset = new Vector3f();
+
         for (int intSpeed = 0;; intSpeed += stepSpeed) {
             float fraction = intSpeed / maxSpeed;
             float theta = MyMath.lerp(fraction, theta0, thetaMin);
@@ -205,12 +215,28 @@ public class SpeedometerState extends BaseAppState {
             String text = Integer.toString(intSpeed);
             Label label = new Label(text);
             numNode.attachChild(label);
-            label.setColor(ColorRGBA.White);
+            label.setColor(markingColor);
 
+            float cos = FastMath.cos(theta);
+            float sin = FastMath.sin(theta);
             Vector3f size = label.getPreferredSize();
-            float x = radius * FastMath.cos(theta) - size.x / 2f;
-            float y = radius * FastMath.sin(theta) + size.y / 2f;
+            float x = radius * cos - size.x / 2;
+            float y = radius * sin + size.y / 2;
             label.setLocalTranslation(x, y, 0f);
+            /*
+             * Generate a Mesh for the corresponding radial marking.
+             */
+            float innerRadius = 60f;
+            innerOffset.x = innerRadius * cos;
+            innerOffset.y = innerRadius * sin;
+            float outerRadius = 68f;
+            outerOffset.x = outerRadius * cos;
+            outerOffset.y = outerRadius * sin;
+            Line radialMesh = new Line(innerOffset, outerOffset);
+
+            Geometry radial = new Geometry("Speedometer Radial", radialMesh);
+            numNode.attachChild(radial);
+            radial.setMaterial(markingMaterial);
         }
 
         return numNode;
