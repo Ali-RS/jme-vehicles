@@ -227,7 +227,8 @@ public class TachometerState extends BaseAppState {
         material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
 
         int maxRevs = (int) vehicle.getEngine().getMaxRevs();
-        Node numNode = buildNumNode(maxRevs, 1000, width / 2f - 20f);
+        float numbersRadius = 0.38f * width;
+        Node numNode = buildNumNode(maxRevs, 1000, numbersRadius);
         numNode.attachChild(backgroundGeom);
         numNode.setLocalTranslation(width / 2f, height / 2f, -1f);
 
