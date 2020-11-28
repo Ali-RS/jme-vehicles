@@ -10,7 +10,6 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
-import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
 import com.jme3.math.Quaternion;
@@ -20,9 +19,7 @@ import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.texture.Texture;
-import com.simsilica.lemur.event.DefaultMouseListener;
 import com.simsilica.lemur.event.MouseEventControl;
-import com.simsilica.lemur.event.MouseListener;
 import java.util.logging.Logger;
 import jme3utilities.MyAsset;
 import jme3utilities.SignalTracker;
@@ -121,13 +118,9 @@ public class DriverHud extends BaseAppState {
      * show it in the "silent" state
      */
     public void showHornButton(boolean sounding) {
-        hideHornButton();
-
-        float radius = 0.05f * viewPortHeight;
-        int numVertices = 25;
-        Mesh mesh = new DiscMesh(radius, numVertices);
-        hornButton = new Geometry("horn button", mesh);
-        attachToGui(hornButton);
+        if (hornButton.getParent() == null) {
+            attachToGui(hornButton);
+        }
 
         if (sounding) {
             hornButton.setMaterial(hornSoundMaterial);
@@ -140,23 +133,6 @@ public class DriverHud extends BaseAppState {
         float x = 0.5f * viewPortWidth;
         float y = 0.18f * viewPortHeight;
         hornButton.setLocalTranslation(x, y, guiZ);
-        /*
-         * Add a MouseListener to toggle the horn sounding/silent.
-         */
-        MouseListener listener = new DefaultMouseListener() {
-            @Override
-            public void mouseButtonEvent(MouseButtonEvent event, Spatial s1,
-                    Spatial s2) {
-                KeyboardVehicleInputState kvis
-                        = Main.findAppState(KeyboardVehicleInputState.class);
-                SignalTracker signalTracker = kvis.getSignalTracker();
-                boolean pressed = event.isPressed();
-                signalTracker.setActive("horn", 999, pressed);
-                event.setConsumed();
-            }
-        };
-        MouseEventControl control = new MouseEventControl(listener);
-        hornButton.addControl(control);
     }
 
     /**
@@ -244,10 +220,31 @@ public class DriverHud extends BaseAppState {
         stateManager.attach(atmiState);
         stateManager.attach(compassState);
         /*
+         * Construct a Geometry for the horn button.
+         */
+        float radius = 0.05f * viewPortHeight;
+        int numVertices = 25;
+        Mesh mesh = new DiscMesh(radius, numVertices);
+        hornButton = new Geometry("horn button", mesh);
+        /*
+         * Add an Expander to toggle the horn sounding/silent.
+         */
+        Expander listener = new Expander(hornButton) {
+            @Override
+            public void onClick(boolean isPressed) {
+                KeyboardVehicleInputState kvis
+                        = Main.findAppState(KeyboardVehicleInputState.class);
+                SignalTracker signalTracker = kvis.getSignalTracker();
+                signalTracker.setActive("horn", 999, isPressed);
+            }
+        };
+        MouseEventControl control = new MouseEventControl(listener);
+        hornButton.addControl(control);
+        /*
          * Construct a Geometry for the steering-wheel indicator.
          */
-        float radius = 120f;
-        Mesh mesh = new RectangleMesh(-radius, +radius, -radius, +radius, +1f);
+        radius = 120f;
+        mesh = new RectangleMesh(-radius, +radius, -radius, +radius, +1f);
         steering = new Geometry("steering wheel", mesh);
 
         texture = manager.loadTexture("Textures/steering.png");
@@ -334,9 +331,8 @@ public class DriverHud extends BaseAppState {
      * Hide the horn button.
      */
     private void hideHornButton() {
-        if (hornButton != null) {
+        if (hornButton.getParent() != null) {
             hornButton.removeFromParent();
-            hornButton = null;
         }
     }
 
@@ -416,16 +412,14 @@ public class DriverHud extends BaseAppState {
         float y = 0.955f * viewPortHeight;
         exitButton.setLocalTranslation(x, y, guiZ);
         /*
-         * Add a MouseListener to return to the main menu.
+         * Add an Expander to return to the main menu.
          */
-        MouseListener listener = new DefaultMouseListener() {
+        Expander listener = new Expander(exitButton) {
             @Override
-            public void mouseButtonEvent(MouseButtonEvent event, Spatial s1,
-                    Spatial s2) {
-                if (event.isPressed()) {
+            public void onClick(boolean isPressed) {
+                if (isPressed) {
                     returnToMainMenu();
                 }
-                event.setConsumed();
             }
         };
         MouseEventControl control = new MouseEventControl(listener);
@@ -459,16 +453,14 @@ public class DriverHud extends BaseAppState {
         float y = 0.95f * viewPortHeight;
         pauseButton.setLocalTranslation(x, y, guiZ);
         /*
-         * Add a MouseListener to toggle the simulation running/paused.
+         * Add an Expander to toggle the simulation running/paused.
          */
-        MouseListener listener = new DefaultMouseListener() {
+        Expander listener = new Expander(pauseButton) {
             @Override
-            public void mouseButtonEvent(MouseButtonEvent event, Spatial s1,
-                    Spatial s2) {
-                if (event.isPressed()) {
+            public void onClick(boolean isPressed) {
+                if (isPressed) {
                     togglePhysicsPaused();
                 }
-                event.setConsumed();
             }
         };
         MouseEventControl control = new MouseEventControl(listener);
@@ -502,16 +494,14 @@ public class DriverHud extends BaseAppState {
         float y = 0.07f * viewPortHeight;
         powerButton.setLocalTranslation(x, y, guiZ);
         /*
-         * Add a MouseListener to toggle the engine on/off.
+         * Add an Expander to toggle the engine on/off.
          */
-        MouseListener listener = new DefaultMouseListener() {
+        Expander listener = new Expander(powerButton) {
             @Override
-            public void mouseButtonEvent(MouseButtonEvent event, Spatial s1,
-                    Spatial s2) {
-                if (event.isPressed()) {
+            public void onClick(boolean isPressed) {
+                if (isPressed) {
                     toggleEngineStarted();
                 }
-                event.setConsumed();
             }
         };
         MouseEventControl control = new MouseEventControl(listener);
