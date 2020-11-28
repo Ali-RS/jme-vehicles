@@ -10,6 +10,7 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
 import com.jme3.math.Quaternion;
@@ -35,6 +36,7 @@ import jme3utilities.mesh.RectangleMesh;
  * <li>the pause button</li>
  * <li>the horn button</li>
  * <li>the power button</li>
+ * <li>the single-step button</li>
  * <li>the steering-wheel indicator</li>
  * </ul>
  * It indirectly manages:
@@ -76,6 +78,7 @@ public class DriverHud extends BaseAppState {
     private Geometry hornButton;
     private Geometry pauseButton;
     private Geometry powerButton;
+    private Geometry singleStepButton;
     private Geometry steering;
     /**
      * pre-loaded materials for buttons
@@ -136,6 +139,19 @@ public class DriverHud extends BaseAppState {
     }
 
     /**
+     * Single-step the physics simulation.
+     */
+    public void singleStepPhysics() {
+        BulletAppState bas = Main.findAppState(BulletAppState.class);
+        float physicsSpeed = bas.getSpeed();
+        assert physicsSpeed == 0f : physicsSpeed;
+
+        PhysicsSpace space = bas.getPhysicsSpace();
+        float timeStep = space.getAccuracy();
+        space.update(timeStep, 0);
+    }
+
+    /**
      * Toggle the engine between the started and stopped states.
      */
     public void toggleEngineStarted() {
@@ -158,9 +174,11 @@ public class DriverHud extends BaseAppState {
         if (physicsSpeed > 0f) { // was running
             bas.setSpeed(0f);
             showPauseButton(true);
+            showSingleStepButton();
         } else {
             bas.setSpeed(1f);
             showPauseButton(false);
+            hideSingleStepButton();
         }
     }
     // *************************************************************************
@@ -241,6 +259,29 @@ public class DriverHud extends BaseAppState {
         MouseEventControl control = new MouseEventControl(listener);
         hornButton.addControl(control);
         /*
+         * Construct a Geometry for the single-step button.
+         */
+        radius = 0.025f * viewPortHeight;
+        numVertices = 25;
+        mesh = new DiscMesh(radius, numVertices);
+        singleStepButton = new Geometry("single-step button", mesh);
+        texture = manager.loadTexture("Textures/single-step.png");
+        Material material = MyAsset.createUnshadedMaterial(manager, texture);
+        singleStepButton.setMaterial(material);
+        /*
+         * Add an Expander to single-step the simulation.
+         */
+        listener = new Expander(singleStepButton) {
+            @Override
+            public void onClick(boolean isPressed) {
+                if (isPressed) {
+                    singleStepPhysics();
+                }
+            }
+        };
+        control = new MouseEventControl(listener);
+        singleStepButton.addControl(control);
+        /*
          * Construct a Geometry for the steering-wheel indicator.
          */
         radius = 120f;
@@ -248,7 +289,7 @@ public class DriverHud extends BaseAppState {
         steering = new Geometry("steering wheel", mesh);
 
         texture = manager.loadTexture("Textures/steering.png");
-        Material material = MyAsset.createUnshadedMaterial(manager, texture);
+        material = MyAsset.createUnshadedMaterial(manager, texture);
         RenderState ars = material.getAdditionalRenderState();
         ars.setBlendMode(RenderState.BlendMode.Alpha);
         steering.setMaterial(material);
@@ -266,6 +307,7 @@ public class DriverHud extends BaseAppState {
         hideHornButton();
         hidePauseButton();
         hidePowerButton();
+        hideSingleStepButton();
         hideSpeedometer();
         hideSteering();
         hideTachometer();
@@ -280,6 +322,9 @@ public class DriverHud extends BaseAppState {
         BulletAppState bas = Main.findAppState(BulletAppState.class);
         boolean isPaused = (bas.getSpeed() == 0f);
         showPauseButton(isPaused);
+        if (isPaused) {
+            showSingleStepButton();
+        }
 
         atmiState.setEnabled(true);
         compassState.setEnabled(true);
@@ -354,6 +399,13 @@ public class DriverHud extends BaseAppState {
             powerButton.removeFromParent();
             powerButton = null;
         }
+    }
+
+    /**
+     * Hide the single-step button.
+     */
+    private void hideSingleStepButton() {
+        singleStepButton.removeFromParent();
     }
 
     /**
@@ -506,6 +558,21 @@ public class DriverHud extends BaseAppState {
         };
         MouseEventControl control = new MouseEventControl(listener);
         powerButton.addControl(control);
+    }
+
+    /**
+     * Display the single-step button.
+     */
+    private void showSingleStepButton() {
+        if (singleStepButton.getParent() == null) {
+            attachToGui(singleStepButton);
+        }
+        /*
+         * Position the button in the viewport.
+         */
+        float x = 0.84f * viewPortWidth;
+        float y = 0.95f * viewPortHeight;
+        singleStepButton.setLocalTranslation(x, y, guiZ);
     }
 
     /**
