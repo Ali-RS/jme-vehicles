@@ -2,14 +2,32 @@ package com.jayfella.jme.vehicle;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
+import com.jme3.audio.AudioNode;
+import com.jme3.audio.AudioSource;
 import com.jme3.math.FastMath;
 
 public class VehicleAudioState extends BaseAppState {
+    // *************************************************************************
+    // fields
+
+    /**
+     * true&arr;sound globally muted, false&rarr;sound enabled
+     */
+    private static boolean isGloballyMuted = false;
 
     private final Vehicle vehicle;
 
     public VehicleAudioState(Vehicle vehicle) {
         this.vehicle = vehicle;
+    }
+
+    /**
+     * Test whether sound is globally muted.
+     *
+     * @return true&rarr;muted, false&rarr;enabled
+     */
+    public static boolean isMuted() {
+        return isGloballyMuted;
     }
 
     public void playEngineSound() {
@@ -18,6 +36,13 @@ public class VehicleAudioState extends BaseAppState {
 
     public void stopEngineSound() {
         vehicle.getEngine().getEngineAudio().stop();
+    }
+
+    /**
+     * Toggle the sound between muted and enabled.
+     */
+    public static void toggleMuted() {
+        isGloballyMuted = !isGloballyMuted;
     }
 
     @Override
@@ -44,6 +69,19 @@ public class VehicleAudioState extends BaseAppState {
 
     @Override
     public void update(float tpf) {
+        boolean isRequested = vehicle.getEngine().isStarted()
+                && !isGloballyMuted;
+
+        AudioNode engineAudio = vehicle.getEngine().getEngineAudio();
+        AudioSource.Status status = engineAudio.getStatus();
+        boolean isSounding = (status == AudioSource.Status.Playing);
+
+        if (isSounding && !isRequested) {
+            stopEngineSound();
+        } else if (isRequested && !isSounding) {
+            playEngineSound();
+        }
+
         float value = vehicle.getEngine().getRevs();
 
         // add a bit of interpolation for when we change gears.

@@ -85,16 +85,18 @@ public abstract class Vehicle {
      * @param isRequested true &rarr; requested, false &rarr; not requested
      */
     public void setHornStatus(boolean isRequested) {
+        DriverHud hud = Main.findAppState(DriverHud.class);
+        hud.showHornButton(isRequested);
+
         AudioSource.Status status = hornAudio.getStatus();
         boolean isSounding = (status == AudioSource.Status.Playing);
-
-        DriverHud hud = Main.findAppState(DriverHud.class);
+        if (VehicleAudioState.isMuted()) {
+            isRequested = false;
+        }
         if (isSounding && !isRequested) {
             hornAudio.stop();
-            hud.showHornButton(false);
         } else if (isRequested && !isSounding) {
             hornAudio.play();
-            hud.showHornButton(true);
         }
     }
 

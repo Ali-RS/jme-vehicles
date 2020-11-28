@@ -3,6 +3,7 @@ package com.jayfella.jme.vehicle.gui;
 import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Vehicle;
+import com.jayfella.jme.vehicle.VehicleAudioState;
 import com.jayfella.jme.vehicle.input.KeyboardVehicleInputState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -33,8 +34,9 @@ import jme3utilities.mesh.RectangleMesh;
  * portions of the graphical user interface, namely:
  * <ul>
  * <li>the exit button</li>
- * <li>the pause button</li>
  * <li>the horn button</li>
+ * <li>the mute button</li>
+ * <li>the pause button</li>
  * <li>the power button</li>
  * <li>the single-step button</li>
  * <li>the steering-wheel indicator</li>
@@ -76,18 +78,21 @@ public class DriverHud extends BaseAppState {
 
     private Geometry exitButton;
     private Geometry hornButton;
+    private Geometry muteButton;
     private Geometry pauseButton;
     private Geometry powerButton;
     private Geometry singleStepButton;
     private Geometry steering;
     /**
-     * pre-loaded materials for buttons
+     * pre-loaded materials for iconic buttons
      */
     private Material exitMaterial;
-    private Material hornSilentMaterial, hornSoundMaterial, pauseMaterial;
+    private Material hornSilentMaterial, hornSoundMaterial;
+    private Material muteMaterial, pauseMaterial;
     private Material powerOffMaterial, powerOnMaterial, runMaterial;
+    private Material soundMaterial;
     /**
-     * appstates for indicators
+     * appstates to manage the dial indicators
      */
     private SpeedometerState speedometer;
     private TachometerState tachometer;
@@ -181,6 +186,16 @@ public class DriverHud extends BaseAppState {
             hideSingleStepButton();
         }
     }
+
+    /**
+     * Toggle the sound between enabled and muted.
+     */
+    public void toggleSoundMuted() {
+        VehicleAudioState.toggleMuted();
+
+        boolean isMuted = VehicleAudioState.isMuted();
+        showMuteButton(isMuted);
+    }
     // *************************************************************************
     // BaseAppState methods
 
@@ -222,6 +237,9 @@ public class DriverHud extends BaseAppState {
         texture = manager.loadTexture("Textures/horn-sound.png");
         hornSoundMaterial = MyAsset.createUnshadedMaterial(manager, texture);
 
+        texture = manager.loadTexture("Textures/mute.png");
+        muteMaterial = MyAsset.createUnshadedMaterial(manager, texture);
+
         texture = manager.loadTexture("Textures/pause.png");
         pauseMaterial = MyAsset.createUnshadedMaterial(manager, texture);
 
@@ -233,6 +251,9 @@ public class DriverHud extends BaseAppState {
 
         texture = manager.loadTexture("Textures/power-on.png");
         powerOnMaterial = MyAsset.createUnshadedMaterial(manager, texture);
+
+        texture = manager.loadTexture("Textures/sound.png");
+        soundMaterial = MyAsset.createUnshadedMaterial(manager, texture);
 
         AppStateManager stateManager = getApplication().getStateManager();
         stateManager.attach(atmiState);
@@ -305,6 +326,7 @@ public class DriverHud extends BaseAppState {
         compassState.setEnabled(false);
         hideExitButton();
         hideHornButton();
+        hideMuteButton();
         hidePauseButton();
         hidePowerButton();
         hideSingleStepButton();
@@ -319,6 +341,9 @@ public class DriverHud extends BaseAppState {
      */
     @Override
     protected void onEnable() {
+        boolean isMuted = VehicleAudioState.isMuted();
+        showMuteButton(isMuted);
+
         BulletAppState bas = Main.findAppState(BulletAppState.class);
         boolean isPaused = (bas.getSpeed() == 0f);
         showPauseButton(isPaused);
@@ -388,6 +413,16 @@ public class DriverHud extends BaseAppState {
         if (pauseButton != null) {
             pauseButton.removeFromParent();
             pauseButton = null;
+        }
+    }
+
+    /**
+     * Hide the mute button.
+     */
+    private void hideMuteButton() {
+        if (muteButton != null) {
+            muteButton.removeFromParent();
+            muteButton = null;
         }
     }
 
@@ -476,6 +511,47 @@ public class DriverHud extends BaseAppState {
         };
         MouseEventControl control = new MouseEventControl(listener);
         exitButton.addControl(control);
+    }
+
+    /**
+     * Display the mute/sound button.
+     *
+     * @param muted true &rarr; show it in the "muted" state, false &rarr; show
+     * it in the "enabled" state
+     */
+    private void showMuteButton(boolean muted) {
+        hideMuteButton();
+
+        float radius = 0.025f * viewPortHeight;
+        int numVertices = 25;
+        Mesh mesh = new DiscMesh(radius, numVertices);
+        muteButton = new Geometry("mute button", mesh);
+        attachToGui(muteButton);
+
+        if (muted) {
+            muteButton.setMaterial(muteMaterial);
+        } else {
+            muteButton.setMaterial(soundMaterial);
+        }
+        /*
+         * Position the button in the viewport.
+         */
+        float x = 0.76f * viewPortWidth;
+        float y = 0.95f * viewPortHeight;
+        muteButton.setLocalTranslation(x, y, guiZ);
+        /*
+         * Add an Expander to toggle the sound on/muted.
+         */
+        Expander listener = new Expander(muteButton) {
+            @Override
+            public void onClick(boolean isPressed) {
+                if (isPressed) {
+                    toggleSoundMuted();
+                }
+            }
+        };
+        MouseEventControl control = new MouseEventControl(listener);
+        muteButton.addControl(control);
     }
 
     /**
