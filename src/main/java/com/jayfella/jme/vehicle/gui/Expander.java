@@ -9,6 +9,8 @@ import java.util.logging.Logger;
 
 /**
  * A MouseListener for a GUI button that expands by 20% when entered.
+ *
+ * @author Stephen Gold sgold@sonic.net
  */
 abstract class Expander implements MouseListener {
     // *************************************************************************
