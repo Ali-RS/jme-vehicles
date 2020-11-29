@@ -64,7 +64,7 @@ public class HatchBack extends Car {
         getWheel(3).setAccelerationForce(0);
 
         //vehicle.setMaxSpeedMph(130);
-        setDashCamLocation(new Vector3f(0f, 1.4f, 0.3f));
+        setDashCamLocation(new Vector3f(0f, 1.6f, 0.3f));
 
         GearBox gearBox = new GearBox(6);
         gearBox.setGear(0, 0, 20);
