@@ -211,11 +211,13 @@ Package names begin with `com.jayfella.jme.vehicle`
 
 The source code is compatible with JDK 8.
 
-World coordinate system:
+The world (and physics-space) coordinate system is:
 
  + the `+X` axis points toward the northern horizon
  + the `+Y` axis points up (toward the zenith)
  + the `+Z` axis points toward the eastern horizon
+
+The world (and physics-space) units of distance are meters.
 
 [Jump to table of contents](#toc)
 
