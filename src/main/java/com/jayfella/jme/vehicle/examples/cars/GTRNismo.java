@@ -65,7 +65,7 @@ public class GTRNismo extends Car {
         getWheel(2).setAccelerationForce(1);
         getWheel(3).setAccelerationForce(1);
 
-        setDashCamLocation(new Vector3f(new Vector3f(0, 1.5f, 0.5f)));
+        setDashCamLocation(new Vector3f(0f, 1.5f, 0.5f));
 
         GearBox gearBox = new GearBox(6);
         gearBox.setGear(0, 0, 30);
