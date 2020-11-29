@@ -19,7 +19,7 @@ public class GTRNismo extends Car {
     private final float scale = 0.01f;
 
     public GTRNismo(Application app) {
-        super(app, "Dune Buggy");
+        super(app, "GTR Nismo");
 
         AssetManager assetManager = app.getAssetManager();
 
