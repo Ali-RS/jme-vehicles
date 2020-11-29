@@ -117,7 +117,6 @@ Additional controls when the chase camera is active:
 
 This project is a work in progress.  Some ideas for future development:
 
-+ Eliminate the initial drop
 + More alternatives for:
   + Environments, such as: racetrack, off-road, urban, and parking garage
   + Surface conditions, such as: wet, dirt, grass

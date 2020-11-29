@@ -50,6 +50,10 @@ public class Main extends SimpleApplication {
      * message logger for this class
      */
     final private static Logger logger = Logger.getLogger(Main.class.getName());
+    /**
+     * drop location for vehicles added to the Playground TODO Environment i/f
+     */
+    final public static Vector3f dropLocation = new Vector3f(0f, 6f, 0f);
     // *************************************************************************
     // fields
 

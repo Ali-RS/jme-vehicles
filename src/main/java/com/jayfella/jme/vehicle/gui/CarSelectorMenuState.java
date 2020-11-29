@@ -14,8 +14,6 @@ import com.jayfella.jme.vehicle.examples.cars.PickupTruck;
 import com.jayfella.jme.vehicle.input.KeyboardVehicleInputState;
 import com.jme3.app.Application;
 import com.jme3.bullet.PhysicsSpace;
-import com.jme3.math.Vector3f;
-import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import com.simsilica.lemur.Button;
 
@@ -61,11 +59,10 @@ public class CarSelectorMenuState extends AnimatedMenuState {
         DriverHud hud = Main.findAppState(DriverHud.class);
         hud.setCar(vehicle);
         hud.setEnabled(true);
+
         vehicle.attachToScene(scene, physicsSpace);
 
-        vehicle.getVehicleControl().setPhysicsLocation(new Vector3f(0, 6, 0));
-
-        // add some controls
+        // handle keyboard/mouse/joystick inputs
         KeyboardVehicleInputState inputState = new KeyboardVehicleInputState(vehicle);
         // XBoxJoystickVehicleInputState inputState = new XBoxJoystickVehicleInputState(vehicle);
         getStateManager().attach(inputState);
@@ -87,8 +84,6 @@ public class CarSelectorMenuState extends AnimatedMenuState {
         // vehicle debug add-on to enable/disable debug screens
         DebugTabState debugTabState = new DebugTabState();
         getStateManager().attach(debugTabState);
-
-        vehicle.getNode().setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
     }
 
     private void setVehicle(Car newVehicle) {

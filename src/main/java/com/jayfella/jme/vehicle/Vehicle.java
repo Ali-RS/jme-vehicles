@@ -8,15 +8,22 @@ import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioData;
 import com.jme3.audio.AudioNode;
 import com.jme3.audio.AudioSource;
+import com.jme3.bounding.BoundingBox;
+import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
+import com.jme3.bullet.collision.PhysicsRayTestResult;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.VehicleControl;
+import com.jme3.bullet.objects.VehicleWheel;
 import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.math.Matrix3f;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import java.util.List;
+import jme3utilities.math.MyVector3f;
 
 /**
  * A vehicle with a single Engine and a single GearBox.
@@ -242,6 +249,8 @@ public abstract class Vehicle {
     }
 
     public void attachToScene(Node parent, PhysicsSpace physicsSpace) {
+        warpToStart();
+        getNode().setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         enable();
 
         parent.attachChild(node);
@@ -282,6 +291,63 @@ public abstract class Vehicle {
         result.addLocal(offset);
 
         return result;
+    }
+
+    /**
+     * Warp this vehicle to a suitable start position.
+     */
+    public void warpToStart() {
+        /*
+         * Cast a physics ray downward from the drop location.
+         */
+        Vector3f endLocation = Main.dropLocation.add(0f, -999f, 0f);
+        BulletAppState bas = Main.findAppState(BulletAppState.class);
+        PhysicsSpace physicsSpace = bas.getPhysicsSpace();
+        List<PhysicsRayTestResult> rayTest
+                = physicsSpace.rayTestRaw(Main.dropLocation, endLocation);
+        /*
+         * Find the closest contact with another collision object,
+         * typically the pavement.
+         */
+        float closestFraction = 9f;
+        for (PhysicsRayTestResult hit : rayTest) {
+            if (hit.getCollisionObject() != vehicleControl) {
+                float hitFraction = hit.getHitFraction();
+                if (hitFraction < closestFraction) {
+                    closestFraction = hitFraction;
+                }
+            }
+        }
+        Vector3f contactLocation = MyVector3f.lerp(closestFraction,
+                Main.dropLocation, endLocation, null);
+        /*
+         * Estimate the minimum chassis Y offset to keep
+         * the undercarriage off the pavement.
+         */
+        CollisionShape shape = vehicleControl.getCollisionShape();
+        BoundingBox aabb
+                = shape.boundingBox(Vector3f.ZERO, Matrix3f.IDENTITY, null);
+        float minYOffset = aabb.getYExtent() - aabb.getCenter().y;
+        /*
+         * Estimate chassis Y offset based on an unloaded axle.
+         * TODO adjust for the vehicle's weight
+         */
+        VehicleWheel w0 = vehicleControl.getWheel(0);
+        float suspensionLength = w0.getRestLength();
+        float yOffset
+                = w0.getRadius() + suspensionLength - w0.getLocation(null).y;
+        /*
+         * Calculate and apply an appropriate start location.
+         */
+        if (yOffset < minYOffset) {
+            yOffset = minYOffset;
+        }
+        Vector3f startLocation = contactLocation.add(0f, yOffset, 0f);
+        vehicleControl.setPhysicsLocation(startLocation);
+        // The vehicle's orientation is untouched!
+
+        vehicleControl.setAngularVelocity(Vector3f.ZERO);
+        vehicleControl.setLinearVelocity(Vector3f.ZERO);
     }
 
     /**
