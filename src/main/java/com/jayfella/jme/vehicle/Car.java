@@ -13,7 +13,7 @@ import com.jme3.scene.Spatial;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Car extends Vehicle {
+abstract public class Car extends Vehicle {
 
     // wheel-related stuff. This isn't really "vehicle" related since a vehicle can be a boat or a helicopter.
     private final List<Wheel> wheels = new ArrayList<>();
