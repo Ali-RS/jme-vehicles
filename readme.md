@@ -37,6 +37,7 @@ vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
   + speedometer
   + tachometer
   + steering-wheel indicator
+  + automatic-transmission mode indicator
   + edit vehicle parameters
 + special effects:
   + skid marks
@@ -217,7 +218,7 @@ The world (and physics-space) coordinate system is:
  + the `+Y` axis points up (toward the zenith)
  + the `+Z` axis points toward the eastern horizon
 
-The world (and physics-space) units of distance are meters.
+The world (and physics-space) units of distance are *meters*.
 
 [Jump to table of contents](#toc)
 
