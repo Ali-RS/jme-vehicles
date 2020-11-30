@@ -127,7 +127,7 @@ class TachometerState extends BaseAppState {
                 -(width / 2f) - 7f,
                 0f);
 
-        revsLabel = new Label("RPM");
+        revsLabel = new Label("RPM x1000");
         node.attachChild(revsLabel);
         revsLabel.setColor(markingColor);
         float labelWidth = revsLabel.getPreferredSize().x;
