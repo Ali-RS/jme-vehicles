@@ -88,7 +88,7 @@ public class DashCamera
 
     @Override
     public void attach() {
-        cameraNode.setLocalTranslation(vehicle.getDashCamLocation(null));
+        cameraNode.setLocalTranslation(vehicle.dashCamOffset());
         vehicle.getNode().attachChild(cameraNode);
 
         InputMapper inputMapper = GuiGlobals.getInstance().getInputMapper();

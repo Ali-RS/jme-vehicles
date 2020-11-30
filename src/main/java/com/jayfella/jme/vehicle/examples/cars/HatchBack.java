@@ -64,8 +64,6 @@ public class HatchBack extends Car {
         getWheel(3).setAccelerationForce(0);
 
         //vehicle.setMaxSpeedMph(130);
-        setDashCamLocation(new Vector3f(0f, 1.6f, 0.3f));
-
         GearBox gearBox = new GearBox(6);
         gearBox.setGear(0, 0, 20);
         gearBox.setGear(1, 20, 40);
@@ -85,9 +83,21 @@ public class HatchBack extends Car {
         build();
 
     }
+    // *************************************************************************
+    // Vehicle methods
 
     /**
-     * Determine the offset of the vehicle's ChaseCamera target.
+     * Determine the offset of the hatchback's DashCamera.
+     *
+     * @return a new offset vector (in scaled shape coordinates)
+     */
+    @Override
+    public Vector3f dashCamOffset() {
+        return new Vector3f(0f, 1.6f, 0.3f);
+    }
+
+    /**
+     * Determine the offset of the hatchback's ChaseCamera target.
      *
      * @return a new offset vector (in scaled shape coordinates)
      */

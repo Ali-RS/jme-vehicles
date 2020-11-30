@@ -69,8 +69,6 @@ public class GrandTourer extends Car {
         getWheel(2).setAccelerationForce(1);
         getWheel(3).setAccelerationForce(1);
 
-        setDashCamLocation(new Vector3f(0, 1.5f, 0.5f));
-
         GearBox gearBox = new GearBox(5);
         gearBox.setGear(0, 0, 15);
         gearBox.setGear(1, 5, 40);
@@ -90,9 +88,21 @@ public class GrandTourer extends Car {
         build();
 
     }
+    // *************************************************************************
+    // Vehicle methods
 
     /**
-     * Determine the offset of the vehicle's ChaseCamera target.
+     * Determine the offset of the Grand Tourer's DashCamera.
+     *
+     * @return a new offset vector (in scaled shape coordinates)
+     */
+    @Override
+    public Vector3f dashCamOffset() {
+        return new Vector3f(0f, 1.5f, 0.5f);
+    }
+
+    /**
+     * Determine the offset of the Grand Tourer's ChaseCamera target.
      *
      * @return a new offset vector (in scaled shape coordinates)
      */

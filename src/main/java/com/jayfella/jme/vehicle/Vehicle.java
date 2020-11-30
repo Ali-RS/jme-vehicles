@@ -47,7 +47,6 @@ public abstract class Vehicle {
     final private Node node;
     private Spatial chassis;
     private String name;
-    final private Vector3f dashCamLocation = new Vector3f();
     private VehicleAudioState vehicleAudioState;
     private VehicleControl vehicleControl;
 
@@ -85,6 +84,13 @@ public abstract class Vehicle {
      */
     public abstract void brake(float strength);
 
+    /**
+     * Determine the offset of the vehicle's DashCamera.
+     *
+     * @return a new offset vector (in scaled shape coordinates)
+     */
+    abstract public Vector3f dashCamOffset();
+
     public void detachFromScene() {
         disable();
 
@@ -110,21 +116,6 @@ public abstract class Vehicle {
 
     public Spatial getChassis() {
         return chassis;
-    }
-
-    /**
-     * Determine the location of the dash camera.
-     *
-     * @param storeResult storage for the result (modified if not null)
-     * @return a location vector in local coordinates (either storeResult or a
-     * new instance)
-     */
-    public Vector3f getDashCamLocation(Vector3f storeResult) {
-        if (storeResult == null) {
-            return dashCamLocation.clone();
-        } else {
-            return storeResult.set(dashCamLocation);
-        }
     }
 
     public Engine getEngine() {
@@ -362,10 +353,6 @@ public abstract class Vehicle {
     protected void enable() {
         app.getStateManager().attach(gearboxState);
         app.getStateManager().attach(vehicleAudioState);
-    }
-
-    protected void setDashCamLocation(Vector3f loc) {
-        dashCamLocation.set(loc);
     }
 
     /**

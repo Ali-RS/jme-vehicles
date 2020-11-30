@@ -111,9 +111,6 @@ public class PickupTruck extends Car {
         getWheel(2).setAccelerationForce(1);
         getWheel(3).setAccelerationForce(1);
 
-        // set the DashCamera location of the vehicle
-        setDashCamLocation(new Vector3f(0, 1.7f, 1.3f));
-
         // define a gearbox. Each gear does NOT need to begin where the last one ends.
         // the "end" value of the last gear will dictate the maximum speed this vehicle can go.
         GearBox gearBox = new GearBox(new Gear[] {
@@ -140,9 +137,21 @@ public class PickupTruck extends Car {
         // in the car implementation it initializes the skidmarks and smoke emitters for each wheel.
         build();
     }
+    // *************************************************************************
+    // Vehicle methods
 
     /**
-     * Determine the offset of the vehicle's ChaseCamera target.
+     * Determine the offset of the truck's DashCamera.
+     *
+     * @return a new offset vector (in scaled shape coordinates)
+     */
+    @Override
+    public Vector3f dashCamOffset() {
+        return new Vector3f(0f, 1.7f, 1.3f);
+    }
+
+    /**
+     * Determine the offset of the truck's ChaseCamera target.
      *
      * @return a new offset vector (in scaled shape coordinates)
      */

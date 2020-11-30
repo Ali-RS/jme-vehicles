@@ -65,8 +65,6 @@ public class GTRNismo extends Car {
         getWheel(2).setAccelerationForce(1);
         getWheel(3).setAccelerationForce(1);
 
-        setDashCamLocation(new Vector3f(0f, 1.5f, 0.5f));
-
         GearBox gearBox = new GearBox(6);
         gearBox.setGear(0, 0, 30);
         gearBox.setGear(1, 15, 70);
@@ -85,6 +83,18 @@ public class GTRNismo extends Car {
 
         build();
 
+    }
+    // *************************************************************************
+    // Vehicle methods
+
+    /**
+     * Determine the offset of the Nismo's DashCamera.
+     *
+     * @return a new offset vector (in scaled shape coordinates)
+     */
+    @Override
+    public Vector3f dashCamOffset() {
+        return new Vector3f(0f, 1.5f, 0.5f);
     }
 
     /**
