@@ -37,24 +37,19 @@ public abstract class Vehicle {
     public static final float KMH_TO_MPH = 0.62137f;
     public static final float MPH_TO_KMH = 1.60934f;
 
-    private final Application app;
-
+    final private Application app;
     private AudioNode hornAudio;
-    private final Node node;
-    private VehicleControl vehicleControl;
-
-    private String name;
-
-    private Spatial chassis;
-    private Engine engine;
-    private GearBox gearBox;
-
     private AutomaticGearboxState gearboxState;
-    private VehicleAudioState vehicleAudioState;
-
-    final private Vector3f dashCamLocation = new Vector3f();
-
     private boolean parkingBrakeApplied;
+    private Engine engine;
+    private float accelerationForce;
+    private GearBox gearBox;
+    final private Node node;
+    private Spatial chassis;
+    private String name;
+    final private Vector3f dashCamLocation = new Vector3f();
+    private VehicleAudioState vehicleAudioState;
+    private VehicleControl vehicleControl;
 
     public Vehicle(Application app, String name) {
         this.app = app;
@@ -62,13 +57,147 @@ public abstract class Vehicle {
         node = new Node("Vehicle: " + name);
     }
 
+    /**
+     * Accelerate the vehicle with the given power.
+     *
+     * @param strength a unit value between 0.0 - 1.0. Essentially how "hard"
+     * you want to accelerate.
+     */
+    public void accelerate(float strength) {
+        accelerationForce = strength;
+    }
+
+    public abstract void applyEngineBraking();
+
+    public void attachToScene(Node parent, PhysicsSpace physicsSpace) {
+        warpToStart();
+        getNode().setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
+        enable();
+
+        parent.attachChild(node);
+        physicsSpace.add(vehicleControl);
+    }
+
+    /**
+     * Apply the vehicle brakes at the given strength.
+     *
+     * @param strength a unit value between 0.0 - 1.0.
+     */
+    public abstract void brake(float strength);
+
+    public void detachFromScene() {
+        disable();
+
+        node.removeFromParent();
+        vehicleControl.getPhysicsSpace().remove(vehicleControl);
+    }
+
+    /**
+     * Determine the forward direction.
+     *
+     * @param storeResult storage for the result (modified if not null)
+     * @return a unit vector in physics-space coordinates (either storeResult or
+     * a new instance)
+     */
+    public Vector3f forwardDirection(Vector3f storeResult) {
+        Vector3f result = vehicleControl.getForwardVector(storeResult);
+        return result;
+    }
+
+    public float getAccelerationForce() {
+        return accelerationForce;
+    }
+
+    public Spatial getChassis() {
+        return chassis;
+    }
+
+    /**
+     * Determine the location of the dash camera.
+     *
+     * @param storeResult storage for the result (modified if not null)
+     * @return a location vector in local coordinates (either storeResult or a
+     * new instance)
+     */
+    public Vector3f getDashCamLocation(Vector3f storeResult) {
+        if (storeResult == null) {
+            return dashCamLocation.clone();
+        } else {
+            return storeResult.set(dashCamLocation);
+        }
+    }
+
+    public Engine getEngine() {
+        return engine;
+    }
+
+    public GearBox getGearBox() {
+        return gearBox;
+    }
+
+    public Vector3f getLocation() {
+        return node.getLocalTranslation();
+    }
+
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-        node.setName("Vehicle: " + name);
+    public Node getNode() {
+        return node;
+    }
+
+    public Quaternion getRotation() {
+        return node.getLocalRotation();
+    }
+
+    /**
+     * Determine the forward component of this vehicle's airspeed as of the
+     * previous time step.
+     *
+     * @param speedUnit the unit of measurement to use (not null)
+     * @return the speed (may be negative)
+     */
+    public float getSpeed(SpeedUnit speedUnit) {
+        float kph = vehicleControl.getCurrentVehicleSpeedKmHour();
+        switch (speedUnit) {
+            case KMH:
+                return kph;
+            case MPH:
+                return kph * KMH_TO_MPH;
+            default:
+                throw new IllegalArgumentException("speedUnit = " + speedUnit);
+        }
+    }
+
+    public VehicleControl getVehicleControl() {
+        return vehicleControl;
+    }
+
+    public abstract void handbrake(float strength);
+
+    public boolean isParkingBrakeApplied() {
+        return parkingBrakeApplied;
+    }
+
+    public abstract void removeEngineBraking();
+
+    public void setChassis(Spatial chassis, float mass) {
+        this.chassis = chassis;
+        CollisionShape chassisCollisionShape
+                = CollisionShapeFactory.createDynamicMeshShape(chassis);
+        vehicleControl = new VehicleControl(chassisCollisionShape, mass);
+        node.addControl(vehicleControl);
+        node.attachChild(chassis);
+    }
+
+    public void setEngine(Engine engine) {
+        this.engine = engine;
+        node.attachChild(this.engine.getEngineAudio());
+    }
+
+    public void setGearBox(GearBox gearBox) {
+        this.gearBox = gearBox;
     }
 
     /**
@@ -107,26 +236,21 @@ public abstract class Vehicle {
         }
     }
 
-    public Spatial getChassis() {
-        return chassis;
+    public void setLocation(Vector3f loc) {
+        vehicleControl.setPhysicsLocation(loc);
     }
 
-    public void setChassis(Spatial chassis, float mass) {
-        this.chassis = chassis;
-        CollisionShape chassisCollisionShape
-                = CollisionShapeFactory.createDynamicMeshShape(chassis);
-        vehicleControl = new VehicleControl(chassisCollisionShape, mass);
-        node.addControl(vehicleControl);
-        node.attachChild(chassis);
+    public void setName(String name) {
+        this.name = name;
+        node.setName("Vehicle: " + name);
     }
 
-    public Engine getEngine() {
-        return engine;
+    public void setParkingBrakeApplied(boolean applied) {
+        parkingBrakeApplied = applied;
     }
 
-    public void setEngine(Engine engine) {
-        this.engine = engine;
-        node.attachChild(this.engine.getEngineAudio());
+    public void setRotation(Quaternion rotation) {
+        vehicleControl.setPhysicsRotation(rotation);
     }
 
     public void startEngine() {
@@ -136,144 +260,13 @@ public abstract class Vehicle {
         }
     }
 
+    public abstract void steer(float strength);
+
     public void stopEngine() {
         if (engine.isStarted()) {
             engine.setStarted(false);
             vehicleAudioState.stopEngineSound();
         }
-    }
-
-    public GearBox getGearBox() {
-        return gearBox;
-    }
-
-    public void setGearBox(GearBox gearBox) {
-        this.gearBox = gearBox;
-    }
-
-    private float accelerationForce;
-
-    /**
-     * Accelerate the vehicle with the given power.
-     *
-     * @param strength a unit value between 0.0 - 1.0. Essentially how "hard"
-     * you want to accelerate.
-     */
-    public void accelerate(float strength) {
-        accelerationForce = strength;
-    }
-
-    public float getAccelerationForce() {
-        return accelerationForce;
-    }
-
-    /**
-     * Apply the vehicle brakes at the given strength.
-     *
-     * @param strength a unit value between 0.0 - 1.0.
-     */
-    public abstract void brake(float strength);
-
-    public abstract void handbrake(float strength);
-
-    public abstract void steer(float strength);
-
-    public Vector3f getLocation() {
-        return node.getLocalTranslation();
-    }
-
-    public void setLocation(Vector3f loc) {
-        vehicleControl.setPhysicsLocation(loc);
-    }
-
-    public Quaternion getRotation() {
-        return node.getLocalRotation();
-    }
-
-    public void setRotation(Quaternion rotation) {
-        vehicleControl.setPhysicsRotation(rotation);
-    }
-
-    public Node getNode() {
-        return node;
-    }
-
-    public VehicleControl getVehicleControl() {
-        return vehicleControl;
-    }
-
-    /**
-     * Determine the forward component of this vehicle's airspeed as of the
-     * previous time step.
-     *
-     * @param speedUnit the unit of measurement to use (not null)
-     * @return the speed (may be negative)
-     */
-    public float getSpeed(SpeedUnit speedUnit) {
-        float kph = vehicleControl.getCurrentVehicleSpeedKmHour();
-        switch (speedUnit) {
-            case KMH:
-                return kph;
-            case MPH:
-                return kph * KMH_TO_MPH;
-            default:
-                throw new IllegalArgumentException("speedUnit = " + speedUnit);
-        }
-    }
-
-    /**
-     * Determine the location of the dash camera.
-     *
-     * @param storeResult storage for the result (modified if not null)
-     * @return a location vector in local coordinates (either storeResult or a
-     * new instance)
-     */
-    public Vector3f getDashCamLocation(Vector3f storeResult) {
-        if (storeResult == null) {
-            return dashCamLocation.clone();
-        } else {
-            return storeResult.set(dashCamLocation);
-        }
-    }
-
-    protected void setDashCamLocation(Vector3f loc) {
-        dashCamLocation.set(loc);
-    }
-
-    public boolean isParkingBrakeApplied() {
-        return parkingBrakeApplied;
-    }
-
-    public void setParkingBrakeApplied(boolean applied) {
-        parkingBrakeApplied = applied;
-    }
-
-    public void attachToScene(Node parent, PhysicsSpace physicsSpace) {
-        warpToStart();
-        getNode().setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
-        enable();
-
-        parent.attachChild(node);
-        physicsSpace.add(vehicleControl);
-    }
-
-    public void detachFromScene() {
-        disable();
-
-        node.removeFromParent();
-        vehicleControl.getPhysicsSpace().remove(vehicleControl);
-    }
-
-    /**
-     * Determine the forward direction.
-     *
-     * @param storeResult storage for the result (modified if not null)
-     * @return a unit vector in physics-space coordinates (either storeResult or
-     * a new instance)
-     */
-    public Vector3f forwardDirection(Vector3f storeResult) {
-        Vector3f result = vehicleControl.getForwardVector(storeResult);
-        return result;
     }
 
     /**
@@ -292,13 +285,6 @@ public abstract class Vehicle {
 
         return result;
     }
-
-    /**
-     * Determine the offset of the vehicle's ChaseCamera target.
-     *
-     * @return a new offset vector (in scaled shape coordinates)
-     */
-    abstract protected Vector3f targetOffset();
 
     /**
      * Warp this vehicle to a suitable start position.
@@ -368,17 +354,24 @@ public abstract class Vehicle {
         app.getStateManager().attach(vehicleAudioState);
     }
 
-    protected void enable() {
-        app.getStateManager().attach(gearboxState);
-        app.getStateManager().attach(vehicleAudioState);
-    }
-
     protected void disable() {
         app.getStateManager().detach(gearboxState);
         app.getStateManager().detach(vehicleAudioState);
     }
 
-    public abstract void applyEngineBraking();
+    protected void enable() {
+        app.getStateManager().attach(gearboxState);
+        app.getStateManager().attach(vehicleAudioState);
+    }
 
-    public abstract void removeEngineBraking();
+    protected void setDashCamLocation(Vector3f loc) {
+        dashCamLocation.set(loc);
+    }
+
+    /**
+     * Determine the offset of the vehicle's ChaseCamera target.
+     *
+     * @return a new offset vector (in scaled shape coordinates)
+     */
+    abstract protected Vector3f targetOffset();
 }
