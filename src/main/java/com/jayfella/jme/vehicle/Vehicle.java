@@ -284,7 +284,7 @@ public abstract class Vehicle {
      * storeResult or a new instance)
      */
     public Vector3f targetLocation(Vector3f storeResult) {
-        Vector3f offset = new Vector3f(0f, 1f, -3f); // TODO tune
+        Vector3f offset = targetOffset();
         Matrix3f orientation = vehicleControl.getPhysicsRotationMatrix(null);
         orientation.mult(offset, offset);
         Vector3f result = vehicleControl.getPhysicsLocation(storeResult);
@@ -292,6 +292,13 @@ public abstract class Vehicle {
 
         return result;
     }
+
+    /**
+     * Determine the offset of the vehicle's ChaseCamera target.
+     *
+     * @return a new offset vector (in scaled shape coordinates)
+     */
+    abstract protected Vector3f targetOffset();
 
     /**
      * Warp this vehicle to a suitable start position.

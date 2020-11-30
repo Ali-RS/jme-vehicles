@@ -1,12 +1,12 @@
 package com.jayfella.jme.vehicle.examples.cars;
 
 import com.jayfella.jme.vehicle.Car;
+import com.jayfella.jme.vehicle.engine.Engine;
 import com.jayfella.jme.vehicle.examples.engines.Engine180HP;
 import com.jayfella.jme.vehicle.examples.tires.Tire_02;
 import com.jayfella.jme.vehicle.examples.wheels.BasicAlloyWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Brake;
-import com.jayfella.jme.vehicle.engine.Engine;
 import com.jayfella.jme.vehicle.part.GearBox;
 import com.jme3.app.Application;
 import com.jme3.asset.AssetManager;
@@ -84,5 +84,15 @@ public class HatchBack extends Car {
 
         build();
 
+    }
+
+    /**
+     * Determine the offset of the vehicle's ChaseCamera target.
+     *
+     * @return a new offset vector (in scaled shape coordinates)
+     */
+    @Override
+    protected Vector3f targetOffset() {
+        return new Vector3f(0f, 0.52f, -2.112f);
     }
 }

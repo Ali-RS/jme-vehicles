@@ -1,12 +1,12 @@
 package com.jayfella.jme.vehicle.examples.cars;
 
 import com.jayfella.jme.vehicle.Car;
+import com.jayfella.jme.vehicle.engine.Engine;
 import com.jayfella.jme.vehicle.examples.engines.Engine450HP;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
 import com.jayfella.jme.vehicle.examples.wheels.BasicAlloyWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Brake;
-import com.jayfella.jme.vehicle.engine.Engine;
 import com.jayfella.jme.vehicle.part.Gear;
 import com.jayfella.jme.vehicle.part.GearBox;
 import com.jme3.app.Application;
@@ -139,5 +139,15 @@ public class PickupTruck extends Car {
         // this MUST be called last.
         // in the car implementation it initializes the skidmarks and smoke emitters for each wheel.
         build();
+    }
+
+    /**
+     * Determine the offset of the vehicle's ChaseCamera target.
+     *
+     * @return a new offset vector (in scaled shape coordinates)
+     */
+    @Override
+    protected Vector3f targetOffset() {
+        return new Vector3f(0f, 0.77f, -2.67f);
     }
 }

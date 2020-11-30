@@ -90,4 +90,14 @@ public class GrandTourer extends Car {
         build();
 
     }
+
+    /**
+     * Determine the offset of the vehicle's ChaseCamera target.
+     *
+     * @return a new offset vector (in scaled shape coordinates)
+     */
+    @Override
+    protected Vector3f targetOffset() {
+        return new Vector3f(0f, 0.8f, -2.74f);
+    }
 }
