@@ -158,7 +158,7 @@ abstract public class Engine {
      * @return the amount of power (&gt;0)
      */
     public float getPowerOutputAtRevs() {
-        float revs = getRevs() * getMaxRevs();
+        float revs = getRpmFraction() * getMaxRevs();
         revs = FastMath.clamp(revs, 0, getMaxRevs() - 0.01f);
         float power = evaluateSpline(revs);
 
@@ -170,7 +170,7 @@ abstract public class Engine {
      *
      * @return the fraction (&ge;0)
      */
-    public float getRevs() {
+    public float getRpmFraction() {
         return rpmFraction;
     }
 

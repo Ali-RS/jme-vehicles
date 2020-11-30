@@ -98,7 +98,7 @@ public class AutomaticGearboxState extends BaseAppState {
 
                 // if the wheel is accelerating and slipping, increase the revs.
                 // find the range of the current revs vs the max revs.
-                float revsLeft = 1.0f - car.getEngine().getRevs();
+                float revsLeft = 1.0f - car.getEngine().getRpmFraction();
 
                 // float revRange = unInterpolateLinear((totalForce * skid), revsLeft, 1.0f);
                 revIncrease = (totalForce * skid);

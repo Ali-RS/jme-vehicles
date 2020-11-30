@@ -82,7 +82,7 @@ public class VehicleAudioState extends BaseAppState {
             playEngineSound();
         }
 
-        float value = vehicle.getEngine().getRevs();
+        float value = vehicle.getEngine().getRpmFraction();
 
         // add a bit of interpolation for when we change gears.
         // this effectively stops the sound from jumping from full revs to low revs and vice versa.

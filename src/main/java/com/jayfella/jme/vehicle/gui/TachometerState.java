@@ -169,7 +169,7 @@ class TachometerState extends BaseAppState {
     @Override
     public void update(float tpf) {
         Engine engine = vehicle.getEngine();
-        float rpmFraction = engine.getRevs();
+        float rpmFraction = engine.getRpmFraction();
         float theta = MyMath.lerp(rpmFraction, theta0, thetaRedline);
         /*
          * a slight lag, because a physical needle cannot pivot instantly
