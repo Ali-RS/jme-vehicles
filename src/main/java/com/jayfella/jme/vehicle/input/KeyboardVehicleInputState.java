@@ -125,7 +125,7 @@ public class KeyboardVehicleInputState
     final private SignalTracker signalTracker;
     private final Vehicle vehicle;
     private VehicleCamera activeCam;
-    private VehicleCamView currentCam = VehicleCamView.DashCam;
+    private VehicleCamView cameraMode = VehicleCamView.DashCam;
     // *************************************************************************
     // constructors
 
@@ -154,6 +154,14 @@ public class KeyboardVehicleInputState
      */
     public SignalTracker getSignalTracker() {
         return signalTracker;
+    }
+
+    /**
+     * Advance to the next camera mode.
+     */
+    public void nextCameraMode() {
+        cameraMode = cameraMode.next();
+        setCamera(cameraMode);
     }
 
     /**
@@ -272,7 +280,7 @@ public class KeyboardVehicleInputState
             }
         }
 
-        setCamera(currentCam);
+        setCamera(cameraMode);
     }
 
     @Override
@@ -403,8 +411,7 @@ public class KeyboardVehicleInputState
             screenshotAppState.takeScreenshot();
 
         } else if (func == F_CAMVIEW && pressed) {
-            currentCam = currentCam.next();
-            setCamera(currentCam);
+            nextCameraMode();
         }
     }
     // *************************************************************************

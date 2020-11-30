@@ -4,6 +4,8 @@ import com.atr.jme.font.TrueTypeMesh;
 import com.atr.jme.font.asset.TrueTypeKeyMesh;
 import com.atr.jme.font.shape.TrueTypeNode;
 import com.atr.jme.font.util.Style;
+import com.jayfella.jme.vehicle.Main;
+import com.jayfella.jme.vehicle.input.KeyboardVehicleInputState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
@@ -15,6 +17,7 @@ import com.jme3.renderer.Camera;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
+import com.simsilica.lemur.event.MouseEventControl;
 import java.util.logging.Logger;
 import jme3utilities.MyAsset;
 import jme3utilities.mesh.RoundedRectangle;
@@ -92,7 +95,7 @@ class CameraNameState extends BaseAppState {
         Camera camera = app.getCamera();
         float viewPortHeight = camera.getHeight();
         float viewPortWidth = camera.getWidth();
-        float x = 0.38f * viewPortWidth;
+        float x = 0.62f * viewPortWidth;
         float y = 0.95f * viewPortHeight;
         node.setLocalTranslation(x, y, 0f);
         /*
@@ -103,7 +106,7 @@ class CameraNameState extends BaseAppState {
                 "Interface/Fonts/DroidSerifBold-aMPE.ttf", Style.Plain, 18);
         droidFont = assetManager.loadAsset(assetKey);
         /*
-         * pre-load unshaded materials
+         * pre-load the background Material
          */
         ColorRGBA bgColor = new ColorRGBA(0.1f, 0.2f, 0.5f, 1f);
         bgMaterial = MyAsset.createUnshadedMaterial(assetManager, bgColor);
@@ -181,6 +184,21 @@ class CameraNameState extends BaseAppState {
         Geometry background = new Geometry("camera name background", bgMesh);
         node.attachChild(background);
         background.setMaterial(bgMaterial);
+        /*
+         * Add an Expander to advance to the next camera mode.
+         */
+        Expander listener = new Expander(node) {
+            @Override
+            public void onClick(boolean isPressed) {
+                if (isPressed) {
+                    KeyboardVehicleInputState kvis
+                            = Main.findAppState(KeyboardVehicleInputState.class);
+                    kvis.nextCameraMode();
+                }
+            }
+        };
+        MouseEventControl control = new MouseEventControl(listener);
+        node.addControl(control);
 
         displayedText = text;
     }
