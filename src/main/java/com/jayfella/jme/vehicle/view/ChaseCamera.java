@@ -126,7 +126,7 @@ public class ChaseCamera
      * Alter the offset.
      *
      * @param desiredOffset the offset from the target vehicle (in world
-     * coordintes)
+     * coordinates)
      */
     public void setOffset(Vector3f desiredOffset) {
         Validate.finite(desiredOffset, "offset");
