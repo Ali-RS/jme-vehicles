@@ -1,5 +1,5 @@
-[The More Advanced Vehicles Project][mav] demonstrates
-vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
+[The More Advanced Vehicles Project][mav] demonstrates vehicle simulation using
+[the jMonkeyEngine (JME) game engine][jme].
 
 <a name="toc"/>
 
@@ -47,7 +47,7 @@ vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
 
 [Jump to table of contents](#toc)
 
-<img height="400" src="https://i.imgur.com/WNVXH1E.png">
+<img height="400" src="https://i.imgur.com/TsWukzO.png">
 
 <a name="prebuilt"/>
 
