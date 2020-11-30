@@ -6,6 +6,7 @@ vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
 ## Contents of this document
 
 + [Important features](#features)
++ [How to download and run a pre-built release of More Advanced Vehicles](#prebuilt)
 + [How to build and run More Advanced Vehicles from source](#build)
 + [Controls](#controls)
 + [Wish list](#wishlist)
@@ -48,15 +49,40 @@ vehicle simulation using [the jMonkeyEngine (JME)][jme] game engine.
 
 <img height="400" src="https://i.imgur.com/WNVXH1E.png">
 
+<a name="prebuilt"/>
+
+## How to download and run a pre-built release of More Advanced Vehicles
+
+1. Install [Java], if you don't already have it.
+2. Browse to https://github.com/stephengold/jme-vehicles/releases/latest
+3. Follow the "jme-vehicles.zip" link.
+4. Save the ZIP file.
+5. Extract the contents of the saved ZIP file.
+  + using Bash:  `unzip jme-vehicles.zip`
+6. `cd` to the extracted "bin" directory/folder
+  + using Bash:  `cd jme-vehicles/bin`
+7. Run the shell script.
+  + using Bash:  `./jme-vehicles`
+
+[Jump to table of contents](#toc)
+
 <a name="build"/>
 
 ## How to build and run More Advanced Vehicles from source
 
- 1. Install a Java Development Kit (JDK), if you don't already have one.
+ 1. Install a [Java Development Kit (JDK)][openJDK],
+    if you don't already have one.
  2. Download and extract the More Advanced Vehicles source code from GitHub:
    + using Git:
      + `git clone https://github.com/stephengold/jme-vehicles.git`
      + `cd jme-vehicles`
+     + `git checkout -b latest v1.1.0`
+   + using a web browser:
+     + browse to https://github.com/stephengold/jme-vehicles/releases/latest
+     + follow the "Source code (zip)" link
+     + save the ZIP file
+     + extract the contents of the saved ZIP file
+     + `cd` to the extracted directory/folder
  3. Set the `JAVA_HOME` environment variable:
    + using Bash:  `export JAVA_HOME="` *path to your JDK* `"`
    + using Windows Command Prompt:  `set JAVA_HOME="` *path to your JDK* `"`
@@ -105,9 +131,11 @@ Additional controls when the chase camera is active:
 [atryder]: https://github.com/ATryder "Adam T. Ryder"
 [github]: https://github.com "GitHub"
 [gradle]: https://gradle.org "Gradle Project"
+[java]: https://java.com "Java"
 [jme]: http://jmonkeyengine.org  "jMonkeyEngine Project"
 [lemur]: https://github.com/jMonkeyEngine-Contributions/Lemur "Lemur UI Toolkit"
 [mav]: https://github.com/stephengold/jme-vehicles "More Advanced Vehicles Project"
+[openJDK]: https://openjdk.java.net "OpenJDK Project"
 [pspeed]: https://github.com/pspeed42 "Paul Speed"
 [sergej]: https://hdrihaven.com/hdris/?a=Sergej%20Majboroda "HDRIs by Sergej Majboroda"
 [tgt]: https://www.tgthorne.com/contact "Thomas Glenn Thorne"
