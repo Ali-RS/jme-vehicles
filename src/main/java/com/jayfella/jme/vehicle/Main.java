@@ -8,6 +8,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
 import com.jme3.app.state.AppState;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.app.state.ConstantVerifierState;
 import com.jme3.app.state.ScreenshotAppState;
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.TextureKey;
@@ -64,8 +65,15 @@ public class Main extends SimpleApplication {
     // *************************************************************************
     // constructors
 
+    /**
+     * Instantiate a SimpleApplication without FlyCam or debug keys.
+     */
     private Main() {
-        super(new StatsAppState(), new AudioListenerState(), new LoadingState());
+        super(
+                new AudioListenerState(),
+                new ConstantVerifierState(),
+                new StatsAppState()
+        );
     }
     // *************************************************************************
     // new methods exposed
@@ -176,18 +184,23 @@ public class Main extends SimpleApplication {
         );
         rootNode.addLight(directionalLight);
 
-        // initialize physics
+        // display a rotating texture to entertain users
+        LoadingState loadingState = new LoadingState();
+        stateManager.attach(loadingState);
+
+        // initialize physics with debug disabled
         BulletAppState bulletAppState = new BulletAppState();
         bulletAppState.setDebugEnabled(false);
-        getStateManager().attach(bulletAppState);
+        stateManager.attach(bulletAppState);
 
+        // create the driver's heads-up display (disabled)
         DriverHud driverHud = new DriverHud();
         stateManager.attach(driverHud);
 
         // enable screenshots
         ScreenshotAppState screenshotAppState
                 = new ScreenshotAppState("./", "screen_shot");
-        getStateManager().attach(screenshotAppState);
+        stateManager.attach(screenshotAppState);
 
         // load the sky asyncronously
         CompletableFuture
@@ -217,7 +230,7 @@ public class Main extends SimpleApplication {
                         bulletAppState.getPhysicsSpace().add(rigidBodyControl);
 
                         findAppState(LoadingState.class).setEnabled(false);
-                        getStateManager().attach(new MainMenuState());
+                        stateManager.attach(new MainMenuState());
                     });
                 });
 
