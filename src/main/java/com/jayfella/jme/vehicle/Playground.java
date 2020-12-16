@@ -18,7 +18,7 @@ import com.jme3.texture.Texture;
  * An Environment based on "vehicle-playground.j3o", James Khan's Vehicle
  * Playground model.
  */
-class Playground extends Environment {
+public class Playground extends Environment {
     // *************************************************************************
     // Environment methods
 

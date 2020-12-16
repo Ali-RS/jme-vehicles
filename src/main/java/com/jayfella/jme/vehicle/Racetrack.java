@@ -15,7 +15,7 @@ import com.jme3.scene.Node;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-class Racetrack extends Environment {
+public class Racetrack extends Environment {
     // *************************************************************************
     // Environment methods
 
