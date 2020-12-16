@@ -18,7 +18,9 @@
 
 ## Important features
 
-+ Vehicle Playground environment
++ 2 environments:
+  + racetrack
+  + vehicle playground
 + 5 vehicle models:
   + Grand Tourer
   + GTR Nismo
@@ -128,6 +130,7 @@ Additional controls when the chase camera is active:
 
 [Jump to table of contents](#toc)
 
+[adi]: https://github.com/scenemax3d "Adi Barda"
 [atryder]: https://github.com/ATryder "Adam T. Ryder"
 [github]: https://github.com "GitHub"
 [gradle]: https://gradle.org "Gradle Project"
@@ -147,7 +150,7 @@ Additional controls when the chase camera is active:
 This project is a work in progress.  Some ideas for future development:
 
 + More alternatives for:
-  + Environments, such as: racetrack, off-road, urban, and parking garage
+  + Environments, such as: off-road, urban, and parking garage
   + Surface conditions, such as: wet, dirt, grass
   + Propulsion, such as: four-wheel drive, front-wheel drive, and jets
   + Vehicle physics, such as that used in RallyGame
@@ -204,6 +207,8 @@ Resources/assets/media:
   has a CC Attribution-NonCommercial-ShareAlike license.
 + The [gtr_nismo model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/gtr_nismo)
   has a CC Attribution-NoDerivs license.
++ The [racetrack model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/race1)
+  has an Unlicense and a Creative Commons Zero v1.0 Universal license.
 + The [vehicle-playground model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/vehicle-playground)
   has a CC Zero Universal license.
 + The [marble_01 textures](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Textures/Ground/Marble)
@@ -262,6 +267,7 @@ The world (and physics-space) units of distance are *meters*.
 + [Sergej Majboroda][sergej] created the quarry_03 texture.
 + [Thomas Glenn Thorne (aka "systmh")][tgt] created the GT model.
 + "isteven" created the gtr_nismo model.
++ [Adi Barda (aka "adi.barda")][adi] created the racetrack model.
 
 I am grateful to [Github] and Imgur
 for providing free hosting for this project

@@ -50,7 +50,7 @@ public class Main extends SimpleApplication {
     /**
      * game environment/world
      */
-    final private static Environment environment = new Playground();
+    final private static Environment environment = new Racetrack();
     /**
      * message logger for this class
      */
