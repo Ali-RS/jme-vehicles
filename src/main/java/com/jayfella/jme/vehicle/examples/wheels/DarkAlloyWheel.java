@@ -7,7 +7,7 @@ public class DarkAlloyWheel extends WheelModel {
 
     public DarkAlloyWheel(AssetManager assetManager, float size) {
 
-        Spatial wheelSpatial = assetManager.loadModel("Models/dark_alloy/dark_alloy.gltf.j3o");
+        Spatial wheelSpatial = assetManager.loadModel("Models/gtr_nismo/dark_alloy.gltf.j3o");
 
         setSpatial(wheelSpatial);
         getWheelNode().setLocalScale(size);
