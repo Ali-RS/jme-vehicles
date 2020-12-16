@@ -48,16 +48,20 @@ public class Main extends SimpleApplication {
     // constants and loggers
 
     /**
-     * game environment/world
-     */
-    final private static Environment environment = new Racetrack();
-    /**
      * message logger for this class
      */
     final private static Logger logger = Logger.getLogger(Main.class.getName());
     // *************************************************************************
     // fields
 
+    /**
+     * directional light
+     */
+    private static DirectionalLight directionalLight;
+    /**
+     * current game environment/world
+     */
+    private static Environment environment;
     /**
      * application instance
      */
@@ -152,6 +156,25 @@ public class Main extends SimpleApplication {
         application.setShowSettings(forceDialog);
         application.start();
     }
+
+    /**
+     * Replace the current environment with a new one. Assumes that no vehicle
+     * is loaded.
+     *
+     * @param newEnvironment the desired environment (not null)
+     */
+    public void setEnvironment(Environment newEnvironment) {
+        environment.remove();
+        environment = newEnvironment;
+
+        float intensity = environment.directLightIntensity();
+        ColorRGBA directColor = ColorRGBA.White.mult(intensity);
+        directionalLight.setColor(directColor);
+
+        environment.resetCameraPosition();
+        environment.load();
+        environment.add(rootNode);
+    }
     // *************************************************************************
     // SimpleApplication methods
 
@@ -187,10 +210,12 @@ public class Main extends SimpleApplication {
         BaseStyles.loadGlassStyle();
         GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
 
+        environment = new Racetrack();
+
         // Let there be light
         float intensity = environment.directLightIntensity();
         ColorRGBA directColor = ColorRGBA.White.mult(intensity);
-        DirectionalLight directionalLight = new DirectionalLight(
+        directionalLight = new DirectionalLight(
                 new Vector3f(1f, -0.45f, 0.5f).normalizeLocal(), directColor);
         rootNode.addLight(directionalLight);
 
