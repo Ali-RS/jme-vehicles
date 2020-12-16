@@ -23,9 +23,8 @@ public class MainMenuState extends AnimatedMenuState {
             animateOut(() -> {
 
                 BulletAppState bulletAppState = getState(BulletAppState.class);
-                Node playground = (Node) Main.getApplication().getRootNode().getChild("playground");
-
-                getStateManager().attach(new CarSelectorMenuState(playground, bulletAppState.getPhysicsSpace()));
+                Node envNode = Main.getEnvironment().getCgm();
+                getStateManager().attach(new CarSelectorMenuState(envNode, bulletAppState.getPhysicsSpace()));
 
                 getStateManager().detach(this);
             });

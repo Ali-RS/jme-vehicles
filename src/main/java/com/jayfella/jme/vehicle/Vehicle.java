@@ -284,11 +284,12 @@ public abstract class Vehicle {
         /*
          * Cast a physics ray downward from the drop location.
          */
-        Vector3f endLocation = Main.dropLocation.add(0f, -999f, 0f);
+        Vector3f dropLocation = Main.getEnvironment().dropLocation();
+        Vector3f endLocation = dropLocation.add(0f, -999f, 0f);
         BulletAppState bas = Main.findAppState(BulletAppState.class);
         PhysicsSpace physicsSpace = bas.getPhysicsSpace();
         List<PhysicsRayTestResult> rayTest
-                = physicsSpace.rayTestRaw(Main.dropLocation, endLocation);
+                = physicsSpace.rayTestRaw(dropLocation, endLocation);
         /*
          * Find the closest contact with another collision object,
          * typically the pavement.
@@ -303,7 +304,7 @@ public abstract class Vehicle {
             }
         }
         Vector3f contactLocation = MyVector3f.lerp(closestFraction,
-                Main.dropLocation, endLocation, null);
+                dropLocation, endLocation, null);
         /*
          * Estimate the minimum chassis Y offset to keep
          * the undercarriage off the pavement.
@@ -328,7 +329,9 @@ public abstract class Vehicle {
         }
         Vector3f startLocation = contactLocation.add(0f, yOffset, 0f);
         vehicleControl.setPhysicsLocation(startLocation);
-        // The vehicle's orientation is untouched!
+        float yRotation = Main.getEnvironment().dropYRotation();
+        Quaternion orient = new Quaternion().fromAngles(0f, yRotation, 0f);
+        vehicleControl.setPhysicsRotation(orient);
 
         vehicleControl.setAngularVelocity(Vector3f.ZERO);
         vehicleControl.setLinearVelocity(Vector3f.ZERO);

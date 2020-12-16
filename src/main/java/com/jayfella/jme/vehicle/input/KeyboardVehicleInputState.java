@@ -200,9 +200,7 @@ public class KeyboardVehicleInputState
         vehicle.detachFromScene();
         stateManager.attach(new MainMenuState());
 
-        Camera camera = app.getCamera();
-        camera.setLocation(new Vector3f(-200f, 50f, -200f));
-        camera.lookAt(new Vector3f(100f, 10f, 150f), Vector3f.UNIT_Y);
+        Main.getEnvironment().resetCameraPosition();
     }
     // *************************************************************************
     // BaseAppState methods

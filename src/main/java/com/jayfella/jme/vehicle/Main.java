@@ -15,14 +15,11 @@ import com.jme3.asset.TextureKey;
 import com.jme3.audio.AudioListenerState;
 import com.jme3.bounding.BoundingSphere;
 import com.jme3.bullet.BulletAppState;
-import com.jme3.bullet.control.RigidBodyControl;
-import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.input.Joystick;
 import com.jme3.input.JoystickConnectionListener;
 import com.jme3.light.DirectionalLight;
 import com.jme3.light.LightProbe;
 import com.jme3.material.Material;
-import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
@@ -47,15 +44,17 @@ import jme3utilities.SignalTracker;
 import jme3utilities.mesh.Octasphere;
 
 public class Main extends SimpleApplication {
+    // *************************************************************************
+    // constants and loggers
 
+    /**
+     * game environment/world
+     */
+    final private static Environment environment = new Playground();
     /**
      * message logger for this class
      */
     final private static Logger logger = Logger.getLogger(Main.class.getName());
-    /**
-     * drop location for vehicles added to the Playground TODO Environment i/f
-     */
-    final public static Vector3f dropLocation = new Vector3f(0f, 6f, 0f);
     // *************************************************************************
     // fields
 
@@ -103,6 +102,16 @@ public class Main extends SimpleApplication {
     public static Main getApplication() {
         assert application != null;
         return application;
+    }
+
+    /**
+     * Access the environment from a static context.
+     *
+     * @return the pre-existing instance (not null)
+     */
+    public static Environment getEnvironment() {
+        assert environment != null;
+        return environment;
     }
 
     /**
@@ -179,10 +188,10 @@ public class Main extends SimpleApplication {
         GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
 
         // Let there be light
+        float intensity = environment.directLightIntensity();
+        ColorRGBA directColor = ColorRGBA.White.mult(intensity);
         DirectionalLight directionalLight = new DirectionalLight(
-                new Vector3f(1, -.45f, 0.5f).normalizeLocal(),
-                ColorRGBA.White.clone()
-        );
+                new Vector3f(1f, -0.45f, 0.5f).normalizeLocal(), directColor);
         rootNode.addLight(directionalLight);
 
         String probeName = "/Probes/quarry_03.j3o";
@@ -222,27 +231,23 @@ public class Main extends SimpleApplication {
                     enqueue(() -> rootNode.attachChild(spatial));
                 });
 
-        // load the playground async.
+        // Load the Environment asynchronously.
         CompletableFuture
                 .supplyAsync(() -> {
-                    Node node = (Node) loadPlayground();
-                    RigidBodyControl rigidBodyControl = new RigidBodyControl(CollisionShapeFactory.createMeshShape(node), 0);
-                    node.addControl(rigidBodyControl);
+                    Node node = environment.load();
                     return node;
                 })
                 .whenComplete((node, ex) -> {
                     enqueue(() -> {
-                        rootNode.attachChild(node);
-                        RigidBodyControl rigidBodyControl = node.getControl(RigidBodyControl.class);
-                        bulletAppState.getPhysicsSpace().add(rigidBodyControl);
+                        environment.add(rootNode);
+                        loadingState.setEnabled(false);
 
-                        findAppState(LoadingState.class).setEnabled(false);
-                        stateManager.attach(new MainMenuState());
+                        MainMenuState mainMenuState = new MainMenuState();
+                        stateManager.attach(mainMenuState);
                     });
                 });
 
-        cam.setLocation(new Vector3f(-200, 50, -200));
-        cam.lookAt(new Vector3f(100, 10, 150), Vector3f.UNIT_Y);
+        environment.resetCameraPosition();
 
         rootNode.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         addPostProcessing(directionalLight);
@@ -318,50 +323,5 @@ public class Main extends SimpleApplication {
         result.setModelBound(bound);
 
         return result;
-    }
-
-    private Spatial loadPlayground() {
-        Material material = new Material(assetManager, "Common/MatDefs/Light/PBRLighting.j3md");
-
-        Texture baseColorMap = assetManager.loadTexture("Textures/Ground/Marble/marble_01_diff_2k.png");
-        baseColorMap.setWrap(Texture.WrapMode.Repeat);
-
-        Texture roughnessMap = assetManager.loadTexture("Textures/Ground/Marble/marble_01_rough_2k.png");
-        roughnessMap.setWrap(Texture.WrapMode.Repeat);
-
-        Texture aoMap = assetManager.loadTexture("Textures/Ground/Marble/marble_01_AO_2k.png");
-        aoMap.setWrap(Texture.WrapMode.Repeat);
-
-        //Texture dispMap = assetManager.loadTexture("Textures/Ground/Marble/marble_01_disp_2k.png");
-        //dispMap.setWrap(Texture.WrapMode.Repeat);
-        Texture normalMap = assetManager.loadTexture("Textures/Ground/Marble/marble_01_nor_2k.png");
-        normalMap.setWrap(Texture.WrapMode.Repeat);
-
-        material.setTexture("BaseColorMap", baseColorMap);
-        material.setTexture("RoughnessMap", roughnessMap);
-        material.setTexture("LightMap", aoMap);
-        material.setBoolean("LightMapAsAOMap", true);
-        //material.setTexture("ParallaxMap", dispMap);
-        material.setTexture("NormalMap", normalMap);
-        material.setFloat("NormalType", 1.0f);
-
-        // material.setColor("BaseColor", ColorRGBA.LightGray);
-        // material.setFloat("Roughness", 0.75f);
-        material.setFloat("Metallic", 0.001f);
-
-        // material.setBoolean("UseFog", true);
-        // material.setColor("FogColor", new ColorRGBA(0.5f, 0.6f, 0.7f, 1.0f));
-        // material.setFloat("ExpSqFog", 0.002f);
-        RenderState additional = material.getAdditionalRenderState();
-        additional.setFaceCullMode(RenderState.FaceCullMode.Off);
-
-        Spatial playground = assetManager.loadModel("Models/vehicle-playground/vehicle-playground.j3o");
-        playground.setMaterial(material);
-
-        Node p = (Node) playground;
-        p.breadthFirstTraversal(spatial -> spatial.setShadowMode(RenderQueue.ShadowMode.CastAndReceive));
-
-        playground.setName("playground");
-        return playground;
     }
 }
