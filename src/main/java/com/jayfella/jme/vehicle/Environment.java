@@ -9,6 +9,8 @@ import com.jme3.scene.Node;
 /**
  * A game environment/world, such as the Vehicle Playground. Doesn't include
  * sky.
+ *
+ * @author Stephen Gold sgold@sonic.net
  */
 abstract public class Environment {
     // *************************************************************************
@@ -62,13 +64,13 @@ abstract public class Environment {
 
     /**
      * Access the C-G model.
-     * 
+     *
      * @return the pre-existing Node, or null if not yet loaded
      */
     public Node getCgm() {
         return loadedCgm;
     }
-    
+
     /**
      * Load this Environment from assets.
      */

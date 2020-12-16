@@ -12,6 +12,8 @@ import com.jme3.scene.Node;
 
 /**
  * An Environment based on "race1.j3o", Adi Barda's racetrack model.
+ *
+ * @author Stephen Gold sgold@sonic.net
  */
 class Racetrack extends Environment {
     // *************************************************************************

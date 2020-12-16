@@ -18,13 +18,17 @@ import java.util.concurrent.CountDownLatch;
 
 /**
  * A simple loading state to entertain users. It displays a rotating texture
- * until a CountDownLatch reaches zero.
+ * until its CountDownLatch reaches zero.
  */
 public class LoadingState extends BaseAppState {
     // *************************************************************************
     // fields
 
+    /**
+     * keep track of how many assets loads are in progress
+     */
     final private CountDownLatch latch;
+
     private Node node = new Node("Loading Node");
     private Geometry backgroundGeom;
     private Node spinnerNode = new Node("Spinner Node");
@@ -35,21 +39,21 @@ public class LoadingState extends BaseAppState {
     /**
      * Instantiate an AppState for the specified latch.
      *
-     * @param latch the latch to monitor.
+     * @param latch the latch to monitor
      */
     public LoadingState(CountDownLatch latch) {
         this.latch = latch;
     }
 
     private Node createSpinnerNode(AssetManager assetManager) {
-
         Texture texture = assetManager.loadTexture("loading.png");
 
         Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         material.setTexture("ColorMap", texture);
         material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
 
-        Geometry spinnerGeom = new Geometry("Loading Circle", new Quad(texture.getImage().getWidth(), texture.getImage().getHeight()));
+        Geometry spinnerGeom = new Geometry("Loading Circle",
+                new Quad(texture.getImage().getWidth(), texture.getImage().getHeight()));
         spinnerGeom.setMaterial(material);
 
         spinnerGeom.setLocalTranslation(
@@ -59,8 +63,11 @@ public class LoadingState extends BaseAppState {
 
         spinnerNode.attachChild(spinnerGeom);
         spinnerNode.setLocalScale(0.25f);
-
-        // if we put this in the onEnable method we could set its location every time it's enabled just in-case the resolution changes.
+        /*
+         * If we put this in the onEnable() method,
+         * we could set its location every time.
+         * It's here in-case the display size changes.
+         */
         spinnerNode.setLocalTranslation(
                 (getApplication().getCamera().getWidth() * 0.5f),
                 (getApplication().getCamera().getHeight() * 0.5f),
@@ -71,7 +78,6 @@ public class LoadingState extends BaseAppState {
     }
 
     private Geometry createBackgroundGeom(AssetManager assetManager, Camera cam) {
-
         Geometry backgroundGeom = new Geometry("Background", new Quad(cam.getWidth(), cam.getHeight()));
         backgroundGeom.setMaterial(new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
         backgroundGeom.getMaterial().setColor("Color", new ColorRGBA(0.0f, 0.0f, 0.0f, 1.0f));
@@ -83,8 +89,7 @@ public class LoadingState extends BaseAppState {
     public void setShowBackground(boolean value) {
         if (value) {
             node.attachChild(backgroundGeom);
-        }
-        else {
+        } else {
             backgroundGeom.removeFromParent();
         }
     }
@@ -112,9 +117,14 @@ public class LoadingState extends BaseAppState {
         );
     }
 
+    /**
+     * Callback invoked during initialization once this AppState is attached but
+     * before onEnable() is called.
+     *
+     * @param app the application instance (not null)
+     */
     @Override
     protected void initialize(Application app) {
-
         spinnerNode = createSpinnerNode(app.getAssetManager());
         backgroundGeom = createBackgroundGeom(app.getAssetManager(), app.getCamera());
         label = createLabel();
@@ -127,16 +137,31 @@ public class LoadingState extends BaseAppState {
         setText("Loading...");
     }
 
+    /**
+     * Callback invoked after this AppState is detached or during application
+     * shutdown if the state is still attached. onDisable() is called before
+     * this cleanup() method if the state is enabled at the time of cleanup.
+     *
+     * @param app the application instance (not null)
+     */
     @Override
     protected void cleanup(Application app) {
-
+        // do nothing
     }
 
+    /**
+     * Callback invoked whenever this AppState becomes both attached and
+     * enabled.
+     */
     @Override
     protected void onEnable() {
-        ((SimpleApplication)getApplication()).getGuiNode().attachChild(node);
+        ((SimpleApplication) getApplication()).getGuiNode().attachChild(node);
     }
 
+    /**
+     * Callback invoked whenever this AppState ceases to be both attached and
+     * enabled.
+     */
     @Override
     protected void onDisable() {
         node.removeFromParent();
@@ -159,5 +184,4 @@ public class LoadingState extends BaseAppState {
             setEnabled(false);
         }
     }
-
 }
