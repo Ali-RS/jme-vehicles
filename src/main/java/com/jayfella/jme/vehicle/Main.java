@@ -3,7 +3,6 @@ package com.jayfella.jme.vehicle;
 import com.atr.jme.font.asset.TrueTypeLoader;
 import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.gui.LoadingState;
-import com.jayfella.jme.vehicle.gui.MainMenuState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
 import com.jme3.app.state.AppState;
@@ -35,6 +34,7 @@ import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.focus.FocusNavigationState;
 import com.simsilica.lemur.style.BaseStyles;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jme3utilities.MyCamera;
@@ -201,7 +201,8 @@ public class Main extends SimpleApplication {
         rootNode.addLight(probe);
 
         // display a rotating texture to entertain users
-        LoadingState loadingState = new LoadingState();
+        CountDownLatch latch = new CountDownLatch(2);
+        LoadingState loadingState = new LoadingState(latch);
         stateManager.attach(loadingState);
 
         // initialize physics with debug disabled
@@ -218,7 +219,7 @@ public class Main extends SimpleApplication {
                 = new ScreenshotAppState("./", "screen_shot");
         stateManager.attach(screenshotAppState);
 
-        // load the sky asyncronously
+        // Load the sky asynchronously.
         CompletableFuture
                 .supplyAsync(() -> {
                     Spatial sky = createSky(assetManager,
@@ -228,7 +229,10 @@ public class Main extends SimpleApplication {
                     return sky;
                 })
                 .whenComplete((spatial, ex) -> {
-                    enqueue(() -> rootNode.attachChild(spatial));
+                    enqueue(() -> {
+                        rootNode.attachChild(spatial);
+                        latch.countDown();
+                    });
                 });
 
         // Load the Environment asynchronously.
@@ -240,10 +244,7 @@ public class Main extends SimpleApplication {
                 .whenComplete((node, ex) -> {
                     enqueue(() -> {
                         environment.add(rootNode);
-                        loadingState.setEnabled(false);
-
-                        MainMenuState mainMenuState = new MainMenuState();
-                        stateManager.attach(mainMenuState);
+                        latch.countDown();
                     });
                 });
 

@@ -14,19 +14,31 @@ import com.jme3.scene.Node;
 import com.jme3.scene.shape.Quad;
 import com.jme3.texture.Texture;
 import com.simsilica.lemur.Label;
+import java.util.concurrent.CountDownLatch;
 
 /**
- * A simple loading state that rotates a texture.
+ * A simple loading state to entertain users. It displays a rotating texture
+ * until a CountDownLatch reaches zero.
  */
 public class LoadingState extends BaseAppState {
+    // *************************************************************************
+    // fields
 
+    final private CountDownLatch latch;
     private Node node = new Node("Loading Node");
     private Geometry backgroundGeom;
     private Node spinnerNode = new Node("Spinner Node");
     private Label label;
+    // *************************************************************************
+    // constructors
 
-    public LoadingState() {
-
+    /**
+     * Instantiate an AppState for the specified latch.
+     *
+     * @param latch the latch to monitor.
+     */
+    public LoadingState(CountDownLatch latch) {
+        this.latch = latch;
     }
 
     private Node createSpinnerNode(AssetManager assetManager) {
@@ -135,6 +147,17 @@ public class LoadingState extends BaseAppState {
     @Override
     public void update(float tpf) {
         spinnerNode.rotate(0, 0, -tpf * speedMult);
+
+        long latchCount = latch.getCount();
+        if (latchCount == 0L) {
+            /*
+             * All asynchronous asset loads have completed.
+             * Disable this AppState and display the main menu.
+             */
+            MainMenuState mainMenuState = new MainMenuState();
+            getStateManager().attach(mainMenuState);
+            setEnabled(false);
+        }
     }
 
 }
