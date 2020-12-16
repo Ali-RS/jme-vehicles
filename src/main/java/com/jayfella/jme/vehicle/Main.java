@@ -20,6 +20,7 @@ import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.input.Joystick;
 import com.jme3.input.JoystickConnectionListener;
 import com.jme3.light.DirectionalLight;
+import com.jme3.light.LightProbe;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
@@ -183,6 +184,12 @@ public class Main extends SimpleApplication {
                 ColorRGBA.White.clone()
         );
         rootNode.addLight(directionalLight);
+
+        String probeName = "/Probes/quarry_03.j3o";
+        LightProbe probe = (LightProbe) assetManager.loadAsset(probeName);
+        probe.setPosition(Vector3f.ZERO);
+        probe.getArea().setRadius(9_999f);
+        rootNode.addLight(probe);
 
         // display a rotating texture to entertain users
         LoadingState loadingState = new LoadingState();
