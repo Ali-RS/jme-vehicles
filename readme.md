@@ -126,7 +126,7 @@ Additional controls when the chase camera is active:
  + Numpad1 : dolly back (away from the vehicle)
  + Numpad8 or drag upward with MMB : orbit upward (to look down on the vehicle)
  + Numpad2 or drag downward with MMB : orbit downward (to look up at the vehicle)
- + Numpad5 : reset the viewpoint location relative to the vehicle
+ + Numpad5 or RMB : reset the viewpoint's position relative to the vehicle
 
 [Jump to table of contents](#toc)
 

@@ -250,6 +250,7 @@ public class KeyboardVehicleInputState
         inputMapper.map(F_CAMERA_DRAG_TO_ORBIT1, Button.MOUSE_BUTTON3);
         inputMapper.map(F_CAMERA_FORWARD1, KeyInput.KEY_NUMPAD7);
         inputMapper.map(F_CAMERA_RESET_FOV, KeyInput.KEY_NUMPAD6);
+        inputMapper.map(F_CAMERA_RESET_OFFSET, Button.MOUSE_BUTTON2);
         inputMapper.map(F_CAMERA_RESET_OFFSET, KeyInput.KEY_NUMPAD5);
         inputMapper.map(F_CAMERA_UP1, KeyInput.KEY_NUMPAD8);
         inputMapper.map(F_CAMERA_XRAY1, KeyInput.KEY_NUMPAD0);
