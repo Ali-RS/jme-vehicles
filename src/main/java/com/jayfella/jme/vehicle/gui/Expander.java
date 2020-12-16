@@ -40,7 +40,7 @@ abstract class Expander implements MouseListener {
     // constructors
 
     /**
-     * Instantiate an Expander for the specified spatial.
+     * Instantiate an Expander for the specified Spatial.
      *
      * @param buttonSpatial the Spatial to expand (not null, alias created)
      */
@@ -55,8 +55,8 @@ abstract class Expander implements MouseListener {
     // new methods exposed
 
     /**
-     * Callback invoked when the button is clicked on. Afterward, the causative
-     * MouseButtonEvent is consumed.
+     * Callback invoked when the button is clicked using the LMB. Afterward, the
+     * causative MouseButtonEvent is consumed.
      *
      * @param isPressed true&rarr;pressed, false&rarr;released
      */
@@ -67,9 +67,12 @@ abstract class Expander implements MouseListener {
     @Override
     public void mouseButtonEvent(MouseButtonEvent event, Spatial s1,
             Spatial s2) {
-        boolean isPressed = event.isPressed();
-        onClick(isPressed);
-        event.setConsumed();
+        int buttonIndex = event.getButtonIndex();
+        if (buttonIndex == 0) { // ignore buttons other than the LMB
+            boolean isPressed = event.isPressed();
+            onClick(isPressed);
+            event.setConsumed();
+        }
     }
 
     @Override
