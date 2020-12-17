@@ -13,47 +13,81 @@ import com.jayfella.jme.vehicle.examples.cars.HatchBack;
 import com.jayfella.jme.vehicle.examples.cars.PickupTruck;
 import com.jayfella.jme.vehicle.input.KeyboardVehicleInputState;
 import com.jme3.app.Application;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.scene.Node;
 import com.simsilica.lemur.Button;
+import java.util.logging.Logger;
 
-public class CarSelectorMenuState extends AnimatedMenuState {
+/**
+ * An animated menu to choose among the available vehicles.
+ */
+class CarSelectorMenuState extends AnimatedMenuState {
+    // *************************************************************************
+    // constants and loggers
+
+    /**
+     * message logger for this class
+     */
+    final private static Logger logger
+            = Logger.getLogger(CarSelectorMenuState.class.getName());
+    // *************************************************************************
+    // fields
 
     private final Node scene;
     private final PhysicsSpace physicsSpace;
+    // *************************************************************************
+    // constructors
 
     public CarSelectorMenuState(Node scene, PhysicsSpace physicsSpace) {
         this.scene = scene;
         this.physicsSpace = physicsSpace;
     }
+    // *************************************************************************
+    // AnimatedMenuState methods
 
     @Override
     protected Button[] createItems() {
-        Button[] buttons = new Button[]{
-            new Button("Grand Tourer"),
-            new Button("GTR Nismo"),
-            new Button("Pickup Truck"),
-            new Button("Hatchback"),
-            new Button("Dune Buggy"),
-            new Button("<< Back")
-        };
-
         Application app = getApplication();
-        buttons[0].addClickCommands(source -> setVehicle(new GrandTourer(app)));
-        buttons[1].addClickCommands(source -> setVehicle(new GTRNismo(app)));
-        buttons[2].addClickCommands(source -> setVehicle(new PickupTruck(app)));
-        buttons[3].addClickCommands(source -> setVehicle(new HatchBack(app)));
-        buttons[4].addClickCommands(source -> setVehicle(new DuneBuggy(app)));
+        AppStateManager stateManager = getStateManager();
 
-        buttons[5].addClickCommands(source -> {
+        Button gtButton = new Button("Grand Tourer");
+        gtButton.addClickCommands(source -> setVehicle(new GrandTourer(app)));
+
+        Button nismoButton = new Button("GTR Nismo");
+        nismoButton.addClickCommands(source -> setVehicle(new GTRNismo(app)));
+
+        Button pickupButton = new Button("Pickup Truck");
+        pickupButton.addClickCommands(source
+                -> setVehicle(new PickupTruck(app)));
+
+        Button hatchbackButton = new Button("Hatchback");
+        hatchbackButton.addClickCommands(source
+                -> setVehicle(new HatchBack(app)));
+
+        Button buggyButton = new Button("Dune Buggy");
+        buggyButton.addClickCommands(source -> setVehicle(new DuneBuggy(app)));
+
+        Button backButton = new Button("<< Back");
+        backButton.addClickCommands(source -> {
             animateOut(() -> {
-                getStateManager().attach(new MainMenuState());
-                getStateManager().detach(this);
+                stateManager.attach(new MainMenuState());
+                stateManager.detach(this);
             });
         });
 
-        return buttons;
+        Button[] result = new Button[]{
+            gtButton,
+            nismoButton,
+            pickupButton,
+            hatchbackButton,
+            buggyButton,
+            backButton
+        };
+        return result;
     }
+    // *************************************************************************
+    // private methods
 
     private void addVehicle(Car vehicle) {
         DriverHud hud = Main.findAppState(DriverHud.class);
@@ -64,25 +98,26 @@ public class CarSelectorMenuState extends AnimatedMenuState {
 
         // handle keyboard/mouse inputs
         KeyboardVehicleInputState inputState = new KeyboardVehicleInputState(vehicle);
-        getStateManager().attach(inputState);
+        AppStateManager stateManager = getStateManager();
+        stateManager.attach(inputState);
 
         // engine graph GUI for viewing torque/power @ revs
         EnginePowerGraphState enginePowerGraphState = new EnginePowerGraphState(vehicle);
         enginePowerGraphState.setEnabled(false);
-        getStateManager().attach(enginePowerGraphState);
+        stateManager.attach(enginePowerGraphState);
 
         // tire data GUI for viewing how much grip each tire has according to the Pacejka formula
         TireDataState tireDataState = new TireDataState(vehicle);
         tireDataState.setEnabled(false);
-        getStateManager().attach(tireDataState);
+        stateManager.attach(tireDataState);
 
         // the main vehicle editor to modify aspects of the vehicle in real time
         VehicleEditorState vehicleEditorState = new VehicleEditorState(vehicle);
-        getStateManager().attach(vehicleEditorState);
+        stateManager.attach(vehicleEditorState);
 
         // vehicle debug add-on to enable/disable debug screens
         DebugTabState debugTabState = new DebugTabState();
-        getStateManager().attach(debugTabState);
+        stateManager.attach(debugTabState);
     }
 
     private void setVehicle(Car newVehicle) {
