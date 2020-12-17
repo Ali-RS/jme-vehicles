@@ -125,7 +125,7 @@ public class KeyboardVehicleInputState
     final private SignalTracker signalTracker;
     private final Vehicle vehicle;
     private VehicleCamera activeCam;
-    private VehicleCamView cameraMode = VehicleCamView.DashCam;
+    private VehicleCamView cameraMode = VehicleCamView.ChaseCam;
     // *************************************************************************
     // constructors
 
