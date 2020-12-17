@@ -7,7 +7,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.scene.Geometry;
 
 /**
- * Appstate to manage a car's active skidmarks, one for each wheel.
+ * AppState to manage a car's active skidmarks, one skidmark for each wheel.
  */
 public class SkidMarksState extends BaseAppState {
     // *************************************************************************
@@ -15,15 +15,33 @@ public class SkidMarksState extends BaseAppState {
 
     private boolean skidmarkEnabled = true;
     final private Car vehicle;
-    private WheelSkid[] skids;
-    private int numWheels;
     final private float tireWidth;
+    private int numWheels;
+    private WheelSkid[] skids;
     // *************************************************************************
     // constructors
 
     public SkidMarksState(Car vehicle, float tireWidth) {
         this.vehicle = vehicle;
         this.tireWidth = tireWidth;
+    }
+    // *************************************************************************
+    // new methods exposed
+
+    /**
+     * Stop adding more skidmarks.
+     *
+     * @param enabled whether or not to show more skidmarks.
+     */
+    public void setSkidmarkEnabled(boolean enabled) {
+        skidmarkEnabled = enabled;
+    }
+    // *************************************************************************
+    // BaseAppState methods
+
+    @Override
+    protected void cleanup(Application app) {
+        // do nothing
     }
 
     @Override
@@ -38,16 +56,6 @@ public class SkidMarksState extends BaseAppState {
     }
 
     @Override
-    protected void cleanup(Application app) {
-        // do nothing
-    }
-
-    @Override
-    protected void onEnable() {
-        // do nothing
-    }
-
-    @Override
     protected void onDisable() {
         for (int i = 0; i < numWheels; ++i) {
             WheelSkid skid = skids[i];
@@ -57,6 +65,11 @@ public class SkidMarksState extends BaseAppState {
                 geometry.removeFromParent();
             }
         }
+    }
+
+    @Override
+    protected void onEnable() {
+        // do nothing
     }
 
     @Override
@@ -74,14 +87,5 @@ public class SkidMarksState extends BaseAppState {
                 skid.update(tpf);
             }
         }
-    }
-
-    /**
-     * Stop adding more skidmarks.
-     *
-     * @param enabled whether or not to show more skidmarks.
-     */
-    public void setSkidmarkEnabled(boolean enabled) {
-        skidmarkEnabled = enabled;
     }
 }
