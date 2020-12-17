@@ -14,7 +14,6 @@ import com.jayfella.jme.vehicle.examples.cars.PickupTruck;
 import com.jayfella.jme.vehicle.input.KeyboardVehicleInputState;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.bullet.PhysicsSpace;
 import com.jme3.scene.Node;
 import com.simsilica.lemur.Button;
 import java.util.logging.Logger;
@@ -35,13 +34,11 @@ class CarSelectorMenuState extends AnimatedMenuState {
     // fields
 
     private final Node scene;
-    private final PhysicsSpace physicsSpace;
     // *************************************************************************
     // constructors
 
-    public CarSelectorMenuState(Node scene, PhysicsSpace physicsSpace) {
+    public CarSelectorMenuState(Node scene) {
         this.scene = scene;
-        this.physicsSpace = physicsSpace;
     }
     // *************************************************************************
     // AnimatedMenuState methods
@@ -94,7 +91,7 @@ class CarSelectorMenuState extends AnimatedMenuState {
         hud.setCar(vehicle);
         hud.setEnabled(true);
 
-        vehicle.attachToScene(scene, physicsSpace);
+        vehicle.attachToScene(scene);
 
         // handle keyboard/mouse inputs
         KeyboardVehicleInputState inputState = new KeyboardVehicleInputState(vehicle);

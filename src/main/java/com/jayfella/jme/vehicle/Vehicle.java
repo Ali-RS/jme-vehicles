@@ -68,12 +68,15 @@ public abstract class Vehicle {
 
     public abstract void applyEngineBraking();
 
-    public void attachToScene(Node parent, PhysicsSpace physicsSpace) {
+    public void attachToScene(Node parent) {
         warpToStart();
         getNode().setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         enable();
 
         parent.attachChild(node);
+
+        BulletAppState bulletAppState = Main.findAppState(BulletAppState.class);
+        PhysicsSpace physicsSpace = bulletAppState.getPhysicsSpace();
         physicsSpace.add(vehicleControl);
     }
 
