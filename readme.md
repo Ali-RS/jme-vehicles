@@ -206,7 +206,7 @@ Resources/assets/media:
 + The [GT model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/GT)
   has a CC Attribution-NonCommercial-ShareAlike license.
 + The [gtr_nismo model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/gtr_nismo)
-  has a CC Attribution-NoDerivs license.
+  has a CC Attribution-NonCommercial-ShareAlike license.
 + The [racetrack model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/race1)
   has an Unlicense and a Creative Commons Zero v1.0 Universal license.
 + The [vehicle-playground model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/vehicle-playground)
