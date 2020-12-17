@@ -249,8 +249,6 @@ public class Main extends SimpleApplication {
                 .supplyAsync(() -> {
                     Spatial sky = createSky(assetManager,
                             "Textures/Sky/quarry_03_4k.jpg");
-                    sky.setQueueBucket(RenderQueue.Bucket.Sky);
-                    sky.setShadowMode(RenderQueue.ShadowMode.Off);
                     return sky;
                 })
                 .whenComplete((spatial, ex) -> {
