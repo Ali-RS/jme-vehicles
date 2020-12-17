@@ -62,9 +62,8 @@ public class CarSelectorMenuState extends AnimatedMenuState {
 
         vehicle.attachToScene(scene, physicsSpace);
 
-        // handle keyboard/mouse/joystick inputs
+        // handle keyboard/mouse inputs
         KeyboardVehicleInputState inputState = new KeyboardVehicleInputState(vehicle);
-        // XBoxJoystickVehicleInputState inputState = new XBoxJoystickVehicleInputState(vehicle);
         getStateManager().attach(inputState);
 
         // engine graph GUI for viewing torque/power @ revs
