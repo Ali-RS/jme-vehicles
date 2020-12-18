@@ -118,6 +118,7 @@ class CarSelectorMenuState extends AnimatedMenuState {
     }
 
     private void setVehicle(Car newVehicle) {
+        newVehicle.load();
         addVehicle(newVehicle);
         getStateManager().detach(this);
     }

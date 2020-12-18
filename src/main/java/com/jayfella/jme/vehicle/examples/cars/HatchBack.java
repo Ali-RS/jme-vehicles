@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle.examples.cars;
 
 import com.jayfella.jme.vehicle.Car;
+import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.engine.Engine;
 import com.jayfella.jme.vehicle.examples.engines.Engine180HP;
 import com.jayfella.jme.vehicle.examples.tires.Tire_02;
@@ -19,8 +20,14 @@ public class HatchBack extends Car {
 
     public HatchBack(Application app) {
         super(app, "HatchBack");
+    }
 
-        AssetManager assetManager = app.getAssetManager();
+    /**
+     * Load this Vehicle from assets. TODO re-order methods
+     */
+    @Override
+    public void load() {
+        AssetManager assetManager = Main.getApplication().getAssetManager();
 
         Spatial chassis = assetManager.loadModel("Models/Vehicles/Chassis/Hatchback/hatchback.j3o");
         Material chassisMaterial = assetManager.loadMaterial("Materials/Vehicles/Hatchback.j3m");

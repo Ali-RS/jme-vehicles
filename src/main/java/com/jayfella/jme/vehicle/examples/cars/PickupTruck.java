@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle.examples.cars;
 
 import com.jayfella.jme.vehicle.Car;
+import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.engine.Engine;
 import com.jayfella.jme.vehicle.examples.engines.Engine450HP;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
@@ -23,8 +24,14 @@ public class PickupTruck extends Car {
 
     public PickupTruck(Application app) {
         super(app, "Pickup Truck");
+    }
 
-        AssetManager assetManager = app.getAssetManager();
+    /**
+     * Load this Vehicle from assets. TODO re-order methods
+     */
+    @Override
+    public void load() {
+        AssetManager assetManager = Main.getApplication().getAssetManager();
 
         // the chassis model, aligned in blender so it points "forward".
         // see here for blender alignment: https://i.ibb.co/jrBtz5K/image.png

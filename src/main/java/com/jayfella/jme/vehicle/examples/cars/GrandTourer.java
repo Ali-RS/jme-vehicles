@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle.examples.cars;
 
 import com.jayfella.jme.vehicle.Car;
+import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.engine.Engine;
 import com.jayfella.jme.vehicle.examples.engines.Engine450HP;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
@@ -18,8 +19,14 @@ public class GrandTourer extends Car {
 
     public GrandTourer(Application app) {
         super(app, "Grand Tourer");
+    }
 
-        AssetManager assetManager = app.getAssetManager();
+    /**
+     * Load this Vehicle from assets. TODO re-order methods
+     */
+    @Override
+    public void load() {
+        AssetManager assetManager = Main.getApplication().getAssetManager();
 
         Spatial chassis = assetManager.loadModel("Models/GT/scene.gltf.j3o");
         chassis.setLocalScale(0.2f);

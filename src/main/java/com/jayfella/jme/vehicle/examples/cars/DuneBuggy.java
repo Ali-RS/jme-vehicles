@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle.examples.cars;
 
 import com.jayfella.jme.vehicle.Car;
+import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.engine.Engine;
 import com.jayfella.jme.vehicle.examples.engines.Engine250HP;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
@@ -19,8 +20,14 @@ public class DuneBuggy extends Car {
 
     public DuneBuggy(Application app) {
         super(app, "Dune Buggy");
+    }
 
-        AssetManager assetManager = app.getAssetManager();
+    /**
+     * Load this Vehicle from assets. TODO re-order methods
+     */
+    @Override
+    public void load() {
+        AssetManager assetManager = Main.getApplication().getAssetManager();
 
         Spatial chassis = assetManager.loadModel("Models/Vehicles/Chassis/DuneBuggy/dune-buggy.j3o");
         Material chassisMaterial = assetManager.loadMaterial("Materials/Vehicles/DuneBuggy.j3m");

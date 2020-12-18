@@ -174,6 +174,11 @@ public abstract class Vehicle {
         return parkingBrakeApplied;
     }
 
+    /**
+     * Load this Vehicle from assets.
+     */
+    abstract public void load();
+
     public abstract void removeEngineBraking();
 
     public void setChassis(Spatial chassis, float mass) {
