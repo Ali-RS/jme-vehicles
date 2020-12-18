@@ -31,10 +31,10 @@ public class LoadingState extends BaseAppState {
      */
     final private CountDownLatch latch;
 
-    private float speedMult = 3.0f;
+    final private float speedMult = 3.0f;
     private Geometry backgroundGeom;
     private Label label;
-    private Node node = new Node("Loading Node");
+    final private Node node = new Node("Loading Node");
     private Node spinnerNode = new Node("Spinner Node");
     // *************************************************************************
     // constructors
