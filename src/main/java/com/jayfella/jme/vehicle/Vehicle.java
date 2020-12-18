@@ -306,9 +306,6 @@ public abstract class Vehicle {
     protected void build() {
         gearboxState = new AutomaticGearboxState(this);
         vehicleAudioState = new VehicleAudioState(this);
-
-        app.getStateManager().attach(gearboxState);
-        app.getStateManager().attach(vehicleAudioState);
     }
 
     protected void disable() {
