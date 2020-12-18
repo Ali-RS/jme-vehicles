@@ -9,17 +9,28 @@ import com.jayfella.jme.vehicle.examples.wheels.BasicAlloyWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Brake;
 import com.jayfella.jme.vehicle.part.GearBox;
-import com.jme3.app.Application;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DuneBuggy extends Car {
+    // *************************************************************************
+    // constants and loggers
 
-    public DuneBuggy(Application app) {
-        super(app, "Dune Buggy");
+    /**
+     * message logger for this class
+     */
+    final public static Logger logger
+            = Logger.getLogger(DuneBuggy.class.getName());
+    // *************************************************************************
+    // constructors
+
+    public DuneBuggy() {
+        super(Main.getApplication(), "Dune Buggy");
     }
     // *************************************************************************
     // Car methods
@@ -39,8 +50,12 @@ public class DuneBuggy extends Car {
      */
     @Override
     public void load() {
-        AssetManager assetManager = Main.getApplication().getAssetManager();
+        if (getVehicleControl() != null) {
+            logger.log(Level.SEVERE, "The model is already loaded.");
+            return;
+        }
 
+        AssetManager assetManager = Main.getApplication().getAssetManager();
         Spatial chassis = assetManager.loadModel("Models/Vehicles/Chassis/DuneBuggy/dune-buggy.j3o");
         Material chassisMaterial = assetManager.loadMaterial("Materials/Vehicles/DuneBuggy.j3m");
         chassis.setMaterial(chassisMaterial);

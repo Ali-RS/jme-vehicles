@@ -12,7 +12,6 @@ import com.jayfella.jme.vehicle.examples.cars.GrandTourer;
 import com.jayfella.jme.vehicle.examples.cars.HatchBack;
 import com.jayfella.jme.vehicle.examples.cars.PickupTruck;
 import com.jayfella.jme.vehicle.input.KeyboardVehicleInputState;
-import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.scene.Node;
 import com.simsilica.lemur.Button;
@@ -45,25 +44,24 @@ class CarSelectorMenuState extends AnimatedMenuState {
 
     @Override
     protected Button[] createItems() {
-        Application app = getApplication();
         AppStateManager stateManager = getStateManager();
 
         Button gtButton = new Button("Grand Tourer");
-        gtButton.addClickCommands(source -> setVehicle(new GrandTourer(app)));
+        gtButton.addClickCommands(source -> setVehicle(new GrandTourer()));
 
         Button nismoButton = new Button("GTR Nismo");
-        nismoButton.addClickCommands(source -> setVehicle(new GTRNismo(app)));
+        nismoButton.addClickCommands(source -> setVehicle(new GTRNismo()));
 
         Button pickupButton = new Button("Pickup Truck");
         pickupButton.addClickCommands(source
-                -> setVehicle(new PickupTruck(app)));
+                -> setVehicle(new PickupTruck()));
 
         Button hatchbackButton = new Button("Hatchback");
         hatchbackButton.addClickCommands(source
-                -> setVehicle(new HatchBack(app)));
+                -> setVehicle(new HatchBack()));
 
         Button buggyButton = new Button("Dune Buggy");
-        buggyButton.addClickCommands(source -> setVehicle(new DuneBuggy(app)));
+        buggyButton.addClickCommands(source -> setVehicle(new DuneBuggy()));
 
         Button backButton = new Button("<< Back");
         backButton.addClickCommands(source -> {

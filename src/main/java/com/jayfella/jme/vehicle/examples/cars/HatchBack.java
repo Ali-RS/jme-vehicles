@@ -9,17 +9,28 @@ import com.jayfella.jme.vehicle.examples.wheels.BasicAlloyWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Brake;
 import com.jayfella.jme.vehicle.part.GearBox;
-import com.jme3.app.Application;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HatchBack extends Car {
+    // *************************************************************************
+    // constants and loggers
 
-    public HatchBack(Application app) {
-        super(app, "HatchBack");
+    /**
+     * message logger for this class
+     */
+    final public static Logger logger
+            = Logger.getLogger(HatchBack.class.getName());
+    // *************************************************************************
+    // constructors
+
+    public HatchBack() {
+        super(Main.getApplication(), "HatchBack");
     }
     // *************************************************************************
     // Car methods
@@ -39,8 +50,11 @@ public class HatchBack extends Car {
      */
     @Override
     public void load() {
-        AssetManager assetManager = Main.getApplication().getAssetManager();
+        if (getVehicleControl() != null) {
+            logger.log(Level.SEVERE, "The model is already loaded.");
+        }
 
+        AssetManager assetManager = Main.getApplication().getAssetManager();
         Spatial chassis = assetManager.loadModel("Models/Vehicles/Chassis/Hatchback/hatchback.j3o");
         Material chassisMaterial = assetManager.loadMaterial("Materials/Vehicles/Hatchback.j3m");
         chassis.setMaterial(chassisMaterial);

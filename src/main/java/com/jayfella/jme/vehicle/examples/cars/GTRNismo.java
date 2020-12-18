@@ -9,18 +9,27 @@ import com.jayfella.jme.vehicle.examples.wheels.DarkAlloyWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Brake;
 import com.jayfella.jme.vehicle.part.GearBox;
-import com.jme3.app.Application;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GTRNismo extends Car {
+    // *************************************************************************
+    // constants and loggers
+
+    /**
+     * message logger for this class
+     */
+    final public static Logger logger
+            = Logger.getLogger(GTRNismo.class.getName());
 
     private final float scale = 0.01f;
 
-    public GTRNismo(Application app) {
-        super(app, "GTR Nismo");
+    public GTRNismo() {
+        super(Main.getApplication(), "GTR Nismo");
     }
     // *************************************************************************
     // Car methods
@@ -40,8 +49,11 @@ public class GTRNismo extends Car {
      */
     @Override
     public void load() {
-        AssetManager assetManager = Main.getApplication().getAssetManager();
+        if (getVehicleControl() != null) {
+            logger.log(Level.SEVERE, "The model is already loaded.");
+        }
 
+        AssetManager assetManager = Main.getApplication().getAssetManager();
         Spatial chassis = assetManager.loadModel("Models/gtr_nismo/scene.gltf.j3o");
         chassis.setLocalScale(scale);
         // chassis.breadthFirstTraversal(new WheelVisitor());

@@ -10,20 +10,31 @@ import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Brake;
 import com.jayfella.jme.vehicle.part.Gear;
 import com.jayfella.jme.vehicle.part.GearBox;
-import com.jme3.app.Application;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * An example Car vehicle.
  */
 public class PickupTruck extends Car {
+    // *************************************************************************
+    // constants and loggers
 
-    public PickupTruck(Application app) {
-        super(app, "Pickup Truck");
+    /**
+     * message logger for this class
+     */
+    final public static Logger logger
+            = Logger.getLogger(PickupTruck.class.getName());
+    // *************************************************************************
+    // constructors
+
+    public PickupTruck() {
+        super(Main.getApplication(), "Pickup Truck");
     }
     // *************************************************************************
     // Car methods
@@ -43,6 +54,10 @@ public class PickupTruck extends Car {
      */
     @Override
     public void load() {
+        if (getVehicleControl() != null) {
+            logger.log(Level.SEVERE, "The model is already loaded.");
+        }
+
         AssetManager assetManager = Main.getApplication().getAssetManager();
 
         // the chassis model, aligned in blender so it points "forward".
@@ -64,7 +79,6 @@ public class PickupTruck extends Car {
         // Add each wheel. The order is not important, but lets do it FL, FR, RL, RR.
         // In this vehicle we're just going to clone the wheel above for every wheel.
         // We're NOT going to clone the material, but if you're implementing damage, you might want to.
-
         WheelModel wheel_fl = new BasicAlloyWheel(assetManager, 1.1f);
 
         WheelModel wheel_fr = new BasicAlloyWheel(assetManager, 1.1f);
@@ -77,7 +91,6 @@ public class PickupTruck extends Car {
 
         // add the wheels, setting the position, whether or not they steer, and a brake with force.
         // if you want rear-wheel steering, you will also want to "flip" the steering.
-
         addWheel(wheel_fl.getWheelNode(), new Vector3f(0.8f, .5f, 1.7f), true, false, new Brake(90));
         addWheel(wheel_fr.getWheelNode(), new Vector3f(-.8f, .5f, 1.7f), true, false, new Brake(90));
 
@@ -132,13 +145,12 @@ public class PickupTruck extends Car {
 
         // define a gearbox. Each gear does NOT need to begin where the last one ends.
         // the "end" value of the last gear will dictate the maximum speed this vehicle can go.
-        GearBox gearBox = new GearBox(new Gear[] {
-                new Gear(0, 19),
-                new Gear(15, 48),
-                new Gear(35, 112),
-                new Gear(100, 192),
-                new Gear(180, 254),
-        });
+        GearBox gearBox = new GearBox(new Gear[]{
+            new Gear(0, 19),
+            new Gear(15, 48),
+            new Gear(35, 112),
+            new Gear(100, 192),
+            new Gear(180, 254),});
 
         setGearBox(gearBox);
 
