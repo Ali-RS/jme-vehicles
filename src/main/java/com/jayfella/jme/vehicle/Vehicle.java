@@ -172,7 +172,7 @@ public abstract class Vehicle {
 
     public abstract void removeEngineBraking();
 
-    public void setChassis(Spatial chassis, float mass) {
+    protected void setChassis(Spatial chassis, float mass) {
         this.chassis = chassis;
         CollisionShape chassisCollisionShape
                 = CollisionShapeFactory.createDynamicMeshShape(chassis);
@@ -181,12 +181,12 @@ public abstract class Vehicle {
         node.attachChild(chassis);
     }
 
-    public void setEngine(Engine engine) {
+    protected void setEngine(Engine engine) {
         this.engine = engine;
         node.attachChild(this.engine.getEngineAudio());
     }
 
-    public void setGearBox(GearBox gearBox) {
+    protected void setGearBox(GearBox gearBox) {
         this.gearBox = gearBox;
     }
 
@@ -195,7 +195,7 @@ public abstract class Vehicle {
      *
      * @param assetPath the path to the OGG asset (not null, not empty)
      */
-    public void setHornAudio(String assetPath) {
+    protected void setHornAudio(String assetPath) {
         AssetManager assetManager = app.getAssetManager();
         hornAudio = new AudioNode(assetManager, assetPath,
                 AudioData.DataType.Stream);
