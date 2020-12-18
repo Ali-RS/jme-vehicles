@@ -82,8 +82,7 @@ abstract public class AnimatedMenu extends BaseAppState {
     }
 
     /**
-     * Callback invoked whenever this menu becomes both attached and
-     * enabled.
+     * Callback invoked whenever this menu becomes both attached and enabled.
      */
     @Override
     protected void onEnable() {

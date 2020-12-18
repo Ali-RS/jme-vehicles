@@ -123,10 +123,9 @@ public class ChaseCamera
     // new methods exposed
 
     /**
-     * Alter the offset.
+     * Alter the offset of the camera from the target vehicle.
      *
-     * @param desiredOffset the offset from the target vehicle (in world
-     * coordinates)
+     * @param desiredOffset the desired offset (in world coordinates)
      */
     public void setOffset(Vector3f desiredOffset) {
         Validate.finite(desiredOffset, "offset");
@@ -341,8 +340,7 @@ public class ChaseCamera
             /*
              * Test the sightline for obstructions, from target to camera.
              */
-            PhysicsCollisionObject targetPco
-                    = vehicle.getVehicleControl();
+            PhysicsCollisionObject targetPco = vehicle.getVehicleControl();
             CollisionSpace collisionSpace = targetPco.getCollisionSpace();
             float rayRange = Math.max(range, preferredRange);
             tmpLook.mult(-rayRange, offset);
