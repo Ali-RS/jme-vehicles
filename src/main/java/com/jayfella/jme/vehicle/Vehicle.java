@@ -33,8 +33,12 @@ public abstract class Vehicle {
     public enum SpeedUnit {
         KMH, MPH
     }
+    // *************************************************************************
+    // constants and loggers
 
     public static final float KMH_TO_MPH = 0.62137f;
+    // *************************************************************************
+    // fields
 
     final private Application app;
     private AudioNode hornAudio;
@@ -48,12 +52,16 @@ public abstract class Vehicle {
     private String name;
     private VehicleAudioState vehicleAudioState;
     private VehicleControl vehicleControl;
+    // *************************************************************************
+    // constructors
 
     public Vehicle(Application app, String name) {
         this.app = app;
         this.name = name;
         node = new Node("Vehicle: " + name);
     }
+    // *************************************************************************
+    // new methods exposed
 
     /**
      * Accelerate the vehicle with the given power.
@@ -172,39 +180,6 @@ public abstract class Vehicle {
 
     public abstract void removeEngineBraking();
 
-    protected void setChassis(Spatial chassis, float mass) {
-        this.chassis = chassis;
-        CollisionShape chassisCollisionShape
-                = CollisionShapeFactory.createDynamicMeshShape(chassis);
-        vehicleControl = new VehicleControl(chassisCollisionShape, mass);
-        node.addControl(vehicleControl);
-        node.attachChild(chassis);
-    }
-
-    protected void setEngine(Engine engine) {
-        this.engine = engine;
-        node.attachChild(this.engine.getEngineAudio());
-    }
-
-    protected void setGearBox(GearBox gearBox) {
-        this.gearBox = gearBox;
-    }
-
-    /**
-     * Create and attach an audio node for the vehicle's horn.
-     *
-     * @param assetPath the path to the OGG asset (not null, not empty)
-     */
-    protected void setHornAudio(String assetPath) {
-        AssetManager assetManager = app.getAssetManager();
-        hornAudio = new AudioNode(assetManager, assetPath,
-                AudioData.DataType.Stream);
-        hornAudio.setLooping(true);
-        hornAudio.setPositional(true);
-        hornAudio.setDirectional(false);
-        node.attachChild(hornAudio);
-    }
-
     /**
      * Update the status of the horn.
      *
@@ -322,9 +297,11 @@ public abstract class Vehicle {
         vehicleControl.setAngularVelocity(Vector3f.ZERO);
         vehicleControl.setLinearVelocity(Vector3f.ZERO);
     }
+    // *************************************************************************
+    // new protected methods
 
     /**
-     * Should be called last when all vehicle parts have been built and added.
+     * Should be invoked last, after all parts have been configured and added.
      */
     protected void build() {
         gearboxState = new AutomaticGearboxState(this);
@@ -342,6 +319,39 @@ public abstract class Vehicle {
     protected void enable() {
         app.getStateManager().attach(gearboxState);
         app.getStateManager().attach(vehicleAudioState);
+    }
+
+    protected void setChassis(Spatial chassis, float mass) {
+        this.chassis = chassis;
+        CollisionShape chassisCollisionShape
+                = CollisionShapeFactory.createDynamicMeshShape(chassis);
+        vehicleControl = new VehicleControl(chassisCollisionShape, mass);
+        node.addControl(vehicleControl);
+        node.attachChild(chassis);
+    }
+
+    protected void setEngine(Engine engine) {
+        this.engine = engine;
+        node.attachChild(this.engine.getEngineAudio());
+    }
+
+    protected void setGearBox(GearBox gearBox) {
+        this.gearBox = gearBox;
+    }
+
+    /**
+     * Create and attach an audio node for the vehicle's horn.
+     *
+     * @param assetPath the path to the OGG asset (not null, not empty)
+     */
+    protected void setHornAudio(String assetPath) {
+        AssetManager assetManager = app.getAssetManager();
+        hornAudio = new AudioNode(assetManager, assetPath,
+                AudioData.DataType.Stream);
+        hornAudio.setLooping(true);
+        hornAudio.setPositional(true);
+        hornAudio.setDirectional(false);
+        node.attachChild(hornAudio);
     }
 
     /**
