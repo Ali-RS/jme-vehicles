@@ -140,17 +140,17 @@ public class LoadingState extends BaseAppState {
         spinnerNode.rotate(0, 0, -tpf * spinRate);
 
         long latchCount = latch.getCount();
-        if (latchCount == 0L) {
+        if (latchCount < 1L) {
             /*
              * All asynchronous asset loads have completed.
+             *
+             * Attach the assets to the scene, bring up the main menu,
+             * and self-detach.
              */
-            Main.getApplication().attachAllToScene();
-            /*
-             * Disable this AppState and display the main menu.
-             */
-            MainMenu mainMenuState = new MainMenu();
-            getStateManager().attach(mainMenuState);
-            setEnabled(false);
+            Main application = Main.getApplication();
+            application.attachAllToScene();
+            getStateManager().attach(new MainMenu());
+            application.getStateManager().detach(this);
         }
     }
     // *************************************************************************
