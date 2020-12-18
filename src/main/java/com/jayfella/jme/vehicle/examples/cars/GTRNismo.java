@@ -22,9 +22,21 @@ public class GTRNismo extends Car {
     public GTRNismo(Application app) {
         super(app, "GTR Nismo");
     }
+    // *************************************************************************
+    // Car methods
 
     /**
-     * Load this Vehicle from assets. TODO re-order methods
+     * Determine the offset of the Nismo's DashCamera.
+     *
+     * @return a new offset vector (in scaled shape coordinates)
+     */
+    @Override
+    public Vector3f dashCamOffset() {
+        return new Vector3f(0f, 1.5f, 0.5f);
+    }
+
+    /**
+     * Load this Vehicle from assets.
      */
     @Override
     public void load() {
@@ -89,19 +101,6 @@ public class GTRNismo extends Car {
         super.setHornAudio("Audio/horn-1.ogg");
 
         build();
-
-    }
-    // *************************************************************************
-    // Vehicle methods
-
-    /**
-     * Determine the offset of the Nismo's DashCamera.
-     *
-     * @return a new offset vector (in scaled shape coordinates)
-     */
-    @Override
-    public Vector3f dashCamOffset() {
-        return new Vector3f(0f, 1.5f, 0.5f);
     }
 
     /**

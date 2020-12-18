@@ -21,9 +21,21 @@ public class HatchBack extends Car {
     public HatchBack(Application app) {
         super(app, "HatchBack");
     }
+    // *************************************************************************
+    // Car methods
 
     /**
-     * Load this Vehicle from assets. TODO re-order methods
+     * Determine the offset of the hatchback's DashCamera.
+     *
+     * @return a new offset vector (in scaled shape coordinates)
+     */
+    @Override
+    public Vector3f dashCamOffset() {
+        return new Vector3f(0f, 1.6f, 0.3f);
+    }
+
+    /**
+     * Load this Vehicle from assets.
      */
     @Override
     public void load() {
@@ -49,7 +61,6 @@ public class HatchBack extends Car {
 
         addWheel(wheel_rl.getWheelNode(), new Vector3f(0.75f, 0, -1.3f), false, false, new Brake(0));
         addWheel(wheel_rr.getWheelNode(), new Vector3f(-0.75f, 0, -1.3f), false, false, new Brake(0));
-
 
         for (int i = 0; i < getNumWheels(); i++) {
             getWheel(i).getSuspension().setRestLength(0.01f);
@@ -88,19 +99,6 @@ public class HatchBack extends Car {
         super.setHornAudio("Audio/horn-1.ogg");
 
         build();
-
-    }
-    // *************************************************************************
-    // Vehicle methods
-
-    /**
-     * Determine the offset of the hatchback's DashCamera.
-     *
-     * @return a new offset vector (in scaled shape coordinates)
-     */
-    @Override
-    public Vector3f dashCamOffset() {
-        return new Vector3f(0f, 1.6f, 0.3f);
     }
 
     /**

@@ -20,9 +20,21 @@ public class GrandTourer extends Car {
     public GrandTourer(Application app) {
         super(app, "Grand Tourer");
     }
+    // *************************************************************************
+    // Car methods
 
     /**
-     * Load this Vehicle from assets. TODO re-order methods
+     * Determine the offset of the Grand Tourer's DashCamera.
+     *
+     * @return a new offset vector (in scaled shape coordinates)
+     */
+    @Override
+    public Vector3f dashCamOffset() {
+        return new Vector3f(0f, 1.5f, 0.5f);
+    }
+
+    /**
+     * Load this Vehicle from assets.
      */
     @Override
     public void load() {
@@ -42,13 +54,11 @@ public class GrandTourer extends Car {
 
         WheelModel wheel_rr = new CruiserWheel(assetManager, 0.85f);
 
-
         addWheel(wheel_fl.getWheelNode(), new Vector3f(0.85f, .35f, 1.6f), true, false, new Brake(700));
         addWheel(wheel_fr.getWheelNode(), new Vector3f(-0.85f, .35f, 1.6f), true, false, new Brake(700));
 
         addWheel(wheel_rl.getWheelNode(), new Vector3f(0.85f, .45f, -1.6f), false, false, new Brake(0));
         addWheel(wheel_rr.getWheelNode(), new Vector3f(-0.85f, .45f, -1.6f), false, false, new Brake(0));
-
 
         for (int i = 0; i < getNumWheels(); i++) {
             // getWheel(i).getSuspension().setRestLength(0.285f);
@@ -93,19 +103,6 @@ public class GrandTourer extends Car {
         super.setHornAudio("Audio/horn-1.ogg");
 
         build();
-
-    }
-    // *************************************************************************
-    // Vehicle methods
-
-    /**
-     * Determine the offset of the Grand Tourer's DashCamera.
-     *
-     * @return a new offset vector (in scaled shape coordinates)
-     */
-    @Override
-    public Vector3f dashCamOffset() {
-        return new Vector3f(0f, 1.5f, 0.5f);
     }
 
     /**

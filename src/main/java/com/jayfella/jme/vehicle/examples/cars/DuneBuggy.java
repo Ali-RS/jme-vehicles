@@ -21,9 +21,21 @@ public class DuneBuggy extends Car {
     public DuneBuggy(Application app) {
         super(app, "Dune Buggy");
     }
+    // *************************************************************************
+    // Car methods
 
     /**
-     * Load this Vehicle from assets. TODO re-order methods
+     * Determine the offset of the dune buggy's DashCamera.
+     *
+     * @return a new offset vector (in scaled shape coordinates)
+     */
+    @Override
+    public Vector3f dashCamOffset() {
+        return new Vector3f(0f, 1f, 0.1f);
+    }
+
+    /**
+     * Load this Vehicle from assets.
      */
     @Override
     public void load() {
@@ -35,7 +47,6 @@ public class DuneBuggy extends Car {
         setChassis(chassis, 525);
 
         // rotate the right-sided wheels 180 degrees.
-
         WheelModel wheel_fl = new BasicAlloyWheel(assetManager, 0.75f);
         wheel_fl.getSpatial().rotate(0, FastMath.PI, 0);
 
@@ -45,7 +56,6 @@ public class DuneBuggy extends Car {
         wheel_rl.getSpatial().rotate(0, FastMath.PI, 0);
 
         WheelModel wheel_rr = new BasicAlloyWheel(assetManager, 0.75f);
-
 
         addWheel(wheel_fl.getWheelNode(), new Vector3f(0.75f, .25f, 1.2f), true, false, new Brake(80));
         addWheel(wheel_fr.getWheelNode(), new Vector3f(-0.75f, .25f, 1.2f), true, false, new Brake(80));
@@ -91,19 +101,6 @@ public class DuneBuggy extends Car {
         super.setHornAudio("Audio/horn-1.ogg");
 
         build();
-
-    }
-    // *************************************************************************
-    // Vehicle methods
-
-    /**
-     * Determine the offset of the dune buggy's DashCamera.
-     *
-     * @return a new offset vector (in scaled shape coordinates)
-     */
-    @Override
-    public Vector3f dashCamOffset() {
-        return new Vector3f(0f, 1f, 0.1f);
     }
 
     /**

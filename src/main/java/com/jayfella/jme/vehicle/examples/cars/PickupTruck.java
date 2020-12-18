@@ -25,9 +25,21 @@ public class PickupTruck extends Car {
     public PickupTruck(Application app) {
         super(app, "Pickup Truck");
     }
+    // *************************************************************************
+    // Car methods
 
     /**
-     * Load this Vehicle from assets. TODO re-order methods
+     * Determine the offset of the truck's DashCamera.
+     *
+     * @return a new offset vector (in scaled shape coordinates)
+     */
+    @Override
+    public Vector3f dashCamOffset() {
+        return new Vector3f(0f, 1.7f, 1.3f);
+    }
+
+    /**
+     * Load this Vehicle from assets.
      */
     @Override
     public void load() {
@@ -143,18 +155,6 @@ public class PickupTruck extends Car {
         // this MUST be called last.
         // in the car implementation it initializes the skidmarks and smoke emitters for each wheel.
         build();
-    }
-    // *************************************************************************
-    // Vehicle methods
-
-    /**
-     * Determine the offset of the truck's DashCamera.
-     *
-     * @return a new offset vector (in scaled shape coordinates)
-     */
-    @Override
-    public Vector3f dashCamOffset() {
-        return new Vector3f(0f, 1.7f, 1.3f);
     }
 
     /**
