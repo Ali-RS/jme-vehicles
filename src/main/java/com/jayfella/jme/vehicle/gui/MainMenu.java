@@ -8,7 +8,6 @@ import com.jayfella.jme.vehicle.debug.TireDataState;
 import com.jayfella.jme.vehicle.debug.VehicleEditorState;
 import com.jayfella.jme.vehicle.input.KeyboardVehicleInputState;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.scene.Node;
 import com.simsilica.lemur.Button;
 import java.util.logging.Logger;
 
@@ -42,8 +41,7 @@ public class MainMenu extends AnimatedMenu {
 
         Button vehicleButton = new Button("Change Vehicle");
         vehicleButton.addClickCommands(source -> {
-            Node envNode = Main.getEnvironment().getCgm();
-            stateManager.attach(new CarMenu(envNode));
+            stateManager.attach(new CarMenu());
             stateManager.detach(this);
         });
 

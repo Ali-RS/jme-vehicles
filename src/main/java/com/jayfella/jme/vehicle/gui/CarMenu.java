@@ -8,7 +8,6 @@ import com.jayfella.jme.vehicle.examples.cars.GrandTourer;
 import com.jayfella.jme.vehicle.examples.cars.HatchBack;
 import com.jayfella.jme.vehicle.examples.cars.PickupTruck;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.scene.Node;
 import com.simsilica.lemur.Button;
 import java.util.logging.Logger;
 
@@ -24,16 +23,6 @@ class CarMenu extends AnimatedMenu {
      */
     final private static Logger logger
             = Logger.getLogger(CarMenu.class.getName());
-    // *************************************************************************
-    // fields
-
-    private final Node scene;
-    // *************************************************************************
-    // constructors
-
-    public CarMenu(Node scene) {
-        this.scene = scene;
-    }
     // *************************************************************************
     // AnimatedMenuState methods
 
