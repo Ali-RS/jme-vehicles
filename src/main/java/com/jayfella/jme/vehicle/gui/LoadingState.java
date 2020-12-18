@@ -78,12 +78,12 @@ public class LoadingState extends BaseAppState {
     }
 
     private Geometry createBackgroundGeom(AssetManager assetManager, Camera cam) {
-        Geometry backgroundGeom = new Geometry("Background", new Quad(cam.getWidth(), cam.getHeight()));
-        backgroundGeom.setMaterial(new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
-        backgroundGeom.getMaterial().setColor("Color", new ColorRGBA(0.0f, 0.0f, 0.0f, 1.0f));
-        backgroundGeom.getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+        Geometry result = new Geometry("Background", new Quad(cam.getWidth(), cam.getHeight()));
+        result.setMaterial(new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
+        result.getMaterial().setColor("Color", new ColorRGBA(0.0f, 0.0f, 0.0f, 1.0f));
+        result.getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
 
-        return backgroundGeom;
+        return result;
     }
 
     public void setShowBackground(boolean value) {
