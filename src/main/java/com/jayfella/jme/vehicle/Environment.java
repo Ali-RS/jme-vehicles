@@ -25,7 +25,7 @@ abstract public class Environment {
 
     /**
      * Add this loaded environment to the specified scene-graph node and also to
-     * the PhysicsSpace.
+     * the PhysicsSpace. TODO rename attachToScene()
      */
     void add(Node parent) {
         assert loadedCgm != null;
@@ -74,11 +74,11 @@ abstract public class Environment {
     /**
      * Load this Environment from assets.
      */
-    abstract Node load();
+    abstract public Node load();
 
     /**
      * Remove this loaded environment from the scene-graph node and PhysicsSpace
-     * to which it has been added.
+     * to which it has been added. TODO rename detachFromScene()
      */
     void remove() {
         RigidBodyControl rigidBodyControl

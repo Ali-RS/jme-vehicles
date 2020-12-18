@@ -55,7 +55,7 @@ public class Racetrack extends Environment {
      * Load this Environment from assets.
      */
     @Override
-    Node load() {
+    public Node load() {
         assert loadedCgm == null : "The model is already loaded.";
 
         AssetManager assetManager = Main.getApplication().getAssetManager();
