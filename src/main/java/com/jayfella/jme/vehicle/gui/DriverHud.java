@@ -6,7 +6,6 @@ import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.VehicleAudioState;
 import com.jayfella.jme.vehicle.input.KeyboardVehicleInputState;
 import com.jme3.app.Application;
-import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
@@ -390,8 +389,7 @@ public class DriverHud extends BaseAppState {
      * @param spatial (not null, alias created)
      */
     private void attachToGui(Spatial spatial) {
-        SimpleApplication simpleApp = Main.getApplication();
-        Node guiNode = simpleApp.getGuiNode();
+        Node guiNode = Main.getApplication().getGuiNode();
         guiNode.attachChild(spatial);
     }
 
