@@ -1,8 +1,10 @@
 package com.jayfella.jme.vehicle.gui;
 
 import com.jayfella.jme.vehicle.Main;
+import com.jayfella.jme.vehicle.input.NonDrivingInputState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
@@ -146,10 +148,13 @@ public class LoadingState extends BaseAppState {
              * Attach the assets to the scene, bring up the main menu,
              * and self-detach.
              */
-            Main application = Main.getApplication();
-            application.attachAllToScene();
-            getStateManager().attach(new MainMenu());
-            application.getStateManager().detach(this);
+            Main.getApplication().attachAllToScene();
+
+            AppStateManager stateManager = getStateManager();
+            stateManager.attach(new MainMenu());
+            stateManager.attach(new NonDrivingInputState());
+
+            stateManager.detach(this);
         }
     }
     // *************************************************************************

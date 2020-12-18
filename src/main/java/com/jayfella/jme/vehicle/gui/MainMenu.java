@@ -7,6 +7,7 @@ import com.jayfella.jme.vehicle.debug.EnginePowerGraphState;
 import com.jayfella.jme.vehicle.debug.TireDataState;
 import com.jayfella.jme.vehicle.debug.VehicleEditorState;
 import com.jayfella.jme.vehicle.input.KeyboardVehicleInputState;
+import com.jayfella.jme.vehicle.input.NonDrivingInputState;
 import com.jme3.app.state.AppStateManager;
 import com.simsilica.lemur.Button;
 import java.util.logging.Logger;
@@ -19,7 +20,7 @@ public class MainMenu extends AnimatedMenu {
      * message logger for this class
      */
     final private static Logger logger
-            = Logger.getLogger(EnvironmentMenu.class.getName());
+            = Logger.getLogger(MainMenu.class.getName());
     // *************************************************************************
     // AnimatedMenuState methods
 
@@ -66,15 +67,18 @@ public class MainMenu extends AnimatedMenu {
      * Drive the selected vehicle in the selected environment.
      */
     private void drive() {
-        Car vehicle = (Car) Main.getVehicle();
+        AppStateManager stateManager = getStateManager();
+        NonDrivingInputState orbit
+                = stateManager.getState(NonDrivingInputState.class);
+        stateManager.detach(orbit);
 
+        Car vehicle = (Car) Main.getVehicle();
         DriverHud hud = Main.findAppState(DriverHud.class);
         hud.setCar(vehicle);
         hud.setEnabled(true);
 
         // handle keyboard/mouse inputs
         KeyboardVehicleInputState inputState = new KeyboardVehicleInputState(vehicle);
-        AppStateManager stateManager = getStateManager();
         stateManager.attach(inputState);
 
         // engine graph GUI for viewing torque/power @ revs

@@ -4,6 +4,7 @@ import com.atr.jme.font.asset.TrueTypeLoader;
 import com.jayfella.jme.vehicle.examples.cars.GrandTourer;
 import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.gui.LoadingState;
+import com.jayfella.jme.vehicle.input.NonDrivingInputState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
 import com.jme3.app.state.AppState;
@@ -197,6 +198,12 @@ public class Main extends SimpleApplication {
 
         environment = newEnvironment;
         attachAllToScene();
+        /*
+         * Re-use the existing input state with the new Vehicle instance.
+         */
+        NonDrivingInputState inputState
+                = Main.findAppState(NonDrivingInputState.class);
+        inputState.setVehicle(vehicle);
     }
 
     /**

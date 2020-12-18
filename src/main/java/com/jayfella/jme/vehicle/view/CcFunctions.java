@@ -1,7 +1,7 @@
 package com.jayfella.jme.vehicle.view;
 
 /**
- * Enumerate the ChaseCamera functions that can be controlled by signals.
+ * Enumerate camera functions that can be controlled by signals. TODO rename
  *
  * @author Stephen Gold sgold@sonic.net
  */
@@ -21,6 +21,14 @@ public enum CcFunctions {
      * translate forward (camera's look or +Z direction)
      */
     Forward,
+    /**
+     * orbit counter-clockwise (world +Y axis), moving to the camera's right
+     */
+    OrbitCcw,
+    /**
+     * orbit clockwise (world -Y axis), moving to the camera's left
+     */
+    OrbitCw,
     /**
      * orbit in the camera's actual "down" direction
      */

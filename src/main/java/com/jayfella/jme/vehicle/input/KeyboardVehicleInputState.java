@@ -37,6 +37,10 @@ import jme3utilities.debug.Dumper;
 import jme3utilities.minie.FilterAll;
 import jme3utilities.minie.PhysicsDumper;
 
+/**
+ * An AppState to handle input while driving a Vehicle. There are 2 camera
+ * modes: one for the dash camera and one for the orbit camera. TODO rename
+ */
 public class KeyboardVehicleInputState
         extends BaseAppState
         implements StateFunctionListener {
@@ -130,9 +134,9 @@ public class KeyboardVehicleInputState
     // constructors
 
     /**
-     * Instantiate an input state to control the specified Vehicle.
+     * Instantiate an input state to drive the specified Vehicle.
      *
-     * @param vehicle the Vehicle to control (not null)
+     * @param vehicle the Vehicle to drive (not null)
      */
     public KeyboardVehicleInputState(Vehicle vehicle) {
         this.vehicle = vehicle;
@@ -165,11 +169,10 @@ public class KeyboardVehicleInputState
     }
 
     /**
-     * Unload the vehicle and return to the main menu.
+     * Stop driving, reload the vehicle, and return to the main menu.
      */
     public void returnToMainMenu() {
-        Main app = Main.getApplication();
-        AppStateManager stateManager = app.getStateManager();
+        AppStateManager stateManager = getStateManager();
         stateManager.detach(this);
 
         EnginePowerGraphState enginePowerGraphState
@@ -204,8 +207,10 @@ public class KeyboardVehicleInputState
             throw new RuntimeException(exception);
         }
         newVehicle.load();
-        app.setVehicle(newVehicle);
+        Main.getApplication().setVehicle(newVehicle);
+
         stateManager.attach(new MainMenu());
+        stateManager.attach(new NonDrivingInputState());
 
         Main.getEnvironment().resetCameraPosition();
     }
@@ -450,10 +455,14 @@ public class KeyboardVehicleInputState
 
     private void resetCameraOffset() {
         if (activeCam instanceof ChaseCamera) {
-            ChaseCamera chaseCam = (ChaseCamera) activeCam;
+            /*
+             * Locate the camera 20 wu behind and 5 wu above the target vehicle.
+             */
             Vector3f offset = vehicle.forwardDirection(null);
             offset.multLocal(-20f);
             offset.y += 5f;
+
+            ChaseCamera chaseCam = (ChaseCamera) activeCam;
             chaseCam.setOffset(offset);
         }
     }
