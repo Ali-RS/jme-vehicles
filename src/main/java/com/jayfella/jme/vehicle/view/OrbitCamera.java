@@ -166,7 +166,7 @@ public class OrbitCamera
         Validate.nonNegative(reading, "reading");
         Validate.nonNegative(tpf, "time per frame");
 
-        boolean isDragToOrbit = isActive(CcFunctions.DragToOrbit);
+        boolean isDragToOrbit = isActive(CameraSignal.DragToOrbit);
         switch (eventName) {
             case analogOrbitCcw:
                 if (isDragToOrbit) {
@@ -234,7 +234,7 @@ public class OrbitCamera
         /*
          * Hide the cursor if dragging.
          */
-        boolean cursorVisible = !isActive(CcFunctions.DragToOrbit);
+        boolean cursorVisible = !isActive(CameraSignal.DragToOrbit);
         InputManager inputManager = Main.getApplication().getInputManager();
         inputManager.setCursorVisible(cursorVisible);
         /*
@@ -244,7 +244,7 @@ public class OrbitCamera
         int orbitUpSign = 0;
         int orbitCwSign = 0;
         int zoomSignalDirection = 0;
-        for (CcFunctions function : CcFunctions.values()) {
+        for (CameraSignal function : CameraSignal.values()) {
             if (isActive(function)) {
                 switch (function) {
                     case Back:
@@ -347,7 +347,7 @@ public class OrbitCamera
         assert tmpLook.isUnitVector() : tmpLook;
         camera.lookAtDirection(tmpLook, preferredUpDirection);
 
-        boolean xrayVision = isActive(CcFunctions.Xray);
+        boolean xrayVision = isActive(CameraSignal.Xray);
         if (forwardSum != 0) {
             range *= FastMath.exp(-tpf * forwardSum); // TODO move rate?
             if (forwardSum > 0 || xrayVision) {

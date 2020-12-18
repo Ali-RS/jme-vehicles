@@ -1,11 +1,11 @@
 package com.jayfella.jme.vehicle.view;
 
 /**
- * Enumerate camera functions that can be controlled by signals. TODO rename
+ * Enumerate camera functions that can be controlled by signals.
  *
  * @author Stephen Gold sgold@sonic.net
  */
-public enum CcFunctions {
+public enum CameraSignal {
     // *************************************************************************
     // values
 

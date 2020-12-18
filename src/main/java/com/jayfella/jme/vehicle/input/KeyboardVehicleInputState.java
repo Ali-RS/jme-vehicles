@@ -8,7 +8,7 @@ import com.jayfella.jme.vehicle.debug.TireDataState;
 import com.jayfella.jme.vehicle.debug.VehicleEditorState;
 import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.gui.MainMenu;
-import com.jayfella.jme.vehicle.view.CcFunctions;
+import com.jayfella.jme.vehicle.view.CameraSignal;
 import com.jayfella.jme.vehicle.view.ChaseCamera;
 import com.jayfella.jme.vehicle.view.DashCamera;
 import com.jayfella.jme.vehicle.view.VehicleCamView;
@@ -61,9 +61,9 @@ public class KeyboardVehicleInputState
     private static final FunctionId F_CAMERA_RESET_FOV
             = new FunctionId(G_VEHICLE, "Camera Reset FOV");
     private static final FunctionId F_CAMERA_ZOOM_IN1
-            = new FunctionId(G_VEHICLE, CcFunctions.ZoomIn.toString());
+            = new FunctionId(G_VEHICLE, CameraSignal.ZoomIn.toString());
     private static final FunctionId F_CAMERA_ZOOM_OUT1
-            = new FunctionId(G_VEHICLE, CcFunctions.ZoomOut.toString());
+            = new FunctionId(G_VEHICLE, CameraSignal.ZoomOut.toString());
     private static final FunctionId F_CAMVIEW
             = new FunctionId(G_VEHICLE, "Camera View");
     private static final FunctionId F_DUMP_CAMERA
@@ -100,19 +100,19 @@ public class KeyboardVehicleInputState
      * ChaseCamera function IDs
      */
     private static final FunctionId F_CAMERA_BACK1
-            = new FunctionId(G_CAMERA, CcFunctions.Back.toString());
+            = new FunctionId(G_CAMERA, CameraSignal.Back.toString());
     private static final FunctionId F_CAMERA_DOWN1
-            = new FunctionId(G_CAMERA, CcFunctions.OrbitDown.toString());
+            = new FunctionId(G_CAMERA, CameraSignal.OrbitDown.toString());
     private static final FunctionId F_CAMERA_DRAG_TO_ORBIT1
-            = new FunctionId(G_CAMERA, CcFunctions.DragToOrbit.toString());
+            = new FunctionId(G_CAMERA, CameraSignal.DragToOrbit.toString());
     private static final FunctionId F_CAMERA_FORWARD1
-            = new FunctionId(G_CAMERA, CcFunctions.Forward.toString());
+            = new FunctionId(G_CAMERA, CameraSignal.Forward.toString());
     private static final FunctionId F_CAMERA_RESET_OFFSET
             = new FunctionId(G_CAMERA, "Camera Reset Offset");
     private static final FunctionId F_CAMERA_UP1
-            = new FunctionId(G_CAMERA, CcFunctions.OrbitUp.toString());
+            = new FunctionId(G_CAMERA, CameraSignal.OrbitUp.toString());
     private static final FunctionId F_CAMERA_XRAY1
-            = new FunctionId(G_CAMERA, CcFunctions.Xray.toString());
+            = new FunctionId(G_CAMERA, CameraSignal.Xray.toString());
     // *************************************************************************
     // fields
 
@@ -143,7 +143,7 @@ public class KeyboardVehicleInputState
 
         signalTracker = new SignalTracker();
         signalTracker.add("horn");
-        for (CcFunctions function : CcFunctions.values()) {
+        for (CameraSignal function : CameraSignal.values()) {
             String signalName = function.toString();
             signalTracker.add(signalName);
         }
@@ -379,18 +379,19 @@ public class KeyboardVehicleInputState
             vehicle.getVehicleControl().setLinearVelocity(Vector3f.ZERO);
 
         } else if (func == F_CAMERA_BACK1) {
-            signalTracker.setActive(CcFunctions.Back.toString(), 1, pressed);
+            signalTracker.setActive(CameraSignal.Back.toString(), 1, pressed);
 
         } else if (func == F_CAMERA_DOWN1) {
-            signalTracker.setActive(
-                    CcFunctions.OrbitDown.toString(), 1, pressed);
+            signalTracker.setActive(CameraSignal.OrbitDown.toString(),
+                    1, pressed);
 
         } else if (func == F_CAMERA_DRAG_TO_ORBIT1) {
-            signalTracker.setActive(
-                    CcFunctions.DragToOrbit.toString(), 1, pressed);
+            signalTracker.setActive(CameraSignal.DragToOrbit.toString(),
+                    1, pressed);
 
         } else if (func == F_CAMERA_FORWARD1) {
-            signalTracker.setActive(CcFunctions.Forward.toString(), 1, pressed);
+            signalTracker.setActive(CameraSignal.Forward.toString(),
+                    1, pressed);
 
         } else if (func == F_CAMERA_RESET_OFFSET && pressed) {
             resetCameraOffset();
@@ -400,16 +401,19 @@ public class KeyboardVehicleInputState
             MyCamera.setYTangent(cam, 1f);
 
         } else if (func == F_CAMERA_UP1) {
-            signalTracker.setActive(CcFunctions.OrbitUp.toString(), 1, pressed);
+            signalTracker.setActive(CameraSignal.OrbitUp.toString(),
+                    1, pressed);
 
         } else if (func == F_CAMERA_XRAY1) {
-            signalTracker.setActive(CcFunctions.Xray.toString(), 1, pressed);
+            signalTracker.setActive(CameraSignal.Xray.toString(), 1, pressed);
 
         } else if (func == F_CAMERA_ZOOM_IN1) {
-            signalTracker.setActive(CcFunctions.ZoomIn.toString(), 1, pressed);
+            signalTracker.setActive(CameraSignal.ZoomIn.toString(),
+                    1, pressed);
 
         } else if (func == F_CAMERA_ZOOM_OUT1) {
-            signalTracker.setActive(CcFunctions.ZoomOut.toString(), 1, pressed);
+            signalTracker.setActive(CameraSignal.ZoomOut.toString(),
+                    1, pressed);
 
         } else if (func == F_DUMP_CAMERA && pressed) {
             dumpCamera();
@@ -480,7 +484,7 @@ public class KeyboardVehicleInputState
                 ChaseCamera chaseCam = new ChaseCamera(vehicle, cam,
                         signalTracker, obstructionFilter);
                 activeCam = chaseCam;
-                for (CcFunctions function : CcFunctions.values()) {
+                for (CameraSignal function : CameraSignal.values()) {
                     String signalName = function.toString();
                     chaseCam.setSignalName(function, signalName);
                 }
@@ -490,10 +494,10 @@ public class KeyboardVehicleInputState
                 DashCamera dashCam
                         = new DashCamera(vehicle, cam, signalTracker);
                 activeCam = dashCam;
-                dashCam.setSignalName(CcFunctions.ZoomIn,
-                        CcFunctions.ZoomIn.toString());
-                dashCam.setSignalName(CcFunctions.ZoomOut,
-                        CcFunctions.ZoomOut.toString());
+                dashCam.setSignalName(CameraSignal.ZoomIn,
+                        CameraSignal.ZoomIn.toString());
+                dashCam.setSignalName(CameraSignal.ZoomOut,
+                        CameraSignal.ZoomOut.toString());
                 break;
 
             default:

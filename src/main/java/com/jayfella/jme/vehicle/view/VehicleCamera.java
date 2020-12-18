@@ -42,8 +42,8 @@ abstract public class VehicleCamera {
     /**
      * map functions to signal names
      */
-    final protected EnumMap<CcFunctions, String> signalNames
-            = new EnumMap<>(CcFunctions.class);
+    final protected EnumMap<CameraSignal, String> signalNames
+            = new EnumMap<>(CameraSignal.class);
     /**
      * status of named signals
      */
@@ -75,7 +75,7 @@ abstract public class VehicleCamera {
      * @param function which function to alter (not null)
      * @param signalName the desired signal name (may be null)
      */
-    public void setSignalName(CcFunctions function, String signalName) {
+    public void setSignalName(CameraSignal function, String signalName) {
         Validate.nonNull(function, "function");
         signalNames.put(function, signalName);
     }
@@ -96,7 +96,7 @@ abstract public class VehicleCamera {
      *
      * @param function the function to test (not null)
      */
-    protected boolean isActive(CcFunctions function) {
+    protected boolean isActive(CameraSignal function) {
         String signalName = signalNames.get(function);
         if (signalName != null && signalTracker.test(signalName)) {
             return true;

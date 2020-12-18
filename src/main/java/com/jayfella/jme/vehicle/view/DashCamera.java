@@ -119,7 +119,7 @@ public class DashCamera
          * Sum the discrete inputs (signals).
          */
         int zoomSignalDirection = 0;
-        for (CcFunctions function : CcFunctions.values()) {
+        for (CameraSignal function : CameraSignal.values()) {
             if (isActive(function)) {
                 switch (function) {
                     case Back:

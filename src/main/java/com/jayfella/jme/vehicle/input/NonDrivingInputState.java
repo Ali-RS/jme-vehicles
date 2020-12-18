@@ -2,7 +2,7 @@ package com.jayfella.jme.vehicle.input;
 
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Vehicle;
-import com.jayfella.jme.vehicle.view.CcFunctions;
+import com.jayfella.jme.vehicle.view.CameraSignal;
 import com.jayfella.jme.vehicle.view.OrbitCamera;
 import com.jayfella.jme.vehicle.view.VehicleCamera;
 import com.jme3.app.Application;
@@ -49,9 +49,9 @@ public class NonDrivingInputState
     private static final FunctionId F_CAMERA_RESET_FOV
             = new FunctionId(G_ORBIT, "Camera Reset FOV");
     private static final FunctionId F_CAMERA_ZOOM_IN1
-            = new FunctionId(G_ORBIT, CcFunctions.ZoomIn.toString());
+            = new FunctionId(G_ORBIT, CameraSignal.ZoomIn.toString());
     private static final FunctionId F_CAMERA_ZOOM_OUT1
-            = new FunctionId(G_ORBIT, CcFunctions.ZoomOut.toString());
+            = new FunctionId(G_ORBIT, CameraSignal.ZoomOut.toString());
     private static final FunctionId F_DUMP_CAMERA
             = new FunctionId(G_ORBIT, "Dump Camera");
     private static final FunctionId F_DUMP_PHYSICS
@@ -63,17 +63,17 @@ public class NonDrivingInputState
     private static final FunctionId F_SCREEN_SHOT
             = new FunctionId(G_ORBIT, "ScreenShot");
     private static final FunctionId F_CAMERA_BACK1
-            = new FunctionId(G_ORBIT, CcFunctions.Back.toString());
+            = new FunctionId(G_ORBIT, CameraSignal.Back.toString());
     private static final FunctionId F_CAMERA_DOWN1
-            = new FunctionId(G_ORBIT, CcFunctions.OrbitDown.toString());
+            = new FunctionId(G_ORBIT, CameraSignal.OrbitDown.toString());
     private static final FunctionId F_CAMERA_DRAG_TO_ORBIT1
-            = new FunctionId(G_ORBIT, CcFunctions.DragToOrbit.toString());
+            = new FunctionId(G_ORBIT, CameraSignal.DragToOrbit.toString());
     private static final FunctionId F_CAMERA_FORWARD1
-            = new FunctionId(G_ORBIT, CcFunctions.Forward.toString());
+            = new FunctionId(G_ORBIT, CameraSignal.Forward.toString());
     private static final FunctionId F_CAMERA_RESET_OFFSET
             = new FunctionId(G_ORBIT, "Camera Reset Offset");
     private static final FunctionId F_CAMERA_UP1
-            = new FunctionId(G_ORBIT, CcFunctions.OrbitUp.toString());
+            = new FunctionId(G_ORBIT, CameraSignal.OrbitUp.toString());
     // *************************************************************************
     // fields
 
@@ -92,14 +92,14 @@ public class NonDrivingInputState
         Camera cam = Main.getApplication().getCamera();
 
         signalTracker = new SignalTracker();
-        for (CcFunctions function : CcFunctions.values()) {
+        for (CameraSignal function : CameraSignal.values()) {
             String signalName = function.toString();
             signalTracker.add(signalName);
         }
 
         FilterAll filter = new FilterAll(true);
         activeCam = new OrbitCamera(cam, signalTracker, filter);
-        for (CcFunctions function : CcFunctions.values()) {
+        for (CameraSignal function : CameraSignal.values()) {
             String signalName = function.toString();
             activeCam.setSignalName(function, signalName);
         }
@@ -219,18 +219,19 @@ public class NonDrivingInputState
         boolean pressed = (value == InputState.Positive);
 
         if (func == F_CAMERA_BACK1) {
-            signalTracker.setActive(CcFunctions.Back.toString(), 1, pressed);
+            signalTracker.setActive(CameraSignal.Back.toString(), 1, pressed);
 
         } else if (func == F_CAMERA_DOWN1) {
-            signalTracker.setActive(
-                    CcFunctions.OrbitDown.toString(), 1, pressed);
+            signalTracker.setActive(CameraSignal.OrbitDown.toString(),
+                    1, pressed);
 
         } else if (func == F_CAMERA_DRAG_TO_ORBIT1) {
-            signalTracker.setActive(
-                    CcFunctions.DragToOrbit.toString(), 1, pressed);
+            signalTracker.setActive(CameraSignal.DragToOrbit.toString(),
+                    1, pressed);
 
         } else if (func == F_CAMERA_FORWARD1) {
-            signalTracker.setActive(CcFunctions.Forward.toString(), 1, pressed);
+            signalTracker.setActive(CameraSignal.Forward.toString(),
+                    1, pressed);
 
         } else if (func == F_CAMERA_RESET_OFFSET && pressed) {
             resetCameraOffset();
@@ -240,13 +241,16 @@ public class NonDrivingInputState
             MyCamera.setYTangent(cam, 1f);
 
         } else if (func == F_CAMERA_UP1) {
-            signalTracker.setActive(CcFunctions.OrbitUp.toString(), 1, pressed);
+            signalTracker.setActive(CameraSignal.OrbitUp.toString(),
+                    1, pressed);
 
         } else if (func == F_CAMERA_ZOOM_IN1) {
-            signalTracker.setActive(CcFunctions.ZoomIn.toString(), 1, pressed);
+            signalTracker.setActive(CameraSignal.ZoomIn.toString(),
+                    1, pressed);
 
         } else if (func == F_CAMERA_ZOOM_OUT1) {
-            signalTracker.setActive(CcFunctions.ZoomOut.toString(), 1, pressed);
+            signalTracker.setActive(CameraSignal.ZoomOut.toString(),
+                    1, pressed);
 
         } else if (func == F_DUMP_CAMERA && pressed) {
             dumpCamera();
