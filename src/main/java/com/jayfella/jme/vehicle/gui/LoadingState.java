@@ -8,6 +8,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
@@ -65,11 +66,14 @@ public class LoadingState extends BaseAppState {
 
     public void setText(String text) {
         label.setText(text);
-        label.setLocalTranslation(
-                getApplication().getCamera().getWidth() - label.getPreferredSize().x - 20,
-                label.getPreferredSize().y + 20,
-                1
-        );
+
+        Camera camera = getApplication().getCamera();
+        float height = camera.getHeight();
+        float width = camera.getWidth();
+        Vector3f labelSize = label.getPreferredSize();
+        float x = width / 2 - labelSize.x / 2;
+        float y = height / 2 - labelSize.y / 2 + 70f;
+        label.setLocalTranslation(x, y, 1f);
     }
 
     /**
@@ -134,7 +138,7 @@ public class LoadingState extends BaseAppState {
             Main.getApplication().attachAllToScene();
             /*
              * Disable this AppState and display the main menu.
-             */ 
+             */
             MainMenuState mainMenuState = new MainMenuState();
             getStateManager().attach(mainMenuState);
             setEnabled(false);
