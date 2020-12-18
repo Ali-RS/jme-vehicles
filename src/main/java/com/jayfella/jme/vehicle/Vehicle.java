@@ -35,7 +35,6 @@ public abstract class Vehicle {
     }
 
     public static final float KMH_TO_MPH = 0.62137f;
-    public static final float MPH_TO_KMH = 1.60934f;
 
     final private Application app;
     private AudioNode hornAudio;
@@ -129,10 +128,6 @@ public abstract class Vehicle {
         return gearBox;
     }
 
-    public Vector3f getLocation() {
-        return node.getLocalTranslation();
-    }
-
     public String getName() {
         return name;
     }
@@ -169,10 +164,6 @@ public abstract class Vehicle {
     }
 
     public abstract void handbrake(float strength);
-
-    public boolean isParkingBrakeApplied() {
-        return parkingBrakeApplied;
-    }
 
     /**
      * Load this Vehicle from assets.
@@ -235,21 +226,8 @@ public abstract class Vehicle {
         }
     }
 
-    public void setLocation(Vector3f loc) {
-        vehicleControl.setPhysicsLocation(loc);
-    }
-
-    public void setName(String name) {
-        this.name = name;
-        node.setName("Vehicle: " + name);
-    }
-
     public void setParkingBrakeApplied(boolean applied) {
         parkingBrakeApplied = applied;
-    }
-
-    public void setRotation(Quaternion rotation) {
-        vehicleControl.setPhysicsRotation(rotation);
     }
 
     public void startEngine() {
