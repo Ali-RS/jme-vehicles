@@ -30,25 +30,19 @@ public class MainMenuState extends AnimatedMenuState {
 
         Button envButton = new Button("Select Environment");
         envButton.addClickCommands(source -> {
-            animateOut(() -> {
-                stateManager.attach(new EnvironmentMenu());
-                stateManager.detach(this);
-            });
+            stateManager.attach(new EnvironmentMenu());
+            stateManager.detach(this);
         });
 
         Button vehicleButton = new Button("Select Vehicle");
         vehicleButton.addClickCommands(source -> {
-            animateOut(() -> {
-                Node envNode = Main.getEnvironment().getCgm();
-                stateManager.attach(new CarSelectorMenuState(envNode));
-                stateManager.detach(this);
-            });
+            Node envNode = Main.getEnvironment().getCgm();
+            stateManager.attach(new CarSelectorMenuState(envNode));
+            stateManager.detach(this);
         });
 
         Button exitButton = new Button("Exit Game");
-        exitButton.addClickCommands(source -> {
-            animateOut(() -> application.stop());
-        });
+        exitButton.addClickCommands(source -> application.stop());
 
         Button[] result = new Button[]{
             envButton,

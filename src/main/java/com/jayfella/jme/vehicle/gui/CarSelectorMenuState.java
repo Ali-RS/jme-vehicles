@@ -67,10 +67,8 @@ class CarSelectorMenuState extends AnimatedMenuState {
 
         Button backButton = new Button("<< Back");
         backButton.addClickCommands(source -> {
-            animateOut(() -> {
-                stateManager.attach(new MainMenuState());
-                stateManager.detach(this);
-            });
+            stateManager.attach(new MainMenuState());
+            stateManager.detach(this);
         });
 
         Button[] result = new Button[]{
