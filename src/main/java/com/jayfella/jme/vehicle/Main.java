@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle;
 
 import com.atr.jme.font.asset.TrueTypeLoader;
+import com.jayfella.jme.vehicle.examples.cars.GrandTourer;
 import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.gui.LoadingState;
 import com.jme3.app.SimpleApplication;
@@ -66,6 +67,10 @@ public class Main extends SimpleApplication {
      * application instance
      */
     private static Main application;
+    /**
+     * vehicle currently selected
+     */
+    private static Vehicle vehicle;
     // *************************************************************************
     // constructors
 
@@ -81,6 +86,20 @@ public class Main extends SimpleApplication {
     }
     // *************************************************************************
     // new methods exposed
+
+    /**
+     * Attach the selected environment and vehicle to the scene.
+     */
+    public void attachAllToScene() {
+        float intensity = environment.directLightIntensity();
+        ColorRGBA directColor = ColorRGBA.White.mult(intensity);
+        directionalLight.setColor(directColor);
+
+        environment.resetCameraPosition();
+        environment.add(rootNode);
+
+        vehicle.attachToScene(rootNode);
+    }
 
     /**
      * Find the first attached AppState that's an instance of the specified
@@ -116,6 +135,16 @@ public class Main extends SimpleApplication {
     public static Environment getEnvironment() {
         assert environment != null;
         return environment;
+    }
+
+    /**
+     * Access the selected vehicle from a static context.
+     *
+     * @return the pre-existing instance (not null)
+     */
+    public static Vehicle getVehicle() {
+        assert vehicle != null;
+        return vehicle;
     }
 
     /**
@@ -158,22 +187,27 @@ public class Main extends SimpleApplication {
     }
 
     /**
-     * Replace the current environment with a new one. Assumes that no vehicle
-     * is loaded.
+     * Replace the current Environment with a new one.
      *
-     * @param newEnvironment the desired environment (not null)
+     * @param newEnvironment the desired environment (not null, loaded)
      */
     public void setEnvironment(Environment newEnvironment) {
+        vehicle.detachFromScene();
         environment.remove();
+
         environment = newEnvironment;
+        attachAllToScene();
+    }
 
-        float intensity = environment.directLightIntensity();
-        ColorRGBA directColor = ColorRGBA.White.mult(intensity);
-        directionalLight.setColor(directColor);
-
-        environment.resetCameraPosition();
-        environment.load();
-        environment.add(rootNode);
+    /**
+     * Replace the current Vehicle with a new one.
+     *
+     * @param newVehicle the desired Vehicle (not null, loaded)
+     */
+    public void setVehicle(Vehicle newVehicle) {
+        vehicle.detachFromScene();
+        vehicle = newVehicle;
+        vehicle.attachToScene(rootNode);
     }
     // *************************************************************************
     // SimpleApplication methods
@@ -226,7 +260,7 @@ public class Main extends SimpleApplication {
         rootNode.addLight(probe);
 
         // display a rotating texture to entertain users
-        CountDownLatch latch = new CountDownLatch(2);
+        CountDownLatch latch = new CountDownLatch(3);
         LoadingState loadingState = new LoadingState(latch);
         stateManager.attach(loadingState);
 
@@ -275,6 +309,21 @@ public class Main extends SimpleApplication {
 
         rootNode.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         addPostProcessing(directionalLight);
+
+        // Load the default Vehicle asynchronously.
+        vehicle = new GrandTourer();
+        assert vehicle.getVehicleControl() == null;
+        CompletableFuture
+                .supplyAsync(() -> {
+                    vehicle.load();
+                    Node node = vehicle.getNode();
+                    return node;
+                })
+                .whenComplete((node, ex) -> {
+                    enqueue(() -> {
+                        latch.countDown();
+                    });
+                });
 
         // this consumes joystick input. I'll have to investigate why.
         stateManager.getState(FocusNavigationState.class).setEnabled(false);

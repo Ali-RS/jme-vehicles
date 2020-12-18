@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle.gui;
 
+import com.jayfella.jme.vehicle.Main;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
@@ -129,8 +130,11 @@ public class LoadingState extends BaseAppState {
         if (latchCount == 0L) {
             /*
              * All asynchronous asset loads have completed.
-             * Disable this AppState and display the main menu.
              */
+            Main.getApplication().attachAllToScene();
+            /*
+             * Disable this AppState and display the main menu.
+             */ 
             MainMenuState mainMenuState = new MainMenuState();
             getStateManager().attach(mainMenuState);
             setEnabled(false);

@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle.gui;
 
+import com.jayfella.jme.vehicle.Environment;
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Playground;
 import com.jayfella.jme.vehicle.Racetrack;
@@ -31,16 +32,15 @@ class EnvironmentMenu extends AnimatedMenuState {
      */
     @Override
     protected Button[] createItems() {
-        Main application = Main.getApplication();
         AppStateManager stateManager = getStateManager();
 
         Button playgroundButton = new Button("Playground");
         playgroundButton.addClickCommands(source
-                -> application.setEnvironment(new Playground()));
+                -> setEnvironment(new Playground()));
 
         Button racetrackButton = new Button("Racetrack");
         racetrackButton.addClickCommands(source
-                -> application.setEnvironment(new Racetrack()));
+                -> setEnvironment(new Racetrack()));
 
         Button backButton = new Button("<< Back");
         backButton.addClickCommands(source -> {
@@ -54,5 +54,12 @@ class EnvironmentMenu extends AnimatedMenuState {
             backButton
         };
         return result;
+    }
+    // *************************************************************************
+    // private methods
+
+    private void setEnvironment(Environment environment) {
+        environment.load();
+        Main.getApplication().setEnvironment(environment);
     }
 }

@@ -168,7 +168,7 @@ public class KeyboardVehicleInputState
      * Unload the vehicle and return to the main menu.
      */
     public void returnToMainMenu() {
-        Application app = Main.getApplication();
+        Main app = Main.getApplication();
         AppStateManager stateManager = app.getStateManager();
         stateManager.detach(this);
 
@@ -197,7 +197,14 @@ public class KeyboardVehicleInputState
         DriverHud hud = Main.findAppState(DriverHud.class);
         hud.setEnabled(false);
 
-        vehicle.detachFromScene();
+        Vehicle newVehicle;
+        try {
+            newVehicle = vehicle.getClass().newInstance();
+        } catch (IllegalAccessException | InstantiationException exception) {
+            throw new RuntimeException(exception);
+        }
+        newVehicle.load();
+        app.setVehicle(newVehicle);
         stateManager.attach(new MainMenuState());
 
         Main.getEnvironment().resetCameraPosition();

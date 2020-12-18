@@ -1,6 +1,12 @@
 package com.jayfella.jme.vehicle.gui;
 
+import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Main;
+import com.jayfella.jme.vehicle.debug.DebugTabState;
+import com.jayfella.jme.vehicle.debug.EnginePowerGraphState;
+import com.jayfella.jme.vehicle.debug.TireDataState;
+import com.jayfella.jme.vehicle.debug.VehicleEditorState;
+import com.jayfella.jme.vehicle.input.KeyboardVehicleInputState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.scene.Node;
 import com.simsilica.lemur.Button;
@@ -28,18 +34,21 @@ public class MainMenuState extends AnimatedMenuState {
         Main application = Main.getApplication();
         AppStateManager stateManager = getStateManager();
 
-        Button envButton = new Button("Select Environment");
+        Button envButton = new Button("Change Environment");
         envButton.addClickCommands(source -> {
             stateManager.attach(new EnvironmentMenu());
             stateManager.detach(this);
         });
 
-        Button vehicleButton = new Button("Select Vehicle");
+        Button vehicleButton = new Button("Change Vehicle");
         vehicleButton.addClickCommands(source -> {
             Node envNode = Main.getEnvironment().getCgm();
             stateManager.attach(new CarSelectorMenuState(envNode));
             stateManager.detach(this);
         });
+
+        Button driveButton = new Button("Drive");
+        driveButton.addClickCommands(source -> drive());
 
         Button exitButton = new Button("Exit Game");
         exitButton.addClickCommands(source -> application.stop());
@@ -47,8 +56,44 @@ public class MainMenuState extends AnimatedMenuState {
         Button[] result = new Button[]{
             envButton,
             vehicleButton,
+            driveButton,
             exitButton
         };
         return result;
+    }
+    // *************************************************************************
+    // private methods
+
+    private void drive() {
+        Car vehicle = (Car) Main.getVehicle();
+
+        DriverHud hud = Main.findAppState(DriverHud.class);
+        hud.setCar(vehicle);
+        hud.setEnabled(true);
+
+        // handle keyboard/mouse inputs
+        KeyboardVehicleInputState inputState = new KeyboardVehicleInputState(vehicle);
+        AppStateManager stateManager = getStateManager();
+        stateManager.attach(inputState);
+
+        // engine graph GUI for viewing torque/power @ revs
+        EnginePowerGraphState enginePowerGraphState = new EnginePowerGraphState(vehicle);
+        enginePowerGraphState.setEnabled(false);
+        stateManager.attach(enginePowerGraphState);
+
+        // tire data GUI for viewing how much grip each tire has according to the Pacejka formula
+        TireDataState tireDataState = new TireDataState(vehicle);
+        tireDataState.setEnabled(false);
+        stateManager.attach(tireDataState);
+
+        // the main vehicle editor to modify aspects of the vehicle in real time
+        VehicleEditorState vehicleEditorState = new VehicleEditorState(vehicle);
+        stateManager.attach(vehicleEditorState);
+
+        // vehicle debug add-on to enable/disable debug screens
+        DebugTabState debugTabState = new DebugTabState();
+        stateManager.attach(debugTabState);
+
+        stateManager.detach(this);
     }
 }
