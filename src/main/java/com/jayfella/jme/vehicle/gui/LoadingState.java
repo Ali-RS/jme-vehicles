@@ -19,8 +19,8 @@ import com.simsilica.lemur.Label;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * A simple loading state to entertain users. It displays a rotating texture
- * until its CountDownLatch reaches zero.
+ * A simple loading state to entertain users. It displays text and a rotating
+ * texture until its CountDownLatch reaches zero.
  */
 public class LoadingState extends BaseAppState {
     // *************************************************************************
@@ -47,6 +47,8 @@ public class LoadingState extends BaseAppState {
     public LoadingState(CountDownLatch latch) {
         this.latch = latch;
     }
+    // *************************************************************************
+    // new methods exposed
 
     public void setText(String text) {
         label.setText(text);
@@ -59,6 +61,8 @@ public class LoadingState extends BaseAppState {
         float y = height / 2 - labelSize.y / 2 + 70f;
         label.setLocalTranslation(x, y, 1f);
     }
+    // *************************************************************************
+    // BaseAppState methods
 
     /**
      * Callback invoked after this AppState is detached or during application
@@ -128,6 +132,8 @@ public class LoadingState extends BaseAppState {
             setEnabled(false);
         }
     }
+    // *************************************************************************
+    // private methods
 
     private Geometry createBackgroundGeom(AssetManager assetManager, Camera cam) {
         Geometry result = new Geometry("Background", new Quad(cam.getWidth(), cam.getHeight()));
@@ -141,6 +147,7 @@ public class LoadingState extends BaseAppState {
     private Label createLabel() {
         label = new Label("");
         label.setFontSize(18);
+
         return label;
     }
 
