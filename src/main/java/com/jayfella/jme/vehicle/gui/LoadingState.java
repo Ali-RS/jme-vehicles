@@ -48,22 +48,6 @@ public class LoadingState extends BaseAppState {
         this.latch = latch;
     }
 
-    public boolean isShowBackground() {
-        return backgroundGeom.getParent() != null;
-    }
-
-    public void setBackgroundColor(ColorRGBA color) {
-        backgroundGeom.getMaterial().setColor("Color", color);
-    }
-
-    public void setShowBackground(boolean value) {
-        if (value) {
-            node.attachChild(backgroundGeom);
-        } else {
-            backgroundGeom.removeFromParent();
-        }
-    }
-
     public void setText(String text) {
         label.setText(text);
 
