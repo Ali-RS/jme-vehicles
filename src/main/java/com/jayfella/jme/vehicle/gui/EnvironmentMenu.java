@@ -9,11 +9,11 @@ import com.simsilica.lemur.Button;
 import java.util.logging.Logger;
 
 /**
- * An animated menu to choose among the available environments.
+ * An AnimatedMenu to choose among the available environments.
  *
  * @author Stephen Gold sgold@sonic.net
  */
-class EnvironmentMenu extends AnimatedMenuState {
+class EnvironmentMenu extends AnimatedMenu {
     // *************************************************************************
     // constants and loggers
 
@@ -44,7 +44,7 @@ class EnvironmentMenu extends AnimatedMenuState {
 
         Button backButton = new Button("<< Back");
         backButton.addClickCommands(source -> {
-            stateManager.attach(new MainMenuState());
+            stateManager.attach(new MainMenu());
             stateManager.detach(this);
         });
 

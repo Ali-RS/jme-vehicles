@@ -7,7 +7,7 @@ import com.jayfella.jme.vehicle.debug.EnginePowerGraphState;
 import com.jayfella.jme.vehicle.debug.TireDataState;
 import com.jayfella.jme.vehicle.debug.VehicleEditorState;
 import com.jayfella.jme.vehicle.gui.DriverHud;
-import com.jayfella.jme.vehicle.gui.MainMenuState;
+import com.jayfella.jme.vehicle.gui.MainMenu;
 import com.jayfella.jme.vehicle.view.CcFunctions;
 import com.jayfella.jme.vehicle.view.ChaseCamera;
 import com.jayfella.jme.vehicle.view.DashCamera;
@@ -205,7 +205,7 @@ public class KeyboardVehicleInputState
         }
         newVehicle.load();
         app.setVehicle(newVehicle);
-        stateManager.attach(new MainMenuState());
+        stateManager.attach(new MainMenu());
 
         Main.getEnvironment().resetCameraPosition();
     }

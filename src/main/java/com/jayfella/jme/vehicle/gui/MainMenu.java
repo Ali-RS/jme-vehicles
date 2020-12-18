@@ -12,7 +12,7 @@ import com.jme3.scene.Node;
 import com.simsilica.lemur.Button;
 import java.util.logging.Logger;
 
-public class MainMenuState extends AnimatedMenuState {
+public class MainMenu extends AnimatedMenu {
     // *************************************************************************
     // constants and loggers
 
@@ -43,7 +43,7 @@ public class MainMenuState extends AnimatedMenuState {
         Button vehicleButton = new Button("Change Vehicle");
         vehicleButton.addClickCommands(source -> {
             Node envNode = Main.getEnvironment().getCgm();
-            stateManager.attach(new CarSelectorMenuState(envNode));
+            stateManager.attach(new CarMenu(envNode));
             stateManager.detach(this);
         });
 

@@ -13,7 +13,7 @@ import com.simsilica.lemur.Insets3f;
 import com.simsilica.lemur.Panel;
 import com.simsilica.lemur.component.TbtQuadBackgroundComponent;
 
-abstract public class AnimatedMenuState extends BaseAppState {
+abstract public class AnimatedMenu extends BaseAppState {
 
     private AnimCompleteEvent completeEvent;
     private boolean allComplete = false;

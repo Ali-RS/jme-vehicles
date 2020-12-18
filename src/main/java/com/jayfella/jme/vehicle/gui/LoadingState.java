@@ -148,7 +148,7 @@ public class LoadingState extends BaseAppState {
             /*
              * Disable this AppState and display the main menu.
              */
-            MainMenuState mainMenuState = new MainMenuState();
+            MainMenu mainMenuState = new MainMenu();
             getStateManager().attach(mainMenuState);
             setEnabled(false);
         }

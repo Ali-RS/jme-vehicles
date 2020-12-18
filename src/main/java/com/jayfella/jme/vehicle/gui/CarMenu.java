@@ -13,9 +13,9 @@ import com.simsilica.lemur.Button;
 import java.util.logging.Logger;
 
 /**
- * An animated menu to choose among the available vehicles.
+ * An AnimatedMenu to choose among the available vehicles.
  */
-class CarSelectorMenuState extends AnimatedMenuState {
+class CarMenu extends AnimatedMenu {
     // *************************************************************************
     // constants and loggers
 
@@ -23,7 +23,7 @@ class CarSelectorMenuState extends AnimatedMenuState {
      * message logger for this class
      */
     final private static Logger logger
-            = Logger.getLogger(CarSelectorMenuState.class.getName());
+            = Logger.getLogger(CarMenu.class.getName());
     // *************************************************************************
     // fields
 
@@ -31,7 +31,7 @@ class CarSelectorMenuState extends AnimatedMenuState {
     // *************************************************************************
     // constructors
 
-    public CarSelectorMenuState(Node scene) {
+    public CarMenu(Node scene) {
         this.scene = scene;
     }
     // *************************************************************************
@@ -58,7 +58,7 @@ class CarSelectorMenuState extends AnimatedMenuState {
 
         Button backButton = new Button("<< Back");
         backButton.addClickCommands(source -> {
-            stateManager.attach(new MainMenuState());
+            stateManager.attach(new MainMenu());
             stateManager.detach(this);
         });
 
