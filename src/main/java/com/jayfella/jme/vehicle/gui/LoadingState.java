@@ -6,36 +6,56 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
+import com.jme3.material.Materials;
 import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Quad;
 import com.jme3.texture.Texture;
 import com.simsilica.lemur.Label;
 import java.util.concurrent.CountDownLatch;
+import java.util.logging.Logger;
+import jme3utilities.mesh.RectangleMesh;
 
 /**
- * A simple loading state to entertain users. It displays text and a rotating
+ * A simple loading state to entertain users. It displays text and a spinning
  * texture until its CountDownLatch reaches zero.
  */
 public class LoadingState extends BaseAppState {
     // *************************************************************************
+    // constants and loggers
+
+    /**
+     * message logger for this class
+     */
+    final private static Logger logger
+            = Logger.getLogger(LoadingState.class.getName());
+    /**
+     * spinner's angular rate (in radians/second)
+     */
+    final private static float spinRate = 3f;
+    // *************************************************************************
     // fields
 
     /**
-     * keep track of how many assets loads are in progress
+     * monitor how many asynchronous assets loads are in progress
      */
     final private CountDownLatch latch;
-
-    final private float speedMult = 3.0f;
+    /**
+     * conceals whatever's going on in the main scene
+     */
     private Geometry backgroundGeom;
+    /**
+     * displays the text
+     */
     private Label label;
     final private Node node = new Node("Loading Node");
-    private Node spinnerNode = new Node("Spinner Node");
+    private Node spinnerNode;
     // *************************************************************************
     // constructors
 
@@ -52,13 +72,13 @@ public class LoadingState extends BaseAppState {
 
     public void setText(String text) {
         label.setText(text);
-
+        /*
+         * Center the text 70px above the center of the display.
+         */
         Camera camera = getApplication().getCamera();
-        float height = camera.getHeight();
-        float width = camera.getWidth();
         Vector3f labelSize = label.getPreferredSize();
-        float x = width / 2 - labelSize.x / 2;
-        float y = height / 2 - labelSize.y / 2 + 70f;
+        float x = camera.getWidth() / 2 - labelSize.x / 2;
+        float y = camera.getHeight() / 2 - labelSize.y / 2 + 70f;
         label.setLocalTranslation(x, y, 1f);
     }
     // *************************************************************************
@@ -84,8 +104,9 @@ public class LoadingState extends BaseAppState {
      */
     @Override
     protected void initialize(Application app) {
-        spinnerNode = createSpinnerNode(app.getAssetManager());
-        backgroundGeom = createBackgroundGeom(app.getAssetManager(), app.getCamera());
+        AssetManager assetManager = app.getAssetManager();
+        spinnerNode = createSpinnerNode(assetManager);
+        backgroundGeom = createBackgroundGeom(assetManager);
         label = createLabel();
 
         node.attachChild(backgroundGeom);
@@ -116,7 +137,7 @@ public class LoadingState extends BaseAppState {
 
     @Override
     public void update(float tpf) {
-        spinnerNode.rotate(0, 0, -tpf * speedMult);
+        spinnerNode.rotate(0, 0, -tpf * spinRate);
 
         long latchCount = latch.getCount();
         if (latchCount == 0L) {
@@ -135,51 +156,47 @@ public class LoadingState extends BaseAppState {
     // *************************************************************************
     // private methods
 
-    private Geometry createBackgroundGeom(AssetManager assetManager, Camera cam) {
-        Geometry result = new Geometry("Background", new Quad(cam.getWidth(), cam.getHeight()));
-        result.setMaterial(new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
-        result.getMaterial().setColor("Color", new ColorRGBA(0.0f, 0.0f, 0.0f, 1.0f));
-        result.getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+    private Geometry createBackgroundGeom(AssetManager assetManager) {
+        Material material = new Material(assetManager, Materials.UNSHADED);
+        material.setColor("Color", ColorRGBA.Black.clone());
+
+        Camera camera = getApplication().getCamera();
+        Mesh mesh = new Quad(camera.getWidth(), camera.getHeight());
+        Geometry result = new Geometry("Background", mesh);
+        result.setMaterial(material);
 
         return result;
     }
 
     private Label createLabel() {
-        label = new Label("");
-        label.setFontSize(18);
+        Label result = new Label("");
+        result.setFontSize(18f);
 
-        return label;
+        return result;
     }
 
     private Node createSpinnerNode(AssetManager assetManager) {
         Texture texture = assetManager.loadTexture("loading.png");
-
-        Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material material = new Material(assetManager, Materials.UNSHADED);
         material.setTexture("ColorMap", texture);
-        material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+        material.getAdditionalRenderState()
+                .setBlendMode(RenderState.BlendMode.Alpha);
 
-        Geometry spinnerGeom = new Geometry("Loading Circle",
-                new Quad(texture.getImage().getWidth(), texture.getImage().getHeight()));
+        float radius = 25f;
+        Mesh square = new RectangleMesh(-radius, +radius, -radius, +radius, 1f);
+        Geometry spinnerGeom = new Geometry("Spinner", square);
         spinnerGeom.setMaterial(material);
 
-        spinnerGeom.setLocalTranslation(
-                -(texture.getImage().getWidth() * 0.5f),
-                -(texture.getImage().getHeight() * 0.5f),
-                1);
-
-        spinnerNode.attachChild(spinnerGeom);
-        spinnerNode.setLocalScale(0.25f);
+        Node result = new Node("Spinner Node");
+        result.attachChild(spinnerGeom);
         /*
-         * If we put this in the onEnable() method,
-         * we could set its location every time.
-         * It's here in-case the display size changes.
+         * Center the spinner in the display.
          */
-        spinnerNode.setLocalTranslation(
-                (getApplication().getCamera().getWidth() * 0.5f),
-                (getApplication().getCamera().getHeight() * 0.5f),
-                1
-        );
+        Camera camera = getApplication().getCamera();
+        float x = camera.getWidth() / 2;
+        float y = camera.getHeight() / 2;
+        result.move(x, y, 1f);
 
-        return spinnerNode;
+        return result;
     }
 }
