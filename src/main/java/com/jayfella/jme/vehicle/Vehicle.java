@@ -23,6 +23,7 @@ import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import java.util.List;
+import java.util.logging.Logger;
 import jme3utilities.math.MyVector3f;
 
 /**
@@ -37,6 +38,11 @@ public abstract class Vehicle {
     // constants and loggers
 
     public static final float KMH_TO_MPH = 0.62137f;
+    /**
+     * message logger for this class
+     */
+    final public static Logger logger
+            = Logger.getLogger(Vehicle.class.getName());
     // *************************************************************************
     // fields
 
