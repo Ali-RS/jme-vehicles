@@ -45,21 +45,34 @@ public class VehicleAudioState extends BaseAppState {
         isGloballyMuted = !isGloballyMuted;
     }
 
+    /**
+     * Callback invoked after this AppState is attached but before onEnable().
+     *
+     * @param app the application instance (not null)
+     */
     @Override
     protected void initialize(Application app) {
-
+        // do nothing
     }
 
     @Override
     protected void cleanup(Application app) {
-
+        // do nothing
     }
 
+    /**
+     * Callback invoked whenever this AppState becomes both attached and
+     * enabled.
+     */
     @Override
     protected void onEnable() {
         // vehicle.getEngine().getEngineAudio().play();
     }
 
+    /**
+     * Callback invoked whenever this AppState ceases to be both attached and
+     * enabled.
+     */
     @Override
     protected void onDisable() {
         stopEngineSound();

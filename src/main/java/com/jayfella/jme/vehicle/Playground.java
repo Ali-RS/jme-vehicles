@@ -56,6 +56,8 @@ public class Playground extends Environment {
 
     /**
      * Load this Environment from assets.
+     * 
+     * @return the model's root node (a new instance)
      */
     @Override
     public Node load() {

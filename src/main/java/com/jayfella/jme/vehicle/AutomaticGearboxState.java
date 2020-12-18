@@ -25,6 +25,11 @@ public class AutomaticGearboxState extends BaseAppState {
         }
     }
 
+    /**
+     * Callback invoked after this AppState is attached but before onEnable().
+     *
+     * @param app the application instance (not null)
+     */
     @Override
     protected void initialize(Application app) {
         wheelCount = car.getNumWheels();
@@ -32,17 +37,25 @@ public class AutomaticGearboxState extends BaseAppState {
 
     @Override
     protected void cleanup(Application app) {
-
+        // do nothing
     }
 
+    /**
+     * Callback invoked whenever this AppState becomes both attached and
+     * enabled.
+     */
     @Override
     protected void onEnable() {
         this.gearBox = vehicle.getGearBox();
     }
 
+    /**
+     * Callback invoked whenever this AppState ceases to be both attached and
+     * enabled.
+     */
     @Override
     protected void onDisable() {
-
+        // do nothing
     }
 
     @Override
@@ -65,7 +78,7 @@ public class AutomaticGearboxState extends BaseAppState {
         for (int i = 0; i < gearBox.getGearCount(); i++) {
             Gear gear = gearBox.getGear(i);
 
-            if ( speed > gear.getStart() && speed <= gear.getEnd() ) {
+            if (speed > gear.getStart() && speed <= gear.getEnd()) {
                 gearBox.setActiveGearNum(i);
 
                 revs = unInterpolateLinear(speed, gear.getStart(), gear.getEnd());
@@ -106,7 +119,6 @@ public class AutomaticGearboxState extends BaseAppState {
                 // if (revRange > revIncrease) {
                     // revIncrease = revRange;
                 // }
-
             }
 
             revs += revIncrease;
@@ -118,13 +130,9 @@ public class AutomaticGearboxState extends BaseAppState {
             }
             engine.setRevs(revs);
         }
-
-
-
     }
 
     private float unInterpolateLinear(float value, float min, float max) {
         return (value - min) / (max - min);
     }
-
 }

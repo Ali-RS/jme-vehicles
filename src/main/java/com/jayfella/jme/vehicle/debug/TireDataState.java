@@ -29,7 +29,6 @@ public class TireDataState extends BaseAppState {
     private Geometry[][] needles;
 
     public TireDataState(Car vehicle) {
-
         this.vehicle = vehicle;
         this.tireGraphs = new TireGraph[vehicle.getNumWheels()];
         this.needles = new Geometry[vehicle.getNumWheels()][3];
@@ -47,14 +46,16 @@ public class TireDataState extends BaseAppState {
 
     private void drawGraph(int i) {
         tireGraphs[i].drawGraph();
-
-
     }
 
+    /**
+     * Callback invoked after this AppState is attached but before onEnable().
+     *
+     * @param app the application instance (not null)
+     */
     @Override
     protected void initialize(Application app) {
-
-        guiNode = ((SimpleApplication)app).getGuiNode();
+        guiNode = ((SimpleApplication) app).getGuiNode();
 
         float space = 10;
 
@@ -66,7 +67,7 @@ public class TireDataState extends BaseAppState {
             Node graphNode = new Node("");
             graphNode.setLocalTranslation(x, y, 0);
 
-            x+= graphWidth + space;
+            x += graphWidth + space;
 
             if ((i + 1) % 2 == 0) {
                 y -= graphHeight + space;
@@ -104,14 +105,22 @@ public class TireDataState extends BaseAppState {
 
     @Override
     protected void cleanup(Application app) {
-
+        // do nothing
     }
 
+    /**
+     * Callback invoked whenever this AppState becomes both attached and
+     * enabled.
+     */
     @Override
     protected void onEnable() {
         guiNode.attachChild(node);
     }
 
+    /**
+     * Callback invoked whenever this AppState ceases to be both attached and
+     * enabled.
+     */
     @Override
     protected void onDisable() {
         node.removeFromParent();
@@ -119,7 +128,6 @@ public class TireDataState extends BaseAppState {
 
     @Override
     public void update(float tpf) {
-
         for (int i = 0; i < vehicle.getNumWheels(); i++) {
 
             tireGraphs[i].drawGraph();
@@ -145,7 +153,5 @@ public class TireDataState extends BaseAppState {
             needles[i][1].setLocalTranslation(lng, 0, 0);
             needles[i][2].setLocalTranslation(mnt, 0, 0);
         }
-
     }
-
 }

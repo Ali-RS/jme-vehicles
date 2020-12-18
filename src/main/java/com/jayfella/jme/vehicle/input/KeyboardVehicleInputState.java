@@ -234,6 +234,11 @@ public class KeyboardVehicleInputState
         }
     }
 
+    /**
+     * Callback invoked after this AppState is attached but before onEnable().
+     *
+     * @param app the application instance (not null)
+     */
     @Override
     protected void initialize(Application app) {
         inputMapper = GuiGlobals.getInstance().getInputMapper();
@@ -289,11 +294,19 @@ public class KeyboardVehicleInputState
         setCamera(cameraMode);
     }
 
+    /**
+     * Callback invoked whenever this AppState ceases to be both attached and
+     * enabled.
+     */
     @Override
     protected void onDisable() {
         inputMapper.deactivateGroup(G_VEHICLE);
     }
 
+    /**
+     * Callback invoked whenever this AppState becomes both attached and
+     * enabled.
+     */
     @Override
     protected void onEnable() {
         inputMapper.activateGroup(G_VEHICLE);

@@ -89,8 +89,7 @@ class SpeedometerState extends BaseAppState {
     }
 
     /**
-     * Callback invoked during initialization once this AppState is attached but
-     * before onEnable() is called.
+     * Callback invoked after this AppState is attached but before onEnable().
      *
      * @param app the application instance (not null)
      */
@@ -148,9 +147,8 @@ class SpeedometerState extends BaseAppState {
     }
 
     /**
-     * Callback invoked when this AppState was previously enabled but is now
-     * disabled either because setEnabled(false) was called or the state is
-     * being cleaned up.
+     * Callback invoked whenever this AppState ceases to be both attached and
+     * enabled.
      */
     @Override
     protected void onDisable() {
@@ -158,9 +156,8 @@ class SpeedometerState extends BaseAppState {
     }
 
     /**
-     * Callback invoked when this AppState becomes fully enabled, ie: is
-     * attached and isEnabled() is true or when the setEnabled() status changes
-     * after the state is attached.
+     * Callback invoked whenever this AppState becomes both attached and
+     * enabled.
      */
     @Override
     protected void onEnable() {

@@ -32,19 +32,21 @@ public class VehicleEditorState extends BaseAppState {
     private VehicleEditor wheels;
 
     public VehicleEditorState(Car vehicle) {
-
         this.vehicle = vehicle;
         this.tabbedPanel = new TabbedPanel();
-
     }
 
     public TabbedPanel getTabbedPanel() {
         return tabbedPanel;
     }
 
+    /**
+     * Callback invoked after this AppState is attached but before onEnable().
+     *
+     * @param app the application instance (not null)
+     */
     @Override
     protected void initialize(Application app) {
-
         chassis = tabbedPanel.addTab("Chassis", new ChassisEditor(vehicle));
         engine = tabbedPanel.addTab("Engine", new EngineEditor(vehicle));
         gearbox = tabbedPanel.addTab("Gearbox", new GearboxEditor(vehicle));
@@ -61,14 +63,22 @@ public class VehicleEditorState extends BaseAppState {
 
     @Override
     protected void cleanup(Application app) {
-
+        // do nothing
     }
 
+    /**
+     * Callback invoked whenever this AppState becomes both attached and
+     * enabled.
+     */
     @Override
     protected void onEnable() {
         Main.getApplication().getGuiNode().attachChild(this.tabbedPanel);
     }
 
+    /**
+     * Callback invoked whenever this AppState ceases to be both attached and
+     * enabled.
+     */
     @Override
     protected void onDisable() {
         this.tabbedPanel.removeFromParent();
@@ -82,7 +92,5 @@ public class VehicleEditorState extends BaseAppState {
         suspension.update(tpf);
         brakes.update(tpf);
         wheels.update(tpf);
-
     }
-
 }

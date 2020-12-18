@@ -16,27 +16,24 @@ import com.jme3.scene.Node;
 public class TireSmokeEmitter extends BaseAppState {
 
     private Node rootNode;
-
     private final Vehicle vehicle;
-
     private int wheelCount;
     private ParticleEmitter[] emitters;
 
     public TireSmokeEmitter(Vehicle vehicle) {
         this.vehicle = vehicle;
-
     }
 
     private ParticleEmitter createEmitter(AssetManager assetManager) {
         ParticleEmitter smoke = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
 
         Material mat_red = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
-        mat_red.setTexture("Texture", assetManager.loadTexture( "Textures/Particles/smoke_line.png"));
+        mat_red.setTexture("Texture", assetManager.loadTexture("Textures/Particles/smoke_line.png"));
 
         smoke.setMaterial(mat_red);
         smoke.setImagesX(15);
         smoke.setImagesY(1); // 2x2 texture animation
-        smoke.setEndColor(  new ColorRGBA(99 / 255f, 68 / 255f, 45 / 255f, 0.4f));   // red
+        smoke.setEndColor(new ColorRGBA(99 / 255f, 68 / 255f, 45 / 255f, 0.4f));   // red
         smoke.setStartColor(new ColorRGBA(183 / 255f, 130 / 255f, 89 / 255f, 0.05f)); // yellow
         smoke.getParticleInfluencer().setInitialVelocity(new Vector3f(0, 2, 0));
         smoke.setStartSize(1.0f);
@@ -49,18 +46,20 @@ public class TireSmokeEmitter extends BaseAppState {
         return smoke;
     }
 
+    /**
+     * Callback invoked after this AppState is attached but before onEnable().
+     *
+     * @param app the application instance (not null)
+     */
     @Override
     protected void initialize(Application app) {
-
-
         this.wheelCount = vehicle.getVehicleControl().getNumWheels();
 
         if (rootNode == null) {
-            rootNode = ((SimpleApplication)getApplication()).getRootNode();
+            rootNode = ((SimpleApplication) getApplication()).getRootNode();
         }
 
         if (this.emitters == null) {
-
             this.emitters = new ParticleEmitter[wheelCount];
 
             for (int i = 0; i < wheelCount; i++) {
@@ -68,46 +67,46 @@ public class TireSmokeEmitter extends BaseAppState {
                 smoke.setLocalTranslation(vehicle.getVehicleControl().getWheel(i).getLocation());
                 smoke.setShadowMode(RenderQueue.ShadowMode.Receive);
                 emitters[i] = smoke;
-
             }
-
         }
-
-
     }
 
-    @Override protected void cleanup(Application app) { }
+    @Override
+    protected void cleanup(Application app) {
+        // do nothing
+    }
 
-    @Override protected void onEnable() {
-
+    /**
+     * Callback invoked whenever this AppState becomes both attached and
+     * enabled.
+     */
+    @Override
+    protected void onEnable() {
         for (int i = 0; i < emitters.length; i++) {
             rootNode.attachChild(emitters[i]);
         }
     }
 
-    @Override protected void onDisable() {
-
+    /**
+     * Callback invoked whenever this AppState ceases to be both attached and
+     * enabled.
+     */
+    @Override
+    protected void onDisable() {
         for (int i = 0; i < emitters.length; i++) {
             emitters[i].removeFromParent();
         }
-
     }
-
-
 
     @Override
     public void update(float tpf) {
-
         for (int i = 0; i < wheelCount; i++) {
-
             VehicleWheel wheel = vehicle.getVehicleControl().getWheel(i);
 
             ParticleEmitter smoke = emitters[i];
-
             smoke.setLocalTranslation(wheel.getCollisionLocation());
 
             if (wheel.getSkidInfo() < 0.5) {
-
                 float scale = 1.0f - wheel.getSkidInfo();
 
                 smoke.emitParticles((int) (scale * 20));
@@ -115,18 +114,10 @@ public class TireSmokeEmitter extends BaseAppState {
                 smoke.getParticleInfluencer().setInitialVelocity(vehicle.getVehicleControl().getPhysicsRotation().getRotationColumn(2).negate()
                         .mult(scale * (vehicle.getSpeed(Vehicle.SpeedUnit.KMH) / 10)));
 
-            }
-            else {
+            } else {
                 // smoke.emitParticles(0);
                 smoke.setParticlesPerSec(0);
             }
-
         }
-
-
-
-
-
     }
-
 }

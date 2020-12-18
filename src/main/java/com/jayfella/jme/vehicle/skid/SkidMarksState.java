@@ -44,6 +44,11 @@ public class SkidMarksState extends BaseAppState {
         // do nothing
     }
 
+    /**
+     * Callback invoked after this AppState is attached but before onEnable().
+     *
+     * @param app the application instance (not null)
+     */
     @Override
     protected void initialize(Application app) {
         numWheels = vehicle.getNumWheels();
@@ -55,6 +60,10 @@ public class SkidMarksState extends BaseAppState {
         }
     }
 
+    /**
+     * Callback invoked whenever this AppState ceases to be both attached and
+     * enabled.
+     */
     @Override
     protected void onDisable() {
         for (int i = 0; i < numWheels; ++i) {
@@ -67,6 +76,10 @@ public class SkidMarksState extends BaseAppState {
         }
     }
 
+    /**
+     * Callback invoked whenever this AppState becomes both attached and
+     * enabled.
+     */
     @Override
     protected void onEnable() {
         // do nothing

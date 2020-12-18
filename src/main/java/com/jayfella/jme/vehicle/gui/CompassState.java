@@ -74,8 +74,7 @@ public class CompassState extends BaseAppState {
     }
 
     /**
-     * Callback invoked during initialization once this AppState is attached but
-     * before onEnable() is called.
+     * Callback invoked after this AppState is attached but before onEnable().
      *
      * @param app the application instance (not null)
      */

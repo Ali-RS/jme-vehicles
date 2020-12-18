@@ -62,6 +62,9 @@ public class MainMenu extends AnimatedMenu {
     // *************************************************************************
     // private methods
 
+    /**
+     * Drive the selected vehicle in the selected environment.
+     */
     private void drive() {
         Car vehicle = (Car) Main.getVehicle();
 

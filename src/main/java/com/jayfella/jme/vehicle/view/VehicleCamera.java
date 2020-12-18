@@ -83,6 +83,8 @@ abstract public class VehicleCamera {
 
     /**
      * Test whether the specified camera function (signal) is active.
+     *
+     * @param function the function to test (not null)
      */
     protected boolean isActive(CcFunctions function) {
         String signalName = signalNames.get(function);

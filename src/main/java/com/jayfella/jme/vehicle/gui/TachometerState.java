@@ -91,8 +91,7 @@ class TachometerState extends BaseAppState {
     }
 
     /**
-     * Callback invoked during initialization once this AppState is attached but
-     * before onEnable() is called.
+     * Callback invoked after this AppState is attached but before onEnable().
      *
      * @param app the application instance (not null)
      */
@@ -151,9 +150,8 @@ class TachometerState extends BaseAppState {
     }
 
     /**
-     * Callback invoked when this AppState becomes fully enabled, ie: is
-     * attached and isEnabled() is true or when the setEnabled() status changes
-     * after the state is attached.
+     * Callback invoked whenever this AppState becomes both attached and
+     * enabled.
      */
     @Override
     protected void onEnable() {

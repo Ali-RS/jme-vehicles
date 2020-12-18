@@ -72,7 +72,9 @@ abstract public class Environment {
     }
 
     /**
-     * Load this Environment from assets.
+     * Load the Environment from assets.
+     *
+     * @return the model's root node (a new instance)
      */
     abstract public Node load();
 

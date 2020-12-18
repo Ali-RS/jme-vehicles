@@ -105,7 +105,7 @@ public class Main extends SimpleApplication {
      * Find the first attached AppState that's an instance of the specified
      * class.
      *
-     * @param <T>
+     * @param <T> the kind of AppState
      * @param subclass the kind of AppState to search for (not null)
      * @return the pre-existing instance (not null)
      */

@@ -25,11 +25,13 @@ public class EnginePowerGraphState extends BaseAppState {
     int width = 300;
     int height = 100;
 
+    /**
+     * Callback invoked after this AppState is attached but before onEnable().
+     *
+     * @param app the application instance (not null)
+     */
     @Override
     protected void initialize(Application app) {
-
-
-
         EnginePowerGraph enginePowerGraph = new EnginePowerGraph(app.getAssetManager(), vehicle.getEngine(), width, height);
         node.attachChild(enginePowerGraph);
 
@@ -39,7 +41,6 @@ public class EnginePowerGraphState extends BaseAppState {
         node.attachChild(line);
 
         node.setLocalTranslation(0, app.getCamera().getHeight() - height, 0);
-
     }
 
     @Override
@@ -56,15 +57,23 @@ public class EnginePowerGraphState extends BaseAppState {
 
     @Override
     protected void cleanup(Application app) {
-
+        // do nothing
     }
 
+    /**
+     * Callback invoked whenever this AppState becomes both attached and
+     * enabled.
+     */
     @Override
     protected void onEnable() {
         Node guiNode = ((SimpleApplication)getApplication()).getGuiNode();
         guiNode.attachChild(node);
     }
 
+    /**
+     * Callback invoked whenever this AppState ceases to be both attached and
+     * enabled.
+     */
     @Override
     protected void onDisable() {
         node.removeFromParent();

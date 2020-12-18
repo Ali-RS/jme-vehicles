@@ -41,6 +41,11 @@ abstract public class AnimatedMenu extends BaseAppState {
         // do nothing
     }
 
+    /**
+     * Callback invoked after this menu is attached but before onEnable().
+     *
+     * @param app the application instance (not null)
+     */
     @Override
     protected void initialize(Application app) {
         items = createItems();
@@ -67,11 +72,19 @@ abstract public class AnimatedMenu extends BaseAppState {
         }
     }
 
+    /**
+     * Callback invoked whenever this AppState ceases to be both attached and
+     * enabled.
+     */
     @Override
     protected void onDisable() {
         node.removeFromParent();
     }
 
+    /**
+     * Callback invoked whenever this menu becomes both attached and
+     * enabled.
+     */
     @Override
     protected void onEnable() {
         Main.getApplication().getGuiNode().attachChild(node);
