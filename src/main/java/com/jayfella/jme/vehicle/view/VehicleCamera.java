@@ -8,6 +8,9 @@ import jme3utilities.MyCamera;
 import jme3utilities.SignalTracker;
 import jme3utilities.Validate;
 
+/**
+ * Abstract camera controller for More Advanced Vehicles. TODO rename
+ */
 abstract public class VehicleCamera {
     // *************************************************************************
     // constants and loggers
@@ -48,7 +51,7 @@ abstract public class VehicleCamera {
     /**
      * Vehicle with which the Camera is associated
      */
-    final protected Vehicle vehicle;
+    protected Vehicle vehicle;
 
     protected VehicleCamera(Vehicle vehicle, Camera camera,
             SignalTracker tracker) {
@@ -75,6 +78,13 @@ abstract public class VehicleCamera {
     public void setSignalName(CcFunctions function, String signalName) {
         Validate.nonNull(function, "function");
         signalNames.put(function, signalName);
+    }
+
+    /**
+     * Alter which Vehicle is associated with this camera.
+     */
+    public void setVehicle(Vehicle newVehicle) {
+        vehicle = newVehicle;
     }
 
     abstract public void update(float tpf);
