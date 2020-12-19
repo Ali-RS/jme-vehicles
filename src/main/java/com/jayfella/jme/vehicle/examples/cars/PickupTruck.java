@@ -85,7 +85,7 @@ public class PickupTruck extends Car {
          * For rear-wheel steering, it will be necessary to "flip" the steering.
          */
         float wheelX = 0.75f; // half of the wheelbase
-        float axleY = 0.5f; // height of axle above vehicle's center of gravity
+        float axleY = 0.7f; // height of axle relative to vehicle's CoG
         float frontZ = 1.76f;
         float rearZ = -1.42f;
         boolean front = true; // Front wheels are for steering.
