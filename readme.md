@@ -142,6 +142,7 @@ Additional controls when the chase camera is active:
 [pspeed]: https://github.com/pspeed42 "Paul Speed"
 [sergej]: https://hdrihaven.com/hdris/?a=Sergej%20Majboroda "HDRIs by Sergej Majboroda"
 [tgt]: https://www.tgthorne.com/contact "Thomas Glenn Thorne"
+[zampaoli]: https://sketchfab.com/mauro.zampaoli "Mauro Zampaoli"
 
 <a name="wishlist"/>
 
@@ -207,6 +208,8 @@ Resources/assets/media:
   has a CC Attribution-NonCommercial-ShareAlike license.
 + The [gtr_nismo model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/gtr_nismo)
   has a CC Attribution-NonCommercial-ShareAlike license.
++ The [ford_ranger model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/ford_ranger)
+  has a CC Attribution license.
 + The [racetrack model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/race1)
   has an Unlicense and a Creative Commons Zero v1.0 Universal license.
 + The [vehicle-playground model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/vehicle-playground)
@@ -267,6 +270,7 @@ The world (and physics-space) units of distance are *meters*.
 + [Sergej Majboroda][sergej] created the quarry_03 texture.
 + [Thomas Glenn Thorne (aka "systmh")][tgt] created the GT model.
 + "isteven" created the gtr_nismo model.
++ [Mauro Zampaoli][zampaoli] created the ford_ranger model.
 + [Adi Barda (aka "adi.barda")][adi] created the racetrack model.
 
 I am grateful to [Github] and Imgur
