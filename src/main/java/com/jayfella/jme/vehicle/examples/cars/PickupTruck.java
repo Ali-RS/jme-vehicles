@@ -5,7 +5,7 @@ import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.engine.Engine;
 import com.jayfella.jme.vehicle.examples.engines.Engine450HP;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
-import com.jayfella.jme.vehicle.examples.wheels.BasicAlloyWheel;
+import com.jayfella.jme.vehicle.examples.wheels.RangerWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Brake;
 import com.jayfella.jme.vehicle.part.Gear;
@@ -71,14 +71,14 @@ public class PickupTruck extends Car {
          * wheel models for the right side require a 180-degree rotation.
          */
         float wheelScale = 0.8f;
-        WheelModel wheel_fl = new BasicAlloyWheel(assetManager, wheelScale);
+        WheelModel wheel_fl = new RangerWheel(wheelScale);
 
-        WheelModel wheel_fr = new BasicAlloyWheel(assetManager, wheelScale);
+        WheelModel wheel_fr = new RangerWheel(wheelScale);
         wheel_fr.getSpatial().rotate(0f, FastMath.PI, 0f);
 
-        WheelModel wheel_rl = new BasicAlloyWheel(assetManager, wheelScale);
+        WheelModel wheel_rl = new RangerWheel(wheelScale);
 
-        WheelModel wheel_rr = new BasicAlloyWheel(assetManager, wheelScale);
+        WheelModel wheel_rr = new RangerWheel(wheelScale);
         wheel_rr.getSpatial().rotate(0f, FastMath.PI, 0f);
         /*
          * Add wheels to the vehicle.
