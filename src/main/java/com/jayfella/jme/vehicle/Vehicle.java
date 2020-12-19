@@ -326,9 +326,16 @@ public abstract class Vehicle {
 
     protected void setChassis(Spatial chassis, float mass) {
         this.chassis = chassis;
-        CollisionShape chassisCollisionShape
+        CollisionShape shape
                 = CollisionShapeFactory.createDynamicMeshShape(chassis);
-        vehicleControl = new VehicleControl(chassisCollisionShape, mass);
+        vehicleControl = new VehicleControl(shape, mass);
+        /*
+         * Configure continuous collision detection (CCD) for the chassis.
+         */
+        float radius = shape.maxRadius();
+        vehicleControl.setCcdMotionThreshold(radius);
+        vehicleControl.setCcdSweptSphereRadius(radius);
+
         node.addControl(vehicleControl);
         node.attachChild(chassis);
     }
