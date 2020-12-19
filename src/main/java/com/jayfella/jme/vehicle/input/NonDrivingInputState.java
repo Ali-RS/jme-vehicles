@@ -9,11 +9,9 @@ import com.jayfella.jme.vehicle.view.VehicleCamera;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.app.state.ScreenshotAppState;
-import com.jme3.bullet.BulletAppState;
 import com.jme3.input.KeyInput;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
-import com.jme3.renderer.ViewPort;
 import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.input.Button;
 import com.simsilica.lemur.input.FunctionId;
@@ -24,9 +22,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 import jme3utilities.MyCamera;
 import jme3utilities.SignalTracker;
-import jme3utilities.debug.Dumper;
 import jme3utilities.minie.FilterAll;
-import jme3utilities.minie.PhysicsDumper;
 
 /**
  * An AppState to handle input when not driving a Vehicle.
@@ -53,12 +49,6 @@ public class NonDrivingInputState
             = new FunctionId(G_ORBIT, CameraSignal.ZoomIn.toString());
     private static final FunctionId F_CAMERA_ZOOM_OUT1
             = new FunctionId(G_ORBIT, CameraSignal.ZoomOut.toString());
-    private static final FunctionId F_DUMP_CAMERA
-            = new FunctionId(G_ORBIT, "Dump Camera");
-    private static final FunctionId F_DUMP_PHYSICS
-            = new FunctionId(G_ORBIT, "Dump Physics");
-    private static final FunctionId F_DUMP_VIEWPORT
-            = new FunctionId(G_ORBIT, "Dump Viewport");
     private static final FunctionId F_RETURN
             = new FunctionId(G_ORBIT, "Return to Main Menu");
     private static final FunctionId F_SCREEN_SHOT
@@ -167,10 +157,6 @@ public class NonDrivingInputState
         inputMapper.map(F_CAMERA_ZOOM_IN1, KeyInput.KEY_NUMPAD9);
         inputMapper.map(F_CAMERA_ZOOM_OUT1, KeyInput.KEY_NUMPAD3);
 
-        inputMapper.map(F_DUMP_CAMERA, KeyInput.KEY_C);
-        inputMapper.map(F_DUMP_PHYSICS, KeyInput.KEY_O);
-        inputMapper.map(F_DUMP_VIEWPORT, KeyInput.KEY_P);
-
         inputMapper.map(F_RETURN, KeyInput.KEY_ESCAPE);
         // Some Linux window managers block SYSRQ/PrtSc, so we map F12 instead.
         inputMapper.map(F_SCREEN_SHOT, KeyInput.KEY_F12);
@@ -254,17 +240,6 @@ public class NonDrivingInputState
             signalTracker.setActive(CameraSignal.ZoomOut.toString(),
                     1, pressed);
 
-        } else if (func == F_DUMP_CAMERA && pressed) {
-            dumpCamera();
-
-        } else if (func == F_DUMP_PHYSICS && pressed) {
-            BulletAppState bas = Main.findAppState(BulletAppState.class);
-            new PhysicsDumper().dump(bas);
-
-        } else if (func == F_DUMP_VIEWPORT && pressed) {
-            ViewPort vp = getApplication().getViewPort();
-            new Dumper().setDumpShadow(true).dump(vp);
-
         } else if (func == F_SCREEN_SHOT && pressed) {
             ScreenshotAppState screenshotAppState
                     = Main.findAppState(ScreenshotAppState.class);
@@ -273,18 +248,6 @@ public class NonDrivingInputState
     }
     // *************************************************************************
     // private methods
-
-    private void dumpCamera() {
-        Camera camera = getApplication().getCamera();
-        String desc1 = MyCamera.describe(camera);
-        System.out.println(desc1);
-
-        String desc2 = MyCamera.describeMore(camera);
-        System.out.println(desc2);
-
-        float degrees = MyCamera.yDegrees(camera);
-        System.out.printf("fovY=%.1f deg%n", degrees);
-    }
 
     private void resetCameraOffset() {
         if (activeCam instanceof ChaseCamera) {

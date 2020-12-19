@@ -18,12 +18,10 @@ import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.app.state.ScreenshotAppState;
-import com.jme3.bullet.BulletAppState;
 import com.jme3.input.KeyInput;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
-import com.jme3.renderer.ViewPort;
 import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.input.Button;
 import com.simsilica.lemur.input.FunctionId;
@@ -34,9 +32,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 import jme3utilities.MyCamera;
 import jme3utilities.SignalTracker;
-import jme3utilities.debug.Dumper;
 import jme3utilities.minie.FilterAll;
-import jme3utilities.minie.PhysicsDumper;
 
 /**
  * An AppState to handle input while driving a Vehicle. There are 2 camera
@@ -67,12 +63,6 @@ public class DrivingInputState
             = new FunctionId(G_VEHICLE, CameraSignal.ZoomOut.toString());
     private static final FunctionId F_CAMVIEW
             = new FunctionId(G_VEHICLE, "Camera View");
-    private static final FunctionId F_DUMP_CAMERA
-            = new FunctionId(G_VEHICLE, "Dump Camera");
-    private static final FunctionId F_DUMP_PHYSICS
-            = new FunctionId(G_VEHICLE, "Dump Physics");
-    private static final FunctionId F_DUMP_VIEWPORT
-            = new FunctionId(G_VEHICLE, "Dump Viewport");
     private static final FunctionId F_FOOTBRAKE
             = new FunctionId(G_VEHICLE, "Vehicle Footbrake");
     private static final FunctionId F_HANDBRAKE
@@ -275,10 +265,6 @@ public class DrivingInputState
         inputMapper.map(F_CAMERA_ZOOM_IN1, KeyInput.KEY_NUMPAD9);
         inputMapper.map(F_CAMERA_ZOOM_OUT1, KeyInput.KEY_NUMPAD3);
 
-        inputMapper.map(F_DUMP_CAMERA, KeyInput.KEY_C);
-        inputMapper.map(F_DUMP_PHYSICS, KeyInput.KEY_O);
-        inputMapper.map(F_DUMP_VIEWPORT, KeyInput.KEY_P);
-
         inputMapper.map(F_PAUSE, KeyInput.KEY_PAUSE);
         inputMapper.map(F_PAUSE, KeyInput.KEY_PERIOD);
         inputMapper.map(F_RETURN, KeyInput.KEY_ESCAPE);
@@ -416,17 +402,6 @@ public class DrivingInputState
             signalTracker.setActive(CameraSignal.ZoomOut.toString(),
                     1, pressed);
 
-        } else if (func == F_DUMP_CAMERA && pressed) {
-            dumpCamera();
-
-        } else if (func == F_DUMP_PHYSICS && pressed) {
-            BulletAppState bas = Main.findAppState(BulletAppState.class);
-            new PhysicsDumper().dump(bas);
-
-        } else if (func == F_DUMP_VIEWPORT && pressed) {
-            ViewPort vp = getApplication().getViewPort();
-            new Dumper().setDumpShadow(true).dump(vp);
-
         } else if (func == F_PAUSE && pressed) {
             driverHud.togglePhysicsPaused();
 
@@ -445,18 +420,6 @@ public class DrivingInputState
     }
     // *************************************************************************
     // private methods
-
-    private void dumpCamera() {
-        Camera camera = getApplication().getCamera();
-        String desc1 = MyCamera.describe(camera);
-        System.out.println(desc1);
-
-        String desc2 = MyCamera.describeMore(camera);
-        System.out.println(desc2);
-
-        float degrees = MyCamera.yDegrees(camera);
-        System.out.printf("fovY=%.1f deg%n", degrees);
-    }
 
     private void resetCameraOffset() {
         if (activeCam instanceof ChaseCamera) {
