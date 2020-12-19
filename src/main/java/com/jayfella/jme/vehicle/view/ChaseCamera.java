@@ -3,6 +3,7 @@ package com.jayfella.jme.vehicle.view;
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.input.DrivingInputState;
+import com.jayfella.jme.vehicle.input.NonDrivingInputState;
 import com.jme3.bullet.CollisionSpace;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.collision.PhysicsRayTestResult;
@@ -26,8 +27,10 @@ import jme3utilities.math.MyMath;
 import jme3utilities.math.MyVector3f;
 
 /**
- * A VehicleCamera to control a Camera that chases a Vehicle, jumping forward as
- * needed to maintain a clear line of sight in the vehicle's CollisionSpace.
+ * A VehicleCamera to control a Camera that orbits a target vehicle, jumping
+ * forward as needed to maintain a clear line of sight in the vehicle's
+ * CollisionSpace. Two chasing behaviors are implemented: FreeOrbit and
+ * StrictChase.
  *
  * @author Stephen Gold sgold@sonic.net
  */
@@ -39,11 +42,11 @@ public class ChaseCamera
 
     /**
      * maximum magnitude of the dot product between the camera's look direction
-     * and its preferred "up" direction (default=cos(0.3))
+     * and its preferred "up" direction)
      */
     final private static double maxAbsDot = Math.cos(0.3);
     /**
-     * orbiting rate (in radians per second, &ge;0, default=0.5)
+     * orbiting rate (in radians per second, &ge;0)
      */
     final private static float orbitRate = 0.5f;
     /**
@@ -54,6 +57,8 @@ public class ChaseCamera
     /**
      * names of analog events
      */
+    final private static String analogOrbitCcw = "orbit ccw";
+    final private static String analogOrbitCw = "orbit cw";
     final private static String analogOrbitDown = "orbit down";
     final private static String analogOrbitUp = "orbit up";
     /**
@@ -70,6 +75,10 @@ public class ChaseCamera
      */
     final private BulletDebugAppState.DebugAppStateFilter obstructionFilter;
     /**
+     * configured target-chasing behavior (not null)
+     */
+    final private ChaseOption chaseOption;
+    /**
      * accumulated analog pitch input since the last update (in 1024-pixel
      * units, measured downward from the look direction)
      */
@@ -78,6 +87,11 @@ public class ChaseCamera
      * distance from the target vehicle if the camera had X-ray vision
      */
     private float preferredRange = 10f;
+    /**
+     * accumulated analog yaw input since the last update (in 1024-pixel units,
+     * measured leftward from the look direction)
+     */
+    private float yawAnalogSum = 0f;
     /**
      * accumulated analog zoom amount since the last update (in clicks)
      */
@@ -104,19 +118,24 @@ public class ChaseCamera
     // constructors
 
     /**
-     * Instantiate a VehicleCamera that chases the specified Vehicle.
+     * Instantiate a VehicleCamera that orbits (and optionally chases) the
+     * selected Vehicle.
      *
-     * @param vehicle the Vehicle to chase (not null, alias created)
      * @param camera the Camera to control (not null, alias created)
      * @param tracker the status tracker for named signals (not null, alias
      * created)
+     * @param chaseOption to configure chase behavior (not null)
      * @param obstructionFilter to determine which collision objects obstruct
      * the camera's view (alias created) or null to treat all non-target PCOs as
      * obstructions
      */
-    public ChaseCamera(Vehicle vehicle, Camera camera, SignalTracker tracker,
+    public ChaseCamera(Camera camera, SignalTracker tracker,
+            ChaseOption chaseOption,
             BulletDebugAppState.DebugAppStateFilter obstructionFilter) {
-        super(vehicle, camera, tracker);
+        super(Main.getVehicle(), camera, tracker);
+        Validate.nonNull(chaseOption, "chase option");
+
+        this.chaseOption = chaseOption;
         this.obstructionFilter = obstructionFilter;
     }
     // *************************************************************************
@@ -130,6 +149,18 @@ public class ChaseCamera
     public void setOffset(Vector3f desiredOffset) {
         Validate.finite(desiredOffset, "offset");
         offset.set(desiredOffset);
+    }
+
+    /**
+     * Alter which Vehicle the camera is targeting.
+     */
+    @Override
+    public void setVehicle(Vehicle newVehicle) {
+        super.setVehicle(newVehicle);
+
+        tmpCameraLocation.set(camera.getLocation());
+        vehicle.targetLocation(tmpTargetLocation);
+        tmpCameraLocation.subtract(tmpTargetLocation, offset);
     }
     // *************************************************************************
     // AnalogListener methods
@@ -149,6 +180,18 @@ public class ChaseCamera
 
         boolean isDragToOrbit = isActive(CameraSignal.DragToOrbit);
         switch (eventName) {
+            case analogOrbitCcw:
+                if (isDragToOrbit) {
+                    yawAnalogSum += reading;
+                }
+                break;
+
+            case analogOrbitCw:
+                if (isDragToOrbit) {
+                    yawAnalogSum -= reading;
+                }
+                break;
+
             case analogOrbitDown:
                 if (isDragToOrbit) {
                     pitchAnalogSum += reading;
@@ -179,7 +222,11 @@ public class ChaseCamera
     @Override
     public void attach() {
         InputMapper inputMapper = GuiGlobals.getInstance().getInputMapper();
-        inputMapper.activateGroup(DrivingInputState.G_CAMERA);
+        if (chaseOption == chaseOption.FreeOrbit) {
+            inputMapper.activateGroup(NonDrivingInputState.G_ORBIT);
+        } else {
+            inputMapper.activateGroup(DrivingInputState.G_CAMERA);
+        }
 
         enable();
     }
@@ -187,7 +234,11 @@ public class ChaseCamera
     @Override
     public void detach() {
         InputMapper inputMapper = GuiGlobals.getInstance().getInputMapper();
-        inputMapper.deactivateGroup(DrivingInputState.G_CAMERA);
+        if (chaseOption == chaseOption.FreeOrbit) {
+            inputMapper.deactivateGroup(NonDrivingInputState.G_ORBIT);
+        } else {
+            inputMapper.deactivateGroup(DrivingInputState.G_CAMERA);
+        }
 
         disable();
     }
@@ -229,6 +280,14 @@ public class ChaseCamera
                         ++forwardSum;
                         break;
 
+                    case OrbitCcw:
+                        --orbitCwSign;
+                        break;
+
+                    case OrbitCw:
+                        ++orbitCwSign;
+                        break;
+
                     case OrbitDown:
                         --orbitUpSign;
                         break;
@@ -255,8 +314,8 @@ public class ChaseCamera
          * first the discrete signals and then the analog values.
          */
         float range = offset.length();
-        if (orbitUpSign != 0) {
-            float rootSumSquares = FastMath.abs(orbitUpSign);
+        if (orbitCwSign != 0 || orbitUpSign != 0) {
+            float rootSumSquares = MyMath.hypotenuse(orbitCwSign, orbitUpSign);
             float dist = range * orbitRate * tpf / rootSumSquares;
 
             camera.getLeft(tmpLeft);
@@ -270,13 +329,18 @@ public class ChaseCamera
             float factor = range / offset.length();
             offset.multLocal(factor);
         }
-        if (pitchAnalogSum != 0f) {
+        if (chaseOption == ChaseOption.StrictChase) {
+            yawAnalogSum = 0f;
+        }
+        if (pitchAnalogSum != 0f || yawAnalogSum != 0f) {
             float multiplier = camera.getHeight() / 1024f;
             float pitchAngle = multiplier * pitchAnalogSum;
-            tmpRotation.fromAngles(pitchAngle, 0f, 0f);
+            float yawAngle = multiplier * yawAnalogSum;
+            tmpRotation.fromAngles(pitchAngle, yawAngle, 0f);
             tmpRotation.mult(offset, offset);
 
             pitchAnalogSum = 0f;
+            yawAnalogSum = 0f;
         }
         /*
          * Avoid looking too near the preferred "up" direction or its opposite.
@@ -299,17 +363,21 @@ public class ChaseCamera
                 tmpLook.set(tmpProj);
             }
         }
-        /*
-         * Rotate the "look" direction to stay behind the Vehicle.
-         */
-        vehicle.forwardDirection(tmpRej);
-        assert preferredUpDirection.equals(Vector3f.UNIT_Y) : preferredUpDirection;
-        float thetaForward = FastMath.atan2(tmpRej.x, tmpRej.z);
-        float thetaLook = FastMath.atan2(tmpLook.x, tmpLook.z);
-        float angle = thetaForward - thetaLook;
-        if (Float.isFinite(angle)) {
-            tmpRotation.fromAngles(0f, angle, 0f);
-            tmpRotation.mult(tmpLook, tmpLook);
+        if (chaseOption == ChaseOption.StrictChase) {
+            /*
+             * Rotate the "look" direction to stay
+             * directly behind the target Vehicle.
+             */
+            vehicle.forwardDirection(tmpRej);
+            assert preferredUpDirection.equals(Vector3f.UNIT_Y) :
+                    preferredUpDirection;
+            float thetaForward = FastMath.atan2(tmpRej.x, tmpRej.z);
+            float thetaLook = FastMath.atan2(tmpLook.x, tmpLook.z);
+            float angle = thetaForward - thetaLook;
+            if (Float.isFinite(angle)) {
+                tmpRotation.fromAngles(0f, angle, 0f);
+                tmpRotation.mult(tmpLook, tmpLook);
+            }
         }
         /*
          * Apply the new "look" direction to the Camera.
@@ -396,6 +464,10 @@ public class ChaseCamera
          * Configure the analog inputs.
          */
         InputManager inputManager = Main.getApplication().getInputManager();
+        if (chaseOption == ChaseOption.FreeOrbit) {
+            inputManager.deleteMapping(analogOrbitCcw);
+            inputManager.deleteMapping(analogOrbitCw);
+        }
         inputManager.deleteMapping(analogOrbitDown);
         inputManager.deleteMapping(analogOrbitUp);
         inputManager.deleteMapping(analogZoomIn);
@@ -409,7 +481,11 @@ public class ChaseCamera
      * Enable this camera controller. Assumes it is initialized and disabled.
      */
     private void enable() {
-        camera.setName("chase camera");
+        if (chaseOption == ChaseOption.FreeOrbit) {
+            camera.setName("orbit camera");
+        } else {
+            camera.setName("chase camera");
+        }
         /*
          * Initialize the camera offset and preferred range.
          */
@@ -433,6 +509,13 @@ public class ChaseCamera
          * Configure the analog inputs.
          */
         InputManager inputManager = Main.getApplication().getInputManager();
+        if (chaseOption == ChaseOption.FreeOrbit) {
+            inputManager.addMapping(analogOrbitCcw,
+                    new MouseAxisTrigger(MouseInput.AXIS_X, false));
+            inputManager.addMapping(analogOrbitCw,
+                    new MouseAxisTrigger(MouseInput.AXIS_X, true));
+            inputManager.addListener(this, analogOrbitCcw, analogOrbitCw);
+        }
         inputManager.addMapping(analogOrbitDown,
                 new MouseAxisTrigger(MouseInput.AXIS_Y, true));
         inputManager.addMapping(analogOrbitUp,

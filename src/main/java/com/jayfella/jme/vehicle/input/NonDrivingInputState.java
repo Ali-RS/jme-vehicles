@@ -3,7 +3,8 @@ package com.jayfella.jme.vehicle.input;
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.view.CameraSignal;
-import com.jayfella.jme.vehicle.view.OrbitCamera;
+import com.jayfella.jme.vehicle.view.ChaseCamera;
+import com.jayfella.jme.vehicle.view.ChaseOption;
 import com.jayfella.jme.vehicle.view.VehicleCamera;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
@@ -98,7 +99,8 @@ public class NonDrivingInputState
         }
 
         FilterAll filter = new FilterAll(true);
-        activeCam = new OrbitCamera(cam, signalTracker, filter);
+        activeCam = new ChaseCamera(cam, signalTracker, ChaseOption.FreeOrbit,
+                filter);
         for (CameraSignal function : CameraSignal.values()) {
             String signalName = function.toString();
             activeCam.setSignalName(function, signalName);
@@ -285,7 +287,7 @@ public class NonDrivingInputState
     }
 
     private void resetCameraOffset() {
-        if (activeCam instanceof OrbitCamera) {
+        if (activeCam instanceof ChaseCamera) {
             /*
              * Locate the camera 20 wu behind and 5 wu above the target vehicle.
              */
@@ -293,7 +295,7 @@ public class NonDrivingInputState
             offset.multLocal(-20f);
             offset.y += 5f;
 
-            OrbitCamera orbitCam = (OrbitCamera) activeCam;
+            ChaseCamera orbitCam = (ChaseCamera) activeCam;
             orbitCam.setOffset(offset);
         }
     }

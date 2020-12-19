@@ -10,6 +10,7 @@ import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.gui.MainMenu;
 import com.jayfella.jme.vehicle.view.CameraSignal;
 import com.jayfella.jme.vehicle.view.ChaseCamera;
+import com.jayfella.jme.vehicle.view.ChaseOption;
 import com.jayfella.jme.vehicle.view.DashCamera;
 import com.jayfella.jme.vehicle.view.VehicleCamView;
 import com.jayfella.jme.vehicle.view.VehicleCamera;
@@ -481,8 +482,8 @@ public class DrivingInputState
         switch (camView) {
             case ChaseCam:
                 FilterAll obstructionFilter = new FilterAll(true);
-                ChaseCamera chaseCam = new ChaseCamera(vehicle, cam,
-                        signalTracker, obstructionFilter);
+                ChaseCamera chaseCam = new ChaseCamera(cam, signalTracker,
+                        ChaseOption.StrictChase, obstructionFilter);
                 activeCam = chaseCam;
                 for (CameraSignal function : CameraSignal.values()) {
                     String signalName = function.toString();
