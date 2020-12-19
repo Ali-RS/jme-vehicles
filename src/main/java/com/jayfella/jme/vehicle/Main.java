@@ -16,6 +16,7 @@ import com.jme3.asset.TextureKey;
 import com.jme3.audio.AudioListenerState;
 import com.jme3.bounding.BoundingSphere;
 import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.util.NativeLibrary;
 import com.jme3.input.Joystick;
 import com.jme3.input.JoystickConnectionListener;
 import com.jme3.light.DirectionalLight;
@@ -221,6 +222,7 @@ public class Main extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
+        NativeLibrary.setStartupMessageEnabled(false);
         assetManager.registerLoader(TrueTypeLoader.class, "ttf");
         renderer.setDefaultAnisotropicFilter(4);
 
