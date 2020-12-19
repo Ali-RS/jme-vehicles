@@ -55,7 +55,7 @@ public abstract class Vehicle {
     private GearBox gearBox;
     final private Node node;
     private Spatial chassis;
-    private String name;
+    final private String name;
     private VehicleAudioState vehicleAudioState;
     private VehicleControl vehicleControl;
     // *************************************************************************
