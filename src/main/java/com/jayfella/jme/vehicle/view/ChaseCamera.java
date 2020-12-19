@@ -271,8 +271,7 @@ public class ChaseCamera
             offset.multLocal(factor);
         }
         if (pitchAnalogSum != 0f) {
-            float frustumYTangent = MyCamera.yTangent(camera);
-            float multiplier = camera.getHeight() * frustumYTangent / 1024f;
+            float multiplier = camera.getHeight() / 1024f;
             float pitchAngle = multiplier * pitchAnalogSum;
             tmpRotation.fromAngles(pitchAngle, 0f, 0f);
             tmpRotation.mult(offset, offset);
