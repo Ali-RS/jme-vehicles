@@ -362,7 +362,10 @@ public class DriverHud extends BaseAppState {
         compassState.setEnabled(true);
         showExitButton();
         showHornButton(false);
-        showPowerButton(false);
+
+        boolean isEngineRunning = car.getEngine().isStarted();
+        showPowerButton(isEngineRunning);
+
         showSpeedo(Vehicle.SpeedUnit.MPH);
         showSteeringWheel();
         showTacho();

@@ -73,6 +73,7 @@ public class MainMenu extends AnimatedMenu {
         stateManager.detach(orbit);
 
         Car vehicle = (Car) Main.getVehicle();
+        vehicle.getEngine().setStarted(true);
         DriverHud hud = Main.findAppState(DriverHud.class);
         hud.setCar(vehicle);
         hud.setEnabled(true);
