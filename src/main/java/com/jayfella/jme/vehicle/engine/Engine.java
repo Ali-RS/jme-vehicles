@@ -188,7 +188,7 @@ abstract public class Engine {
      *
      * @return true if running, otherwise false
      */
-    public boolean isStarted() {
+    public boolean isRunning() {
         return isRunning;
     }
 
@@ -244,20 +244,17 @@ abstract public class Engine {
     }
 
     /**
-     * Alter whether this Engine is started.
+     * Alter whether this Engine is running.
      *
-     * @param started the desired setting
+     * @param newState the desired state (default=false)
      */
-    public void setStarted(boolean started) {
-        isRunning = started;
+    public void setRunning(boolean newState) {
+        isRunning = newState;
     }
     // *************************************************************************
     // new protected methods
 
     protected float getTorqueAtSpeed(Vehicle vehicle) {
-        // the maximum this vehicle can go is 135mph or 216kmh.
-
-        // float engineMaxSpeed = 192.0f;
         float engineMaxSpeed
                 = vehicle.getGearBox().getMaxSpeed(Vehicle.SpeedUnit.KMH);
         float speedUnit

@@ -82,7 +82,7 @@ public class VehicleAudioState extends BaseAppState {
 
     @Override
     public void update(float tpf) {
-        boolean isRequested = vehicle.getEngine().isStarted()
+        boolean isRequested = vehicle.getEngine().isRunning()
                 && !isGloballyMuted;
 
         AudioNode engineAudio = vehicle.getEngine().getEngineAudio();

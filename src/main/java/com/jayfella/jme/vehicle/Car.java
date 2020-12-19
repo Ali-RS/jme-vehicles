@@ -111,7 +111,7 @@ abstract public class Car extends Vehicle {
     public void accelerate(float strength) {
         super.accelerate(strength);
 
-        if (getEngine().isStarted()) {
+        if (getEngine().isRunning()) {
             for (Wheel wheel : wheels) {
                 if (wheel.getAccelerationForce() > 0) {
 

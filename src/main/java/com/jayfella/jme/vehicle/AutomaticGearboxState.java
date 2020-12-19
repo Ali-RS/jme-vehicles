@@ -61,7 +61,7 @@ public class AutomaticGearboxState extends BaseAppState {
     @Override
     public void update(float tpf) {
         Engine engine = vehicle.getEngine();
-        boolean isEngineRunning = engine.isStarted();
+        boolean isEngineRunning = engine.isRunning();
         if (!isEngineRunning) {
             engine.setRevs(0f);
             return;

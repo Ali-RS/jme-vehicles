@@ -212,8 +212,8 @@ public abstract class Vehicle {
     }
 
     public void startEngine() {
-        if (!engine.isStarted()) {
-            engine.setStarted(true);
+        if (!engine.isRunning()) {
+            engine.setRunning(true);
             vehicleAudioState.playEngineSound();
         }
     }
@@ -221,8 +221,8 @@ public abstract class Vehicle {
     public abstract void steer(float strength);
 
     public void stopEngine() {
-        if (engine.isStarted()) {
-            engine.setStarted(false);
+        if (engine.isRunning()) {
+            engine.setRunning(false);
             vehicleAudioState.stopEngineSound();
         }
     }

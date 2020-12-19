@@ -164,7 +164,7 @@ public class DriverHud extends BaseAppState {
      * Toggle the engine between the started and stopped states.
      */
     public void toggleEngineStarted() {
-        boolean wasStarted = car.getEngine().isStarted();
+        boolean wasStarted = car.getEngine().isRunning();
         if (wasStarted) {
             car.stopEngine();
             showPowerButton(false);
@@ -363,7 +363,7 @@ public class DriverHud extends BaseAppState {
         showExitButton();
         showHornButton(false);
 
-        boolean isEngineRunning = car.getEngine().isStarted();
+        boolean isEngineRunning = car.getEngine().isRunning();
         showPowerButton(isEngineRunning);
 
         showSpeedo(Vehicle.SpeedUnit.MPH);
