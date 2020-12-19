@@ -2,7 +2,7 @@ package com.jayfella.jme.vehicle.view;
 
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Vehicle;
-import com.jayfella.jme.vehicle.input.KeyboardVehicleInputState;
+import com.jayfella.jme.vehicle.input.DrivingInputState;
 import com.jme3.input.InputManager;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.AnalogListener;
@@ -92,7 +92,7 @@ public class DashCamera
         vehicle.getNode().attachChild(cameraNode);
 
         InputMapper inputMapper = GuiGlobals.getInstance().getInputMapper();
-        inputMapper.activateGroup(KeyboardVehicleInputState.G_CAMERA);
+        inputMapper.activateGroup(DrivingInputState.G_CAMERA);
 
         enable();
     }
@@ -102,7 +102,7 @@ public class DashCamera
         cameraNode.removeFromParent();
 
         InputMapper inputMapper = GuiGlobals.getInstance().getInputMapper();
-        inputMapper.deactivateGroup(KeyboardVehicleInputState.G_CAMERA);
+        inputMapper.deactivateGroup(DrivingInputState.G_CAMERA);
 
         disable();
     }

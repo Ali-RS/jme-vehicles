@@ -39,9 +39,9 @@ import jme3utilities.minie.PhysicsDumper;
 
 /**
  * An AppState to handle input while driving a Vehicle. There are 2 camera
- * modes: one for the dash camera and one for the orbit camera. TODO rename
+ * modes: one for the dash camera and one for the orbit camera.
  */
-public class KeyboardVehicleInputState
+public class DrivingInputState
         extends BaseAppState
         implements StateFunctionListener {
     // *************************************************************************
@@ -51,7 +51,7 @@ public class KeyboardVehicleInputState
      * message logger for this class
      */
     final public static Logger logger
-            = Logger.getLogger(KeyboardVehicleInputState.class.getName());
+            = Logger.getLogger(DrivingInputState.class.getName());
 
     public static final String G_CAMERA = "GROUP_CAMERA";
     public static final String G_VEHICLE = "GROUP_VEHICLE";
@@ -138,7 +138,7 @@ public class KeyboardVehicleInputState
      *
      * @param vehicle the Vehicle to drive (not null)
      */
-    public KeyboardVehicleInputState(Vehicle vehicle) {
+    public DrivingInputState(Vehicle vehicle) {
         this.vehicle = vehicle;
 
         signalTracker = new SignalTracker();

@@ -4,7 +4,7 @@ import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.VehicleAudioState;
-import com.jayfella.jme.vehicle.input.KeyboardVehicleInputState;
+import com.jayfella.jme.vehicle.input.DrivingInputState;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
@@ -276,9 +276,9 @@ public class DriverHud extends BaseAppState {
         Expander listener = new Expander(hornButton) {
             @Override
             public void onClick(boolean isPressed) {
-                KeyboardVehicleInputState kvis
-                        = Main.findAppState(KeyboardVehicleInputState.class);
-                SignalTracker signalTracker = kvis.getSignalTracker();
+                DrivingInputState inputState
+                        = Main.findAppState(DrivingInputState.class);
+                SignalTracker signalTracker = inputState.getSignalTracker();
                 signalTracker.setActive("horn", 999, isPressed);
             }
         };
@@ -480,9 +480,9 @@ public class DriverHud extends BaseAppState {
      * Exit the car and return to the main menu.
      */
     private void returnToMainMenu() {
-        KeyboardVehicleInputState kvis
-                = Main.findAppState(KeyboardVehicleInputState.class);
-        kvis.returnToMainMenu();
+        DrivingInputState inputState
+                = Main.findAppState(DrivingInputState.class);
+        inputState.returnToMainMenu();
     }
 
     /**

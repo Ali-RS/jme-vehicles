@@ -2,7 +2,7 @@ package com.jayfella.jme.vehicle.view;
 
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Vehicle;
-import com.jayfella.jme.vehicle.input.KeyboardVehicleInputState;
+import com.jayfella.jme.vehicle.input.DrivingInputState;
 import com.jme3.bullet.CollisionSpace;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.collision.PhysicsRayTestResult;
@@ -179,7 +179,7 @@ public class ChaseCamera
     @Override
     public void attach() {
         InputMapper inputMapper = GuiGlobals.getInstance().getInputMapper();
-        inputMapper.activateGroup(KeyboardVehicleInputState.G_CAMERA);
+        inputMapper.activateGroup(DrivingInputState.G_CAMERA);
 
         enable();
     }
@@ -187,7 +187,7 @@ public class ChaseCamera
     @Override
     public void detach() {
         InputMapper inputMapper = GuiGlobals.getInstance().getInputMapper();
-        inputMapper.deactivateGroup(KeyboardVehicleInputState.G_CAMERA);
+        inputMapper.deactivateGroup(DrivingInputState.G_CAMERA);
 
         disable();
     }

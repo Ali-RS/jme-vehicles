@@ -5,7 +5,7 @@ import com.atr.jme.font.asset.TrueTypeKeyMesh;
 import com.atr.jme.font.shape.TrueTypeNode;
 import com.atr.jme.font.util.Style;
 import com.jayfella.jme.vehicle.Main;
-import com.jayfella.jme.vehicle.input.KeyboardVehicleInputState;
+import com.jayfella.jme.vehicle.input.DrivingInputState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
@@ -190,9 +190,9 @@ class CameraNameState extends BaseAppState {
             @Override
             public void onClick(boolean isPressed) {
                 if (isPressed) {
-                    KeyboardVehicleInputState kvis
-                            = Main.findAppState(KeyboardVehicleInputState.class);
-                    kvis.nextCameraMode();
+                    DrivingInputState inputState
+                            = Main.findAppState(DrivingInputState.class);
+                    inputState.nextCameraMode();
                 }
             }
         };
