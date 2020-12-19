@@ -40,6 +40,19 @@ abstract public class Environment {
     }
 
     /**
+     * Remove this loaded environment from the scene-graph node and PhysicsSpace
+     * to which it has been added.
+     */
+    void detachFromScene() {
+        RigidBodyControl rigidBodyControl
+                = loadedCgm.getControl(RigidBodyControl.class);
+        PhysicsSpace physicsSpace = rigidBodyControl.getPhysicsSpace();
+        physicsSpace.remove(rigidBodyControl);
+
+        loadedCgm.removeFromParent();
+    }
+
+    /**
      * Determine the preferred intensity for direct light.
      *
      * @return the average color component (&ge;0)
@@ -77,19 +90,6 @@ abstract public class Environment {
      * @return the model's root node (a new instance)
      */
     abstract public Node load();
-
-    /**
-     * Remove this loaded environment from the scene-graph node and PhysicsSpace
-     * to which it has been added. TODO re-order
-     */
-    void detachFromScene() {
-        RigidBodyControl rigidBodyControl
-                = loadedCgm.getControl(RigidBodyControl.class);
-        PhysicsSpace physicsSpace = rigidBodyControl.getPhysicsSpace();
-        physicsSpace.remove(rigidBodyControl);
-
-        loadedCgm.removeFromParent();
-    }
 
     /**
      * Reposition the default Camera to the initial location and orientation for
