@@ -25,9 +25,9 @@ abstract public class Environment {
 
     /**
      * Add this loaded environment to the specified scene-graph node and also to
-     * the PhysicsSpace. TODO rename attachToScene()
+     * the PhysicsSpace.
      */
-    void add(Node parent) {
+    void attachToScene(Node parent) {
         assert loadedCgm != null;
 
         parent.attachChild(loadedCgm);
@@ -80,9 +80,9 @@ abstract public class Environment {
 
     /**
      * Remove this loaded environment from the scene-graph node and PhysicsSpace
-     * to which it has been added. TODO rename detachFromScene()
+     * to which it has been added. TODO re-order
      */
-    void remove() {
+    void detachFromScene() {
         RigidBodyControl rigidBodyControl
                 = loadedCgm.getControl(RigidBodyControl.class);
         PhysicsSpace physicsSpace = rigidBodyControl.getPhysicsSpace();

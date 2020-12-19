@@ -97,7 +97,7 @@ public class Main extends SimpleApplication {
         directionalLight.setColor(directColor);
 
         environment.resetCameraPosition();
-        environment.add(rootNode);
+        environment.attachToScene(rootNode);
 
         vehicle.attachToScene(rootNode);
     }
@@ -194,7 +194,7 @@ public class Main extends SimpleApplication {
      */
     public void setEnvironment(Environment newEnvironment) {
         vehicle.detachFromScene();
-        environment.remove();
+        environment.detachFromScene();
 
         environment = newEnvironment;
         attachAllToScene();
@@ -307,7 +307,7 @@ public class Main extends SimpleApplication {
                 })
                 .whenComplete((node, ex) -> {
                     enqueue(() -> {
-                        environment.add(rootNode);
+                        environment.attachToScene(rootNode);
                         latch.countDown();
                     });
                 });
