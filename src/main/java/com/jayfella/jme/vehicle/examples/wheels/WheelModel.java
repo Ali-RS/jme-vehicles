@@ -8,10 +8,6 @@ public abstract class WheelModel {
     private final Node wheelNode = new Node("Wheel Node");
     private Spatial wheelSpatial;
 
-    protected WheelModel() {
-
-    }
-
     protected void setSpatial(Spatial wheelSpatial) {
         this.wheelSpatial = wheelSpatial;
         this.wheelNode.attachChild(wheelSpatial);

@@ -11,10 +11,6 @@ import com.simsilica.lemur.props.PropertyPanel;
 
 public class DebugTabState extends BaseAppState {
 
-    public DebugTabState() {
-
-    }
-
     /**
      * Callback invoked after this AppState is attached but before onEnable().
      *
