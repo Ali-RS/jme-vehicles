@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle.engine;
 
+import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioData;
@@ -255,10 +256,8 @@ abstract public class Engine {
     // new protected methods
 
     protected float getTorqueAtSpeed(Vehicle vehicle) {
-        float engineMaxSpeed
-                = vehicle.getGearBox().getMaxSpeed(Vehicle.SpeedUnit.KMH);
-        float speedUnit
-                = vehicle.getSpeed(Vehicle.SpeedUnit.KMH) / engineMaxSpeed;
+        float engineMaxSpeed = vehicle.getGearBox().getMaxSpeed(SpeedUnit.KMH);
+        float speedUnit = vehicle.getSpeed(SpeedUnit.KMH) / engineMaxSpeed;
         return 1.0f - FastMath.interpolateLinear(speedUnit, 0, speedUnit);
     }
     // *************************************************************************

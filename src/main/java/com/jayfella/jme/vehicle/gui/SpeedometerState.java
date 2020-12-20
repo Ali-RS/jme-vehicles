@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle.gui;
 
+import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -52,7 +53,7 @@ class SpeedometerState extends BaseAppState {
      */
     final private Quaternion tmpRotation = new Quaternion();
 
-    final private Vehicle.SpeedUnit speedUnit;
+    final private SpeedUnit speedUnit;
     /**
      * corresponding Vehicle
      */
@@ -66,7 +67,7 @@ class SpeedometerState extends BaseAppState {
      * @param vehicle the corresponding Vehicle (not null)
      * @param speedUnit the units to display (not null)
      */
-    SpeedometerState(Vehicle vehicle, Vehicle.SpeedUnit speedUnit) {
+    SpeedometerState(Vehicle vehicle, SpeedUnit speedUnit) {
         this.vehicle = vehicle;
         this.speedUnit = speedUnit;
 

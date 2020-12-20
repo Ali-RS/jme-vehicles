@@ -2,7 +2,7 @@ package com.jayfella.jme.vehicle.gui;
 
 import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Main;
-import com.jayfella.jme.vehicle.Vehicle;
+import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.VehicleAudioState;
 import com.jayfella.jme.vehicle.input.DrivingInputState;
 import com.jme3.app.Application;
@@ -366,7 +366,7 @@ public class DriverHud extends BaseAppState {
         boolean isEngineRunning = car.getEngine().isRunning();
         showPowerButton(isEngineRunning);
 
-        showSpeedo(Vehicle.SpeedUnit.MPH);
+        showSpeedo(SpeedUnit.MPH);
         showSteeringWheel();
         showTacho();
     }
@@ -665,7 +665,7 @@ public class DriverHud extends BaseAppState {
      *
      * @param speedUnit (not null)
      */
-    private void showSpeedo(Vehicle.SpeedUnit speedUnit) {
+    private void showSpeedo(SpeedUnit speedUnit) {
         hideSpeedometer();
 
         speedometer = new SpeedometerState(car, speedUnit);

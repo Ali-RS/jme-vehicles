@@ -30,10 +30,6 @@ import jme3utilities.math.MyVector3f;
  * A vehicle with a single Engine and a single GearBox.
  */
 public abstract class Vehicle {
-
-    public enum SpeedUnit {
-        KMH, MPH
-    }
     // *************************************************************************
     // constants and loggers
 

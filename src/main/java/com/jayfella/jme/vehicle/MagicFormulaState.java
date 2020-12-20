@@ -211,7 +211,7 @@ public class MagicFormulaState extends BaseAppState {
 
         Vector3f vehicleTravel;
 
-        if (vehicle.getSpeed(Vehicle.SpeedUnit.KMH) < 5) {
+        if (vehicle.getSpeed(SpeedUnit.KMH) < 5) {
             vehicleTravel = vehicle.getVehicleControl().getPhysicsRotation().getRotationColumn(2);
         } else {
             vehicleTravel = vehicle.getVehicleControl().getLinearVelocity().normalizeLocal();

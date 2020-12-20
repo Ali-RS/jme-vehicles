@@ -1,7 +1,6 @@
 package com.jayfella.jme.vehicle.part;
 
-import com.jayfella.jme.vehicle.Vehicle;
-
+import com.jayfella.jme.vehicle.SpeedUnit;
 import static com.jayfella.jme.vehicle.Vehicle.KMH_TO_MPH;
 
 public class GearBox {
@@ -71,7 +70,7 @@ public class GearBox {
         return this.gears.length;
     }
 
-    public float getMaxSpeed(Vehicle.SpeedUnit speedUnit) {
+    public float getMaxSpeed(SpeedUnit speedUnit) {
         switch (speedUnit) {
             case KMH: return gears[getGearCount() - 1].getEnd();
             case MPH: return gears[getGearCount() - 1].getEnd() * KMH_TO_MPH;

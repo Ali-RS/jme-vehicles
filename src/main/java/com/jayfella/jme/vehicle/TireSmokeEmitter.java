@@ -112,7 +112,7 @@ public class TireSmokeEmitter extends BaseAppState {
                 smoke.emitParticles((int) (scale * 20));
                 // smoke.getParticleInfluencer().setInitialVelocity(vehicle.getVehicleControl().getLinearVelocity().negate().mult(scale * 0.25f));
                 smoke.getParticleInfluencer().setInitialVelocity(vehicle.getVehicleControl().getPhysicsRotation().getRotationColumn(2).negate()
-                        .mult(scale * (vehicle.getSpeed(Vehicle.SpeedUnit.KMH) / 10)));
+                        .mult(scale * (vehicle.getSpeed(SpeedUnit.KMH) / 10)));
 
             } else {
                 // smoke.emitParticles(0);

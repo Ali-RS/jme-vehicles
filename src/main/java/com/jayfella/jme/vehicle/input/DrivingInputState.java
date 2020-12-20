@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle.input;
 
 import com.jayfella.jme.vehicle.Main;
+import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.debug.DebugTabState;
 import com.jayfella.jme.vehicle.debug.EnginePowerGraphState;
@@ -313,10 +314,6 @@ public class DrivingInputState
 
         boolean hornIsRequested = signalTracker.test("horn");
         vehicle.setHornStatus(hornIsRequested);
-
-        //if (vehicle.getDriver() != null) {
-        //vehicle.getDriver().getPlayerNode().setLocalTranslation(vehicle.getLocation());
-        //}
     }
     // *************************************************************************
     // StateFunctionListener methods
@@ -484,9 +481,8 @@ public class DrivingInputState
         if (accelerating) {
             vehicle.removeEngineBraking();
 
-            float kph = vehicle.getSpeed(Vehicle.SpeedUnit.KMH);
-            float maxKph
-                    = vehicle.getGearBox().getMaxSpeed(Vehicle.SpeedUnit.KMH);
+            float kph = vehicle.getSpeed(SpeedUnit.KMH);
+            float maxKph = vehicle.getGearBox().getMaxSpeed(SpeedUnit.KMH);
             if (kph < maxKph) {
                 vehicle.accelerate(1f);
             } else {
@@ -502,7 +498,7 @@ public class DrivingInputState
         }
 
         if (vehicle.getGearBox().isReversing()) {
-            if (vehicle.getSpeed(Vehicle.SpeedUnit.KMH) > -40f) {
+            if (vehicle.getSpeed(SpeedUnit.KMH) > -40f) {
                 vehicle.accelerate(-1f);
             } else {
                 vehicle.accelerate(0f);
