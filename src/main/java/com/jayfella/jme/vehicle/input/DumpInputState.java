@@ -38,7 +38,7 @@ public class DumpInputState
 
     final private static String G_DUMP = "G_DUMP";
     /**
-     * Function IDs
+     * function IDs
      */
     private static final FunctionId F_DUMP_CAMERA
             = new FunctionId(G_DUMP, "Dump Camera");
@@ -54,7 +54,7 @@ public class DumpInputState
      * shutdown if the state is still attached. onDisable() is called before
      * this cleanup() method if the state is enabled at the time of cleanup.
      *
-     * @param app the application instance (not null)
+     * @param application the application instance (not null)
      */
     @Override
     protected void cleanup(Application application) {
