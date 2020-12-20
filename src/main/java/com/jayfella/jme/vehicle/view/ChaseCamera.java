@@ -153,9 +153,12 @@ public class ChaseCamera
 
     /**
      * Alter which Vehicle the camera is targeting.
+     *
+     * @param newVehicle the desired target vehicle (not null)
      */
     @Override
     public void setVehicle(Vehicle newVehicle) {
+        Validate.nonNull(newVehicle, "new vehicle");
         super.setVehicle(newVehicle);
 
         tmpCameraLocation.set(camera.getLocation());
@@ -222,7 +225,7 @@ public class ChaseCamera
     @Override
     public void attach() {
         InputMapper inputMapper = GuiGlobals.getInstance().getInputMapper();
-        if (chaseOption == chaseOption.FreeOrbit) {
+        if (chaseOption == ChaseOption.FreeOrbit) {
             inputMapper.activateGroup(NonDrivingInputState.G_ORBIT);
         } else {
             inputMapper.activateGroup(DrivingInputState.G_CAMERA);
@@ -234,7 +237,7 @@ public class ChaseCamera
     @Override
     public void detach() {
         InputMapper inputMapper = GuiGlobals.getInstance().getInputMapper();
-        if (chaseOption == chaseOption.FreeOrbit) {
+        if (chaseOption == ChaseOption.FreeOrbit) {
             inputMapper.deactivateGroup(NonDrivingInputState.G_ORBIT);
         } else {
             inputMapper.deactivateGroup(DrivingInputState.G_CAMERA);

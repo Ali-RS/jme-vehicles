@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 import jme3utilities.MyCamera;
 import jme3utilities.SignalTracker;
+import jme3utilities.Validate;
 import jme3utilities.minie.FilterAll;
 
 /**
@@ -76,8 +77,6 @@ public class NonDrivingInputState
 
     /**
      * Instantiate an input state to orbit the selected Vehicle.
-     *
-     * @param vehicle the Vehicle to orbit (not null)
      */
     public NonDrivingInputState() {
         Camera cam = Main.getApplication().getCamera();
@@ -110,8 +109,11 @@ public class NonDrivingInputState
 
     /**
      * Alter which Vehicle is associated with the camera.
+     *
+     * @param newVehicle the vehicle to associate (not null)
      */
     public void setVehicle(Vehicle newVehicle) {
+        Validate.nonNull(newVehicle, "new vehicle");
         activeCam.setVehicle(newVehicle);
     }
     // *************************************************************************

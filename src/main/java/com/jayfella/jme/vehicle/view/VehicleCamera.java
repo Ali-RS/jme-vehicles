@@ -82,8 +82,11 @@ abstract public class VehicleCamera {
 
     /**
      * Alter which Vehicle is associated with this camera.
+     *
+     * @param newVehicle the desired target vehicle (not null)
      */
     public void setVehicle(Vehicle newVehicle) {
+        Validate.nonNull(newVehicle, "new vehicle");
         vehicle = newVehicle;
     }
 
