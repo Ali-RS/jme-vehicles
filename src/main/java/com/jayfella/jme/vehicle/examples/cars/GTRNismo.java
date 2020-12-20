@@ -26,7 +26,7 @@ public class GTRNismo extends Car {
     final public static Logger logger
             = Logger.getLogger(GTRNismo.class.getName());
 
-    private final float scale = 0.01f;
+    final private float scale = 0.01f;
 
     public GTRNismo() {
         super(Main.getApplication(), "GTR Nismo");

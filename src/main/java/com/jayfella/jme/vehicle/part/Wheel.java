@@ -9,9 +9,9 @@ import com.jme3.math.Vector3f;
 
 public class Wheel {
 
-    private final VehicleControl vehicleControl;
-    private final int wheelIndex;
-    private final VehicleWheel vehicleWheel;
+    final private VehicleControl vehicleControl;
+    final private int wheelIndex;
+    final private VehicleWheel vehicleWheel;
 
     // allows us to steer with rear wheels by flipping the direction and power.
     private boolean steering;
@@ -24,9 +24,9 @@ public class Wheel {
     private float maxSteerAngle = FastMath.QUARTER_PI;
     // private float maxSteerAngle = 30 * FastMath.DEG_TO_RAD;
 
-    private final Suspension suspension;
+    final private Suspension suspension;
 
-    private final Brake brake;
+    final private Brake brake;
 
     private PacejkaTireModel tireModel;
 

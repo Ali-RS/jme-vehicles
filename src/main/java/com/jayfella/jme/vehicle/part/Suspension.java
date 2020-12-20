@@ -11,7 +11,7 @@ public class Suspension {
     private float maxForce;
     private float restLength;
 
-    private final VehicleWheel vehicleWheel;
+    final private VehicleWheel vehicleWheel;
 
     public Suspension(VehicleWheel vehicleWheel, float compression, float damping) {
         this.vehicleWheel = vehicleWheel;

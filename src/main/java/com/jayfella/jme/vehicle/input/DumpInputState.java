@@ -40,11 +40,11 @@ public class DumpInputState
     /**
      * function IDs
      */
-    private static final FunctionId F_DUMP_CAMERA
+    final private static FunctionId F_DUMP_CAMERA
             = new FunctionId(G_DUMP, "Dump Camera");
-    private static final FunctionId F_DUMP_PHYSICS
+    final private static FunctionId F_DUMP_PHYSICS
             = new FunctionId(G_DUMP, "Dump Physics");
-    private static final FunctionId F_DUMP_VIEWPORT
+    final private static FunctionId F_DUMP_VIEWPORT
             = new FunctionId(G_DUMP, "Dump Viewport");
     // *************************************************************************
     // BaseAppState methods

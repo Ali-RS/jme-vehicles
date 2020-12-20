@@ -10,7 +10,7 @@ import com.jme3.scene.Spatial;
 
 public class WheelSpinState extends BaseAppState {
 
-    private final Car car;
+    final private Car car;
     private int wheelCount;
 
     private Quaternion[] rot;

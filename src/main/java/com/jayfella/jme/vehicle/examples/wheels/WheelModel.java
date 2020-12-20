@@ -3,9 +3,9 @@ package com.jayfella.jme.vehicle.examples.wheels;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
-public abstract class WheelModel {
+abstract public class WheelModel {
 
-    private final Node wheelNode = new Node("Wheel Node");
+    final private Node wheelNode = new Node("Wheel Node");
     private Spatial wheelSpatial;
 
     protected void setSpatial(Spatial wheelSpatial) {

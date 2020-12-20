@@ -13,13 +13,13 @@ import com.jme3.util.BufferUtils;
 
 public class TireGraph extends Geometry {
 
-    private final PacejkaTireModel tireModel;
-    private final int width, height;
+    final private PacejkaTireModel tireModel;
+    final private int width, height;
 
-    private final ImageRaster imageRaster;
-    private final Texture2D texture;
+    final private ImageRaster imageRaster;
+    final private Texture2D texture;
 
-    private static final float maxSlipAngle = FastMath.QUARTER_PI; // 45 degrees
+    final private static float maxSlipAngle = FastMath.QUARTER_PI; // 45 degrees
 
     private ColorRGBA backgroundColor = ColorRGBA.White;
     private ColorRGBA lineColor = ColorRGBA.DarkGray;

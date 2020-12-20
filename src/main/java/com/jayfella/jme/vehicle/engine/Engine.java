@@ -78,7 +78,7 @@ abstract public class Engine {
      * @param range a value from 0-maxRevs
      * @return the power at this rev-range, from 0 to getPower().
      */
-    public abstract float evaluateSpline(float range);
+    abstract public float evaluateSpline(float range);
 
     public float evaluateSpline(Spline powerGraph, float range) {
         int index = powerGraph.getControlPoints().size() - 1;
@@ -182,7 +182,7 @@ abstract public class Engine {
      *
      * @return the amount of torque applied at the current speed.
      */
-    public abstract float getTorqueAtSpeed();
+    abstract public float getTorqueAtSpeed();
 
     /**
      * Test whether this Engine is running.

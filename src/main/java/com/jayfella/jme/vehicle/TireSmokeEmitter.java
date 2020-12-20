@@ -16,7 +16,7 @@ import com.jme3.scene.Node;
 public class TireSmokeEmitter extends BaseAppState {
 
     private Node rootNode;
-    private final Vehicle vehicle;
+    final private Vehicle vehicle;
     private int wheelCount;
     private ParticleEmitter[] emitters;
 

@@ -103,8 +103,8 @@ public class TireSettings {
         this.changeListener = changeListener;
     }
 
-    public abstract static class ChangeListener {
-        public abstract void valueChanged();
+    abstract public static class ChangeListener {
+        abstract public void valueChanged();
     }
 
 }

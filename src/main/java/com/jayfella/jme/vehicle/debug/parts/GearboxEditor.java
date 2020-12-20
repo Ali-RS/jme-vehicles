@@ -6,7 +6,7 @@ import com.simsilica.lemur.props.PropertyPanel;
 
 public class GearboxEditor extends VehicleEditor {
 
-    private final Vehicle vehicle;
+    final private Vehicle vehicle;
 
     public GearboxEditor(Vehicle vehicle) {
         this.vehicle = vehicle;

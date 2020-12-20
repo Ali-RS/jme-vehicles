@@ -51,59 +51,59 @@ public class DrivingInputState
     final public static Logger logger
             = Logger.getLogger(DrivingInputState.class.getName());
 
-    public static final String G_CAMERA = "GROUP_CAMERA";
-    public static final String G_VEHICLE = "GROUP_VEHICLE";
+    final public static String G_CAMERA = "GROUP_CAMERA";
+    final public static String G_VEHICLE = "GROUP_VEHICLE";
     /**
      * Vehicle function IDs
      */
-    private static final FunctionId F_CAMERA_RESET_FOV
+    final private static FunctionId F_CAMERA_RESET_FOV
             = new FunctionId(G_VEHICLE, "Camera Reset FOV");
-    private static final FunctionId F_CAMERA_ZOOM_IN1
+    final private static FunctionId F_CAMERA_ZOOM_IN1
             = new FunctionId(G_VEHICLE, CameraSignal.ZoomIn.toString());
-    private static final FunctionId F_CAMERA_ZOOM_OUT1
+    final private static FunctionId F_CAMERA_ZOOM_OUT1
             = new FunctionId(G_VEHICLE, CameraSignal.ZoomOut.toString());
-    private static final FunctionId F_CAMVIEW
+    final private static FunctionId F_CAMVIEW
             = new FunctionId(G_VEHICLE, "Camera View");
-    private static final FunctionId F_FOOTBRAKE
+    final private static FunctionId F_FOOTBRAKE
             = new FunctionId(G_VEHICLE, "Vehicle Footbrake");
-    private static final FunctionId F_HANDBRAKE
+    final private static FunctionId F_HANDBRAKE
             = new FunctionId(G_VEHICLE, "Vehicle Handbrake");
-    private static final FunctionId F_HORN
+    final private static FunctionId F_HORN
             = new FunctionId(G_VEHICLE, "Vehicle Horn");
-    private static final FunctionId F_FORWARD
+    final private static FunctionId F_FORWARD
             = new FunctionId(G_VEHICLE, "Vehicle Move");
-    private static final FunctionId F_PAUSE
+    final private static FunctionId F_PAUSE
             = new FunctionId(G_VEHICLE, "Pause Simulation");
-    private static final FunctionId F_RESET
+    final private static FunctionId F_RESET
             = new FunctionId(G_VEHICLE, "Vehicle Reset");
-    private static final FunctionId F_RETURN
+    final private static FunctionId F_RETURN
             = new FunctionId(G_VEHICLE, "Return to Main Menu");
-    private static final FunctionId F_REVERSE
+    final private static FunctionId F_REVERSE
             = new FunctionId(G_VEHICLE, "Vehicle reverse");
-    private static final FunctionId F_SCREEN_SHOT
+    final private static FunctionId F_SCREEN_SHOT
             = new FunctionId(G_VEHICLE, "ScreenShot");
-    private static final FunctionId F_START_ENGINE
+    final private static FunctionId F_START_ENGINE
             = new FunctionId(G_VEHICLE, "Vehicle Start Engine");
-    private static final FunctionId F_TURN_LEFT
+    final private static FunctionId F_TURN_LEFT
             = new FunctionId(G_VEHICLE, "Vehicle Turn Left");
-    private static final FunctionId F_TURN_RIGHT
+    final private static FunctionId F_TURN_RIGHT
             = new FunctionId(G_VEHICLE, "Vehicle Turn Right");
     /**
      * ChaseCamera function IDs
      */
-    private static final FunctionId F_CAMERA_BACK1
+    final private static FunctionId F_CAMERA_BACK1
             = new FunctionId(G_CAMERA, CameraSignal.Back.toString());
-    private static final FunctionId F_CAMERA_DOWN1
+    final private static FunctionId F_CAMERA_DOWN1
             = new FunctionId(G_CAMERA, CameraSignal.OrbitDown.toString());
-    private static final FunctionId F_CAMERA_DRAG_TO_ORBIT1
+    final private static FunctionId F_CAMERA_DRAG_TO_ORBIT1
             = new FunctionId(G_CAMERA, CameraSignal.DragToOrbit.toString());
-    private static final FunctionId F_CAMERA_FORWARD1
+    final private static FunctionId F_CAMERA_FORWARD1
             = new FunctionId(G_CAMERA, CameraSignal.Forward.toString());
-    private static final FunctionId F_CAMERA_RESET_OFFSET
+    final private static FunctionId F_CAMERA_RESET_OFFSET
             = new FunctionId(G_CAMERA, "Camera Reset Offset");
-    private static final FunctionId F_CAMERA_UP1
+    final private static FunctionId F_CAMERA_UP1
             = new FunctionId(G_CAMERA, CameraSignal.OrbitUp.toString());
-    private static final FunctionId F_CAMERA_XRAY1
+    final private static FunctionId F_CAMERA_XRAY1
             = new FunctionId(G_CAMERA, CameraSignal.Xray.toString());
     // *************************************************************************
     // fields
@@ -119,7 +119,7 @@ public class DrivingInputState
 
     private InputMapper inputMapper;
     final private SignalTracker signalTracker;
-    private final Vehicle vehicle;
+    final private Vehicle vehicle;
     private VehicleCamera activeCam;
     private VehicleCamView cameraMode = VehicleCamView.ChaseCam;
     // *************************************************************************

@@ -18,11 +18,11 @@ import com.simsilica.lemur.component.SpringGridLayout;
 
 public class VehicleEditorState extends BaseAppState {
 
-    private final Car vehicle;
-    private final TabbedPanel tabbedPanel;
+    final private Car vehicle;
+    final private TabbedPanel tabbedPanel;
 
-    public static final SpringGridLayout Layout = new SpringGridLayout(Axis.Y, Axis.X, FillMode.Even, FillMode.Last);
-    public static final int Width = 350;
+    final public static SpringGridLayout Layout = new SpringGridLayout(Axis.Y, Axis.X, FillMode.Even, FillMode.Last);
+    final public static int Width = 350;
 
     private VehicleEditor chassis;
     private VehicleEditor engine;

@@ -15,7 +15,7 @@ public class VehicleAudioState extends BaseAppState {
      */
     private static boolean isGloballyMuted = false;
 
-    private final Vehicle vehicle;
+    final private Vehicle vehicle;
 
     public VehicleAudioState(Vehicle vehicle) {
         this.vehicle = vehicle;

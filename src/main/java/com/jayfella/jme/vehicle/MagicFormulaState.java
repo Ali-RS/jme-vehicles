@@ -20,7 +20,7 @@ import com.simsilica.lemur.Label;
 
 public class MagicFormulaState extends BaseAppState {
 
-    private final Car vehicle;
+    final private Car vehicle;
 
     private Node rootNode;
     private Node guiNode;

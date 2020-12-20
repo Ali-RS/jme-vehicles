@@ -7,8 +7,8 @@ import com.jme3.math.Vector3f;
 
 public class Engine180HP extends Engine {
 
-    private final Vehicle vehicle;
-    private final Spline powerGraph;
+    final private Vehicle vehicle;
+    final private Spline powerGraph;
 
     public Engine180HP(Vehicle vehicle) {
         super("Basic 180", 1800f, 600f, 5000f, 10f);

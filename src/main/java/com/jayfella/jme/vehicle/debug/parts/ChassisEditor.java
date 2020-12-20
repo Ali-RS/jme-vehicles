@@ -6,7 +6,7 @@ import com.simsilica.lemur.props.PropertyPanel;
 
 public class ChassisEditor extends VehicleEditor {
 
-    private final Vehicle vehicle;
+    final private Vehicle vehicle;
 
     public ChassisEditor(Vehicle vehicle) {
         super();

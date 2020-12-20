@@ -34,7 +34,7 @@ abstract public class AnimatedMenu extends BaseAppState {
         this.completeEvent = animComplete;
     }
 
-    protected abstract Button[] createItems();
+    abstract protected Button[] createItems();
 
     @Override
     protected void cleanup(Application app) {

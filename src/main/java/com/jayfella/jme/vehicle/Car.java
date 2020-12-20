@@ -16,7 +16,7 @@ import java.util.List;
 abstract public class Car extends Vehicle {
 
     // wheel-related stuff. This isn't really "vehicle" related since a vehicle can be a boat or a helicopter.
-    private final List<Wheel> wheels = new ArrayList<>(4);
+    final private List<Wheel> wheels = new ArrayList<>(4);
     private MagicFormulaState magicFormulaState;
     private SkidMarksState skidmarks;
     /**

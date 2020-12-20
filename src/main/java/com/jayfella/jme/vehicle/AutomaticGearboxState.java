@@ -9,7 +9,7 @@ import com.jme3.app.state.BaseAppState;
 
 public class AutomaticGearboxState extends BaseAppState {
 
-    private final Vehicle vehicle;
+    final private Vehicle vehicle;
     private GearBox gearBox;
 
     private boolean isCar;

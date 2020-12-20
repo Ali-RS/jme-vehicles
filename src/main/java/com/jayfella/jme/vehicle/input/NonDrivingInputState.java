@@ -44,27 +44,27 @@ public class NonDrivingInputState
     /**
      * Function IDs
      */
-    private static final FunctionId F_CAMERA_RESET_FOV
+    final private static FunctionId F_CAMERA_RESET_FOV
             = new FunctionId(G_ORBIT, "Camera Reset FOV");
-    private static final FunctionId F_CAMERA_ZOOM_IN1
+    final private static FunctionId F_CAMERA_ZOOM_IN1
             = new FunctionId(G_ORBIT, CameraSignal.ZoomIn.toString());
-    private static final FunctionId F_CAMERA_ZOOM_OUT1
+    final private static FunctionId F_CAMERA_ZOOM_OUT1
             = new FunctionId(G_ORBIT, CameraSignal.ZoomOut.toString());
-    private static final FunctionId F_RETURN
+    final private static FunctionId F_RETURN
             = new FunctionId(G_ORBIT, "Return to Main Menu");
-    private static final FunctionId F_SCREEN_SHOT
+    final private static FunctionId F_SCREEN_SHOT
             = new FunctionId(G_ORBIT, "ScreenShot");
-    private static final FunctionId F_CAMERA_BACK1
+    final private static FunctionId F_CAMERA_BACK1
             = new FunctionId(G_ORBIT, CameraSignal.Back.toString());
-    private static final FunctionId F_CAMERA_DOWN1
+    final private static FunctionId F_CAMERA_DOWN1
             = new FunctionId(G_ORBIT, CameraSignal.OrbitDown.toString());
-    private static final FunctionId F_CAMERA_DRAG_TO_ORBIT1
+    final private static FunctionId F_CAMERA_DRAG_TO_ORBIT1
             = new FunctionId(G_ORBIT, CameraSignal.DragToOrbit.toString());
-    private static final FunctionId F_CAMERA_FORWARD1
+    final private static FunctionId F_CAMERA_FORWARD1
             = new FunctionId(G_ORBIT, CameraSignal.Forward.toString());
-    private static final FunctionId F_CAMERA_RESET_OFFSET
+    final private static FunctionId F_CAMERA_RESET_OFFSET
             = new FunctionId(G_ORBIT, "Camera Reset Offset");
-    private static final FunctionId F_CAMERA_UP1
+    final private static FunctionId F_CAMERA_UP1
             = new FunctionId(G_ORBIT, CameraSignal.OrbitUp.toString());
     // *************************************************************************
     // fields

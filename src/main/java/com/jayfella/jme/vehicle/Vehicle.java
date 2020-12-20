@@ -29,11 +29,11 @@ import jme3utilities.math.MyVector3f;
 /**
  * A vehicle with a single Engine and a single GearBox.
  */
-public abstract class Vehicle {
+abstract public class Vehicle {
     // *************************************************************************
     // constants and loggers
 
-    public static final float KMH_TO_MPH = 0.62137f;
+    final public static float KMH_TO_MPH = 0.62137f;
     /**
      * message logger for this class
      */
@@ -75,7 +75,7 @@ public abstract class Vehicle {
         accelerationForce = strength;
     }
 
-    public abstract void applyEngineBraking();
+    abstract public void applyEngineBraking();
 
     public void attachToScene(Node parent) {
         warpToStart();
@@ -94,7 +94,7 @@ public abstract class Vehicle {
      *
      * @param strength a unit value between 0.0 - 1.0.
      */
-    public abstract void brake(float strength);
+    abstract public void brake(float strength);
 
     /**
      * Determine the offset of the vehicle's DashCamera.
@@ -172,14 +172,14 @@ public abstract class Vehicle {
         return vehicleControl;
     }
 
-    public abstract void handbrake(float strength);
+    abstract public void handbrake(float strength);
 
     /**
      * Load this Vehicle from assets.
      */
     abstract public void load();
 
-    public abstract void removeEngineBraking();
+    abstract public void removeEngineBraking();
 
     /**
      * Update the status of the horn.
@@ -213,7 +213,7 @@ public abstract class Vehicle {
         }
     }
 
-    public abstract void steer(float strength);
+    abstract public void steer(float strength);
 
     public void stopEngine() {
         if (engine.isRunning()) {

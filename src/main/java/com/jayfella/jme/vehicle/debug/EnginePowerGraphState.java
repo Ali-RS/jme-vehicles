@@ -13,10 +13,10 @@ import com.jme3.scene.shape.Quad;
 
 public class EnginePowerGraphState extends BaseAppState {
 
-    private final Vehicle vehicle;
+    final private Vehicle vehicle;
     private Geometry line;
 
-    private final Node node = new Node("Engine Graph Node");
+    final private Node node = new Node("Engine Graph Node");
 
     public EnginePowerGraphState(Vehicle vehicle) {
         this.vehicle = vehicle;

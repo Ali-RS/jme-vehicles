@@ -16,7 +16,7 @@ import com.jme3.scene.shape.Quad;
 
 public class TireDataState extends BaseAppState {
 
-    private final Car vehicle;
+    final private Car vehicle;
 
     final private static int graphWidth = 200;
     final private static int graphHeight = 100;

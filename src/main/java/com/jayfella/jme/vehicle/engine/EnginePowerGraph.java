@@ -13,11 +13,11 @@ import com.jme3.util.BufferUtils;
 
 public class EnginePowerGraph extends Geometry {
 
-    private final Engine engine;
-    private final int width,  height;
+    final private Engine engine;
+    final private int width,  height;
 
-    private final ImageRaster imageRaster;
-    private final Texture2D texture;
+    final private ImageRaster imageRaster;
+    final private Texture2D texture;
 
     public EnginePowerGraph(AssetManager assetManager, Engine engine, int width, int height) {
         super("Engine Graph");
