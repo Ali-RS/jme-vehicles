@@ -109,9 +109,8 @@ public abstract class Vehicle {
 
     public void detachFromScene() {
         disable();
-
+        vehicleControl.setPhysicsSpace(null);
         node.removeFromParent();
-        vehicleControl.getPhysicsSpace().remove(vehicleControl);
     }
 
     /**

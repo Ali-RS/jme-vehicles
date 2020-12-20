@@ -46,8 +46,7 @@ abstract public class Environment {
     void detachFromScene() {
         RigidBodyControl rigidBodyControl
                 = loadedCgm.getControl(RigidBodyControl.class);
-        PhysicsSpace physicsSpace = rigidBodyControl.getPhysicsSpace();
-        physicsSpace.remove(rigidBodyControl);
+        rigidBodyControl.setPhysicsSpace(null);
 
         loadedCgm.removeFromParent();
     }
