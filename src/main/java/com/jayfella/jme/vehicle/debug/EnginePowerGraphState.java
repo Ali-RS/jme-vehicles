@@ -22,8 +22,8 @@ public class EnginePowerGraphState extends BaseAppState {
         this.vehicle = vehicle;
     }
 
-    int width = 300;
-    int height = 100;
+    final private static int width = 300;
+    final private static int height = 100;
 
     /**
      * Callback invoked after this AppState is attached but before onEnable().

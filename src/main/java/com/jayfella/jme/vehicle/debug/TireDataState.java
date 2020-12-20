@@ -18,15 +18,15 @@ public class TireDataState extends BaseAppState {
 
     private final Car vehicle;
 
-    int graphWidth = 200;
-    int graphHeight = 100;
-    private TireGraph[] tireGraphs;
+    final private static int graphWidth = 200;
+    final private static int graphHeight = 100;
+    final private TireGraph[] tireGraphs;
 
     private Node guiNode;
-    private Node node;
+    final private Node node;
 
     // 3 needles per wheel.
-    private Geometry[][] needles;
+    final private Geometry[][] needles;
 
     public TireDataState(Car vehicle) {
         this.vehicle = vehicle;
