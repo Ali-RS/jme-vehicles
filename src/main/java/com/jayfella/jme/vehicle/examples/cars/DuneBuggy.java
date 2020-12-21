@@ -5,7 +5,8 @@ import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.engine.Engine;
 import com.jayfella.jme.vehicle.examples.engines.Engine250HP;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
-import com.jayfella.jme.vehicle.examples.wheels.BasicAlloyWheel;
+import com.jayfella.jme.vehicle.examples.wheels.BuggyFrontWheel;
+import com.jayfella.jme.vehicle.examples.wheels.BuggyRearWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Brake;
 import com.jayfella.jme.vehicle.part.GearBox;
@@ -71,15 +72,17 @@ public class DuneBuggy extends Car {
          * By convention, wheels are modeled for the left side, so
          * wheel models for the right side require a 180-degree rotation.
          */
-        WheelModel wheel_fl = new BasicAlloyWheel(0.77f);
-        wheel_fl.getSpatial().rotate(0f, FastMath.PI, 0f); // ???
+        float rearDiameter = 0.944f;
+        float frontDiameter = 0.77f;
+        WheelModel wheel_fl = new BuggyFrontWheel(frontDiameter);
 
-        WheelModel wheel_fr = new BasicAlloyWheel(0.77f);
+        WheelModel wheel_fr = new BuggyFrontWheel(frontDiameter);
+        wheel_fr.getSpatial().rotate(0f, FastMath.PI, 0f);
 
-        WheelModel wheel_rl = new BasicAlloyWheel(0.944f);
-        wheel_rl.getSpatial().rotate(0f, FastMath.PI, 0f); // ???
+        WheelModel wheel_rl = new BuggyRearWheel(rearDiameter);
 
-        WheelModel wheel_rr = new BasicAlloyWheel(0.944f);
+        WheelModel wheel_rr = new BuggyRearWheel(rearDiameter);
+        wheel_rr.getSpatial().rotate(0f, FastMath.PI, 0f);
         /*
          * Add the wheels to the vehicle.
          * For rear-wheel steering, it will be necessary to "flip" the steering.
