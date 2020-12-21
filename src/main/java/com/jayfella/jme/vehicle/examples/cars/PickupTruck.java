@@ -8,8 +8,8 @@ import com.jayfella.jme.vehicle.examples.tires.Tire_01;
 import com.jayfella.jme.vehicle.examples.wheels.RangerWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Brake;
-import com.jayfella.jme.vehicle.part.Gear;
 import com.jayfella.jme.vehicle.part.GearBox;
+import com.jayfella.jme.vehicle.part.Suspension;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.FastMath;
@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * An sample Car based around mauro.zampaoli's "Ford Ranger" model.
+ * A sample Car, built around mauro.zampaoli's "Ford Ranger" model.
  */
 public class PickupTruck extends Car {
     // *************************************************************************
@@ -56,6 +56,7 @@ public class PickupTruck extends Car {
     public void load() {
         if (getVehicleControl() != null) {
             logger.log(Level.SEVERE, "The model is already loaded.");
+            //return; TODO
         }
         /*
          * Load the C-G model with everything except the wheels.
@@ -81,11 +82,11 @@ public class PickupTruck extends Car {
         WheelModel wheel_rr = new RangerWheel(wheelScale);
         wheel_rr.getSpatial().rotate(0f, FastMath.PI, 0f);
         /*
-         * Add wheels to the vehicle.
+         * Add the wheels to the vehicle.
          * For rear-wheel steering, it will be necessary to "flip" the steering.
          */
         float wheelX = 0.75f; // half of the wheelbase
-        float axleY = 0.7f; // height of axle relative to vehicle's CoG
+        float axleY = 0.7f; // height of the axles relative to vehicle's CoG
         float frontZ = 1.76f;
         float rearZ = -1.42f;
         boolean front = true; // Front wheels are for steering.
@@ -111,26 +112,27 @@ public class PickupTruck extends Car {
          */
         for (int wheelIndex = 0; wheelIndex < getNumWheels(); ++wheelIndex) {
             Wheel w = getWheel(wheelIndex);
+            Suspension suspension = w.getSuspension();
 
             // the rest-length or "height" of the suspension
-            w.getSuspension().setRestLength(0.51f);
+            suspension.setRestLength(0.51f);
             w.getVehicleWheel().setMaxSuspensionTravelCm(1_000f);
 
-            // how much force the suspension can take before it bottoms out
-            // setting this too low will make the wheels sink into the ground
-            w.getSuspension().setMaxForce(20_000f);
+            // how much weight the suspension can take before it bottoms out
+            // Setting this too low will make the wheels sink into the ground.
+            suspension.setMaxForce(20_000f);
 
             // the stiffness of the suspension
-            // setting this too soft can cause odd behavior.
-            w.getSuspension().setStiffness(20f);
+            // Setting this too low can cause odd behavior.
+            suspension.setStiffness(20f);
 
             // how fast the suspension will compress
             // 1 = slow, 0 = fast.
-            w.getSuspension().setCompression(0.2f);
+            suspension.setCompression(0.2f);
 
             // how quickly the suspension will rebound back to height
             // 1 = slow, 0 = fast.
-            w.getSuspension().setDamping(0.3f);
+            suspension.setDamping(0.3f);
         }
         /*
          * Give each wheel a tire with friction.
@@ -151,18 +153,16 @@ public class PickupTruck extends Car {
         getWheel(2).setAccelerationForce(1f);
         getWheel(3).setAccelerationForce(1f);
         /*
-         * Define the speed range for each gearbox.
+         * Define the speed range for each gear.
          * Successive gears should overlap.
          * The "end" value of the last gear should determine the top speed.
          */
-        Gear[] gearArray = new Gear[]{
-            new Gear(0f, 19f),
-            new Gear(15f, 48f),
-            new Gear(35f, 112f),
-            new Gear(100f, 192f),
-            new Gear(180f, 254f)
-        };
-        GearBox gearBox = new GearBox(gearArray);
+        GearBox gearBox = new GearBox(5);
+        gearBox.setGear(0, 0f, 19f);
+        gearBox.setGear(1, 15f, 48f);
+        gearBox.setGear(2, 35f, 112f);
+        gearBox.setGear(3, 100f, 192f);
+        gearBox.setGear(4, 180f, 254f);
         setGearBox(gearBox);
 
         Engine engine = new Engine450HP(this);
