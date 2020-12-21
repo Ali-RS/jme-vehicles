@@ -9,6 +9,8 @@ import com.jayfella.jme.vehicle.examples.wheels.BasicAlloyWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Brake;
 import com.jayfella.jme.vehicle.part.GearBox;
+import com.jayfella.jme.vehicle.part.Suspension;
+import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.FastMath;
@@ -17,6 +19,9 @@ import com.jme3.scene.Spatial;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * A sample Car.
+ */
 public class HatchBack extends Car {
     // *************************************************************************
     // constants and loggers
@@ -52,58 +57,111 @@ public class HatchBack extends Car {
     public void load() {
         if (getVehicleControl() != null) {
             logger.log(Level.SEVERE, "The model is already loaded.");
+            //return;
         }
-
+        /*
+         * Load the C-G model with everything except the wheels.
+         * Bullet refers to this as the "chassis".
+         */
         AssetManager assetManager = Main.getApplication().getAssetManager();
-        Spatial chassis = assetManager.loadModel("Models/Vehicles/Chassis/Hatchback/hatchback.j3o");
-        Material chassisMaterial = assetManager.loadMaterial("Materials/Vehicles/Hatchback.j3m");
+        String assetPath = "Models/Vehicles/Chassis/Hatchback/hatchback.j3o";
+        Spatial chassis = assetManager.loadModel(assetPath);
+        Material chassisMaterial
+                = assetManager.loadMaterial("Materials/Vehicles/Hatchback.j3m");
         chassis.setMaterial(chassisMaterial);
-        setChassis(chassis, 1140);
+        float mass = 1_140f; // in kilos
+        setChassis(chassis, mass);
+        /*
+         * By convention, wheels are modeled for the left side, so
+         * wheel models for the right side require a 180-degree rotation.
+         */
+        float wheelScale = 0.8f;
+        WheelModel wheel_fl = new BasicAlloyWheel(assetManager, wheelScale);
 
-        WheelModel wheel_fl = new BasicAlloyWheel(assetManager, 0.8f);
+        WheelModel wheel_fr = new BasicAlloyWheel(assetManager, wheelScale);
+        wheel_fr.getSpatial().rotate(0f, FastMath.PI, 0f);
 
-        WheelModel wheel_fr = new BasicAlloyWheel(assetManager, 0.8f);
-        wheel_fr.getSpatial().rotate(0, FastMath.PI, 0);
+        WheelModel wheel_rl = new BasicAlloyWheel(assetManager, wheelScale);
 
-        WheelModel wheel_rl = new BasicAlloyWheel(assetManager, 0.8f);
+        WheelModel wheel_rr = new BasicAlloyWheel(assetManager, wheelScale);
+        wheel_rr.getSpatial().rotate(0f, FastMath.PI, 0f);
+        /*
+         * Add the wheels to the vehicle.
+         * For rear-wheel steering, it will be necessary to "flip" the steering.
+         */
+        float wheelX = 0.75f; // half of the wheelbase
+        float axleY = 0f; // height of the axles relative to vehicle's CoG
+        float frontZ = 1.3f;
+        float rearZ = -1.3f;
+        boolean front = true; // Front wheels are for steering.
+        boolean rear = false; // Rear wheels do not steer.
+        boolean steeringFlipped = false;
+        float brakeForce = 80f; // This vehicle has brakes only in front.
+        addWheel(wheel_fl.getWheelNode(),
+                new Vector3f(+wheelX, axleY, frontZ), front, steeringFlipped,
+                new Brake(brakeForce));
+        addWheel(wheel_fr.getWheelNode(),
+                new Vector3f(-wheelX, axleY, frontZ), front, steeringFlipped,
+                new Brake(brakeForce));
+        addWheel(wheel_rl.getWheelNode(),
+                new Vector3f(+wheelX, axleY, rearZ), rear, steeringFlipped,
+                new Brake(0f));
+        addWheel(wheel_rr.getWheelNode(),
+                new Vector3f(-wheelX, axleY, rearZ), rear, steeringFlipped,
+                new Brake(0f));
+        /*
+         * Configure the suspension.
+         * This vehicle applies the same settings to each wheel,
+         * but you don't have to.
+         */
+        for (int wheelIndex = 0; wheelIndex < getNumWheels(); ++wheelIndex) {
+            Suspension suspension = getWheel(wheelIndex).getSuspension();
 
-        WheelModel wheel_rr = new BasicAlloyWheel(assetManager, 0.8f);
-        wheel_rr.getSpatial().rotate(0, FastMath.PI, 0);
+            // the rest-length or "height" of the suspension
+            suspension.setRestLength(0.01f);
 
-        addWheel(wheel_fl.getWheelNode(), new Vector3f(0.75f, 0, 1.3f), true, false, new Brake(80));
-        addWheel(wheel_fr.getWheelNode(), new Vector3f(-0.75f, 0, 1.3f), true, false, new Brake(80));
+            // the stiffness of the suspension
+            // Setting this too low can cause odd behavior.
+            suspension.setStiffness(20f);
 
-        addWheel(wheel_rl.getWheelNode(), new Vector3f(0.75f, 0, -1.3f), false, false, new Brake(0));
-        addWheel(wheel_rr.getWheelNode(), new Vector3f(-0.75f, 0, -1.3f), false, false, new Brake(0));
+            // how fast the suspension will compress
+            // 1 = slow, 0 = fast.
+            suspension.setCompression(0.6f);
 
-        for (int i = 0; i < getNumWheels(); i++) {
-            getWheel(i).getSuspension().setRestLength(0.01f);
-            getWheel(i).getSuspension().setStiffness(20);
-            getWheel(i).getSuspension().setCompression(0.6f);
-            getWheel(i).getSuspension().setDamping(0.8f);
-            getWheel(i).setFriction(0.9f);
+            // how quickly the suspension will rebound back to height
+            // 1 = slow, 0 = fast.
+            suspension.setDamping(0.8f);
         }
-
-        // give each wheel a tire.
-        getWheel(0).setTireModel(new Tire_02());
-        getWheel(1).setTireModel(new Tire_02());
-        getWheel(2).setTireModel(new Tire_02());
-        getWheel(3).setTireModel(new Tire_02());
-
-        getWheel(0).setAccelerationForce(1);
-        getWheel(1).setAccelerationForce(1);
-        getWheel(2).setAccelerationForce(0);
-        getWheel(3).setAccelerationForce(0);
-
-        //vehicle.setMaxSpeedMph(130);
+        /*
+         * Give each wheel a tire with friction.
+         */
+        for (int wheelIndex = 0; wheelIndex < getNumWheels(); ++wheelIndex) {
+            Wheel w = getWheel(wheelIndex);
+            w.setTireModel(new Tire_02());
+            w.setFriction(0.9f);
+        }
+        /*
+         * Distribute drive power across the wheels:
+         *  0 = no power, 1 = full power
+         *
+         * This vehicle has 4-wheel drive.
+         */
+        getWheel(0).setAccelerationForce(1f);
+        getWheel(1).setAccelerationForce(1f);
+        getWheel(2).setAccelerationForce(1f);
+        getWheel(3).setAccelerationForce(1f);
+        /*
+         * Define the speed range for each gear.
+         * Successive gears should overlap.
+         * The "end" value of the last gear should determine the top speed.
+         */
         GearBox gearBox = new GearBox(6);
-        gearBox.setGear(0, 0, 20);
-        gearBox.setGear(1, 20, 40);
-        gearBox.setGear(2, 40, 75);
-        gearBox.setGear(3, 75, 110);
-        gearBox.setGear(4, 110, 140);
-        gearBox.setGear(5, 140, 200);
-
+        gearBox.setGear(0, 0f, 20f);
+        gearBox.setGear(1, 20f, 40f);
+        gearBox.setGear(2, 40f, 75f);
+        gearBox.setGear(3, 75f, 110f);
+        gearBox.setGear(4, 110f, 140f);
+        gearBox.setGear(5, 140f, 200f);
         setGearBox(gearBox);
 
         Engine engine = new Engine180HP(this);
@@ -111,7 +169,9 @@ public class HatchBack extends Car {
         setEngine(engine);
 
         super.setHornAudio("Audio/horn-1.ogg");
-
+        /*
+         * build() must be invoked last, to complete the Vehicle
+         */
         build();
     }
 

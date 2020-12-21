@@ -9,6 +9,8 @@ import com.jayfella.jme.vehicle.examples.wheels.DarkAlloyWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Brake;
 import com.jayfella.jme.vehicle.part.GearBox;
+import com.jayfella.jme.vehicle.part.Suspension;
+import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
@@ -16,6 +18,9 @@ import com.jme3.scene.Spatial;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * A sample Car, built around iSteven's "Nissan GT-R" model.
+ */
 public class GTRNismo extends Car {
     // *************************************************************************
     // constants and loggers
@@ -25,8 +30,8 @@ public class GTRNismo extends Car {
      */
     final public static Logger logger
             = Logger.getLogger(GTRNismo.class.getName());
-
-    final private float scale = 0.01f;
+    // *************************************************************************
+    // constructors
 
     public GTRNismo() {
         super(Main.getApplication(), "GTR Nismo");
@@ -51,58 +56,112 @@ public class GTRNismo extends Car {
     public void load() {
         if (getVehicleControl() != null) {
             logger.log(Level.SEVERE, "The model is already loaded.");
+            // return; TODO
         }
-
+        /*
+         * Load the C-G model with everything except the wheels.
+         * Bullet refers to this as the "chassis".
+         */
         AssetManager assetManager = Main.getApplication().getAssetManager();
-        Spatial chassis = assetManager.loadModel("Models/gtr_nismo/scene.gltf.j3o");
-        chassis.setLocalScale(scale);
-        // chassis.breadthFirstTraversal(new WheelVisitor());
-        setChassis(chassis, 1525);
+        String assetPath = "Models/gtr_nismo/scene.gltf.j3o";
+        Spatial chassis = assetManager.loadModel(assetPath);
+        chassis.setLocalScale(0.01f); // TODO eliminate this step
+        float mass = 1_525f; // in kilos
+        setChassis(chassis, mass);
+        /*
+         * By convention, wheels are modeled for the left side, so
+         * wheel models for the right side require a 180-degree rotation.
+         */
+        float wheelScale = 0.75f;
+        WheelModel wheel_fl = new DarkAlloyWheel(assetManager, wheelScale);
+        wheel_fl.getSpatial().rotate(0f, FastMath.PI, 0f); // ???
 
-        WheelModel wheel_fl = new DarkAlloyWheel(assetManager, 0.75f);
-        wheel_fl.getSpatial().rotate(0, FastMath.PI, 0);
+        WheelModel wheel_fr = new DarkAlloyWheel(assetManager, wheelScale);
 
-        WheelModel wheel_fr = new DarkAlloyWheel(assetManager, 0.75f);
+        WheelModel wheel_rl = new DarkAlloyWheel(assetManager, wheelScale);
+        wheel_rl.getSpatial().rotate(0f, FastMath.PI, 0f); // ???
 
-        WheelModel wheel_rl = new DarkAlloyWheel(assetManager, 0.75f);
-        wheel_rl.getSpatial().rotate(0, FastMath.PI, 0);
+        WheelModel wheel_rr = new DarkAlloyWheel(assetManager, wheelScale);
+        /*
+         * Add the wheels to the vehicle.
+         * For rear-wheel steering, it will be necessary to "flip" the steering.
+         */
+        float wheelX = 0.8f; // half of the wheelbase
+        float axleY = 0.1f; // height of the axles relative to vehicle's CoG
+        float frontZ = 1.4f;
+        float rearZ = -1.4f;
+        boolean front = true; // Front wheels are for steering.
+        boolean rear = false; // Rear wheels do not steer.
+        boolean steeringFlipped = false;
+        addWheel(wheel_fl.getWheelNode(),
+                new Vector3f(+wheelX, axleY, frontZ), front, steeringFlipped,
+                new Brake(675f));
+        addWheel(wheel_fr.getWheelNode(),
+                new Vector3f(-wheelX, axleY, frontZ), front, steeringFlipped,
+                new Brake(675f));
+        addWheel(wheel_rl.getWheelNode(),
+                new Vector3f(+wheelX, axleY, rearZ), rear, steeringFlipped,
+                new Brake(300f));
+        addWheel(wheel_rr.getWheelNode(),
+                new Vector3f(-wheelX, axleY, rearZ), rear, steeringFlipped,
+                new Brake(300f));
+        /*
+         * Configure the suspension.
+         * This vehicle applies the same settings to each wheel,
+         * but you don't have to.
+         */
+        for (int wheelIndex = 0; wheelIndex < getNumWheels(); ++wheelIndex) {
+            Suspension suspension = getWheel(wheelIndex).getSuspension();
 
-        WheelModel wheel_rr = new DarkAlloyWheel(assetManager, 0.75f);
+            // the rest-length or "height" of the suspension
+            suspension.setRestLength(0.01f);
 
-        addWheel(wheel_fl.getWheelNode(), new Vector3f(0.8f, 0.1f, 1.4f), true, false, new Brake(675));
-        addWheel(wheel_fr.getWheelNode(), new Vector3f(-0.8f, 0.1f, 1.4f), true, false, new Brake(675));
+            // how much weight the suspension can take before it bottoms out
+            // Setting this too low will make the wheels sink into the ground.
+            suspension.setMaxForce(7_000f);
 
-        addWheel(wheel_rl.getWheelNode(), new Vector3f(0.8f, 0.1f, -1.4f), false, false, new Brake(300));
-        addWheel(wheel_rr.getWheelNode(), new Vector3f(-0.8f, 0.1f, -1.4f), false, false, new Brake(300));
+            // the stiffness of the suspension
+            // Setting this too low can cause odd behavior.
+            suspension.setStiffness(12.5f);
 
-        for (int i = 0; i < getNumWheels(); i++) {
-            getWheel(i).getSuspension().setRestLength(0.01f);
+            // how fast the suspension will compress
+            // 1 = slow, 0 = fast.
+            suspension.setCompression(0.3f);
 
-            getWheel(i).getSuspension().setStiffness(12.5f);
-            getWheel(i).getSuspension().setMaxForce(7000);
-            getWheel(i).getSuspension().setCompression(0.3f);
-            getWheel(i).getSuspension().setDamping(0.4f);
-            getWheel(i).setFriction(1.6f);
+            // how quickly the suspension will rebound back to height
+            // 1 = slow, 0 = fast.
+            suspension.setDamping(0.4f);
         }
-
-        // give each wheel a tire.
-        getWheel(0).setTireModel(new Tire_01());
-        getWheel(1).setTireModel(new Tire_01());
-        getWheel(2).setTireModel(new Tire_01());
-        getWheel(3).setTireModel(new Tire_01());
-
-        getWheel(0).setAccelerationForce(1);
-        getWheel(1).setAccelerationForce(1);
-        getWheel(2).setAccelerationForce(1);
-        getWheel(3).setAccelerationForce(1);
-
+        /*
+         * Give each wheel a tire with friction.
+         */
+        for (int wheelIndex = 0; wheelIndex < getNumWheels(); ++wheelIndex) {
+            Wheel w = getWheel(wheelIndex);
+            w.setTireModel(new Tire_01());
+            w.setFriction(1.6f);
+        }
+        /*
+         * Distribute drive power across the wheels:
+         *  0 = no power, 1 = full power
+         *
+         * This vehicle has 4-wheel drive.
+         */
+        getWheel(0).setAccelerationForce(1f);
+        getWheel(1).setAccelerationForce(1f);
+        getWheel(2).setAccelerationForce(1f);
+        getWheel(3).setAccelerationForce(1f);
+        /*
+         * Define the speed range for each gear.
+         * Successive gears should overlap.
+         * The "end" value of the last gear should determine the top speed.
+         */
         GearBox gearBox = new GearBox(6);
-        gearBox.setGear(0, 0, 30);
-        gearBox.setGear(1, 15, 70);
-        gearBox.setGear(2, 50, 130);
-        gearBox.setGear(3, 120, 190);
-        gearBox.setGear(4, 180, 255);
-        gearBox.setGear(5, 250, 320);
+        gearBox.setGear(0, 0f, 30f);
+        gearBox.setGear(1, 15f, 70f);
+        gearBox.setGear(2, 50f, 130f);
+        gearBox.setGear(3, 120f, 190f);
+        gearBox.setGear(4, 180f, 255f);
+        gearBox.setGear(5, 250f, 320f);
 
         setGearBox(gearBox);
 
@@ -111,7 +170,9 @@ public class GTRNismo extends Car {
         setEngine(engine);
 
         super.setHornAudio("Audio/horn-1.ogg");
-
+        /*
+         * build() must be invoked last, to complete the Vehicle
+         */
         build();
     }
 
