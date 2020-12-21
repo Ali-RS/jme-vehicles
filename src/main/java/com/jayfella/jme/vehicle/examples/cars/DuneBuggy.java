@@ -76,15 +76,15 @@ public class DuneBuggy extends Car {
          * wheel models for the right side require a 180-degree rotation.
          */
         float wheelScale = 0.75f;
-        WheelModel wheel_fl = new BasicAlloyWheel(assetManager, wheelScale);
+        WheelModel wheel_fl = new BasicAlloyWheel(wheelScale);
         wheel_fl.getSpatial().rotate(0f, FastMath.PI, 0f); // ???
 
-        WheelModel wheel_fr = new BasicAlloyWheel(assetManager, wheelScale);
+        WheelModel wheel_fr = new BasicAlloyWheel(wheelScale);
 
-        WheelModel wheel_rl = new BasicAlloyWheel(assetManager, wheelScale);
+        WheelModel wheel_rl = new BasicAlloyWheel(wheelScale);
         wheel_rl.getSpatial().rotate(0f, FastMath.PI, 0f); // ???
 
-        WheelModel wheel_rr = new BasicAlloyWheel(assetManager, wheelScale);
+        WheelModel wheel_rr = new BasicAlloyWheel(wheelScale);
         /*
          * Add the wheels to the vehicle.
          * For rear-wheel steering, it will be necessary to "flip" the steering.

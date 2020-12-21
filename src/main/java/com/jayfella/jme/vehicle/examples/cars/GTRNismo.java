@@ -73,15 +73,15 @@ public class GTRNismo extends Car {
          * wheel models for the right side require a 180-degree rotation.
          */
         float wheelScale = 0.75f;
-        WheelModel wheel_fl = new DarkAlloyWheel(assetManager, wheelScale);
+        WheelModel wheel_fl = new DarkAlloyWheel(wheelScale);
         wheel_fl.getSpatial().rotate(0f, FastMath.PI, 0f); // ???
 
-        WheelModel wheel_fr = new DarkAlloyWheel(assetManager, wheelScale);
+        WheelModel wheel_fr = new DarkAlloyWheel(wheelScale);
 
-        WheelModel wheel_rl = new DarkAlloyWheel(assetManager, wheelScale);
+        WheelModel wheel_rl = new DarkAlloyWheel(wheelScale);
         wheel_rl.getSpatial().rotate(0f, FastMath.PI, 0f); // ???
 
-        WheelModel wheel_rr = new DarkAlloyWheel(assetManager, wheelScale);
+        WheelModel wheel_rr = new DarkAlloyWheel(wheelScale);
         /*
          * Add the wheels to the vehicle.
          * For rear-wheel steering, it will be necessary to "flip" the steering.

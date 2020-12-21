@@ -73,15 +73,15 @@ public class GrandTourer extends Car {
          * wheel models for the right side require a 180-degree rotation.
          */
         float wheelScale = 0.85f;
-        WheelModel wheel_fl = new CruiserWheel(assetManager, wheelScale);
+        WheelModel wheel_fl = new CruiserWheel(wheelScale);
         wheel_fl.getSpatial().rotate(0f, FastMath.PI, 0f); // ???
 
-        WheelModel wheel_fr = new CruiserWheel(assetManager, wheelScale);
+        WheelModel wheel_fr = new CruiserWheel(wheelScale);
 
-        WheelModel wheel_rl = new CruiserWheel(assetManager, wheelScale);
+        WheelModel wheel_rl = new CruiserWheel(wheelScale);
         wheel_rl.getSpatial().rotate(0f, FastMath.PI, 0f); // ???
 
-        WheelModel wheel_rr = new CruiserWheel(assetManager, wheelScale);
+        WheelModel wheel_rr = new CruiserWheel(wheelScale);
         /*
          * Add the wheels to the vehicle.
          * For rear-wheel steering, it will be necessary to "flip" the steering.
