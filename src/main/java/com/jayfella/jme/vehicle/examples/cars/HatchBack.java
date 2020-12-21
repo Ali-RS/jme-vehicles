@@ -57,7 +57,7 @@ public class HatchBack extends Car {
     public void load() {
         if (getVehicleControl() != null) {
             logger.log(Level.SEVERE, "The model is already loaded.");
-            //return;
+            return;
         }
         /*
          * Load the C-G model with everything except the wheels.
