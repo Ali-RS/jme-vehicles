@@ -210,6 +210,8 @@ Resources/assets/media:
   has a CC Attribution-NonCommercial-ShareAlike license.
 + The [ford_ranger model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/ford_ranger)
   has a CC Attribution license.
++ The [hcr2_buggy model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/hcr2_buggy)
+  has a CC Attribution license.
 + The [racetrack model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/race1)
   has an Unlicense and a Creative Commons Zero v1.0 Universal license.
 + The [vehicle-playground model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/vehicle-playground)
@@ -271,6 +273,7 @@ The world (and physics-space) units of distance are *meters*.
 + [Thomas Glenn Thorne (aka "systmh")][tgt] created the GT model.
 + "isteven" created the gtr_nismo model.
 + [Mauro Zampaoli][zampaoli] created the ford_ranger model.
++ "oakar258" created the hcr2_buggy model.
 + [Adi Barda (aka "adi.barda")][adi] created the racetrack model.
 
 I am grateful to [Github] and Imgur
