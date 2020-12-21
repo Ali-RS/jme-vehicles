@@ -12,7 +12,6 @@ import com.jayfella.jme.vehicle.part.GearBox;
 import com.jayfella.jme.vehicle.part.Suspension;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.asset.AssetManager;
-import com.jme3.material.Material;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
@@ -20,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A sample Car.
+ * A sample Car, built around oakar258's "HCR2 Buggy" model.
  */
 public class DuneBuggy extends Car {
     // *************************************************************************
@@ -47,7 +46,7 @@ public class DuneBuggy extends Car {
      */
     @Override
     public Vector3f dashCamOffset() {
-        return new Vector3f(0f, 1f, 0.1f);
+        return new Vector3f(0f, 1.4f, -0.4f);
     }
 
     /**
@@ -64,50 +63,47 @@ public class DuneBuggy extends Car {
          * Bullet refers to this as the "chassis".
          */
         AssetManager assetManager = Main.getApplication().getAssetManager();
-        String assetPath = "Models/Vehicles/Chassis/DuneBuggy/dune-buggy.j3o";
+        String assetPath = "Models/hcr2_buggy/dune-buggy.j3o";
         Spatial chassis = assetManager.loadModel(assetPath);
-        Material chassisMaterial
-                = assetManager.loadMaterial("Materials/Vehicles/DuneBuggy.j3m");
-        chassis.setMaterial(chassisMaterial);
         float mass = 525f; // in kilos
         setChassis(chassis, mass);
         /*
          * By convention, wheels are modeled for the left side, so
          * wheel models for the right side require a 180-degree rotation.
          */
-        float wheelScale = 0.75f;
-        WheelModel wheel_fl = new BasicAlloyWheel(wheelScale);
+        WheelModel wheel_fl = new BasicAlloyWheel(0.77f);
         wheel_fl.getSpatial().rotate(0f, FastMath.PI, 0f); // ???
 
-        WheelModel wheel_fr = new BasicAlloyWheel(wheelScale);
+        WheelModel wheel_fr = new BasicAlloyWheel(0.77f);
 
-        WheelModel wheel_rl = new BasicAlloyWheel(wheelScale);
+        WheelModel wheel_rl = new BasicAlloyWheel(0.944f);
         wheel_rl.getSpatial().rotate(0f, FastMath.PI, 0f); // ???
 
-        WheelModel wheel_rr = new BasicAlloyWheel(wheelScale);
+        WheelModel wheel_rr = new BasicAlloyWheel(0.944f);
         /*
          * Add the wheels to the vehicle.
          * For rear-wheel steering, it will be necessary to "flip" the steering.
          */
-        float wheelX = 0.75f; // half of the wheelbase
-        float axleY = 0.25f; // height of the axles relative to vehicle's CoG
-        float frontZ = 1.2f;
-        float rearZ = -1.2f;
+        float wheelX = 0.92f; // half of the wheelbase
+        float frontY = 0.53f; // height of front axle relative to vehicle's CoG
+        float rearY = 0.63f; // height of rear axle relative to vehicle's CoG
+        float frontZ = 1.12f;
+        float rearZ = -1.33f;
         boolean front = true; // Front wheels are for steering.
         boolean rear = false; // Rear wheels do not steer.
         boolean steeringFlipped = false;
         float brakeForce = 80f; // This vehicle has brakes only in front.
         addWheel(wheel_fl.getWheelNode(),
-                new Vector3f(+wheelX, axleY, frontZ), front, steeringFlipped,
+                new Vector3f(+wheelX, frontY, frontZ), front, steeringFlipped,
                 new Brake(brakeForce));
         addWheel(wheel_fr.getWheelNode(),
-                new Vector3f(-wheelX, axleY, frontZ), front, steeringFlipped,
+                new Vector3f(-wheelX, frontY, frontZ), front, steeringFlipped,
                 new Brake(brakeForce));
         addWheel(wheel_rl.getWheelNode(),
-                new Vector3f(+wheelX, axleY, rearZ), rear, steeringFlipped,
+                new Vector3f(+wheelX, rearY, rearZ), rear, steeringFlipped,
                 new Brake(0f));
         addWheel(wheel_rr.getWheelNode(),
-                new Vector3f(-wheelX, axleY, rearZ), rear, steeringFlipped,
+                new Vector3f(-wheelX, rearY, rearZ), rear, steeringFlipped,
                 new Brake(0f));
         /*
          * Configure the suspension.
@@ -186,6 +182,6 @@ public class DuneBuggy extends Car {
      */
     @Override
     protected Vector3f targetOffset() {
-        return new Vector3f(0f, 0.44f, -1.67f);
+        return new Vector3f(0f, 1.18f, -1.67f);
     }
 }
