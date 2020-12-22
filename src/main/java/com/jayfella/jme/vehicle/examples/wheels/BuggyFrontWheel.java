@@ -6,8 +6,7 @@ import com.jme3.scene.Spatial;
 import jme3utilities.Validate;
 
 /**
- * A WheelModel derived from the left front wheel of oakar258's "HCR2 Buggy"
- * model.
+ * Encapsulate the left front wheel from oakar258's "HCR2 Buggy" model.
  *
  * @author Stephen Gold sgold@sonic.net
  */
@@ -24,8 +23,8 @@ public class BuggyFrontWheel extends WheelModel {
         Validate.positive(diameter, "diameter");
 
         AssetManager assetManager = Main.getApplication().getAssetManager();
-        Spatial cgmRoot
-                = assetManager.loadModel("/Models/hcr2_buggy/front-wheel.j3o");
+        String assetPath = "/Models/hcr2_buggy/front-wheel.j3o";
+        Spatial cgmRoot = assetManager.loadModel(assetPath);
         super.setSpatial(cgmRoot);
         super.getWheelNode().setLocalScale(diameter);
     }

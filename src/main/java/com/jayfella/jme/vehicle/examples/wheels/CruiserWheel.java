@@ -9,7 +9,8 @@ public class CruiserWheel extends WheelModel {
     public CruiserWheel(float size) {
 
         AssetManager assetManager = Main.getApplication().getAssetManager();
-        Spatial wheelSpatial = assetManager.loadModel("Models/GT/cruiser_wheel.gltf.j3o");
+        String assetPath = "Models/GT/cruiser_wheel.gltf.j3o";
+        Spatial wheelSpatial = assetManager.loadModel(assetPath);
 
         setSpatial(wheelSpatial);
         getWheelNode().setLocalScale(size);

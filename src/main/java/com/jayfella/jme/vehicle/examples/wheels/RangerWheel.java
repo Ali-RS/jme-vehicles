@@ -6,7 +6,7 @@ import com.jme3.scene.Spatial;
 import jme3utilities.Validate;
 
 /**
- * A single wheel from mauro.zampaoli's "Ford Ranger" model.
+ * Encapsulate a single wheel from mauro.zampaoli's "Ford Ranger" model.
  *
  * @author Stephen Gold sgold@sonic.net
  */
@@ -17,14 +17,14 @@ public class RangerWheel extends WheelModel {
     /**
      * Instantiate a wheel with the specified diameter.
      *
-     * @param diameter (in world units, &gt;0)
+     * @param diameter the desired diameter (in world units, &gt;0)
      */
     public RangerWheel(float diameter) {
         Validate.positive(diameter, "diameter");
 
         AssetManager assetManager = Main.getApplication().getAssetManager();
-        Spatial cgmRoot
-                = assetManager.loadModel("/Models/ford_ranger/wheel.j3o");
+        String assetPath = "/Models/ford_ranger/wheel.j3o";
+        Spatial cgmRoot = assetManager.loadModel(assetPath);
         super.setSpatial(cgmRoot);
         super.getWheelNode().setLocalScale(diameter);
     }

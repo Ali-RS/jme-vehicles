@@ -24,8 +24,8 @@ public class BuggyRearWheel extends WheelModel {
         Validate.positive(diameter, "diameter");
 
         AssetManager assetManager = Main.getApplication().getAssetManager();
-        Spatial cgmRoot
-                = assetManager.loadModel("/Models/hcr2_buggy/rear-wheel.j3o");
+        String assetPath = "/Models/hcr2_buggy/rear-wheel.j3o";
+        Spatial cgmRoot = assetManager.loadModel(assetPath);
         super.setSpatial(cgmRoot);
         super.getWheelNode().setLocalScale(diameter);
     }

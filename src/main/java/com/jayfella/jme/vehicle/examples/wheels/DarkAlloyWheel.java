@@ -9,7 +9,8 @@ public class DarkAlloyWheel extends WheelModel {
     public DarkAlloyWheel(float size) {
 
         AssetManager assetManager = Main.getApplication().getAssetManager();
-        Spatial wheelSpatial = assetManager.loadModel("Models/gtr_nismo/dark_alloy.gltf.j3o");
+        String assetPath = "Models/gtr_nismo/dark_alloy.gltf.j3o";
+        Spatial wheelSpatial = assetManager.loadModel(assetPath);
 
         setSpatial(wheelSpatial);
         getWheelNode().setLocalScale(size);

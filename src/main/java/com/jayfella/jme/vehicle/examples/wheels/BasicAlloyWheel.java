@@ -9,8 +9,10 @@ public class BasicAlloyWheel extends WheelModel {
     public BasicAlloyWheel(float size) {
 
         AssetManager assetManager = Main.getApplication().getAssetManager();
-        Spatial wheelSpatial = assetManager.loadModel("Models/Vehicles/Wheel/Wheel_1/wheel.j3o");
-        wheelSpatial.setMaterial(assetManager.loadMaterial("Materials/Vehicles/Wheel_1.j3m"));
+        String assetPath = "Models/Vehicles/Wheel/Wheel_1/wheel.j3o";
+        Spatial wheelSpatial = assetManager.loadModel(assetPath);
+        String materialAssetPath = "Materials/Vehicles/Wheel_1.j3m";
+        wheelSpatial.setMaterial(assetManager.loadMaterial(materialAssetPath));
         // wheelSpatial.setLocalScale(0.75f); // this makes it 1.0 wu in radius
         setSpatial(wheelSpatial);
         getWheelNode().setLocalScale(size);
