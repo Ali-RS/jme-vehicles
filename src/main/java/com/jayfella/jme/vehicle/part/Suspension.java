@@ -79,7 +79,8 @@ public class Suspension {
         kCompress = dampingRatio;
 
         float stiffness = vehicleWheel.getSuspensionStiffness();
-        vehicleWheel.setWheelsDampingCompression(kCompress * 2.0f * FastMath.sqrt(stiffness));
+        float damp = 2 * dampingRatio * FastMath.sqrt(stiffness);
+        vehicleWheel.setWheelsDampingCompression(damp);
     }
 
     /**
@@ -92,7 +93,8 @@ public class Suspension {
         kRelax = dampingRatio;
 
         float stiffness = vehicleWheel.getSuspensionStiffness();
-        vehicleWheel.setWheelsDampingRelaxation(kRelax * 2.0f * FastMath.sqrt(stiffness));
+        float damp = 2 * dampingRatio * FastMath.sqrt(stiffness);
+        vehicleWheel.setWheelsDampingRelaxation(damp);
     }
 
     /**
