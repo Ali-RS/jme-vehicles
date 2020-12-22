@@ -71,15 +71,15 @@ public class PickupTruck extends Car {
          * By convention, wheels are modeled for the left side, so
          * wheel models for the right side require a 180-degree rotation.
          */
-        float wheelScale = 0.8f;
-        WheelModel wheel_fl = new RangerWheel(wheelScale);
+        float diameter = 0.8f;
+        WheelModel wheel_fl = new RangerWheel(diameter);
 
-        WheelModel wheel_fr = new RangerWheel(wheelScale);
+        WheelModel wheel_fr = new RangerWheel(diameter);
         wheel_fr.getSpatial().rotate(0f, FastMath.PI, 0f);
 
-        WheelModel wheel_rl = new RangerWheel(wheelScale);
+        WheelModel wheel_rl = new RangerWheel(diameter);
 
-        WheelModel wheel_rr = new RangerWheel(wheelScale);
+        WheelModel wheel_rr = new RangerWheel(diameter);
         wheel_rr.getSpatial().rotate(0f, FastMath.PI, 0f);
         /*
          * Add the wheels to the vehicle.

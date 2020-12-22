@@ -75,15 +75,15 @@ public class HatchBack extends Car {
          * By convention, wheels are modeled for the left side, so
          * wheel models for the right side require a 180-degree rotation.
          */
-        float wheelScale = 0.8f;
-        WheelModel wheel_fl = new HatchbackWheel(wheelScale);
+        float diameter = 0.8f;
+        WheelModel wheel_fl = new HatchbackWheel(diameter);
 
-        WheelModel wheel_fr = new HatchbackWheel(wheelScale);
+        WheelModel wheel_fr = new HatchbackWheel(diameter);
         wheel_fr.getSpatial().rotate(0f, FastMath.PI, 0f);
 
-        WheelModel wheel_rl = new HatchbackWheel(wheelScale);
+        WheelModel wheel_rl = new HatchbackWheel(diameter);
 
-        WheelModel wheel_rr = new HatchbackWheel(wheelScale);
+        WheelModel wheel_rr = new HatchbackWheel(diameter);
         wheel_rr.getSpatial().rotate(0f, FastMath.PI, 0f);
         /*
          * Add the wheels to the vehicle.
