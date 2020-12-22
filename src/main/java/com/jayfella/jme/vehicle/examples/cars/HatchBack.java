@@ -12,7 +12,6 @@ import com.jayfella.jme.vehicle.part.GearBox;
 import com.jayfella.jme.vehicle.part.Suspension;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.asset.AssetManager;
-import com.jme3.material.Material;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
@@ -47,7 +46,7 @@ public class HatchBack extends Car {
      */
     @Override
     public Vector3f dashCamOffset() {
-        return new Vector3f(0f, 1.6f, 0.3f);
+        return new Vector3f(0f, 1.2f, 0.7f);
     }
 
     /**
@@ -64,18 +63,15 @@ public class HatchBack extends Car {
          * Bullet refers to this as the "chassis".
          */
         AssetManager assetManager = Main.getApplication().getAssetManager();
-        String assetPath = "Models/Vehicles/Chassis/Hatchback/hatchback.j3o";
+        String assetPath = "Models/modern_hatchback/hatchback.j3o";
         Spatial chassis = assetManager.loadModel(assetPath);
-        Material chassisMaterial
-                = assetManager.loadMaterial("Materials/Vehicles/Hatchback.j3m");
-        chassis.setMaterial(chassisMaterial);
         float mass = 1_140f; // in kilos
         setChassis(chassis, mass);
         /*
          * By convention, wheels are modeled for the left side, so
          * wheel models for the right side require a 180-degree rotation.
          */
-        float diameter = 0.8f;
+        float diameter = 0.65f;
         WheelModel wheel_fl = new HatchbackWheel(diameter);
 
         WheelModel wheel_fr = new HatchbackWheel(diameter);
@@ -89,10 +85,10 @@ public class HatchBack extends Car {
          * Add the wheels to the vehicle.
          * For rear-wheel steering, it will be necessary to "flip" the steering.
          */
-        float wheelX = 0.75f; // half of the wheelbase
-        float axleY = 0f; // height of the axles relative to vehicle's CoG
-        float frontZ = 1.3f;
-        float rearZ = -1.3f;
+        float wheelX = 0.66f; // half of the wheelbase
+        float axleY = -0.02f; // height of the axles relative to vehicle's CoG
+        float frontZ = 1.2f;
+        float rearZ = -1.19f;
         boolean front = true; // Front wheels are for steering.
         boolean rear = false; // Rear wheels do not steer.
         boolean steeringFlipped = false;
@@ -182,6 +178,6 @@ public class HatchBack extends Car {
      */
     @Override
     protected Vector3f targetOffset() {
-        return new Vector3f(0f, 0.52f, -2.112f);
+        return new Vector3f(0f, 0.52f, -1.7f);
     }
 }
