@@ -111,12 +111,11 @@ public class PickupTruck extends Car {
          * but you don't have to.
          */
         for (int wheelIndex = 0; wheelIndex < getNumWheels(); ++wheelIndex) {
-            Wheel w = getWheel(wheelIndex);
-            Suspension suspension = w.getSuspension();
+            Suspension suspension = getWheel(wheelIndex).getSuspension();
 
             // the rest-length or "height" of the suspension
             suspension.setRestLength(0.51f);
-            w.getVehicleWheel().setMaxSuspensionTravelCm(1_000f);
+            suspension.setMaxTravelCm(1_000f);
 
             // how much weight the suspension can take before it bottoms out
             // Setting this too low will make the wheels sink into the ground.

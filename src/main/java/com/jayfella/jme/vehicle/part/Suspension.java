@@ -95,6 +95,20 @@ public class Suspension {
 
     }
 
+    /**
+     * Alter the maximum travel distance.
+     *
+     * Note that the units are centimeters ONLY if the physics-space unit is
+     * exactly one meter.
+     *
+     * @param travelCm the desired maximum amount the suspension can be
+     * compressed or expanded, relative to its rest length (in hundredths of a
+     * physics-space unit)
+     */
+    public void setMaxTravelCm(float travelCm) {
+        vehicleWheel.setMaxSuspensionTravelCm(travelCm);
+    }
+
     public void setRestLength(float restLength) {
         this.restLength = restLength;
         vehicleWheel.setRestLength(restLength);
