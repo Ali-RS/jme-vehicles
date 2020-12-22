@@ -48,13 +48,9 @@ public class Suspension {
             float kRelax) {
         this.vehicleWheel = vehicleWheel;
 
-        // we can't get compression and damping because they use a formula.
-        this.kCompress = kCompress;
-        this.kRelax = kRelax;
-
         setStiffness(25f);
-        setCompression(this.kCompress);
-        setDamping(this.kRelax);
+        setCompression(kCompress);
+        setDamping(kRelax);
         setMaxForce(10_000f);
     }
     // *************************************************************************
@@ -67,7 +63,7 @@ public class Suspension {
      * 50&rarr;sports car, 200&rarr;Formula-1 race car, default=5.88)
      */
     public void setStiffness(float stiffness) {
-        this.vehicleWheel.setSuspensionStiffness(stiffness);
+        vehicleWheel.setSuspensionStiffness(stiffness);
 
         setCompression(kCompress);
         setDamping(kRelax);
@@ -80,9 +76,10 @@ public class Suspension {
      * damped)
      */
     public void setCompression(float dampingRatio) {
-        this.kCompress = dampingRatio;
+        kCompress = dampingRatio;
+
         float stiffness = vehicleWheel.getSuspensionStiffness();
-        this.vehicleWheel.setWheelsDampingCompression(this.kCompress * 2.0f * FastMath.sqrt(stiffness));
+        vehicleWheel.setWheelsDampingCompression(kCompress * 2.0f * FastMath.sqrt(stiffness));
     }
 
     /**
@@ -92,9 +89,10 @@ public class Suspension {
      * damped)
      */
     public void setDamping(float dampingRatio) {
-        this.kRelax = dampingRatio;
+        kRelax = dampingRatio;
+
         float stiffness = vehicleWheel.getSuspensionStiffness();
-        this.vehicleWheel.setWheelsDampingRelaxation(this.kRelax * 2.0f * FastMath.sqrt(stiffness));
+        vehicleWheel.setWheelsDampingRelaxation(kRelax * 2.0f * FastMath.sqrt(stiffness));
     }
 
     /**
