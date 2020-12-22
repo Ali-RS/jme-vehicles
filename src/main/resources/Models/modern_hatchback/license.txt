@@ -1,0 +1,12 @@
+Licensing history for assets in src/main/resources/Models/modern_hatchback
+
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use src/main/resources/Models/modern_hatchback assets in your project,
+be sure to include the following acknowledgment wherever you share it:
+
+ This work is based on "Modern Hatchback - Low Poly model"
+ (https://sketchfab.com/3d-models/modern-hatchback-low-poly-model-055ff8a21b8d4d279debca089e2fafcd)
+ by Daniel Zhabotinsky (https://sketchfab.com/DanielZhabotinsky)
+ licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).
