@@ -38,8 +38,9 @@ public class Wheel {
     // the amount of braking strength being applied. Between 0 and 1
     private float brakeStrength = 0;
 
-    public Wheel(VehicleControl vehicleControl, int wheelIndex, boolean isSteering, boolean steeringFlipped, Suspension suspension, Brake brake) {
-
+    public Wheel(VehicleControl vehicleControl, int wheelIndex,
+            boolean isSteering, boolean steeringFlipped, Suspension suspension,
+            Brake brake) {
         this.vehicleControl = vehicleControl;
 
         this.wheelIndex = wheelIndex;
@@ -92,28 +93,39 @@ public class Wheel {
         this.vehicleWheel.setFrontWheel(steering);
     }
 
-    public boolean isSteeringFlipped() { return steeringFlipped; }
-    public void setSteeringFlipped(boolean steeringFlipped) { this.steeringFlipped = steeringFlipped; }
+    public boolean isSteeringFlipped() {
+        return steeringFlipped;
+    }
 
-    public float getAccelerationForce() { return accelerationForce; }
+    public void setSteeringFlipped(boolean steeringFlipped) {
+        this.steeringFlipped = steeringFlipped;
+    }
+
+    public float getAccelerationForce() {
+        return accelerationForce;
+    }
 
     /**
-     * The amount of force applied to this wheel when the vehicle is accelerating
-     * Value is in the 0 to 1 range. 0 = no force, 1 = full force.
+     * The amount of force applied to this wheel when the vehicle is
+     * accelerating Value is in the 0 to 1 range. 0 = no force, 1 = full force.
      * This acts as a multiplier for the engine power to this wheel.
-     * @param accelerationForce the amount of force to apply to this wheel when accelerating.
+     *
+     * @param accelerationForce the amount of force to apply to this wheel when
+     * accelerating.
      */
-    public void setAccelerationForce(float accelerationForce) { this.accelerationForce = accelerationForce; }
+    public void setAccelerationForce(float accelerationForce) {
+        this.accelerationForce = accelerationForce;
+    }
 
     // public float getBrakeForce() { return brakeForce; }
     // public void setBrakeForce(float brakeForce) { this.brakeForce = brakeForce; }
-
     public void accelerate(float strength) {
         vehicleControl.accelerate(wheelIndex, accelerationForce * strength);
     }
 
     /**
      * Causes the wheel to slow down.
+     *
      * @param strength the strength of the braking force from 0 - 1.
      */
     public void brake(float strength) {
@@ -125,10 +137,11 @@ public class Wheel {
         return this.brakeStrength;
     }
 
-
     /**
-     * Causes the wheel to slow down. This method is usually used for a handbrake. It overrides the specified brake strength.
-     * @param strength      the force of the brake from 0 - 1
+     * Causes the wheel to slow down. This method is usually used for a
+     * handbrake. It overrides the specified brake strength.
+     *
+     * @param strength the force of the brake from 0 - 1
      * @param brakeStrength the strength of the brake force at 1 (100%).
      */
     public void brake(float strength, float brakeStrength) {
@@ -145,8 +158,7 @@ public class Wheel {
         if (isSteering()) {
             if (steeringFlipped) {
                 steeringAngle = getMaxSteerAngle() * -strength;
-            }
-            else {
+            } else {
                 steeringAngle = getMaxSteerAngle() * strength;
             }
 
@@ -159,9 +171,7 @@ public class Wheel {
     }
 
     public float getMaxSteerAngle() {
-
         //float speed = 1.0f - (vehicleControl.getCurrentVehicleSpeedKmHour() / 200);
-
         return maxSteerAngle;// * speed;
     }
 
@@ -179,36 +189,33 @@ public class Wheel {
         vehicleWheel.setRadius(scale * 0.5f);
     }
 
-    public Suspension getSuspension() { return suspension; }
+    public Suspension getSuspension() {
+        return suspension;
+    }
 
     public VehicleWheel getVehicleWheel() {
         return this.vehicleWheel;
     }
-
 
     // Pacejka
     // LATERAL
     // the slip angle is the angle between the direction in which a wheel is pointing
     // and the direction in which the vehicle is traveling.
     public float calculateLateralSlipAngle() {
-
         Quaternion wheelRot = vehicleControl.getPhysicsRotation().mult(
                 new Quaternion().fromAngles(new float[]{0, getSteeringAngle(), 0}));
 
         Vector3f wheelDir = wheelRot.getRotationColumn(2);
-
         Vector3f vehicleTravel;
 
         if (vehicleControl.getCurrentVehicleSpeedKmHour() < 5) {
             vehicleTravel = vehicleControl.getPhysicsRotation().getRotationColumn(2);
-        }
-        else {
+        } else {
             vehicleTravel = vehicleControl.getLinearVelocity().normalizeLocal();
             vehicleTravel.setY(0);
         }
 
         float minAngle = 0.1f;
-
         float angle = minAngle + wheelDir.angleBetween(vehicleTravel);
         // System.out.println(getVehicleWheel().getWheelSpatial().getName() + ": " + angle * FastMath.RAD_TO_DEG);
 
@@ -216,13 +223,11 @@ public class Wheel {
         angle = FastMath.clamp(angle, 0, FastMath.QUARTER_PI);
 
         return angle;
-
     }
 
     // the slip angle for this is how much force is being applied to the tire (acceleration force).
     // how much rotation has been applied as a result of acceleration.
     public float calculateLongitudinalSlipAngle() {
-
         // the rotation of the wheel as if it were just following a moving vehicle.
         // that is to say a wheel that is rolling without slip.
         float normalRot = vehicleWheel.getDeltaRotation();// * 0.5f;
@@ -234,8 +239,6 @@ public class Wheel {
         float rot = wheelSpinRot + normalRot;
 
         // System.out.println(getVehicleWheel().getWheelSpatial().getName() + ": " + rot);
-
-
         float vel = vehicleControl.getLinearVelocity().length();
 
         float minAngle = 0.1f;
@@ -249,7 +252,6 @@ public class Wheel {
         // float slip = 1.0f - vehicleWheel.getSkidInfo();
         // slip *= FastMath.QUARTER_PI;
         //return slip;
-
         angle = FastMath.clamp(angle, 0, FastMath.TWO_PI);
         return angle;
     }
@@ -261,6 +263,4 @@ public class Wheel {
     public void setRotationDelta(float rotationDelta) {
         this.rotationDelta = rotationDelta;
     }
-
-
 }
