@@ -48,26 +48,13 @@ public class Suspension {
             float kRelax) {
         this.vehicleWheel = vehicleWheel;
 
-        setStiffness(25f);
         setCompressDamping(kCompress);
-        setRelaxDamping(kRelax);
         setMaxForce(10_000f);
+        setRelaxDamping(kRelax);
+        setStiffness(25f);
     }
     // *************************************************************************
     // new methods exposed
-
-    /**
-     * Alter the stiffness of this suspension.
-     *
-     * @param stiffness the desired stiffness constant (10&rarr;off-road buggy,
-     * 50&rarr;sports car, 200&rarr;Formula-1 race car, default=5.88)
-     */
-    public void setStiffness(float stiffness) {
-        vehicleWheel.setSuspensionStiffness(stiffness);
-
-        setCompressDamping(kCompress);
-        setRelaxDamping(kRelax);
-    }
 
     /**
      * Alter the damping for compression.
@@ -81,20 +68,6 @@ public class Suspension {
         float stiffness = vehicleWheel.getSuspensionStiffness();
         float damp = 2 * dampingRatio * FastMath.sqrt(stiffness);
         vehicleWheel.setWheelsDampingCompression(damp);
-    }
-
-    /**
-     * Alter the damping for relaxation.
-     *
-     * @param dampingRatio the desired damping ratio (0=undamped, 1=critically
-     * damped)
-     */
-    public void setRelaxDamping(float dampingRatio) {
-        kRelax = dampingRatio;
-
-        float stiffness = vehicleWheel.getSuspensionStiffness();
-        float damp = 2 * dampingRatio * FastMath.sqrt(stiffness);
-        vehicleWheel.setWheelsDampingRelaxation(damp);
     }
 
     /**
@@ -122,7 +95,34 @@ public class Suspension {
         vehicleWheel.setMaxSuspensionTravelCm(travelCm);
     }
 
+    /**
+     * Alter the damping for relaxation.
+     *
+     * @param dampingRatio the desired damping ratio (0=undamped, 1=critically
+     * damped)
+     */
+    public void setRelaxDamping(float dampingRatio) {
+        kRelax = dampingRatio;
+
+        float stiffness = vehicleWheel.getSuspensionStiffness();
+        float damp = 2 * dampingRatio * FastMath.sqrt(stiffness);
+        vehicleWheel.setWheelsDampingRelaxation(damp);
+    }
+
     public void setRestLength(float restLength) {
         vehicleWheel.setRestLength(restLength);
+    }
+
+    /**
+     * Alter the stiffness of this suspension.
+     *
+     * @param stiffness the desired stiffness constant (10&rarr;off-road buggy,
+     * 50&rarr;sports car, 200&rarr;Formula-1 race car, default=5.88)
+     */
+    public void setStiffness(float stiffness) {
+        vehicleWheel.setSuspensionStiffness(stiffness);
+
+        setCompressDamping(kCompress);
+        setRelaxDamping(kRelax);
     }
 }
