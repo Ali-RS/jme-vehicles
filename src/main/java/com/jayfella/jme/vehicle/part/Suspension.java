@@ -4,17 +4,30 @@ import com.jme3.bullet.objects.VehicleWheel;
 import com.jme3.math.FastMath;
 
 /**
- * Manage a wheel's suspension. If you use this class, you should avoid directly
- * invoking the corresponding physics setters.
+ * Manage a wheel's suspension.
+ * <p>
+ * If you use this class, you should avoid directly invoking certain physics
+ * setters, namely:
+ * <ul>
+ * <li>setWheelsDampingCompression(),</li>
+ * <li>setWheelsDampingRelaxation(), and</li>
+ * <li>setSuspensionStiffness().</li>
+ * </ul>
  */
 public class Suspension {
     // *************************************************************************
     // fields
 
-    private float compression;
-    private float damping;
     /**
-     * physics object being configured
+     * damping ratio for compression (0=undamped, 1=critically damped)
+     */
+    private float kCompress;
+    /**
+     * damping ratio for relaxation (0=undamped, 1=critically damped)
+     */
+    private float kRelax;
+    /**
+     * physics object being managed
      */
     final private VehicleWheel vehicleWheel;
     // *************************************************************************
@@ -24,7 +37,7 @@ public class Suspension {
      * Instantiate a suspension with stiffness=25. TODO default to
      * kCompress=0.2, kRelax=0.3
      *
-     * @param vehicleWheel the corresponding physics object (not null, alias
+     * @param vehicleWheel the physics object to manage (not null, alias
      * created)
      * @param compression the desired damping ratio for compression (0=undamped,
      * 1=critically damped)
@@ -35,12 +48,12 @@ public class Suspension {
         this.vehicleWheel = vehicleWheel;
 
         // we can't get compression and damping because they use a formula.
-        this.compression = compression;
-        this.damping = damping;
+        this.kCompress = compression;
+        this.kRelax = damping;
 
         setStiffness(25f);
-        setCompression(this.compression);
-        setDamping(this.damping);
+        setCompression(this.kCompress);
+        setDamping(this.kRelax);
         setMaxForce(10_000f);
     }
     // *************************************************************************
@@ -55,8 +68,8 @@ public class Suspension {
     public void setStiffness(float stiffness) {
         this.vehicleWheel.setSuspensionStiffness(stiffness);
 
-        setCompression(compression);
-        setDamping(damping);
+        setCompression(kCompress);
+        setDamping(kRelax);
     }
 
     /**
@@ -66,9 +79,9 @@ public class Suspension {
      * damped)
      */
     public void setCompression(float compression) {
-        this.compression = compression;
+        this.kCompress = compression;
         float stiffness = vehicleWheel.getSuspensionStiffness();
-        this.vehicleWheel.setWheelsDampingCompression(this.compression * 2.0f * FastMath.sqrt(stiffness));
+        this.vehicleWheel.setWheelsDampingCompression(this.kCompress * 2.0f * FastMath.sqrt(stiffness));
     }
 
     /**
@@ -78,9 +91,9 @@ public class Suspension {
      * damped)
      */
     public void setDamping(float damping) {
-        this.damping = damping;
+        this.kRelax = damping;
         float stiffness = vehicleWheel.getSuspensionStiffness();
-        this.vehicleWheel.setWheelsDampingRelaxation(this.damping * 2.0f * FastMath.sqrt(stiffness));
+        this.vehicleWheel.setWheelsDampingRelaxation(this.kRelax * 2.0f * FastMath.sqrt(stiffness));
     }
 
     public void setMaxForce(float maxForce) {
