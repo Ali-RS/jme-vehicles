@@ -212,6 +212,8 @@ Resources/assets/media:
   has a CC Attribution license.
 + The [hcr2_buggy model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/hcr2_buggy)
   has a CC Attribution license.
++ The [modern_hatchback model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/modern_hatchback)
+  has a CC Attribution license.
 + The [racetrack model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/race1)
   has an Unlicense and a Creative Commons Zero v1.0 Universal license.
 + The [vehicle-playground model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/vehicle-playground)
@@ -274,6 +276,10 @@ The world (and physics-space) units of distance are *meters*.
 + "isteven" created the gtr_nismo model.
 + [Mauro Zampaoli][zampaoli] created the ford_ranger model.
 + "oakar258" created the hcr2_buggy model.
++ This work is based on "Modern Hatchback - Low Poly model"
+ (https://sketchfab.com/3d-models/modern-hatchback-low-poly-model-055ff8a21b8d4d279debca089e2fafcd)
+ by Daniel Zhabotinsky (https://sketchfab.com/DanielZhabotinsky)
+ licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).
 + [Adi Barda (aka "adi.barda")][adi] created the racetrack model.
 
 I am grateful to [Github] and Imgur
