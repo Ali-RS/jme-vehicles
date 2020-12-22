@@ -34,8 +34,8 @@ public class Suspension {
     // constructors
 
     /**
-     * Instantiate a suspension with stiffness=25. TODO default to
-     * kCompress=0.2, kRelax=0.3
+     * Instantiate a suspension with stiffness=25 and maxForce=10000. TODO
+     * default to kCompress=0.2, kRelax=0.3
      *
      * @param vehicleWheel the physics object to manage (not null, alias
      * created)
@@ -73,7 +73,7 @@ public class Suspension {
     }
 
     /**
-     * Alter the damping for compression
+     * Alter the damping for compression.
      *
      * @param compression the desired damping ratio (0=undamped, 1=critically
      * damped)
@@ -96,6 +96,13 @@ public class Suspension {
         this.vehicleWheel.setWheelsDampingRelaxation(this.kRelax * 2.0f * FastMath.sqrt(stiffness));
     }
 
+    /**
+     * Alter the maximum force exerted by this suspension.
+     * <p>
+     * Increase this if the suspension cannot handle the weight of your vehicle.
+     *
+     * @param maxForce the desired maximum force
+     */
     public void setMaxForce(float maxForce) {
         vehicleWheel.setMaxSuspensionForce(maxForce);
     }
