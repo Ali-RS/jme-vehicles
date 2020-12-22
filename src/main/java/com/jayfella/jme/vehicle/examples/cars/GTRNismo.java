@@ -86,7 +86,7 @@ public class GTRNismo extends Car {
          * Add the wheels to the vehicle.
          * For rear-wheel steering, it will be necessary to "flip" the steering.
          */
-        float wheelX = 0.8f; // half of the wheelbase
+        float wheelX = 0.8f; // half of the axle track
         float axleY = 0.1f; // height of the axles relative to vehicle's CoG
         float frontZ = 1.4f;
         float rearZ = -1.4f;
