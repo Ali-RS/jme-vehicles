@@ -129,11 +129,11 @@ public class DuneBuggy extends Car {
 
             // how fast the suspension will compress
             // 1 = slow, 0 = fast.
-            suspension.setCompression(0.5f);
+            suspension.setCompressDamping(0.5f);
 
             // how quickly the suspension will rebound back to height
             // 1 = slow, 0 = fast.
-            suspension.setDamping(0.65f);
+            suspension.setRelaxDamping(0.65f);
         }
         /*
          * Give each wheel a tire with friction.

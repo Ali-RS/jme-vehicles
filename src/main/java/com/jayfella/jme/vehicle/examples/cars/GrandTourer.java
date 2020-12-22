@@ -125,11 +125,11 @@ public class GrandTourer extends Car {
 
             // how fast the suspension will compress
             // 1 = slow, 0 = fast.
-            suspension.setCompression(0.33f);
+            suspension.setCompressDamping(0.33f);
 
             // how quickly the suspension will rebound back to height
             // 1 = slow, 0 = fast.
-            suspension.setDamping(0.45f);
+            suspension.setRelaxDamping(0.45f);
         }
         // the rest-length or "height" of the suspension
         getWheel(0).getSuspension().setRestLength(0.225f);

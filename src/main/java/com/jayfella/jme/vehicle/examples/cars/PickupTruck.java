@@ -127,11 +127,11 @@ public class PickupTruck extends Car {
 
             // how fast the suspension will compress
             // 1 = slow, 0 = fast.
-            suspension.setCompression(0.2f);
+            suspension.setCompressDamping(0.2f);
 
             // how quickly the suspension will rebound back to height
             // 1 = slow, 0 = fast.
-            suspension.setDamping(0.3f);
+            suspension.setRelaxDamping(0.3f);
         }
         /*
          * Give each wheel a tire with friction.

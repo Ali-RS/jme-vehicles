@@ -49,8 +49,8 @@ public class Suspension {
         this.vehicleWheel = vehicleWheel;
 
         setStiffness(25f);
-        setCompression(kCompress);
-        setDamping(kRelax);
+        setCompressDamping(kCompress);
+        setRelaxDamping(kRelax);
         setMaxForce(10_000f);
     }
     // *************************************************************************
@@ -65,8 +65,8 @@ public class Suspension {
     public void setStiffness(float stiffness) {
         vehicleWheel.setSuspensionStiffness(stiffness);
 
-        setCompression(kCompress);
-        setDamping(kRelax);
+        setCompressDamping(kCompress);
+        setRelaxDamping(kRelax);
     }
 
     /**
@@ -75,7 +75,7 @@ public class Suspension {
      * @param dampingRatio the desired damping ratio (0=undamped, 1=critically
      * damped)
      */
-    public void setCompression(float dampingRatio) {
+    public void setCompressDamping(float dampingRatio) {
         kCompress = dampingRatio;
 
         float stiffness = vehicleWheel.getSuspensionStiffness();
@@ -84,12 +84,12 @@ public class Suspension {
     }
 
     /**
-     * Alter the damping for relaxation. TODO rename
+     * Alter the damping for relaxation.
      *
      * @param dampingRatio the desired damping ratio (0=undamped, 1=critically
      * damped)
      */
-    public void setDamping(float dampingRatio) {
+    public void setRelaxDamping(float dampingRatio) {
         kRelax = dampingRatio;
 
         float stiffness = vehicleWheel.getSuspensionStiffness();

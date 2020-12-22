@@ -126,11 +126,11 @@ public class GTRNismo extends Car {
 
             // how fast the suspension will compress
             // 1 = slow, 0 = fast.
-            suspension.setCompression(0.3f);
+            suspension.setCompressDamping(0.3f);
 
             // how quickly the suspension will rebound back to height
             // 1 = slow, 0 = fast.
-            suspension.setDamping(0.4f);
+            suspension.setRelaxDamping(0.4f);
         }
         /*
          * Give each wheel a tire with friction.
