@@ -53,10 +53,6 @@ public class Suspension {
     // *************************************************************************
     // new methods exposed
 
-    public float getStiffness() {
-        return stiffness;
-    }
-
     /**
      * Alter the stiffness of this suspension.
      *
@@ -71,10 +67,6 @@ public class Suspension {
         setDamping(damping);
     }
 
-    public float getCompression() {
-        return compression;
-    }
-
     /**
      * Alter the damping for compression
      *
@@ -84,10 +76,6 @@ public class Suspension {
     public void setCompression(float compression) {
         this.compression = compression;
         this.vehicleWheel.setWheelsDampingCompression(this.compression * 2.0f * FastMath.sqrt(stiffness));
-    }
-
-    public float getDamping() {
-        return damping;
     }
 
     /**
@@ -101,18 +89,10 @@ public class Suspension {
         this.vehicleWheel.setWheelsDampingRelaxation(this.damping * 2.0f * FastMath.sqrt(stiffness));
     }
 
-    public float getMaxForce() {
-        return maxForce;
-    }
-
     public void setMaxForce(float maxForce) {
         this.maxForce = maxForce;
         vehicleWheel.setMaxSuspensionForce(this.maxForce);
 
-    }
-
-    public float getRestLength() {
-        return restLength;
     }
 
     public void setRestLength(float restLength) {
