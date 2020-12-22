@@ -5,7 +5,7 @@ import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.engine.Engine;
 import com.jayfella.jme.vehicle.examples.engines.Engine180HP;
 import com.jayfella.jme.vehicle.examples.tires.Tire_02;
-import com.jayfella.jme.vehicle.examples.wheels.BasicAlloyWheel;
+import com.jayfella.jme.vehicle.examples.wheels.HatchbackWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Brake;
 import com.jayfella.jme.vehicle.part.GearBox;
@@ -76,14 +76,14 @@ public class HatchBack extends Car {
          * wheel models for the right side require a 180-degree rotation.
          */
         float wheelScale = 0.8f;
-        WheelModel wheel_fl = new BasicAlloyWheel(wheelScale);
+        WheelModel wheel_fl = new HatchbackWheel(wheelScale);
 
-        WheelModel wheel_fr = new BasicAlloyWheel(wheelScale);
+        WheelModel wheel_fr = new HatchbackWheel(wheelScale);
         wheel_fr.getSpatial().rotate(0f, FastMath.PI, 0f);
 
-        WheelModel wheel_rl = new BasicAlloyWheel(wheelScale);
+        WheelModel wheel_rl = new HatchbackWheel(wheelScale);
 
-        WheelModel wheel_rr = new BasicAlloyWheel(wheelScale);
+        WheelModel wheel_rr = new HatchbackWheel(wheelScale);
         wheel_rr.getSpatial().rotate(0f, FastMath.PI, 0f);
         /*
          * Add the wheels to the vehicle.
