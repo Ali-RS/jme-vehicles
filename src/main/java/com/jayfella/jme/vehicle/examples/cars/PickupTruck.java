@@ -124,14 +124,6 @@ public class PickupTruck extends Car {
             // the stiffness of the suspension
             // Setting this too low can cause odd behavior.
             suspension.setStiffness(20f);
-
-            // how fast the suspension will compress
-            // 1 = slow, 0 = fast.
-            suspension.setCompressDamping(0.2f);
-
-            // how quickly the suspension will rebound back to height
-            // 1 = slow, 0 = fast.
-            suspension.setRelaxDamping(0.3f);
         }
         /*
          * Give each wheel a tire with friction.

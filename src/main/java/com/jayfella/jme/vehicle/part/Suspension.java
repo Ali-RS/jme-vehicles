@@ -7,7 +7,7 @@ import com.jme3.math.FastMath;
  * Manage a wheel's suspension.
  * <p>
  * If you use this class, you should avoid directly invoking certain physics
- * setters, namely:
+ * setters, notably:
  * <ul>
  * <li>setWheelsDampingCompression(),</li>
  * <li>setWheelsDampingRelaxation(), and</li>
@@ -34,23 +34,17 @@ public class Suspension {
     // constructors
 
     /**
-     * Instantiate a suspension with stiffness=25 and maxForce=10000. TODO
-     * default to kCompress=0.2, kRelax=0.3
+     * Instantiate a suspension with reasonable parameter settings.
      *
      * @param vehicleWheel the physics object to manage (not null, alias
      * created)
-     * @param kCompress the desired damping ratio for compression (0=undamped,
-     * 1=critically damped)
-     * @param kRelax the desired damping ratio for relaxation (0=undamped,
-     * 1=critically damped)
      */
-    public Suspension(VehicleWheel vehicleWheel, float kCompress,
-            float kRelax) {
+    public Suspension(VehicleWheel vehicleWheel) {
         this.vehicleWheel = vehicleWheel;
 
-        setCompressDamping(kCompress);
+        setCompressDamping(0.2f);
         setMaxForce(10_000f);
-        setRelaxDamping(kRelax);
+        setRelaxDamping(0.3f);
         setStiffness(25f);
     }
     // *************************************************************************
@@ -60,7 +54,7 @@ public class Suspension {
      * Alter the damping for compression.
      *
      * @param dampingRatio the desired damping ratio (0=undamped, 1=critically
-     * damped)
+     * damped, default=0.2)
      */
     public void setCompressDamping(float dampingRatio) {
         kCompress = dampingRatio;
@@ -75,7 +69,7 @@ public class Suspension {
      * <p>
      * Increase this if the suspension cannot handle the weight of your vehicle.
      *
-     * @param maxForce the desired maximum force
+     * @param maxForce the desired maximum force (default=10_000)
      */
     public void setMaxForce(float maxForce) {
         vehicleWheel.setMaxSuspensionForce(maxForce);
@@ -89,7 +83,7 @@ public class Suspension {
      *
      * @param travelCm the desired maximum amount the suspension can be
      * compressed or expanded, relative to its rest length (in hundredths of a
-     * physics-space unit)
+     * physics-space unit, default=500)
      */
     public void setMaxTravelCm(float travelCm) {
         vehicleWheel.setMaxSuspensionTravelCm(travelCm);
@@ -99,7 +93,7 @@ public class Suspension {
      * Alter the damping for relaxation.
      *
      * @param dampingRatio the desired damping ratio (0=undamped, 1=critically
-     * damped)
+     * damped, default=0.3)
      */
     public void setRelaxDamping(float dampingRatio) {
         kRelax = dampingRatio;
@@ -109,6 +103,12 @@ public class Suspension {
         vehicleWheel.setWheelsDampingRelaxation(damp);
     }
 
+    /**
+     * Alter the length of this suspension. Bullet updates the length on every
+     * physics tick. TODO so remove this?
+     *
+     * @param restLength the desired length (in physics-space units)
+     */
     public void setRestLength(float restLength) {
         vehicleWheel.setRestLength(restLength);
     }
@@ -117,7 +117,7 @@ public class Suspension {
      * Alter the stiffness of this suspension.
      *
      * @param stiffness the desired stiffness constant (10&rarr;off-road buggy,
-     * 50&rarr;sports car, 200&rarr;Formula-1 race car, default=5.88)
+     * 50&rarr;sports car, 200&rarr;Formula-1 race car, default=25)
      */
     public void setStiffness(float stiffness) {
         vehicleWheel.setSuspensionStiffness(stiffness);

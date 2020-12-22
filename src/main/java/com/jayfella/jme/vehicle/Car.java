@@ -50,7 +50,7 @@ abstract public class Car extends Vehicle {
 
         int index = getVehicleControl().getNumWheels() - 1;
 
-        Suspension suspension = new Suspension(vehicleWheel, 0.2f, 0.3f);
+        Suspension suspension = new Suspension(vehicleWheel);
 
         Wheel wheel = new Wheel(getVehicleControl(), index, isSteering,
                 steeringFlipped, suspension, brake);
