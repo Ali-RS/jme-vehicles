@@ -8,21 +8,23 @@ import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 
 public class Wheel {
+    // *************************************************************************
+    // fields
 
     final private VehicleControl vehicleControl;
     final private int wheelIndex;
     final private VehicleWheel vehicleWheel;
 
     // allows us to steer with rear wheels by flipping the direction and power.
-    private boolean steering;
-    private boolean steeringFlipped;
+    private boolean steering; // TODO rename isSteering
+    private boolean steeringFlipped; // TODO rename isSteeringFlipped
 
     // determines whether this wheel provides acceleration in a 0..1 range.
     // this can be used for settings FWD, RWD, 60/40 distribution, etc...
-    private float accelerationForce = 0;
+    private float accelerationForce = 0f;
 
     private float maxSteerAngle = FastMath.QUARTER_PI;
-    // private float maxSteerAngle = 30 * FastMath.DEG_TO_RAD;
+    private float steeringAngle = 0f;
 
     final private Suspension suspension;
 
@@ -32,11 +34,13 @@ public class Wheel {
 
     private float rotationDelta;
 
-    // simulates degradation. 1.0 = full grip the tire allows, 0.0 = the tire is dead.
-    private float grip = 1.0f;
+    // grip degradation: 1 = full grip the tire allows, 0 = dead tire
+    private float grip = 1f;
 
     // the amount of braking strength being applied. Between 0 and 1
-    private float brakeStrength = 0;
+    private float brakeStrength = 0f;
+    // *************************************************************************
+    // constructors
 
     public Wheel(VehicleControl vehicleControl, int wheelIndex,
             boolean isSteering, boolean steeringFlipped, Suspension suspension,
@@ -54,6 +58,8 @@ public class Wheel {
 
         setFriction(1f);
     }
+    // *************************************************************************
+    // new methods exposed
 
     public PacejkaTireModel getTireModel() {
         return tireModel;
@@ -76,7 +82,7 @@ public class Wheel {
     }
 
     public void setFriction(float friction) {
-        this.vehicleWheel.setFrictionSlip(friction);
+        vehicleWheel.setFrictionSlip(friction);
     }
 
     public boolean isSteering() {
@@ -90,7 +96,7 @@ public class Wheel {
 
     public void setSteering(boolean steering) {
         this.steering = steering;
-        this.vehicleWheel.setFrontWheel(steering);
+        vehicleWheel.setFrontWheel(steering);
     }
 
     public boolean isSteeringFlipped() {
@@ -129,12 +135,12 @@ public class Wheel {
      * @param strength the strength of the braking force from 0 - 1.
      */
     public void brake(float strength) {
-        this.brakeStrength = strength;
+        brakeStrength = strength;
         vehicleControl.brake(wheelIndex, brake.getStrength() * strength);
     }
 
     public float getBrakeStrength() {
-        return this.brakeStrength;
+        return brakeStrength;
     }
 
     /**
@@ -149,10 +155,8 @@ public class Wheel {
     }
 
     public Brake getBrake() {
-        return this.brake;
+        return brake;
     }
-
-    private float steeringAngle = 0;
 
     public void steer(float strength) {
         if (isSteering()) {
@@ -162,17 +166,16 @@ public class Wheel {
                 steeringAngle = getMaxSteerAngle() * strength;
             }
 
-            this.vehicleControl.steer(wheelIndex, steeringAngle);
+            vehicleControl.steer(wheelIndex, steeringAngle);
         }
     }
 
     public float getSteeringAngle() {
-        return this.steeringAngle;
+        return steeringAngle;
     }
 
     public float getMaxSteerAngle() {
-        //float speed = 1.0f - (vehicleControl.getCurrentVehicleSpeedKmHour() / 200);
-        return maxSteerAngle;// * speed;
+        return maxSteerAngle;
     }
 
     public void setMaxSteerAngle(float maxSteerAngle) {
@@ -183,10 +186,9 @@ public class Wheel {
         return vehicleWheel.getWheelSpatial().getLocalScale().y; // they should all be the same.
     }
 
-    public void setSize(float scale) {
-        vehicleWheel.getWheelSpatial().setLocalScale(scale);
-        // Vector3f bounds = ((BoundingBox)vehicleWheel.getWheelSpatial().getWorldBound()).getExtent(null);
-        vehicleWheel.setRadius(scale * 0.5f);
+    public void setSize(float diameter) {
+        vehicleWheel.getWheelSpatial().setLocalScale(diameter);
+        vehicleWheel.setRadius(diameter / 2);
     }
 
     public Suspension getSuspension() {
@@ -194,7 +196,7 @@ public class Wheel {
     }
 
     public VehicleWheel getVehicleWheel() {
-        return this.vehicleWheel;
+        return vehicleWheel;
     }
 
     // Pacejka
@@ -203,24 +205,22 @@ public class Wheel {
     // and the direction in which the vehicle is traveling.
     public float calculateLateralSlipAngle() {
         Quaternion wheelRot = vehicleControl.getPhysicsRotation().mult(
-                new Quaternion().fromAngles(new float[]{0, getSteeringAngle(), 0}));
+                new Quaternion().fromAngles(0f, getSteeringAngle(), 0f));
 
         Vector3f wheelDir = wheelRot.getRotationColumn(2);
         Vector3f vehicleTravel;
-
-        if (vehicleControl.getCurrentVehicleSpeedKmHour() < 5) {
+        if (vehicleControl.getCurrentVehicleSpeedKmHour() < 5f) {
             vehicleTravel = vehicleControl.getPhysicsRotation().getRotationColumn(2);
         } else {
             vehicleTravel = vehicleControl.getLinearVelocity().normalizeLocal();
-            vehicleTravel.setY(0);
+            vehicleTravel.setY(0f);
         }
 
         float minAngle = 0.1f;
         float angle = minAngle + wheelDir.angleBetween(vehicleTravel);
         // System.out.println(getVehicleWheel().getWheelSpatial().getName() + ": " + angle * FastMath.RAD_TO_DEG);
 
-        // angle = Math.max(0.1f, angle);
-        angle = FastMath.clamp(angle, 0, FastMath.QUARTER_PI);
+        angle = FastMath.clamp(angle, 0f, FastMath.QUARTER_PI);
 
         return angle;
     }
@@ -230,10 +230,10 @@ public class Wheel {
     public float calculateLongitudinalSlipAngle() {
         // the rotation of the wheel as if it were just following a moving vehicle.
         // that is to say a wheel that is rolling without slip.
-        float normalRot = vehicleWheel.getDeltaRotation();// * 0.5f;
+        float normalRot = vehicleWheel.getDeltaRotation();
 
         // the rotation applied via wheelspin
-        float wheelSpinRot = getRotationDelta();// * 1.5f;
+        float wheelSpinRot = getRotationDelta();
 
         // combined rotation of normal roll + wheelspin
         float rot = wheelSpinRot + normalRot;
@@ -244,7 +244,7 @@ public class Wheel {
         float minAngle = 0.1f;
 
         float angle = rot / vel;
-        angle *= 10;
+        angle *= 10f;
         //angle += minAngle;
 
         //result = FastMath.QUARTER_PI - result;
@@ -252,7 +252,7 @@ public class Wheel {
         // float slip = 1.0f - vehicleWheel.getSkidInfo();
         // slip *= FastMath.QUARTER_PI;
         //return slip;
-        angle = FastMath.clamp(angle, 0, FastMath.TWO_PI);
+        angle = FastMath.clamp(angle, 0f, FastMath.TWO_PI);
         return angle;
     }
 
