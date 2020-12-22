@@ -27,6 +27,7 @@ public class HatchbackWheel extends WheelModel {
         String assetPath = "/Models/modern_hatchback/wheel.j3o";
         Spatial cgmRoot = assetManager.loadModel(assetPath);
         super.setSpatial(cgmRoot);
-        super.getWheelNode().setLocalScale(diameter);
+        super.getWheelNode()
+                .setLocalScale(0.75f * diameter, diameter, diameter);
     }
 }
