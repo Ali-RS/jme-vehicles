@@ -11,11 +11,8 @@ public class Suspension {
     // *************************************************************************
     // fields
 
-    private float stiffness;
     private float compression;
     private float damping;
-    private float maxForce;
-    private float restLength;
     /**
      * physics object being configured
      */
@@ -41,14 +38,10 @@ public class Suspension {
         this.compression = compression;
         this.damping = damping;
 
-        this.stiffness = 25; // vehicleWheel.getSuspensionStiffness();
-        this.maxForce = 10000;
-        this.restLength = 0.2f;
-
-        setStiffness(this.stiffness);
+        setStiffness(25f);
         setCompression(this.compression);
         setDamping(this.damping);
-        setMaxForce(10000);
+        setMaxForce(10_000f);
     }
     // *************************************************************************
     // new methods exposed
@@ -60,7 +53,6 @@ public class Suspension {
      * 50&rarr;sports car, 200&rarr;Formula-1 race car, default=5.88)
      */
     public void setStiffness(float stiffness) {
-        this.stiffness = stiffness;
         this.vehicleWheel.setSuspensionStiffness(stiffness);
 
         setCompression(compression);
@@ -75,6 +67,7 @@ public class Suspension {
      */
     public void setCompression(float compression) {
         this.compression = compression;
+        float stiffness = vehicleWheel.getSuspensionStiffness();
         this.vehicleWheel.setWheelsDampingCompression(this.compression * 2.0f * FastMath.sqrt(stiffness));
     }
 
@@ -86,13 +79,12 @@ public class Suspension {
      */
     public void setDamping(float damping) {
         this.damping = damping;
+        float stiffness = vehicleWheel.getSuspensionStiffness();
         this.vehicleWheel.setWheelsDampingRelaxation(this.damping * 2.0f * FastMath.sqrt(stiffness));
     }
 
     public void setMaxForce(float maxForce) {
-        this.maxForce = maxForce;
-        vehicleWheel.setMaxSuspensionForce(this.maxForce);
-
+        vehicleWheel.setMaxSuspensionForce(maxForce);
     }
 
     /**
@@ -110,8 +102,6 @@ public class Suspension {
     }
 
     public void setRestLength(float restLength) {
-        this.restLength = restLength;
         vehicleWheel.setRestLength(restLength);
-        // vehicleWheel.setMaxSuspensionTravelCm(this.restLength);
     }
 }
