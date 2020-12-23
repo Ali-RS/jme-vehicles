@@ -18,15 +18,27 @@ import com.simsilica.lemur.component.TbtQuadBackgroundComponent;
  */
 abstract public class AnimatedMenu extends BaseAppState {
     // *************************************************************************
+    // constants and loggers
+
+    /**
+     * delay between successive button animations (in seconds)
+     */
+    final private static float buttonDelay = 0.05f;
+    /**
+     * duration of each button animation (in seconds)
+     */
+    final private static float duration = 0.2f;
+    /**
+     * delay before the first animation starts (in seconds)
+     */
+    final private static float startupDelay = 0.1f;
+    // *************************************************************************
     // fields
 
     private AnimCompleteEvent completeEvent;
     private boolean allComplete = false;
     private boolean in = true;
-    final private float buttonDelay = 0.05f; // delay between successive button animations (in seconds)
-    final private float duration = 0.2f; // duration of each button animation (in seconds)
     private float maxWidth; // width of the widest button
-    final private float startupDelay = 0.1f; // delay before the first animation starts (in seconds)
     private float startupTime = 0; // elapsed startup delay (in seconds)
     private float time = 0; // elapsed time since the animation started (in seconds)
     final private Node node = new Node("Menu");
