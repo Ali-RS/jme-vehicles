@@ -13,7 +13,12 @@ import com.simsilica.lemur.Insets3f;
 import com.simsilica.lemur.Panel;
 import com.simsilica.lemur.component.TbtQuadBackgroundComponent;
 
+/**
+ * A Lemur menu whose buttons slide in and out of the display.
+ */
 abstract public class AnimatedMenu extends BaseAppState {
+    // *************************************************************************
+    // fields
 
     private AnimCompleteEvent completeEvent;
     private boolean allComplete = false;
@@ -26,6 +31,8 @@ abstract public class AnimatedMenu extends BaseAppState {
     private float time = 0; // elapsed time since the animation started (in seconds)
     final private Node node = new Node("Menu");
     private Panel[] items;
+    // *************************************************************************
+    // new protected methods
 
     protected void animateOut(AnimCompleteEvent animComplete) {
         time = 0;
@@ -34,7 +41,9 @@ abstract public class AnimatedMenu extends BaseAppState {
         this.completeEvent = animComplete;
     }
 
-    abstract protected Button[] createItems();
+    abstract protected Button[] createItems(); // TODO return List?
+    // *************************************************************************
+    // BaseAppState methods
 
     @Override
     protected void cleanup(Application app) {
@@ -132,6 +141,8 @@ abstract public class AnimatedMenu extends BaseAppState {
             }
         }
     }
+    // *************************************************************************
+    // private methods
 
     private void formatButton(Button item) {
         item.setTextHAlignment(HAlignment.Center);
