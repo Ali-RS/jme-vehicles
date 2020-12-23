@@ -7,6 +7,7 @@ import com.jayfella.jme.vehicle.part.Wheel;
 import com.jayfella.jme.vehicle.skid.SkidMarksState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bounding.BoundingBox;
+import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.objects.VehicleWheel;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
@@ -51,32 +52,24 @@ abstract public class Car extends Vehicle {
     // *************************************************************************
     // new methods exposed
 
-    public Wheel addWheel(Spatial model, Vector3f connectionPoint,
-            boolean isSteering, boolean steeringFlipped, Brake brake) {
-        Vector3f direction = new Vector3f(0, -1, 0);
-        Vector3f axle = new Vector3f(-1, 0, 0);
+    public Wheel addWheel(Spatial wheelNode, Vector3f connectionLocation,
+            boolean isSteering, boolean isSteeringFlipped, Brake brake) {
+        VehicleControl vehicleControl = getVehicleControl();
+        Vector3f suspensionDirection = new Vector3f(0f, -1f, 0f);
+        Vector3f axleDirection = new Vector3f(-1f, 0f, 0f);
+        float restLength = 0.2f;
+        float radius = ((BoundingBox) wheelNode.getWorldBound()).getZExtent(); // TODO
+        VehicleWheel vehicleWheel = vehicleControl.addWheel(wheelNode,
+                connectionLocation, suspensionDirection, axleDirection,
+                restLength, radius, isSteering);
 
-        float restlength = 0.2f;
-        float radius = ((BoundingBox) model.getWorldBound()).getZExtent();
-
-        // boolean isFrontWheel = false;
-        VehicleWheel vehicleWheel = getVehicleControl().addWheel(
-                model,
-                connectionPoint,
-                direction,
-                axle,
-                restlength,
-                radius,
-                isSteering);
-
-        int index = getVehicleControl().getNumWheels() - 1;
-
+        int wheelIndex = vehicleControl.getNumWheels() - 1;
         Suspension suspension = new Suspension(vehicleWheel);
-
-        Wheel wheel = new Wheel(getVehicleControl(), index, isSteering,
-                steeringFlipped, suspension, brake);
+        Wheel wheel = new Wheel(vehicleControl, wheelIndex, isSteering,
+                isSteeringFlipped, suspension, brake);
         wheels.add(wheel);
-        getNode().attachChild(model);
+
+        getNode().attachChild(wheelNode);
 
         return wheel;
     }
@@ -100,19 +93,19 @@ abstract public class Car extends Vehicle {
 
     public void removeWheel(int index) {
         getVehicleControl().removeWheel(index);
-        this.wheels.remove(index);
+        wheels.remove(index);
     }
 
     public void setTireSkidMarksEnabled(boolean enabled) {
-        this.skidmarks.setSkidmarkEnabled(enabled);
+        skidmarks.setSkidmarkEnabled(enabled);
     }
 
     public void setTireSkidMarksVisible(boolean enabled) {
-        this.skidmarks.setEnabled(enabled);
+        skidmarks.setEnabled(enabled);
     }
 
     public void setTireSmokeEnabled(boolean enabled) {
-        this.smokeEmitter.setEnabled(enabled);
+        smokeEmitter.setEnabled(enabled);
     }
 
     /**
@@ -181,21 +174,22 @@ abstract public class Car extends Vehicle {
 
         if (getEngine().isRunning()) {
             for (Wheel wheel : wheels) {
-                if (wheel.getAccelerationForce() > 0) {
+                if (wheel.getAccelerationForce() > 0f) {
+                    /*
+                     * Reduce power by up to 75% to simulate air resistance.
+                     */
+                    float currentKph = getSpeed(SpeedUnit.KMH);
+                    float maxKph = getGearBox().getMaxSpeed(SpeedUnit.KMH);
+                    float speedRatio = currentKph / maxKph;
+                    float powerFactor = Math.max(0.25f, 1f - speedRatio);
 
-                    float power = (getEngine().getPowerOutputAtRevs() * strength);
+                    float power = strength * getEngine().getPowerOutputAtRevs();
+                    power *= powerFactor;
+                    wheel.accelerate(power);
 
-                    // so the faster we go, the less force the vehicle can apply.
-                    // this simulates making it harder to accelerate at higher speeds
-                    // realistically this makes it difficult to achieve the max speed.
-                    float speedRatio = 1.0f - (getSpeed(SpeedUnit.KMH) / getGearBox().getMaxSpeed(SpeedUnit.KMH));
-                    speedRatio = Math.max(0.25f, speedRatio);
-
-                    wheel.accelerate(power * speedRatio);
                 } else {
-
                     // we always set this because the wheel could be "broken down" over time.
-                    wheel.accelerate(0);
+                    wheel.accelerate(0f);
                 }
             }
         }
@@ -203,7 +197,7 @@ abstract public class Car extends Vehicle {
 
     @Override
     public void applyEngineBraking() {
-        for (int i = 0; i < getNumWheels(); i++) {
+        for (int i = 0; i < getNumWheels(); ++i) {
             Wheel wheel = getWheel(i);
 
             // if the wheel is not "connected" to the engine, don't slow the wheel down using engine braking.
@@ -226,15 +220,15 @@ abstract public class Car extends Vehicle {
     @Override
     public void build() {
         super.build();
-        this.smokeEmitter = new TireSmokeEmitter(this);
+        smokeEmitter = new TireSmokeEmitter(this);
 
         Spatial wheelSpatial = getWheel(0).getVehicleWheel().getWheelSpatial();
         BoundingBox bounds = (BoundingBox) wheelSpatial.getWorldBound();
         float markWidth = 0.75f * bounds.getZExtent();
         skidmarks = new SkidMarksState(this, markWidth);
 
-        this.magicFormulaState = new MagicFormulaState(this);
-        this.wheelSpinState = new WheelSpinState(this);
+        magicFormulaState = new MagicFormulaState(this);
+        wheelSpinState = new WheelSpinState(this);
     }
 
     @Override
@@ -268,8 +262,8 @@ abstract public class Car extends Vehicle {
 
     @Override
     public void removeEngineBraking() {
-        for (int i = 0; i < getNumWheels(); i++) {
-            getVehicleControl().brake(i, 0);
+        for (int wheelIndex = 0; wheelIndex < getNumWheels(); ++wheelIndex) {
+            getVehicleControl().brake(wheelIndex, 0);
         }
     }
 
