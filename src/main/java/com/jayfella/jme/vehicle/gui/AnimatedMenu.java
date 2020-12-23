@@ -79,7 +79,6 @@ abstract public class AnimatedMenu extends BaseAppState {
     @Override
     protected void initialize(Application app) {
         items = createItems();
-        int height = app.getCamera().getHeight() - 20;
 
         for (Panel item : items) {
             if (item instanceof Button) {
@@ -89,13 +88,18 @@ abstract public class AnimatedMenu extends BaseAppState {
             node.attachChild(item);
 
             // find the widest button so we can move them all offscreen
-            Vector3f preferredSize = item.getPreferredSize();
-            if (item.getPreferredSize().x > maxWidth) {
-                maxWidth = preferredSize.x;
+            float width = item.getPreferredSize().x;
+            if (width > maxWidth) {
+                maxWidth = width;
             }
+        }
 
+        int height = app.getCamera().getHeight() - 20;
+        for (Panel item : items) {
             // make all the buttons the same width
-            item.setPreferredSize(new Vector3f(maxWidth, preferredSize.y, preferredSize.z));
+            Vector3f preferredSize = item.getPreferredSize();
+            preferredSize.x = maxWidth;
+            item.setPreferredSize(preferredSize);
 
             // position them all one below the other.
             item.setLocalTranslation(-maxWidth, height, 1f);
