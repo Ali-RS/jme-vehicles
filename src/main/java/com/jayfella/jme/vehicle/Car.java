@@ -5,7 +5,6 @@ import com.jayfella.jme.vehicle.part.Brake;
 import com.jayfella.jme.vehicle.part.Suspension;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jayfella.jme.vehicle.skid.SkidMarksState;
-import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.objects.VehicleWheel;
@@ -17,11 +16,21 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * A Vehicle with wheels.
  */
 abstract public class Car extends Vehicle {
+    // *************************************************************************
+    // constants and loggers
+
+    /**
+     * message logger for this class
+     */
+    final private static Logger logger = Logger.getLogger(Car.class.getName());
+    // *************************************************************************
+    // fields
 
     // wheel-related stuff. This isn't really "vehicle" related since a vehicle can be a boat or a helicopter.
     final private List<Wheel> wheels = new ArrayList<>(4);
