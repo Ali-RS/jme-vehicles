@@ -34,7 +34,7 @@ public class GTRNismo extends Car {
     // constructors
 
     public GTRNismo() {
-        super(Main.getApplication(), "GTR Nismo");
+        super("GTR Nismo");
     }
     // *************************************************************************
     // Car methods

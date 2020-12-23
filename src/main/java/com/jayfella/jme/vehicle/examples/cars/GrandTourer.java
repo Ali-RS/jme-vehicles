@@ -34,7 +34,7 @@ public class GrandTourer extends Car {
     // constructors
 
     public GrandTourer() {
-        super(Main.getApplication(), "Grand Tourer");
+        super("Grand Tourer");
     }
     // *************************************************************************
     // Car methods

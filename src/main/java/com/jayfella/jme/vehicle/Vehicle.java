@@ -3,7 +3,7 @@ package com.jayfella.jme.vehicle;
 import com.jayfella.jme.vehicle.engine.Engine;
 import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.part.GearBox;
-import com.jme3.app.Application;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioData;
 import com.jme3.audio.AudioNode;
@@ -42,7 +42,6 @@ abstract public class Vehicle {
     // *************************************************************************
     // fields
 
-    final private Application app;
     private AudioNode hornAudio;
     private AutomaticGearboxState gearboxState;
     private boolean parkingBrakeApplied;
@@ -57,8 +56,7 @@ abstract public class Vehicle {
     // *************************************************************************
     // constructors
 
-    public Vehicle(Application app, String name) {
-        this.app = app;
+    public Vehicle(String name) {
         this.name = name;
         node = new Node("Vehicle: " + name);
     }
@@ -310,13 +308,15 @@ abstract public class Vehicle {
     }
 
     protected void disable() {
-        app.getStateManager().detach(gearboxState);
-        app.getStateManager().detach(vehicleAudioState);
+        AppStateManager stateManager = Main.getApplication().getStateManager();
+        stateManager.detach(gearboxState);
+        stateManager.detach(vehicleAudioState);
     }
 
     protected void enable() {
-        app.getStateManager().attach(gearboxState);
-        app.getStateManager().attach(vehicleAudioState);
+        AppStateManager stateManager = Main.getApplication().getStateManager();
+        stateManager.attach(gearboxState);
+        stateManager.attach(vehicleAudioState);
     }
 
     protected void setChassis(Spatial chassis, float mass) {
@@ -350,7 +350,7 @@ abstract public class Vehicle {
      * @param assetPath the path to the OGG asset (not null, not empty)
      */
     protected void setHornAudio(String assetPath) {
-        AssetManager assetManager = app.getAssetManager();
+        AssetManager assetManager = Main.getApplication().getAssetManager();
         hornAudio = new AudioNode(assetManager, assetPath,
                 AudioData.DataType.Stream);
         hornAudio.setLooping(true);

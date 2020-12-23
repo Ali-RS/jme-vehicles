@@ -35,7 +35,7 @@ public class DuneBuggy extends Car {
     // constructors
 
     public DuneBuggy() {
-        super(Main.getApplication(), "Dune Buggy");
+        super("Dune Buggy");
     }
     // *************************************************************************
     // Car methods

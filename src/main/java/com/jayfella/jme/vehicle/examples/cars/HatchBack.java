@@ -34,7 +34,7 @@ public class HatchBack extends Car {
     // constructors
 
     public HatchBack() {
-        super(Main.getApplication(), "HatchBack");
+        super("HatchBack");
     }
     // *************************************************************************
     // Car methods

@@ -36,8 +36,8 @@ abstract public class Car extends Vehicle {
     // *************************************************************************
     // constructors
 
-    public Car(Application app, String name) {
-        super(app, name);
+    public Car(String name) {
+        super(name);
     }
     // *************************************************************************
     // new methods exposed

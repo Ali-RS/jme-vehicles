@@ -34,7 +34,7 @@ public class PickupTruck extends Car {
     // constructors
 
     public PickupTruck() {
-        super(Main.getApplication(), "Pickup Truck");
+        super("Pickup Truck");
     }
     // *************************************************************************
     // Car methods
