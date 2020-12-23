@@ -43,7 +43,7 @@ abstract public class WheelModel {
      *
      * @param diameter the desired diameter (in local units, &gt;0)
      */
-    public WheelModel(float diameter) {
+    protected WheelModel(float diameter) {
         Validate.positive(diameter, "diameter");
         this.diameter = diameter;
 
