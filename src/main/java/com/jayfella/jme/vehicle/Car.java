@@ -63,7 +63,7 @@ abstract public class Car extends Vehicle {
                 connectionLocation, suspensionDirection, axleDirection,
                 restLength, radius, isSteering);
 
-        int wheelIndex = vehicleControl.getNumWheels() - 1;
+        int wheelIndex = wheels.size();
         Suspension suspension = new Suspension(vehicleWheel);
         Wheel wheel = new Wheel(vehicleControl, wheelIndex, isSteering,
                 isSteeringFlipped, suspension, brake);
