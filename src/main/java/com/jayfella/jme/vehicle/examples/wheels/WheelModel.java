@@ -59,6 +59,8 @@ abstract public class WheelModel {
      */
     protected void setSpatial(Spatial wheelSpatial) {
         this.wheelSpatial = wheelSpatial;
-        this.wheelNode.attachChild(wheelSpatial);
+
+        wheelNode.detachAllChildren();
+        wheelNode.attachChild(wheelSpatial);
     }
 }
