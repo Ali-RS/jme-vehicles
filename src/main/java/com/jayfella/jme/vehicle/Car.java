@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle;
 
+import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Brake;
 import com.jayfella.jme.vehicle.part.Suspension;
 import com.jayfella.jme.vehicle.part.Wheel;
@@ -8,8 +9,12 @@ import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.objects.VehicleWheel;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,6 +97,51 @@ abstract public class Car extends Vehicle {
 
     public void setTireSmokeEnabled(boolean enabled) {
         this.smokeEmitter.setEnabled(enabled);
+    }
+
+    /**
+     * Replace the WheelModel of the indexed wheel with a new instance of the
+     * specified class.
+     *
+     * @param wheelIndex which wheel to replace (&ge;0, &lt;numWheels-1)
+     * @param modelClass the desired type of wheel (not null)
+     */
+    public void setWheelModel(int wheelIndex,
+            Class<? extends WheelModel> modelClass) {
+        Wheel wheel = wheels.get(wheelIndex);
+        VehicleWheel vehicleWheel = wheel.getVehicleWheel();
+
+        Spatial oldSpatial = vehicleWheel.getWheelSpatial();
+        assert oldSpatial.getParent() == getNode();
+        oldSpatial.removeFromParent();
+
+        Constructor<? extends WheelModel>[] constructors
+                = (Constructor<? extends WheelModel>[]) modelClass
+                        .getConstructors();
+        assert constructors.length == 1 : constructors.length;
+        Constructor<? extends WheelModel> constructor = constructors[0];
+        // assuming a single constructor that takes a single float argument
+
+        float radius = vehicleWheel.getRadius();
+        float diameter = 2 * radius;
+        WheelModel wheelModel;
+        try {
+            wheelModel = constructor.newInstance(diameter);
+        } catch (IllegalAccessException
+                | InstantiationException
+                | InvocationTargetException exception) {
+            throw new RuntimeException(exception);
+        }
+        /*
+         * Copy the local rotation of the old Spatial.
+         */
+        Quaternion localRotation = oldSpatial.getLocalRotation();
+        wheelModel.getSpatial().setLocalRotation(localRotation);
+
+        Node wheelNode = wheelModel.getWheelNode();
+        vehicleWheel.setWheelSpatial(wheelNode);
+
+        getNode().attachChild(wheelNode);
     }
 
     /**

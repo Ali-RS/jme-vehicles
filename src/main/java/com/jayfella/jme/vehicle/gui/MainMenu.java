@@ -46,6 +46,12 @@ public class MainMenu extends AnimatedMenu {
             stateManager.detach(this);
         });
 
+        Button wheelButton = new Button("Change Wheels");
+        wheelButton.addClickCommands(source -> {
+            stateManager.attach(new WheelMenu());
+            stateManager.detach(this);
+        });
+
         Button driveButton = new Button("Drive");
         driveButton.addClickCommands(source -> drive());
 
@@ -55,6 +61,7 @@ public class MainMenu extends AnimatedMenu {
         Button[] result = new Button[]{
             envButton,
             vehicleButton,
+            wheelButton,
             driveButton,
             exitButton
         };
