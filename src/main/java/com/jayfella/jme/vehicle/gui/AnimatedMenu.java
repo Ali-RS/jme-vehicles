@@ -38,19 +38,28 @@ abstract public class AnimatedMenu extends BaseAppState {
     private AnimCompleteEvent completeEvent;
     private boolean allComplete = false;
     private boolean in = true;
-    private float maxWidth; // width of the widest button
-    private float startupTime = 0; // elapsed startup delay (in seconds)
-    private float time = 0; // elapsed time since the animation started (in seconds)
+    /**
+     * width of the widest button
+     */
+    private float maxWidth;
+    /**
+     * elapsed startup delay (in seconds)
+     */
+    private float startupTime = 0f;
+    /**
+     * elapsed time since the animation started (in seconds)
+     */
+    private float time = 0f;
     final private Node node = new Node("Menu");
     private Panel[] items;
     // *************************************************************************
     // new protected methods
 
     protected void animateOut(AnimCompleteEvent animComplete) {
-        time = 0;
+        time = 0f;
         allComplete = false;
         in = false;
-        this.completeEvent = animComplete;
+        completeEvent = animComplete;
     }
 
     abstract protected Button[] createItems(); // TODO return List?
@@ -80,16 +89,17 @@ abstract public class AnimatedMenu extends BaseAppState {
             node.attachChild(item);
 
             // find the widest button so we can move them all offscreen
+            Vector3f preferredSize = item.getPreferredSize();
             if (item.getPreferredSize().x > maxWidth) {
-                maxWidth = item.getPreferredSize().x;
+                maxWidth = preferredSize.x;
             }
 
             // make all the buttons the same width
-            item.setPreferredSize(new Vector3f(maxWidth, item.getPreferredSize().y, item.getPreferredSize().z));
+            item.setPreferredSize(new Vector3f(maxWidth, preferredSize.y, preferredSize.z));
 
             // position them all one below the other.
-            item.setLocalTranslation(-maxWidth, height, 1);
-            height -= (item.getPreferredSize().y);
+            item.setLocalTranslation(-maxWidth, height, 1f);
+            height -= preferredSize.y;
         }
     }
 
@@ -123,24 +133,26 @@ abstract public class AnimatedMenu extends BaseAppState {
         }
 
         // prevent time from growing endlessly
-        time = FastMath.clamp(time + tpf, 0, 100);
+        time = FastMath.clamp(time + tpf, 0f, 100f);
 
-        for (int i = 0; i < items.length; i++) {
+        for (int i = 0; i < items.length; ++i) {
             float currentDelay = buttonDelay * i;
             // make each button wait its turn
             if (time < currentDelay) {
                 continue;
             }
 
-            float currentTime = FastMath.clamp(time - currentDelay, 0, duration);
+            float currentTime = FastMath.clamp(time - currentDelay, 0f, duration);
             Panel item = items[i];
 
+            Vector3f translation = item.getLocalTranslation();
+            Easings.Function function = Easings.Function.Quart;
             if (in) {
-                float x = Easings.Function.Quart.easeOut(currentTime, 0, maxWidth + 20, duration);
-                item.setLocalTranslation(-maxWidth + x, item.getLocalTranslation().y, item.getLocalTranslation().z);
+                float x = function.easeOut(currentTime, 0f, maxWidth + 20f, duration);
+                item.setLocalTranslation(-maxWidth + x, translation.y, translation.z);
             } else {
-                float x = Easings.Function.Quart.easeOut(currentTime, 0, -maxWidth, duration);
-                item.setLocalTranslation(x, item.getLocalTranslation().y, item.getLocalTranslation().z);
+                float x = function.easeOut(currentTime, 0f, -maxWidth, duration);
+                item.setLocalTranslation(x, translation.y, translation.z);
             }
 
             if (i == items.length - 1 && currentTime == duration) {
@@ -158,8 +170,8 @@ abstract public class AnimatedMenu extends BaseAppState {
 
     private void formatButton(Button item) {
         item.setTextHAlignment(HAlignment.Center);
-        ((TbtQuadBackgroundComponent) item.getBackground()).setMargin(10, 5);
-        item.setFontSize(16);
-        item.setInsets(new Insets3f(0, 0, 5, 0));
+        ((TbtQuadBackgroundComponent) item.getBackground()).setMargin(10f, 5f);
+        item.setFontSize(16f);
+        item.setInsets(new Insets3f(0f, 0f, 5f, 0f));
     }
 }
