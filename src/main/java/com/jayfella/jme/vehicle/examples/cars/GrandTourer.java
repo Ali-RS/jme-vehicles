@@ -74,14 +74,14 @@ public class GrandTourer extends Car {
          */
         float wheelScale = 0.85f;
         WheelModel wheel_fl = new CruiserWheel(wheelScale);
-        wheel_fl.getSpatial().rotate(0f, FastMath.PI, 0f); // ???
 
         WheelModel wheel_fr = new CruiserWheel(wheelScale);
+        wheel_fr.getSpatial().rotate(0f, FastMath.PI, 0f);
 
         WheelModel wheel_rl = new CruiserWheel(wheelScale);
-        wheel_rl.getSpatial().rotate(0f, FastMath.PI, 0f); // ???
 
         WheelModel wheel_rr = new CruiserWheel(wheelScale);
+        wheel_rr.getSpatial().rotate(0f, FastMath.PI, 0f);
         /*
          * Add the wheels to the vehicle.
          * For rear-wheel steering, it will be necessary to "flip" the steering.

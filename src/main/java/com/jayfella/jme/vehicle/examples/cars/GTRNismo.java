@@ -74,14 +74,14 @@ public class GTRNismo extends Car {
          */
         float wheelScale = 0.75f;
         WheelModel wheel_fl = new DarkAlloyWheel(wheelScale);
-        wheel_fl.getSpatial().rotate(0f, FastMath.PI, 0f); // ???
 
         WheelModel wheel_fr = new DarkAlloyWheel(wheelScale);
+        wheel_fr.getSpatial().rotate(0f, FastMath.PI, 0f);
 
         WheelModel wheel_rl = new DarkAlloyWheel(wheelScale);
-        wheel_rl.getSpatial().rotate(0f, FastMath.PI, 0f); // ???
 
         WheelModel wheel_rr = new DarkAlloyWheel(wheelScale);
+        wheel_rr.getSpatial().rotate(0f, FastMath.PI, 0f);
         /*
          * Add the wheels to the vehicle.
          * For rear-wheel steering, it will be necessary to "flip" the steering.
