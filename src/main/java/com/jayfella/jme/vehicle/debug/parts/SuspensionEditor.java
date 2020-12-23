@@ -58,7 +58,7 @@ public class SuspensionEditor extends VehicleEditor {
         PropertyPanel propertyPanel = new PropertyPanel("glass");
 
         for (int i = 0; i < vehicle.getNumWheels(); i++) {
-            propertyPanel.addFloatProperty("Wheel " + i, vehicle.getWheel(i).getSuspension(), "compression", 0.01f, 1.0f, 0.01f);
+            propertyPanel.addFloatProperty("Wheel " + i, vehicle.getWheel(i).getSuspension(), "compressDamping", 0.01f, 1.0f, 0.01f);
         }
 
         return new RollupPanel("Compression", propertyPanel, "glass");
@@ -69,7 +69,7 @@ public class SuspensionEditor extends VehicleEditor {
         PropertyPanel propertyPanel = new PropertyPanel("glass");
 
         for (int i = 0; i < vehicle.getNumWheels(); i++) {
-            propertyPanel.addFloatProperty("Wheel " + i, vehicle.getWheel(i).getSuspension(), "damping", 0.01f, 1.0f, 0.01f);
+            propertyPanel.addFloatProperty("Wheel " + i, vehicle.getWheel(i).getSuspension(), "relaxDamping", 0.01f, 1.0f, 0.01f);
         }
 
         return new RollupPanel("Damping", propertyPanel, "glass");
