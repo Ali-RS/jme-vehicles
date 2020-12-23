@@ -9,9 +9,9 @@ import jme3utilities.SignalTracker;
 import jme3utilities.Validate;
 
 /**
- * Abstract camera controller for More Advanced Vehicles. TODO rename
+ * Abstract camera controller for More Advanced Vehicles.
  */
-abstract public class VehicleCamera {
+abstract public class CameraController {
     // *************************************************************************
     // constants and loggers
 
@@ -53,7 +53,7 @@ abstract public class VehicleCamera {
      */
     protected Vehicle vehicle;
 
-    protected VehicleCamera(Vehicle vehicle, Camera camera,
+    protected CameraController(Vehicle vehicle, Camera camera,
             SignalTracker tracker) {
         Validate.nonNull(vehicle, "vehicle");
         Validate.nonNull(camera, "camera");

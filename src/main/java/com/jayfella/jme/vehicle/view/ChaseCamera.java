@@ -35,7 +35,7 @@ import jme3utilities.math.MyVector3f;
  * @author Stephen Gold sgold@sonic.net
  */
 public class ChaseCamera
-        extends VehicleCamera
+        extends CameraController
         implements AnalogListener {
     // *************************************************************************
     // constants and loggers

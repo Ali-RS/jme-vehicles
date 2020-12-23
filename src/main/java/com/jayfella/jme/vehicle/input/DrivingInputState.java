@@ -9,12 +9,12 @@ import com.jayfella.jme.vehicle.debug.TireDataState;
 import com.jayfella.jme.vehicle.debug.VehicleEditorState;
 import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.gui.MainMenu;
+import com.jayfella.jme.vehicle.view.CameraController;
 import com.jayfella.jme.vehicle.view.CameraSignal;
 import com.jayfella.jme.vehicle.view.ChaseCamera;
 import com.jayfella.jme.vehicle.view.ChaseOption;
 import com.jayfella.jme.vehicle.view.DashCamera;
 import com.jayfella.jme.vehicle.view.VehicleCamView;
-import com.jayfella.jme.vehicle.view.VehicleCamera;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
@@ -108,6 +108,8 @@ public class DrivingInputState
     // *************************************************************************
     // fields
 
+    private CameraController activeCam;
+
     final private float maxSteeringAngle = 1f; // radians
     final private float returnRate = 2f; // radians per second
     final private float turnRate = 0.5f; // radians per second
@@ -120,7 +122,6 @@ public class DrivingInputState
     private InputMapper inputMapper;
     final private SignalTracker signalTracker;
     final private Vehicle vehicle;
-    private VehicleCamera activeCam;
     private VehicleCamView cameraMode = VehicleCamView.ChaseCam;
     // *************************************************************************
     // constructors

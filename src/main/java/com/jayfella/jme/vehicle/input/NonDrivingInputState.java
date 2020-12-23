@@ -2,10 +2,10 @@ package com.jayfella.jme.vehicle.input;
 
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Vehicle;
+import com.jayfella.jme.vehicle.view.CameraController;
 import com.jayfella.jme.vehicle.view.CameraSignal;
 import com.jayfella.jme.vehicle.view.ChaseCamera;
 import com.jayfella.jme.vehicle.view.ChaseOption;
-import com.jayfella.jme.vehicle.view.VehicleCamera;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.app.state.ScreenshotAppState;
@@ -69,9 +69,9 @@ public class NonDrivingInputState
     // *************************************************************************
     // fields
 
+    final private CameraController activeCam;
     private InputMapper inputMapper;
     final private SignalTracker signalTracker;
-    final private VehicleCamera activeCam;
     // *************************************************************************
     // constructors
 
