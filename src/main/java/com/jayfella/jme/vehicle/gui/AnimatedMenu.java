@@ -12,6 +12,7 @@ import com.simsilica.lemur.HAlignment;
 import com.simsilica.lemur.Insets3f;
 import com.simsilica.lemur.Panel;
 import com.simsilica.lemur.component.TbtQuadBackgroundComponent;
+import java.util.List;
 
 /**
  * A Lemur menu whose buttons slide in and out of the display.
@@ -50,8 +51,11 @@ abstract public class AnimatedMenu extends BaseAppState {
      * elapsed time since the animation started (in seconds)
      */
     private float time = 0f;
+    /**
+     * items in this menu
+     */
+    private List<Button> buttons;
     final private Node node = new Node("Menu");
-    private Panel[] items;
     // *************************************************************************
     // new protected methods
 
@@ -62,7 +66,12 @@ abstract public class AnimatedMenu extends BaseAppState {
         completeEvent = animComplete;
     }
 
-    abstract protected Button[] createItems(); // TODO return List?
+    /**
+     * Generate the items for this menu.
+     *
+     * @return a new array of GUI buttons
+     */
+    abstract protected List<Button> createItems();
     // *************************************************************************
     // BaseAppState methods
 
@@ -78,9 +87,9 @@ abstract public class AnimatedMenu extends BaseAppState {
      */
     @Override
     protected void initialize(Application app) {
-        items = createItems();
+        buttons = createItems();
 
-        for (Panel item : items) {
+        for (Panel item : buttons) {
             if (item instanceof Button) {
                 formatButton((Button) item);
             }
@@ -95,7 +104,7 @@ abstract public class AnimatedMenu extends BaseAppState {
         }
 
         int height = app.getCamera().getHeight() - 20;
-        for (Panel item : items) {
+        for (Panel item : buttons) {
             // make all the buttons the same width
             Vector3f preferredSize = item.getPreferredSize();
             preferredSize.x = maxWidth;
@@ -139,7 +148,8 @@ abstract public class AnimatedMenu extends BaseAppState {
         // prevent time from growing endlessly
         time = FastMath.clamp(time + tpf, 0f, 100f);
 
-        for (int i = 0; i < items.length; ++i) {
+        int numButtons = buttons.size();
+        for (int i = 0; i < numButtons; ++i) {
             float currentDelay = buttonDelay * i;
             // make each button wait its turn
             if (time < currentDelay) {
@@ -147,7 +157,7 @@ abstract public class AnimatedMenu extends BaseAppState {
             }
 
             float currentTime = FastMath.clamp(time - currentDelay, 0f, duration);
-            Panel item = items[i];
+            Panel item = buttons.get(i);
 
             Vector3f translation = item.getLocalTranslation();
             Easings.Function function = Easings.Function.Quart;
@@ -159,7 +169,7 @@ abstract public class AnimatedMenu extends BaseAppState {
                 item.setLocalTranslation(x, translation.y, translation.z);
             }
 
-            if (i == items.length - 1 && currentTime == duration) {
+            if (i == numButtons - 1 && currentTime == duration) {
                 allComplete = true;
 
                 if (completeEvent != null) {

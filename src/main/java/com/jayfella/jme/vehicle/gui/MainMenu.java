@@ -10,6 +10,8 @@ import com.jayfella.jme.vehicle.input.DrivingInputState;
 import com.jayfella.jme.vehicle.input.NonDrivingInputState;
 import com.jme3.app.state.AppStateManager;
 import com.simsilica.lemur.Button;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class MainMenu extends AnimatedMenu {
@@ -30,41 +32,40 @@ public class MainMenu extends AnimatedMenu {
      * @return a new array of GUI buttons
      */
     @Override
-    protected Button[] createItems() {
+    protected List<Button> createItems() {
         Main application = Main.getApplication();
         AppStateManager stateManager = getStateManager();
+        List<Button> result = new ArrayList<>(5);
 
-        Button envButton = new Button("Change Environment");
-        envButton.addClickCommands(source -> {
+        Button button = new Button("Change Environment");
+        button.addClickCommands(source -> {
             stateManager.attach(new EnvironmentMenu());
             stateManager.detach(this);
         });
+        result.add(button);
 
-        Button vehicleButton = new Button("Change Vehicle");
-        vehicleButton.addClickCommands(source -> {
+        button = new Button("Change Vehicle");
+        button.addClickCommands(source -> {
             stateManager.attach(new CarMenu());
             stateManager.detach(this);
         });
+        result.add(button);
 
-        Button wheelButton = new Button("Change Wheels");
-        wheelButton.addClickCommands(source -> {
+        button = new Button("Change Wheels");
+        button.addClickCommands(source -> {
             stateManager.attach(new WheelMenu());
             stateManager.detach(this);
         });
+        result.add(button);
 
-        Button driveButton = new Button("Drive");
-        driveButton.addClickCommands(source -> drive());
+        button = new Button("Drive");
+        button.addClickCommands(source -> drive());
+        result.add(button);
 
-        Button exitButton = new Button("Exit Game");
-        exitButton.addClickCommands(source -> application.stop());
+        button = new Button("Exit Game");
+        button.addClickCommands(source -> application.stop());
+        result.add(button);
 
-        Button[] result = new Button[]{
-            envButton,
-            vehicleButton,
-            wheelButton,
-            driveButton,
-            exitButton
-        };
         return result;
     }
     // *************************************************************************

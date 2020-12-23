@@ -10,6 +10,8 @@ import com.jayfella.jme.vehicle.examples.cars.PickupTruck;
 import com.jayfella.jme.vehicle.input.NonDrivingInputState;
 import com.jme3.app.state.AppStateManager;
 import com.simsilica.lemur.Button;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -28,38 +30,37 @@ class CarMenu extends AnimatedMenu {
     // AnimatedMenuState methods
 
     @Override
-    protected Button[] createItems() {
+    protected List<Button> createItems() {
         AppStateManager stateManager = getStateManager();
+        List<Button> result = new ArrayList<>(6);
 
-        Button gtButton = new Button("Grand Tourer");
-        gtButton.addClickCommands(source -> setVehicle(new GrandTourer()));
+        Button button = new Button("Grand Tourer");
+        button.addClickCommands(source -> setVehicle(new GrandTourer()));
+        result.add(button);
 
-        Button nismoButton = new Button("GTR Nismo");
-        nismoButton.addClickCommands(source -> setVehicle(new GTRNismo()));
+        button = new Button("GTR Nismo");
+        button.addClickCommands(source -> setVehicle(new GTRNismo()));
+        result.add(button);
 
-        Button pickupButton = new Button("Pickup Truck");
-        pickupButton.addClickCommands(source -> setVehicle(new PickupTruck()));
+        button = new Button("Pickup Truck");
+        button.addClickCommands(source -> setVehicle(new PickupTruck()));
+        result.add(button);
 
-        Button hatchbackButton = new Button("Hatchback");
-        hatchbackButton.addClickCommands(source -> setVehicle(new HatchBack()));
+        button = new Button("Hatchback");
+        button.addClickCommands(source -> setVehicle(new HatchBack()));
+        result.add(button);
 
-        Button buggyButton = new Button("Dune Buggy");
-        buggyButton.addClickCommands(source -> setVehicle(new DuneBuggy()));
+        button = new Button("Dune Buggy");
+        button.addClickCommands(source -> setVehicle(new DuneBuggy()));
+        result.add(button);
 
-        Button backButton = new Button("<< Back");
-        backButton.addClickCommands(source -> {
+        button = new Button("<< Back");
+        button.addClickCommands(source -> {
             stateManager.attach(new MainMenu());
             stateManager.detach(this);
         });
+        result.add(button);
 
-        Button[] result = new Button[]{
-            gtButton,
-            nismoButton,
-            pickupButton,
-            hatchbackButton,
-            buggyButton,
-            backButton
-        };
         return result;
     }
     // *************************************************************************

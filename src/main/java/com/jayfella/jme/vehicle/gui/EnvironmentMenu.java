@@ -6,6 +6,8 @@ import com.jayfella.jme.vehicle.Playground;
 import com.jayfella.jme.vehicle.Racetrack;
 import com.jme3.app.state.AppStateManager;
 import com.simsilica.lemur.Button;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -31,28 +33,25 @@ class EnvironmentMenu extends AnimatedMenu {
      * @return a new array of GUI buttons
      */
     @Override
-    protected Button[] createItems() {
+    protected List<Button> createItems() {
         AppStateManager stateManager = getStateManager();
+        List<Button> result = new ArrayList<>(3);
 
-        Button playgroundButton = new Button("Playground");
-        playgroundButton.addClickCommands(source
-                -> setEnvironment(new Playground()));
+        Button button = new Button("Playground");
+        button.addClickCommands(source -> setEnvironment(new Playground()));
+        result.add(button);
 
-        Button racetrackButton = new Button("Racetrack");
-        racetrackButton.addClickCommands(source
-                -> setEnvironment(new Racetrack()));
+        button = new Button("Racetrack");
+        button.addClickCommands(source -> setEnvironment(new Racetrack()));
+        result.add(button);
 
-        Button backButton = new Button("<< Back");
-        backButton.addClickCommands(source -> {
+        button = new Button("<< Back");
+        button.addClickCommands(source -> {
             stateManager.attach(new MainMenu());
             stateManager.detach(this);
         });
+        result.add(button);
 
-        Button[] result = new Button[]{
-            playgroundButton,
-            racetrackButton,
-            backButton
-        };
         return result;
     }
     // *************************************************************************

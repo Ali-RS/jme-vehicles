@@ -12,6 +12,8 @@ import com.jayfella.jme.vehicle.examples.wheels.RangerWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jme3.app.state.AppStateManager;
 import com.simsilica.lemur.Button;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -37,53 +39,45 @@ class WheelMenu extends AnimatedMenu {
      * @return a new array of GUI buttons
      */
     @Override
-    protected Button[] createItems() {
+    protected List<Button> createItems() {
         AppStateManager stateManager = getStateManager();
+        List<Button> result = new ArrayList<>(8);
 
-        Button basicAlloyButton = new Button("Basic Alloy");
-        basicAlloyButton.addClickCommands(source
-                -> setModel(BasicAlloyWheel.class));
+        Button button = new Button("Basic Alloy");
+        button.addClickCommands(source -> setModel(BasicAlloyWheel.class));
+        result.add(button);
 
-        Button buggyFrontButton = new Button("Buggy Front");
-        buggyFrontButton.addClickCommands(source
-                -> setModel(BuggyFrontWheel.class));
+        button = new Button("Buggy Front");
+        button.addClickCommands(source -> setModel(BuggyFrontWheel.class));
+        result.add(button);
 
-        Button buggyRearButton = new Button("Buggy Rear");
-        buggyRearButton.addClickCommands(source
-                -> setModel(BuggyRearWheel.class));
+        button = new Button("Buggy Rear");
+        button.addClickCommands(source -> setModel(BuggyRearWheel.class));
+        result.add(button);
 
-        Button cruiserButton = new Button("Cruiser");
-        cruiserButton.addClickCommands(source
-                -> setModel(CruiserWheel.class));
+        button = new Button("Cruiser");
+        button.addClickCommands(source -> setModel(CruiserWheel.class));
+        result.add(button);
 
-        Button darkAlloyButton = new Button("Dark Alloy");
-        darkAlloyButton.addClickCommands(source
-                -> setModel(DarkAlloyWheel.class));
+        button = new Button("Dark Alloy");
+        button.addClickCommands(source -> setModel(DarkAlloyWheel.class));
+        result.add(button);
 
-        Button hatchbackButton = new Button("Hatchback");
-        hatchbackButton.addClickCommands(source
-                -> setModel(HatchbackWheel.class));
+        button = new Button("Hatchback");
+        button.addClickCommands(source -> setModel(HatchbackWheel.class));
+        result.add(button);
 
-        Button rangerButton = new Button("Ranger");
-        rangerButton.addClickCommands(source
-                -> setModel(RangerWheel.class));
+        button = new Button("Ranger");
+        button.addClickCommands(source -> setModel(RangerWheel.class));
+        result.add(button);
 
-        Button backButton = new Button("<< Back");
-        backButton.addClickCommands(source -> {
+        button = new Button("<< Back");
+        button.addClickCommands(source -> {
             stateManager.attach(new MainMenu());
             stateManager.detach(this);
         });
+        result.add(button);
 
-        Button[] result = new Button[]{
-            basicAlloyButton,
-            buggyFrontButton,
-            buggyRearButton,
-            cruiserButton,
-            darkAlloyButton,
-            hatchbackButton,
-            rangerButton,
-            backButton
-        };
         return result;
     }
     // *************************************************************************
