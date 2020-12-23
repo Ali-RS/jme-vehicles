@@ -11,7 +11,6 @@ import com.jayfella.jme.vehicle.part.GearBox;
 import com.jayfella.jme.vehicle.part.Suspension;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.asset.AssetManager;
-import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import java.util.logging.Level;
@@ -72,14 +71,9 @@ public class HatchBack extends Car {
          */
         float diameter = 0.65f;
         WheelModel wheel_fl = new HatchbackWheel(diameter);
-
-        WheelModel wheel_fr = new HatchbackWheel(diameter);
-        wheel_fr.getSpatial().rotate(0f, FastMath.PI, 0f);
-
+        WheelModel wheel_fr = new HatchbackWheel(diameter).flip();
         WheelModel wheel_rl = new HatchbackWheel(diameter);
-
-        WheelModel wheel_rr = new HatchbackWheel(diameter);
-        wheel_rr.getSpatial().rotate(0f, FastMath.PI, 0f);
+        WheelModel wheel_rr = new HatchbackWheel(diameter).flip();
         /*
          * Add the wheels to the vehicle.
          * For rear-wheel steering, it will be necessary to "flip" the steering.

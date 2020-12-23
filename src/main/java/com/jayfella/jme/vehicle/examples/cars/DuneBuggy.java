@@ -12,7 +12,6 @@ import com.jayfella.jme.vehicle.part.GearBox;
 import com.jayfella.jme.vehicle.part.Suspension;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.asset.AssetManager;
-import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import java.util.logging.Level;
@@ -74,14 +73,9 @@ public class DuneBuggy extends Car {
         float rearDiameter = 0.944f;
         float frontDiameter = 0.77f;
         WheelModel wheel_fl = new BuggyFrontWheel(frontDiameter);
-
-        WheelModel wheel_fr = new BuggyFrontWheel(frontDiameter);
-        wheel_fr.getSpatial().rotate(0f, FastMath.PI, 0f);
-
+        WheelModel wheel_fr = new BuggyFrontWheel(frontDiameter).flip();
         WheelModel wheel_rl = new BuggyRearWheel(rearDiameter);
-
-        WheelModel wheel_rr = new BuggyRearWheel(rearDiameter);
-        wheel_rr.getSpatial().rotate(0f, FastMath.PI, 0f);
+        WheelModel wheel_rr = new BuggyRearWheel(rearDiameter).flip();
         /*
          * Add the wheels to the vehicle.
          * For rear-wheel steering, it will be necessary to "flip" the steering.

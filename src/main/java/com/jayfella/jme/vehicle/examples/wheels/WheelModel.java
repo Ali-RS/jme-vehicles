@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle.examples.wheels;
 
+import com.jme3.math.FastMath;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import java.util.logging.Logger;
@@ -32,7 +33,7 @@ abstract public class WheelModel {
      */
     final private Node node;
     /**
-     * root spatial of the C-G model
+     * root spatial of the C-G model: Y-axis rotation is applied here
      */
     private Spatial cgmRoot;
     // *************************************************************************
@@ -52,6 +53,16 @@ abstract public class WheelModel {
     }
     // *************************************************************************
     // new methods exposed
+
+    /**
+     * Convert a left-side wheel into a right-side wheel, or vice versa.
+     *
+     * @return this
+     */
+    public WheelModel flip() {
+        cgmRoot.rotate(0f, FastMath.PI, 0f);
+        return this;
+    }
 
     /**
      * Access the parent of the model's root spatial.

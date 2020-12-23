@@ -11,7 +11,6 @@ import com.jayfella.jme.vehicle.part.GearBox;
 import com.jayfella.jme.vehicle.part.Suspension;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.asset.AssetManager;
-import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import java.util.logging.Level;
@@ -72,14 +71,9 @@ public class GTRNismo extends Car {
          */
         float wheelScale = 0.74f;
         WheelModel wheel_fl = new DarkAlloyWheel(wheelScale);
-
-        WheelModel wheel_fr = new DarkAlloyWheel(wheelScale);
-        wheel_fr.getSpatial().rotate(0f, FastMath.PI, 0f);
-
+        WheelModel wheel_fr = new DarkAlloyWheel(wheelScale).flip();
         WheelModel wheel_rl = new DarkAlloyWheel(wheelScale);
-
-        WheelModel wheel_rr = new DarkAlloyWheel(wheelScale);
-        wheel_rr.getSpatial().rotate(0f, FastMath.PI, 0f);
+        WheelModel wheel_rr = new DarkAlloyWheel(wheelScale).flip();
         /*
          * Add the wheels to the vehicle.
          * For rear-wheel steering, it will be necessary to "flip" the steering.
