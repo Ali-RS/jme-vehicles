@@ -5,15 +5,22 @@ import com.jme3.asset.AssetManager;
 import com.jme3.scene.Spatial;
 
 public class DarkAlloyWheel extends WheelModel {
+    // *************************************************************************
+    // constructors
 
-    public DarkAlloyWheel(float size) {
+    /**
+     * Instantiate a model with the specified diameter.
+     *
+     * @param diameter the desired diameter (in local units, &gt;0)
+     */
+    public DarkAlloyWheel(float diameter) {
+        super(diameter);
 
         AssetManager assetManager = Main.getApplication().getAssetManager();
         String assetPath = "Models/gtr_nismo/dark_alloy.gltf.j3o";
         Spatial wheelSpatial = assetManager.loadModel(assetPath);
 
         setSpatial(wheelSpatial);
-        getWheelNode().setLocalScale(size);
+        getWheelNode().setLocalScale(diameter);
     }
-
 }

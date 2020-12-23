@@ -60,7 +60,7 @@ abstract public class Car extends Vehicle {
         Vector3f suspensionDirection = new Vector3f(0f, -1f, 0f);
         Vector3f axleDirection = new Vector3f(-1f, 0f, 0f);
         float restLength = 0.2f;
-        float radius = ((BoundingBox) wheelNode.getWorldBound()).getZExtent(); // TODO
+        float radius = wheelModel.radius();
         VehicleWheel vehicleWheel = vehicleControl.addWheel(wheelNode,
                 connectionLocation, suspensionDirection, axleDirection,
                 restLength, radius, isSteering);
