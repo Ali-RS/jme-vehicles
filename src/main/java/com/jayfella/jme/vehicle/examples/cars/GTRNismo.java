@@ -65,14 +65,13 @@ public class GTRNismo extends Car {
         AssetManager assetManager = Main.getApplication().getAssetManager();
         String assetPath = "Models/gtr_nismo/scene.gltf.j3o";
         Spatial chassis = assetManager.loadModel(assetPath);
-        chassis.setLocalScale(0.01f); // TODO eliminate this step
         float mass = 1_525f; // in kilos
         setChassis(chassis, mass);
         /*
          * By convention, wheels are modeled for the left side, so
          * wheel models for the right side require a 180-degree rotation.
          */
-        float wheelScale = 0.75f;
+        float wheelScale = 0.74f;
         WheelModel wheel_fl = new DarkAlloyWheel(wheelScale);
 
         WheelModel wheel_fr = new DarkAlloyWheel(wheelScale);
@@ -87,9 +86,9 @@ public class GTRNismo extends Car {
          * For rear-wheel steering, it will be necessary to "flip" the steering.
          */
         float wheelX = 0.8f; // half of the axle track
-        float axleY = 0.1f; // height of the axles relative to vehicle's CoG
-        float frontZ = 1.4f;
-        float rearZ = -1.4f;
+        float axleY = 0.15f; // height of the axles relative to vehicle's CoG
+        float frontZ = 1.42f;
+        float rearZ = -1.36f;
         boolean front = true; // Front wheels are for steering.
         boolean rear = false; // Rear wheels do not steer.
         boolean steeringFlipped = false;
@@ -183,6 +182,6 @@ public class GTRNismo extends Car {
      */
     @Override
     protected Vector3f targetOffset() {
-        return new Vector3f(0f, 0.6f, -2.478f);
+        return new Vector3f(0f, 0.6f, -2.31f);
     }
 }
