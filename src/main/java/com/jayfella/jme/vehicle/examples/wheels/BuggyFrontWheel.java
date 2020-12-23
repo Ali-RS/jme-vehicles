@@ -25,6 +25,5 @@ public class BuggyFrontWheel extends WheelModel {
         String assetPath = "/Models/hcr2_buggy/front-wheel.j3o";
         Spatial cgmRoot = assetManager.loadModel(assetPath);
         super.setSpatial(cgmRoot);
-        super.getWheelNode().setLocalScale(diameter);
     }
 }

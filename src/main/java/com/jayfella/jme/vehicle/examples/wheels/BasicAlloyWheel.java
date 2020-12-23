@@ -16,11 +16,9 @@ public class BasicAlloyWheel extends WheelModel {
         AssetManager assetManager = Main.getApplication().getAssetManager();
         String assetPath = "Models/Vehicles/Wheel/Wheel_1/wheel.j3o";
         Spatial wheelSpatial = assetManager.loadModel(assetPath);
+        super.setSpatial(wheelSpatial);
 
         String materialAssetPath = "Materials/Vehicles/Wheel_1.j3m";
         wheelSpatial.setMaterial(assetManager.loadMaterial(materialAssetPath));
-        super.setSpatial(wheelSpatial);
-
-        super.getWheelNode().setLocalScale(diameter);
     }
 }

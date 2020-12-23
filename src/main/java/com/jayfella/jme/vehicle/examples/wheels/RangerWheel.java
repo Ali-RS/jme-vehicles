@@ -25,6 +25,5 @@ public class RangerWheel extends WheelModel {
         String assetPath = "/Models/ford_ranger/wheel.j3o";
         Spatial cgmRoot = assetManager.loadModel(assetPath);
         super.setSpatial(cgmRoot);
-        super.getWheelNode().setLocalScale(diameter);
     }
 }

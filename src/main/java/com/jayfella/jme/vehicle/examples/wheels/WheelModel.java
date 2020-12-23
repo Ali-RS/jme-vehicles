@@ -8,8 +8,8 @@ import jme3utilities.Validate;
 /**
  * A computer-graphics (C-G) model for a wheel.
  *
- * By convention, the local +X axis points inward, toward the middle of the
- * axle.
+ * By convention, the model has radius=0.5 model units, and the local +X axis
+ * points inward, toward the middle of the axle.
  */
 abstract public class WheelModel {
     // *************************************************************************
@@ -30,7 +30,7 @@ abstract public class WheelModel {
     /**
      * parent of the model's root spatial: scaling is applied here
      */
-    final private Node node = new Node("Wheel Node"); // TODO distinct names
+    final private Node node;
     /**
      * root spatial of the C-G model
      */
@@ -46,6 +46,9 @@ abstract public class WheelModel {
     public WheelModel(float diameter) {
         Validate.positive(diameter, "diameter");
         this.diameter = diameter;
+
+        this.node = new Node("Wheel Node"); // TODO distinct names
+        node.setLocalScale(diameter);
     }
     // *************************************************************************
     // new methods exposed
