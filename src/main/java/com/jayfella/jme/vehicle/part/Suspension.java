@@ -51,6 +51,55 @@ public class Suspension {
     // new methods exposed
 
     /**
+     * Determine the damping for compression.
+     *
+     * @return the damping ratio (0=undamped, 1=critically damped)
+     */
+    public float getCompressDamping() {
+        return kCompress;
+    }
+
+    /**
+     * Determine the maximum force exerted by this suspension.
+     *
+     * @param maxForce the maximum force
+     */
+    public float getMaxForce() {
+        float result = vehicleWheel.getMaxSuspensionForce();
+        return result;
+    }
+
+    /**
+     * Determine the damping for relaxation.
+     *
+     * @return the damping ratio (0=undamped, 1=critically damped)
+     */
+    public float getRelaxDamping() {
+        return kRelax;
+    }
+
+    /**
+     * Determine the rest length of this suspension.
+     *
+     * @return the length (in physics-space units)
+     */
+    public float getRestLength() {
+        float result = vehicleWheel.getRestLength();
+        return result;
+    }
+
+    /**
+     * Determine the stiffness of this suspension.
+     *
+     * @return the stiffness constant (10&rarr;off-road buggy, 50&rarr;sports
+     * car, 200&rarr;Formula-1 race car)
+     */
+    public float getStiffness() {
+        float result = vehicleWheel.getSuspensionStiffness();
+        return result;
+    }
+
+    /**
      * Alter the damping for compression.
      *
      * @param dampingRatio the desired damping ratio (0=undamped, 1=critically
