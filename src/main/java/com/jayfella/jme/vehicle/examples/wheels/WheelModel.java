@@ -2,6 +2,7 @@ package com.jayfella.jme.vehicle.examples.wheels;
 
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import java.util.logging.Logger;
 
 /**
  * A computer-graphics (C-G) model for a wheel.
@@ -9,6 +10,14 @@ import com.jme3.scene.Spatial;
  * By convention, the +X axis points inward, toward the middle of the axle.
  */
 abstract public class WheelModel {
+    // *************************************************************************
+    // constants and loggers
+
+    /**
+     * message logger for this class
+     */
+    final public static Logger logger
+            = Logger.getLogger(WheelModel.class.getName());
     // *************************************************************************
     // fields
 
