@@ -52,9 +52,11 @@ abstract public class Car extends Vehicle {
     // *************************************************************************
     // new methods exposed
 
-    public Wheel addWheel(Spatial wheelNode, Vector3f connectionLocation,
-            boolean isSteering, boolean isSteeringFlipped, Brake brake) {
+    public Wheel addWheel(WheelModel wheelModel, Vector3f connectionLocation,
+            boolean isSteering, boolean isSteeringFlipped,
+            float brakeStrength) {
         VehicleControl vehicleControl = getVehicleControl();
+        Node wheelNode = wheelModel.getWheelNode();
         Vector3f suspensionDirection = new Vector3f(0f, -1f, 0f);
         Vector3f axleDirection = new Vector3f(-1f, 0f, 0f);
         float restLength = 0.2f;
@@ -65,6 +67,7 @@ abstract public class Car extends Vehicle {
 
         int wheelIndex = wheels.size();
         Suspension suspension = new Suspension(vehicleWheel);
+        Brake brake = new Brake(brakeStrength);
         Wheel wheel = new Wheel(vehicleControl, wheelIndex, isSteering,
                 isSteeringFlipped, suspension, brake);
         wheels.add(wheel);

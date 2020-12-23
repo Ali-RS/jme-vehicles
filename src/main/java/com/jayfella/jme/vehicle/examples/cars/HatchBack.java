@@ -7,7 +7,6 @@ import com.jayfella.jme.vehicle.examples.engines.Engine180HP;
 import com.jayfella.jme.vehicle.examples.tires.Tire_02;
 import com.jayfella.jme.vehicle.examples.wheels.HatchbackWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
-import com.jayfella.jme.vehicle.part.Brake;
 import com.jayfella.jme.vehicle.part.GearBox;
 import com.jayfella.jme.vehicle.part.Suspension;
 import com.jayfella.jme.vehicle.part.Wheel;
@@ -93,18 +92,14 @@ public class HatchBack extends Car {
         boolean rear = false; // Rear wheels do not steer.
         boolean steeringFlipped = false;
         float brakeForce = 80f; // This vehicle has brakes only in front.
-        addWheel(wheel_fl.getWheelNode(),
-                new Vector3f(+wheelX, axleY, frontZ), front, steeringFlipped,
-                new Brake(brakeForce));
-        addWheel(wheel_fr.getWheelNode(),
-                new Vector3f(-wheelX, axleY, frontZ), front, steeringFlipped,
-                new Brake(brakeForce));
-        addWheel(wheel_rl.getWheelNode(),
-                new Vector3f(+wheelX, axleY, rearZ), rear, steeringFlipped,
-                new Brake(0f));
-        addWheel(wheel_rr.getWheelNode(),
-                new Vector3f(-wheelX, axleY, rearZ), rear, steeringFlipped,
-                new Brake(0f));
+        addWheel(wheel_fl, new Vector3f(+wheelX, axleY, frontZ), front,
+                steeringFlipped, brakeForce);
+        addWheel(wheel_fr, new Vector3f(-wheelX, axleY, frontZ), front,
+                steeringFlipped, brakeForce);
+        addWheel(wheel_rl, new Vector3f(+wheelX, axleY, rearZ), rear,
+                steeringFlipped, 0f);
+        addWheel(wheel_rr, new Vector3f(-wheelX, axleY, rearZ), rear,
+                steeringFlipped, 0f);
         /*
          * Configure the suspension.
          * This vehicle applies the same settings to each wheel,

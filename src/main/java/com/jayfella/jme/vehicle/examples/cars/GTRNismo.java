@@ -7,7 +7,6 @@ import com.jayfella.jme.vehicle.examples.engines.Engine600HP;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
 import com.jayfella.jme.vehicle.examples.wheels.DarkAlloyWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
-import com.jayfella.jme.vehicle.part.Brake;
 import com.jayfella.jme.vehicle.part.GearBox;
 import com.jayfella.jme.vehicle.part.Suspension;
 import com.jayfella.jme.vehicle.part.Wheel;
@@ -92,18 +91,14 @@ public class GTRNismo extends Car {
         boolean front = true; // Front wheels are for steering.
         boolean rear = false; // Rear wheels do not steer.
         boolean steeringFlipped = false;
-        addWheel(wheel_fl.getWheelNode(),
-                new Vector3f(+wheelX, axleY, frontZ), front, steeringFlipped,
-                new Brake(675f));
-        addWheel(wheel_fr.getWheelNode(),
-                new Vector3f(-wheelX, axleY, frontZ), front, steeringFlipped,
-                new Brake(675f));
-        addWheel(wheel_rl.getWheelNode(),
-                new Vector3f(+wheelX, axleY, rearZ), rear, steeringFlipped,
-                new Brake(300f));
-        addWheel(wheel_rr.getWheelNode(),
-                new Vector3f(-wheelX, axleY, rearZ), rear, steeringFlipped,
-                new Brake(300f));
+        addWheel(wheel_fl, new Vector3f(+wheelX, axleY, frontZ), front,
+                steeringFlipped, 675f);
+        addWheel(wheel_fr, new Vector3f(-wheelX, axleY, frontZ), front,
+                steeringFlipped, 675f);
+        addWheel(wheel_rl, new Vector3f(+wheelX, axleY, rearZ), rear,
+                steeringFlipped, 300f);
+        addWheel(wheel_rr, new Vector3f(-wheelX, axleY, rearZ), rear,
+                steeringFlipped, 300f);
         /*
          * Configure the suspension.
          * This vehicle applies the same settings to each wheel,

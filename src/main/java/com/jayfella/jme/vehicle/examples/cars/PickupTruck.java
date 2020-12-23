@@ -7,7 +7,6 @@ import com.jayfella.jme.vehicle.examples.engines.Engine450HP;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
 import com.jayfella.jme.vehicle.examples.wheels.RangerWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
-import com.jayfella.jme.vehicle.part.Brake;
 import com.jayfella.jme.vehicle.part.GearBox;
 import com.jayfella.jme.vehicle.part.Suspension;
 import com.jayfella.jme.vehicle.part.Wheel;
@@ -93,18 +92,14 @@ public class PickupTruck extends Car {
         boolean rear = false; // Rear wheels do not steer.
         boolean steeringFlipped = false;
         float brakeForce = 90f;
-        addWheel(wheel_fl.getWheelNode(),
-                new Vector3f(+wheelX, axleY, frontZ), front, steeringFlipped,
-                new Brake(brakeForce));
-        addWheel(wheel_fr.getWheelNode(),
-                new Vector3f(-wheelX, axleY, frontZ), front, steeringFlipped,
-                new Brake(brakeForce));
-        addWheel(wheel_rl.getWheelNode(),
-                new Vector3f(+wheelX, axleY, rearZ), rear, steeringFlipped,
-                new Brake(brakeForce));
-        addWheel(wheel_rr.getWheelNode(),
-                new Vector3f(-wheelX, axleY, rearZ), rear, steeringFlipped,
-                new Brake(brakeForce));
+        addWheel(wheel_fl, new Vector3f(+wheelX, axleY, frontZ), front,
+                steeringFlipped, brakeForce);
+        addWheel(wheel_fr, new Vector3f(-wheelX, axleY, frontZ), front,
+                steeringFlipped, brakeForce);
+        addWheel(wheel_rl, new Vector3f(+wheelX, axleY, rearZ), rear,
+                steeringFlipped, brakeForce);
+        addWheel(wheel_rr, new Vector3f(-wheelX, axleY, rearZ), rear,
+                steeringFlipped, brakeForce);
         /*
          * Configure the suspension.
          * This vehicle applies the same settings to each wheel,
