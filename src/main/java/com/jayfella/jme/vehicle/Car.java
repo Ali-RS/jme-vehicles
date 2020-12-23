@@ -18,6 +18,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A Vehicle with wheels.
+ */
 abstract public class Car extends Vehicle {
 
     // wheel-related stuff. This isn't really "vehicle" related since a vehicle can be a boat or a helicopter.
@@ -30,10 +33,14 @@ abstract public class Car extends Vehicle {
     final private String[] atModes = new String[]{"R", "D"};
     private TireSmokeEmitter smokeEmitter;
     private WheelSpinState wheelSpinState;
+    // *************************************************************************
+    // constructors
 
     public Car(Application app, String name) {
         super(app, name);
     }
+    // *************************************************************************
+    // new methods exposed
 
     public Wheel addWheel(Spatial model, Vector3f connectionPoint,
             boolean isSteering, boolean steeringFlipped, Brake brake) {
@@ -156,6 +163,8 @@ abstract public class Car extends Vehicle {
 
         return result;
     }
+    // *************************************************************************
+    // Vehicle methods
 
     @Override
     public void accelerate(float strength) {
