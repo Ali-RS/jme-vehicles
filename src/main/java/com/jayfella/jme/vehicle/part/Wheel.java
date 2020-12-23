@@ -11,13 +11,15 @@ public class Wheel {
     // *************************************************************************
     // fields
 
+    private boolean isSteering;
+    /**
+     * steer with a rear wheel by flipping the direction
+     */
+    private boolean isSteeringFlipped;
+
     final private VehicleControl vehicleControl;
     final private int wheelIndex;
     final private VehicleWheel vehicleWheel;
-
-    // allows us to steer with rear wheels by flipping the direction and power.
-    private boolean steering; // TODO rename isSteering
-    private boolean steeringFlipped; // TODO rename isSteeringFlipped
 
     // determines whether this wheel provides acceleration in a 0..1 range.
     // this can be used for settings FWD, RWD, 60/40 distribution, etc...
@@ -50,8 +52,8 @@ public class Wheel {
         this.wheelIndex = wheelIndex;
         this.vehicleWheel = vehicleControl.getWheel(wheelIndex);
 
-        this.steering = isSteering;
-        this.steeringFlipped = steeringFlipped;
+        this.isSteering = isSteering;
+        this.isSteeringFlipped = steeringFlipped;
 
         this.suspension = suspension;
         this.brake = brake;
@@ -86,7 +88,7 @@ public class Wheel {
     }
 
     public boolean isSteering() {
-        return steering;
+        return isSteering;
     }
 
     public void setSteering(boolean steering, boolean flipped) {
@@ -95,16 +97,16 @@ public class Wheel {
     }
 
     public void setSteering(boolean steering) {
-        this.steering = steering;
+        this.isSteering = steering;
         vehicleWheel.setFrontWheel(steering);
     }
 
     public boolean isSteeringFlipped() {
-        return steeringFlipped;
+        return isSteeringFlipped;
     }
 
     public void setSteeringFlipped(boolean steeringFlipped) {
-        this.steeringFlipped = steeringFlipped;
+        this.isSteeringFlipped = steeringFlipped;
     }
 
     public float getAccelerationForce() {
@@ -160,7 +162,7 @@ public class Wheel {
 
     public void steer(float strength) {
         if (isSteering()) {
-            if (steeringFlipped) {
+            if (isSteeringFlipped) {
                 steeringAngle = getMaxSteerAngle() * -strength;
             } else {
                 steeringAngle = getMaxSteerAngle() * strength;
