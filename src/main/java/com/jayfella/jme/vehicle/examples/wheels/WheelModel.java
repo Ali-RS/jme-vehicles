@@ -24,11 +24,11 @@ abstract public class WheelModel {
     /**
      * parent of the model's root spatial
      */
-    final private Node wheelNode = new Node("Wheel Node");
+    final private Node node = new Node("Wheel Node");
     /**
      * root spatial of the C-G model
      */
-    private Spatial wheelSpatial;
+    private Spatial cgmRoot;
     // *************************************************************************
     // new methods exposed
 
@@ -38,7 +38,7 @@ abstract public class WheelModel {
      * @return the pre-existing Node (not null)
      */
     public Node getWheelNode() {
-        return wheelNode;
+        return node;
     }
 
     /**
@@ -47,7 +47,7 @@ abstract public class WheelModel {
      * @return the pre-existing instance
      */
     public Spatial getSpatial() {
-        return wheelSpatial;
+        return cgmRoot;
     }
     // *************************************************************************
     // new protected methods
@@ -58,9 +58,9 @@ abstract public class WheelModel {
      * @param wheelSpatial the desired C-G model (not null)
      */
     protected void setSpatial(Spatial wheelSpatial) {
-        this.wheelSpatial = wheelSpatial;
+        this.cgmRoot = wheelSpatial;
 
-        wheelNode.detachAllChildren();
-        wheelNode.attachChild(wheelSpatial);
+        node.detachAllChildren();
+        node.attachChild(wheelSpatial);
     }
 }
