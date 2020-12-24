@@ -1,2 +1,19 @@
-Original Model: https://store.jmonkeyengine.org/ebb00017-10ee-4fe9-9424-92448b44db63
-Licenses: The Unlicense and Creative Commons Zero v1.0 Universal
+Licensing history for files in "src/main/resources/Models/race1" and its
+subfolders
+
+Based on "Race Track Model":
+* download file:     race1.glb
+* downloaded from:   https://github.com/scenemax3d/3d-models/tree/main/race%20track%201
+* store URL:         https://store.jmonkeyengine.org/ebb00017-10ee-4fe9-9424-92448b44db63
+* author:            adibarda (Adi Barda)
+* author URL:        https://github.com/scenemax3d
+* license type:      The Unlicense
+* license URL:       https://github.com/scenemax3d/3d-models/blob/main/LICENSE
+
+Derived files (also licensed The Unlicense):
+* net.png
+* race1.j3o
+* red.png
+
+Added files (also licensed The Unlicense):
+* license.txt
