@@ -264,7 +264,7 @@ public class Main extends SimpleApplication {
                 new Vector3f(1f, -0.45f, 0.5f).normalizeLocal(), directColor);
         rootNode.addLight(directionalLight);
 
-        String probeName = "/Probes/quarry_03.j3o";
+        String probeName = "/Textures/Sky/quarry_03/probe.j3o";
         LightProbe probe = (LightProbe) assetManager.loadAsset(probeName);
         probe.setPosition(Vector3f.ZERO);
         probe.getArea().setRadius(9_999f);
@@ -293,7 +293,7 @@ public class Main extends SimpleApplication {
         CompletableFuture
                 .supplyAsync(() -> {
                     Spatial sky = createSky(assetManager,
-                            "Textures/Sky/quarry_03_4k.jpg");
+                            "Textures/Sky/quarry_03/equirec_4k.jpg");
                     return sky;
                 })
                 .whenComplete((spatial, ex) -> {

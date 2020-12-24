@@ -220,7 +220,7 @@ Resources/assets/media:
   has a CC Zero Universal license.
 + The [marble_01 textures](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Textures/Ground/Marble)
   have a Creative Commons CC0 License.
-+ The [quarry_03 texture](https://github.com/stephengold/jme-vehicles/blob/master/src/main/resources/Textures/Sky/quarry_03_4k.jpg)
++ The [quarry_03 texture](https://github.com/stephengold/jme-vehicles/blob/master/src/main/resources/Textures/Sky/quarry_03)
   has a CC0 1.0 Universal license.
 + The [exit texture](https://github.com/stephengold/jme-vehicles/blob/master/src/main/resources/Textures/exit.png)
   has a CC0 1.0 Universal license.
