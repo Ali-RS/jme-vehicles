@@ -1,0 +1,21 @@
+Licensing history for files in "src/main/resources/Textures/Ground/Marble"
+
+Based on "marble_01":
+* download file:     marble_01_2k_png.zip
+* downloaded from:   https://www.texturehaven.com/tex/?t=marble_01
+* download options:  All Maps, 2K, PNG
+* author:            Rob Tuytel
+* author URL:        https://www.texturehaven.com/textures/?a=Rob%20Tuytel
+* license type:      CC0
+* license URL:       https://creativecommons.org/publicdomain/zero/1.0/
+
+Extracted files used without modification:
+* marble_01_AO_2k.png
+* marble_01_diff_2k.png
+* marble_01_disp_2k.png
+* marble_01_nor_2k.png
+* marble_01_rough_2k.png
+* marble_01_spec_2k.png
+
+Added files (also licensed CC0):
+* license.txt
