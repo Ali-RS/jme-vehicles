@@ -270,7 +270,7 @@ The world (and physics-space) units of distance are *meters*.
   on which this project is based.
 + [Paul Speed (aka "pspeed42")][pspeed] created the Lemur libraries.
 + [Adam T. Ryder (aka "ATryder")][atryder] created the jME-TTF library.
-+ Lennart Demes created the marble_01 textures.
++ Rob Tuytel authored the marble_01 textures.
 + [Sergej Majboroda][sergej] created the quarry_03 texture.
 + [Thomas Glenn Thorne (aka "systmh")][tgt] created the GT model.
 + "isteven" created the gtr_nismo model.
@@ -282,7 +282,7 @@ The world (and physics-space) units of distance are *meters*.
  licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).
 + [Adi Barda (aka "adi.barda")][adi] created the racetrack model.
 
-I am grateful to [Github] and Imgur
+I am grateful to [GitHub] and Imgur
 for providing free hosting for this project
 and many other open-source projects.
 
