@@ -25,6 +25,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import java.util.List;
 import java.util.logging.Logger;
+import jme3utilities.Validate;
 import jme3utilities.math.MyVector3f;
 
 /**
@@ -47,7 +48,11 @@ abstract public class Vehicle {
     private AutomaticGearboxState gearboxState;
     private boolean parkingBrakeApplied;
     private Engine engine;
-    private float accelerationForce;
+    /**
+     * control signal for acceleration, ranging from -1 (full-throttle reverse)
+     * to +1 = full-throttle forward
+     */
+    private float accelerateSignal;
     private GearBox gearBox;
     final private Node node;
     private Spatial chassis;
@@ -65,13 +70,15 @@ abstract public class Vehicle {
     // new methods exposed
 
     /**
-     * Accelerate the vehicle with the given power.
+     * Alter the "accelerate" control signal. TODO rename setAccelerateSignal()
      *
-     * @param strength a unit value between 0.0 - 1.0. Essentially how "hard"
-     * you want to accelerate.
+     * @param value the desired signal value, between -1 (full-throttle reverse)
+     * and +1 (full-throttle forward) inclusive
      */
-    public void accelerate(float strength) {
-        accelerationForce = strength;
+    public void accelerate(float value) {
+        // TODO awkward interface - controls both the gearbox and the throttle
+        Validate.inRange(value, "value", -1f, 1f);
+        accelerateSignal = value;
     }
 
     abstract public void applyEngineBraking();
@@ -120,8 +127,13 @@ abstract public class Vehicle {
         return result;
     }
 
+    /**
+     * Evaluate the "accelerate" control signal. TODO rename
+     *
+     * @return a value between -1 and +1 inclusive
+     */
     public float getAccelerationForce() {
-        return accelerationForce;
+        return accelerateSignal;
     }
 
     public Spatial getChassis() {
