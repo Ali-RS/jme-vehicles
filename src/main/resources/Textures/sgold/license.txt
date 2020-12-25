@@ -1,0 +1,13 @@
+Licensing history for files in "src/main/resources/Textures/sgold"
+
+* title of work:     "Car-door Exit Button"
+* download URL:      https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Textures/sgold
+* author:            Stephen Gold
+* author URL:        https://github.com/stephengold
+* copyright:         none (dedicated to the public domain)
+* license type:      CC0 1.0 Universal
+* license URL:       https://creativecommons.org/publicdomain/zero/1.0/
+
+Files:
+* exit.png (created 27 November 2020)
+* license.txt
