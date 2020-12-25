@@ -87,9 +87,10 @@ public class NonDrivingInputState
             signalTracker.add(signalName);
         }
 
+        float rearBias = 0f;
         FilterAll filter = new FilterAll(true);
         activeCam = new ChaseCamera(cam, signalTracker, ChaseOption.FreeOrbit,
-                filter);
+                rearBias, filter);
         for (CameraSignal function : CameraSignal.values()) {
             String signalName = function.toString();
             activeCam.setSignalName(function, signalName);

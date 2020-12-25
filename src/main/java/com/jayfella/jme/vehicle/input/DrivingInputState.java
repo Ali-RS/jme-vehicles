@@ -442,9 +442,10 @@ public class DrivingInputState
         MyCamera.setYTangent(cam, 1f);
         switch (camView) {
             case ChaseCam:
+                float rearBias = 1f;
                 FilterAll obstructionFilter = new FilterAll(true);
                 ChaseCamera chaseCam = new ChaseCamera(cam, signalTracker,
-                        ChaseOption.StrictChase, obstructionFilter);
+                        ChaseOption.StrictChase, rearBias, obstructionFilter);
                 activeCam = chaseCam;
                 for (CameraSignal function : CameraSignal.values()) {
                     String signalName = function.toString();

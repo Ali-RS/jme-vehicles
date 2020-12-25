@@ -79,6 +79,10 @@ public class ChaseCamera
      */
     final private ChaseOption chaseOption;
     /**
+     * how much to displace the camera target (0=center of mass, 1=back bumper)
+     */
+    final private float rearBias;
+    /**
      * accumulated analog pitch input since the last update (in 1024-pixel
      * units, measured downward from the look direction)
      */
@@ -125,17 +129,20 @@ public class ChaseCamera
      * @param tracker the status tracker for named signals (not null, alias
      * created)
      * @param chaseOption to configure chase behavior (not null)
+     * @param rearBias how much to displace the camera target (0=center of mass,
+     * 1=back bumper)
      * @param obstructionFilter to determine which collision objects obstruct
      * the camera's view (alias created) or null to treat all non-target PCOs as
      * obstructions
      */
     public ChaseCamera(Camera camera, SignalTracker tracker,
-            ChaseOption chaseOption,
+            ChaseOption chaseOption, float rearBias,
             BulletDebugAppState.DebugAppStateFilter obstructionFilter) {
         super(Main.getVehicle(), camera, tracker);
         Validate.nonNull(chaseOption, "chase option");
 
         this.chaseOption = chaseOption;
+        this.rearBias = rearBias;
         this.obstructionFilter = obstructionFilter;
     }
     // *************************************************************************
@@ -162,7 +169,7 @@ public class ChaseCamera
         super.setVehicle(newVehicle);
 
         tmpCameraLocation.set(camera.getLocation());
-        vehicle.targetLocation(tmpTargetLocation);
+        vehicle.targetLocation(rearBias, tmpTargetLocation);
         tmpCameraLocation.subtract(tmpTargetLocation, offset);
     }
     // *************************************************************************
@@ -405,7 +412,7 @@ public class ChaseCamera
             range = maxRange;
         }
 
-        vehicle.targetLocation(tmpTargetLocation);
+        vehicle.targetLocation(rearBias, tmpTargetLocation);
         if (!xrayVision) {
             /*
              * Test the sightline for obstructions, from target to camera.
@@ -493,7 +500,7 @@ public class ChaseCamera
          * Initialize the camera offset and preferred range.
          */
         tmpCameraLocation.set(camera.getLocation());
-        vehicle.targetLocation(tmpTargetLocation);
+        vehicle.targetLocation(rearBias, tmpTargetLocation);
         tmpCameraLocation.subtract(tmpTargetLocation, offset);
         preferredRange = offset.length();
 

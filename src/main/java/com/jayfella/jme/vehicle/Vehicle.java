@@ -224,14 +224,18 @@ abstract public class Vehicle {
     /**
      * Determine the location of the ChaseCamera target.
      *
+     * @param bias how much to displace the target toward the rear (0=center of
+     * mass, 1=back bumper)
      * @param storeResult storage for the result (modified if not null)
      * @return a location vector (in physics-space coordinates, either
      * storeResult or a new instance)
      */
-    public Vector3f targetLocation(Vector3f storeResult) {
+    public Vector3f targetLocation(float bias, Vector3f storeResult) {
         Vector3f offset = targetOffset();
+        offset.z *= bias;
         Matrix3f orientation = vehicleControl.getPhysicsRotationMatrix(null);
         orientation.mult(offset, offset);
+
         Vector3f result = vehicleControl.getPhysicsLocation(storeResult);
         result.addLocal(offset);
 
