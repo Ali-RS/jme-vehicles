@@ -56,8 +56,8 @@ public class Playground extends Environment {
 
     /**
      * Load this Environment from assets.
-     * 
-     * @return the model's root node (a new instance)
+     *
+     * @return the C-G model's root node (a new instance)
      */
     @Override
     public Node load() {
@@ -66,41 +66,36 @@ public class Playground extends Environment {
         AssetManager assetManager = Main.getApplication().getAssetManager();
         Material material = new Material(assetManager, Materials.PBR);
 
-        Texture baseColorMap = assetManager.loadTexture(
-                "Textures/Ground/Marble/marble_01_diff_2k.png");
+        String prefix = "/Textures/Ground/Marble/marble_01_";
+        String assetPath = prefix + "diff_2k.png";
+        Texture baseColorMap = assetManager.loadTexture(assetPath);
         baseColorMap.setWrap(Texture.WrapMode.Repeat);
         material.setTexture("BaseColorMap", baseColorMap);
 
-        Texture roughnessMap = assetManager.loadTexture(
-                "Textures/Ground/Marble/marble_01_rough_2k.png");
+        assetPath = prefix + "rough_2k.png";
+        Texture roughnessMap = assetManager.loadTexture(assetPath);
         roughnessMap.setWrap(Texture.WrapMode.Repeat);
         material.setTexture("RoughnessMap", roughnessMap);
 
-        Texture aoMap = assetManager.loadTexture(
-                "Textures/Ground/Marble/marble_01_AO_2k.png");
+        assetPath = prefix + "AO_2k.png";
+        Texture aoMap = assetManager.loadTexture(assetPath);
         aoMap.setWrap(Texture.WrapMode.Repeat);
         material.setTexture("LightMap", aoMap);
         material.setBoolean("LightMapAsAOMap", true);
 
-        //Texture dispMap = assetManager.loadTexture("Textures/Ground/Marble/marble_01_disp_2k.png");
-        //dispMap.setWrap(Texture.WrapMode.Repeat);
-        //material.setTexture("ParallaxMap", dispMap);
-        Texture normalMap = assetManager.loadTexture(
-                "Textures/Ground/Marble/marble_01_nor_2k.png");
+        assetPath = prefix + "nor_2k.png";
+        Texture normalMap = assetManager.loadTexture(assetPath);
         normalMap.setWrap(Texture.WrapMode.Repeat);
         material.setTexture("NormalMap", normalMap);
         material.setFloat("NormalType", 1f);
 
         material.setFloat("Metallic", 0.001f);
 
-        // material.setBoolean("UseFog", true);
-        // material.setColor("FogColor", new ColorRGBA(0.5f, 0.6f, 0.7f, 1.0f));
-        // material.setFloat("ExpSqFog", 0.002f);
         RenderState additional = material.getAdditionalRenderState();
         additional.setFaceCullMode(RenderState.FaceCullMode.Off);
 
-        loadedCgm = (Node) assetManager.loadModel(
-                "Models/vehicle-playground/vehicle-playground.j3o");
+        assetPath = "/Models/vehicle-playground/vehicle-playground.j3o";
+        loadedCgm = (Node) assetManager.loadModel(assetPath);
         loadedCgm.setMaterial(material);
 
         loadedCgm.breadthFirstTraversal(spatial
