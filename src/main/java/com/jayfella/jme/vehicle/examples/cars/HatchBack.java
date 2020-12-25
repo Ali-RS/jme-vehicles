@@ -64,7 +64,7 @@ public class HatchBack extends Car {
         String assetPath = "Models/modern_hatchback/hatchback.j3o";
         Spatial chassis = assetManager.loadModel(assetPath);
         float mass = 1_140f; // in kilos
-        setChassis(chassis, mass);
+        setChassis("modern_hatchback", chassis, mass);
         /*
          * By convention, wheels are modeled for the left side, so
          * wheel models for the right side require a 180-degree rotation.

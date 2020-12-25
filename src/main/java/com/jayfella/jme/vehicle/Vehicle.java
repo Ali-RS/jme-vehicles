@@ -5,6 +5,7 @@ import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.part.GearBox;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
+import com.jme3.asset.AssetNotFoundException;
 import com.jme3.audio.AudioData;
 import com.jme3.audio.AudioNode;
 import com.jme3.audio.AudioSource;
@@ -319,10 +320,20 @@ abstract public class Vehicle {
         stateManager.attach(vehicleAudioState);
     }
 
-    protected void setChassis(Spatial chassis, float mass) {
+    protected void setChassis(String folderName, Spatial chassis, float mass) {
         this.chassis = chassis;
-        CollisionShape shape
-                = CollisionShapeFactory.createDynamicMeshShape(chassis);
+
+        AssetManager assetManager = Main.getApplication().getAssetManager();
+        String assetPath
+                = "/Models/" + folderName + "/shapes/chassis-shape.j3o";
+        CollisionShape shape;
+        try {
+            shape = (CollisionShape) assetManager.loadAsset(assetPath);
+            Vector3f scale = chassis.getWorldScale();
+            shape.setScale(scale);
+        } catch (AssetNotFoundException exception) {
+            shape = CollisionShapeFactory.createDynamicMeshShape(chassis);
+        }
         vehicleControl = new VehicleControl(shape, mass);
         /*
          * Configure continuous collision detection (CCD) for the chassis.

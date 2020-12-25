@@ -64,7 +64,7 @@ public class GTRNismo extends Car {
         String assetPath = "Models/gtr_nismo/scene.gltf.j3o";
         Spatial chassis = assetManager.loadModel(assetPath);
         float mass = 1_525f; // in kilos
-        setChassis(chassis, mass);
+        setChassis("gtr_nismo", chassis, mass);
         /*
          * By convention, wheels are modeled for the left side, so
          * wheel models for the right side require a 180-degree rotation.

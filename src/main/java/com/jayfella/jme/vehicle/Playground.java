@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle;
 
 import com.jme3.asset.AssetManager;
+import com.jme3.asset.AssetNotFoundException;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.objects.PhysicsBody;
@@ -101,7 +102,16 @@ public class Playground extends Environment {
         loadedCgm.breadthFirstTraversal(spatial
                 -> spatial.setShadowMode(RenderQueue.ShadowMode.CastAndReceive));
 
-        CollisionShape shape = CollisionShapeFactory.createMeshShape(loadedCgm);
+        assetPath = "/Models/vehicle-playground/shapes/env-shape.j3o";
+        CollisionShape shape;
+        try {
+            shape = (CollisionShape) assetManager.loadAsset(assetPath);
+            Vector3f scale = loadedCgm.getWorldScale();
+            shape.setScale(scale);
+        } catch (AssetNotFoundException exception) {
+            shape = CollisionShapeFactory.createMeshShape(loadedCgm);
+        }
+
         RigidBodyControl rigidBodyControl
                 = new RigidBodyControl(shape, PhysicsBody.massForStatic);
         loadedCgm.addControl(rigidBodyControl);

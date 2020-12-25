@@ -64,7 +64,7 @@ public class PickupTruck extends Car {
         String assetPath = "Models/ford_ranger/pickup.j3o";
         Spatial chassis = assetManager.loadModel(assetPath);
         float mass = 1_550f; // in kilos
-        setChassis(chassis, mass);
+        setChassis("ford_ranger", chassis, mass);
         /*
          * By convention, wheels are modeled for the left side, so
          * wheel models for the right side require a 180-degree rotation.

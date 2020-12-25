@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle;
 
 import com.jme3.asset.AssetManager;
+import com.jme3.asset.AssetNotFoundException;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.objects.PhysicsBody;
@@ -53,7 +54,7 @@ public class Racetrack extends Environment {
 
     /**
      * Load this Environment from assets.
-     * 
+     *
      * @return the model's root node (a new instance)
      */
     @Override
@@ -61,9 +62,18 @@ public class Racetrack extends Environment {
         assert loadedCgm == null : "The model is already loaded.";
 
         AssetManager assetManager = Main.getApplication().getAssetManager();
+        String assetPath = "Models/race1/race1.j3o";
         loadedCgm = (Node) assetManager.loadModel("Models/race1/race1.j3o");
 
-        CollisionShape shape = CollisionShapeFactory.createMeshShape(loadedCgm);
+        assetPath = "/Models/race1/shapes/env-shape.j3o";
+        CollisionShape shape;
+        try {
+            shape = (CollisionShape) assetManager.loadAsset(assetPath);
+            Vector3f scale = loadedCgm.getWorldScale();
+            shape.setScale(scale);
+        } catch (AssetNotFoundException exception) {
+            shape = CollisionShapeFactory.createMeshShape(loadedCgm);
+        }
         RigidBodyControl rigidBodyControl
                 = new RigidBodyControl(shape, PhysicsBody.massForStatic);
         loadedCgm.addControl(rigidBodyControl);
