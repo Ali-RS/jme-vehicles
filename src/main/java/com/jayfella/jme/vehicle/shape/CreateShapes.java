@@ -57,16 +57,16 @@ public class CreateShapes {
         /*
          * Create a collision shape for each vehicle chassis.
          */
-        createChassisShape("/Models/GT/", "scene.gltf");
-        createChassisShape("/Models/ford_ranger/", "pickup");
-        createChassisShape("/Models/gtr_nismo/", "scene.gltf");
-        createChassisShape("/Models/hcr2_buggy/", "dune-buggy");
-        createChassisShape("/Models/modern_hatchback/", "hatchback");
+        createChassisShape("GT", "scene.gltf");
+        createChassisShape("ford_ranger", "pickup");
+        createChassisShape("gtr_nismo", "scene.gltf");
+        createChassisShape("hcr2_buggy", "dune-buggy");
+        createChassisShape("modern_hatchback", "hatchback");
         /*
          * Create a collision shape for each Environment.
          */
-        createEnvShape("/Models/race1/", "race1");
-        createEnvShape("/Models/vehicle-playground/", "vehicle-playground");
+        createEnvShape("race1", "race1");
+        createEnvShape("vehicle-playground", "vehicle-playground");
     }
     // *************************************************************************
     // private methods
@@ -74,14 +74,15 @@ public class CreateShapes {
     /**
      * Create a collision shape for a vehicle chassis.
      *
-     * @param folderPath an asset path to the folder containing the C-G model
+     * @param folderName the name of the folder containing the C-G model
      * @param cgmBaseFileName the base filename of the C-G model
      */
-    private static void createChassisShape(String folderPath,
+    private static void createChassisShape(String folderName,
             String cgmBaseFileName) {
         assetManager.clearCache(); // to reclaim direct buffer memory
 
-        String cgmAssetPath = folderPath + cgmBaseFileName + ".j3o";
+        String cgmAssetPath = String.format("/Models/%s/%s.j3o", folderName,
+                cgmBaseFileName);
         Spatial cgmRoot = assetManager.loadModel(cgmAssetPath);
 
         System.out.printf("%nCreate shape for %s chassis ... ", cgmBaseFileName);
@@ -90,28 +91,29 @@ public class CreateShapes {
         CollisionShape collisionShape
                 = CollisionShapeFactory.createDynamicMeshShape(cgmRoot);
 
-        System.out.printf("  done!%n", cgmBaseFileName);
+        System.out.printf("done!%n");
         System.out.flush();
         new PhysicsDumper().dump(collisionShape, "    ");
         /*
          * Save the shape in J3O format.
          */
-        String writeFilePath = "./src/main/resources" + folderPath
-                + "shapes/chassis-shape.j3o";
+        String writeFilePath = "src/main/resources/Models/" + folderName
+                + "/shapes/chassis-shape.j3o";
         Heart.writeJ3O(writeFilePath, collisionShape);
     }
 
     /**
      * Create a collision shape for an Environment.
      *
-     * @param folderPath an asset path to the folder containing the C-G model
+     * @param folderName the name of the folder containing the C-G model
      * @param cgmBaseFileName the base filename of the C-G model
      */
-    private static void createEnvShape(String folderPath,
+    private static void createEnvShape(String folderName,
             String cgmBaseFileName) {
         assetManager.clearCache(); // to reclaim direct buffer memory
 
-        String cgmAssetPath = folderPath + cgmBaseFileName + ".j3o";
+        String cgmAssetPath = String.format("/Models/%s/%s.j3o", folderName,
+                cgmBaseFileName);
         Spatial cgmRoot = assetManager.loadModel(cgmAssetPath);
 
         System.out.printf("%nCreate shape for the %s environment ... ",
@@ -121,14 +123,14 @@ public class CreateShapes {
         CollisionShape collisionShape
                 = CollisionShapeFactory.createMergedMeshShape(cgmRoot);
 
-        System.out.printf("  done!%n", cgmBaseFileName);
+        System.out.printf("done!%n");
         System.out.flush();
         new PhysicsDumper().dump(collisionShape, "    ");
         /*
          * Save the shape in J3O format.
          */
-        String writeFilePath = "./src/main/resources" + folderPath
-                + "shapes/env-shape.j3o";
+        String writeFilePath = "src/main/resources/Models/" + folderName
+                + "/shapes/env-shape.j3o";
         Heart.writeJ3O(writeFilePath, collisionShape);
     }
 }
