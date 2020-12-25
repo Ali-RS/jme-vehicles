@@ -19,6 +19,7 @@ Extracted files used without modification:
 * tyre_normal.png
 
 Derived files (also licensed CC-BY-NC-SA):
+* chassis-shape.j3o
 * dark_alloy.gltf.j3o
 * scene.gltf.j3o
 

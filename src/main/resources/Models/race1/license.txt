@@ -11,6 +11,7 @@ Based on "Race Track Model":
 * license URL:       https://github.com/scenemax3d/3d-models/blob/main/LICENSE
 
 Derived files (also licensed The Unlicense):
+* env-shape.j3o
 * net.png
 * race1.j3o
 * red.png

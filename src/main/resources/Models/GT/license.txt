@@ -20,6 +20,7 @@ Extracted files used without modification:
 * shadow_baseColor.png
 
 Derived files (also licensed CC-BY-NC-SA):
+* chassis-shape.j3o
 * cruiser_wheel.gltf.j3o
 * scene.gltf.j3o
 

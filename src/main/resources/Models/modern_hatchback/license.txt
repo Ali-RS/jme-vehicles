@@ -19,6 +19,7 @@ Extracted files used without modification:
 * MODERNHATCH_INTERIOR_normal.png
 
 Derived files (also licensed CC-BY-4.0):
+* chassis-shape.j3o
 * hatchback.j3o
 * license.txt
 * wheel.j3o

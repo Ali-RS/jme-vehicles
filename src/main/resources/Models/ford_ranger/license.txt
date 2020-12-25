@@ -14,6 +14,7 @@ Extracted files used without modification:
 * rangerFordlambert2_baseColor.jpeg
 
 Derived files (also licensed CC-BY-4.0):
+* chassis-shape.j3o
 * license.txt
 * pickup.j3o
 * wheel.j3o

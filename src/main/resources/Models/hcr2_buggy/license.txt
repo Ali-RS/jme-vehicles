@@ -11,12 +11,13 @@ Based on "HCR2 Buggy":
 * license URL:       https://creativecommons.org/licenses/by/4.0/
 
 Extracted files used without modification:
-* Buggy_Main_baseColor.png 
+* Buggy_Main_baseColor.png
 * Buggy_Main_metallicRoughness.png
 * Buggy_Wheel_baseColor.png
 * Buggy_Wheel_metallicRoughness.png
 
 Derived files (also licensed CC-BY-4.0):
+* chassis-shape.j3o
 * dune-buggy.j3o
 * front-wheel.j3o
 * rear-wheel.j3o
