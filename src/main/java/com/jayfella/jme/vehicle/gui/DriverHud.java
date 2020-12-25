@@ -232,7 +232,7 @@ public class DriverHud extends BaseAppState {
          * pre-load unshaded materials for buttons
          */
         AssetManager manager = app.getAssetManager();
-        Texture texture = manager.loadTexture("Textures/exit.png");
+        Texture texture = manager.loadTexture("Textures/sgold/exit.png");
         exitMaterial = MyAsset.createUnshadedMaterial(manager, texture);
 
         texture = manager.loadTexture("Textures/horn-silent.png");
