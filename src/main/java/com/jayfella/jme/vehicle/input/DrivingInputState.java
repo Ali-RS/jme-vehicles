@@ -309,7 +309,7 @@ public class DrivingInputState
     @Override
     public void update(float tpf) {
         updateTurn(tpf);
-        updateMovement(tpf);
+        updateBrakeAndAccelerate();
 
         activeCam.update(tpf);
 
@@ -472,40 +472,41 @@ public class DrivingInputState
         resetCameraOffset();
     }
 
-    private void updateMovement(float tpf) {
-        // do braking first so it doesn't override engineBraking.
+    private void updateBrakeAndAccelerate() {
+        /*
+         * Update the brake control signal first,
+         * so it won't override engine braking.
+         */
         if (braking) {
             vehicle.brake(1f);
         } else {
             vehicle.brake(0f);
         }
-
+        /*
+         * Update the "accelerate" control signal.
+         */
+        float kph = vehicle.getSpeed(SpeedUnit.KMH);
+        float acceleration = 0f;
         if (accelerating) {
             vehicle.removeEngineBraking();
 
-            float kph = vehicle.getSpeed(SpeedUnit.KMH);
             float maxKph = vehicle.getGearBox().getMaxSpeed(SpeedUnit.KMH);
             if (kph < maxKph) {
-                vehicle.accelerate(1f);
-            } else {
-                vehicle.accelerate(0f);
+                acceleration = 1f;
             }
 
-        } else {
-            if (!braking) {
-                vehicle.applyEngineBraking();
-            }
-
-            vehicle.accelerate(0f);
+        } else if (!braking) {
+            vehicle.applyEngineBraking();
         }
 
         if (vehicle.getGearBox().isReversing()) {
-            if (vehicle.getSpeed(SpeedUnit.KMH) > -40f) {
-                vehicle.accelerate(-1f);
+            if (kph > -40f) {
+                acceleration = -1f;
             } else {
-                vehicle.accelerate(0f);
+                acceleration = 0f;
             }
         }
+        vehicle.accelerate(acceleration);
     }
 
     private void updateTurn(float tpf) {
