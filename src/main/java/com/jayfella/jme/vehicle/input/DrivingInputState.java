@@ -306,6 +306,12 @@ public class DrivingInputState
         inputMapper.activateGroup(G_VEHICLE);
     }
 
+    /**
+     * Callback to update this AppState, invoked once per frame when the
+     * AppState is both attached and enabled.
+     *
+     * @param tpf the time interval between frames (in seconds, &ge;0)
+     */
     @Override
     public void update(float tpf) {
         updateTurn(tpf);
@@ -485,9 +491,10 @@ public class DrivingInputState
         /*
          * Update the "accelerate" control signal.
          */
+        boolean isEngineRunning = vehicle.getEngine().isRunning();
         float kph = vehicle.getSpeed(SpeedUnit.KMH);
         float acceleration = 0f;
-        if (accelerating) {
+        if (isEngineRunning && accelerating) {
             vehicle.removeEngineBraking();
 
             float maxKph = vehicle.getGearBox().getMaxSpeed(SpeedUnit.KMH);
@@ -499,8 +506,8 @@ public class DrivingInputState
             vehicle.applyEngineBraking();
         }
 
-        if (vehicle.getGearBox().isReversing()) {
-            if (kph > -40f) {
+        if (isEngineRunning && vehicle.getGearBox().isReversing()) {
+            if (kph > -40f) { // TODO maxKph based on engine and gearbox
                 acceleration = -1f;
             } else {
                 acceleration = 0f;
