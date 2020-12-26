@@ -6,7 +6,11 @@ import com.jme3.bullet.objects.VehicleWheel;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
+import jme3utilities.Validate;
 
+/**
+ * A single wheel of a Car.
+ */
 public class Wheel {
     // *************************************************************************
     // fields
@@ -16,14 +20,14 @@ public class Wheel {
      * steer with a rear wheel by flipping the direction
      */
     private boolean isSteeringFlipped;
+    /**
+     * fraction of the total drive power to apply to this wheel (&ge;0, &le;1)
+     */
+    private float powerFraction = 0f;
 
     final private VehicleControl vehicleControl;
     final private int wheelIndex;
     final private VehicleWheel vehicleWheel;
-
-    // determines whether this wheel provides acceleration in a 0..1 range.
-    // this can be used for settings FWD, RWD, 60/40 distribution, etc...
-    private float accelerationForce = 0f;
 
     private float maxSteerAngle = FastMath.QUARTER_PI;
     private float steeringAngle = 0f;
@@ -109,26 +113,35 @@ public class Wheel {
         this.isSteeringFlipped = steeringFlipped;
     }
 
+    /**
+     * Determine the fraction of the total drive power to apply to this wheel.
+     * TODO rename powerFraction()
+     *
+     * @return the power fraction (&ge;0, &le;1)
+     */
     public float getAccelerationForce() {
-        return accelerationForce;
+        return powerFraction;
     }
 
     /**
-     * The amount of force applied to this wheel when the vehicle is
-     * accelerating Value is in the 0 to 1 range. 0 = no force, 1 = full force.
-     * This acts as a multiplier for the engine power to this wheel.
+     * Alter the fraction of the total drive power that gets applied to this
+     * wheel. TODO rename setPowerFraction
      *
-     * @param accelerationForce the amount of force to apply to this wheel when
-     * accelerating.
+     * @param fraction the desired power fraction (&ge;0, &le;1)
      */
-    public void setAccelerationForce(float accelerationForce) {
-        this.accelerationForce = accelerationForce;
+    public void setAccelerationForce(float fraction) {
+        Validate.fraction(fraction, "fraction");
+        powerFraction = fraction;
     }
 
-    // public float getBrakeForce() { return brakeForce; }
-    // public void setBrakeForce(float brakeForce) { this.brakeForce = brakeForce; }
-    public void accelerate(float strength) {
-        vehicleControl.accelerate(wheelIndex, accelerationForce * strength);
+    /**
+     * Update the drive force applied via this wheel.
+     *
+     * @param force the amount of drive force (negative if reversing)
+     */
+    public void accelerate(float force) {
+        vehicleControl.accelerate(wheelIndex, powerFraction * force);
+        // TODO pre-scale by the power fraction!
     }
 
     /**
