@@ -170,9 +170,9 @@ class TachometerState extends BaseAppState {
         float rpmFraction = engine.getRpmFraction();
         float theta = MyMath.lerp(rpmFraction, theta0, thetaRedline);
         /*
-         * a slight lag, because a physical needle cannot pivot instantly
+         * a slight lag, to prevent the needle from jiggling
          */
-        prevTheta = FastMath.interpolateLinear(0.1f, prevTheta, theta);
+        prevTheta = FastMath.interpolateLinear(0.3f, prevTheta, theta);
 
         tmpRotation.fromAngles(0f, 0f, prevTheta - FastMath.HALF_PI);
         needleNode.setLocalRotation(tmpRotation);
