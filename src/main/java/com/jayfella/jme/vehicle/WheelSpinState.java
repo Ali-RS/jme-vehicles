@@ -89,6 +89,12 @@ public class WheelSpinState extends BaseAppState {
         return radPerSec;
     }
 
+    /**
+     * Callback to update this AppState, invoked once per frame when the
+     * AppState is both attached and enabled.
+     *
+     * @param tpf the time interval between frames (in seconds, &ge;0)
+     */
     @Override
     public void update(float tpf) {
         for (int i = 0; i < wheelCount; i++) {

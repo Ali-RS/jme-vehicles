@@ -90,6 +90,12 @@ abstract public class CameraController {
         vehicle = newVehicle;
     }
 
+    /**
+     * Callback to update this AppState, invoked once per frame when the
+     * AppState is both attached and enabled.
+     *
+     * @param tpf the time interval between frames (in seconds, &ge;0)
+     */
     abstract public void update(float tpf);
     // *************************************************************************
     // new protected methods
