@@ -188,7 +188,8 @@ abstract public class Car extends Vehicle {
 
                     float power = strength * getEngine().getPowerOutputAtRevs();
                     power *= powerFactor;
-                    wheel.accelerate(power);
+                    float wheelForce = getAccelerationForce() * power;
+                    wheel.accelerate(wheelForce);
 
                 } else {
                     // we always set this because the wheel could be "broken down" over time.

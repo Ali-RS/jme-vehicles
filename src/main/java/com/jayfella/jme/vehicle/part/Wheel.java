@@ -140,8 +140,7 @@ public class Wheel {
      * @param force the amount of drive force (negative if reversing)
      */
     public void accelerate(float force) {
-        vehicleControl.accelerate(wheelIndex, powerFraction * force);
-        // TODO pre-scale by the power fraction!
+        vehicleControl.accelerate(wheelIndex, force);
     }
 
     /**
