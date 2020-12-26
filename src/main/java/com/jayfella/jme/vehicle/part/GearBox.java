@@ -13,9 +13,8 @@ public class GearBox {
         this.gears = new Gear[gearCount];
 
         for (int i = 0; i < gearCount; i++) {
-            this.gears[i] = new Gear(0, 0);
+            gears[i] = new Gear(0, 0);
         }
-
     }
 
     public GearBox(Gear[] gears) {
@@ -39,23 +38,23 @@ public class GearBox {
     }
 
     public Gear getGear(int gearNum) {
-        return this.gears[gearNum];
+        return gears[gearNum];
     }
 
     public void setGear(int gearNum, Gear gear) {
-        this.gears[gearNum] = gear;
+        gears[gearNum] = gear;
     }
 
     public void setGear(int gearNum, float start, float end) {
 
-        Gear gear = this.gears[gearNum];
+        Gear gear = gears[gearNum];
 
         gear.setStart(start);
         gear.setEnd(end);
     }
 
     public Gear getActiveGear() {
-        return this.gears[activeGear];
+        return gears[activeGear];
     }
 
     public int getActiveGearNum() {
@@ -67,7 +66,7 @@ public class GearBox {
     }
 
     public int getGearCount() {
-        return this.gears.length;
+        return gears.length;
     }
 
     public float getMaxSpeed(SpeedUnit speedUnit) {
