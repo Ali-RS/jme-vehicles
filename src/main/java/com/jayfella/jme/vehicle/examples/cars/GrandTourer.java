@@ -65,7 +65,8 @@ public class GrandTourer extends Car {
         Spatial chassis = assetManager.loadModel(assetPath);
         chassis.setLocalScale(0.2f); // TODO eliminate this step
         float mass = 1_525f; // in kilos
-        setChassis("GT", chassis, mass);
+        float linearDamping = 0f;
+        setChassis("GT", chassis, mass, linearDamping);
         /*
          * By convention, wheels are modeled for the left side, so
          * wheel models for the right side require a 180-degree rotation.

@@ -65,7 +65,8 @@ public class DuneBuggy extends Car {
         String assetPath = "Models/hcr2_buggy/dune-buggy.j3o";
         Spatial chassis = assetManager.loadModel(assetPath);
         float mass = 525f; // in kilos
-        setChassis("hcr2_buggy", chassis, mass);
+        float linearDamping = 0f;
+        setChassis("hcr2_buggy", chassis, mass, linearDamping);
         /*
          * By convention, wheels are modeled for the left side, so
          * wheel models for the right side require a 180-degree rotation.

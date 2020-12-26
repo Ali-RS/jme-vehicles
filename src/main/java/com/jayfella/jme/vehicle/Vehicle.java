@@ -72,8 +72,8 @@ abstract public class Vehicle {
     /**
      * Alter the "accelerate" control signal. TODO rename setAccelerateSignal()
      *
-     * @param value the desired signal value, between -1 (full-throttle reverse)
-     * and +1 (full-throttle forward) inclusive
+     * @param value the desired value, between -1 (full-throttle reverse) and +1
+     * (full-throttle forward) inclusive
      */
     public void accelerate(float value) {
         // TODO awkward interface - controls both the gearbox and the throttle
@@ -96,9 +96,10 @@ abstract public class Vehicle {
     }
 
     /**
-     * Apply the vehicle brakes at the given strength.
+     * Alter the "brake" control signal. TODO rename setBrakeSignal()
      *
-     * @param strength a unit value between 0.0 - 1.0.
+     * @param value the desired value, between 0 (not applied) and 1 (applied as
+     * hard as possible)
      */
     abstract public void brake(float strength);
 
@@ -336,7 +337,8 @@ abstract public class Vehicle {
         stateManager.attach(vehicleAudioState);
     }
 
-    protected void setChassis(String folderName, Spatial chassis, float mass) {
+    protected void setChassis(String folderName, Spatial chassis, float mass,
+            float linearDamping) {
         this.chassis = chassis;
 
         AssetManager assetManager = Main.getApplication().getAssetManager();
@@ -351,6 +353,11 @@ abstract public class Vehicle {
             shape = CollisionShapeFactory.createDynamicMeshShape(chassis);
         }
         vehicleControl = new VehicleControl(shape, mass);
+        /*
+         * Configure damping for the chassis,
+         * to simulate drag due to air resistance.
+         */
+        vehicleControl.setLinearDamping(linearDamping);
         /*
          * Configure continuous collision detection (CCD) for the chassis.
          */
