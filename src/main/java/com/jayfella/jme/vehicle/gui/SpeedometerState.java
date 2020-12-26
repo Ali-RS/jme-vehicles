@@ -201,7 +201,6 @@ class SpeedometerState extends BaseAppState {
     private Node buildNumNode(float maxSpeed, int stepSpeed, float radius) {
         Node numNode = new Node("Speedometer Numbers");
 
-        ColorRGBA markingColor = ColorRGBA.White.clone();
         AssetManager assetManager = getApplication().getAssetManager();
         Material markingMaterial
                 = MyAsset.createUnshadedMaterial(assetManager, markingColor);
