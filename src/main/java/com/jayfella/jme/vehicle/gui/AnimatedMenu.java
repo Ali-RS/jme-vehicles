@@ -133,6 +133,12 @@ abstract public class AnimatedMenu extends BaseAppState {
         Main.getApplication().getGuiNode().attachChild(node);
     }
 
+    /**
+     * Callback to update this AppState, invoked once per frame when the
+     * AppState is both attached and enabled.
+     *
+     * @param tpf the time interval between frames (in seconds, &ge;0)
+     */
     @Override
     public void update(float tpf) {
         if (allComplete) {

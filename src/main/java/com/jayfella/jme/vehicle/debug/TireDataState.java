@@ -126,6 +126,12 @@ public class TireDataState extends BaseAppState {
         node.removeFromParent();
     }
 
+    /**
+     * Callback to update this AppState, invoked once per frame when the
+     * AppState is both attached and enabled.
+     *
+     * @param tpf the time interval between frames (in seconds, &ge;0)
+     */
     @Override
     public void update(float tpf) {
         for (int i = 0; i < vehicle.getNumWheels(); i++) {

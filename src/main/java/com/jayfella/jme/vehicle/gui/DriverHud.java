@@ -371,6 +371,12 @@ public class DriverHud extends BaseAppState {
         showTacho();
     }
 
+    /**
+     * Callback to update this AppState, invoked once per frame when the
+     * AppState is both attached and enabled.
+     *
+     * @param tpf the time interval between frames (in seconds, &ge;0)
+     */
     @Override
     public void update(float tpf) {
         super.update(tpf);
