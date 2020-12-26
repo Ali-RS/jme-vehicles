@@ -144,7 +144,7 @@ abstract public class Engine {
     }
 
     /**
-     * Determine this engine's maximum power output.
+     * Determine this engine's maximum power output. TODO units?
      *
      * @return the amount of power (&gt;0)
      */
@@ -256,8 +256,8 @@ abstract public class Engine {
     // new protected methods
 
     protected float getTorqueAtSpeed(Vehicle vehicle) {
-        float engineMaxSpeed = vehicle.getGearBox().getMaxSpeed(SpeedUnit.KMH);
-        float speedUnit = vehicle.getSpeed(SpeedUnit.KMH) / engineMaxSpeed;
+        float engineMaxSpeed = vehicle.getGearBox().getMaxSpeed(SpeedUnit.KPH);
+        float speedUnit = vehicle.getSpeed(SpeedUnit.KPH) / engineMaxSpeed;
         return 1.0f - FastMath.interpolateLinear(speedUnit, 0, speedUnit);
     }
     // *************************************************************************

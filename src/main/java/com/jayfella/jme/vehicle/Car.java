@@ -181,8 +181,8 @@ abstract public class Car extends Vehicle {
                     /*
                      * Reduce power by up to 75% to simulate air resistance.
                      */
-                    float currentKph = getSpeed(SpeedUnit.KMH);
-                    float maxKph = getGearBox().getMaxSpeed(SpeedUnit.KMH);
+                    float currentKph = getSpeed(SpeedUnit.KPH);
+                    float maxKph = getGearBox().getMaxSpeed(SpeedUnit.KPH);
                     float speedRatio = currentKph / maxKph;
                     float powerFactor = Math.max(0.25f, 1f - speedRatio);
 

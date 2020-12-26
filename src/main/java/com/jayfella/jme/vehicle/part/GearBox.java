@@ -77,7 +77,7 @@ public class GearBox {
 
         float result;
         switch (speedUnit) {
-            case KMH:
+            case KPH:
                 result = kph;
                 break;
             case MPH:

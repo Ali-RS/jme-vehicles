@@ -77,7 +77,7 @@ public class AutomaticGearboxState extends BaseAppState {
 
         // limit the reported speed to the max speed.
         // if we don't do this and exceed the max speed of the gearbox, the revs return to zero.
-        float speed = Math.min(vehicle.getSpeed(SpeedUnit.KMH), vehicle.getGearBox().getMaxSpeed(SpeedUnit.KMH));
+        float speed = Math.min(vehicle.getSpeed(SpeedUnit.KPH), vehicle.getGearBox().getMaxSpeed(SpeedUnit.KPH));
 
         float revs = 0;
 

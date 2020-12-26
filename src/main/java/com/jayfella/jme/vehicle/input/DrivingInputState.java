@@ -492,12 +492,12 @@ public class DrivingInputState
          * Update the "accelerate" control signal.
          */
         boolean isEngineRunning = vehicle.getEngine().isRunning();
-        float kph = vehicle.getSpeed(SpeedUnit.KMH);
+        float kph = vehicle.getSpeed(SpeedUnit.KPH);
         float acceleration = 0f;
         if (isEngineRunning && accelerating) {
             vehicle.removeEngineBraking();
 
-            float maxKph = vehicle.getGearBox().getMaxSpeed(SpeedUnit.KMH);
+            float maxKph = vehicle.getGearBox().getMaxSpeed(SpeedUnit.KPH);
             if (kph < maxKph) {
                 acceleration = 1f;
             }

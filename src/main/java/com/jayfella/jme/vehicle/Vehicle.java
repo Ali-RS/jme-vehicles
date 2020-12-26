@@ -177,7 +177,7 @@ abstract public class Vehicle {
 
         float result;
         switch (speedUnit) {
-            case KMH:
+            case KPH:
                 result = kph;
                 break;
             case MPH:

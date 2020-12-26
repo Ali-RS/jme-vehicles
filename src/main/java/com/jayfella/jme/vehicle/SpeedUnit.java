@@ -8,9 +8,9 @@ public enum SpeedUnit {
     // values
 
     /**
-     * kilometers per hour TODO rename KPH
+     * kilometers per hour
      */
-    KMH,
+    KPH,
     /**
      * miles per hour
      */
