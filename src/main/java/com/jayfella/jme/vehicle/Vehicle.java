@@ -35,7 +35,11 @@ abstract public class Vehicle {
     // *************************************************************************
     // constants and loggers
 
-    final public static float KMH_TO_MPH = 0.62137f;
+    final public static float KPH_TO_MPH = 0.62137f;
+    /**
+     * factor to convert km/hr to wu/sec
+     */
+    final public static float KPH_TO_WUPS = 0.277778f;
     /**
      * message logger for this class
      */
@@ -170,14 +174,23 @@ abstract public class Vehicle {
      */
     public float getSpeed(SpeedUnit speedUnit) {
         float kph = vehicleControl.getCurrentVehicleSpeedKmHour();
+
+        float result;
         switch (speedUnit) {
             case KMH:
-                return kph;
+                result = kph;
+                break;
             case MPH:
-                return kph * KMH_TO_MPH;
+                result = kph * Vehicle.KPH_TO_MPH;
+                break;
+            case WUPS:
+                result = kph * Vehicle.KPH_TO_WUPS;
+                break;
             default:
-                throw new IllegalArgumentException("speedUnit = " + speedUnit);
+                throw new RuntimeException("speedUnit = " + speedUnit);
         }
+
+        return result;
     }
 
     public VehicleControl getVehicleControl() {

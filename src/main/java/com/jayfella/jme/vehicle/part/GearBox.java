@@ -1,7 +1,7 @@
 package com.jayfella.jme.vehicle.part;
 
 import com.jayfella.jme.vehicle.SpeedUnit;
-import static com.jayfella.jme.vehicle.Vehicle.KMH_TO_MPH;
+import com.jayfella.jme.vehicle.Vehicle;
 
 public class GearBox {
 
@@ -30,7 +30,7 @@ public class GearBox {
         this.gears = gears;
     }
 
-    public boolean isReversing() {
+    public boolean isReversing() { // TODO rename isInReverse()
         return isInReverse;
     }
 
@@ -71,11 +71,25 @@ public class GearBox {
     }
 
     public float getMaxSpeed(SpeedUnit speedUnit) {
-        switch (speedUnit) {
-            case KMH: return gears[getGearCount() - 1].getEnd();
-            case MPH: return gears[getGearCount() - 1].getEnd() * KMH_TO_MPH;
-            default: return -1;
-        }
-    }
+        int topGearIndex = getGearCount() - 1;
+        Gear topGear = gears[topGearIndex];
+        float kph = topGear.getEnd();
 
+        float result;
+        switch (speedUnit) {
+            case KMH:
+                result = kph;
+                break;
+            case MPH:
+                result = kph * Vehicle.KPH_TO_MPH;
+                break;
+            case WUPS:
+                result = kph * Vehicle.KPH_TO_WUPS;
+                break;
+            default:
+                throw new RuntimeException("speedUnit = " + speedUnit);
+        }
+
+        return result;
+    }
 }
