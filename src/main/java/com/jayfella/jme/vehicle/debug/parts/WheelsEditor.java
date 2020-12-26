@@ -44,7 +44,7 @@ public class WheelsEditor extends VehicleEditor {
         PropertyPanel propertyPanel = new PropertyPanel("glass");
 
         for (int i = 0; i < vehicle.getNumWheels(); i++) {
-            propertyPanel.addFloatProperty("Wheel " + i, vehicle.getWheel(i), "accelerationForce", 0f, 1f, 0.01f);
+            propertyPanel.addFloatProperty("Wheel " + i, vehicle.getWheel(i), "powerFraction", 0f, 1f, 0.01f);
         }
 
         return new RollupPanel("Power", propertyPanel, "glass");

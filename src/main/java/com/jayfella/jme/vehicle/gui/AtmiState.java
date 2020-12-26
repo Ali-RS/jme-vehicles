@@ -159,7 +159,7 @@ class AtmiState extends BaseAppState {
          * Indicate the current mode of the automatic transmission.
          */
         String mode;
-        if (car.getGearBox().isReversing()) {
+        if (car.getGearBox().isInReverse()) {
             mode = "R";
         } else {
             mode = "D";

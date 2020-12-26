@@ -30,7 +30,7 @@ public class GearBox {
         this.gears = gears;
     }
 
-    public boolean isReversing() { // TODO rename isInReverse()
+    public boolean isInReverse() {
         return isInReverse;
     }
 

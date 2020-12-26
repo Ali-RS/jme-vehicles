@@ -135,10 +135,10 @@ public class GTRNismo extends Car {
          *
          * This vehicle has 4-wheel drive.
          */
-        getWheel(0).setAccelerationForce(1f);
-        getWheel(1).setAccelerationForce(1f);
-        getWheel(2).setAccelerationForce(1f);
-        getWheel(3).setAccelerationForce(1f);
+        getWheel(0).setPowerFraction(1f);
+        getWheel(1).setPowerFraction(1f);
+        getWheel(2).setPowerFraction(1f);
+        getWheel(3).setPowerFraction(1f);
         /*
          * Define the speed range for each gear.
          * Successive gears should overlap.

@@ -172,12 +172,12 @@ abstract public class Car extends Vehicle {
     // Vehicle methods
 
     @Override
-    public void accelerate(float strength) {
-        super.accelerate(strength);
+    public void setAccelerateSignal(float strength) {
+        super.setAccelerateSignal(strength);
 
         if (getEngine().isRunning()) {
             for (Wheel wheel : wheels) {
-                if (wheel.getAccelerationForce() > 0f) {
+                if (wheel.getPowerFraction() > 0f) {
                     /*
                      * Reduce power by up to 75% to simulate air resistance.
                      */
@@ -188,7 +188,7 @@ abstract public class Car extends Vehicle {
 
                     float power = strength * getEngine().getPowerOutputAtRevs();
                     power *= powerFactor;
-                    float wheelForce = getAccelerationForce() * power;
+                    float wheelForce = accelerateSignal() * power;
                     wheel.accelerate(wheelForce);
 
                 } else {
@@ -207,7 +207,7 @@ abstract public class Car extends Vehicle {
             // if the wheel is not "connected" to the engine, don't slow the wheel down using engine braking.
             // so if the wheel has 1 acceleration force, apply full engine braking.
             // but if the wheel has 0 acceleration force, it's not "connected" to the engine.
-            float brakingForce = getEngine().getBraking() * wheel.getAccelerationForce();
+            float brakingForce = getEngine().getBraking() * wheel.getPowerFraction();
             // System.out.println(brakingForce);
             // wheel.brake(brakingForce);
             getVehicleControl().brake(i, brakingForce);
@@ -215,7 +215,7 @@ abstract public class Car extends Vehicle {
     }
 
     @Override
-    public void brake(float strength) {
+    public void setBrakeSignal(float strength) {
         for (Wheel wheel : wheels) {
             wheel.brake(strength);
         }

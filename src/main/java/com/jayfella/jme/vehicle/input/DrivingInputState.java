@@ -484,9 +484,9 @@ public class DrivingInputState
          * so it won't override engine braking.
          */
         if (braking) {
-            vehicle.brake(1f);
+            vehicle.setBrakeSignal(1f);
         } else {
-            vehicle.brake(0f);
+            vehicle.setBrakeSignal(0f);
         }
         /*
          * Update the "accelerate" control signal.
@@ -506,14 +506,14 @@ public class DrivingInputState
             vehicle.applyEngineBraking();
         }
 
-        if (isEngineRunning && vehicle.getGearBox().isReversing()) {
+        if (isEngineRunning && vehicle.getGearBox().isInReverse()) {
             if (kph > -40f) { // TODO maxKph based on engine and gearbox
                 acceleration = -1f;
             } else {
                 acceleration = 0f;
             }
         }
-        vehicle.accelerate(acceleration);
+        vehicle.setAccelerateSignal(acceleration);
     }
 
     private void updateTurn(float tpf) {

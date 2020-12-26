@@ -140,10 +140,10 @@ public class GrandTourer extends Car {
          *
          * This vehicle has rear-wheel drive only.
          */
-        getWheel(0).setAccelerationForce(0f);
-        getWheel(1).setAccelerationForce(0f);
-        getWheel(2).setAccelerationForce(1f);
-        getWheel(3).setAccelerationForce(1f);
+        getWheel(0).setPowerFraction(0f);
+        getWheel(1).setPowerFraction(0f);
+        getWheel(2).setPowerFraction(1f);
+        getWheel(3).setPowerFraction(1f);
         /*
          * Define the speed range for each gear.
          * Successive gears should overlap.

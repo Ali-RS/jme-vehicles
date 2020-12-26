@@ -107,10 +107,10 @@ public class AutomaticGearboxState extends BaseAppState {
                 float skid = 1.0f - wheel.getVehicleWheel().getSkidInfo();
                 skid *= 0.4f;
                 // the acceleration force being applied to this wheel in 0-1 range.
-                float wheelforce = wheel.getAccelerationForce();
+                float wheelforce = wheel.getPowerFraction();
 
                 // the acceleration force of the accelerator pedal in 0-1 range.
-                float acceleration = car.getAccelerationForce();
+                float acceleration = car.accelerateSignal();
 
                 // the amount of force being applied to this wheel as a result of acceleration.
                 float totalForce = acceleration * wheelforce;

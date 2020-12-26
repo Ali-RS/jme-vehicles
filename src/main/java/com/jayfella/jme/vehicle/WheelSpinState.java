@@ -121,13 +121,13 @@ public class WheelSpinState extends BaseAppState {
             Wheel wheel = car.getWheel(i);
 
             // only calculate wheelspin when the vehicle is actually accelerating.
-            if (car.getAccelerationForce() > 0) {
+            if (car.accelerateSignal() > 0) {
 
                 // the acceleration force this wheel can apply. 0 = it doesnt give power, 1 = it gives full power.
-                float wheelforce = wheel.getAccelerationForce();
+                float wheelforce = wheel.getPowerFraction();
 
                 // the acceleration force of the accelerator pedal in 0-1 range.
-                float acceleration = car.getAccelerationForce();
+                float acceleration = car.accelerateSignal();
 
                 // how much this wheel is "skidding".
                 float skid = 1.0f - wheel.getVehicleWheel().getSkidInfo();

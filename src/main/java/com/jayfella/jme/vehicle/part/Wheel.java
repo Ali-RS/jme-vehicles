@@ -115,21 +115,20 @@ public class Wheel {
 
     /**
      * Determine the fraction of the total drive power to apply to this wheel.
-     * TODO rename powerFraction()
      *
      * @return the power fraction (&ge;0, &le;1)
      */
-    public float getAccelerationForce() {
+    public float getPowerFraction() {
         return powerFraction;
     }
 
     /**
      * Alter the fraction of the total drive power that gets applied to this
-     * wheel. TODO rename setPowerFraction
+     * wheel.
      *
      * @param fraction the desired power fraction (&ge;0, &le;1)
      */
-    public void setAccelerationForce(float fraction) {
+    public void setPowerFraction(float fraction) {
         Validate.fraction(fraction, "fraction");
         powerFraction = fraction;
     }

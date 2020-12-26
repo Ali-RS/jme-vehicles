@@ -74,12 +74,12 @@ abstract public class Vehicle {
     // new methods exposed
 
     /**
-     * Alter the "accelerate" control signal. TODO rename setAccelerateSignal()
+     * Alter the "accelerate" control signal.
      *
      * @param value the desired value, between -1 (full-throttle reverse) and +1
      * (full-throttle forward) inclusive
      */
-    public void accelerate(float value) {
+    public void setAccelerateSignal(float value) {
         // TODO awkward interface - controls both the gearbox and the throttle
         Validate.inRange(value, "value", -1f, 1f);
         accelerateSignal = value;
@@ -100,12 +100,12 @@ abstract public class Vehicle {
     }
 
     /**
-     * Alter the "brake" control signal. TODO rename setBrakeSignal()
+     * Alter the "brake" control signal.
      *
      * @param value the desired value, between 0 (not applied) and 1 (applied as
      * hard as possible)
      */
-    abstract public void brake(float strength);
+    abstract public void setBrakeSignal(float strength);
 
     /**
      * Determine the offset of the vehicle's DashCamera.
@@ -133,11 +133,11 @@ abstract public class Vehicle {
     }
 
     /**
-     * Evaluate the "accelerate" control signal. TODO rename
+     * Evaluate the "accelerate" control signal.
      *
      * @return a value between -1 and +1 inclusive
      */
-    public float getAccelerationForce() {
+    public float accelerateSignal() {
         return accelerateSignal;
     }
 
