@@ -157,7 +157,7 @@ public class DuneBuggy extends Car {
         gearBox.setGear(5, 140f, 220f);
         setGearBox(gearBox);
 
-        Engine engine = new Engine250HP(this);
+        Engine engine = new Engine250HP();
         engine.setEngineAudio(assetManager, "Audio/engine-5.ogg");
         setEngine(engine);
 

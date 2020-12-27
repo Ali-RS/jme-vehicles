@@ -158,7 +158,7 @@ public class GrandTourer extends Car {
 
         setGearBox(gearBox);
 
-        Engine engine = new Engine450HP(this);
+        Engine engine = new Engine450HP();
         engine.setEngineAudio(assetManager, "Audio/engine-1.ogg");
         setEngine(engine);
 

@@ -1,6 +1,5 @@
 package com.jayfella.jme.vehicle.examples.engines;
 
-import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.engine.Engine;
 import com.jme3.math.Spline;
 import com.jme3.math.Vector3f;
@@ -13,7 +12,6 @@ public class Engine600HP extends Engine {
     // *************************************************************************
     // constants and loggers
 
-    final private Vehicle vehicle;
     /**
      * points defining the power curve: x=RPMs, y=powerFraction
      */
@@ -41,9 +39,8 @@ public class Engine600HP extends Engine {
     /**
      * Instantiate a 600-horsepower engine.
      */
-    public Engine600HP(Vehicle vehicle) {
+    public Engine600HP() {
         super("Basic 600", 6000f, 600f, 9000f, 20f);
-        this.vehicle = vehicle;
         spline = new Spline(Spline.SplineType.Linear, points, 0.1f, false);
     }
     // *************************************************************************
