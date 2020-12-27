@@ -64,7 +64,7 @@ public class PickupTruck extends Car {
         String assetPath = "Models/ford_ranger/pickup.j3o";
         Spatial chassis = assetManager.loadModel(assetPath);
         float mass = 1_550f; // in kilos
-        float linearDamping = 0f;
+        float linearDamping = 0.15f;
         setChassis("ford_ranger", chassis, mass, linearDamping);
         /*
          * By convention, wheels are modeled for the left side, so

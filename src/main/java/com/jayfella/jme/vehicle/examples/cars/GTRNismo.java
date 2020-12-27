@@ -64,7 +64,7 @@ public class GTRNismo extends Car {
         String assetPath = "Models/gtr_nismo/scene.gltf.j3o";
         Spatial chassis = assetManager.loadModel(assetPath);
         float mass = 1_525f; // in kilos
-        float linearDamping = 0f;
+        float linearDamping = 0.04f;
         setChassis("gtr_nismo", chassis, mass, linearDamping);
         /*
          * By convention, wheels are modeled for the left side, so
