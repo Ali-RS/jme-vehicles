@@ -4,6 +4,7 @@ import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.engine.Engine;
 import com.jme3.math.Spline;
 import com.jme3.math.Vector3f;
+import jme3utilities.Validate;
 
 /**
  * A 250-horsepower engine with a 600-RPM idle and a 7,500-RPM redline.
@@ -61,6 +62,7 @@ public class Engine250HP extends Engine {
      */
     @Override
     public float evaluateSpline(float rpm) {
+        Validate.nonNegative(rpm, "rpm");
         float result = evaluateSpline(spline, rpm);
         return result;
     }
