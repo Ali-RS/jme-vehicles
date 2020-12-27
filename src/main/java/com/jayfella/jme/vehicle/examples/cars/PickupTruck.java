@@ -139,12 +139,11 @@ public class PickupTruck extends Car {
          * Successive gears should overlap.
          * The "end" value of the last gear should determine the top speed.
          */
-        GearBox gearBox = new GearBox(5);
+        GearBox gearBox = new GearBox(4);
         gearBox.setGear(0, 0f, 19f);
-        gearBox.setGear(1, 15f, 48f);
-        gearBox.setGear(2, 35f, 112f);
-        gearBox.setGear(3, 100f, 192f);
-        gearBox.setGear(4, 180f, 254f);
+        gearBox.setGear(1, 12f, 50f);
+        gearBox.setGear(2, 40f, 80f);
+        gearBox.setGear(3, 70f, 110f);
         setGearBox(gearBox);
 
         Engine engine = new Engine450HP();
