@@ -40,7 +40,7 @@ public class Engine450HP extends Engine {
      * Instantiate a 450-horsepower engine.
      */
     public Engine450HP() {
-        super("Basic 450", 4500f, 600f, 7500f);
+        super("Basic 450", 450f * HP_TO_W, 600f, 7_500f);
         spline = new Spline(Spline.SplineType.Linear, points, 0.1f, false);
     }
     // *************************************************************************

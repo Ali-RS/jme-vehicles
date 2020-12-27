@@ -15,6 +15,13 @@ import jme3utilities.Validate;
  */
 abstract public class Engine {
     // *************************************************************************
+    // constants and loggers
+
+    /**
+     * approximate factor to convert horsepower to Watts
+     */
+    final public static float HP_TO_W = 745f;
+    // *************************************************************************
     // fields
 
     private AudioNode audioNode;

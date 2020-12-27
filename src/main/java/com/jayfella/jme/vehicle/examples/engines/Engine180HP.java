@@ -37,7 +37,7 @@ public class Engine180HP extends Engine {
      * Instantiate a 180-horsepower engine.
      */
     public Engine180HP() {
-        super("Basic 180", 1800f, 600f, 5000f);
+        super("Basic 180", 180f * HP_TO_W, 600f, 5_000f);
         spline = new Spline(Spline.SplineType.Linear, points, 0.1f, false);
     }
     // *************************************************************************
