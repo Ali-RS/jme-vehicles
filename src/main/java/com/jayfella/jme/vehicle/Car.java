@@ -9,6 +9,7 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.objects.VehicleWheel;
+import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
@@ -183,7 +184,15 @@ abstract public class Car extends Vehicle {
     public void setAccelerateSignal(float strength) {
         super.setAccelerateSignal(strength);
         /*
-         * Distribute the engine's power across the wheels in accordance
+         * Determine unsigned speed in world units per second.
+         */
+        float speed = getSpeed(SpeedUnit.WUPS);
+        speed = FastMath.abs(speed);
+        if (speed < 0.1f) {
+            speed = 0.1f; // avoid division by zero
+        }
+        /*
+         * Distribute the total engine power across the wheels in accordance
          * with their configured power fractions.
          */
         float maxWatts = getEngine().getPowerOutputAtRevs();
@@ -191,7 +200,8 @@ abstract public class Car extends Vehicle {
         float totalWatts = strength * maxWatts; // signed so that <0 means reverse
         for (Wheel wheel : wheels) {
             float powerFraction = wheel.getPowerFraction();
-            float wheelForce = powerFraction * totalWatts;
+            float wheelPower = powerFraction * totalWatts;
+            float wheelForce = wheelPower / speed;
             wheel.accelerate(wheelForce);
         }
     }
