@@ -10,6 +10,7 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
+import java.util.logging.Logger;
 
 /**
  * An Environment based on "race1.j3o", Adi Barda's racetrack model.
@@ -17,6 +18,14 @@ import com.jme3.scene.Node;
  * @author Stephen Gold sgold@sonic.net
  */
 public class Racetrack extends Environment {
+    // *************************************************************************
+    // constants and loggers
+
+    /**
+     * message logger for this class
+     */
+    final private static Logger logger
+            = Logger.getLogger(Racetrack.class.getName());
     // *************************************************************************
     // Environment methods
 

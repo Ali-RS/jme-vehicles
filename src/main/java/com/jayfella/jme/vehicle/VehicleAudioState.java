@@ -5,8 +5,17 @@ import com.jme3.app.state.BaseAppState;
 import com.jme3.audio.AudioNode;
 import com.jme3.audio.AudioSource;
 import com.jme3.math.FastMath;
+import java.util.logging.Logger;
 
 public class VehicleAudioState extends BaseAppState {
+    // *************************************************************************
+    // constants and loggers
+
+    /**
+     * message logger for this class
+     */
+    final private static Logger logger
+            = Logger.getLogger(VehicleAudioState.class.getName());
     // *************************************************************************
     // fields
 

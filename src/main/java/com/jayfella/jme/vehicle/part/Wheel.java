@@ -9,12 +9,21 @@ import com.jme3.bullet.objects.VehicleWheel;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
+import java.util.logging.Logger;
 import jme3utilities.Validate;
 
 /**
  * A single wheel of a Car.
  */
 public class Wheel {
+    // *************************************************************************
+    // constants and loggers
+
+    /**
+     * message logger for this class
+     */
+    final public static Logger logger
+            = Logger.getLogger(Wheel.class.getName());
     // *************************************************************************
     // fields
 

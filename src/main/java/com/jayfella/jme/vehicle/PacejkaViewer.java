@@ -10,9 +10,19 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.system.AppSettings;
 import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.style.BaseStyles;
+import java.util.logging.Logger;
 
 public class PacejkaViewer extends SimpleApplication {
+    // *************************************************************************
+    // constants and loggers
 
+    /**
+     * message logger for this class
+     */
+    final private static Logger logger
+            = Logger.getLogger(PacejkaViewer.class.getName());
+    // *************************************************************************
+    // fields
 
     private PacejkaTireModel tireModel;
 

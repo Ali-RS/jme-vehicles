@@ -14,12 +14,21 @@ import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import com.jme3.texture.Texture;
+import java.util.logging.Logger;
 
 /**
  * An Environment based on "vehicle-playground.j3o", James Khan's Vehicle
  * Playground model.
  */
 public class Playground extends Environment {
+    // *************************************************************************
+    // constants and loggers
+
+    /**
+     * message logger for this class
+     */
+    final private static Logger logger
+            = Logger.getLogger(Playground.class.getName());
     // *************************************************************************
     // Environment methods
 

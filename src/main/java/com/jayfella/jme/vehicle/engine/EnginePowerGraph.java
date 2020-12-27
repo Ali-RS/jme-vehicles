@@ -10,11 +10,22 @@ import com.jme3.texture.Image;
 import com.jme3.texture.Texture2D;
 import com.jme3.texture.image.ImageRaster;
 import com.jme3.util.BufferUtils;
+import java.util.logging.Logger;
 
 public class EnginePowerGraph extends Geometry {
+    // *************************************************************************
+    // constants and loggers
+
+    /**
+     * message logger for this class
+     */
+    final private static Logger logger
+            = Logger.getLogger(EnginePowerGraph.class.getName());
+    // *************************************************************************
+    // constants and fields
 
     final private Engine engine;
-    final private int width,  height;
+    final private int width, height;
 
     final private ImageRaster imageRaster;
     final private Texture2D texture;

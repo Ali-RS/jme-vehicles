@@ -12,8 +12,19 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
+import java.util.logging.Logger;
 
 public class TireSmokeEmitter extends BaseAppState {
+    // *************************************************************************
+    // constants and loggers
+
+    /**
+     * message logger for this class
+     */
+    final private static Logger logger
+            = Logger.getLogger(TireSmokeEmitter.class.getName());
+    // *************************************************************************
+    // fields
 
     private Node rootNode;
     final private Vehicle vehicle;

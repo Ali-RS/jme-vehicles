@@ -7,8 +7,19 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import java.util.logging.Logger;
 
 public class WheelSpinState extends BaseAppState {
+    // *************************************************************************
+    // constants and loggers
+
+    /**
+     * message logger for this class
+     */
+    final private static Logger logger
+            = Logger.getLogger(WheelSpinState.class.getName());
+    // *************************************************************************
+    // fields
 
     final private Car car;
     private int wheelCount;

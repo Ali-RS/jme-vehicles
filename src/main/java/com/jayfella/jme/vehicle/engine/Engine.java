@@ -8,6 +8,7 @@ import com.jme3.audio.AudioNode;
 import com.jme3.math.FastMath;
 import com.jme3.math.Spline;
 import com.jme3.math.Vector3f;
+import java.util.logging.Logger;
 import jme3utilities.Validate;
 
 /**
@@ -21,6 +22,11 @@ abstract public class Engine {
      * approximate factor to convert horsepower to Watts
      */
     final public static float HP_TO_W = 745f;
+    /**
+     * message logger for this class
+     */
+    final public static Logger logger
+            = Logger.getLogger(Engine.class.getName());
     // *************************************************************************
     // fields
 

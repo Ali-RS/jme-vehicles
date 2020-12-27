@@ -3,6 +3,7 @@ package com.jayfella.jme.vehicle.examples.wheels;
 import com.jayfella.jme.vehicle.Main;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Spatial;
+import java.util.logging.Logger;
 
 /**
  * Encapsulate the left front wheel from oakar258's "HCR2 Buggy" model.
@@ -10,6 +11,14 @@ import com.jme3.scene.Spatial;
  * @author Stephen Gold sgold@sonic.net
  */
 public class BuggyFrontWheel extends WheelModel {
+    // *************************************************************************
+    // constants and loggers
+
+    /**
+     * message logger for this class
+     */
+    final private static Logger logger
+            = Logger.getLogger(BuggyFrontWheel.class.getName());
     // *************************************************************************
     // constructors
 

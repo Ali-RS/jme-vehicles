@@ -17,8 +17,19 @@ import com.simsilica.lemur.Container;
 import com.simsilica.lemur.HAlignment;
 import com.simsilica.lemur.Insets3f;
 import com.simsilica.lemur.Label;
+import java.util.logging.Logger;
 
 public class MagicFormulaState extends BaseAppState {
+    // *************************************************************************
+    // constants and loggers
+
+    /**
+     * message logger for this class
+     */
+    final public static Logger logger
+            = Logger.getLogger(MagicFormulaState.class.getName());
+    // *************************************************************************
+    // fields
 
     final private Car vehicle;
 

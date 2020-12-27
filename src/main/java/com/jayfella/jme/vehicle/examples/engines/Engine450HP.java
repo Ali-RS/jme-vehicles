@@ -3,6 +3,7 @@ package com.jayfella.jme.vehicle.examples.engines;
 import com.jayfella.jme.vehicle.engine.Engine;
 import com.jme3.math.Spline;
 import com.jme3.math.Vector3f;
+import java.util.logging.Logger;
 import jme3utilities.Validate;
 
 /**
@@ -12,6 +13,11 @@ public class Engine450HP extends Engine {
     // *************************************************************************
     // constants and loggers
 
+    /**
+     * message logger for this class
+     */
+    final private static Logger logger
+            = Logger.getLogger(Engine450HP.class.getName());
     /**
      * points defining the power curve: x=RPMs, y=powerFraction
      */

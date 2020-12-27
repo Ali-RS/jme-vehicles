@@ -7,8 +7,19 @@ import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.math.FastMath;
+import java.util.logging.Logger;
 
 public class AutomaticGearboxState extends BaseAppState {
+    // *************************************************************************
+    // constants and loggers
+
+    /**
+     * message logger for this class
+     */
+    final private static Logger logger
+            = Logger.getLogger(AutomaticGearboxState.class.getName());
+    // *************************************************************************
+    // fields
 
     final private Vehicle vehicle;
     private GearBox gearBox;
