@@ -56,7 +56,7 @@ public class AutomaticGearboxState extends BaseAppState {
      */
     @Override
     protected void onEnable() {
-        this.gearBox = vehicle.getGearBox();
+        gearBox = vehicle.getGearBox();
     }
 
     /**

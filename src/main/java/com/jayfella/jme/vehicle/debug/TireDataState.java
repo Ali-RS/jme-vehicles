@@ -30,10 +30,10 @@ public class TireDataState extends BaseAppState {
 
     public TireDataState(Car vehicle) {
         this.vehicle = vehicle;
-        this.tireGraphs = new TireGraph[vehicle.getNumWheels()];
-        this.needles = new Geometry[vehicle.getNumWheels()][3];
+        tireGraphs = new TireGraph[vehicle.getNumWheels()];
+        needles = new Geometry[vehicle.getNumWheels()][3];
 
-        this.node = new Node("Tire Data Node");
+        node = new Node("Tire Data Node");
     }
 
     private Geometry createNeedle(AssetManager assetManager, ColorRGBA color) {

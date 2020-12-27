@@ -48,7 +48,7 @@ abstract public class WheelModel {
         Validate.positive(diameter, "diameter");
         this.diameter = diameter;
 
-        this.node = new Node("Wheel Node"); // TODO distinct names
+        node = new Node("Wheel Node"); // TODO distinct names
         node.setLocalScale(diameter);
     }
     // *************************************************************************

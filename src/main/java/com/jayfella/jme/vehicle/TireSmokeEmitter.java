@@ -64,14 +64,14 @@ public class TireSmokeEmitter extends BaseAppState {
      */
     @Override
     protected void initialize(Application app) {
-        this.wheelCount = vehicle.getVehicleControl().getNumWheels();
+        wheelCount = vehicle.getVehicleControl().getNumWheels();
 
         if (rootNode == null) {
             rootNode = ((SimpleApplication) getApplication()).getRootNode();
         }
 
-        if (this.emitters == null) {
-            this.emitters = new ParticleEmitter[wheelCount];
+        if (emitters == null) {
+            emitters = new ParticleEmitter[wheelCount];
 
             for (int i = 0; i < wheelCount; i++) {
                 ParticleEmitter smoke = createEmitter(app.getAssetManager());

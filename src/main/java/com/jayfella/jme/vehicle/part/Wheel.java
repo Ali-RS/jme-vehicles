@@ -101,7 +101,7 @@ public class Wheel {
         this.vehicleControl = vehicleControl;
 
         this.wheelIndex = wheelIndex;
-        this.vehicleWheel = vehicleControl.getWheel(wheelIndex);
+        vehicleWheel = vehicleControl.getWheel(wheelIndex);
 
         this.isSteering = isSteering;
         this.isSteeringFlipped = steeringFlipped;

@@ -144,7 +144,7 @@ abstract public class Engine {
      * @return the descriptive name (not null)
      */
     public String getName() {
-        return this.name;
+        return name;
     }
 
     /**

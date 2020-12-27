@@ -10,7 +10,7 @@ public class GearBox {
     private Gear[] gears;
 
     public GearBox(int gearCount) {
-        this.gears = new Gear[gearCount];
+        gears = new Gear[gearCount];
 
         for (int i = 0; i < gearCount; i++) {
             gears[i] = new Gear(0, 0);

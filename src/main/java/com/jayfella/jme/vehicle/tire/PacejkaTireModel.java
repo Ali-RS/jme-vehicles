@@ -102,17 +102,17 @@ public class PacejkaTireModel {
      * @return - lateral tire force in N.
      */
     public float calcLateralTireForce(float slipAngle) {
-        this.lateralValue = calcSlipAngleFactor(slipAngle, lateral) * calcLoadForce(load, lateral);
+        lateralValue = calcSlipAngleFactor(slipAngle, lateral) * calcLoadForce(load, lateral);
         return lateralValue;
     }
 
     public float calcLongtitudeTireForce(float slipAngle) {
-        this.longitudinalValue = calcSlipAngleFactor(slipAngle, longitudinal) * calcLoadForce(load, longitudinal);
+        longitudinalValue = calcSlipAngleFactor(slipAngle, longitudinal) * calcLoadForce(load, longitudinal);
         return longitudinalValue;
     }
 
     public float calcAlignMoment(float slipAngle) {
-        this.momentValue = calcSlipAngleFactor(slipAngle, alignMoment) * calcLoadForce(load, alignMoment);
+        momentValue = calcSlipAngleFactor(slipAngle, alignMoment) * calcLoadForce(load, alignMoment);
         return momentValue;
     }
 
@@ -131,17 +131,17 @@ public class PacejkaTireModel {
 
             This method favors longitudinal forces over lateral ones (cuts down the lateral force and leaves Fx intact).
          */
-        this.frictionCircle = lateralValue * FastMath.sqrt(
+        frictionCircle = lateralValue * FastMath.sqrt(
                 1.0f - FastMath.pow((longitudinalValue / 7800), 2)
         );
 
-        this.frictionCircle = Math.max(0.1f, this.frictionCircle);
+        frictionCircle = Math.max(0.1f, frictionCircle);
 
         return frictionCircle;
     }
 
     public float getLateralValue() {
-        return this.lateralValue;
+        return lateralValue;
     }
 
     public float getLongitudinalValue() {
@@ -160,17 +160,17 @@ public class PacejkaTireModel {
     public String toString() {
         String format = "%s: \"%s\" : %s (C=%.2f, B=%.2f, E=%.2f, KA=%.2f, KB=%.6f)";
 
-        String lat = String.format(format, this.getClass().toString(),
+        String lat = String.format(format, getClass().toString(),
                 name, "Lateral",
                 lateral.getSlipAngleCoefficientC(), lateral.getSlipAngleCoefficientB(), lateral.getSlipAngleCoefficientE(),
                 lateral.getLoadCoefficientKA(), lateral.getLoadCoefficientKB());
 
-        String lng = String.format(format, this.getClass().toString(),
+        String lng = String.format(format, getClass().toString(),
                 name, "Longitudinal",
                 longitudinal.getSlipAngleCoefficientC(), longitudinal.getSlipAngleCoefficientB(), longitudinal.getSlipAngleCoefficientE(),
                 longitudinal.getLoadCoefficientKA(), longitudinal.getLoadCoefficientKB());
 
-        String mnt = String.format(format, this.getClass().toString(),
+        String mnt = String.format(format, getClass().toString(),
                 name, "Align Moment",
                 alignMoment.getSlipAngleCoefficientC(), alignMoment.getSlipAngleCoefficientB(), alignMoment.getSlipAngleCoefficientE(),
                 alignMoment.getLoadCoefficientKA(), alignMoment.getLoadCoefficientKB());

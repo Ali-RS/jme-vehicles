@@ -33,7 +33,7 @@ public class VehicleEditorState extends BaseAppState {
 
     public VehicleEditorState(Car vehicle) {
         this.vehicle = vehicle;
-        this.tabbedPanel = new TabbedPanel();
+        tabbedPanel = new TabbedPanel();
     }
 
     public TabbedPanel getTabbedPanel() {
@@ -72,7 +72,7 @@ public class VehicleEditorState extends BaseAppState {
      */
     @Override
     protected void onEnable() {
-        Main.getApplication().getGuiNode().attachChild(this.tabbedPanel);
+        Main.getApplication().getGuiNode().attachChild(tabbedPanel);
     }
 
     /**
@@ -81,7 +81,7 @@ public class VehicleEditorState extends BaseAppState {
      */
     @Override
     protected void onDisable() {
-        this.tabbedPanel.removeFromParent();
+        tabbedPanel.removeFromParent();
     }
 
     @Override

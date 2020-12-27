@@ -431,7 +431,7 @@ abstract public class Vehicle {
 
     protected void setEngine(Engine engine) {
         this.engine = engine;
-        node.attachChild(this.engine.getEngineAudio());
+        node.attachChild(engine.getEngineAudio());
     }
 
     protected void setGearBox(GearBox gearBox) {

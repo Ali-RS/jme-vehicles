@@ -38,8 +38,8 @@ public class WheelSpinState extends BaseAppState {
      */
     @Override
     protected void initialize(Application app) {
-        this.wheelCount = car.getVehicleControl().getNumWheels();
-        this.angles = new float[wheelCount][3];
+        wheelCount = car.getVehicleControl().getNumWheels();
+        angles = new float[wheelCount][3];
 
         rot = new Quaternion[wheelCount];
 
