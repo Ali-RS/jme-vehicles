@@ -250,7 +250,7 @@ public class DrivingInputState
         inputMapper.map(F_TURN_RIGHT, KeyInput.KEY_D);
 
         inputMapper.map(F_REVERSE, KeyInput.KEY_E);
-        inputMapper.map(F_HANDBRAKE, KeyInput.KEY_Q);
+        inputMapper.map(F_HANDBRAKE, KeyInput.KEY_SPACE);
         inputMapper.map(F_RESET, KeyInput.KEY_R);
         inputMapper.map(F_CAMVIEW, KeyInput.KEY_F5);
         inputMapper.map(F_HORN, KeyInput.KEY_H);
