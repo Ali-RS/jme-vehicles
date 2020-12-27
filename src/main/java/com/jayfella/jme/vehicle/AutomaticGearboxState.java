@@ -6,13 +6,13 @@ import com.jayfella.jme.vehicle.part.GearBox;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
+import com.jme3.math.FastMath;
 
 public class AutomaticGearboxState extends BaseAppState {
 
     final private Vehicle vehicle;
     private GearBox gearBox;
 
-    private boolean isCar;
     private Car car;
     private int wheelCount;
 
@@ -20,7 +20,6 @@ public class AutomaticGearboxState extends BaseAppState {
         this.vehicle = vehicle;
 
         if (vehicle instanceof Car) {
-            isCar = true;
             car = (Car) vehicle;
         }
     }
@@ -73,72 +72,64 @@ public class AutomaticGearboxState extends BaseAppState {
             return;
         }
 
-        // gearboxes speeds are in km/h.
+        GearBox gearbox = vehicle.getGearBox();
+        float signedKph = vehicle.getSpeed(SpeedUnit.KPH);
+        float revs; // as a fraction of redline
+        if (gearbox.isInReverse()) {
+            float maxReverseKph = 40f; // TODO
+            revs = -signedKph / maxReverseKph;
 
-        // limit the reported speed to the max speed.
-        // if we don't do this and exceed the max speed of the gearbox, the revs return to zero.
-        float speed = Math.min(vehicle.getSpeed(SpeedUnit.KPH), vehicle.getGearBox().getMaxSpeed(SpeedUnit.KPH));
-
-        float revs = 0;
-
-        for (int i = 0; i < gearBox.getGearCount(); i++) {
-            Gear gear = gearBox.getGear(i);
-
-            if (speed > gear.getStart() && speed <= gear.getEnd()) {
-                gearBox.setActiveGearNum(i);
-
-                revs = unInterpolateLinear(speed, gear.getStart(), gear.getEnd());
-                break;
+        } else { // in some forward driving gear
+            int numGears = gearbox.getGearCount();
+            int gearIndex = gearbox.getActiveGearNum();
+            Gear gear = gearBox.getGear(gearIndex);
+            float minKph = gear.getStart();
+            float maxKph = gear.getEnd();
+            if (signedKph < minKph && gearIndex > 0) {
+                --gearIndex;
+                //System.out.println("Downshifting to " + gearIndex);
+            } else if (signedKph > maxKph && gearIndex < numGears - 1) {
+                ++gearIndex;
+                //System.out.println("Upshifting to " + gearIndex);
             }
+            gearbox.setActiveGearNum(gearIndex); // TODO not instantaneous
+
+            gear = gearBox.getGear(gearIndex);
+            maxKph = gear.getEnd();
+            revs = signedKph / maxKph;
         }
 
-        // this should be "if has wheels" or something.
-        // we need to calculate "slip" at the same time we calculate the revs.
-        // the gearbox is responsible for the "base" revs, and outside interaction can alter that, such as wheel spin.
-        if (isCar) {
+        float accelerateSignal = car.accelerateSignal();
+        accelerateSignal = FastMath.abs(accelerateSignal);
+        if (accelerateSignal == 0f) { // coasting
+            revs = 0f;
 
-            float revIncrease = 0;
+        } else if (wheelCount > 0) {
+            float boostRevs = 0f;
+            for (int wheelIndex = 0; wheelIndex < wheelCount; ++wheelIndex) {
+                Wheel wheel = car.getWheel(wheelIndex);
+                float wheelFraction = wheel.getPowerFraction();
+                float scaledSignal = wheelFraction * accelerateSignal;
 
-            for (int i = 0; i < wheelCount; i++) {
+                // how much the tire is slipping (0-1, 0=full traction)
+                float slipFraction = 1f - wheel.getVehicleWheel().getSkidInfo();
+                assert slipFraction >= 0f && slipFraction <= 1f : slipFraction;
 
-                Wheel wheel = car.getWheel(i);
-
-                // how much this wheel is "skidding".
-                float skid = 1.0f - wheel.getVehicleWheel().getSkidInfo();
-                skid *= 0.4f;
-                // the acceleration force being applied to this wheel in 0-1 range.
-                float wheelforce = wheel.getPowerFraction();
-
-                // the acceleration force of the accelerator pedal in 0-1 range.
-                float acceleration = car.accelerateSignal();
-
-                // the amount of force being applied to this wheel as a result of acceleration.
-                float totalForce = acceleration * wheelforce;
-
-                // if the wheel is accelerating and slipping, increase the revs.
-                // find the range of the current revs vs the max revs.
-                float revsLeft = 1.0f - car.getEngine().getRpmFraction();
-
-                // float revRange = unInterpolateLinear((totalForce * skid), revsLeft, 1.0f);
-                revIncrease = (totalForce * skid);
-
-                // if (revRange > revIncrease) {
-                    // revIncrease = revRange;
-                // }
+                // If both accelerating and slipping, boost the revs.
+                boostRevs += scaledSignal * slipFraction;
             }
-
-            revs += revIncrease;
-            // System.out.println("revs: " + revs + " / " + revIncrease);
-
-            float idlingFraction = engine.getIdleRpm() / engine.getMaxRevs();
-            if (revs < idlingFraction) {
-                revs = idlingFraction;
-            }
-            engine.setRevs(revs);
+            revs += boostRevs;
         }
-    }
+        /*
+         * Prevent the engine from stalling or passing the redline.
+         */
+        float idleFraction = engine.getIdleRpm() / engine.getMaxRevs();
+        if (revs < idleFraction) {
+            revs = idleFraction;
+        } else if (revs > 1f) {
+            revs = 1f;
+        }
 
-    private float unInterpolateLinear(float value, float min, float max) {
-        return (value - min) / (max - min);
+        engine.setRevs(revs);
     }
 }
