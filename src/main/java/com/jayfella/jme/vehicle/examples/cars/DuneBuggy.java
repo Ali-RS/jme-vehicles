@@ -3,7 +3,7 @@ package com.jayfella.jme.vehicle.examples.cars;
 import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.engine.Engine;
-import com.jayfella.jme.vehicle.examples.engines.Engine250HP;
+import com.jayfella.jme.vehicle.examples.engines.Engine180HP;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
 import com.jayfella.jme.vehicle.examples.wheels.BuggyFrontWheel;
 import com.jayfella.jme.vehicle.examples.wheels.BuggyRearWheel;
@@ -149,16 +149,14 @@ public class DuneBuggy extends Car {
          * Successive gears should overlap.
          * The "end" value of the last gear should determine the top speed.
          */
-        GearBox gearBox = new GearBox(6);
+        GearBox gearBox = new GearBox(4);
         gearBox.setGear(0, 0f, 15f);
-        gearBox.setGear(1, 15f, 30f);
-        gearBox.setGear(2, 30f, 45f);
-        gearBox.setGear(3, 45f, 80f);
-        gearBox.setGear(4, 80f, 140f);
-        gearBox.setGear(5, 140f, 220f);
+        gearBox.setGear(1, 5f, 30f);
+        gearBox.setGear(2, 25f, 50f);
+        gearBox.setGear(3, 45f, 90f);
         setGearBox(gearBox);
 
-        Engine engine = new Engine250HP();
+        Engine engine = new Engine180HP();
         engine.setEngineAudio(assetManager, "Audio/engine-5.ogg");
         setEngine(engine);
 
