@@ -3,7 +3,7 @@ package com.jayfella.jme.vehicle.examples.cars;
 import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.engine.Engine;
-import com.jayfella.jme.vehicle.examples.engines.Engine180HP;
+import com.jayfella.jme.vehicle.examples.engines.Engine250HP;
 import com.jayfella.jme.vehicle.examples.tires.Tire_02;
 import com.jayfella.jme.vehicle.examples.wheels.HatchbackWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
@@ -17,7 +17,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A sample Car.
+ * A sample Car, built around Daniel Zhabotinsky's "Modern Hatchback - Low Poly"
+ * model.
  */
 public class HatchBack extends Car {
     // *************************************************************************
@@ -142,16 +143,14 @@ public class HatchBack extends Car {
          * Successive gears should overlap.
          * The "end" value of the last gear should determine the top speed.
          */
-        GearBox gearBox = new GearBox(6);
-        gearBox.setGear(0, 0f, 20f);
-        gearBox.setGear(1, 20f, 40f);
-        gearBox.setGear(2, 40f, 75f);
-        gearBox.setGear(3, 75f, 110f);
-        gearBox.setGear(4, 110f, 140f);
-        gearBox.setGear(5, 140f, 200f);
+        GearBox gearBox = new GearBox(4);
+        gearBox.setGear(0, 0f, 30f);
+        gearBox.setGear(1, 20f, 60f);
+        gearBox.setGear(2, 50f, 100f);
+        gearBox.setGear(3, 80f, 140f);
         setGearBox(gearBox);
 
-        Engine engine = new Engine180HP();
+        Engine engine = new Engine250HP();
         engine.setEngineAudio(assetManager, "Audio/engine-4.ogg");
         setEngine(engine);
 
