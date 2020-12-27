@@ -98,10 +98,16 @@ public class Wheel {
     public Wheel(VehicleControl vehicleControl, int wheelIndex,
             boolean isSteering, boolean steeringFlipped, Suspension suspension,
             Brake mainBrake, Brake parkingBrake) {
+        Validate.nonNegative(wheelIndex, "wheel index");
+        Validate.nonNull(suspension, "suspension");
+        Validate.nonNull(mainBrake, "main brake");
+        Validate.nonNull(parkingBrake, "parking brake");
+
         this.vehicleControl = vehicleControl;
 
         this.wheelIndex = wheelIndex;
         vehicleWheel = vehicleControl.getWheel(wheelIndex);
+        assert vehicleWheel != null;
 
         this.isSteering = isSteering;
         this.isSteeringFlipped = steeringFlipped;
@@ -200,6 +206,7 @@ public class Wheel {
      * @return the power fraction (&ge;0, &le;1)
      */
     public float getPowerFraction() {
+        assert powerFraction >= 0f && powerFraction <= 1f : powerFraction;
         return powerFraction;
     }
 
@@ -221,6 +228,8 @@ public class Wheel {
      */
     public void accelerate(float force) {
         vehicleControl.accelerate(wheelIndex, force);
+        assert vehicleWheel.getEngineForce() == force :
+                vehicleWheel.getEngineForce();
     }
 
     /**
@@ -278,10 +287,12 @@ public class Wheel {
     }
 
     public float getMaxSteerAngle() {
+        assert maxSteerAngle >= 0f : maxSteerAngle;
         return maxSteerAngle;
     }
 
     public void setMaxSteerAngle(float maxSteerAngle) {
+        Validate.nonNegative(maxSteerAngle, "max steer angle");
         this.maxSteerAngle = maxSteerAngle;
     }
 
@@ -290,15 +301,19 @@ public class Wheel {
     }
 
     public void setSize(float diameter) {
+        Validate.positive(diameter, "diameter");
+
         vehicleWheel.getWheelSpatial().setLocalScale(diameter);
         vehicleWheel.setRadius(diameter / 2);
     }
 
     public Suspension getSuspension() {
+        assert suspension != null;
         return suspension;
     }
 
     public VehicleWheel getVehicleWheel() {
+        assert vehicleWheel != null;
         return vehicleWheel;
     }
 

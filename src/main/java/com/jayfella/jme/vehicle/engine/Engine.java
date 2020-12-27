@@ -68,12 +68,13 @@ abstract public class Engine {
      * @param name the desired name (not null)
      * @param maxWatts the desired maximum power output (in Watts, &gt;0)
      * @param idleRpm the desired idle speed (in RPMs, &ge;0, &lt;redlineRpm)
-     * @param redlineRpm the resired redline speed (&gt;0)
+     * @param redlineRpm the desired redline speed (&gt;0)
      */
     public Engine(String name, float maxWatts, float idleRpm,
             float redlineRpm) {
-        Validate.positive(redlineRpm, "redline RPM");
+        Validate.positive(maxWatts, "max Watts");
         Validate.inRange(idleRpm, "idle RPM", 0f, redlineRpm);
+        Validate.positive(redlineRpm, "redline RPM");
 
         this.name = name;
         this.maxOutputWatts = maxWatts;
@@ -92,6 +93,8 @@ abstract public class Engine {
     abstract public float evaluateSpline(float rpm);
 
     public float evaluateSpline(Spline powerGraph, float range) {
+        Validate.inRange(range, "RPM", 0f, redlineRpm);
+
         int index = powerGraph.getControlPoints().size() - 1;
         Vector3f point = powerGraph.getControlPoints().get(index);
 
@@ -124,7 +127,7 @@ abstract public class Engine {
      * &le;redlineRpm)
      */
     public float getIdleRpm() {
-        assert idleRpm >= 0f : idleRpm;
+        assert idleRpm >= 0f && idleRpm <= redlineRpm : idleRpm;
         return idleRpm;
     }
 
@@ -135,6 +138,7 @@ abstract public class Engine {
      * &gt;idlRpm)
      */
     public float getMaxRevs() {
+        assert redlineRpm > 0f : redlineRpm;
         return redlineRpm;
     }
 
@@ -144,6 +148,7 @@ abstract public class Engine {
      * @return the descriptive name (not null)
      */
     public String getName() {
+        assert name != null;
         return name;
     }
 
@@ -153,6 +158,7 @@ abstract public class Engine {
      * @return the power (in Watts, &gt;0)
      */
     public float getPower() {
+        assert maxOutputWatts > 0f : maxOutputWatts;
         return maxOutputWatts;
     }
 
@@ -165,8 +171,10 @@ abstract public class Engine {
         float revs = getRpmFraction() * getMaxRevs();
         revs = FastMath.clamp(revs, 0, getMaxRevs() - 0.01f);
         float powerFraction = evaluateSpline(revs);
+        float result = powerFraction * getPower();
 
-        return powerFraction * getPower();
+        assert result >= 0f && result <= getPower() : result;
+        return result;
     }
 
     /**
@@ -175,6 +183,7 @@ abstract public class Engine {
      * @return the fraction (&ge;0)
      */
     public float getRpmFraction() {
+        assert rpmFraction >= 0f && rpmFraction <= 1f : rpmFraction;
         return rpmFraction;
     }
 
@@ -194,6 +203,8 @@ abstract public class Engine {
      * @param audioFile an asset path to the desired sound (not null)
      */
     public void setEngineAudio(AssetManager assetManager, String audioFile) {
+        Validate.nonEmpty(audioFile, "asset path");
+
         audioNode = new AudioNode(assetManager, audioFile,
                 AudioData.DataType.Buffer);
         audioNode.setLooping(true);
@@ -218,6 +229,7 @@ abstract public class Engine {
      * @param watts the desired amount of power (&gt;0)
      */
     public void setPower(float watts) {
+        Validate.positive(watts, "watts");
         maxOutputWatts = watts;
     }
 
@@ -228,6 +240,7 @@ abstract public class Engine {
      * @param revs the desired fraction (&ge;0)
      */
     public void setRevs(float revs) {
+        Validate.fraction(revs, "revs");
         rpmFraction = revs;
     }
 
