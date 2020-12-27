@@ -92,9 +92,7 @@ abstract public class Engine {
      */
     abstract public float evaluateSpline(float rpm);
 
-    public float evaluateSpline(Spline powerGraph, float range) {
-        Validate.inRange(range, "RPM", 0f, redlineRpm);
-
+    public static float evaluateSpline(Spline powerGraph, float range) {
         int index = powerGraph.getControlPoints().size() - 1;
         Vector3f point = powerGraph.getControlPoints().get(index);
 
@@ -274,8 +272,8 @@ abstract public class Engine {
      * @param newMax the new maximum value
      * @return the new value
      */
-    private float map(float value, float oldMin, float oldMax, float newMin,
-            float newMax) {
+    private static float map(float value, float oldMin, float oldMax,
+            float newMin, float newMax) {
         return (((value - oldMin) * (newMax - newMin)) / (oldMax - oldMin)) + newMin;
     }
 }
