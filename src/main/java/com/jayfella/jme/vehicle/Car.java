@@ -54,7 +54,7 @@ abstract public class Car extends Vehicle {
 
     public Wheel addWheel(WheelModel wheelModel, Vector3f connectionLocation,
             boolean isSteering, boolean isSteeringFlipped,
-            float brakeStrength) {
+            float brakeStrength, float parkingBrakePeakForce) {
         VehicleControl vehicleControl = getVehicleControl();
         Node wheelNode = wheelModel.getWheelNode();
         Vector3f suspensionDirection = new Vector3f(0f, -1f, 0f);
@@ -68,8 +68,9 @@ abstract public class Car extends Vehicle {
         int wheelIndex = wheels.size();
         Suspension suspension = new Suspension(vehicleWheel);
         Brake brake = new Brake(brakeStrength);
+        Brake parkingBrake = new Brake(parkingBrakePeakForce);
         Wheel wheel = new Wheel(vehicleControl, wheelIndex, isSteering,
-                isSteeringFlipped, suspension, brake);
+                isSteeringFlipped, suspension, brake, parkingBrake);
         wheels.add(wheel);
 
         getNode().attachChild(wheelNode);
@@ -200,9 +201,9 @@ abstract public class Car extends Vehicle {
     }
 
     @Override
-    public void setBrakeSignal(float strength) {
+    public void setBrakeSignal(float strength, float parkingStrength) {
         for (Wheel wheel : wheels) {
-            wheel.brake(strength);
+            wheel.brake(strength, parkingStrength);
         }
     }
 
@@ -240,26 +241,6 @@ abstract public class Car extends Vehicle {
         manager.attach(skidmarks);
         manager.attach(magicFormulaState);
         manager.attach(wheelSpinState);
-    }
-
-    @Override
-    public void handbrake(float strength) {
-        // just apply the brakes to the rear wheels.
-        wheels.get(2).brake(strength, 100);
-        wheels.get(3).brake(strength, 100);
-    }
-
-    @Override
-    public void setParkingBrakeApplied(boolean applied) {
-        super.setParkingBrakeApplied(applied);
-
-        if (applied) {
-            wheels.get(2).brake(1);
-            wheels.get(3).brake(1);
-        } else {
-            wheels.get(2).brake(0);
-            wheels.get(3).brake(0);
-        }
     }
 
     @Override

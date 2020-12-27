@@ -174,7 +174,7 @@ public class WheelSpinState extends BaseAppState {
                 rot[i].fromAngles(angles[i]);
 
                 wheelGeom.setLocalRotation(rot[i]);
-            } else if (wheel.getBrakeStrength() > 0) {
+            } else if (wheel.isBraking()) {
 
                 // calculate how fast this wheel should be rotating at the speed it's travelling.
                 // multiply it by how much slip the wheel is experiencing

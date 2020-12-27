@@ -89,14 +89,15 @@ public class GrandTourer extends Car {
         boolean rear = false; // Rear wheels do not steer.
         boolean steeringFlipped = false;
         float mainBrake = 6_000f; // in front only
+        float parkingBrake = 25_000f; // in rear only
         addWheel(wheel_fl, new Vector3f(+wheelX, frontY, frontZ), front,
-                steeringFlipped, mainBrake);
+                steeringFlipped, mainBrake, 0f);
         addWheel(wheel_fr, new Vector3f(-wheelX, frontY, frontZ), front,
-                steeringFlipped, mainBrake);
+                steeringFlipped, mainBrake, 0f);
         addWheel(wheel_rl, new Vector3f(+wheelX, rearY, rearZ), rear,
-                steeringFlipped, 0f);
+                steeringFlipped, 0f, parkingBrake);
         addWheel(wheel_rr, new Vector3f(-wheelX, rearY, rearZ), rear,
-                steeringFlipped, 0f);
+                steeringFlipped, 0f, parkingBrake);
         /*
          * Configure the suspension.
          * This vehicle applies the same settings to each wheel,

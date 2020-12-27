@@ -87,14 +87,15 @@ public class PickupTruck extends Car {
         boolean rear = false; // Rear wheels do not steer.
         boolean steeringFlipped = false;
         float mainBrake = 4_000f; // all 4 wheels
+        float parkingBrake = 25_000f; // in rear only
         addWheel(wheel_fl, new Vector3f(+wheelX, axleY, frontZ), front,
-                steeringFlipped, mainBrake);
+                steeringFlipped, mainBrake, 0f);
         addWheel(wheel_fr, new Vector3f(-wheelX, axleY, frontZ), front,
-                steeringFlipped, mainBrake);
+                steeringFlipped, mainBrake, 0f);
         addWheel(wheel_rl, new Vector3f(+wheelX, axleY, rearZ), rear,
-                steeringFlipped, mainBrake);
+                steeringFlipped, mainBrake, parkingBrake);
         addWheel(wheel_rr, new Vector3f(-wheelX, axleY, rearZ), rear,
-                steeringFlipped, mainBrake);
+                steeringFlipped, mainBrake, parkingBrake);
         /*
          * Configure the suspension.
          * This vehicle applies the same settings to each wheel,

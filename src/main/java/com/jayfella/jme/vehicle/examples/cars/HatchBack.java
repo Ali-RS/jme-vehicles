@@ -87,14 +87,15 @@ public class HatchBack extends Car {
         boolean rear = false; // Rear wheels do not steer.
         boolean steeringFlipped = false;
         float mainBrake = 5_000f; // in front only
+        float parkingBrake = 25_000f; // in front only
         addWheel(wheel_fl, new Vector3f(+wheelX, axleY, frontZ), front,
-                steeringFlipped, mainBrake);
+                steeringFlipped, mainBrake, parkingBrake);
         addWheel(wheel_fr, new Vector3f(-wheelX, axleY, frontZ), front,
-                steeringFlipped, mainBrake);
+                steeringFlipped, mainBrake, parkingBrake);
         addWheel(wheel_rl, new Vector3f(+wheelX, axleY, rearZ), rear,
-                steeringFlipped, 0f);
+                steeringFlipped, 0f, 0f);
         addWheel(wheel_rr, new Vector3f(-wheelX, axleY, rearZ), rear,
-                steeringFlipped, 0f);
+                steeringFlipped, 0f, 0f);
         /*
          * Configure the suspension.
          * This vehicle applies the same settings to each wheel,

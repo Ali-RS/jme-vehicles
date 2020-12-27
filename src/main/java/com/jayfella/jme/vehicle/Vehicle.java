@@ -98,12 +98,15 @@ abstract public class Vehicle {
     }
 
     /**
-     * Alter the "brake" control signal.
+     * Alter the values of the brake control signals. TODO rename
+     * setBrakeSignals()
      *
-     * @param value the desired value, between 0 (not applied) and 1 (applied as
-     * hard as possible)
+     * @param strength the strength of the main-brake control signal, between 0
+     * (not applied) and 1 (applied as strongly as possible)
+     * @param parkingValue the strength of the parking-brake control signal,
+     * between 0 (not applied) and 1 (applied as strongly as possible)
      */
-    abstract public void setBrakeSignal(float strength);
+    abstract public void setBrakeSignal(float strength, float parkingValue);
 
     /**
      * Determine the offset of the vehicle's DashCamera.
@@ -194,8 +197,6 @@ abstract public class Vehicle {
     public VehicleControl getVehicleControl() {
         return vehicleControl;
     }
-
-    abstract public void handbrake(float strength);
 
     /**
      * Load this Vehicle from assets.

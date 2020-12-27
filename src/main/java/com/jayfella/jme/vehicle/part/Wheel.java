@@ -1,6 +1,9 @@
 package com.jayfella.jme.vehicle.part;
 
+import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.tire.PacejkaTireModel;
+import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.objects.VehicleWheel;
 import com.jme3.math.FastMath;
@@ -20,6 +23,10 @@ public class Wheel {
      * steer with a rear wheel by flipping the direction
      */
     private boolean isSteeringFlipped;
+    /**
+     * parking (aka hand or emergency) brake
+     */
+    final private Brake parkingBrake;
     /**
      * fraction of the total drive power to apply to this wheel (&ge;0, &le;1)
      */
@@ -42,15 +49,12 @@ public class Wheel {
 
     // grip degradation: 1 = full grip the tire allows, 0 = dead tire
     private float grip = 1f;
-
-    // the amount of braking strength being applied. Between 0 and 1
-    private float brakeStrength = 0f;
     // *************************************************************************
     // constructors
 
     public Wheel(VehicleControl vehicleControl, int wheelIndex,
             boolean isSteering, boolean steeringFlipped, Suspension suspension,
-            Brake brake) {
+            Brake brake, Brake parkingBrake) {
         this.vehicleControl = vehicleControl;
 
         this.wheelIndex = wheelIndex;
@@ -61,6 +65,7 @@ public class Wheel {
 
         this.suspension = suspension;
         this.brake = brake;
+        this.parkingBrake = parkingBrake;
 
         setFriction(1f);
     }
@@ -143,28 +148,31 @@ public class Wheel {
     }
 
     /**
-     * Causes the wheel to slow down.
+     * Update the braking impulse applied to this wheel. TODO rename
+     * updateBrakes()
      *
-     * @param strength the strength of the braking force from 0 - 1.
+     * @param strength the strength of the main-brake control signal (&ge;0,
+     * &le;1)
+     * @param parkingStrength the strength of the parking-brake control signal
+     * (&ge;0, &le;1)
      */
-    public void brake(float strength) {
-        brakeStrength = strength;
-        vehicleControl.brake(wheelIndex, brake.getStrength() * strength);
-    }
+    public void brake(float strength, float parkingStrength) {
+        Validate.fraction(strength, "strength");
+        Validate.fraction(parkingStrength, "parking strength");
 
-    public float getBrakeStrength() {
-        return brakeStrength;
-    }
+        BulletAppState bas = Main.findAppState(BulletAppState.class);
+        PhysicsSpace physicsSpace = bas.getPhysicsSpace();
+        float timeStep = physicsSpace.getAccuracy();
 
-    /**
-     * Causes the wheel to slow down. This method is usually used for a
-     * handbrake. It overrides the specified brake strength.
-     *
-     * @param strength the force of the brake from 0 - 1
-     * @param brakeStrength the strength of the brake force at 1 (100%).
-     */
-    public void brake(float strength, float brakeStrength) {
-        vehicleControl.brake(wheelIndex, brakeStrength * strength);
+        float force = strength * brake.getStrength()
+                + parkingStrength * parkingBrake.getStrength();
+        float impulse = force * timeStep;
+        if (impulse != vehicleWheel.getBrake()) {
+            //System.out.printf("brake[%d] = %f%n", wheelIndex, impulse);
+        }
+        vehicleControl.brake(wheelIndex, impulse);
+
+        assert vehicleWheel.getBrake() == impulse : vehicleWheel.getBrake();
     }
 
     public Brake getBrake() {
@@ -271,6 +279,20 @@ public class Wheel {
 
     public float getRotationDelta() {
         return rotationDelta;
+    }
+
+    /**
+     * Test whether this wheel's brakes are applied.
+     *
+     * @return false if the braking impulse is negligible, otherwise true
+     */
+    public boolean isBraking() {
+        float impulse = vehicleWheel.getBrake();
+        if (impulse > +1f || impulse < -1f) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void setRotationDelta(float rotationDelta) {

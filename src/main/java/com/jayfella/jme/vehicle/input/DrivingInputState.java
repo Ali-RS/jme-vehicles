@@ -66,8 +66,8 @@ public class DrivingInputState
             = new FunctionId(G_VEHICLE, "Camera View");
     final private static FunctionId F_FOOTBRAKE
             = new FunctionId(G_VEHICLE, "Vehicle Footbrake");
-    final private static FunctionId F_HANDBRAKE
-            = new FunctionId(G_VEHICLE, "Vehicle Handbrake");
+    final private static FunctionId F_PARKING_BRAKE
+            = new FunctionId(G_VEHICLE, "Vehicle Parking Brake");
     final private static FunctionId F_HORN
             = new FunctionId(G_VEHICLE, "Vehicle Horn");
     final private static FunctionId F_FORWARD
@@ -114,7 +114,7 @@ public class DrivingInputState
     final private float returnRate = 2f; // radians per second
     final private float turnRate = 0.5f; // radians per second
 
-    private boolean accelerating, braking;
+    private boolean accelerating, braking, parkingBrake;
     private boolean turningLeft, turningRight;
 
     private float steeringAngle = 0f;
@@ -250,7 +250,7 @@ public class DrivingInputState
         inputMapper.map(F_TURN_RIGHT, KeyInput.KEY_D);
 
         inputMapper.map(F_REVERSE, KeyInput.KEY_E);
-        inputMapper.map(F_HANDBRAKE, KeyInput.KEY_SPACE);
+        inputMapper.map(F_PARKING_BRAKE, KeyInput.KEY_SPACE);
         inputMapper.map(F_RESET, KeyInput.KEY_R);
         inputMapper.map(F_CAMVIEW, KeyInput.KEY_F5);
         inputMapper.map(F_HORN, KeyInput.KEY_H);
@@ -345,12 +345,8 @@ public class DrivingInputState
         } else if (func == F_REVERSE) {
             vehicle.getGearBox().setReversing(pressed);
 
-        } else if (func == F_HANDBRAKE) {
-            // if (pressed) {
-            // vehicle.setParkingBrakeApplied(!vehicle.isParkingBrakeApplied());
-            // }
-            // vehicle.setParkingBrakeApplied(pressed);
-            vehicle.handbrake(pressed ? 1f : 0f);
+        } else if (func == F_PARKING_BRAKE) {
+            parkingBrake = pressed;
 
         } else if (func == F_TURN_LEFT) {
             turningLeft = pressed;
@@ -479,11 +475,12 @@ public class DrivingInputState
     }
 
     private void updateBrakeAndAccelerate() {
-        if (braking) {
-            vehicle.setBrakeSignal(1f);
-        } else {
-            vehicle.setBrakeSignal(0f);
-        }
+        /*
+         * Update the brake control signals.
+         */
+        float main = braking ? 1f : 0f;
+        float parking = parkingBrake ? 1f : 0f;
+        vehicle.setBrakeSignal(main, parking);
         /*
          * Update the "accelerate" control signal.
          */
