@@ -19,12 +19,9 @@ public class Engine180HP extends Engine {
         new Vector3f(0f, 0.25f, 0f),
         new Vector3f(1_000, 0.35f, 0f),
         new Vector3f(2_000, 0.4f, 0f),
-        new Vector3f(3_000, 0.6f, 0f),
-        new Vector3f(4_000, 0.7f, 0f),
-        new Vector3f(5_000, 0.95f, 0f),
-        new Vector3f(6_000, 0.99f, 0f),
-        new Vector3f(7_000, 0.95f, 0f),
-        new Vector3f(7_500, 0.85f, 0f)
+        new Vector3f(3_000, 0.8f, 0f),
+        new Vector3f(4_000, 0.99f, 0f),
+        new Vector3f(5_000, 0.95f, 0f)
     };
     // *************************************************************************
     // fields
