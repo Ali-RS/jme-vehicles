@@ -172,31 +172,27 @@ abstract public class Car extends Vehicle {
     // *************************************************************************
     // Vehicle methods
 
+    /**
+     * Alter the value of the "accelerate" control signal and update the drive
+     * force applied to each wheel.
+     *
+     * @param strength the "accelerate" control-signal value: between -1
+     * (full-throttle reverse) and +1 (full-throttle forward) inclusive
+     */
     @Override
     public void setAccelerateSignal(float strength) {
         super.setAccelerateSignal(strength);
-
-        if (getEngine().isRunning()) {
-            for (Wheel wheel : wheels) {
-                if (wheel.getPowerFraction() > 0f) {
-                    /*
-                     * Reduce power by up to 75% to simulate air resistance.
-                     */
-                    float currentKph = getSpeed(SpeedUnit.KPH);
-                    float maxKph = getGearBox().getMaxSpeed(SpeedUnit.KPH);
-                    float speedRatio = currentKph / maxKph;
-                    float powerFactor = Math.max(0.25f, 1f - speedRatio);
-
-                    float power = strength * getEngine().getPowerOutputAtRevs();
-                    power *= powerFactor;
-                    float wheelForce = accelerateSignal() * power;
-                    wheel.accelerate(wheelForce);
-
-                } else {
-                    // we always set this because the wheel could be "broken down" over time.
-                    wheel.accelerate(0f);
-                }
-            }
+        /*
+         * Distribute the engine's power across the wheels in accordance
+         * with their configured power fractions.
+         */
+        float maxWatts = getEngine().getPowerOutputAtRevs();
+        //System.out.println("speed = " + speed + " rpm = " + getEngine().getRpm() + " maxWatts = " + maxWatts);
+        float totalWatts = strength * maxWatts; // signed so that <0 means reverse
+        for (Wheel wheel : wheels) {
+            float powerFraction = wheel.getPowerFraction();
+            float wheelForce = powerFraction * totalWatts;
+            wheel.accelerate(wheelForce);
         }
     }
 
