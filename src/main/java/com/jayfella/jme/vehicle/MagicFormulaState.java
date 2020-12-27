@@ -185,13 +185,13 @@ public class MagicFormulaState extends BaseAppState {
 
     private Geometry createArrow(Vector3f dir, ColorRGBA color) {
         Arrow arrow = new Arrow(dir);
-        Geometry geometry = new Geometry("arrow", arrow);
-        geometry.setMaterial(new Material(Main.getApplication().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md"));
-        geometry.getMaterial().getAdditionalRenderState().setWireframe(true);
-        geometry.getMaterial().getAdditionalRenderState().setLineWidth(4);
-        geometry.getMaterial().setColor("Color", color);
+        Geometry result = new Geometry("arrow", arrow);
+        result.setMaterial(new Material(Main.getApplication().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md"));
+        result.getMaterial().getAdditionalRenderState().setWireframe(true);
+        result.getMaterial().getAdditionalRenderState().setLineWidth(4);
+        result.getMaterial().setColor("Color", color);
 
-        return geometry;
+        return result;
     }
 
     private Geometry wheelDirArrow;
@@ -218,12 +218,12 @@ public class MagicFormulaState extends BaseAppState {
             vehicleTravel.setY(0);
         }
 
-        float angle = wheelDir.angleBetween(vehicleTravel);
+        float result = wheelDir.angleBetween(vehicleTravel);
         // System.out.println(wheel.getVehicleWheel().getWheelSpatial().getName() + ": " + angle * FastMath.RAD_TO_DEG);
 
-        angle = Math.max(0.1f, angle);
+        result = Math.max(0.1f, result);
 
-        return angle;
+        return result;
     }
 
     // calculate the amount of weight on the wheel.
@@ -242,17 +242,17 @@ public class MagicFormulaState extends BaseAppState {
 
         // the load starts by sharing it with each wheel. One quarter per wheel.
         int wheelCount = vehicle.getNumWheels();
-        float load = vehicle.getVehicleControl().getMass() / wheelCount;// * 0.25f;
+        float result = vehicle.getVehicleControl().getMass() / wheelCount;// * 0.25f;
 
         // front-back
         // so the angle is in radians. at 90 degrees it should take full load.
         if (i < 2) { // if it's the front wheels
             if (xAngle > 0) {
-                load += (vehicle.getVehicleControl().getMass()) * (xAngle / FastMath.QUARTER_PI);
+                result += (vehicle.getVehicleControl().getMass()) * (xAngle / FastMath.QUARTER_PI);
             }
         } else {
             if (xAngle < 0) {
-                load += (vehicle.getVehicleControl().getMass()) * (-xAngle / FastMath.QUARTER_PI);
+                result += (vehicle.getVehicleControl().getMass()) * (-xAngle / FastMath.QUARTER_PI);
             }
         }
 
@@ -260,16 +260,16 @@ public class MagicFormulaState extends BaseAppState {
         if ((i + 1) % 2 == 0) {
             if (zAngle > 0) {
                 // load += (vehicle.getVehicleControl().getMass() * 1.25) * -zAngle;
-                load += (vehicle.getVehicleControl().getMass()) * (-zAngle / FastMath.QUARTER_PI);
+                result += (vehicle.getVehicleControl().getMass()) * (-zAngle / FastMath.QUARTER_PI);
             }
         } else {
             if (zAngle < 0) {
                 //load += (vehicle.getVehicleControl().getMass() * 1.25) * zAngle;
-                load += (vehicle.getVehicleControl().getMass()) * (zAngle / FastMath.QUARTER_PI);
+                result += (vehicle.getVehicleControl().getMass()) * (zAngle / FastMath.QUARTER_PI);
             }
         }
 
-        return load;
+        return result;
     }
 
     /**

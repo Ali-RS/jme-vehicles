@@ -71,11 +71,11 @@ public class GrandTourer extends Car {
          * By convention, wheels are modeled for the left side, so
          * wheel models for the right side require a 180-degree rotation.
          */
-        float wheelScale = 0.85f;
-        WheelModel wheel_fl = new CruiserWheel(wheelScale);
-        WheelModel wheel_fr = new CruiserWheel(wheelScale).flip();
-        WheelModel wheel_rl = new CruiserWheel(wheelScale);
-        WheelModel wheel_rr = new CruiserWheel(wheelScale).flip();
+        float diameter = 0.85f;
+        WheelModel wheel_fl = new CruiserWheel(diameter);
+        WheelModel wheel_fr = new CruiserWheel(diameter).flip();
+        WheelModel wheel_rl = new CruiserWheel(diameter);
+        WheelModel wheel_rr = new CruiserWheel(diameter).flip();
         /*
          * Add the wheels to the vehicle.
          * For rear-wheel steering, it will be necessary to "flip" the steering.

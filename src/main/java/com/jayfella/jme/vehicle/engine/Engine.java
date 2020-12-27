@@ -36,11 +36,11 @@ abstract public class Engine {
     /*
      * maximum power output (total across all axles, &gt;0)
      */
-    private float maxPower;
+    private float maxOutputWatts;
     /*
      * revolutions per minute (RPMs) at the redline (&ge;idleRpm)
      */
-    private float redline;
+    private float redlineRpm;
     /*
      * current RPMs as a fraction of the redline (&ge;0)
      */
@@ -56,18 +56,19 @@ abstract public class Engine {
      * Instantiate an Engine in the "off" state, without audio.
      *
      * @param name a descriptive name
-     * @param power the desired maximum power output (&gt;0)
-     * @param idleSpeed the desired idle speed (in RPMs, &ge;0)
-     * @param maxRevs the desired RPMs at the redline (&gt;0)
+     * @param maxWatts the desired maximum power output (in Watts, &gt;0)
+     * @param idleRpm the desired idle speed (in RPMs, &ge;0)
+     * @param redlineRpm the desired RPMs at the redline (&gt;0)
      */
-    public Engine(String name, float power, float idleSpeed, float maxRevs) {
-        Validate.positive(maxRevs, "redline");
-        Validate.inRange(idleSpeed, "idle speed", 0f, maxRevs);
+    public Engine(String name, float maxWatts, float idleRpm,
+            float redlineRpm) {
+        Validate.positive(redlineRpm, "redline RPM");
+        Validate.inRange(idleRpm, "idle RPM", 0f, redlineRpm);
 
         this.name = name;
-        this.maxPower = power;
-        this.idleRpm = idleSpeed;
-        this.redline = maxRevs;
+        this.maxOutputWatts = maxWatts;
+        this.idleRpm = idleRpm;
+        this.redlineRpm = redlineRpm;
     }
     // *************************************************************************
     // new methods exposed
@@ -75,10 +76,10 @@ abstract public class Engine {
     /**
      * Evaluate this engine's power graph.
      *
-     * @param range a value from 0-maxRevs
+     * @param rpm a value from 0-maxRevs
      * @return the power at this rev-range, from 0 to getPower().
      */
-    abstract public float evaluateSpline(float range);
+    abstract public float evaluateSpline(float rpm);
 
     public float evaluateSpline(Spline powerGraph, float range) {
         int index = powerGraph.getControlPoints().size() - 1;
@@ -117,12 +118,12 @@ abstract public class Engine {
     }
 
     /**
-     * Determine this engine's redline.
+     * Determine this engine's redline. TODO rename
      *
      * @return the rate (in revolutions per minute, &gt;0)
      */
     public float getMaxRevs() {
-        return redline;
+        return redlineRpm;
     }
 
     /**
@@ -140,7 +141,7 @@ abstract public class Engine {
      * @return the amount of power (&gt;0)
      */
     public float getPower() {
-        return maxPower;
+        return maxOutputWatts;
     }
 
     /**
@@ -152,9 +153,9 @@ abstract public class Engine {
     public float getPowerOutputAtRevs() {
         float revs = getRpmFraction() * getMaxRevs();
         revs = FastMath.clamp(revs, 0, getMaxRevs() - 0.01f);
-        float power = evaluateSpline(revs);
+        float powerFraction = evaluateSpline(revs);
 
-        return power * getPower();
+        return powerFraction * getPower();
     }
 
     /**
@@ -192,20 +193,20 @@ abstract public class Engine {
     /**
      * Alter this engine's redline.
      *
-     * @param maxRevs the desired speed (in RPMs, &ge;idleRpm)
+     * @param redlineRpm the desired speed (in RPMs, &ge;idleRpm)
      */
-    public void setMaxRevs(float maxRevs) {
-        Validate.inRange(maxRevs, "max revs", idleRpm, Float.MAX_VALUE);
-        redline = maxRevs;
+    public void setMaxRevs(float redlineRpm) {
+        Validate.inRange(redlineRpm, "redline RPM", idleRpm, Float.MAX_VALUE);
+        this.redlineRpm = redlineRpm;
     }
 
     /**
-     * Alter this engine's maximum power output.
+     * Alter this engine's maximum power output. TODO rename
      *
-     * @param power the desired amount of power (&gt;0)
+     * @param watts the desired amount of power (&gt;0)
      */
-    public void setPower(float power) {
-        maxPower = power;
+    public void setPower(float watts) {
+        maxOutputWatts = watts;
     }
 
     /**

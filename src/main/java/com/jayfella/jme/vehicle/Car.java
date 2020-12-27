@@ -55,7 +55,7 @@ abstract public class Car extends Vehicle {
 
     public Wheel addWheel(WheelModel wheelModel, Vector3f connectionLocation,
             boolean isSteering, boolean isSteeringFlipped,
-            float brakeStrength, float parkingBrakePeakForce) {
+            float mainBrakePeakForce, float parkingBrakePeakForce) {
         VehicleControl vehicleControl = getVehicleControl();
         Node wheelNode = wheelModel.getWheelNode();
         Vector3f suspensionDirection = new Vector3f(0f, -1f, 0f);
@@ -68,15 +68,15 @@ abstract public class Car extends Vehicle {
 
         int wheelIndex = wheels.size();
         Suspension suspension = new Suspension(vehicleWheel);
-        Brake brake = new Brake(brakeStrength);
+        Brake mainBrake = new Brake(mainBrakePeakForce);
         Brake parkingBrake = new Brake(parkingBrakePeakForce);
-        Wheel wheel = new Wheel(vehicleControl, wheelIndex, isSteering,
-                isSteeringFlipped, suspension, brake, parkingBrake);
-        wheels.add(wheel);
+        Wheel result = new Wheel(vehicleControl, wheelIndex, isSteering,
+                isSteeringFlipped, suspension, mainBrake, parkingBrake);
+        wheels.add(result);
 
         getNode().attachChild(wheelNode);
 
-        return wheel;
+        return result;
     }
 
     public int getNumWheels() {
@@ -207,9 +207,9 @@ abstract public class Car extends Vehicle {
     }
 
     @Override
-    public void setBrakeSignal(float strength, float parkingStrength) {
+    public void setBrakeSignal(float mainStrength, float parkingStrength) {
         for (Wheel wheel : wheels) {
-            wheel.brake(strength, parkingStrength);
+            wheel.brake(mainStrength, parkingStrength);
         }
     }
 

@@ -37,11 +37,11 @@ public class TireDataState extends BaseAppState {
     }
 
     private Geometry createNeedle(AssetManager assetManager, ColorRGBA color) {
-        Geometry line = new Geometry("Needle", new Quad(1, graphHeight));
-        line.setMaterial(new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
-        line.getMaterial().setColor("Color", color);
+        Geometry result = new Geometry("Needle", new Quad(1, graphHeight));
+        result.setMaterial(new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
+        result.getMaterial().setColor("Color", color);
 
-        return line;
+        return result;
     }
 
     private void drawGraph(int i) {

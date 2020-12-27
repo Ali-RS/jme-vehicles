@@ -188,7 +188,7 @@ class TachometerState extends BaseAppState {
     // private methods
 
     private Node buildNumNode(float redlineRpm, int stepRpm, float radius) {
-        Node numNode = new Node("Tachometer Numbers");
+        Node result = new Node("Tachometer Numbers");
 
         AssetManager assetManager = getApplication().getAssetManager();
         Material markingMaterial
@@ -205,7 +205,7 @@ class TachometerState extends BaseAppState {
             }
             String text = Integer.toString(intRpm / 1000);
             Label label = new Label(text);
-            numNode.attachChild(label);
+            result.attachChild(label);
             label.setColor(markingColor);
 
             float cos = FastMath.cos(theta);
@@ -226,11 +226,11 @@ class TachometerState extends BaseAppState {
             Line radialMesh = new Line(innerOffset, outerOffset);
 
             Geometry radial = new Geometry("Tachometer Radial", radialMesh);
-            numNode.attachChild(radial);
+            result.attachChild(radial);
             radial.setMaterial(markingMaterial);
         }
 
-        return numNode;
+        return result;
     }
 
     /**
@@ -256,10 +256,10 @@ class TachometerState extends BaseAppState {
 
         int maxRevs = (int) vehicle.getEngine().getMaxRevs();
         float numbersRadius = 0.38f * width;
-        Node numNode = buildNumNode(maxRevs, 1000, numbersRadius);
-        numNode.attachChild(backgroundGeom);
-        numNode.setLocalTranslation(width / 2f, height / 2f, -1f);
+        Node result = buildNumNode(maxRevs, 1000, numbersRadius);
+        result.attachChild(backgroundGeom);
+        result.setLocalTranslation(width / 2f, height / 2f, -1f);
 
-        return numNode;
+        return result;
     }
 }

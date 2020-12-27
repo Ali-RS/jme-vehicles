@@ -25,25 +25,25 @@ public class TireSmokeEmitter extends BaseAppState {
     }
 
     private ParticleEmitter createEmitter(AssetManager assetManager) {
-        ParticleEmitter smoke = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
+        ParticleEmitter result = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
 
         Material mat_red = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
         mat_red.setTexture("Texture", assetManager.loadTexture("Textures/Particles/smoke_line.png"));
 
-        smoke.setMaterial(mat_red);
-        smoke.setImagesX(15);
-        smoke.setImagesY(1); // 2x2 texture animation
-        smoke.setEndColor(new ColorRGBA(99 / 255f, 68 / 255f, 45 / 255f, 0.4f));   // red
-        smoke.setStartColor(new ColorRGBA(183 / 255f, 130 / 255f, 89 / 255f, 0.05f)); // yellow
-        smoke.getParticleInfluencer().setInitialVelocity(new Vector3f(0, 2, 0));
-        smoke.setStartSize(1.0f);
-        smoke.setEndSize(0.0f);
-        smoke.setGravity(0, 0, 0);
-        smoke.setLowLife(0.1f);
-        smoke.setHighLife(2f);
-        smoke.getParticleInfluencer().setVelocityVariation(0.3f);
+        result.setMaterial(mat_red);
+        result.setImagesX(15);
+        result.setImagesY(1); // 2x2 texture animation
+        result.setEndColor(new ColorRGBA(99 / 255f, 68 / 255f, 45 / 255f, 0.4f));   // red
+        result.setStartColor(new ColorRGBA(183 / 255f, 130 / 255f, 89 / 255f, 0.05f)); // yellow
+        result.getParticleInfluencer().setInitialVelocity(new Vector3f(0, 2, 0));
+        result.setStartSize(1.0f);
+        result.setEndSize(0.0f);
+        result.setGravity(0, 0, 0);
+        result.setLowLife(0.1f);
+        result.setHighLife(2f);
+        result.getParticleInfluencer().setVelocityVariation(0.3f);
 
-        return smoke;
+        return result;
     }
 
     /**

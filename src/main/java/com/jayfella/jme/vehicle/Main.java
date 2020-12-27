@@ -115,10 +115,10 @@ public class Main extends SimpleApplication {
      */
     public static <T extends AppState> T findAppState(Class<T> subclass) {
         AppStateManager manager = application.getStateManager();
-        T appState = manager.getState(subclass);
+        T result = manager.getState(subclass);
 
-        assert appState != null;
-        return appState;
+        assert result != null;
+        return result;
     }
 
     /**
@@ -292,9 +292,9 @@ public class Main extends SimpleApplication {
         // Load the sky asynchronously.
         CompletableFuture
                 .supplyAsync(() -> {
-                    Spatial sky = createSky(assetManager,
+                    Spatial result = createSky(assetManager,
                             "Textures/Sky/quarry_03/equirec_4k.jpg");
-                    return sky;
+                    return result;
                 })
                 .whenComplete((spatial, ex) -> {
                     enqueue(() -> {
@@ -306,8 +306,8 @@ public class Main extends SimpleApplication {
         // Load the Environment asynchronously.
         CompletableFuture
                 .supplyAsync(() -> {
-                    Node node = environment.load();
-                    return node;
+                    Node result = environment.load();
+                    return result;
                 })
                 .whenComplete((node, ex) -> {
                     enqueue(() -> {
@@ -327,8 +327,8 @@ public class Main extends SimpleApplication {
         CompletableFuture
                 .supplyAsync(() -> {
                     vehicle.load();
-                    Node node = vehicle.getNode();
-                    return node;
+                    Node result = vehicle.getNode();
+                    return result;
                 })
                 .whenComplete((node, ex) -> {
                     enqueue(() -> {

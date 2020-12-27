@@ -76,13 +76,13 @@ abstract public class Vehicle {
     /**
      * Alter the "accelerate" control signal.
      *
-     * @param value the desired value, between -1 (full-throttle reverse) and +1
-     * (full-throttle forward) inclusive
+     * @param strength the desired value, between -1 (full-throttle reverse) and
+     * +1 (full-throttle forward) inclusive
      */
-    public void setAccelerateSignal(float value) {
+    public void setAccelerateSignal(float strength) {
         // TODO awkward interface - controls both the gearbox and the throttle
-        Validate.inRange(value, "value", -1f, 1f);
-        accelerateSignal = value;
+        Validate.inRange(strength, "strength", -1f, 1f);
+        accelerateSignal = strength;
     }
 
     public void attachToScene(Node parent) {
@@ -101,12 +101,13 @@ abstract public class Vehicle {
      * Alter the values of the brake control signals. TODO rename
      * setBrakeSignals()
      *
-     * @param strength the strength of the main-brake control signal, between 0
-     * (not applied) and 1 (applied as strongly as possible)
-     * @param parkingValue the strength of the parking-brake control signal,
+     * @param mainStrength the strength of the main-brake control signal,
+     * between 0 (not applied) and 1 (applied as strongly as possible)
+     * @param parkingStrength the strength of the parking-brake control signal,
      * between 0 (not applied) and 1 (applied as strongly as possible)
      */
-    abstract public void setBrakeSignal(float strength, float parkingValue);
+    abstract public void setBrakeSignal(float mainStrength,
+            float parkingStrength);
 
     /**
      * Determine the offset of the vehicle's DashCamera.

@@ -199,7 +199,7 @@ class SpeedometerState extends BaseAppState {
     // private methods
 
     private Node buildNumNode(float maxSpeed, int stepSpeed, float radius) {
-        Node numNode = new Node("Speedometer Numbers");
+        Node result = new Node("Speedometer Numbers");
 
         AssetManager assetManager = getApplication().getAssetManager();
         Material markingMaterial
@@ -216,7 +216,7 @@ class SpeedometerState extends BaseAppState {
             }
             String text = Integer.toString(intSpeed);
             Label label = new Label(text);
-            numNode.attachChild(label);
+            result.attachChild(label);
             label.setColor(markingColor);
 
             float cos = FastMath.cos(theta);
@@ -237,11 +237,11 @@ class SpeedometerState extends BaseAppState {
             Line radialMesh = new Line(innerOffset, outerOffset);
 
             Geometry radial = new Geometry("Speedometer Radial", radialMesh);
-            numNode.attachChild(radial);
+            result.attachChild(radial);
             radial.setMaterial(markingMaterial);
         }
 
-        return numNode;
+        return result;
     }
 
     /**
@@ -267,10 +267,10 @@ class SpeedometerState extends BaseAppState {
 
         int maxSpeed = (int) vehicle.getGearBox().getMaxSpeed(speedUnit);
         int stepSpeed = 10 * (1 + maxSpeed / 160);
-        Node numNode = buildNumNode(maxSpeed, stepSpeed, width / 2f - 20f);
-        numNode.attachChild(backgroundGeom);
-        numNode.setLocalTranslation(width / 2f, height / 2f, -1f);
+        Node result = buildNumNode(maxSpeed, stepSpeed, width / 2f - 20f);
+        result.attachChild(backgroundGeom);
+        result.setLocalTranslation(width / 2f, height / 2f, -1f);
 
-        return numNode;
+        return result;
     }
 }

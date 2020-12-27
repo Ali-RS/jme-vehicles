@@ -41,7 +41,7 @@ public class Wheel {
 
     final private Suspension suspension;
 
-    final private Brake brake;
+    final private Brake mainBrake;
 
     private PacejkaTireModel tireModel;
 
@@ -54,7 +54,7 @@ public class Wheel {
 
     public Wheel(VehicleControl vehicleControl, int wheelIndex,
             boolean isSteering, boolean steeringFlipped, Suspension suspension,
-            Brake brake, Brake parkingBrake) {
+            Brake mainBrake, Brake parkingBrake) {
         this.vehicleControl = vehicleControl;
 
         this.wheelIndex = wheelIndex;
@@ -64,7 +64,7 @@ public class Wheel {
         this.isSteeringFlipped = steeringFlipped;
 
         this.suspension = suspension;
-        this.brake = brake;
+        this.mainBrake = mainBrake;
         this.parkingBrake = parkingBrake;
 
         setFriction(1f);
@@ -151,20 +151,20 @@ public class Wheel {
      * Update the braking impulse applied to this wheel. TODO rename
      * updateBrakes()
      *
-     * @param strength the strength of the main-brake control signal (&ge;0,
+     * @param mainStrength the strength of the main-brake control signal (&ge;0,
      * &le;1)
      * @param parkingStrength the strength of the parking-brake control signal
      * (&ge;0, &le;1)
      */
-    public void brake(float strength, float parkingStrength) {
-        Validate.fraction(strength, "strength");
+    public void brake(float mainStrength, float parkingStrength) {
+        Validate.fraction(mainStrength, "main strength");
         Validate.fraction(parkingStrength, "parking strength");
 
         BulletAppState bas = Main.findAppState(BulletAppState.class);
         PhysicsSpace physicsSpace = bas.getPhysicsSpace();
         float timeStep = physicsSpace.getAccuracy();
 
-        float force = strength * brake.getStrength()
+        float force = mainStrength * mainBrake.getStrength()
                 + parkingStrength * parkingBrake.getStrength();
         float impulse = force * timeStep;
         if (impulse != vehicleWheel.getBrake()) {
@@ -175,8 +175,8 @@ public class Wheel {
         assert vehicleWheel.getBrake() == impulse : vehicleWheel.getBrake();
     }
 
-    public Brake getBrake() {
-        return brake;
+    public Brake getBrake() { // TODO rename getMainBrake()
+        return mainBrake;
     }
 
     public void steer(float strength) {
@@ -238,12 +238,12 @@ public class Wheel {
         }
 
         float minAngle = 0.1f;
-        float angle = minAngle + wheelDir.angleBetween(vehicleTravel);
+        float result = minAngle + wheelDir.angleBetween(vehicleTravel);
         // System.out.println(getVehicleWheel().getWheelSpatial().getName() + ": " + angle * FastMath.RAD_TO_DEG);
 
-        angle = FastMath.clamp(angle, 0f, FastMath.QUARTER_PI);
+        result = FastMath.clamp(result, 0f, FastMath.QUARTER_PI);
 
-        return angle;
+        return result;
     }
 
     // the slip angle for this is how much force is being applied to the tire (acceleration force).
@@ -264,8 +264,8 @@ public class Wheel {
 
         float minAngle = 0.1f;
 
-        float angle = rot / vel;
-        angle *= 10f;
+        float result = rot / vel;
+        result *= 10f;
         //angle += minAngle;
 
         //result = FastMath.QUARTER_PI - result;
@@ -273,8 +273,8 @@ public class Wheel {
         // float slip = 1.0f - vehicleWheel.getSkidInfo();
         // slip *= FastMath.QUARTER_PI;
         //return slip;
-        angle = FastMath.clamp(angle, 0f, FastMath.TWO_PI);
-        return angle;
+        result = FastMath.clamp(result, 0f, FastMath.TWO_PI);
+        return result;
     }
 
     public float getRotationDelta() {

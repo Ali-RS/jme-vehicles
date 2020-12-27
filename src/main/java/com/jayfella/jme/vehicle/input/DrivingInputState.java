@@ -64,7 +64,7 @@ public class DrivingInputState
             = new FunctionId(G_VEHICLE, CameraSignal.ZoomOut.toString());
     final private static FunctionId F_CAMVIEW
             = new FunctionId(G_VEHICLE, "Camera View");
-    final private static FunctionId F_FOOTBRAKE
+    final private static FunctionId F_MAIN_BRAKE
             = new FunctionId(G_VEHICLE, "Vehicle Footbrake");
     final private static FunctionId F_PARKING_BRAKE
             = new FunctionId(G_VEHICLE, "Vehicle Parking Brake");
@@ -114,7 +114,7 @@ public class DrivingInputState
     final private float returnRate = 2f; // radians per second
     final private float turnRate = 0.5f; // radians per second
 
-    private boolean accelerating, braking, parkingBrake;
+    private boolean accelerating, mainBrake, parkingBrake;
     private boolean turningLeft, turningRight;
 
     private float steeringAngle = 0f;
@@ -244,7 +244,7 @@ public class DrivingInputState
         inputMapper.map(F_START_ENGINE, KeyInput.KEY_Y);
 
         inputMapper.map(F_FORWARD, KeyInput.KEY_W);
-        inputMapper.map(F_FOOTBRAKE, KeyInput.KEY_S);
+        inputMapper.map(F_MAIN_BRAKE, KeyInput.KEY_S);
 
         inputMapper.map(F_TURN_LEFT, KeyInput.KEY_A);
         inputMapper.map(F_TURN_RIGHT, KeyInput.KEY_D);
@@ -339,8 +339,8 @@ public class DrivingInputState
         } else if (func == F_FORWARD) {
             accelerating = pressed;
 
-        } else if (func == F_FOOTBRAKE) {
-            braking = pressed;
+        } else if (func == F_MAIN_BRAKE) {
+            mainBrake = pressed;
 
         } else if (func == F_REVERSE) {
             vehicle.getGearBox().setReversing(pressed);
@@ -478,7 +478,7 @@ public class DrivingInputState
         /*
          * Update the brake control signals.
          */
-        float main = braking ? 1f : 0f;
+        float main = mainBrake ? 1f : 0f;
         float parking = parkingBrake ? 1f : 0f;
         vehicle.setBrakeSignal(main, parking);
         /*
