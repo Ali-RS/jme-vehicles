@@ -1,21 +1,49 @@
 package com.jayfella.jme.vehicle.part;
 
+import jme3utilities.Validate;
+
 /**
- * Model a single brake, for example on a Wheel.
+ * Model a single brake, such a disc brake on a Wheel.
  */
 public class Brake {
+    // *************************************************************************
+    // fields - TODO model failures due to wear and overheating
 
-    private float strength;
+    /**
+     * peak force (in Newtons, &ge;0)
+     */
+    private float peakForce;
+    // *************************************************************************
+    // constructors
 
-    public Brake(float strength) {
-        this.strength = strength;
+    /**
+     * Instantiate a Brake with the specified peak force.
+     *
+     * @param force the desired peak force (in Newtons, &ge;0)
+     */
+    public Brake(float force) {
+        Validate.nonNegative(force, "force");
+        this.peakForce = force;
+    }
+    // *************************************************************************
+    // new methods exposed
+
+    /**
+     * Determine the peak force.
+     *
+     * @return the peak force (in Newtons, &ge;0)
+     */
+    public float getStrength() { // TODO rename getPeakForce()
+        return peakForce;
     }
 
-    public float getStrength() {
-        return strength;
-    }
-
-    public void setStrength(float strength) {
-        this.strength = strength;
+    /**
+     * Alter the peak force.
+     *
+     * @param force the desired peak force (in Newtons, &ge;0)
+     */
+    public void setStrength(float force) { // TODO setPeakForce()
+        Validate.nonNegative(force, "force");
+        peakForce = force;
     }
 }
