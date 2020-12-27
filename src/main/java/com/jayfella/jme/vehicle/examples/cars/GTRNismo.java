@@ -87,13 +87,13 @@ public class GTRNismo extends Car {
         boolean rear = false; // Rear wheels do not steer.
         boolean steeringFlipped = false;
         addWheel(wheel_fl, new Vector3f(+wheelX, axleY, frontZ), front,
-                steeringFlipped, 675f);
+                steeringFlipped, 6_750f);
         addWheel(wheel_fr, new Vector3f(-wheelX, axleY, frontZ), front,
-                steeringFlipped, 675f);
+                steeringFlipped, 6_750f);
         addWheel(wheel_rl, new Vector3f(+wheelX, axleY, rearZ), rear,
-                steeringFlipped, 300f);
+                steeringFlipped, 3_000f);
         addWheel(wheel_rr, new Vector3f(-wheelX, axleY, rearZ), rear,
-                steeringFlipped, 300f);
+                steeringFlipped, 3_000f);
         /*
          * Configure the suspension.
          * This vehicle applies the same settings to each wheel,

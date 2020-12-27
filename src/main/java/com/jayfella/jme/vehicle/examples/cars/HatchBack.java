@@ -86,11 +86,11 @@ public class HatchBack extends Car {
         boolean front = true; // Front wheels are for steering.
         boolean rear = false; // Rear wheels do not steer.
         boolean steeringFlipped = false;
-        float brakeForce = 80f; // This vehicle has brakes only in front.
+        float mainBrake = 5_000f; // in front only
         addWheel(wheel_fl, new Vector3f(+wheelX, axleY, frontZ), front,
-                steeringFlipped, brakeForce);
+                steeringFlipped, mainBrake);
         addWheel(wheel_fr, new Vector3f(-wheelX, axleY, frontZ), front,
-                steeringFlipped, brakeForce);
+                steeringFlipped, mainBrake);
         addWheel(wheel_rl, new Vector3f(+wheelX, axleY, rearZ), rear,
                 steeringFlipped, 0f);
         addWheel(wheel_rr, new Vector3f(-wheelX, axleY, rearZ), rear,
