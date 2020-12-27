@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 import jme3utilities.Validate;
 
 /**
- * A single wheel of a Car.
+ * A single wheel of a Car, including its suspension and brakes.
  */
 public class Wheel {
     // *************************************************************************
@@ -27,6 +27,9 @@ public class Wheel {
     // *************************************************************************
     // fields
 
+    /**
+     * true if used for steering, otherwise false
+     */
     private boolean isSteering;
     /**
      * steer with a rear wheel by flipping the direction
@@ -37,30 +40,61 @@ public class Wheel {
      */
     final private Brake parkingBrake;
     /**
-     * fraction of the total drive power to apply to this wheel (&ge;0, &le;1)
+     * fraction of the engine's output power transmitted to this wheel (&ge;0,
+     * &le;1)
      */
     private float powerFraction = 0f;
-
+    /**
+     * vehicle's physics control
+     */
     final private VehicleControl vehicleControl;
+    /**
+     * index among the vehicle's wheels (&ge;0)
+     */
     final private int wheelIndex;
+    /**
+     * wheel's physics object
+     */
     final private VehicleWheel vehicleWheel;
-
+    /**
+     * how far the wheel can turn when steered (in radians)
+     */
     private float maxSteerAngle = FastMath.QUARTER_PI;
+    /**
+     * horizontal rotation (in radians) TODO direction of measurement?
+     */
     private float steeringAngle = 0f;
-
+    /**
+     * parameters of the associated suspension spring
+     */
     final private Suspension suspension;
-
+    /**
+     * main brake, which is typically hydraulic
+     */
     final private Brake mainBrake;
 
     private PacejkaTireModel tireModel;
 
     private float rotationDelta;
-
-    // grip degradation: 1 = full grip the tire allows, 0 = dead tire
+    /**
+     * grip degradation: 1 = full grip the tire allows, 0 = worn-out tire
+     */
     private float grip = 1f;
     // *************************************************************************
     // constructors
 
+    /**
+     * Instantiate a wheel with the specified parameters.
+     *
+     * @param vehicleControl the vehicle's physics control (not null, alias
+     * created)
+     * @param wheelIndex the index among the vehicle's wheels (&ge;0)
+     * @param isSteering true if used for steering, otherwise false
+     * @param steeringFlipped
+     * @param suspension the suspension spring (not null, alias created)
+     * @param mainBrake the main brake (not null, alias created)
+     * @param parkingBrake the parking brake (not null, alias created)
+     */
     public Wheel(VehicleControl vehicleControl, int wheelIndex,
             boolean isSteering, boolean steeringFlipped, Suspension suspension,
             Brake mainBrake, Brake parkingBrake) {
@@ -81,18 +115,39 @@ public class Wheel {
     // *************************************************************************
     // new methods exposed
 
+    /**
+     * Access the tire model.
+     *
+     * @return the pre-existing instance
+     */
     public PacejkaTireModel getTireModel() {
         return tireModel;
     }
 
+    /**
+     * Alter the tire model.
+     *
+     * @param tireModel the desired model (alias created)
+     */
     public void setTireModel(PacejkaTireModel tireModel) {
         this.tireModel = tireModel;
     }
 
+    /**
+     * Determine the tire's grip.
+     *
+     * @return the fraction of the original grip remaining (&ge;0, &le;1)
+     */
     public float getGrip() {
         return grip;
     }
 
+    /**
+     * Alter the tire's grip.
+     *
+     * @param grip the fraction of the original grip remaining (&ge;0, &le;1,
+     * default=1)
+     */
     public void setGrip(float grip) {
         this.grip = grip;
     }
@@ -105,6 +160,11 @@ public class Wheel {
         vehicleWheel.setFrictionSlip(friction);
     }
 
+    /**
+     * Test whether this wheel is used for steering.
+     *
+     * @return true if used for steering, otherwise false
+     */
     public boolean isSteering() {
         return isSteering;
     }
@@ -119,6 +179,12 @@ public class Wheel {
         vehicleWheel.setFrontWheel(steering);
     }
 
+    /**
+     * Test whether this wheel turns in the opposite direction relative to the
+     * Vehicle.
+     *
+     * @return true if opposite, otherwise false
+     */
     public boolean isSteeringFlipped() {
         return isSteeringFlipped;
     }
@@ -128,7 +194,8 @@ public class Wheel {
     }
 
     /**
-     * Determine the fraction of the total drive power to apply to this wheel.
+     * Determine the fraction of the engine's output power transmitted to this
+     * wheel.
      *
      * @return the power fraction (&ge;0, &le;1)
      */
@@ -137,8 +204,8 @@ public class Wheel {
     }
 
     /**
-     * Alter the fraction of the total drive power that gets applied to this
-     * wheel.
+     * Alter the fraction of the of the engine's output power that gets
+     * transmitted this wheel.
      *
      * @param fraction the desired power fraction (&ge;0, &le;1)
      */
@@ -150,7 +217,7 @@ public class Wheel {
     /**
      * Update the drive force applied via this wheel.
      *
-     * @param force the amount of drive force (negative if reversing)
+     * @param force the desired drive force (negative if reversing)
      */
     public void accelerate(float force) {
         vehicleControl.accelerate(wheelIndex, force);
@@ -184,6 +251,12 @@ public class Wheel {
         assert vehicleWheel.getBrake() == impulse : vehicleWheel.getBrake();
     }
 
+    /**
+     * Access the main brake for this wheel. (The main brakes are typically
+     * hydraulic.)
+     *
+     * @return the pre-existing instance
+     */
     public Brake getBrake() { // TODO rename getMainBrake()
         return mainBrake;
     }

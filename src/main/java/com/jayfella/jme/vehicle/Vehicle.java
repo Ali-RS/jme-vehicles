@@ -35,6 +35,9 @@ abstract public class Vehicle {
     // *************************************************************************
     // constants and loggers
 
+    /**
+     * factor to convert km/hr to miles per hour
+     */
     final public static float KPH_TO_MPH = 0.62137f;
     /**
      * factor to convert km/hr to wu/sec
@@ -51,21 +54,36 @@ abstract public class Vehicle {
     private AudioNode hornAudio;
     private AutomaticGearboxState gearboxState;
     private boolean parkingBrakeApplied;
+    /**
+     * engine model
+     */
     private Engine engine;
     /**
      * control signal for acceleration, ranging from -1 (full-throttle reverse)
-     * to +1 = full-throttle forward
+     * to +1 (full-throttle forward)
      */
     private float accelerateSignal;
     private GearBox gearBox;
     final private Node node;
+    /**
+     * computer-graphics (C-G) model to visualize the whole Vehicle except for
+     * its wheels
+     */
     private Spatial chassis;
+    /**
+     * descriptive name (not null)
+     */
     final private String name;
     private VehicleAudioState vehicleAudioState;
     private VehicleControl vehicleControl;
     // *************************************************************************
     // constructors
 
+    /**
+     * Instantiate a Vehicle with the specified name.
+     *
+     * @param name the desired name (not null)
+     */
     public Vehicle(String name) {
         this.name = name;
         node = new Node("Vehicle: " + name);
@@ -76,8 +94,9 @@ abstract public class Vehicle {
     /**
      * Alter the "accelerate" control signal.
      *
-     * @param strength the desired value, between -1 (full-throttle reverse) and
-     * +1 (full-throttle forward) inclusive
+     * @param strength the desired strength of the "accelerate" control signal:
+     * between -1 (full-throttle reverse) and +1 (full-throttle forward)
+     * inclusive
      */
     public void setAccelerateSignal(float strength) {
         // TODO awkward interface - controls both the gearbox and the throttle
@@ -98,13 +117,12 @@ abstract public class Vehicle {
     }
 
     /**
-     * Alter the values of the brake control signals. TODO rename
-     * setBrakeSignals()
+     * Alter the brake control signals. TODO rename setBrakeSignals()
      *
-     * @param mainStrength the strength of the main-brake control signal,
-     * between 0 (not applied) and 1 (applied as strongly as possible)
-     * @param parkingStrength the strength of the parking-brake control signal,
-     * between 0 (not applied) and 1 (applied as strongly as possible)
+     * @param mainStrength the desired strength of the main-brake control
+     * signal, between 0 (not applied) and 1 (applied as strongly as possible)
+     * @param parkingStrength the desired strength of the parking-brake control
+     * signal, between 0 (not applied) and 1 (applied as strongly as possible)
      */
     abstract public void setBrakeSignal(float mainStrength,
             float parkingStrength);
@@ -143,18 +161,38 @@ abstract public class Vehicle {
         return accelerateSignal;
     }
 
+    /**
+     * Access the computer-graphics (C-G) model for visualization.
+     *
+     * @return the pre-existing instance
+     */
     public Spatial getChassis() {
         return chassis;
     }
 
+    /**
+     * Access the Engine.
+     *
+     * @return the pre-existing instance
+     */
     public Engine getEngine() {
         return engine;
     }
 
+    /**
+     * Access the GearBox.
+     *
+     * @return the pre-existing instance
+     */
     public GearBox getGearBox() {
         return gearBox;
     }
 
+    /**
+     * Determine this vehicle's name.
+     *
+     * @return the descriptive name (not null)
+     */
     public String getName() {
         return name;
     }
@@ -195,6 +233,11 @@ abstract public class Vehicle {
         return result;
     }
 
+    /**
+     * Access the PhysicsControl.
+     *
+     * @return the pre-existing instance
+     */
     public VehicleControl getVehicleControl() {
         return vehicleControl;
     }
@@ -225,6 +268,12 @@ abstract public class Vehicle {
         }
     }
 
+    /**
+     * Alter whether the parking brake is applied.
+     *
+     * @param applied the desired state (true&rarr;applied, false&rarr; not
+     * applied)
+     */
     public void setParkingBrakeApplied(boolean applied) {
         parkingBrakeApplied = applied;
     }

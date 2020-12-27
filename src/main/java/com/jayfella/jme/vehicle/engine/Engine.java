@@ -30,29 +30,33 @@ abstract public class Engine {
     // *************************************************************************
     // fields
 
+    /**
+     * sound produced by this Engine
+     */
     private AudioNode audioNode;
-    /*
+    /**
      * true when on/running, false when off/stopped
      */
     private boolean isRunning;
-    /*
-     * crankshaft revolutions per minute (RPMs) when idling (&ge;0)
+    /**
+     * crankshaft rotation rate while idling (in revolutions per minute, &ge;0)
      */
     private float idleRpm;
-    /*
-     * maximum power output (total across all axles, &gt;0)
+    /**
+     * maximum power output (in Watts, &gt;0)
      */
     private float maxOutputWatts;
-    /*
-     * revolutions per minute (RPMs) at the redline (&ge;idleRpm)
+    /**
+     * crankshaft rotation rate at the redline (in revolutions per minute,
+     * &ge;idleRpm)
      */
     private float redlineRpm;
-    /*
-     * current RPMs as a fraction of the redline (&ge;0)
+    /**
+     * rotational speed as a fraction of the redline (&ge;0)
      */
     private float rpmFraction;
-    /*
-     * descriptive name
+    /**
+     * descriptive name (not null)
      */
     final private String name;
     // *************************************************************************
@@ -61,10 +65,10 @@ abstract public class Engine {
     /**
      * Instantiate an Engine in the "off" state, without audio.
      *
-     * @param name a descriptive name
+     * @param name the desired name (not null)
      * @param maxWatts the desired maximum power output (in Watts, &gt;0)
-     * @param idleRpm the desired idle speed (in RPMs, &ge;0)
-     * @param redlineRpm the desired RPMs at the redline (&gt;0)
+     * @param idleRpm the desired idle speed (in RPMs, &ge;0, &lt;redlineRpm)
+     * @param redlineRpm the resired redline speed (&gt;0)
      */
     public Engine(String name, float maxWatts, float idleRpm,
             float redlineRpm) {
@@ -83,7 +87,7 @@ abstract public class Engine {
      * Evaluate this engine's power graph.
      *
      * @param rpm a value from 0-maxRevs
-     * @return the power at this rev-range, from 0 to getPower().
+     * @return the output power (in Watts, between 0 and getPower())
      */
     abstract public float evaluateSpline(float rpm);
 
@@ -105,7 +109,7 @@ abstract public class Engine {
     }
 
     /**
-     * Access the sound of this Engine.
+     * Access this engine's sound.
      *
      * @return the pre-existing AudioNode
      */
@@ -114,9 +118,10 @@ abstract public class Engine {
     }
 
     /**
-     * Determine this engine's idle speed.
+     * Determine the idle speed.
      *
-     * @return the rotational speed (in RPMs, &ge;0)
+     * @return the crankshaft rotation rate (in revolutions per minute, &ge;0,
+     * &le;redlineRpm)
      */
     public float getIdleRpm() {
         assert idleRpm >= 0f : idleRpm;
@@ -124,37 +129,37 @@ abstract public class Engine {
     }
 
     /**
-     * Determine this engine's redline. TODO rename
+     * Determine the redline speed. TODO rename
      *
-     * @return the rate (in revolutions per minute, &gt;0)
+     * @return the crankshaft rotation rate (in revolutions per minute,
+     * &gt;idlRpm)
      */
     public float getMaxRevs() {
         return redlineRpm;
     }
 
     /**
-     * Access this engine's descriptive name.
+     * Determine this engine's name.
      *
-     * @return the name
+     * @return the descriptive name (not null)
      */
     public String getName() {
         return this.name;
     }
 
     /**
-     * Determine this engine's maximum power output. TODO units?
+     * Determine the maximum power output. TODO rename maxOutputWatts()
      *
-     * @return the amount of power (&gt;0)
+     * @return the power (in Watts, &gt;0)
      */
     public float getPower() {
         return maxOutputWatts;
     }
 
     /**
-     * Determine the power output at the current RPM. This determines the
-     * Engine's "power graph".
+     * Determine the current power output.
      *
-     * @return the amount of power (&gt;0)
+     * @return the power (in Watts, &gt;0, &le;maxOutputWatts)
      */
     public float getPowerOutputAtRevs() {
         float revs = getRpmFraction() * getMaxRevs();
@@ -165,7 +170,7 @@ abstract public class Engine {
     }
 
     /**
-     * Determine the current RPMs as a fraction of the redline.
+     * Determine the current speed as a fraction of the redline.
      *
      * @return the fraction (&ge;0)
      */
@@ -197,9 +202,10 @@ abstract public class Engine {
     }
 
     /**
-     * Alter this engine's redline.
+     * Alter this engine's redline speed.
      *
-     * @param redlineRpm the desired speed (in RPMs, &ge;idleRpm)
+     * @param redlineRpm the desired crankshaft rotation rate (in revolutions
+     * per minute, &ge;idleRpm)
      */
     public void setMaxRevs(float redlineRpm) {
         Validate.inRange(redlineRpm, "redline RPM", idleRpm, Float.MAX_VALUE);
@@ -216,7 +222,8 @@ abstract public class Engine {
     }
 
     /**
-     * Alter the current RPMs as a fraction of the redline.
+     * Alter the engine's speed as a fraction of the redline. TODO rename
+     * setRpmFraction()
      *
      * @param revs the desired fraction (&ge;0)
      */
@@ -235,6 +242,7 @@ abstract public class Engine {
     // *************************************************************************
     // new protected methods
 
+    // TODO delete
     protected float getTorqueAtSpeed(Vehicle vehicle) {
         float engineMaxSpeed = vehicle.getGearBox().getMaxSpeed(SpeedUnit.KPH);
         float speedUnit = vehicle.getSpeed(SpeedUnit.KPH) / engineMaxSpeed;
@@ -243,6 +251,16 @@ abstract public class Engine {
     // *************************************************************************
     // private methods
 
+    /**
+     * Linearly map a value from one range to a new range.
+     *
+     * @param value the input value
+     * @param oldMin the input minimum value
+     * @param oldMax the input maximum value
+     * @param newMin the new minimum value
+     * @param newMax the new maximum value
+     * @return the new value
+     */
     private float map(float value, float oldMin, float oldMax, float newMin,
             float newMax) {
         return (((value - oldMin) * (newMax - newMin)) / (oldMax - oldMin)) + newMin;

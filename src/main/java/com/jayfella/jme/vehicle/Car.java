@@ -53,6 +53,17 @@ abstract public class Car extends Vehicle {
     // *************************************************************************
     // new methods exposed
 
+    /**
+     * Add a single Wheel to this Car.
+     *
+     * @param wheelModel
+     * @param connectionLocation
+     * @param isSteering
+     * @param isSteeringFlipped
+     * @param mainBrakePeakForce (in Newtons, &ge;0)
+     * @param parkingBrakePeakForce (in Newtons, &ge;0)
+     * @return the new Wheel
+     */
     public Wheel addWheel(WheelModel wheelModel, Vector3f connectionLocation,
             boolean isSteering, boolean isSteeringFlipped,
             float mainBrakePeakForce, float parkingBrakePeakForce) {
@@ -206,6 +217,15 @@ abstract public class Car extends Vehicle {
         }
     }
 
+    /**
+     * Alter the values of the brake control signals and update the brake
+     * impulses applied to each wheel. TODO rename setBrakeSignals()
+     *
+     * @param mainStrength the strength of the main-brake control signal,
+     * between 0 (not applied) and 1 (applied as strongly as possible)
+     * @param parkingStrength the strength of the parking-brake control signal,
+     * between 0 (not applied) and 1 (applied as strongly as possible)
+     */
     @Override
     public void setBrakeSignal(float mainStrength, float parkingStrength) {
         for (Wheel wheel : wheels) {

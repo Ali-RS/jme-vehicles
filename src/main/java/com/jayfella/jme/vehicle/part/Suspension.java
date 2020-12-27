@@ -62,7 +62,7 @@ public class Suspension {
     /**
      * Determine the maximum force exerted by this suspension.
      *
-     * @param maxForce the maximum force
+     * @return the maximum force (in Newtons)
      */
     public float getMaxForce() {
         float result = vehicleWheel.getMaxSuspensionForce();
