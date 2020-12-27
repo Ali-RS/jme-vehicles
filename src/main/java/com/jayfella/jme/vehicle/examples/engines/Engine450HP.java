@@ -49,11 +49,6 @@ public class Engine450HP extends Engine {
     // *************************************************************************
     // Engine methods
 
-    @Override
-    public float getTorqueAtSpeed() {
-        return getTorqueAtSpeed(vehicle);
-    }
-
     /**
      * Determine the fractional power output at the specified speed. TODO rename
      *

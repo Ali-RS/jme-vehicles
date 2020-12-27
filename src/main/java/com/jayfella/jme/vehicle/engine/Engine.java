@@ -176,15 +176,6 @@ abstract public class Engine {
     }
 
     /**
-     * Get the amount of torque the engine produces at speed. This is a kind of
-     * speed limiter that slows down acceleration as the vehicle increases in
-     * speed.
-     *
-     * @return the amount of torque applied at the current speed.
-     */
-    abstract public float getTorqueAtSpeed();
-
-    /**
      * Test whether this Engine is running.
      *
      * @return true if running, otherwise false
