@@ -166,13 +166,22 @@ abstract public class Engine {
      * @return the power (in Watts, &gt;0, &le;maxOutputWatts)
      */
     public float getPowerOutputAtRevs() {
-        float revs = getRpmFraction() * getMaxRevs();
+        float revs = getRpm();
         revs = FastMath.clamp(revs, 0, getMaxRevs() - 0.01f);
         float powerFraction = evaluateSpline(revs);
         float result = powerFraction * getPower();
 
         assert result >= 0f && result <= getPower() : result;
         return result;
+    }
+
+    /**
+     * Determine the current speed.
+     *
+     * @return the crankshaft rotation rate (in revolutions per minute, &ge;0)
+     */
+    public float getRpm() {
+        return rpmFraction * redlineRpm;
     }
 
     /**
