@@ -85,8 +85,6 @@ abstract public class Vehicle {
         accelerateSignal = value;
     }
 
-    abstract public void applyEngineBraking();
-
     public void attachToScene(Node parent) {
         warpToStart();
         getNode().setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
@@ -203,8 +201,6 @@ abstract public class Vehicle {
      * Load this Vehicle from assets.
      */
     abstract public void load();
-
-    abstract public void removeEngineBraking();
 
     /**
      * Update the status of the horn.

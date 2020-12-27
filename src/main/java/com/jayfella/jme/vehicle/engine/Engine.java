@@ -23,10 +23,6 @@ abstract public class Engine {
      */
     private boolean isRunning;
     /*
-     * amount of engine braking when coasting (alter to simulate damage, &ge;0)
-     */
-    private float braking;
-    /*
      * crankshaft revolutions per minute (RPMs) when idling (&ge;0)
      */
     private float idleRpm;
@@ -56,10 +52,8 @@ abstract public class Engine {
      * @param power the desired maximum power output (&gt;0)
      * @param idleSpeed the desired idle speed (in RPMs, &ge;0)
      * @param maxRevs the desired RPMs at the redline (&gt;0)
-     * @param braking the desired amount of engine braking when coasting (&ge;0)
      */
-    public Engine(String name, float power, float idleSpeed, float maxRevs,
-            float braking) {
+    public Engine(String name, float power, float idleSpeed, float maxRevs) {
         Validate.positive(maxRevs, "redline");
         Validate.inRange(idleSpeed, "idle speed", 0f, maxRevs);
 
@@ -67,7 +61,6 @@ abstract public class Engine {
         this.maxPower = power;
         this.idleRpm = idleSpeed;
         this.redline = maxRevs;
-        this.braking = braking;
     }
     // *************************************************************************
     // new methods exposed
@@ -95,15 +88,6 @@ abstract public class Engine {
         float interp = map(range, start, end, 0, 1);
 
         return powerGraph.interpolate(interp, index, null).y;
-    }
-
-    /**
-     * Determine the amount of engine braking.
-     *
-     * @return the braking strength (&ge;0)
-     */
-    public float getBraking() {
-        return braking;
     }
 
     /**
@@ -182,15 +166,6 @@ abstract public class Engine {
      */
     public boolean isRunning() {
         return isRunning;
-    }
-
-    /**
-     * Alter the amount of engine braking.
-     *
-     * @param braking the desired braking strength (&ge;0)
-     */
-    public void setBraking(float braking) {
-        this.braking = braking;
     }
 
     /**

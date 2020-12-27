@@ -479,10 +479,6 @@ public class DrivingInputState
     }
 
     private void updateBrakeAndAccelerate() {
-        /*
-         * Update the brake control signal first,
-         * so it won't override engine braking.
-         */
         if (braking) {
             vehicle.setBrakeSignal(1f);
         } else {
@@ -495,15 +491,10 @@ public class DrivingInputState
         float kph = vehicle.getSpeed(SpeedUnit.KPH);
         float acceleration = 0f;
         if (isEngineRunning && accelerating) {
-            vehicle.removeEngineBraking();
-
             float maxKph = vehicle.getGearBox().getMaxSpeed(SpeedUnit.KPH);
             if (kph < maxKph) {
                 acceleration = 1f;
             }
-
-        } else if (!braking) {
-            vehicle.applyEngineBraking();
         }
 
         if (isEngineRunning && vehicle.getGearBox().isInReverse()) {

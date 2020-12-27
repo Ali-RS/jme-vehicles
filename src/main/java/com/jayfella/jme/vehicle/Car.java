@@ -200,21 +200,6 @@ abstract public class Car extends Vehicle {
     }
 
     @Override
-    public void applyEngineBraking() {
-        for (int i = 0; i < getNumWheels(); ++i) {
-            Wheel wheel = getWheel(i);
-
-            // if the wheel is not "connected" to the engine, don't slow the wheel down using engine braking.
-            // so if the wheel has 1 acceleration force, apply full engine braking.
-            // but if the wheel has 0 acceleration force, it's not "connected" to the engine.
-            float brakingForce = getEngine().getBraking() * wheel.getPowerFraction();
-            // System.out.println(brakingForce);
-            // wheel.brake(brakingForce);
-            getVehicleControl().brake(i, brakingForce);
-        }
-    }
-
-    @Override
     public void setBrakeSignal(float strength) {
         for (Wheel wheel : wheels) {
             wheel.brake(strength);
@@ -262,13 +247,6 @@ abstract public class Car extends Vehicle {
         // just apply the brakes to the rear wheels.
         wheels.get(2).brake(strength, 100);
         wheels.get(3).brake(strength, 100);
-    }
-
-    @Override
-    public void removeEngineBraking() {
-        for (int wheelIndex = 0; wheelIndex < getNumWheels(); ++wheelIndex) {
-            getVehicleControl().brake(wheelIndex, 0);
-        }
     }
 
     @Override
