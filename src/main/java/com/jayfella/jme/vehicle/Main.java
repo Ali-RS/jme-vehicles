@@ -41,6 +41,14 @@ public class Main extends SimpleApplication {
      * message logger for this class
      */
     final private static Logger logger = Logger.getLogger(Main.class.getName());
+    /**
+     * filesystem path to the directory where screenshots will be written
+     */
+    final private static String screenshotDirectory = "./";
+    /**
+     * filename prefix for numbered screen shots
+     */
+    final private static String screenshotPrefix = "screen_shot";
     // *************************************************************************
     // fields
 
@@ -70,7 +78,9 @@ public class Main extends SimpleApplication {
         super(
                 new AudioListenerState(),
                 new ConstantVerifierState(),
+                new DriverHud(),
                 new DumpInputState(),
+                new ScreenshotAppState(screenshotDirectory, screenshotPrefix),
                 new StatsAppState()
         );
     }
@@ -265,15 +275,6 @@ public class Main extends SimpleApplication {
         BulletAppState bulletAppState = new BulletAppState();
         bulletAppState.setDebugEnabled(false);
         stateManager.attach(bulletAppState);
-
-        // create the driver's heads-up display (disabled)
-        DriverHud driverHud = new DriverHud();
-        stateManager.attach(driverHud);
-
-        // enable screenshots
-        ScreenshotAppState screenshotAppState
-                = new ScreenshotAppState("./", "screen_shot");
-        stateManager.attach(screenshotAppState);
 
         // Load the default Sky asynchronously.
         CompletableFuture
