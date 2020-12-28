@@ -1,5 +1,7 @@
-package com.jayfella.jme.vehicle;
+package com.jayfella.jme.vehicle.examples.environments;
 
+import com.jayfella.jme.vehicle.Environment;
+import com.jayfella.jme.vehicle.Main;
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.AssetNotFoundException;
 import com.jme3.bullet.collision.shapes.CollisionShape;
@@ -38,7 +40,7 @@ public class Playground extends Environment {
      * @return the average color component (&ge;0)
      */
     @Override
-    float directLightIntensity() {
+    public float directLightIntensity() {
         return 1f;
     }
 
@@ -49,7 +51,7 @@ public class Playground extends Environment {
      * @return a new location vector (in world coordinates)
      */
     @Override
-    Vector3f dropLocation() {
+    public Vector3f dropLocation() {
         return new Vector3f(0f, 6f, 0f);
     }
 
@@ -60,7 +62,7 @@ public class Playground extends Environment {
      * seen from above)
      */
     @Override
-    float dropYRotation() {
+    public float dropYRotation() {
         return 0f;
     }
 

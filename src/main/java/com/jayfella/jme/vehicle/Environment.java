@@ -56,7 +56,7 @@ abstract public class Environment {
      *
      * @return the average color component (&ge;0)
      */
-    abstract float directLightIntensity();
+    abstract public float directLightIntensity();
 
     /**
      * Determine the drop location, which lies directly above the preferred
@@ -64,7 +64,7 @@ abstract public class Environment {
      *
      * @return a new location vector (in world coordinates)
      */
-    abstract Vector3f dropLocation();
+    abstract public Vector3f dropLocation();
 
     /**
      * Determine the preferred initial orientation for vehicles.
@@ -72,7 +72,7 @@ abstract public class Environment {
      * @return the Y rotation angle (in radians, measured counter-clockwise as
      * seen from above)
      */
-    abstract float dropYRotation();
+    abstract public float dropYRotation();
 
     /**
      * Access the C-G model.

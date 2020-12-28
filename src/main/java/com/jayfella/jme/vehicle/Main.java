@@ -2,6 +2,7 @@ package com.jayfella.jme.vehicle;
 
 import com.atr.jme.font.asset.TrueTypeLoader;
 import com.jayfella.jme.vehicle.examples.cars.GrandTourer;
+import com.jayfella.jme.vehicle.examples.environments.Racetrack;
 import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.gui.LoadingState;
 import com.jayfella.jme.vehicle.input.DumpInputState;
