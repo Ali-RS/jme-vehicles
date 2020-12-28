@@ -22,7 +22,7 @@ import jme3utilities.mesh.Octasphere;
 /**
  * A simulated sky with its associated lights and post-processing.
  */
-abstract public class Sky {
+abstract public class Sky implements Loadable {
     // *************************************************************************
     // constants and loggers
 
@@ -118,11 +118,6 @@ abstract public class Sky {
         SSAOFilter ssaoFilter = new SSAOFilter();
         fpp.addFilter(ssaoFilter);
     }
-
-    /**
-     * Load this Sky from assets.
-     */
-    abstract public void load();
     // *************************************************************************
     // protected methods
 

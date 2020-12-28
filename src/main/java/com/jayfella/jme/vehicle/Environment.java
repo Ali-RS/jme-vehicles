@@ -12,7 +12,7 @@ import com.jme3.scene.Node;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-abstract public class Environment {
+abstract public class Environment implements Loadable {
     // *************************************************************************
     // fields
 
@@ -84,11 +84,6 @@ abstract public class Environment {
     public Node getCgm() {
         return loadedCgm;
     }
-
-    /**
-     * Load the Environment from assets.
-     */
-    abstract public void load();
 
     /**
      * Reposition the default Camera to the initial location and orientation for

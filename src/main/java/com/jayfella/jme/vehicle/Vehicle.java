@@ -31,7 +31,7 @@ import jme3utilities.math.MyVector3f;
 /**
  * A vehicle with a single Engine and a single GearBox.
  */
-abstract public class Vehicle {
+abstract public class Vehicle implements Loadable {
     // *************************************************************************
     // constants and loggers
 
@@ -249,11 +249,6 @@ abstract public class Vehicle {
     public VehicleControl getVehicleControl() {
         return vehicleControl;
     }
-
-    /**
-     * Load this Vehicle from assets.
-     */
-    abstract public void load();
 
     /**
      * Update the status of the horn.
