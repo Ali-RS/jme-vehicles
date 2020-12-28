@@ -79,8 +79,8 @@ public class LoadingState extends BaseAppState {
          */
         Camera camera = getApplication().getCamera();
         Vector3f labelSize = label.getPreferredSize();
-        float x = camera.getWidth() / 2 - labelSize.x / 2;
-        float y = camera.getHeight() / 2 - labelSize.y / 2 + 70f;
+        float x = camera.getWidth() / 2f - labelSize.x / 2;
+        float y = camera.getHeight() / 2f - labelSize.y / 2 + 70f;
         label.setLocalTranslation(x, y, 1f);
     }
     // *************************************************************************
@@ -205,8 +205,8 @@ public class LoadingState extends BaseAppState {
          * Center the spinner in the display.
          */
         Camera camera = getApplication().getCamera();
-        float x = camera.getWidth() / 2;
-        float y = camera.getHeight() / 2;
+        float x = camera.getWidth() / 2f;
+        float y = camera.getHeight() / 2f;
         result.move(x, y, 1f);
 
         return result;
