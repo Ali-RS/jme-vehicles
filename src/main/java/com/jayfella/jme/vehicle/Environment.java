@@ -26,6 +26,8 @@ abstract public class Environment {
     /**
      * Add this loaded environment to the specified scene-graph node and also to
      * the PhysicsSpace.
+     *
+     * @param parent where to attach (not null)
      */
     void attachToScene(Node parent) {
         assert loadedCgm != null;

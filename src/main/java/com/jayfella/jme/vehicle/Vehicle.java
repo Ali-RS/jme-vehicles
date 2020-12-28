@@ -104,6 +104,11 @@ abstract public class Vehicle {
         accelerateSignal = strength;
     }
 
+    /**
+     * Add this loaded Vehicle to the specified scene-graph node.
+     *
+     * @param parent where to attach (not null)
+     */
     public void attachToScene(Node parent) {
         warpToStart();
         getNode().setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
