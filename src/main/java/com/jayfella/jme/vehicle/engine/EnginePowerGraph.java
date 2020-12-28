@@ -62,9 +62,10 @@ public class EnginePowerGraph extends Geometry {
             }
         }
 
+        float redlineRpm = engine.getRedlineRpm();
         for (int x = 0; x < width; x++) {
-            float range = map(x, 0, width, 0, 7500);
-            float y = FastMath.clamp(engine.powerFraction(range) * height, 0, height - 1);
+            float rpm = map(x, 0f, width, 0f, redlineRpm);
+            float y = FastMath.clamp(engine.powerFraction(rpm) * height, 0, height - 1);
             imageRaster.setPixel(x, (int) y, ColorRGBA.Yellow);
         }
     }
