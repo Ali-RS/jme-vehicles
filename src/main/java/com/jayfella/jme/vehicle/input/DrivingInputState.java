@@ -9,6 +9,7 @@ import com.jayfella.jme.vehicle.debug.TireDataState;
 import com.jayfella.jme.vehicle.debug.VehicleEditorState;
 import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.gui.MainMenu;
+import com.jayfella.jme.vehicle.gui.PhysicsHud;
 import com.jayfella.jme.vehicle.view.CameraController;
 import com.jayfella.jme.vehicle.view.CameraSignal;
 import com.jayfella.jme.vehicle.view.ChaseCamera;
@@ -403,7 +404,8 @@ public class DrivingInputState
                     1, pressed);
 
         } else if (func == F_PAUSE && pressed) {
-            driverHud.togglePhysicsPaused();
+            PhysicsHud physicsState = Main.findAppState(PhysicsHud.class);
+            physicsState.togglePhysicsPaused();
 
         } else if (func == F_RETURN && !pressed) {
             // can't use InputState.Positive for this purpose

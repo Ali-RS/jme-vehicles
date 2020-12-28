@@ -159,6 +159,7 @@ public class LoadingState extends BaseAppState {
             AppStateManager stateManager = getStateManager();
             stateManager.attach(new MainMenu());
             stateManager.attach(new NonDrivingInputState());
+            stateManager.attach(new PhysicsHud());
             //stateManager.attach(new VehiclePointsState());
 
             stateManager.detach(this);
