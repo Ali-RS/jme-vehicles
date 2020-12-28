@@ -73,10 +73,9 @@ public class Racetrack extends Environment {
         assert loadedCgm == null : "The model is already loaded.";
 
         AssetManager assetManager = Main.getApplication().getAssetManager();
-        String assetPath = "Models/race1/race1.j3o";
-        loadedCgm = (Node) assetManager.loadModel("Models/race1/race1.j3o");
+        loadedCgm = (Node) assetManager.loadModel("/Models/race1/race1.j3o");
 
-        assetPath = "/Models/race1/shapes/env-shape.j3o";
+        String assetPath = "/Models/race1/shapes/env-shape.j3o";
         CollisionShape shape;
         try {
             shape = (CollisionShape) assetManager.loadAsset(assetPath);
