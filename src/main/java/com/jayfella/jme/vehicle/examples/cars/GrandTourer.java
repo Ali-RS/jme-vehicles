@@ -63,7 +63,6 @@ public class GrandTourer extends Car {
         AssetManager assetManager = Main.getApplication().getAssetManager();
         String assetPath = "Models/GT/scene.gltf.j3o";
         Spatial chassis = assetManager.loadModel(assetPath);
-        chassis.setLocalScale(0.2f); // TODO eliminate this step
         float mass = 1_525f; // in kilos
         float linearDamping = 0.06f;
         setChassis("GT", chassis, mass, linearDamping);
