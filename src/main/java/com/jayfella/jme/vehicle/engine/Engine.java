@@ -1,7 +1,5 @@
 package com.jayfella.jme.vehicle.engine;
 
-import com.jayfella.jme.vehicle.SpeedUnit;
-import com.jayfella.jme.vehicle.Vehicle;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioData;
 import com.jme3.audio.AudioNode;
@@ -268,31 +266,5 @@ abstract public class Engine {
      */
     public void setRunning(boolean newState) {
         isRunning = newState;
-    }
-    // *************************************************************************
-    // new protected methods
-
-    // TODO delete
-    protected float getTorqueAtSpeed(Vehicle vehicle) {
-        float engineMaxSpeed = vehicle.getGearBox().getMaxSpeed(SpeedUnit.KPH);
-        float speedUnit = vehicle.getSpeed(SpeedUnit.KPH) / engineMaxSpeed;
-        return 1.0f - FastMath.interpolateLinear(speedUnit, 0, speedUnit);
-    }
-    // *************************************************************************
-    // private methods
-
-    /**
-     * Linearly map a value from one range to a new range.
-     *
-     * @param value the input value
-     * @param oldMin the input minimum value
-     * @param oldMax the input maximum value
-     * @param newMin the new minimum value
-     * @param newMax the new maximum value
-     * @return the new value
-     */
-    private static float map(float value, float oldMin, float oldMax,
-            float newMin, float newMax) {
-        return (((value - oldMin) * (newMax - newMin)) / (oldMax - oldMin)) + newMin;
     }
 }

@@ -57,10 +57,6 @@ public class EnginePowerGraphState extends BaseAppState {
         line.setLocalTranslation(posX, 0, 2);
     }
 
-    private float map(float value, float oldMin, float oldMax, float newMin, float newMax) {
-        return (((value - oldMin) * (newMax - newMin)) / (oldMax - oldMin)) + newMin;
-    }
-
     @Override
     protected void cleanup(Application app) {
         // do nothing

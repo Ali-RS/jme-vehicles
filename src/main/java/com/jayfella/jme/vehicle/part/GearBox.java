@@ -17,18 +17,6 @@ public class GearBox {
         }
     }
 
-    public GearBox(Gear[] gears) {
-        this.gears = gears;
-    }
-
-    public Gear[] getGears() {
-        return gears;
-    }
-
-    public void setGears(Gear[] gears) {
-        this.gears = gears;
-    }
-
     public boolean isInReverse() {
         return isInReverse;
     }
@@ -41,20 +29,12 @@ public class GearBox {
         return gears[gearNum];
     }
 
-    public void setGear(int gearNum, Gear gear) {
-        gears[gearNum] = gear;
-    }
-
     public void setGear(int gearNum, float start, float end) {
 
         Gear gear = gears[gearNum];
 
         gear.setMinKph(start);
         gear.setMaxKph(end);
-    }
-
-    public Gear getActiveGear() {
-        return gears[activeGear];
     }
 
     public int getActiveGearNum() {
