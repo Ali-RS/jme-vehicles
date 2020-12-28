@@ -8,6 +8,7 @@ import com.jme3.audio.AudioNode;
 import com.jme3.math.FastMath;
 import com.jme3.math.Spline;
 import com.jme3.math.Vector3f;
+import java.util.List;
 import java.util.logging.Logger;
 import jme3utilities.Validate;
 
@@ -85,28 +86,38 @@ abstract public class Engine {
     // new methods exposed
 
     /**
-     * Evaluate this engine's power graph.
+     * Determine the power output for the specified speed.
      *
-     * @param rpm a value from 0-maxRevs
-     * @return the output power (in Watts, between 0 and getPower())
+     * @param rpm the crankshaft rotation rate (in revolutions per minute,
+     * &ge;0)
+     * @return the power output (in Watts, between 0 and getPower())
      */
     abstract public float powerFraction(float rpm);
 
-    public static float evaluateSpline(Spline powerGraph, float range) {
-        int index = powerGraph.getControlPoints().size() - 1;
-        Vector3f point = powerGraph.getControlPoints().get(index);
+    /**
+     * Determine the power output for the specified speed, using a Spline.
+     *
+     * @param powerCurve the spline to use (not null, unaffected)
+     * @param rpm the crankshaft rotation rate (in revolutions per minute)
+     * @return the power output (in Watts)
+     */
+    protected static float evaluateSpline(Spline powerCurve, float rpm) {
+        List<Vector3f> points = powerCurve.getControlPoints();
+        int lastIndex = points.size() - 1;
+        for (int lowIndex = 0; lowIndex < lastIndex; ++lowIndex) {
+            float lowRpm = points.get(lowIndex).x;
+            float highRpm = points.get(lowIndex + 1).x;
+            if (rpm >= lowRpm && rpm <= highRpm) {
+                float t = FastMath.unInterpolateLinear(rpm, lowRpm, highRpm);
+                Vector3f interpolatedPoint
+                        = powerCurve.interpolate(t, lowIndex, null);
+                assert FastMath.approximateEquals(interpolatedPoint.x, rpm);
+                float result = interpolatedPoint.y;
 
-        while (point.x > range) {
-            index -= 1;
-            point = powerGraph.getControlPoints().get(index);
+                return result;
+            }
         }
-
-        //System.out.println("index: " + index + " - range: " + range);
-        float start = point.x;
-        float end = powerGraph.getControlPoints().get(index + 1).x;
-        float interp = map(range, start, end, 0, 1);
-
-        return powerGraph.interpolate(interp, index, null).y;
+        throw new IllegalArgumentException("rpm = " + rpm);
     }
 
     /**
