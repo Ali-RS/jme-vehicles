@@ -3,6 +3,7 @@ package com.jayfella.jme.vehicle;
 import com.atr.jme.font.asset.TrueTypeLoader;
 import com.jayfella.jme.vehicle.examples.cars.GrandTourer;
 import com.jayfella.jme.vehicle.examples.environments.Racetrack;
+import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
 import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.gui.LoadingState;
 import com.jayfella.jme.vehicle.input.DumpInputState;
@@ -13,28 +14,14 @@ import com.jme3.app.state.AppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.ConstantVerifierState;
 import com.jme3.app.state.ScreenshotAppState;
-import com.jme3.asset.AssetManager;
-import com.jme3.asset.TextureKey;
 import com.jme3.audio.AudioListenerState;
-import com.jme3.bounding.BoundingSphere;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.util.NativeLibrary;
 import com.jme3.input.Joystick;
 import com.jme3.input.JoystickConnectionListener;
-import com.jme3.light.DirectionalLight;
-import com.jme3.light.LightProbe;
-import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
-import com.jme3.math.Vector3f;
-import com.jme3.post.FilterPostProcessor;
-import com.jme3.post.ssao.SSAOFilter;
-import com.jme3.renderer.queue.RenderQueue;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.shadow.DirectionalLightShadowFilter;
 import com.jme3.system.AppSettings;
-import com.jme3.texture.Texture;
 import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.focus.FocusNavigationState;
 import com.simsilica.lemur.style.BaseStyles;
@@ -43,10 +30,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jme3utilities.MyCamera;
-import jme3utilities.MyMesh;
 import jme3utilities.MyString;
 import jme3utilities.SignalTracker;
-import jme3utilities.mesh.Octasphere;
 
 public class Main extends SimpleApplication {
     // *************************************************************************
@@ -60,10 +45,6 @@ public class Main extends SimpleApplication {
     // fields
 
     /**
-     * directional light
-     */
-    private static DirectionalLight directionalLight;
-    /**
      * current game environment/world
      */
     private static Environment environment;
@@ -71,6 +52,10 @@ public class Main extends SimpleApplication {
      * application instance
      */
     private static Main application;
+    /**
+     * selected sky, including lights and post-processing
+     */
+    private static Sky sky;
     /**
      * vehicle currently selected
      */
@@ -93,12 +78,11 @@ public class Main extends SimpleApplication {
     // new methods exposed
 
     /**
-     * Attach the selected environment and vehicle to the scene.
+     * Attach the selected environment, sky, and vehicle to the scene. All 3
+     * must be loaded.
      */
     public void attachAllToScene() {
-        float intensity = environment.directLightIntensity();
-        ColorRGBA directColor = ColorRGBA.White.mult(intensity);
-        directionalLight.setColor(directColor);
+        sky.attachToScene(rootNode);
 
         environment.resetCameraPosition();
         environment.attachToScene(rootNode);
@@ -197,6 +181,7 @@ public class Main extends SimpleApplication {
      * @param newEnvironment the desired environment (not null, loaded)
      */
     public void setEnvironment(Environment newEnvironment) {
+        sky.detachFromScene();
         vehicle.detachFromScene();
         environment.detachFromScene();
 
@@ -208,6 +193,17 @@ public class Main extends SimpleApplication {
         NonDrivingInputState inputState
                 = Main.findAppState(NonDrivingInputState.class);
         inputState.setVehicle(vehicle);
+    }
+
+    /**
+     * Replace the current Sky with a new one.
+     *
+     * @param newSky the desired Sky (not null, loaded)
+     */
+    public void setSky(Sky newSky) {
+        sky.detachFromScene();
+        sky = newSky;
+        sky.attachToScene(rootNode);
     }
 
     /**
@@ -257,19 +253,8 @@ public class Main extends SimpleApplication {
         GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
 
         environment = new Racetrack();
-
-        // Let there be light
-        float intensity = environment.directLightIntensity();
-        ColorRGBA directColor = ColorRGBA.White.mult(intensity);
-        directionalLight = new DirectionalLight(
-                new Vector3f(1f, -0.45f, 0.5f).normalizeLocal(), directColor);
-        rootNode.addLight(directionalLight);
-
-        String probeName = "/Textures/Sky/quarry_03/probe.j3o";
-        LightProbe probe = (LightProbe) assetManager.loadAsset(probeName);
-        probe.setPosition(Vector3f.ZERO);
-        probe.getArea().setRadius(9_999f);
-        rootNode.addLight(probe);
+        Sky.initialize();
+        sky = new QuarrySky();
 
         // display a rotating texture to entertain users
         CountDownLatch latch = new CountDownLatch(3);
@@ -290,16 +275,15 @@ public class Main extends SimpleApplication {
                 = new ScreenshotAppState("./", "screen_shot");
         stateManager.attach(screenshotAppState);
 
-        // Load the sky asynchronously.
+        // Load the default Sky asynchronously.
         CompletableFuture
                 .supplyAsync(() -> {
-                    Spatial result = createSky(assetManager,
-                            "Textures/Sky/quarry_03/equirec_4k.jpg");
+                    Spatial result = sky.load();
                     return result;
                 })
                 .whenComplete((spatial, ex) -> {
                     enqueue(() -> {
-                        rootNode.attachChild(spatial);
+                        sky.attachToScene(rootNode);
                         latch.countDown();
                     });
                 });
@@ -319,9 +303,6 @@ public class Main extends SimpleApplication {
 
         environment.resetCameraPosition();
 
-        rootNode.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
-        addPostProcessing(directionalLight);
-
         // Load the default Vehicle asynchronously.
         vehicle = new GrandTourer();
         assert vehicle.getVehicleControl() == null;
@@ -339,74 +320,5 @@ public class Main extends SimpleApplication {
 
         // this consumes joystick input. I'll have to investigate why.
         stateManager.getState(FocusNavigationState.class).setEnabled(false);
-    }
-    // *************************************************************************
-    // private methods
-
-    private void addPostProcessing(DirectionalLight directionalLight) {
-        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
-
-        DirectionalLightShadowFilter shadowFilter = new DirectionalLightShadowFilter(assetManager, 4096, 4);
-        shadowFilter.setLight(directionalLight);
-        shadowFilter.setShadowIntensity(0.3f);
-        shadowFilter.setShadowZExtend(256);
-        shadowFilter.setShadowZFadeLength(128);
-        // shadowFilter.setEdgeFilteringMode(EdgeFilteringMode.PCFPOISSON);
-        fpp.addFilter(shadowFilter);
-
-        SSAOFilter ssaoFilter = new SSAOFilter();
-        fpp.addFilter(ssaoFilter);
-
-        // LightScatteringFilter lightScattering = new LightScatteringFilter();
-        // lightScattering.setLightPosition(directionalLight.getDirection());
-        // lightScattering.setLightDensity(1);
-        // lightScattering.setBlurWidth(1.1f);
-        // fpp.addFilter(lightScattering);
-        // DepthOfFieldFilter dof = new DepthOfFieldFilter();
-        // dof.setFocusDistance(0);
-        // dof.setFocusRange(384);
-        // dof.setEnabled(false);
-        // fpp.addFilter(dof);
-        // BloomFilter bloomFilter = new BloomFilter();
-        // bloomFilter.setExposurePower(55);
-        // bloomFilter.setBloomIntensity(1.2f);
-        // fpp.addFilter(bloomFilter);
-        viewPort.addProcessor(fpp);
-    }
-
-    /**
-     * Generate a sky Geometry from an Equirectangular texture asset.
-     *
-     * @param assetManager (not null)
-     * @param assetPath the asset path to the texture (not null, not empty)
-     * @return a new Geometry
-     */
-    private Spatial createSky(AssetManager assetManager, String assetPath) {
-        boolean flipY = true;
-        TextureKey textureKey = new TextureKey(assetPath, flipY);
-        Texture texture = assetManager.loadTexture(textureKey);
-        texture.setAnisotropicFilter(1);
-
-        Material skyMat = new Material(assetManager, "MatDefs/SkyEquirec.j3md");
-        skyMat.setTexture("Texture", texture);
-        skyMat.setVector3("NormalScale", new Vector3f(1f, 1f, 1f));
-
-        int numRefineSteps = 1;
-        float meshRadius = 10f;
-        Octasphere sphereMesh = new Octasphere(numRefineSteps, meshRadius);
-        MyMesh.reverseNormals(sphereMesh);
-        MyMesh.reverseWinding(sphereMesh);
-
-        Geometry result = new Geometry("Sky", sphereMesh);
-        result.setCullHint(Spatial.CullHint.Never);
-        result.setMaterial(skyMat);
-        result.setQueueBucket(RenderQueue.Bucket.Sky);
-        result.setShadowMode(RenderQueue.ShadowMode.Off);
-
-        float boundRadius = Float.POSITIVE_INFINITY;
-        BoundingSphere bound = new BoundingSphere(boundRadius, Vector3f.ZERO);
-        result.setModelBound(bound);
-
-        return result;
     }
 }
