@@ -254,7 +254,7 @@ class TachometerState extends BaseAppState {
         material.setTexture("ColorMap", backgroundTexture);
         material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
 
-        int maxRevs = (int) vehicle.getEngine().getMaxRevs();
+        int maxRevs = (int) vehicle.getEngine().getRedlineRpm();
         float numbersRadius = 0.38f * width;
         Node result = buildNumNode(maxRevs, 1000, numbersRadius);
         result.attachChild(backgroundGeom);

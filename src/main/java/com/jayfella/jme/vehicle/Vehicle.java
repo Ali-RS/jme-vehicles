@@ -117,14 +117,14 @@ abstract public class Vehicle {
     }
 
     /**
-     * Alter the brake control signals. TODO rename setBrakeSignals()
+     * Alter the values of the brake control signals.
      *
      * @param mainStrength the desired strength of the main-brake control
      * signal, between 0 (not applied) and 1 (applied as strongly as possible)
      * @param parkingStrength the desired strength of the parking-brake control
      * signal, between 0 (not applied) and 1 (applied as strongly as possible)
      */
-    abstract public void setBrakeSignal(float mainStrength,
+    abstract public void setBrakeSignals(float mainStrength,
             float parkingStrength);
 
     /**

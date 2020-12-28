@@ -33,7 +33,7 @@ public class Brake {
      *
      * @return the peak force (in Newtons, &ge;0)
      */
-    public float getStrength() { // TODO rename getPeakForce()
+    public float getPeakForce() {
         return peakForce;
     }
 
@@ -42,7 +42,7 @@ public class Brake {
      *
      * @param force the desired peak force (in Newtons, &ge;0)
      */
-    public void setStrength(float force) { // TODO setPeakForce()
+    public void setPeakForce(float force) {
         Validate.nonNegative(force, "force");
         peakForce = force;
     }

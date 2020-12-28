@@ -41,7 +41,7 @@ public class Gear {
      *
      * @return the speed (in KPH, &ge;0)
      */
-    public float getStart() { // TODO rename getMinKph()
+    public float getMinKph() {
         return minKph;
     }
 
@@ -50,7 +50,7 @@ public class Gear {
      *
      * @param kph the desired speed (in KPH, &ge;0)
      */
-    public void setStart(float kph) { // TODO rename setMinKph()
+    public void setMinKph(float kph) {
         Validate.nonNegative(kph, "kph");
         this.minKph = kph;
     }
@@ -60,7 +60,7 @@ public class Gear {
      *
      * @return the speed (in KPH, &ge;0)
      */
-    public float getEnd() { // TODO rename getMaxKph()
+    public float getMaxKph() {
         return maxKph;
     }
 
@@ -69,7 +69,7 @@ public class Gear {
      *
      * @param kph the desired speed (in KPH, &ge;0)
      */
-    public void setEnd(float kph) { // TODO rename setMaxKph()
+    public void setMaxKph(float kph) {
         Validate.nonNegative(kph, "kph");
         this.maxKph = kph;
     }

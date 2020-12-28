@@ -233,15 +233,14 @@ public class Wheel {
     }
 
     /**
-     * Update the braking impulse applied to this wheel. TODO rename
-     * updateBrakes()
+     * Update the braking impulse applied to this wheel.
      *
      * @param mainStrength the strength of the main-brake control signal (&ge;0,
      * &le;1)
      * @param parkingStrength the strength of the parking-brake control signal
      * (&ge;0, &le;1)
      */
-    public void brake(float mainStrength, float parkingStrength) {
+    public void updateBrakes(float mainStrength, float parkingStrength) {
         Validate.fraction(mainStrength, "main strength");
         Validate.fraction(parkingStrength, "parking strength");
 
@@ -249,8 +248,8 @@ public class Wheel {
         PhysicsSpace physicsSpace = bas.getPhysicsSpace();
         float timeStep = physicsSpace.getAccuracy();
 
-        float force = mainStrength * mainBrake.getStrength()
-                + parkingStrength * parkingBrake.getStrength();
+        float force = mainStrength * mainBrake.getPeakForce()
+                + parkingStrength * parkingBrake.getPeakForce();
         float impulse = force * timeStep;
         if (impulse != vehicleWheel.getBrake()) {
             //System.out.printf("brake[%d] = %f%n", wheelIndex, impulse);
@@ -266,7 +265,7 @@ public class Wheel {
      *
      * @return the pre-existing instance
      */
-    public Brake getBrake() { // TODO rename getMainBrake()
+    public Brake getMainBrake() {
         return mainBrake;
     }
 

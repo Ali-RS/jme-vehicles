@@ -206,7 +206,7 @@ abstract public class Car extends Vehicle {
          * Distribute the total engine power across the wheels in accordance
          * with their configured power fractions.
          */
-        float maxWatts = getEngine().getPowerOutputAtRevs();
+        float maxWatts = getEngine().outputWatts();
         //System.out.println("speed = " + speed + " rpm = " + getEngine().getRpm() + " maxWatts = " + maxWatts);
         float totalWatts = strength * maxWatts; // signed so that <0 means reverse
         for (Wheel wheel : wheels) {
@@ -219,7 +219,7 @@ abstract public class Car extends Vehicle {
 
     /**
      * Alter the values of the brake control signals and update the brake
-     * impulses applied to each wheel. TODO rename setBrakeSignals()
+     * impulses applied to each wheel.
      *
      * @param mainStrength the strength of the main-brake control signal,
      * between 0 (not applied) and 1 (applied as strongly as possible)
@@ -227,9 +227,9 @@ abstract public class Car extends Vehicle {
      * between 0 (not applied) and 1 (applied as strongly as possible)
      */
     @Override
-    public void setBrakeSignal(float mainStrength, float parkingStrength) {
+    public void setBrakeSignals(float mainStrength, float parkingStrength) {
         for (Wheel wheel : wheels) {
-            wheel.brake(mainStrength, parkingStrength);
+            wheel.updateBrakes(mainStrength, parkingStrength);
         }
     }
 

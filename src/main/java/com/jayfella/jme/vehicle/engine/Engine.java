@@ -90,7 +90,7 @@ abstract public class Engine {
      * @param rpm a value from 0-maxRevs
      * @return the output power (in Watts, between 0 and getPower())
      */
-    abstract public float evaluateSpline(float rpm);
+    abstract public float powerFraction(float rpm);
 
     public static float evaluateSpline(Spline powerGraph, float range) {
         int index = powerGraph.getControlPoints().size() - 1;
@@ -130,12 +130,12 @@ abstract public class Engine {
     }
 
     /**
-     * Determine the redline speed. TODO rename
+     * Determine the redline speed.
      *
      * @return the crankshaft rotation rate (in revolutions per minute,
      * &gt;idlRpm)
      */
-    public float getMaxRevs() {
+    public float getRedlineRpm() {
         assert redlineRpm > 0f : redlineRpm;
         return redlineRpm;
     }
@@ -151,11 +151,11 @@ abstract public class Engine {
     }
 
     /**
-     * Determine the maximum power output. TODO rename maxOutputWatts()
+     * Determine the maximum power output.
      *
      * @return the power (in Watts, &gt;0)
      */
-    public float getPower() {
+    public float getMaxOutputWatts() {
         assert maxOutputWatts > 0f : maxOutputWatts;
         return maxOutputWatts;
     }
@@ -165,13 +165,13 @@ abstract public class Engine {
      *
      * @return the power (in Watts, &gt;0, &le;maxOutputWatts)
      */
-    public float getPowerOutputAtRevs() {
+    public float outputWatts() {
         float revs = getRpm();
-        revs = FastMath.clamp(revs, 0, getMaxRevs() - 0.01f);
-        float powerFraction = evaluateSpline(revs);
-        float result = powerFraction * getPower();
+        revs = FastMath.clamp(revs, 0, getRedlineRpm() - 0.01f);
+        float powerFraction = powerFraction(revs);
+        float result = powerFraction * getMaxOutputWatts();
 
-        assert result >= 0f && result <= getPower() : result;
+        assert result >= 0f && result <= getMaxOutputWatts() : result;
         return result;
     }
 
@@ -231,22 +231,21 @@ abstract public class Engine {
     }
 
     /**
-     * Alter this engine's maximum power output. TODO rename
+     * Alter this engine's maximum power output.
      *
      * @param watts the desired amount of power (&gt;0)
      */
-    public void setPower(float watts) {
+    public void setMaxOutputWatts(float watts) {
         Validate.positive(watts, "watts");
         maxOutputWatts = watts;
     }
 
     /**
-     * Alter the engine's speed as a fraction of the redline. TODO rename
-     * setRpmFraction()
+     * Alter the engine's speed as a fraction of the redline.
      *
      * @param revs the desired fraction (&ge;0)
      */
-    public void setRevs(float revs) {
+    public void setRpmFraction(float revs) {
         Validate.fraction(revs, "revs");
         rpmFraction = revs;
     }

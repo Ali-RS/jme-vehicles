@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle.debug.parts;
 
 import com.jayfella.jme.vehicle.Vehicle;
+import com.jayfella.jme.vehicle.part.Gear;
 import com.simsilica.lemur.RollupPanel;
 import com.simsilica.lemur.props.PropertyPanel;
 
@@ -18,11 +19,11 @@ public class GearboxEditor extends VehicleEditor {
         PropertyPanel propertyPanel = new PropertyPanel("glass");
 
         for (int i = 0; i < vehicle.getGearBox().getGearCount(); i++) {
-
-            // propertyPanel.addFloatProperty("Wheel " + i, vehicle.getWheel(i).getBrake(), "strength", 0, 200, 0.1f);
-            propertyPanel.addFloatProperty("Gear Start " + i, vehicle.getGearBox().getGear(i), "start", 0, 250, 0.1f);
-            propertyPanel.addFloatProperty("Gear End " + i, vehicle.getGearBox().getGear(i), "end", 0, 250, 0.1f);
-
+            Gear gear = vehicle.getGearBox().getGear(i);
+            propertyPanel.addFloatProperty("Gear Start " + i, gear, "minKph",
+                    0f, 250f, 0.1f);
+            propertyPanel.addFloatProperty("Gear End " + i, gear, "maxKph",
+                    0f, 250f, 0.1f);
         }
 
         return new RollupPanel("Ratios", propertyPanel, "glass");

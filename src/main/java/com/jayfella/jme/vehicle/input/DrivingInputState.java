@@ -480,7 +480,7 @@ public class DrivingInputState
          */
         float main = mainBrake ? 1f : 0f;
         float parking = parkingBrake ? 1f : 0f;
-        vehicle.setBrakeSignal(main, parking);
+        vehicle.setBrakeSignals(main, parking);
         /*
          * Update the "accelerate" control signal.
          */

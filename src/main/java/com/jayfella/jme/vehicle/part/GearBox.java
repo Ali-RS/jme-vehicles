@@ -49,8 +49,8 @@ public class GearBox {
 
         Gear gear = gears[gearNum];
 
-        gear.setStart(start);
-        gear.setEnd(end);
+        gear.setMinKph(start);
+        gear.setMaxKph(end);
     }
 
     public Gear getActiveGear() {
@@ -72,7 +72,7 @@ public class GearBox {
     public float getMaxSpeed(SpeedUnit speedUnit) {
         int topGearIndex = getGearCount() - 1;
         Gear topGear = gears[topGearIndex];
-        float kph = topGear.getEnd();
+        float kph = topGear.getMaxKph();
 
         float result;
         switch (speedUnit) {

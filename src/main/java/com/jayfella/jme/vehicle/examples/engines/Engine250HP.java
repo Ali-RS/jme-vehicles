@@ -53,13 +53,13 @@ public class Engine250HP extends Engine {
     // Engine methods
 
     /**
-     * Determine the fractional power output at the specified speed. TODO rename
+     * Determine the fractional power output at the specified speed.
      *
      * @param rpm the angular speed of the crankshaft (in RPMs, &ge;0)
      * @return the power as a fraction of the maximum (&ge;0, &le;1)
      */
     @Override
-    public float evaluateSpline(float rpm) {
+    public float powerFraction(float rpm) {
         Validate.nonNegative(rpm, "rpm");
         float result = evaluateSpline(spline, rpm);
         return result;

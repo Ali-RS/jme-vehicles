@@ -79,7 +79,7 @@ public class AutomaticGearboxState extends BaseAppState {
         Engine engine = vehicle.getEngine();
         boolean isEngineRunning = engine.isRunning();
         if (!isEngineRunning) {
-            engine.setRevs(0f);
+            engine.setRpmFraction(0f);
             return;
         }
 
@@ -94,8 +94,8 @@ public class AutomaticGearboxState extends BaseAppState {
             int numGears = gearbox.getGearCount();
             int gearIndex = gearbox.getActiveGearNum();
             Gear gear = gearBox.getGear(gearIndex);
-            float minKph = gear.getStart();
-            float maxKph = gear.getEnd();
+            float minKph = gear.getMinKph();
+            float maxKph = gear.getMaxKph();
             if (signedKph < minKph && gearIndex > 0) {
                 --gearIndex;
                 //System.out.println("Downshifting to " + gearIndex);
@@ -106,7 +106,7 @@ public class AutomaticGearboxState extends BaseAppState {
             gearbox.setActiveGearNum(gearIndex); // TODO not instantaneous
 
             gear = gearBox.getGear(gearIndex);
-            maxKph = gear.getEnd();
+            maxKph = gear.getMaxKph();
             revs = signedKph / maxKph;
         }
 
@@ -140,13 +140,13 @@ public class AutomaticGearboxState extends BaseAppState {
         /*
          * Prevent the engine from stalling or passing the redline.
          */
-        float idleFraction = engine.getIdleRpm() / engine.getMaxRevs();
+        float idleFraction = engine.getIdleRpm() / engine.getRedlineRpm();
         if (revs < idleFraction) {
             revs = idleFraction;
         } else if (revs > 1f) {
             revs = 1f;
         }
 
-        engine.setRevs(revs);
+        engine.setRpmFraction(revs);
     }
 }

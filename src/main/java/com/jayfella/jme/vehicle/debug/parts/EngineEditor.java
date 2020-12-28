@@ -25,8 +25,8 @@ public class EngineEditor extends VehicleEditor {
             propertyPanel.addFloatProperty("Wheel " + i, vehicle.getWheel(i), "accelerationForce", 0, 1, 0.01f);
         }
          */
-
-        propertyPanel.addFloatProperty("Power", vehicle.getEngine(), "power", 0, 10000, 0.01f);
+        propertyPanel.addFloatProperty("Power", vehicle.getEngine(),
+                "maxOutputWatts", 0f, 10_000f, 0.01f);
 
         return new RollupPanel("Power", propertyPanel, "glass");
     }

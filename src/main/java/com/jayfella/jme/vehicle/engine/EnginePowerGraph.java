@@ -64,7 +64,7 @@ public class EnginePowerGraph extends Geometry {
 
         for (int x = 0; x < width; x++) {
             float range = map(x, 0, width, 0, 7500);
-            float y = FastMath.clamp(engine.evaluateSpline(range) * height, 0, height - 1);
+            float y = FastMath.clamp(engine.powerFraction(range) * height, 0, height - 1);
             imageRaster.setPixel(x, (int) y, ColorRGBA.Yellow);
         }
     }
