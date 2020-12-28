@@ -27,12 +27,12 @@ public class QuarrySky extends Sky {
     /**
      * path to the image asset
      */
-    final private static String imageAssetPath
-            = "Textures/Sky/quarry_03/equirec_4k.jpg";
+    final public static String imageAssetPath
+            = "/Textures/Sky/quarry_03/equirec_4k.jpg";
     /**
      * path to the LightProbe asset
      */
-    final private static String lightProbeAssetPath
+    final public static String lightProbeAssetPath
             = "/Textures/Sky/quarry_03/probe.j3o";
     // *************************************************************************
     // fields

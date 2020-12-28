@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle.probe;
 
+import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
 import com.jme3.app.SimpleApplication;
 import com.jme3.environment.EnvironmentCamera;
 import com.jme3.environment.LightProbeFactory;
@@ -38,9 +39,8 @@ public class MakeQuarryProbe extends SimpleApplication {
     public void simpleInitApp() {
         stateManager.attach(envCam);
 
-        String assetPath = "/Textures/Sky/quarry_03/equirec_4k.jpg";
-        Spatial sky = SkyFactory.createSky(assetManager, assetPath,
-                SkyFactory.EnvMapType.EquirectMap);
+        Spatial sky = SkyFactory.createSky(assetManager,
+                QuarrySky.imageAssetPath, SkyFactory.EnvMapType.EquirectMap);
         rootNode.attachChild(sky);
     }
 
@@ -53,7 +53,9 @@ public class MakeQuarryProbe extends SimpleApplication {
 
         } else if (lightProbe.isReady()) {
             JmeExporter exporter = BinaryExporter.getInstance();
-            File file = new File("probe.j3o");
+            String filePath = "src/main/resources"
+                    + QuarrySky.lightProbeAssetPath;
+            File file = new File(filePath);
             try {
                 exporter.save(lightProbe, file);
             } catch (IOException exception) {
