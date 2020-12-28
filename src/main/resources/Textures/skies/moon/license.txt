@@ -1,0 +1,18 @@
+Licensing history for files in "src/main/resources/Textures/skies/moon"
+
+Based on "Lunar libration with phase Oct 2007":
+* download file:     Lunar_libration_with_phase_Oct_2007.gif
+* download URL:      https://commons.wikimedia.org/wiki/File:Lunar_libration_with_phase_Oct_2007.gif
+* file version:      17:03, November 5, 2007
+* author:            Tom Ruen
+* author URL:        https://en.wikipedia.org/wiki/User:Tomruen
+* copyright:         none (dedicated to the public domain)
+* license type:      PD-self
+* license URL:       https://commons.wikimedia.org/wiki/Template:PD-self
+
+Derived files (also licensed PD-self):
+* probe.j3o
+* waxing-gibbous.png
+
+Added files (also licensed PD-self):
+* license.txt
