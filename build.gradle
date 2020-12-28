@@ -17,7 +17,7 @@ tasks.withType(JavaCompile) { // Java compile-time options:
 tasks.withType(JavaExec) { // Java runtime options:
     //enableAssertions true
     //jvmArgs '-verbose:gc'
-    jvmArgs '-Xms256m', '-Xmx256m'
+    jvmArgs '-Xms512m', '-Xmx512m'
     jvmArgs '-XX:+UseG1GC', '-XX:MaxGCPauseMillis=10'
 }
 

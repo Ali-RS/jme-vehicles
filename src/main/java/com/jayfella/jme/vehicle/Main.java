@@ -1,9 +1,9 @@
 package com.jayfella.jme.vehicle;
 
 import com.atr.jme.font.asset.TrueTypeLoader;
-import com.jayfella.jme.vehicle.examples.cars.GrandTourer;
-import com.jayfella.jme.vehicle.examples.environments.Racetrack;
-import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
+import com.jayfella.jme.vehicle.examples.cars.*;
+import com.jayfella.jme.vehicle.examples.environments.*;
+import com.jayfella.jme.vehicle.examples.skies.*;
 import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.gui.LoadingState;
 import com.jayfella.jme.vehicle.input.DumpInputState;
@@ -19,12 +19,10 @@ import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.util.NativeLibrary;
 import com.jme3.input.Joystick;
 import com.jme3.input.JoystickConnectionListener;
-import com.jme3.scene.Node;
 import com.jme3.system.AppSettings;
 import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.focus.FocusNavigationState;
 import com.simsilica.lemur.style.BaseStyles;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,6 +34,20 @@ public class Main extends SimpleApplication {
     // *************************************************************************
     // constants and loggers
 
+    /**
+     * enumerate all known loadables
+     */
+    final private static Loadable[] allLoadables = new Loadable[]{
+        new AnimatedNightSky(),
+        new DuneBuggy(),
+        new GrandTourer(),
+        new GTRNismo(),
+        new HatchBack(),
+        new Playground(),
+        new PickupTruck(),
+        new QuarrySky(),
+        new Racetrack()
+    };
     /**
      * message logger for this class
      */
@@ -87,8 +99,7 @@ public class Main extends SimpleApplication {
     // new methods exposed
 
     /**
-     * Attach the selected environment, sky, and vehicle to the scene. All 3
-     * must be loaded.
+     * Attach the selected environment, sky, and vehicle to the scene.
      */
     public void attachAllToScene() {
         sky.attachToScene(rootNode);
@@ -261,62 +272,29 @@ public class Main extends SimpleApplication {
         BaseStyles.loadGlassStyle();
         GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
 
-        environment = new Racetrack();
-        Sky.initialize();
-        sky = new QuarrySky();
-
-        // display a rotating texture to entertain users
-        CountDownLatch latch = new CountDownLatch(3);
-        LoadingState loadingState = new LoadingState(latch);
-        stateManager.attach(loadingState);
-
         // initialize physics with debug disabled
         BulletAppState bulletAppState = new BulletAppState();
         bulletAppState.setDebugEnabled(false);
         stateManager.attach(bulletAppState);
 
-        // Load the default Sky asynchronously.
-        CompletableFuture
-                .supplyAsync(() -> {
-                    sky.load();
-                    return sky.getCgm();
-                })
-                .whenComplete((spatial, ex) -> {
-                    enqueue(() -> {
-                        sky.attachToScene(rootNode);
-                        latch.countDown();
-                    });
-                });
-
-        // Load the Environment asynchronously.
-        CompletableFuture
-                .supplyAsync(() -> {
-                    environment.load();
-                    return environment.getCgm();
-                })
-                .whenComplete((node, ex) -> {
-                    enqueue(() -> {
-                        environment.attachToScene(rootNode);
-                        latch.countDown();
-                    });
-                });
-
-        environment.resetCameraPosition();
-
-        // Load the default Vehicle asynchronously.
+        Sky.initialize();
+        sky = new QuarrySky();
         vehicle = new GrandTourer();
-        assert vehicle.getVehicleControl() == null;
-        CompletableFuture
-                .supplyAsync(() -> {
-                    vehicle.load();
-                    Node result = vehicle.getNode();
-                    return result;
-                })
-                .whenComplete((node, ex) -> {
-                    enqueue(() -> {
-                        latch.countDown();
-                    });
-                });
+        environment = new Racetrack();
+        environment.resetCameraPosition();
+        /*
+         * Start threads to warm up the AssetCache.
+         */
+        CountDownLatch latch = new CountDownLatch(allLoadables.length);
+        for (Loadable loadable : allLoadables) {
+            Thread thread = new Preloader(loadable, latch);
+            thread.start();
+        }
+        /*
+         * Display animation to entertain the user until the threads complete.
+         */
+        LoadingState loadingState = new LoadingState(latch);
+        stateManager.attach(loadingState);
 
         // this consumes joystick input. I'll have to investigate why.
         stateManager.getState(FocusNavigationState.class).setEnabled(false);
