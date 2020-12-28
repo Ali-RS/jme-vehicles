@@ -48,6 +48,10 @@ public class MakeNightProbe extends SimpleApplication {
         skyControl.setCloudsYOffset(0.4f);
         skyControl.setPhase(LunarPhase.WAXING_GIBBOUS);
         skyControl.setStarMaps("equator16m");
+        /*
+         * Disable cloud motion for reproducibility.
+         */
+        skyControl.setCloudsRate(0f);
 
         rootNode.addControl(skyControl);
         skyControl.setEnabled(true);
