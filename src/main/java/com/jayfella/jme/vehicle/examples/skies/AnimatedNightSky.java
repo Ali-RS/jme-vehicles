@@ -7,7 +7,6 @@ import com.jme3.light.DirectionalLight;
 import com.jme3.light.LightProbe;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
 import com.jme3.shadow.DirectionalLightShadowFilter;
 import java.util.logging.Logger;
 import jme3utilities.sky.LunarPhase;
@@ -68,15 +67,10 @@ public class AnimatedNightSky extends Sky {
 
     /**
      * Load this Sky from assets.
-     *
-     * @return the root of the loaded C-G model (a new instance)
      */
     @Override
-    public Spatial load() {
-        if (loadedCgm != null) {
-            logger.warning("The model is already loaded.");
-            return loadedCgm;
-        }
+    public void load() {
+        assert loadedCgm == null : "The model is already loaded.";
 
         Main application = Main.getApplication();
         AssetManager assetManager = application.getAssetManager();
@@ -101,7 +95,5 @@ public class AnimatedNightSky extends Sky {
         loadedCgm = new Node();
         loadedCgm.addControl(skyControl);
         skyControl.setEnabled(true);
-
-        return loadedCgm;
     }
 }

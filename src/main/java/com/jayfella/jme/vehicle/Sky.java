@@ -121,10 +121,8 @@ abstract public class Sky {
 
     /**
      * Load this Sky from assets.
-     *
-     * @return the root of the loaded C-G model (a new instance)
      */
-    abstract public Spatial load();
+    abstract public void load();
     // *************************************************************************
     // protected methods
 

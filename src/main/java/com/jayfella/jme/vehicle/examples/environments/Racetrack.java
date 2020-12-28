@@ -65,11 +65,9 @@ public class Racetrack extends Environment {
 
     /**
      * Load this Environment from assets.
-     *
-     * @return the model's root node (a new instance)
      */
     @Override
-    public Node load() {
+    public void load() {
         assert loadedCgm == null : "The model is already loaded.";
 
         AssetManager assetManager = Main.getApplication().getAssetManager();
@@ -87,8 +85,6 @@ public class Racetrack extends Environment {
         RigidBodyControl rigidBodyControl
                 = new RigidBodyControl(shape, PhysicsBody.massForStatic);
         loadedCgm.addControl(rigidBodyControl);
-
-        return loadedCgm;
     }
 
     /**

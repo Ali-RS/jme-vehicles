@@ -20,7 +20,6 @@ import com.jme3.bullet.util.NativeLibrary;
 import com.jme3.input.Joystick;
 import com.jme3.input.JoystickConnectionListener;
 import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
 import com.jme3.system.AppSettings;
 import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.focus.FocusNavigationState;
@@ -279,8 +278,8 @@ public class Main extends SimpleApplication {
         // Load the default Sky asynchronously.
         CompletableFuture
                 .supplyAsync(() -> {
-                    Spatial result = sky.load();
-                    return result;
+                    sky.load();
+                    return sky.getCgm();
                 })
                 .whenComplete((spatial, ex) -> {
                     enqueue(() -> {
@@ -292,8 +291,8 @@ public class Main extends SimpleApplication {
         // Load the Environment asynchronously.
         CompletableFuture
                 .supplyAsync(() -> {
-                    Node result = environment.load();
-                    return result;
+                    environment.load();
+                    return environment.getCgm();
                 })
                 .whenComplete((node, ex) -> {
                     enqueue(() -> {

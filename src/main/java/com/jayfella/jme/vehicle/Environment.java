@@ -87,10 +87,8 @@ abstract public class Environment {
 
     /**
      * Load the Environment from assets.
-     *
-     * @return the model's root node (a new instance)
      */
-    abstract public Node load();
+    abstract public void load();
 
     /**
      * Reposition the default Camera to the initial location and orientation for

@@ -9,7 +9,6 @@ import com.jme3.light.LightProbe;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
 import java.util.logging.Logger;
 
 /**
@@ -83,20 +82,13 @@ public class QuarrySky extends Sky {
 
     /**
      * Load this Sky from assets.
-     *
-     * @return the root of the loaded C-G model (a new instance)
      */
     @Override
-    public Spatial load() {
-        if (loadedCgm != null) {
-            logger.warning("The model is already loaded.");
-            return loadedCgm;
-        }
+    public void load() {
+        assert loadedCgm == null : "The model is already loaded.";
 
         AssetManager assetManager = Main.getApplication().getAssetManager();
         probe = (LightProbe) assetManager.loadAsset(lightProbeAssetPath);
         loadedCgm = createSky(imageAssetPath);
-
-        return loadedCgm;
     }
 }
