@@ -105,16 +105,19 @@ abstract public class Vehicle {
     }
 
     /**
-     * Add this loaded Vehicle to the specified scene-graph node.
+     * Add this Vehicle to the specified scene-graph node.
      *
      * @param parent where to attach (not null)
      */
     public void attachToScene(Node parent) {
+        if (vehicleControl == null) {
+            load();
+        }
+        parent.attachChild(node);
+
         warpToStart();
         getNode().setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         enable();
-
-        parent.attachChild(node);
 
         BulletAppState bulletAppState = Main.findAppState(BulletAppState.class);
         PhysicsSpace physicsSpace = bulletAppState.getPhysicsSpace();

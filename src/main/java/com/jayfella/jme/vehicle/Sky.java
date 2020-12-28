@@ -50,12 +50,14 @@ abstract public class Sky {
     // new methods exposed
 
     /**
-     * Add this loaded Sky to the specified scene-graph node.
+     * Add this Sky to the specified scene.
      *
      * @param parent where to attach (not null)
      */
     public void attachToScene(Node parent) {
-        assert loadedCgm != null;
+        if (loadedCgm == null) {
+            load();
+        }
         parent.attachChild(loadedCgm);
     }
 

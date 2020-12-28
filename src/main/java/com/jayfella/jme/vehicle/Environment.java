@@ -24,14 +24,14 @@ abstract public class Environment {
     // new methods exposed
 
     /**
-     * Add this loaded environment to the specified scene-graph node and also to
-     * the PhysicsSpace.
+     * Add this environment to the specified scene and also to the PhysicsSpace.
      *
      * @param parent where to attach (not null)
      */
     void attachToScene(Node parent) {
-        assert loadedCgm != null;
-
+        if (loadedCgm == null) {
+            load();
+        }
         parent.attachChild(loadedCgm);
 
         BulletAppState bulletAppState = Main.findAppState(BulletAppState.class);
