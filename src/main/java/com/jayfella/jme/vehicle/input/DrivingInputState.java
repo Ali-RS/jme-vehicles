@@ -171,25 +171,17 @@ public class DrivingInputState
 
         EnginePowerGraphState enginePowerGraphState
                 = Main.findAppState(EnginePowerGraphState.class);
-        if (enginePowerGraphState != null) {
-            stateManager.detach(enginePowerGraphState);
-        }
+        stateManager.detach(enginePowerGraphState);
 
         TireDataState tireDataState = Main.findAppState(TireDataState.class);
-        if (tireDataState != null) {
-            stateManager.detach(tireDataState);
-        }
+        stateManager.detach(tireDataState);
 
         VehicleEditorState vehicleEditorState
                 = Main.findAppState(VehicleEditorState.class);
-        if (vehicleEditorState != null) {
-            stateManager.detach(vehicleEditorState);
-        }
+        stateManager.detach(vehicleEditorState);
 
         DebugTabState debugTabState = Main.findAppState(DebugTabState.class);
-        if (debugTabState != null) {
-            stateManager.detach(debugTabState);
-        }
+        stateManager.detach(debugTabState);
 
         DriverHud hud = Main.findAppState(DriverHud.class);
         hud.setEnabled(false);
