@@ -46,7 +46,15 @@ class Preloader extends Thread {
 
     @Override
     public void run() {
+        long startMillis = System.currentTimeMillis();
+
         loadable.load();
+
+        String name = loadable.getClass().getSimpleName();
+        long latencyMillis = System.currentTimeMillis() - startMillis;
+        float seconds = latencyMillis / 1000f;
+        System.out.println("loaded " + name + " in " + seconds + " seconds");
+
         latch.countDown();
     }
 }
