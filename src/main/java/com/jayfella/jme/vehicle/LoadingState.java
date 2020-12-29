@@ -10,40 +10,49 @@ import com.jayfella.jme.vehicle.examples.environments.Racetrack;
 import com.jayfella.jme.vehicle.examples.skies.AnimatedNightSky;
 import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
 import com.jayfella.jme.vehicle.gui.CameraNameState;
+import com.jme3.animation.AnimControl;
+import com.jme3.animation.Animation;
+import com.jme3.animation.AnimationFactory;
+import com.jme3.animation.LoopMode;
 import com.jme3.app.Application;
-import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
+import com.jme3.cinematic.Cinematic;
+import com.jme3.cinematic.PlayState;
+import com.jme3.cinematic.events.AnimationEvent;
+import com.jme3.cinematic.events.CinematicEvent;
+import com.jme3.cinematic.events.CinematicEventListener;
+import com.jme3.light.PointLight;
+import com.jme3.light.SpotLight;
 import com.jme3.material.Material;
 import com.jme3.material.Materials;
-import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.FastMath;
+import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
+import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Quad;
+import com.jme3.shadow.EdgeFilteringMode;
+import com.jme3.shadow.SpotLightShadowRenderer;
 import com.jme3.texture.Texture;
 import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.focus.FocusNavigationState;
 import com.simsilica.lemur.style.BaseStyles;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Logger;
-import jme3utilities.mesh.RectangleMesh;
 
 /**
- * An AppState to display a spinning texture while warming up the AssetCache and
+ * An AppState to display a Cinematic while warming up the AssetCache and
  * initializing Lemur.
  */
 class LoadingState extends BaseAppState {
     // *************************************************************************
     // constants and loggers
 
-    /**
-     * spinner's angular rate (in radians/second)
-     */
-    final private static float spinRate = 3f;
     /**
      * enumerate all known loadables
      */
@@ -68,16 +77,33 @@ class LoadingState extends BaseAppState {
     // fields
 
     /**
-     * monitor how many asynchronous assets loads are in progress
+     * entertain the user
      */
-    final private CountDownLatch latch
-            = new CountDownLatch(allLoadables.length + 1);
+    Cinematic cinematic;
     /**
-     * conceals whatever's going on in the main scene
+     * monitor how many locally-created created threads are running
      */
-    private Geometry backgroundGeom;
-    final private Node node = new Node("Loading Node");
-    private Node spinnerNode;
+    final CountDownLatch latch = new CountDownLatch(allLoadables.length + 1);
+    /**
+     * hide what happens in the main scene
+     */
+    private Geometry shutter;
+    /**
+     * count update()s for scheduling
+     */
+    private int updateCount = 0;
+    /**
+     * secondary lighting for the Cinematic
+     */
+    private PointLight pointLight;
+    /**
+     * primary lighting for the Cinematic
+     */
+    private SpotLight spotlight;
+    /**
+     * shadows for the Cinematic
+     */
+    private SpotLightShadowRenderer shadowRenderer;
     // *************************************************************************
     // BaseAppState methods
 
@@ -100,13 +126,7 @@ class LoadingState extends BaseAppState {
      */
     @Override
     protected void initialize(Application app) {
-        AssetManager assetManager = app.getAssetManager();
-        spinnerNode = createSpinnerNode(assetManager);
-        backgroundGeom = createBackgroundGeom(assetManager);
-
-        node.attachChild(backgroundGeom);
-        node.attachChild(spinnerNode);
-        node.setQueueBucket(RenderQueue.Bucket.Gui);
+        // do nothing
     }
 
     /**
@@ -115,7 +135,10 @@ class LoadingState extends BaseAppState {
      */
     @Override
     protected void onDisable() {
-        node.removeFromParent();
+        if (shutter != null) {
+            shutter.removeFromParent();
+            shutter = null;
+        }
     }
 
     /**
@@ -124,7 +147,275 @@ class LoadingState extends BaseAppState {
      */
     @Override
     protected void onEnable() {
-        ((SimpleApplication) getApplication()).getGuiNode().attachChild(node);
+        // do nothing
+    }
+
+    /**
+     * Callback to update this AppState, invoked once per frame when the
+     * AppState is both attached and enabled.
+     *
+     * @param tpf the time interval between frames (in seconds, &ge;0)
+     */
+    @Override
+    public void update(float tpf) {
+        ++updateCount;
+        switch (updateCount) {
+            case 1:
+                setupStage();
+                break;
+            case 2:
+                startThreads();
+                break;
+            case 3:
+                startCinematic();
+                break;
+            default:
+                if (cinematic.getPlayState() == PlayState.Playing) {
+                    return;
+                }
+        }
+
+        long latchCount = latch.getCount();
+        if (latchCount < 1L) {
+            /*
+             * The cinematic is stopped, Lemur has been initialized,
+             * and all asynchronous asset loads have completed.
+             */
+            setupShutter();
+
+            Node rootNode = getRootNode();
+            rootNode.detachAllChildren();
+            if (pointLight != null) {
+                rootNode.removeLight(pointLight);
+            }
+            if (spotlight != null) {
+                rootNode.removeLight(spotlight);
+            }
+            if (shadowRenderer != null) {
+                Main application = Main.getApplication();
+                application.getViewPort().removeProcessor(shadowRenderer);
+            }
+
+            Main.getApplication().doneLoading();
+
+            getStateManager().detach(this);
+        }
+    }
+    // *************************************************************************
+    // private methods
+
+    /**
+     * Access the root node of the main scene.
+     *
+     * @return the pre-existing instance (not null)
+     */
+    private static Node getRootNode() {
+        ViewPort viewport = Main.getApplication().getViewPort();
+        Node result = (Node) viewport.getScenes().get(0);
+
+        assert result != null;
+        return result;
+    }
+
+    /**
+     * Initialize the Lemur library with the "glass" style.
+     */
+    private static void initializeLemur() {
+        long startMillis = System.currentTimeMillis();
+
+        Main application = Main.getApplication();
+        GuiGlobals.initialize(application);
+        BaseStyles.loadGlassStyle();
+        GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
+
+        // This consumes joystick input. Why?
+        Main.findAppState(FocusNavigationState.class).setEnabled(false);
+
+        long latencyMillis = System.currentTimeMillis() - startMillis;
+        float seconds = latencyMillis / 1_000f;
+        System.out.println("initialized Lemur in " + seconds + " seconds");
+    }
+
+    /**
+     * Load the Jaime model with an extra animation.
+     */
+    private static Node loadJaime() {
+        AssetManager assetManager = Main.getApplication().getAssetManager();
+        Node result = (Node) assetManager.loadModel("/Models/Jaime/Jaime.j3o");
+        result.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
+        /*
+         * Add an 0.7-second Animation to translate Jaime forward in a jump.
+         */
+        AnimationFactory af = new AnimationFactory(0.7f, "JumpForward");
+        af.addTimeTranslation(0f, new Vector3f(0f, 0f, -3f));
+        af.addTimeTranslation(0.35f, new Vector3f(0f, 1f, -1.5f));
+        af.addTimeTranslation(0.7f, Vector3f.ZERO);
+        Animation spatialAnimation = af.buildAnimation();
+        AnimControl animControl = result.getControl(AnimControl.class);
+        animControl.addAnim(spatialAnimation);
+        /*
+         * Add an 0.7-second Animation to translate Jaime backward in a jump.
+         */
+        af = new AnimationFactory(0.7f, "JumpBackward");
+        af.addTimeTranslation(0.0f, Vector3f.ZERO);
+        af.addTimeTranslation(0.35f, new Vector3f(0f, 1f, -1.5f));
+        af.addTimeTranslation(0.7f, new Vector3f(0f, 0f, -3f));
+        spatialAnimation = af.buildAnimation();
+        animControl.addAnim(spatialAnimation);
+
+        return result;
+    }
+
+    /**
+     * Set up the Cinematic.
+     */
+    private void setupCinematic(Node jaime) {
+        float duration = 60f; // seconds
+        cinematic = new Cinematic(getRootNode(), duration);
+
+        cinematic.enqueueCinematicEvent(
+                new AnimationEvent(jaime, "Idle", 2f, LoopMode.DontLoop));
+        float jumpStart = cinematic.enqueueCinematicEvent(
+                new AnimationEvent(jaime, "JumpStart")
+        );
+        cinematic.addCinematicEvent(jumpStart + 0.2f,
+                new AnimationEvent(jaime, "JumpForward", 1)
+        );
+        cinematic.enqueueCinematicEvent(new AnimationEvent(jaime, "JumpEnd"));
+        cinematic.enqueueCinematicEvent(new AnimationEvent(jaime, "Taunt"));
+        cinematic.enqueueCinematicEvent(new AnimationEvent(jaime, "Punches"));
+        cinematic.enqueueCinematicEvent(new AnimationEvent(jaime, "SideKick"));
+        cinematic.enqueueCinematicEvent(new AnimationEvent(jaime, "SideKick"));
+        cinematic.enqueueCinematicEvent(
+                new AnimationEvent(jaime, "Idle", 1f, LoopMode.DontLoop));
+        cinematic.enqueueCinematicEvent(new AnimationEvent(jaime, "Wave"));
+        float jumpStart2 = cinematic.enqueueCinematicEvent(
+                new AnimationEvent(jaime, "JumpStart")
+        );
+        cinematic.addCinematicEvent(jumpStart2 + 0.2f,
+                new AnimationEvent(jaime, "JumpBackward", 1)
+        );
+        cinematic.enqueueCinematicEvent(new AnimationEvent(jaime, "JumpEnd"));
+        cinematic.enqueueCinematicEvent(
+                new AnimationEvent(jaime, "Idle", 1.5f, LoopMode.DontLoop));
+
+        cinematic.addListener(new CinematicEventListener() {
+            public void onPlay(CinematicEvent c) {
+                // do nothing
+            }
+
+            public void onPause(CinematicEvent c) {
+                // do nothing
+            }
+
+            public void onStop(CinematicEvent c) {
+                jaime.removeFromParent();
+            }
+        });
+        cinematic.fitDuration();
+        cinematic.setSpeed(1.2f);
+    }
+
+    private static Geometry setupFloor() {
+        Main application = Main.getApplication();
+        AssetManager assetManager = application.getAssetManager();
+
+        Texture tex = assetManager.loadTexture("/Textures/powered-by.png");
+        Material material = new Material(assetManager, Materials.LIGHTING);
+        material.setTexture("DiffuseMap", tex);
+
+        Quad mesh = new Quad(2.2f, 2.2f);
+        Geometry result = new Geometry("floor", mesh);
+        result.rotate(-FastMath.HALF_PI, 0f, 0f);
+        result.center();
+        result.setMaterial(material);
+        result.setShadowMode(RenderQueue.ShadowMode.Receive);
+
+        return result;
+    }
+
+    /**
+     * Add lights and shadows to the specified scene.
+     *
+     * @param scene (not null)
+     */
+    private void setupLightsAndShadows(Node scene) {
+        spotlight = new SpotLight();
+        scene.addLight(spotlight);
+
+        Vector3f position = new Vector3f(1f, 10f, 4f);
+        Vector3f direction = position.normalize().negateLocal();
+        spotlight.setDirection(direction);
+        spotlight.setPosition(position);
+        spotlight.setSpotInnerAngle(0.004f);
+        spotlight.setSpotOuterAngle(0.1f);
+
+        // a PointLight to fake indirect lighting from the ground
+        pointLight = new PointLight();
+        scene.addLight(pointLight);
+
+        pointLight.setColor(ColorRGBA.White.mult(1.5f));
+        pointLight.setPosition(Vector3f.UNIT_Z);
+        pointLight.setRadius(2f);
+
+        Main application = Main.getApplication();
+        AssetManager assetManager = application.getAssetManager();
+        shadowRenderer = new SpotLightShadowRenderer(assetManager, 512);
+        application.getViewPort().addProcessor(shadowRenderer);
+        shadowRenderer.setEdgeFilteringMode(EdgeFilteringMode.PCF8);
+        shadowRenderer.setLight(spotlight);
+        shadowRenderer.setShadowIntensity(0.3f);
+    }
+
+    /**
+     * Create and attach a Quad to hide what's going on in the main scene.
+     *
+     * @return a new instance
+     */
+    private void setupShutter() {
+        Main application = Main.getApplication();
+        AssetManager assetManager = application.getAssetManager();
+        Material material = new Material(assetManager, Materials.UNSHADED);
+        material.setColor("Color", ColorRGBA.Gray.clone());
+
+        Camera camera = application.getCamera();
+        Mesh mesh = new Quad(camera.getWidth(), camera.getHeight());
+        shutter = new Geometry("shutter", mesh);
+        shutter.setMaterial(material);
+        shutter.setQueueBucket(RenderQueue.Bucket.Gui);
+
+        application.getGuiNode().attachChild(shutter);
+    }
+
+    /**
+     * Set the stage for the Cinematic.
+     */
+    private void setupStage() {
+        Node rootNode = getRootNode();
+        setupLightsAndShadows(rootNode);
+
+        Camera camera = Main.getApplication().getCamera();
+        camera.setLocation(new Vector3f(0f, 1.2f, 3f));
+        camera.lookAt(new Vector3f(0f, 0.5f, 0f), Vector3f.UNIT_Y);
+
+        Geometry floor = setupFloor();
+        rootNode.attachChild(floor);
+    }
+
+    /**
+     * Set up and play a short Cinematic of Jaime.
+     */
+    private void startCinematic() {
+        Node jaime = loadJaime();
+        getRootNode().attachChild(jaime);
+        jaime.move(0f, 0f, -3f);
+        setupCinematic(jaime);
+
+        Main.getApplication().getStateManager().attach(cinematic);
+        cinematic.play();
+    }
+
+    private void startThreads() {
         /*
          * Start threads to warm up the AssetCache.
          */
@@ -145,84 +436,5 @@ class LoadingState extends BaseAppState {
         };
         thread.setPriority(Thread.MIN_PRIORITY);
         thread.start();
-    }
-
-    /**
-     * Callback to update this AppState, invoked once per frame when the
-     * AppState is both attached and enabled.
-     *
-     * @param tpf the time interval between frames (in seconds, &ge;0)
-     */
-    @Override
-    public void update(float tpf) {
-        spinnerNode.rotate(0, 0, -tpf * spinRate);
-
-        long latchCount = latch.getCount();
-        if (latchCount < 1L) {
-            /*
-             * Lemur has been initialized and all asynchronous asset loads
-             * have completed.
-             */
-            Main.getApplication().doneLoading();
-            getStateManager().detach(this);
-        }
-    }
-    // *************************************************************************
-    // private methods
-
-    private Geometry createBackgroundGeom(AssetManager assetManager) {
-        Material material = new Material(assetManager, Materials.UNSHADED);
-        material.setColor("Color", ColorRGBA.Black.clone());
-
-        Camera camera = getApplication().getCamera();
-        Mesh mesh = new Quad(camera.getWidth(), camera.getHeight());
-        Geometry result = new Geometry("Background", mesh);
-        result.setMaterial(material);
-
-        return result;
-    }
-
-    private Node createSpinnerNode(AssetManager assetManager) {
-        Texture texture = assetManager.loadTexture("loading.png");
-        Material material = new Material(assetManager, Materials.UNSHADED);
-        material.setTexture("ColorMap", texture);
-        material.getAdditionalRenderState()
-                .setBlendMode(RenderState.BlendMode.Alpha);
-
-        float radius = 25f;
-        Mesh square = new RectangleMesh(-radius, +radius, -radius, +radius, 1f);
-        Geometry spinnerGeom = new Geometry("Spinner", square);
-        spinnerGeom.setMaterial(material);
-
-        Node result = new Node("Spinner Node");
-        result.attachChild(spinnerGeom);
-        /*
-         * Center the spinner in the display.
-         */
-        Camera camera = getApplication().getCamera();
-        float x = camera.getWidth() / 2f;
-        float y = camera.getHeight() / 2f;
-        result.move(x, y, 1f);
-
-        return result;
-    }
-
-    /**
-     * Initialize the Lemur library with the "glass" style.
-     */
-    private void initializeLemur() {
-        long startMillis = System.currentTimeMillis();
-
-        Main application = Main.getApplication();
-        GuiGlobals.initialize(application);
-        BaseStyles.loadGlassStyle();
-        GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
-
-        // This consumes joystick input. Why?
-        Main.findAppState(FocusNavigationState.class).setEnabled(false);
-
-        long latencyMillis = System.currentTimeMillis() - startMillis;
-        float seconds = latencyMillis / 1_000f;
-        System.out.println("initialized Lemur in " + seconds + " seconds");
     }
 }
