@@ -82,11 +82,13 @@ abstract public class Sky implements Loadable {
      */
     static void initialize() {
         assert directionalLight == null : directionalLight;
-        /*
-         * Enable shadows on the scene.
-         */
         Main application = Main.getApplication();
+        assert application.getViewPort().getProcessors().isEmpty();
         Node rootNode = application.getRootNode();
+        assert rootNode.getChildren().isEmpty();
+        assert rootNode.getNumControls() == 0;
+        assert rootNode.getLocalLightList().size() == 0;
+
         rootNode.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         /*
          * Create and add the DirectionalLight.
