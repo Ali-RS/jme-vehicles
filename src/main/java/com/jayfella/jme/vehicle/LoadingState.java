@@ -153,6 +153,7 @@ class LoadingState extends BaseAppState {
          */
         for (Loadable loadable : allLoadables) {
             Thread thread = new Preloader(loadable, latch);
+            thread.setPriority(Thread.MIN_PRIORITY);
             thread.start();
         }
     }
