@@ -48,21 +48,21 @@ public class Main extends SimpleApplication {
     // fields
 
     /**
-     * current game environment/world
+     * selected game environment/world (not null)
      */
-    private static Environment environment;
+    private static Environment environment = new Racetrack();
     /**
      * application instance
      */
     private static Main application;
     /**
-     * selected sky, including lights and post-processing
+     * selected sky, including lights and post-processing (not null)
      */
-    private static Sky sky;
+    private static Sky sky = new QuarrySky();
     /**
-     * vehicle currently selected
+     * selected Vehicle (not null)
      */
-    private static Vehicle vehicle;
+    private static Vehicle vehicle = new GrandTourer();
     // *************************************************************************
     // constructors
 
@@ -263,9 +263,6 @@ public class Main extends SimpleApplication {
         stateManager.attach(bulletAppState);
 
         Sky.initialize();
-        sky = new QuarrySky();
-        vehicle = new GrandTourer();
-        environment = new Racetrack();
         environment.resetCameraPosition();
 
         // this consumes joystick input. I'll have to investigate why.
