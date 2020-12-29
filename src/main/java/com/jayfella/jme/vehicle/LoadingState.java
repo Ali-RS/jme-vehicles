@@ -9,15 +9,8 @@ import com.jayfella.jme.vehicle.examples.environments.Playground;
 import com.jayfella.jme.vehicle.examples.environments.Racetrack;
 import com.jayfella.jme.vehicle.examples.skies.AnimatedNightSky;
 import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
-import com.jayfella.jme.vehicle.gui.CameraNameState;
-import com.jayfella.jme.vehicle.gui.CompassState;
-import com.jayfella.jme.vehicle.gui.MainMenu;
-import com.jayfella.jme.vehicle.gui.PhysicsHud;
-import com.jayfella.jme.vehicle.input.DumpInputState;
-import com.jayfella.jme.vehicle.input.NonDrivingInputState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
-import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
@@ -39,8 +32,8 @@ import java.util.logging.Logger;
 import jme3utilities.mesh.RectangleMesh;
 
 /**
- * An AppState to pre-load the AssetCache. It displays text and a spinning
- * texture until its CountDownLatch reaches zero.
+ * An AppState to display a spinning texture while warming up the AssetCache and
+ * initializing Lemur.
  */
 class LoadingState extends BaseAppState {
     // *************************************************************************
@@ -165,25 +158,11 @@ class LoadingState extends BaseAppState {
         long latchCount = latch.getCount();
         if (latchCount < 1L) {
             /*
-             * All asynchronous asset loads have completed.
-             *
-             * Attach the assets to the scene, bring up the main menu,
-             * and self-detach.
+             * Lemur has been initialized and all asynchronous asset loads
+             * have completed.
              */
-            Main.getApplication().attachAllToScene();
-
-            AppStateManager stateManager = getStateManager();
-            stateManager.attachAll(
-                    new CameraNameState(),
-                    new CompassState(),
-                    new DumpInputState(),
-                    new MainMenu(),
-                    new NonDrivingInputState(),
-                    new PhysicsHud()
-            );
-            //stateManager.attach(new VehiclePointsState());
-
-            stateManager.detach(this);
+            Main.doneLoading();
+            getStateManager().detach(this);
         }
     }
     // *************************************************************************

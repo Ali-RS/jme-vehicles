@@ -4,7 +4,12 @@ import com.atr.jme.font.asset.TrueTypeLoader;
 import com.jayfella.jme.vehicle.examples.cars.GrandTourer;
 import com.jayfella.jme.vehicle.examples.environments.Racetrack;
 import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
+import com.jayfella.jme.vehicle.gui.CameraNameState;
+import com.jayfella.jme.vehicle.gui.CompassState;
 import com.jayfella.jme.vehicle.gui.DriverHud;
+import com.jayfella.jme.vehicle.gui.MainMenu;
+import com.jayfella.jme.vehicle.gui.PhysicsHud;
+import com.jayfella.jme.vehicle.input.DumpInputState;
 import com.jayfella.jme.vehicle.input.NonDrivingInputState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
@@ -82,13 +87,31 @@ public class Main extends SimpleApplication {
     /**
      * Attach the selected environment, sky, and vehicle to the scene.
      */
-    public void attachAllToScene() {
+    private void attachAllToScene() {
         sky.attachToScene(rootNode);
 
         environment.resetCameraPosition();
         environment.attachToScene(rootNode);
 
         vehicle.attachToScene(rootNode);
+    }
+
+    /**
+     * Callback from LoadingState when it has finished warming up the AssetCache
+     * and initializing Lemur.
+     */
+    static void doneLoading() {
+        application.attachAllToScene();
+
+        application.stateManager.attachAll(
+                new CameraNameState(),
+                new CompassState(),
+                new DumpInputState(),
+                new MainMenu(),
+                new NonDrivingInputState(),
+                new PhysicsHud()
+        );
+        //application.stateManager.attach(new VehiclePointsState());
     }
 
     /**
