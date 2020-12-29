@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle.engine;
 
+import com.jayfella.jme.vehicle.Main;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioData;
 import com.jme3.audio.AudioNode;
@@ -215,13 +216,13 @@ abstract public class Engine {
     /**
      * Alter the sound of this Engine.
      *
-     * @param assetManager (not null)
-     * @param audioFile an asset path to the desired sound (not null)
+     * @param assetPath an asset path to the desired sound (not null)
      */
-    public void setEngineAudio(AssetManager assetManager, String audioFile) {
-        Validate.nonEmpty(audioFile, "asset path");
+    public void setEngineAudio(String assetPath) {
+        Validate.nonEmpty(assetPath, "asset path");
 
-        audioNode = new AudioNode(assetManager, audioFile,
+        AssetManager assetManager = Main.getApplication().getAssetManager();
+        audioNode = new AudioNode(assetManager, assetPath,
                 AudioData.DataType.Buffer);
         audioNode.setLooping(true);
         audioNode.setPositional(true);

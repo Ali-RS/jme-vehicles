@@ -147,7 +147,7 @@ public class PickupTruck extends Car {
         setGearBox(gearBox);
 
         Engine engine = new Engine450HP();
-        engine.setEngineAudio(assetManager, "Audio/engine-1.ogg");
+        engine.setEngineAudio("/Audio/engine-1.ogg");
         setEngine(engine);
 
         super.setHornAudio("Audio/horn-1.ogg");

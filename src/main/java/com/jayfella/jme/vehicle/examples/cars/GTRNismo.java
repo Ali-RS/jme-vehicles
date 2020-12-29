@@ -156,7 +156,7 @@ public class GTRNismo extends Car {
         setGearBox(gearBox);
 
         Engine engine = new Engine600HP();
-        engine.setEngineAudio(assetManager, "Audio/engine-2.ogg");
+        engine.setEngineAudio("/Audio/engine-2.ogg");
         setEngine(engine);
 
         super.setHornAudio("Audio/horn-1.ogg");

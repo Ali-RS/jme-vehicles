@@ -151,7 +151,7 @@ public class HatchBack extends Car {
         setGearBox(gearBox);
 
         Engine engine = new Engine250HP();
-        engine.setEngineAudio(assetManager, "Audio/engine-4.ogg");
+        engine.setEngineAudio("/Audio/engine-4.ogg");
         setEngine(engine);
 
         super.setHornAudio("Audio/horn-1.ogg");
