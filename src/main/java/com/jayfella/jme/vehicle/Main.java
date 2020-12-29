@@ -22,7 +22,6 @@ import com.jme3.system.AppSettings;
 import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.focus.FocusNavigationState;
 import com.simsilica.lemur.style.BaseStyles;
-import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jme3utilities.MyCamera;
@@ -33,20 +32,6 @@ public class Main extends SimpleApplication {
     // *************************************************************************
     // constants and loggers
 
-    /**
-     * enumerate all known loadables
-     */
-    final private static Loadable[] allLoadables = new Loadable[]{
-        new AnimatedNightSky(),
-        new DuneBuggy(),
-        new GrandTourer(),
-        new GTRNismo(),
-        new HatchBack(),
-        new Playground(),
-        new PickupTruck(),
-        new QuarrySky(),
-        new Racetrack()
-    };
     /**
      * message logger for this class
      */
@@ -90,6 +75,7 @@ public class Main extends SimpleApplication {
                 new ConstantVerifierState(),
                 new DriverHud(),
                 new DumpInputState(),
+                new LoadingState(),
                 new ScreenshotAppState(screenshotDirectory, screenshotPrefix),
                 new StatsAppState()
         );
@@ -281,19 +267,6 @@ public class Main extends SimpleApplication {
         vehicle = new GrandTourer();
         environment = new Racetrack();
         environment.resetCameraPosition();
-        /*
-         * Start threads to warm up the AssetCache.
-         */
-        CountDownLatch latch = new CountDownLatch(allLoadables.length);
-        for (Loadable loadable : allLoadables) {
-            Thread thread = new Preloader(loadable, latch);
-            thread.start();
-        }
-        /*
-         * Display animation to entertain the user until the threads complete.
-         */
-        LoadingState loadingState = new LoadingState(latch);
-        stateManager.attach(loadingState);
 
         // this consumes joystick input. I'll have to investigate why.
         stateManager.getState(FocusNavigationState.class).setEnabled(false);

@@ -1,5 +1,14 @@
 package com.jayfella.jme.vehicle;
 
+import com.jayfella.jme.vehicle.examples.cars.DuneBuggy;
+import com.jayfella.jme.vehicle.examples.cars.GTRNismo;
+import com.jayfella.jme.vehicle.examples.cars.GrandTourer;
+import com.jayfella.jme.vehicle.examples.cars.HatchBack;
+import com.jayfella.jme.vehicle.examples.cars.PickupTruck;
+import com.jayfella.jme.vehicle.examples.environments.Playground;
+import com.jayfella.jme.vehicle.examples.environments.Racetrack;
+import com.jayfella.jme.vehicle.examples.skies.AnimatedNightSky;
+import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
 import com.jayfella.jme.vehicle.gui.MainMenu;
 import com.jayfella.jme.vehicle.gui.PhysicsHud;
 import com.jayfella.jme.vehicle.input.NonDrivingInputState;
@@ -26,13 +35,27 @@ import java.util.logging.Logger;
 import jme3utilities.mesh.RectangleMesh;
 
 /**
- * A simple loading state to entertain users. It displays text and a spinning
+ * An AppState to pre-load the AssetCache. It displays text and a spinning
  * texture until its CountDownLatch reaches zero.
  */
 class LoadingState extends BaseAppState {
     // *************************************************************************
     // constants and loggers
 
+    /**
+     * enumerate all known loadables
+     */
+    final private static Loadable[] allLoadables = new Loadable[]{
+        new AnimatedNightSky(),
+        new DuneBuggy(),
+        new GrandTourer(),
+        new GTRNismo(),
+        new HatchBack(),
+        new Playground(),
+        new PickupTruck(),
+        new QuarrySky(),
+        new Racetrack()
+    };
     /**
      * message logger for this class
      */
@@ -48,7 +71,8 @@ class LoadingState extends BaseAppState {
     /**
      * monitor how many asynchronous assets loads are in progress
      */
-    final private CountDownLatch latch;
+    final private CountDownLatch latch
+            = new CountDownLatch(allLoadables.length);
     /**
      * conceals whatever's going on in the main scene
      */
@@ -59,17 +83,6 @@ class LoadingState extends BaseAppState {
     private Label label;
     final private Node node = new Node("Loading Node");
     private Node spinnerNode;
-    // *************************************************************************
-    // constructors
-
-    /**
-     * Instantiate an AppState for the specified latch.
-     *
-     * @param latch the latch to monitor
-     */
-    LoadingState(CountDownLatch latch) {
-        this.latch = latch;
-    }
     // *************************************************************************
     // new methods exposed
 
@@ -135,6 +148,13 @@ class LoadingState extends BaseAppState {
     @Override
     protected void onEnable() {
         ((SimpleApplication) getApplication()).getGuiNode().attachChild(node);
+        /*
+         * Start threads to warm up the AssetCache.
+         */
+        for (Loadable loadable : allLoadables) {
+            Thread thread = new Preloader(loadable, latch);
+            thread.start();
+        }
     }
 
     /**
