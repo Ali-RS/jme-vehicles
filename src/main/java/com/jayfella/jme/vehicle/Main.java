@@ -75,7 +75,6 @@ public class Main extends SimpleApplication {
         super(
                 new AudioListenerState(),
                 new ConstantVerifierState(),
-                new DriverHud(),
                 new LoadingState(),
                 new ScreenshotAppState(screenshotDirectory, screenshotPrefix),
                 new StatsAppState()
@@ -107,6 +106,7 @@ public class Main extends SimpleApplication {
         stateManager.attachAll(
                 new CameraNameState(),
                 new CompassState(),
+                new DriverHud(),
                 new DumpInputState(),
                 new MainMenu(),
                 new NonDrivingInputState(),
