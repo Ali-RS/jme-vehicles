@@ -100,10 +100,11 @@ public class Main extends SimpleApplication {
      * Callback from LoadingState when it has finished warming up the AssetCache
      * and initializing Lemur.
      */
-    static void doneLoading() {
-        application.attachAllToScene();
+    void doneLoading() {
+        Sky.initialize();
+        attachAllToScene();
 
-        application.stateManager.attachAll(
+        stateManager.attachAll(
                 new CameraNameState(),
                 new CompassState(),
                 new DumpInputState(),
@@ -112,6 +113,15 @@ public class Main extends SimpleApplication {
                 new PhysicsHud()
         );
         //application.stateManager.attach(new VehiclePointsState());
+        /*
+         * The dash camera sits close to the bodywork, so set the near clipping
+         * plane accordingly.
+         */
+        float near = 0.1f;
+        float far = 1_800f;
+        MyCamera.setNearFar(cam, near, far);
+
+        environment.resetCameraPosition();
     }
 
     /**
@@ -268,20 +278,10 @@ public class Main extends SimpleApplication {
 
         inputManager.clearMappings();
         inputManager.clearRawInputListeners();
-        /*
-         * The dash camera sits close to the bodywork, so set its near clipping
-         * plane accordingly.
-         */
-        float near = 0.1f;
-        float far = 1800f;
-        MyCamera.setNearFar(cam, near, far);
 
         // initialize physics with debug disabled
         BulletAppState bulletAppState = new BulletAppState();
         bulletAppState.setDebugEnabled(false);
         stateManager.attach(bulletAppState);
-
-        Sky.initialize();
-        environment.resetCameraPosition();
     }
 }

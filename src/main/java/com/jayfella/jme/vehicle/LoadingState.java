@@ -161,7 +161,7 @@ class LoadingState extends BaseAppState {
              * Lemur has been initialized and all asynchronous asset loads
              * have completed.
              */
-            Main.doneLoading();
+            Main.getApplication().doneLoading();
             getStateManager().detach(this);
         }
     }
