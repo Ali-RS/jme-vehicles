@@ -88,7 +88,7 @@ public class WheelSpinState extends BaseAppState {
         float metersPerMin = metersPerHour / 60;
 
         // calculate the circumference of the wheel.
-        float c = wheel.getSize() * FastMath.PI;
+        float c = wheel.getDiameter() * FastMath.PI;
 
         // calc the wheel speed in revs per min
         float revsPerMin = metersPerMin / c;

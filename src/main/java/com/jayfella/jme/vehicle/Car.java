@@ -249,7 +249,7 @@ abstract public class Car extends Vehicle {
             float powerFraction = wheel.getPowerFraction();
             float wheelPower = powerFraction * totalWatts;
             float wheelForce = wheelPower / speed;
-            wheel.accelerate(wheelForce);
+            wheel.updateAccelerate(wheelForce);
         }
     }
 

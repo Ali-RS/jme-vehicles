@@ -122,12 +122,11 @@ public class Wheel {
     // new methods exposed
 
     /**
-     * Update the drive force applied via this wheel. TODO rename
-     * updateAccelerate()
+     * Update the drive force applied via this wheel.
      *
      * @param force the desired drive force (negative if reversing)
      */
-    public void accelerate(float force) {
+    public void updateAccelerate(float force) {
         vehicleControl.accelerate(wheelIndex, force);
         assert vehicleWheel.getEngineForce() == force :
                 vehicleWheel.getEngineForce();
@@ -233,7 +232,7 @@ public class Wheel {
         return rotationDelta;
     }
 
-    public float getSize() { // TODO rename getDiameter()
+    public float getDiameter() {
         return vehicleWheel.getWheelSpatial().getLocalScale().y; // they should all be the same.
     }
 
@@ -327,7 +326,7 @@ public class Wheel {
         this.rotationDelta = rotationDelta;
     }
 
-    public void setSize(float diameter) { // TODO rename setDiameter()
+    public void setDiameter(float diameter) {
         Validate.positive(diameter, "diameter");
 
         vehicleWheel.getWheelSpatial().setLocalScale(diameter);
