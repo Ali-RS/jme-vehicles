@@ -24,6 +24,7 @@ import com.simsilica.lemur.focus.FocusNavigationState;
 import com.simsilica.lemur.style.BaseStyles;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jme3utilities.Heart;
 import jme3utilities.MyCamera;
 import jme3utilities.MyString;
 import jme3utilities.SignalTracker;
@@ -147,6 +148,11 @@ public class Main extends SimpleApplication {
      * @param args array of command-line arguments (not null)
      */
     public static void main(String... args) {
+        /*
+         * Mute the chatty loggers found in some imported packages.
+         */
+        Heart.setLoggingLevels(Level.WARNING);
+
         boolean forceDialog = false;
         /*
          * Process any command-line arguments.
