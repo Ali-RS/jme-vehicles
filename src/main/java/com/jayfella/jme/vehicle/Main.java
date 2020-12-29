@@ -100,6 +100,9 @@ public class Main extends SimpleApplication {
      * and initializing Lemur.
      */
     void doneLoading() {
+        BulletAppState bulletAppState = new BulletAppState();
+        stateManager.attach(bulletAppState);
+
         Sky.initialize();
         attachAllToScene();
 
@@ -278,10 +281,5 @@ public class Main extends SimpleApplication {
 
         inputManager.clearMappings();
         inputManager.clearRawInputListeners();
-
-        // initialize physics with debug disabled
-        BulletAppState bulletAppState = new BulletAppState();
-        bulletAppState.setDebugEnabled(false);
-        stateManager.attach(bulletAppState);
     }
 }
