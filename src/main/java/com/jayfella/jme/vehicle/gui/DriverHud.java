@@ -41,7 +41,6 @@ import jme3utilities.mesh.RectangleMesh;
  * <li>the automatic-transmision mode indicator</li>
  * <li>the camera-name indicator</li>
  * <li>the speedometer</li>
- * <li>the compass</li>
  * <li>the tachometer</li>
  * </ul>
  */
@@ -70,7 +69,6 @@ public class DriverHud extends BaseAppState {
      */
     final private CameraNameState cameraNameState = new CameraNameState();
     private Car car;
-    final private CompassState compassState = new CompassState();
     /**
      * dimensions of the GUI viewport (in pixels)
      */
@@ -179,7 +177,6 @@ public class DriverHud extends BaseAppState {
         AppStateManager stateManager = getApplication().getStateManager();
         stateManager.detach(atmiState);
         stateManager.detach(cameraNameState);
-        stateManager.detach(compassState);
     }
 
     /**
@@ -220,7 +217,6 @@ public class DriverHud extends BaseAppState {
         AppStateManager stateManager = getApplication().getStateManager();
         stateManager.attach(atmiState);
         stateManager.attach(cameraNameState);
-        stateManager.attach(compassState);
         /*
          * Construct a Geometry for the horn button.
          */
@@ -264,7 +260,6 @@ public class DriverHud extends BaseAppState {
     protected void onDisable() {
         atmiState.setEnabled(false);
         cameraNameState.setEnabled(false);
-        compassState.setEnabled(false);
         hideExitButton();
         hideHornButton();
         hideMuteButton();
@@ -285,7 +280,6 @@ public class DriverHud extends BaseAppState {
 
         atmiState.setEnabled(true);
         cameraNameState.setEnabled(true);
-        compassState.setEnabled(true);
         showExitButton();
         showHornButton(false);
 

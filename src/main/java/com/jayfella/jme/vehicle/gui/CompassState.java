@@ -21,8 +21,7 @@ import java.util.logging.Logger;
 import jme3utilities.MyAsset;
 
 /**
- * AppState to manage an analog compass. This AppState should be instantiated
- * once and then enabled/disabled as needed.
+ * AppState to manage an analog compass.
  *
  * @author Stephen Gold sgold@sonic.net
  */
@@ -52,11 +51,10 @@ public class CompassState extends BaseAppState {
     // constructors
 
     /**
-     * Instantiate a disabled compass.
+     * Instantiate an enabled compass.
      */
     public CompassState() {
         super("Compass");
-        setEnabled(false);
     }
     // *************************************************************************
     // BaseAppState methods

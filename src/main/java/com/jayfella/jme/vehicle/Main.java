@@ -1,9 +1,9 @@
 package com.jayfella.jme.vehicle;
 
 import com.atr.jme.font.asset.TrueTypeLoader;
-import com.jayfella.jme.vehicle.examples.cars.*;
-import com.jayfella.jme.vehicle.examples.environments.*;
-import com.jayfella.jme.vehicle.examples.skies.*;
+import com.jayfella.jme.vehicle.examples.cars.GrandTourer;
+import com.jayfella.jme.vehicle.examples.environments.Racetrack;
+import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
 import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.input.DumpInputState;
 import com.jayfella.jme.vehicle.input.NonDrivingInputState;
