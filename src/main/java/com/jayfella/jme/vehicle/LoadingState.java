@@ -9,6 +9,7 @@ import com.jayfella.jme.vehicle.examples.environments.Playground;
 import com.jayfella.jme.vehicle.examples.environments.Racetrack;
 import com.jayfella.jme.vehicle.examples.skies.AnimatedNightSky;
 import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
+import com.jayfella.jme.vehicle.gui.CameraNameState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
@@ -48,6 +49,7 @@ class LoadingState extends BaseAppState {
      */
     final private static Loadable[] allLoadables = new Loadable[]{
         new AnimatedNightSky(),
+        new CameraNameState(),
         new DuneBuggy(),
         new GrandTourer(),
         new GTRNismo(),

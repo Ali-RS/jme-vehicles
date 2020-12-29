@@ -4,6 +4,7 @@ import com.atr.jme.font.TrueTypeMesh;
 import com.atr.jme.font.asset.TrueTypeKeyMesh;
 import com.atr.jme.font.shape.TrueTypeNode;
 import com.atr.jme.font.util.Style;
+import com.jayfella.jme.vehicle.Loadable;
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.input.DrivingInputState;
 import com.jme3.app.Application;
@@ -27,7 +28,9 @@ import jme3utilities.mesh.RoundedRectangle;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-public class CameraNameState extends BaseAppState {
+public class CameraNameState
+        extends BaseAppState
+        implements Loadable {
     // *************************************************************************
     // constants and loggers
 
@@ -86,10 +89,16 @@ public class CameraNameState extends BaseAppState {
      */
     @Override
     protected void initialize(Application app) {
+        load();
+    }
+
+    @Override
+    public void load() {
         /*
          * position the Node in the viewport
          */
-        Camera camera = app.getCamera();
+        Application application = Main.getApplication();
+        Camera camera = application.getCamera();
         float viewPortHeight = camera.getHeight();
         float viewPortWidth = camera.getWidth();
         float x = 0.62f * viewPortWidth;
@@ -98,7 +107,7 @@ public class CameraNameState extends BaseAppState {
         /*
          * pre-load the Droid font
          */
-        AssetManager assetManager = app.getAssetManager();
+        AssetManager assetManager = application.getAssetManager();
         AssetKey<TrueTypeMesh> assetKey = new TrueTypeKeyMesh(
                 "Interface/Fonts/DroidSerifBold-aMPE.ttf", Style.Plain, 18);
         droidFont = assetManager.loadAsset(assetKey);
