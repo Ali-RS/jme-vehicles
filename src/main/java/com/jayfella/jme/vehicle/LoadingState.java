@@ -40,6 +40,10 @@ class LoadingState extends BaseAppState {
     // constants and loggers
 
     /**
+     * spinner's angular rate (in radians/second)
+     */
+    final private static float spinRate = 3f;
+    /**
      * enumerate all known loadables
      */
     final private static Loadable[] allLoadables = new Loadable[]{
@@ -58,10 +62,6 @@ class LoadingState extends BaseAppState {
      */
     final private static Logger logger
             = Logger.getLogger(LoadingState.class.getName());
-    /**
-     * spinner's angular rate (in radians/second)
-     */
-    final private static float spinRate = 3f;
     // *************************************************************************
     // fields
 

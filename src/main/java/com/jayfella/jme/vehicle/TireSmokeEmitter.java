@@ -26,10 +26,10 @@ public class TireSmokeEmitter extends BaseAppState {
     // *************************************************************************
     // fields
 
-    private Node rootNode;
-    final private Vehicle vehicle;
     private int wheelCount;
+    private Node rootNode;
     private ParticleEmitter[] emitters;
+    final private Vehicle vehicle;
 
     public TireSmokeEmitter(Vehicle vehicle) {
         this.vehicle = vehicle;
@@ -57,6 +57,11 @@ public class TireSmokeEmitter extends BaseAppState {
         return result;
     }
 
+    @Override
+    protected void cleanup(Application app) {
+        // do nothing
+    }
+
     /**
      * Callback invoked after this AppState is attached but before onEnable().
      *
@@ -82,9 +87,15 @@ public class TireSmokeEmitter extends BaseAppState {
         }
     }
 
+    /**
+     * Callback invoked whenever this AppState ceases to be both attached and
+     * enabled.
+     */
     @Override
-    protected void cleanup(Application app) {
-        // do nothing
+    protected void onDisable() {
+        for (int i = 0; i < emitters.length; i++) {
+            emitters[i].removeFromParent();
+        }
     }
 
     /**
@@ -95,17 +106,6 @@ public class TireSmokeEmitter extends BaseAppState {
     protected void onEnable() {
         for (int i = 0; i < emitters.length; i++) {
             rootNode.attachChild(emitters[i]);
-        }
-    }
-
-    /**
-     * Callback invoked whenever this AppState ceases to be both attached and
-     * enabled.
-     */
-    @Override
-    protected void onDisable() {
-        for (int i = 0; i < emitters.length; i++) {
-            emitters[i].removeFromParent();
         }
     }
 

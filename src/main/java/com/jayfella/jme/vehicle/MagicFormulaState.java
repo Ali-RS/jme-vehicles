@@ -32,80 +32,23 @@ public class MagicFormulaState extends BaseAppState {
     // fields
 
     final private Car vehicle;
-
-    private Node rootNode;
-    private Node guiNode;
-
-    // private Node vehicleDataNode;
     private Container vehicleDataContainer;
-    private Geometry vehicle2D;
-    private Label crosshair;
+    private float[] maxLoad;
     private Geometry centerOfGravity;
-
+    private Geometry vehicle2D;
+    private Geometry vehicleDirArrow;
+    private Geometry vehicleTravelArrow;
+    private Geometry wheelDirArrow;
+    private Label crosshair;
     // weight per wheel labels
     private Label[] tireWeightLabels;
+    private Node guiNode;
+    private Node rootNode;
+    // private Node vehicleDataNode;
+    private Vector3f screenCenter = new Vector3f();
 
     public MagicFormulaState(Car vehicle) {
         this.vehicle = vehicle;
-    }
-
-    private Vector3f screenCenter = new Vector3f();
-
-    private void createCenterOfGravityControl() {
-        crosshair = new Label("+");
-        crosshair.setColor(ColorRGBA.Pink);
-        crosshair.setLocalTranslation(screenCenter.add(-crosshair.getPreferredSize().x * 0.5f, crosshair.getPreferredSize().y * 0.5f, 0));
-
-        centerOfGravity = new Geometry("Center of Mass", new Quad(8, 8));
-        centerOfGravity.setMaterial(new Material(getApplication().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md"));
-        centerOfGravity.getMaterial().setColor("Color", ColorRGBA.Yellow);
-        // guiNode.attachChild(centerOfGravity);
-    }
-
-    private void updateCenterOfGravityControl() {
-        Vector3f newLoc = new Vector3f();
-
-        float[] rotation = new float[3];
-        // vehicle.getVehicleControl().getPhysicsRotation().toAngles(rotation);
-        vehicle.getChassis().getWorldRotation().toAngles(rotation);
-
-        // rotation along the X axis. forward and backward rotation.
-        // positive = forward, negative = backward.
-        float rotX = rotation[0] / FastMath.QUARTER_PI;
-        float movementY = rotX * screenCenter.y;
-
-        // rotation along the Z axis.
-        float rotY = rotation[2] / FastMath.QUARTER_PI;//(FastMath.QUARTER_PI * 0.5f);
-        float movementX = rotY * screenCenter.x;
-
-        newLoc.set(movementX, movementY, 0);
-
-        //System.out.println(Arrays.toString(rotation));
-        centerOfGravity.setLocalTranslation(screenCenter.add(newLoc).subtract(2, 2, 0));
-    }
-
-    private void createTireWeightLabels() {
-        tireWeightLabels = new Label[vehicle.getNumWheels()];
-
-        for (int i = 0; i < tireWeightLabels.length; i++) {
-            Label label = new Label("wheel");
-
-            // BoundingBox chassisBB = (BoundingBox) vehicle.getChassis().getWorldBound();
-            // loc.addLocal(chassisBB.getXExtent() * 0.5f, chassisBB.getZExtent() * 0.5f, 0);
-            if (i == 0 || i == 2) {
-                label.setTextHAlignment(HAlignment.Right);
-            }
-
-            label.setInsets(new Insets3f(10, 10, 10, 10));
-            tireWeightLabels[i] = label;
-        }
-
-        vehicleDataContainer.addChild(tireWeightLabels[0], 0, 0);
-        vehicleDataContainer.addChild(tireWeightLabels[1], 0, 1);
-        vehicleDataContainer.addChild(tireWeightLabels[2], 1, 0);
-        vehicleDataContainer.addChild(tireWeightLabels[3], 1, 1);
-
-        // guiNode.attachChild(vehicleDataContainer);
     }
 
     // private boolean centerOfGravityEnabled = false;
@@ -113,6 +56,14 @@ public class MagicFormulaState extends BaseAppState {
     public boolean isCenterOfGravityEnabled() {
         if (centerOfGravity != null) {
             return centerOfGravity.getParent() != null;
+        }
+
+        return false;
+    }
+
+    public boolean isVehicleDataEnabled() {
+        if (vehicleDataContainer != null) {
+            return vehicleDataContainer.getParent() != null;
         }
 
         return false;
@@ -130,14 +81,6 @@ public class MagicFormulaState extends BaseAppState {
         }
     }
 
-    public boolean isVehicleDataEnabled() {
-        if (vehicleDataContainer != null) {
-            return vehicleDataContainer.getParent() != null;
-        }
-
-        return false;
-    }
-
     public void setVehicleDataEnabled(boolean vehicleDataEnabled) {
         // this.vehicleDataEnabled = vehicleDataEnabled;
 
@@ -146,6 +89,11 @@ public class MagicFormulaState extends BaseAppState {
         } else {
             vehicleDataContainer.removeFromParent();
         }
+    }
+
+    @Override
+    protected void cleanup(Application app) {
+        // do nothing
     }
 
     /**
@@ -166,9 +114,14 @@ public class MagicFormulaState extends BaseAppState {
         createTireWeightLabels();
     }
 
+    /**
+     * Callback invoked whenever this AppState ceases to be both attached and
+     * enabled.
+     */
     @Override
-    protected void cleanup(Application app) {
-        // do nothing
+    protected void onDisable() {
+        setCenterOfGravityEnabled(false);
+        setVehicleDataEnabled(false);
     }
 
     /**
@@ -185,31 +138,65 @@ public class MagicFormulaState extends BaseAppState {
     }
 
     /**
-     * Callback invoked whenever this AppState ceases to be both attached and
-     * enabled.
+     * Callback to update this AppState, invoked once per frame when the
+     * AppState is both attached and enabled.
+     *
+     * @param tpf the time interval between frames (in seconds, &ge;0)
      */
     @Override
-    protected void onDisable() {
-        setCenterOfGravityEnabled(false);
-        setVehicleDataEnabled(false);
+    public void update(float tpf) {
+        //if (isCenterOfGravityEnabled()) {
+        updateCenterOfGravityControl();
+        //}
+
+        //if (isVehicleDataEnabled()) {
+        for (int i = 0; i < vehicle.getNumWheels(); i++) {
+            Wheel wheel = vehicle.getWheel(i);
+
+            // the angle between the dir of the wheel and the dir the vehicle is travelling.
+            float lateralSlip = wheel.calculateLateralSlipAngle();
+
+            float load = 10000; // * (wheel.getAccelerationForce() * vehicle.getAccelerationForce());
+            // float load = calculateWheelLoad(i);
+
+            wheel.getTireModel().setLoad(load);
+
+            // returns the amount of force in N on the tire.
+            // this model allows max 10,000 (this is determined by the tire).
+            float lateral = wheel.getTireModel().calcLateralTireForce(lateralSlip);
+
+            // the slip angle for this is how much force is being applied to the tire (acceleration force).
+            float longSlip = wheel.calculateLongitudinalSlipAngle();
+            float longitudinal = wheel.getTireModel().calcLongtitudeTireForce(longSlip);
+
+            // System.out.println(longitudinal);
+            // float friction = lateral / 10000;
+            // float friction = wheel.getTireModel().calculateFrictionCircle();
+            // float friction = 1.0f - ((lateral / 120000) - (longitudinal / 120000));
+            // wheel.setFriction(friction);
+            float friction = 1.0f - ((lateral / 10000) - (longitudinal / 10000));
+            friction *= 2.0;
+            friction = wheel.getGrip() * friction;
+            wheel.setFriction(friction);
+            // wheel.setFriction(friction * 2.0f);
+            // wheel.setFriction( lateral / 5000 );
+            // wheel.setFriction(friction * 2.0f);
+            // wheel.setFriction(friction / 3000);
+
+            // String format = "Weight: %.2f\nLat: %.2f\nLong: %.2f\nFriction: %.2f\nSlip: %.2f";
+            String format = "Lat: %.2f\nLong: %.2f\nFriction: %.2f\nSlip: %.2f\nWheelspin: %.2f";
+
+            tireWeightLabels[i].setText(String.format(format,
+                    // wheel.getTireModel().getLoad(),
+                    lateral / 10000,
+                    longitudinal / 10000,
+                    wheel.getFriction(),
+                    1.0f - wheel.getVehicleWheel().getSkidInfo(),
+                    wheel.getRotationDelta()
+            ));
+        }
+        //}
     }
-
-    private Geometry createArrow(Vector3f dir, ColorRGBA color) {
-        Arrow arrow = new Arrow(dir);
-        Geometry result = new Geometry("arrow", arrow);
-        result.setMaterial(new Material(Main.getApplication().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md"));
-        result.getMaterial().getAdditionalRenderState().setWireframe(true);
-        result.getMaterial().getAdditionalRenderState().setLineWidth(4);
-        result.getMaterial().setColor("Color", color);
-
-        return result;
-    }
-
-    private Geometry wheelDirArrow;
-    private Geometry vehicleDirArrow;
-    private Geometry vehicleTravelArrow;
-
-    private float[] maxLoad;
 
     // LATERAL
     // the slip angle is the angle between the direction in which a wheel is pointing
@@ -283,64 +270,72 @@ public class MagicFormulaState extends BaseAppState {
         return result;
     }
 
-    /**
-     * Callback to update this AppState, invoked once per frame when the
-     * AppState is both attached and enabled.
-     *
-     * @param tpf the time interval between frames (in seconds, &ge;0)
-     */
-    @Override
-    public void update(float tpf) {
-        //if (isCenterOfGravityEnabled()) {
-        updateCenterOfGravityControl();
-        //}
+    private Geometry createArrow(Vector3f dir, ColorRGBA color) {
+        Arrow arrow = new Arrow(dir);
+        Geometry result = new Geometry("arrow", arrow);
+        result.setMaterial(new Material(Main.getApplication().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md"));
+        result.getMaterial().getAdditionalRenderState().setWireframe(true);
+        result.getMaterial().getAdditionalRenderState().setLineWidth(4);
+        result.getMaterial().setColor("Color", color);
 
-        //if (isVehicleDataEnabled()) {
-        for (int i = 0; i < vehicle.getNumWheels(); i++) {
-            Wheel wheel = vehicle.getWheel(i);
-
-            // the angle between the dir of the wheel and the dir the vehicle is travelling.
-            float lateralSlip = wheel.calculateLateralSlipAngle();
-
-            float load = 10000; // * (wheel.getAccelerationForce() * vehicle.getAccelerationForce());
-            // float load = calculateWheelLoad(i);
-
-            wheel.getTireModel().setLoad(load);
-
-            // returns the amount of force in N on the tire.
-            // this model allows max 10,000 (this is determined by the tire).
-            float lateral = wheel.getTireModel().calcLateralTireForce(lateralSlip);
-
-            // the slip angle for this is how much force is being applied to the tire (acceleration force).
-            float longSlip = wheel.calculateLongitudinalSlipAngle();
-            float longitudinal = wheel.getTireModel().calcLongtitudeTireForce(longSlip);
-
-            // System.out.println(longitudinal);
-            // float friction = lateral / 10000;
-            // float friction = wheel.getTireModel().calculateFrictionCircle();
-            // float friction = 1.0f - ((lateral / 120000) - (longitudinal / 120000));
-            // wheel.setFriction(friction);
-            float friction = 1.0f - ((lateral / 10000) - (longitudinal / 10000));
-            friction *= 2.0;
-            friction = wheel.getGrip() * friction;
-            wheel.setFriction(friction);
-            // wheel.setFriction(friction * 2.0f);
-            // wheel.setFriction( lateral / 5000 );
-            // wheel.setFriction(friction * 2.0f);
-            // wheel.setFriction(friction / 3000);
-
-            // String format = "Weight: %.2f\nLat: %.2f\nLong: %.2f\nFriction: %.2f\nSlip: %.2f";
-            String format = "Lat: %.2f\nLong: %.2f\nFriction: %.2f\nSlip: %.2f\nWheelspin: %.2f";
-
-            tireWeightLabels[i].setText(String.format(format,
-                    // wheel.getTireModel().getLoad(),
-                    lateral / 10000,
-                    longitudinal / 10000,
-                    wheel.getFriction(),
-                    1.0f - wheel.getVehicleWheel().getSkidInfo(),
-                    wheel.getRotationDelta()
-            ));
-        }
-        //}
+        return result;
     }
+
+    private void createCenterOfGravityControl() {
+        crosshair = new Label("+");
+        crosshair.setColor(ColorRGBA.Pink);
+        crosshair.setLocalTranslation(screenCenter.add(-crosshair.getPreferredSize().x * 0.5f, crosshair.getPreferredSize().y * 0.5f, 0));
+
+        centerOfGravity = new Geometry("Center of Mass", new Quad(8, 8));
+        centerOfGravity.setMaterial(new Material(getApplication().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md"));
+        centerOfGravity.getMaterial().setColor("Color", ColorRGBA.Yellow);
+        // guiNode.attachChild(centerOfGravity);
+    }
+
+    private void createTireWeightLabels() {
+        tireWeightLabels = new Label[vehicle.getNumWheels()];
+
+        for (int i = 0; i < tireWeightLabels.length; i++) {
+            Label label = new Label("wheel");
+
+            // BoundingBox chassisBB = (BoundingBox) vehicle.getChassis().getWorldBound();
+            // loc.addLocal(chassisBB.getXExtent() * 0.5f, chassisBB.getZExtent() * 0.5f, 0);
+            if (i == 0 || i == 2) {
+                label.setTextHAlignment(HAlignment.Right);
+            }
+
+            label.setInsets(new Insets3f(10, 10, 10, 10));
+            tireWeightLabels[i] = label;
+        }
+
+        vehicleDataContainer.addChild(tireWeightLabels[0], 0, 0);
+        vehicleDataContainer.addChild(tireWeightLabels[1], 0, 1);
+        vehicleDataContainer.addChild(tireWeightLabels[2], 1, 0);
+        vehicleDataContainer.addChild(tireWeightLabels[3], 1, 1);
+
+        // guiNode.attachChild(vehicleDataContainer);
+    }
+
+    private void updateCenterOfGravityControl() {
+        Vector3f newLoc = new Vector3f();
+
+        float[] rotation = new float[3];
+        // vehicle.getVehicleControl().getPhysicsRotation().toAngles(rotation);
+        vehicle.getChassis().getWorldRotation().toAngles(rotation);
+
+        // rotation along the X axis. forward and backward rotation.
+        // positive = forward, negative = backward.
+        float rotX = rotation[0] / FastMath.QUARTER_PI;
+        float movementY = rotX * screenCenter.y;
+
+        // rotation along the Z axis.
+        float rotY = rotation[2] / FastMath.QUARTER_PI;//(FastMath.QUARTER_PI * 0.5f);
+        float movementX = rotY * screenCenter.x;
+
+        newLoc.set(movementX, movementY, 0);
+
+        //System.out.println(Arrays.toString(rotation));
+        centerOfGravity.setLocalTranslation(screenCenter.add(newLoc).subtract(2, 2, 0));
+    }
+
 }

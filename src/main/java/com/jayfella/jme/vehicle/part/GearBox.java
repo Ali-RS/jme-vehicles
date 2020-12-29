@@ -6,8 +6,8 @@ import com.jayfella.jme.vehicle.Vehicle;
 public class GearBox {
 
     private boolean isInReverse;
-    private int activeGear;
     private Gear[] gears;
+    private int activeGear;
 
     public GearBox(int gearCount) {
         gears = new Gear[gearCount];
@@ -17,32 +17,12 @@ public class GearBox {
         }
     }
 
-    public boolean isInReverse() {
-        return isInReverse;
-    }
-
-    public void setReversing(boolean setting) {
-        isInReverse = setting;
-    }
-
-    public Gear getGear(int gearNum) {
-        return gears[gearNum];
-    }
-
-    public void setGear(int gearNum, float start, float end) {
-
-        Gear gear = gears[gearNum];
-
-        gear.setMinKph(start);
-        gear.setMaxKph(end);
-    }
-
     public int getActiveGearNum() {
         return activeGear;
     }
 
-    public void setActiveGearNum(int activeGear) {
-        this.activeGear = activeGear;
+    public Gear getGear(int gearNum) {
+        return gears[gearNum];
     }
 
     public int getGearCount() {
@@ -71,4 +51,24 @@ public class GearBox {
 
         return result;
     }
+
+    public boolean isInReverse() {
+        return isInReverse;
+    }
+
+    public void setActiveGearNum(int activeGear) {
+        this.activeGear = activeGear;
+    }
+
+    public void setGear(int gearNum, float start, float end) {
+        Gear gear = gears[gearNum];
+
+        gear.setMinKph(start);
+        gear.setMaxKph(end);
+    }
+
+    public void setReversing(boolean setting) {
+        isInReverse = setting;
+    }
+
 }

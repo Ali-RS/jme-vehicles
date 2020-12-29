@@ -184,6 +184,42 @@ abstract public class Car extends Vehicle {
     // *************************************************************************
     // Vehicle methods
 
+    @Override
+    public void build() {
+        super.build();
+        smokeEmitter = new TireSmokeEmitter(this);
+
+        Spatial wheelSpatial = getWheel(0).getVehicleWheel().getWheelSpatial();
+        BoundingBox bounds = (BoundingBox) wheelSpatial.getWorldBound();
+        float markWidth = 0.75f * bounds.getZExtent();
+        skidmarks = new SkidMarksState(this, markWidth);
+
+        magicFormulaState = new MagicFormulaState(this);
+        wheelSpinState = new WheelSpinState(this);
+    }
+
+    @Override
+    protected void disable() {
+        super.disable();
+
+        AppStateManager manager = Main.getApplication().getStateManager();
+        manager.detach(smokeEmitter);
+        manager.detach(skidmarks);
+        manager.detach(magicFormulaState);
+        manager.detach(wheelSpinState);
+    }
+
+    @Override
+    protected void enable() {
+        super.enable();
+
+        AppStateManager manager = Main.getApplication().getStateManager();
+        manager.attach(smokeEmitter);
+        manager.attach(skidmarks);
+        manager.attach(magicFormulaState);
+        manager.attach(wheelSpinState);
+    }
+
     /**
      * Alter the value of the "accelerate" control signal and update the drive
      * force applied to each wheel.
@@ -231,42 +267,6 @@ abstract public class Car extends Vehicle {
         for (Wheel wheel : wheels) {
             wheel.updateBrakes(mainStrength, parkingStrength);
         }
-    }
-
-    @Override
-    public void build() {
-        super.build();
-        smokeEmitter = new TireSmokeEmitter(this);
-
-        Spatial wheelSpatial = getWheel(0).getVehicleWheel().getWheelSpatial();
-        BoundingBox bounds = (BoundingBox) wheelSpatial.getWorldBound();
-        float markWidth = 0.75f * bounds.getZExtent();
-        skidmarks = new SkidMarksState(this, markWidth);
-
-        magicFormulaState = new MagicFormulaState(this);
-        wheelSpinState = new WheelSpinState(this);
-    }
-
-    @Override
-    protected void disable() {
-        super.disable();
-
-        AppStateManager manager = Main.getApplication().getStateManager();
-        manager.detach(smokeEmitter);
-        manager.detach(skidmarks);
-        manager.detach(magicFormulaState);
-        manager.detach(wheelSpinState);
-    }
-
-    @Override
-    protected void enable() {
-        super.enable();
-
-        AppStateManager manager = Main.getApplication().getStateManager();
-        manager.attach(smokeEmitter);
-        manager.attach(skidmarks);
-        manager.attach(magicFormulaState);
-        manager.attach(wheelSpinState);
     }
 
     @Override

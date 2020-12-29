@@ -84,18 +84,6 @@ public class Main extends SimpleApplication {
     // new methods exposed
 
     /**
-     * Attach the selected environment, sky, and vehicle to the scene.
-     */
-    private void attachAllToScene() {
-        sky.attachToScene(rootNode);
-
-        environment.resetCameraPosition();
-        environment.attachToScene(rootNode);
-
-        vehicle.attachToScene(rootNode);
-    }
-
-    /**
      * Callback from LoadingState when it has finished warming up the AssetCache
      * and initializing Lemur.
      */
@@ -281,5 +269,19 @@ public class Main extends SimpleApplication {
 
         inputManager.clearMappings();
         inputManager.clearRawInputListeners();
+    }
+    // *************************************************************************
+    // private methods
+
+    /**
+     * Attach the selected Environment, Sky, and Vehicle to the scene.
+     */
+    private void attachAllToScene() {
+        sky.attachToScene(rootNode);
+
+        environment.resetCameraPosition();
+        environment.attachToScene(rootNode);
+
+        vehicle.attachToScene(rootNode);
     }
 }

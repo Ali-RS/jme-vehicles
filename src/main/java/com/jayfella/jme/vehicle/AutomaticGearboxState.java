@@ -21,11 +21,10 @@ public class AutomaticGearboxState extends BaseAppState {
     // *************************************************************************
     // fields
 
-    final private Vehicle vehicle;
-    private GearBox gearBox;
-
     private Car car;
+    private GearBox gearBox;
     private int wheelCount;
+    final private Vehicle vehicle;
 
     public AutomaticGearboxState(Vehicle vehicle) {
         this.vehicle = vehicle;
@@ -33,6 +32,11 @@ public class AutomaticGearboxState extends BaseAppState {
         if (vehicle instanceof Car) {
             car = (Car) vehicle;
         }
+    }
+
+    @Override
+    protected void cleanup(Application app) {
+        // do nothing
     }
 
     /**
@@ -45,8 +49,12 @@ public class AutomaticGearboxState extends BaseAppState {
         wheelCount = car.getNumWheels();
     }
 
+    /**
+     * Callback invoked whenever this AppState ceases to be both attached and
+     * enabled.
+     */
     @Override
-    protected void cleanup(Application app) {
+    protected void onDisable() {
         // do nothing
     }
 
@@ -57,15 +65,6 @@ public class AutomaticGearboxState extends BaseAppState {
     @Override
     protected void onEnable() {
         gearBox = vehicle.getGearBox();
-    }
-
-    /**
-     * Callback invoked whenever this AppState ceases to be both attached and
-     * enabled.
-     */
-    @Override
-    protected void onDisable() {
-        // do nothing
     }
 
     /**

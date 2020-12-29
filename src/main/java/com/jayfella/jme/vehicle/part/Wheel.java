@@ -36,50 +36,50 @@ public class Wheel {
      */
     private boolean isSteeringFlipped;
     /**
+     * main brake, which is typically hydraulic
+     */
+    final private Brake mainBrake;
+    /**
      * parking (aka hand or emergency) brake
      */
     final private Brake parkingBrake;
     /**
-     * fraction of the engine's output power transmitted to this wheel (&ge;0,
-     * &le;1)
+     * grip degradation: 1 = full grip the tire allows, 0 = worn-out tire
      */
-    private float powerFraction = 0f;
-    /**
-     * vehicle's physics control
-     */
-    final private VehicleControl vehicleControl;
-    /**
-     * index among the vehicle's wheels (&ge;0)
-     */
-    final private int wheelIndex;
-    /**
-     * wheel's physics object
-     */
-    final private VehicleWheel vehicleWheel;
+    private float grip = 1f;
     /**
      * how far the wheel can turn when steered (in radians)
      */
     private float maxSteerAngle = FastMath.QUARTER_PI;
     /**
+     * fraction of the engine's output power transmitted to this wheel (&ge;0,
+     * &le;1)
+     */
+    private float powerFraction = 0f;
+
+    private float rotationDelta;
+    /**
      * horizontal rotation (in radians) TODO direction of measurement?
      */
     private float steeringAngle = 0f;
+    /**
+     * index among the vehicle's wheels (&ge;0)
+     */
+    final private int wheelIndex;
+
+    private PacejkaTireModel tireModel;
     /**
      * parameters of the associated suspension spring
      */
     final private Suspension suspension;
     /**
-     * main brake, which is typically hydraulic
+     * vehicle's physics control
      */
-    final private Brake mainBrake;
-
-    private PacejkaTireModel tireModel;
-
-    private float rotationDelta;
+    final private VehicleControl vehicleControl;
     /**
-     * grip degradation: 1 = full grip the tire allows, 0 = worn-out tire
+     * wheel's physics object
      */
-    private float grip = 1f;
+    final private VehicleWheel vehicleWheel;
     // *************************************************************************
     // constructors
 
@@ -122,107 +122,8 @@ public class Wheel {
     // new methods exposed
 
     /**
-     * Access the tire model.
-     *
-     * @return the pre-existing instance
-     */
-    public PacejkaTireModel getTireModel() {
-        return tireModel;
-    }
-
-    /**
-     * Alter the tire model.
-     *
-     * @param tireModel the desired model (alias created)
-     */
-    public void setTireModel(PacejkaTireModel tireModel) {
-        this.tireModel = tireModel;
-    }
-
-    /**
-     * Determine the tire's grip.
-     *
-     * @return the fraction of the original grip remaining (&ge;0, &le;1)
-     */
-    public float getGrip() {
-        return grip;
-    }
-
-    /**
-     * Alter the tire's grip.
-     *
-     * @param grip the fraction of the original grip remaining (&ge;0, &le;1,
-     * default=1)
-     */
-    public void setGrip(float grip) {
-        this.grip = grip;
-    }
-
-    public float getFriction() {
-        return vehicleWheel.getFrictionSlip();
-    }
-
-    public void setFriction(float friction) {
-        vehicleWheel.setFrictionSlip(friction);
-    }
-
-    /**
-     * Test whether this wheel is used for steering.
-     *
-     * @return true if used for steering, otherwise false
-     */
-    public boolean isSteering() {
-        return isSteering;
-    }
-
-    public void setSteering(boolean steering, boolean flipped) {
-        setSteering(steering);
-        setSteeringFlipped(flipped);
-    }
-
-    public void setSteering(boolean steering) {
-        this.isSteering = steering;
-        vehicleWheel.setFrontWheel(steering);
-    }
-
-    /**
-     * Test whether this wheel turns in the opposite direction relative to the
-     * Vehicle.
-     *
-     * @return true if opposite, otherwise false
-     */
-    public boolean isSteeringFlipped() {
-        return isSteeringFlipped;
-    }
-
-    public void setSteeringFlipped(boolean steeringFlipped) {
-        this.isSteeringFlipped = steeringFlipped;
-    }
-
-    /**
-     * Determine the fraction of the engine's output power transmitted to this
-     * wheel.
-     *
-     * @return the power fraction (&ge;0, &le;1)
-     */
-    public float getPowerFraction() {
-        assert powerFraction >= 0f && powerFraction <= 1f : powerFraction;
-        return powerFraction;
-    }
-
-    /**
-     * Alter the fraction of the of the engine's output power that gets
-     * transmitted this wheel.
-     *
-     * @param fraction the desired power fraction (&ge;0, &le;1)
-     */
-    public void setPowerFraction(float fraction) {
-        Validate.fraction(fraction, "fraction");
-        powerFraction = fraction;
-    }
-
-    /**
-     * Update the drive force applied via this wheel.
+     * Update the drive force applied via this wheel. TODO rename
+     * updateAccelerate()
      *
      * @param force the desired drive force (negative if reversing)
      */
@@ -230,90 +131,6 @@ public class Wheel {
         vehicleControl.accelerate(wheelIndex, force);
         assert vehicleWheel.getEngineForce() == force :
                 vehicleWheel.getEngineForce();
-    }
-
-    /**
-     * Update the braking impulse applied to this wheel.
-     *
-     * @param mainStrength the strength of the main-brake control signal (&ge;0,
-     * &le;1)
-     * @param parkingStrength the strength of the parking-brake control signal
-     * (&ge;0, &le;1)
-     */
-    public void updateBrakes(float mainStrength, float parkingStrength) {
-        Validate.fraction(mainStrength, "main strength");
-        Validate.fraction(parkingStrength, "parking strength");
-
-        BulletAppState bas = Main.findAppState(BulletAppState.class);
-        PhysicsSpace physicsSpace = bas.getPhysicsSpace();
-        float timeStep = physicsSpace.getAccuracy();
-
-        float force = mainStrength * mainBrake.getPeakForce()
-                + parkingStrength * parkingBrake.getPeakForce();
-        float impulse = force * timeStep;
-        if (impulse != vehicleWheel.getBrake()) {
-            //System.out.printf("brake[%d] = %f%n", wheelIndex, impulse);
-        }
-        vehicleControl.brake(wheelIndex, impulse);
-
-        assert vehicleWheel.getBrake() == impulse : vehicleWheel.getBrake();
-    }
-
-    /**
-     * Access the main brake for this wheel. (The main brakes are typically
-     * hydraulic.)
-     *
-     * @return the pre-existing instance
-     */
-    public Brake getMainBrake() {
-        return mainBrake;
-    }
-
-    public void steer(float strength) {
-        if (isSteering()) {
-            if (isSteeringFlipped) {
-                steeringAngle = getMaxSteerAngle() * -strength;
-            } else {
-                steeringAngle = getMaxSteerAngle() * strength;
-            }
-
-            vehicleControl.steer(wheelIndex, steeringAngle);
-        }
-    }
-
-    public float getSteeringAngle() {
-        return steeringAngle;
-    }
-
-    public float getMaxSteerAngle() {
-        assert maxSteerAngle >= 0f : maxSteerAngle;
-        return maxSteerAngle;
-    }
-
-    public void setMaxSteerAngle(float maxSteerAngle) {
-        Validate.nonNegative(maxSteerAngle, "max steer angle");
-        this.maxSteerAngle = maxSteerAngle;
-    }
-
-    public float getSize() {
-        return vehicleWheel.getWheelSpatial().getLocalScale().y; // they should all be the same.
-    }
-
-    public void setSize(float diameter) {
-        Validate.positive(diameter, "diameter");
-
-        vehicleWheel.getWheelSpatial().setLocalScale(diameter);
-        vehicleWheel.setRadius(diameter / 2);
-    }
-
-    public Suspension getSuspension() {
-        assert suspension != null;
-        return suspension;
-    }
-
-    public VehicleWheel getVehicleWheel() {
-        assert vehicleWheel != null;
-        return vehicleWheel;
     }
 
     // Pacejka
@@ -373,8 +190,74 @@ public class Wheel {
         return result;
     }
 
+    public float getFriction() {
+        return vehicleWheel.getFrictionSlip();
+    }
+
+    /**
+     * Determine the tire's grip.
+     *
+     * @return the fraction of the original grip remaining (&ge;0, &le;1)
+     */
+    public float getGrip() {
+        return grip;
+    }
+
+    /**
+     * Access the main brake for this wheel. (The main brakes are typically
+     * hydraulic.)
+     *
+     * @return the pre-existing instance
+     */
+    public Brake getMainBrake() {
+        return mainBrake;
+    }
+
+    public float getMaxSteerAngle() {
+        assert maxSteerAngle >= 0f : maxSteerAngle;
+        return maxSteerAngle;
+    }
+
+    /**
+     * Determine the fraction of the engine's output power transmitted to this
+     * wheel.
+     *
+     * @return the power fraction (&ge;0, &le;1)
+     */
+    public float getPowerFraction() {
+        assert powerFraction >= 0f && powerFraction <= 1f : powerFraction;
+        return powerFraction;
+    }
+
     public float getRotationDelta() {
         return rotationDelta;
+    }
+
+    public float getSize() { // TODO rename getDiameter()
+        return vehicleWheel.getWheelSpatial().getLocalScale().y; // they should all be the same.
+    }
+
+    public float getSteeringAngle() {
+        return steeringAngle;
+    }
+
+    public Suspension getSuspension() {
+        assert suspension != null;
+        return suspension;
+    }
+
+    /**
+     * Access the tire model.
+     *
+     * @return the pre-existing instance
+     */
+    public PacejkaTireModel getTireModel() {
+        return tireModel;
+    }
+
+    public VehicleWheel getVehicleWheel() {
+        assert vehicleWheel != null;
+        return vehicleWheel;
     }
 
     /**
@@ -391,7 +274,125 @@ public class Wheel {
         }
     }
 
+    /**
+     * Test whether this wheel is used for steering.
+     *
+     * @return true if used for steering, otherwise false
+     */
+    public boolean isSteering() {
+        return isSteering;
+    }
+
+    /**
+     * Test whether this wheel turns in the opposite direction relative to the
+     * Vehicle.
+     *
+     * @return true if opposite, otherwise false
+     */
+    public boolean isSteeringFlipped() {
+        return isSteeringFlipped;
+    }
+
+    public void setFriction(float friction) {
+        vehicleWheel.setFrictionSlip(friction);
+    }
+
+    /**
+     * Alter the tire's grip.
+     *
+     * @param grip the fraction of the original grip remaining (&ge;0, &le;1,
+     * default=1)
+     */
+    public void setGrip(float grip) {
+        this.grip = grip;
+    }
+
+    public void setMaxSteerAngle(float maxSteerAngle) {
+        Validate.nonNegative(maxSteerAngle, "max steer angle");
+        this.maxSteerAngle = maxSteerAngle;
+    }
+
+    /**
+     * Alter the fraction of the of the engine's output power that gets
+     * transmitted this wheel.
+     *
+     * @param fraction the desired power fraction (&ge;0, &le;1)
+     */
+    public void setPowerFraction(float fraction) {
+        Validate.fraction(fraction, "fraction");
+        powerFraction = fraction;
+    }
+
     public void setRotationDelta(float rotationDelta) {
         this.rotationDelta = rotationDelta;
+    }
+
+    public void setSize(float diameter) { // TODO rename setDiameter()
+        Validate.positive(diameter, "diameter");
+
+        vehicleWheel.getWheelSpatial().setLocalScale(diameter);
+        vehicleWheel.setRadius(diameter / 2);
+    }
+
+    public void setSteering(boolean steering) {
+        this.isSteering = steering;
+        vehicleWheel.setFrontWheel(steering);
+    }
+
+    public void setSteering(boolean steering, boolean flipped) {
+        setSteering(steering);
+        setSteeringFlipped(flipped);
+    }
+
+    public void setSteeringFlipped(boolean steeringFlipped) {
+        this.isSteeringFlipped = steeringFlipped;
+    }
+
+    /**
+     * Alter the tire model.
+     *
+     * @param tireModel the desired model (alias created)
+     */
+    public void setTireModel(PacejkaTireModel tireModel) {
+        this.tireModel = tireModel;
+    }
+
+    public void steer(float strength) {
+        if (isSteering()) {
+            if (isSteeringFlipped) {
+                steeringAngle = getMaxSteerAngle() * -strength;
+            } else {
+                steeringAngle = getMaxSteerAngle() * strength;
+            }
+
+            vehicleControl.steer(wheelIndex, steeringAngle);
+        }
+    }
+
+    /**
+     * Update the braking impulse applied to this wheel.
+     *
+     * @param mainStrength the strength of the main-brake control signal (&ge;0,
+     * &le;1)
+     * @param parkingStrength the strength of the parking-brake control signal
+     * (&ge;0, &le;1)
+     */
+    public void updateBrakes(float mainStrength, float parkingStrength) {
+        Validate.fraction(mainStrength, "main strength");
+        Validate.fraction(parkingStrength, "parking strength");
+
+        BulletAppState bas = Main.findAppState(BulletAppState.class);
+        PhysicsSpace physicsSpace = bas.getPhysicsSpace();
+        float timeStep = physicsSpace.getAccuracy();
+
+        float force = mainStrength * mainBrake.getPeakForce()
+                + parkingStrength * parkingBrake.getPeakForce();
+        float impulse = force * timeStep;
+        if (impulse != vehicleWheel.getBrake()) {
+            //System.out.printf("brake[%d] = %f%n", wheelIndex, impulse);
+        }
+        vehicleControl.brake(wheelIndex, impulse);
+
+        assert vehicleWheel.getBrake() == impulse : vehicleWheel.getBrake();
     }
 }

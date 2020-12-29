@@ -10,14 +10,14 @@ public class Gear {
     // fields
 
     /**
-     * vehicle speed that triggers a downshift (in KPH, &ge;0, &lt;maxKph)
-     */
-    private float minKph;
-    /**
      * vehicle speed that triggers an upshift (in KPH, &gt;minKph) currently
      * this corrsponds to engine redline
      */
     private float maxKph;
+    /**
+     * vehicle speed that triggers a downshift (in KPH, &ge;0, &lt;maxKph)
+     */
+    private float minKph;
     // *************************************************************************
     // constructors
 
@@ -37,31 +37,21 @@ public class Gear {
     // new methods exposed
 
     /**
-     * Determine the vehicle speed that triggers a downshift.
-     *
-     * @return the speed (in KPH, &ge;0)
-     */
-    public float getMinKph() {
-        return minKph;
-    }
-
-    /**
-     * Alter the vehicle speed that triggers a downshift.
-     *
-     * @param kph the desired speed (in KPH, &ge;0)
-     */
-    public void setMinKph(float kph) {
-        Validate.nonNegative(kph, "kph");
-        this.minKph = kph;
-    }
-
-    /**
      * Determine the vehicle speed that triggers an upshift.
      *
      * @return the speed (in KPH, &ge;0)
      */
     public float getMaxKph() {
         return maxKph;
+    }
+
+    /**
+     * Determine the vehicle speed that triggers a downshift.
+     *
+     * @return the speed (in KPH, &ge;0)
+     */
+    public float getMinKph() {
+        return minKph;
     }
 
     /**
@@ -72,5 +62,15 @@ public class Gear {
     public void setMaxKph(float kph) {
         Validate.nonNegative(kph, "kph");
         this.maxKph = kph;
+    }
+
+    /**
+     * Alter the vehicle speed that triggers a downshift.
+     *
+     * @param kph the desired speed (in KPH, &ge;0)
+     */
+    public void setMinKph(float kph) {
+        Validate.nonNegative(kph, "kph");
+        this.minKph = kph;
     }
 }
