@@ -5,7 +5,6 @@ import com.jayfella.jme.vehicle.examples.cars.*;
 import com.jayfella.jme.vehicle.examples.environments.*;
 import com.jayfella.jme.vehicle.examples.skies.*;
 import com.jayfella.jme.vehicle.gui.DriverHud;
-import com.jayfella.jme.vehicle.gui.LoadingState;
 import com.jayfella.jme.vehicle.input.DumpInputState;
 import com.jayfella.jme.vehicle.input.NonDrivingInputState;
 import com.jme3.app.SimpleApplication;

@@ -1,6 +1,7 @@
-package com.jayfella.jme.vehicle.gui;
+package com.jayfella.jme.vehicle;
 
-import com.jayfella.jme.vehicle.Main;
+import com.jayfella.jme.vehicle.gui.MainMenu;
+import com.jayfella.jme.vehicle.gui.PhysicsHud;
 import com.jayfella.jme.vehicle.input.NonDrivingInputState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -28,7 +29,7 @@ import jme3utilities.mesh.RectangleMesh;
  * A simple loading state to entertain users. It displays text and a spinning
  * texture until its CountDownLatch reaches zero.
  */
-public class LoadingState extends BaseAppState {
+class LoadingState extends BaseAppState {
     // *************************************************************************
     // constants and loggers
 
@@ -66,7 +67,7 @@ public class LoadingState extends BaseAppState {
      *
      * @param latch the latch to monitor
      */
-    public LoadingState(CountDownLatch latch) {
+    LoadingState(CountDownLatch latch) {
         this.latch = latch;
     }
     // *************************************************************************
