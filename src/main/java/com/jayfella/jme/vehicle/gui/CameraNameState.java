@@ -23,12 +23,11 @@ import jme3utilities.MyAsset;
 import jme3utilities.mesh.RoundedRectangle;
 
 /**
- * AppState to display the name of the default camera. This AppState should be
- * instantiated once and then enabled/disabled as needed.
+ * AppState to display the name of the default camera.
  *
  * @author Stephen Gold sgold@sonic.net
  */
-class CameraNameState extends BaseAppState {
+public class CameraNameState extends BaseAppState {
     // *************************************************************************
     // constants and loggers
 
@@ -60,11 +59,10 @@ class CameraNameState extends BaseAppState {
     // constructors
 
     /**
-     * Instantiate a disabled AppState.
+     * Instantiate an enabled AppState.
      */
-    CameraNameState() {
+    public CameraNameState() {
         super("Camera Name");
-        setEnabled(false);
     }
     // *************************************************************************
     // BaseAppState methods
@@ -198,7 +196,9 @@ class CameraNameState extends BaseAppState {
                 if (isPressed) {
                     DrivingInputState inputState
                             = Main.findAppState(DrivingInputState.class);
-                    inputState.nextCameraMode();
+                    if (inputState != null) {
+                        inputState.nextCameraMode();
+                    }
                 }
             }
         };

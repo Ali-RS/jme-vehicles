@@ -9,6 +9,7 @@ import com.jayfella.jme.vehicle.examples.environments.Playground;
 import com.jayfella.jme.vehicle.examples.environments.Racetrack;
 import com.jayfella.jme.vehicle.examples.skies.AnimatedNightSky;
 import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
+import com.jayfella.jme.vehicle.gui.CameraNameState;
 import com.jayfella.jme.vehicle.gui.CompassState;
 import com.jayfella.jme.vehicle.gui.MainMenu;
 import com.jayfella.jme.vehicle.gui.PhysicsHud;
@@ -180,6 +181,7 @@ class LoadingState extends BaseAppState {
             Main.getApplication().attachAllToScene();
 
             AppStateManager stateManager = getStateManager();
+            stateManager.attach(new CameraNameState());
             stateManager.attach(new CompassState());
             stateManager.attach(new MainMenu());
             stateManager.attach(new NonDrivingInputState());
