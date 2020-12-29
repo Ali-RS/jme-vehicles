@@ -225,7 +225,7 @@ abstract public class Engine {
         audioNode = new AudioNode(assetManager, assetPath,
                 AudioData.DataType.Buffer);
         audioNode.setLooping(true);
-        audioNode.setPositional(true);
+        audioNode.setPositional(false);
         audioNode.setDirectional(false);
     }
 

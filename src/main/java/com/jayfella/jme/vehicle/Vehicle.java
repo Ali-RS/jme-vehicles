@@ -451,7 +451,7 @@ abstract public class Vehicle implements Loadable {
         hornAudio = new AudioNode(assetManager, assetPath,
                 AudioData.DataType.Stream);
         hornAudio.setLooping(true);
-        hornAudio.setPositional(true);
+        hornAudio.setPositional(false);
         hornAudio.setDirectional(false);
         node.attachChild(hornAudio);
     }
