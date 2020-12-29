@@ -5,7 +5,6 @@ import com.jayfella.jme.vehicle.examples.cars.GrandTourer;
 import com.jayfella.jme.vehicle.examples.environments.Racetrack;
 import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
 import com.jayfella.jme.vehicle.gui.DriverHud;
-import com.jayfella.jme.vehicle.input.DumpInputState;
 import com.jayfella.jme.vehicle.input.NonDrivingInputState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
@@ -19,9 +18,6 @@ import com.jme3.bullet.util.NativeLibrary;
 import com.jme3.input.Joystick;
 import com.jme3.input.JoystickConnectionListener;
 import com.jme3.system.AppSettings;
-import com.simsilica.lemur.GuiGlobals;
-import com.simsilica.lemur.focus.FocusNavigationState;
-import com.simsilica.lemur.style.BaseStyles;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jme3utilities.Heart;
@@ -75,7 +71,6 @@ public class Main extends SimpleApplication {
                 new AudioListenerState(),
                 new ConstantVerifierState(),
                 new DriverHud(),
-                new DumpInputState(),
                 new LoadingState(),
                 new ScreenshotAppState(screenshotDirectory, screenshotPrefix),
                 new StatsAppState()
@@ -258,11 +253,6 @@ public class Main extends SimpleApplication {
         float far = 1800f;
         MyCamera.setNearFar(cam, near, far);
 
-        // initialize Lemur with the "glass" style
-        GuiGlobals.initialize(this);
-        BaseStyles.loadGlassStyle();
-        GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
-
         // initialize physics with debug disabled
         BulletAppState bulletAppState = new BulletAppState();
         bulletAppState.setDebugEnabled(false);
@@ -270,8 +260,5 @@ public class Main extends SimpleApplication {
 
         Sky.initialize();
         environment.resetCameraPosition();
-
-        // this consumes joystick input. I'll have to investigate why.
-        stateManager.getState(FocusNavigationState.class).setEnabled(false);
     }
 }

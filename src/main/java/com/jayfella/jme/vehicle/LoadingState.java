@@ -13,6 +13,7 @@ import com.jayfella.jme.vehicle.gui.CameraNameState;
 import com.jayfella.jme.vehicle.gui.CompassState;
 import com.jayfella.jme.vehicle.gui.MainMenu;
 import com.jayfella.jme.vehicle.gui.PhysicsHud;
+import com.jayfella.jme.vehicle.input.DumpInputState;
 import com.jayfella.jme.vehicle.input.NonDrivingInputState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -23,7 +24,6 @@ import com.jme3.material.Material;
 import com.jme3.material.Materials;
 import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
@@ -31,7 +31,9 @@ import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Quad;
 import com.jme3.texture.Texture;
-import com.simsilica.lemur.Label;
+import com.simsilica.lemur.GuiGlobals;
+import com.simsilica.lemur.focus.FocusNavigationState;
+import com.simsilica.lemur.style.BaseStyles;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Logger;
 import jme3utilities.mesh.RectangleMesh;
@@ -74,31 +76,13 @@ class LoadingState extends BaseAppState {
      * monitor how many asynchronous assets loads are in progress
      */
     final private CountDownLatch latch
-            = new CountDownLatch(allLoadables.length);
+            = new CountDownLatch(allLoadables.length + 1);
     /**
      * conceals whatever's going on in the main scene
      */
     private Geometry backgroundGeom;
-    /**
-     * displays the text
-     */
-    private Label label;
     final private Node node = new Node("Loading Node");
     private Node spinnerNode;
-    // *************************************************************************
-    // new methods exposed
-
-    public void setText(String text) {
-        label.setText(text);
-        /*
-         * Center the text 70px above the center of the display.
-         */
-        Camera camera = getApplication().getCamera();
-        Vector3f labelSize = label.getPreferredSize();
-        float x = camera.getWidth() / 2f - labelSize.x / 2;
-        float y = camera.getHeight() / 2f - labelSize.y / 2 + 70f;
-        label.setLocalTranslation(x, y, 1f);
-    }
     // *************************************************************************
     // BaseAppState methods
 
@@ -124,14 +108,10 @@ class LoadingState extends BaseAppState {
         AssetManager assetManager = app.getAssetManager();
         spinnerNode = createSpinnerNode(assetManager);
         backgroundGeom = createBackgroundGeom(assetManager);
-        label = createLabel();
 
         node.attachChild(backgroundGeom);
         node.attachChild(spinnerNode);
-        node.attachChild(label);
         node.setQueueBucket(RenderQueue.Bucket.Gui);
-
-        setText("Loading...");
     }
 
     /**
@@ -158,6 +138,18 @@ class LoadingState extends BaseAppState {
             thread.setPriority(Thread.MIN_PRIORITY);
             thread.start();
         }
+        /*
+         * Start a thread to initialize Lemur.
+         */
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                initializeLemur();
+                latch.countDown();
+            }
+        };
+        thread.setPriority(Thread.MIN_PRIORITY);
+        thread.start();
     }
 
     /**
@@ -181,11 +173,14 @@ class LoadingState extends BaseAppState {
             Main.getApplication().attachAllToScene();
 
             AppStateManager stateManager = getStateManager();
-            stateManager.attach(new CameraNameState());
-            stateManager.attach(new CompassState());
-            stateManager.attach(new MainMenu());
-            stateManager.attach(new NonDrivingInputState());
-            stateManager.attach(new PhysicsHud());
+            stateManager.attachAll(
+                    new CameraNameState(),
+                    new CompassState(),
+                    new DumpInputState(),
+                    new MainMenu(),
+                    new NonDrivingInputState(),
+                    new PhysicsHud()
+            );
             //stateManager.attach(new VehiclePointsState());
 
             stateManager.detach(this);
@@ -202,13 +197,6 @@ class LoadingState extends BaseAppState {
         Mesh mesh = new Quad(camera.getWidth(), camera.getHeight());
         Geometry result = new Geometry("Background", mesh);
         result.setMaterial(material);
-
-        return result;
-    }
-
-    private Label createLabel() {
-        Label result = new Label("");
-        result.setFontSize(18f);
 
         return result;
     }
@@ -236,5 +224,24 @@ class LoadingState extends BaseAppState {
         result.move(x, y, 1f);
 
         return result;
+    }
+
+    /**
+     * Initialize the Lemur library with the "glass" style.
+     */
+    private void initializeLemur() {
+        long startMillis = System.currentTimeMillis();
+
+        Main application = Main.getApplication();
+        GuiGlobals.initialize(application);
+        BaseStyles.loadGlassStyle();
+        GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
+
+        // This consumes joystick input. Why?
+        Main.findAppState(FocusNavigationState.class).setEnabled(false);
+
+        long latencyMillis = System.currentTimeMillis() - startMillis;
+        float seconds = latencyMillis / 1_000f;
+        System.out.println("initialized Lemur in " + seconds + " seconds");
     }
 }
