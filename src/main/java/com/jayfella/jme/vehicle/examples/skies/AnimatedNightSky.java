@@ -40,6 +40,10 @@ public class AnimatedNightSky extends Sky {
      * loaded LightProbe
      */
     private LightProbe probe;
+    /**
+     * manage the sky simulation
+     */
+    private SkyControl skyControl;
     // *************************************************************************
     // new methods exposed
 
@@ -52,6 +56,12 @@ public class AnimatedNightSky extends Sky {
     public void attachToScene(Node parent) {
         super.attachToScene(parent);
         parent.addLight(probe);
+
+        Updater updater = skyControl.getUpdater();
+        DirectionalLight mainLight = getDirectionalLight();
+        updater.setMainLight(mainLight);
+        DirectionalLightShadowFilter shadowFilter = getShadowFilter();
+        updater.addShadowFilter(shadowFilter);
     }
 
     /**
@@ -79,18 +89,12 @@ public class AnimatedNightSky extends Sky {
         Camera camera = application.getCamera();
         float cloudFlattening = 0.8f;
         boolean bottomDome = true;
-        SkyControl skyControl = new SkyControl(assetManager, camera,
-                cloudFlattening, StarsOption.Cube, bottomDome);
+        skyControl = new SkyControl(assetManager, camera, cloudFlattening,
+                StarsOption.Cube, bottomDome);
         skyControl.setCloudiness(0.8f);
         skyControl.setCloudsYOffset(0.4f);
         skyControl.setPhase(LunarPhase.WAXING_GIBBOUS);
         skyControl.setStarMaps("equator16m");
-
-        Updater updater = skyControl.getUpdater();
-        DirectionalLight mainLight = getDirectionalLight();
-        updater.setMainLight(mainLight);
-        DirectionalLightShadowFilter shadowFilter = getShadowFilter();
-        updater.addShadowFilter(shadowFilter);
 
         loadedCgm = new Node();
         loadedCgm.addControl(skyControl);
