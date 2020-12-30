@@ -1,5 +1,6 @@
-package com.jayfella.jme.vehicle.engine;
+package com.jayfella.jme.vehicle.debug;
 
+import com.jayfella.jme.vehicle.engine.Engine;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;

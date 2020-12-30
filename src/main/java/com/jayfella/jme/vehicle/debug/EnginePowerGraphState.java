@@ -1,7 +1,6 @@
 package com.jayfella.jme.vehicle.debug;
 
 import com.jayfella.jme.vehicle.Vehicle;
-import com.jayfella.jme.vehicle.engine.EnginePowerGraph;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
