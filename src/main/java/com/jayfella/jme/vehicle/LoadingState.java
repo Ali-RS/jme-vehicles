@@ -173,12 +173,14 @@ class LoadingState extends BaseAppState {
                     return;
                 }
         }
-
+        /*
+         * The Cinematic has completed.
+         */
         long latchCount = latch.getCount();
         if (latchCount < 1L) {
             /*
-             * The cinematic is stopped, Lemur has been initialized,
-             * and all asynchronous asset loads have completed.
+             * Lemur has been initialized, and all asynchronous asset loads
+             * have completed.
              */
             setupShutter();
 
@@ -240,12 +242,11 @@ class LoadingState extends BaseAppState {
         AnimControl animControl = result.getControl(AnimControl.class);
         animControl.addAnim(spatialAnimation);
         /*
-         * Add an 0.7-second Animation to translate Jaime backward in a jump.
+         * Add an 0.7-second Animation to translate Jaime upward in a jump.
          */
-        af = new AnimationFactory(0.7f, "JumpBackward");
+        af = new AnimationFactory(0.7f, "JumpUpward");
         af.addTimeTranslation(0.0f, Vector3f.ZERO);
-        af.addTimeTranslation(0.35f, new Vector3f(0f, 1f, -1.5f));
-        af.addTimeTranslation(0.7f, new Vector3f(0f, 0f, -3f));
+        af.addTimeTranslation(0.7f, new Vector3f(0f, 3f, 0f));
         spatialAnimation = af.buildAnimation();
         animControl.addAnim(spatialAnimation);
 
@@ -254,6 +255,8 @@ class LoadingState extends BaseAppState {
 
     /**
      * Set up the Cinematic.
+     *
+     * @param jaime the root of the monkey's C-G model (not null)
      */
     private void setupCinematic(Node jaime) {
         Node rootNode = Main.getApplication().getRootNode();
@@ -280,11 +283,11 @@ class LoadingState extends BaseAppState {
                 new AnimationEvent(jaime, "JumpStart")
         );
         cinematic.addCinematicEvent(jumpStart2 + 0.2f,
-                new AnimationEvent(jaime, "JumpBackward", 1)
+                new AnimationEvent(jaime, "JumpUpward", 1)
         );
         cinematic.enqueueCinematicEvent(new AnimationEvent(jaime, "JumpEnd"));
         cinematic.enqueueCinematicEvent(
-                new AnimationEvent(jaime, "Idle", 1.5f, LoopMode.DontLoop));
+                new AnimationEvent(jaime, "Idle", 0.2f, LoopMode.DontLoop));
 
         cinematic.addListener(new CinematicEventListener() {
             public void onPlay(CinematicEvent c) {
@@ -355,7 +358,7 @@ class LoadingState extends BaseAppState {
     }
 
     /**
-     * Create and attach a Quad to hide what's going on in the main scene.
+     * Create and attach a Quad to hide what's happening in the main scene.
      *
      * @return a new instance
      */
@@ -363,7 +366,7 @@ class LoadingState extends BaseAppState {
         Main application = Main.getApplication();
         AssetManager assetManager = application.getAssetManager();
         Material material = new Material(assetManager, Materials.UNSHADED);
-        material.setColor("Color", ColorRGBA.Gray.clone());
+        material.setColor("Color", new ColorRGBA(0.4f, 0.4f, 0.4f, 1f));
 
         Camera camera = application.getCamera();
         Mesh mesh = new Quad(camera.getWidth(), camera.getHeight());
@@ -383,7 +386,7 @@ class LoadingState extends BaseAppState {
         setupLightsAndShadows(rootNode);
 
         Camera camera = application.getCamera();
-        camera.setLocation(new Vector3f(0f, 1.2f, 3f));
+        camera.setLocation(new Vector3f(0f, 1.2f, 2.7f));
         camera.lookAt(new Vector3f(0f, 0.5f, 0f), Vector3f.UNIT_Y);
 
         Geometry floor = setupFloor();
