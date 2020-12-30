@@ -35,7 +35,7 @@ public class MainMenu extends AnimatedMenu {
     protected List<Button> createItems() {
         Main application = Main.getApplication();
         AppStateManager stateManager = getStateManager();
-        List<Button> result = new ArrayList<>(6);
+        List<Button> result = new ArrayList<>(7);
 
         Button button = new Button("Change Environment");
         button.addClickCommands(source -> {
@@ -47,6 +47,13 @@ public class MainMenu extends AnimatedMenu {
         button = new Button("Change Sky");
         button.addClickCommands(source -> {
             stateManager.attach(new SkyMenu());
+            stateManager.detach(this);
+        });
+        result.add(button);
+
+        button = new Button("Change Engine Sound");
+        button.addClickCommands(source -> {
+            stateManager.attach(new EngineSoundMenu());
             stateManager.detach(this);
         });
         result.add(button);
