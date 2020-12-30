@@ -2,8 +2,10 @@ package com.jayfella.jme.vehicle.examples.cars;
 
 import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Main;
+import com.jayfella.jme.vehicle.Sound;
 import com.jayfella.jme.vehicle.engine.Engine;
 import com.jayfella.jme.vehicle.examples.engines.Engine180HP;
+import com.jayfella.jme.vehicle.examples.sounds.EngineSound5;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
 import com.jayfella.jme.vehicle.examples.wheels.BuggyFrontWheel;
 import com.jayfella.jme.vehicle.examples.wheels.BuggyRearWheel;
@@ -157,10 +159,12 @@ public class DuneBuggy extends Car {
         setGearBox(gearBox);
 
         Engine engine = new Engine180HP();
-        engine.setEngineAudio("/Audio/engine-5.ogg");
         setEngine(engine);
 
-        super.setHornAudio("Audio/horn-1.ogg");
+        Sound engineSound = new EngineSound5();
+        setEngineSound(engineSound);
+
+        setHornAudio("/Audio/horn-1.ogg");
         /*
          * build() must be invoked last, to complete the Vehicle
          */

@@ -1,10 +1,8 @@
 package com.jayfella.jme.vehicle;
 
+import com.jayfella.jme.vehicle.engine.Engine;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.audio.AudioNode;
-import com.jme3.audio.AudioSource;
-import com.jme3.math.FastMath;
 import java.util.logging.Logger;
 
 public class VehicleAudioState extends BaseAppState {
@@ -25,10 +23,14 @@ public class VehicleAudioState extends BaseAppState {
     private static boolean isGloballyMuted = false;
 
     final private Vehicle vehicle;
+    // *************************************************************************
+    // constructors
 
     public VehicleAudioState(Vehicle vehicle) {
         this.vehicle = vehicle;
     }
+    // *************************************************************************
+    // new methods exposed
 
     /**
      * Test whether sound is globally muted.
@@ -39,16 +41,8 @@ public class VehicleAudioState extends BaseAppState {
         return isGloballyMuted;
     }
 
-    public void playEngineSound() {
-        vehicle.getEngine().getEngineAudio().play();
-    }
-
-    public void stopEngineSound() {
-        vehicle.getEngine().getEngineAudio().stop();
-    }
-
     /**
-     * Toggle the sound between muted and enabled.
+     * Toggle the sound between muted and enabled. TODO re-order methods
      */
     public static void toggleMuted() {
         isGloballyMuted = !isGloballyMuted;
@@ -75,7 +69,7 @@ public class VehicleAudioState extends BaseAppState {
      */
     @Override
     protected void onEnable() {
-        // vehicle.getEngine().getEngineAudio().play();
+        // do nothing
     }
 
     /**
@@ -84,10 +78,11 @@ public class VehicleAudioState extends BaseAppState {
      */
     @Override
     protected void onDisable() {
-        stopEngineSound();
+        Sound sound = vehicle.getEngineSound();
+        if (sound != null) {
+            sound.mute();
+        }
     }
-
-    private float lastValue;
 
     /**
      * Callback to update this AppState, invoked once per frame when the
@@ -97,29 +92,17 @@ public class VehicleAudioState extends BaseAppState {
      */
     @Override
     public void update(float tpf) {
-        boolean isRequested = vehicle.getEngine().isRunning()
-                && !isGloballyMuted;
-
-        AudioNode engineAudio = vehicle.getEngine().getEngineAudio();
-        AudioSource.Status status = engineAudio.getStatus();
-        boolean isSounding = (status == AudioSource.Status.Playing);
-
-        if (isSounding && !isRequested) {
-            stopEngineSound();
-        } else if (isRequested && !isSounding) {
-            playEngineSound();
+        Sound engineAudio = vehicle.getEngineSound();
+        if (engineAudio != null) {
+            Engine engine = vehicle.getEngine();
+            boolean mute = isGloballyMuted || !engine.isRunning();
+            if (mute) {
+                engineAudio.mute();
+            } else {
+                float pitch = engine.getRpm() / 60;
+                float volume = 1f; // TODO
+                engineAudio.setPitchAndVolume(pitch, volume);
+            }
         }
-
-        float value = vehicle.getEngine().getRpmFraction();
-
-        // add a bit of interpolation for when we change gears.
-        // this effectively stops the sound from jumping from full revs to low revs and vice versa.
-        // maybe a smoothstep or some kind of exponent would work better here.
-        value = FastMath.interpolateLinear(tpf * 5.0f, lastValue, value);
-
-        float pitch = FastMath.clamp(value + 1.0f, 1.0f, 2.0f);
-        vehicle.getEngine().getEngineAudio().setPitch(pitch);
-
-        lastValue = value;
     }
 }

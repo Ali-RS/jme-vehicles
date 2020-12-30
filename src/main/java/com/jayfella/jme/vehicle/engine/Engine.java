@@ -1,9 +1,5 @@
 package com.jayfella.jme.vehicle.engine;
 
-import com.jayfella.jme.vehicle.Main;
-import com.jme3.asset.AssetManager;
-import com.jme3.audio.AudioData;
-import com.jme3.audio.AudioNode;
 import com.jme3.math.FastMath;
 import com.jme3.math.Spline;
 import com.jme3.math.Vector3f;
@@ -12,7 +8,7 @@ import java.util.logging.Logger;
 import jme3utilities.Validate;
 
 /**
- * Model a single engine in a Vehicle.
+ * An engine to propel a Vehicle. TODO move to "vehicle.part" package
  */
 abstract public class Engine {
     // *************************************************************************
@@ -30,10 +26,6 @@ abstract public class Engine {
     // *************************************************************************
     // fields
 
-    /**
-     * sound produced by this Engine
-     */
-    private AudioNode audioNode;
     /**
      * true when on/running, false when off/stopped
      */
@@ -120,15 +112,6 @@ abstract public class Engine {
     }
 
     /**
-     * Access this engine's sound.
-     *
-     * @return the pre-existing AudioNode
-     */
-    public AudioNode getEngineAudio() {
-        return audioNode;
-    }
-
-    /**
      * Determine the idle speed.
      *
      * @return the crankshaft rotation rate (in revolutions per minute, &ge;0,
@@ -140,7 +123,7 @@ abstract public class Engine {
     }
 
     /**
-     * Determine the redline speed.
+     * Determine the redline speed. TODO re-order methods
      *
      * @return the crankshaft rotation rate (in revolutions per minute,
      * &gt;idlRpm)
@@ -211,22 +194,6 @@ abstract public class Engine {
      */
     public boolean isRunning() {
         return isRunning;
-    }
-
-    /**
-     * Alter the sound of this Engine.
-     *
-     * @param assetPath an asset path to the desired sound (not null)
-     */
-    public void setEngineAudio(String assetPath) {
-        Validate.nonEmpty(assetPath, "asset path");
-
-        AssetManager assetManager = Main.getApplication().getAssetManager();
-        audioNode = new AudioNode(assetManager, assetPath,
-                AudioData.DataType.Buffer);
-        audioNode.setLooping(true);
-        audioNode.setPositional(false);
-        audioNode.setDirectional(false);
     }
 
     /**

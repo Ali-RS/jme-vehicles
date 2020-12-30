@@ -2,8 +2,10 @@ package com.jayfella.jme.vehicle.examples.cars;
 
 import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Main;
+import com.jayfella.jme.vehicle.Sound;
 import com.jayfella.jme.vehicle.engine.Engine;
 import com.jayfella.jme.vehicle.examples.engines.Engine600HP;
+import com.jayfella.jme.vehicle.examples.sounds.EngineSound2;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
 import com.jayfella.jme.vehicle.examples.wheels.DarkAlloyWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
@@ -152,14 +154,15 @@ public class GTRNismo extends Car {
         gearBox.setGear(3, 120f, 190f);
         gearBox.setGear(4, 180f, 255f);
         gearBox.setGear(5, 250f, 320f);
-
         setGearBox(gearBox);
 
         Engine engine = new Engine600HP();
-        engine.setEngineAudio("/Audio/engine-2.ogg");
         setEngine(engine);
 
-        super.setHornAudio("Audio/horn-1.ogg");
+        Sound engineSound = new EngineSound2();
+        setEngineSound(engineSound);
+
+        setHornAudio("/Audio/horn-1.ogg");
         /*
          * build() must be invoked last, to complete the Vehicle
          */

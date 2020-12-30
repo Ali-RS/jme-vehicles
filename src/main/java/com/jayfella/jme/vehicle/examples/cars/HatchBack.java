@@ -2,8 +2,10 @@ package com.jayfella.jme.vehicle.examples.cars;
 
 import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Main;
+import com.jayfella.jme.vehicle.Sound;
 import com.jayfella.jme.vehicle.engine.Engine;
 import com.jayfella.jme.vehicle.examples.engines.Engine250HP;
+import com.jayfella.jme.vehicle.examples.sounds.EngineSound4;
 import com.jayfella.jme.vehicle.examples.tires.Tire_02;
 import com.jayfella.jme.vehicle.examples.wheels.HatchbackWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
@@ -151,10 +153,12 @@ public class HatchBack extends Car {
         setGearBox(gearBox);
 
         Engine engine = new Engine250HP();
-        engine.setEngineAudio("/Audio/engine-4.ogg");
         setEngine(engine);
 
-        super.setHornAudio("Audio/horn-1.ogg");
+        Sound engineSound = new EngineSound4();
+        setEngineSound(engineSound);
+
+        setHornAudio("/Audio/horn-1.ogg");
         /*
          * build() must be invoked last, to complete the Vehicle
          */

@@ -2,8 +2,10 @@ package com.jayfella.jme.vehicle.examples.cars;
 
 import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Main;
+import com.jayfella.jme.vehicle.Sound;
 import com.jayfella.jme.vehicle.engine.Engine;
 import com.jayfella.jme.vehicle.examples.engines.Engine450HP;
+import com.jayfella.jme.vehicle.examples.sounds.EngineSound1;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
 import com.jayfella.jme.vehicle.examples.wheels.RangerWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
@@ -147,10 +149,12 @@ public class PickupTruck extends Car {
         setGearBox(gearBox);
 
         Engine engine = new Engine450HP();
-        engine.setEngineAudio("/Audio/engine-1.ogg");
         setEngine(engine);
 
-        super.setHornAudio("Audio/horn-1.ogg");
+        Sound engineSound = new EngineSound1();
+        setEngineSound(engineSound);
+
+        setHornAudio("/Audio/horn-1.ogg");
         /*
          * build() must be invoked last, to complete the Vehicle
          */

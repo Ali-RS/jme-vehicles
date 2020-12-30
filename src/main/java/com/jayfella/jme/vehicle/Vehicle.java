@@ -66,6 +66,10 @@ abstract public class Vehicle implements Loadable {
     private GearBox gearBox;
     final private Node node;
     /**
+     * sound produced when the Engine is running, or null for silence
+     */
+    private Sound engineSound;
+    /**
      * computer-graphics (C-G) model to visualize the whole Vehicle except for
      * its wheels
      */
@@ -122,6 +126,15 @@ abstract public class Vehicle implements Loadable {
         BulletAppState bulletAppState = Main.findAppState(BulletAppState.class);
         PhysicsSpace physicsSpace = bulletAppState.getPhysicsSpace();
         physicsSpace.add(vehicleControl);
+    }
+    
+    /**
+     * Access the engine sound.
+     * 
+     * @return the pre-existing Sound, or null for silence
+     */
+    public Sound getEngineSound() {
+        return engineSound;
     }
 
     /**
@@ -251,6 +264,15 @@ abstract public class Vehicle implements Loadable {
     }
 
     /**
+     * Alter the engine sound.
+     * 
+     * @param sound the desired sound, or null for silence
+     */
+    public void setEngineSound(Sound sound) {
+        this.engineSound = sound;
+    }
+    
+    /**
      * Update the status of the horn.
      *
      * @param isRequested true &rarr; requested, false &rarr; not requested
@@ -284,7 +306,6 @@ abstract public class Vehicle implements Loadable {
     public void startEngine() {
         if (!engine.isRunning()) {
             engine.setRunning(true);
-            vehicleAudioState.playEngineSound();
         }
     }
 
@@ -293,7 +314,6 @@ abstract public class Vehicle implements Loadable {
     public void stopEngine() {
         if (engine.isRunning()) {
             engine.setRunning(false);
-            vehicleAudioState.stopEngineSound();
         }
     }
 
@@ -432,9 +452,8 @@ abstract public class Vehicle implements Loadable {
         node.attachChild(chassis);
     }
 
-    protected void setEngine(Engine engine) {
-        this.engine = engine;
-        node.attachChild(engine.getEngineAudio());
+    protected void setEngine(Engine desiredEngine) {
+        engine = desiredEngine;
     }
 
     protected void setGearBox(GearBox gearBox) {
