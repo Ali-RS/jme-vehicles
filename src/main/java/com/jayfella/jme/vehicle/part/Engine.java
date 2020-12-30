@@ -77,41 +77,6 @@ abstract public class Engine {
     // new methods exposed
 
     /**
-     * Determine the power output for the specified speed.
-     *
-     * @param rpm the crankshaft rotation rate (in revolutions per minute,
-     * &ge;0)
-     * @return the power output (in Watts, between 0 and getPower())
-     */
-    abstract public float powerFraction(float rpm);
-
-    /**
-     * Determine the power output for the specified speed, using a Spline.
-     *
-     * @param powerCurve the spline to use (not null, unaffected)
-     * @param rpm the crankshaft rotation rate (in revolutions per minute)
-     * @return the power output (in Watts)
-     */
-    protected static float evaluateSpline(Spline powerCurve, float rpm) {
-        List<Vector3f> points = powerCurve.getControlPoints();
-        int lastIndex = points.size() - 1;
-        for (int lowIndex = 0; lowIndex < lastIndex; ++lowIndex) {
-            float lowRpm = points.get(lowIndex).x;
-            float highRpm = points.get(lowIndex + 1).x;
-            if (rpm >= lowRpm && rpm <= highRpm) {
-                float t = FastMath.unInterpolateLinear(rpm, lowRpm, highRpm);
-                Vector3f interpolatedPoint
-                        = powerCurve.interpolate(t, lowIndex, null);
-                assert FastMath.approximateEquals(interpolatedPoint.x, rpm);
-                float result = interpolatedPoint.y;
-
-                return result;
-            }
-        }
-        throw new IllegalArgumentException("rpm = " + rpm);
-    }
-
-    /**
      * Determine the idle speed.
      *
      * @return the crankshaft rotation rate (in revolutions per minute, &ge;0,
@@ -120,27 +85,6 @@ abstract public class Engine {
     public float getIdleRpm() {
         assert idleRpm >= 0f && idleRpm <= redlineRpm : idleRpm;
         return idleRpm;
-    }
-
-    /**
-     * Determine the redline speed. TODO re-order methods
-     *
-     * @return the crankshaft rotation rate (in revolutions per minute,
-     * &gt;idlRpm)
-     */
-    public float getRedlineRpm() {
-        assert redlineRpm > 0f : redlineRpm;
-        return redlineRpm;
-    }
-
-    /**
-     * Determine this engine's name.
-     *
-     * @return the descriptive name (not null)
-     */
-    public String getName() {
-        assert name != null;
-        return name;
     }
 
     /**
@@ -154,18 +98,24 @@ abstract public class Engine {
     }
 
     /**
-     * Determine the current power output.
+     * Determine this engine's name.
      *
-     * @return the power (in Watts, &gt;0, &le;maxOutputWatts)
+     * @return the descriptive name (not null)
      */
-    public float outputWatts() {
-        float revs = getRpm();
-        revs = FastMath.clamp(revs, 0, getRedlineRpm() - 0.01f);
-        float powerFraction = powerFraction(revs);
-        float result = powerFraction * getMaxOutputWatts();
+    public String getName() {
+        assert name != null;
+        return name;
+    }
 
-        assert result >= 0f && result <= getMaxOutputWatts() : result;
-        return result;
+    /**
+     * Determine the redline speed.
+     *
+     * @return the crankshaft rotation rate (in revolutions per minute,
+     * &gt;idlRpm)
+     */
+    public float getRedlineRpm() {
+        assert redlineRpm > 0f : redlineRpm;
+        return redlineRpm;
     }
 
     /**
@@ -197,15 +147,28 @@ abstract public class Engine {
     }
 
     /**
-     * Alter this engine's redline speed.
+     * Determine the current power output.
      *
-     * @param redlineRpm the desired crankshaft rotation rate (in revolutions
-     * per minute, &ge;idleRpm)
+     * @return the power (in Watts, &gt;0, &le;maxOutputWatts)
      */
-    public void setMaxRevs(float redlineRpm) {
-        Validate.inRange(redlineRpm, "redline RPM", idleRpm, Float.MAX_VALUE);
-        this.redlineRpm = redlineRpm;
+    public float outputWatts() {
+        float revs = getRpm();
+        revs = FastMath.clamp(revs, 0, getRedlineRpm() - 0.01f);
+        float powerFraction = powerFraction(revs);
+        float result = powerFraction * getMaxOutputWatts();
+
+        assert result >= 0f && result <= getMaxOutputWatts() : result;
+        return result;
     }
+
+    /**
+     * Determine the power output for the specified speed. TODO rename
+     *
+     * @param rpm the crankshaft rotation rate (in revolutions per minute,
+     * &ge;0)
+     * @return the power output (in Watts, between 0 and getPower())
+     */
+    abstract public float powerFraction(float rpm);
 
     /**
      * Alter this engine's maximum power output.
@@ -215,6 +178,17 @@ abstract public class Engine {
     public void setMaxOutputWatts(float watts) {
         Validate.positive(watts, "watts");
         maxOutputWatts = watts;
+    }
+
+    /**
+     * Alter this engine's redline speed. TODO rename
+     *
+     * @param redlineRpm the desired crankshaft rotation rate (in revolutions
+     * per minute, &ge;idleRpm)
+     */
+    public void setMaxRevs(float redlineRpm) {
+        Validate.inRange(redlineRpm, "redline RPM", idleRpm, Float.MAX_VALUE);
+        this.redlineRpm = redlineRpm;
     }
 
     /**
@@ -234,5 +208,34 @@ abstract public class Engine {
      */
     public void setRunning(boolean newState) {
         isRunning = newState;
+    }
+    // *************************************************************************
+    // new protected methods
+
+    /**
+     * Determine the power output for the specified speed, using a Spline.
+     *
+     * @param powerCurve the spline to use (not null, unaffected)
+     * @param rpm the crankshaft rotation rate (in revolutions per minute)
+     * @return the power output (in Watts)
+     */
+    protected static float evaluateSpline(Spline powerCurve, float rpm) {
+        List<Vector3f> points = powerCurve.getControlPoints();
+        int lastIndex = points.size() - 1;
+        for (int lowIndex = 0; lowIndex < lastIndex; ++lowIndex) {
+            float lowRpm = points.get(lowIndex).x;
+            float highRpm = points.get(lowIndex + 1).x;
+            if (rpm >= lowRpm && rpm <= highRpm) {
+                float t = FastMath.unInterpolateLinear(rpm, lowRpm, highRpm);
+                Vector3f interpolatedPoint
+                        = powerCurve.interpolate(t, lowIndex, null);
+                assert FastMath.approximateEquals(interpolatedPoint.x, rpm);
+                float result = interpolatedPoint.y;
+
+                return result;
+            }
+        }
+
+        throw new IllegalArgumentException("rpm = " + rpm);
     }
 }

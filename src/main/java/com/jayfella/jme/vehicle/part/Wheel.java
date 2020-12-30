@@ -121,17 +121,6 @@ public class Wheel {
     // *************************************************************************
     // new methods exposed
 
-    /**
-     * Update the drive force applied via this wheel.
-     *
-     * @param force the desired drive force (negative if reversing)
-     */
-    public void updateAccelerate(float force) {
-        vehicleControl.accelerate(wheelIndex, force);
-        assert vehicleWheel.getEngineForce() == force :
-                vehicleWheel.getEngineForce();
-    }
-
     // Pacejka
     // LATERAL
     // the slip angle is the angle between the direction in which a wheel is pointing
@@ -189,6 +178,10 @@ public class Wheel {
         return result;
     }
 
+    public float getDiameter() {
+        return vehicleWheel.getWheelSpatial().getLocalScale().y; // they should all be the same.
+    }
+
     public float getFriction() {
         return vehicleWheel.getFrictionSlip();
     }
@@ -230,10 +223,6 @@ public class Wheel {
 
     public float getRotationDelta() {
         return rotationDelta;
-    }
-
-    public float getDiameter() {
-        return vehicleWheel.getWheelSpatial().getLocalScale().y; // they should all be the same.
     }
 
     public float getSteeringAngle() {
@@ -292,6 +281,13 @@ public class Wheel {
         return isSteeringFlipped;
     }
 
+    public void setDiameter(float diameter) {
+        Validate.positive(diameter, "diameter");
+
+        vehicleWheel.getWheelSpatial().setLocalScale(diameter);
+        vehicleWheel.setRadius(diameter / 2);
+    }
+
     public void setFriction(float friction) {
         vehicleWheel.setFrictionSlip(friction);
     }
@@ -324,13 +320,6 @@ public class Wheel {
 
     public void setRotationDelta(float rotationDelta) {
         this.rotationDelta = rotationDelta;
-    }
-
-    public void setDiameter(float diameter) {
-        Validate.positive(diameter, "diameter");
-
-        vehicleWheel.getWheelSpatial().setLocalScale(diameter);
-        vehicleWheel.setRadius(diameter / 2);
     }
 
     public void setSteering(boolean steering) {
@@ -366,6 +355,17 @@ public class Wheel {
 
             vehicleControl.steer(wheelIndex, steeringAngle);
         }
+    }
+
+    /**
+     * Update the drive force applied via this wheel.
+     *
+     * @param force the desired drive force (negative if reversing)
+     */
+    public void updateAccelerate(float force) {
+        vehicleControl.accelerate(wheelIndex, force);
+        assert vehicleWheel.getEngineForce() == force :
+                vehicleWheel.getEngineForce();
     }
 
     /**

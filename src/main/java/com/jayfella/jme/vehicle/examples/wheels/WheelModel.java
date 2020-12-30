@@ -65,21 +65,21 @@ public class WheelModel {
     }
 
     /**
+     * Access the model's root spatial.
+     *
+     * @return the pre-existing instance
+     */
+    public Spatial getSpatial() {
+        return cgmRoot;
+    }
+
+    /**
      * Access the parent of the model's root spatial.
      *
      * @return the pre-existing Node (not null)
      */
     public Node getWheelNode() {
         return node;
-    }
-
-    /**
-     * Access the model's root spatial. TODO re-order methods
-     *
-     * @return the pre-existing instance
-     */
-    public Spatial getSpatial() {
-        return cgmRoot;
     }
 
     /**

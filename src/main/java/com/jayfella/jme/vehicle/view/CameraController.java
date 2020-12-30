@@ -91,7 +91,7 @@ abstract public class CameraController {
     }
 
     /**
-     * Callback to update this AppState, invoked once per frame when the
+     * Callback to update this controller, invoked once per frame when the
      * AppState is both attached and enabled.
      *
      * @param tpf the time interval between frames (in seconds, &ge;0)

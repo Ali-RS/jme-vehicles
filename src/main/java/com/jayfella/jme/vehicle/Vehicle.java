@@ -96,16 +96,12 @@ abstract public class Vehicle implements Loadable {
     // new methods exposed
 
     /**
-     * Alter the "accelerate" control signal.
+     * Evaluate the "accelerate" control signal.
      *
-     * @param strength the desired strength of the "accelerate" control signal:
-     * between -1 (full-throttle reverse) and +1 (full-throttle forward)
-     * inclusive
+     * @return a value between -1 and +1 inclusive
      */
-    public void setAccelerateSignal(float strength) {
-        // TODO awkward interface - controls both the gearbox and the throttle
-        Validate.inRange(strength, "strength", -1f, 1f);
-        accelerateSignal = strength;
+    public float accelerateSignal() {
+        return accelerateSignal;
     }
 
     /**
@@ -138,17 +134,6 @@ abstract public class Vehicle implements Loadable {
     }
 
     /**
-     * Alter the values of the brake control signals.
-     *
-     * @param mainStrength the desired strength of the main-brake control
-     * signal, between 0 (not applied) and 1 (applied as strongly as possible)
-     * @param parkingStrength the desired strength of the parking-brake control
-     * signal, between 0 (not applied) and 1 (applied as strongly as possible)
-     */
-    abstract public void setBrakeSignals(float mainStrength,
-            float parkingStrength);
-
-    /**
      * Determine the offset of the vehicle's DashCamera.
      *
      * @return a new offset vector (in scaled shape coordinates)
@@ -171,15 +156,6 @@ abstract public class Vehicle implements Loadable {
     public Vector3f forwardDirection(Vector3f storeResult) {
         Vector3f result = vehicleControl.getForwardVector(storeResult);
         return result;
-    }
-
-    /**
-     * Evaluate the "accelerate" control signal.
-     *
-     * @return a value between -1 and +1 inclusive
-     */
-    public float accelerateSignal() {
-        return accelerateSignal;
     }
 
     /**
@@ -262,6 +238,30 @@ abstract public class Vehicle implements Loadable {
     public VehicleControl getVehicleControl() {
         return vehicleControl;
     }
+
+    /**
+     * Alter the "accelerate" control signal.
+     *
+     * @param strength the desired strength of the "accelerate" control signal:
+     * between -1 (full-throttle reverse) and +1 (full-throttle forward)
+     * inclusive
+     */
+    public void setAccelerateSignal(float strength) {
+        // TODO awkward interface - controls both the gearbox and the throttle
+        Validate.inRange(strength, "strength", -1f, 1f);
+        accelerateSignal = strength;
+    }
+
+    /**
+     * Alter the values of the brake control signals.
+     *
+     * @param mainStrength the desired strength of the main-brake control
+     * signal, between 0 (not applied) and 1 (applied as strongly as possible)
+     * @param parkingStrength the desired strength of the parking-brake control
+     * signal, between 0 (not applied) and 1 (applied as strongly as possible)
+     */
+    abstract public void setBrakeSignals(float mainStrength,
+            float parkingStrength);
 
     /**
      * Alter the engine sound.

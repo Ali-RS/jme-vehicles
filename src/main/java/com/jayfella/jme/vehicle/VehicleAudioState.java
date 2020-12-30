@@ -42,10 +42,17 @@ public class VehicleAudioState extends BaseAppState {
     }
 
     /**
-     * Toggle the sound between muted and enabled. TODO re-order methods
+     * Toggle the sound between muted and enabled.
      */
     public static void toggleMuted() {
         isGloballyMuted = !isGloballyMuted;
+    }
+    // *************************************************************************
+    // BaseAppState methods
+
+    @Override
+    protected void cleanup(Application app) {
+        // do nothing
     }
 
     /**
@@ -55,20 +62,6 @@ public class VehicleAudioState extends BaseAppState {
      */
     @Override
     protected void initialize(Application app) {
-        // do nothing
-    }
-
-    @Override
-    protected void cleanup(Application app) {
-        // do nothing
-    }
-
-    /**
-     * Callback invoked whenever this AppState becomes both attached and
-     * enabled.
-     */
-    @Override
-    protected void onEnable() {
         // do nothing
     }
 
@@ -82,6 +75,15 @@ public class VehicleAudioState extends BaseAppState {
         if (sound != null) {
             sound.mute();
         }
+    }
+
+    /**
+     * Callback invoked whenever this AppState becomes both attached and
+     * enabled.
+     */
+    @Override
+    protected void onEnable() {
+        // do nothing
     }
 
     /**

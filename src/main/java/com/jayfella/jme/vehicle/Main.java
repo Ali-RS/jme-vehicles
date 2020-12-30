@@ -50,10 +50,6 @@ public class Main extends SimpleApplication {
     // fields
 
     /**
-     * selected world (not null) TODO re-order fields
-     */
-    private static World world = new Racetrack();
-    /**
      * application instance
      */
     private static Main application;
@@ -65,6 +61,10 @@ public class Main extends SimpleApplication {
      * selected Vehicle (not null)
      */
     private static Vehicle vehicle = new GrandTourer();
+    /**
+     * selected World (not null)
+     */
+    private static World world = new Racetrack();
     // *************************************************************************
     // constructors
 
@@ -142,23 +142,23 @@ public class Main extends SimpleApplication {
     }
 
     /**
-     * Access the World from a static context.
-     *
-     * @return the pre-existing instance (not null)
-     */
-    public static World getWorld() {
-        assert world != null;
-        return world;
-    }
-
-    /**
-     * Access the selected vehicle from a static context.
+     * Access the selected Vehicle from a static context.
      *
      * @return the pre-existing instance (not null)
      */
     public static Vehicle getVehicle() {
         assert vehicle != null;
         return vehicle;
+    }
+
+    /**
+     * Access the selected World from a static context.
+     *
+     * @return the pre-existing instance (not null)
+     */
+    public static World getWorld() {
+        assert world != null;
+        return world;
     }
 
     /**
@@ -206,26 +206,6 @@ public class Main extends SimpleApplication {
     }
 
     /**
-     * Replace the current World with a new one. TODO re-order methods
-     *
-     * @param newWorld the desired world (not null, loaded)
-     */
-    public void setWorld(World newWorld) {
-        sky.detachFromScene();
-        vehicle.detachFromScene();
-        world.detachFromScene();
-
-        world = newWorld;
-        attachAllToScene();
-        /*
-         * Re-use the existing input state with the new Vehicle instance.
-         */
-        NonDrivingInputState inputState
-                = Main.findAppState(NonDrivingInputState.class);
-        inputState.setVehicle(vehicle);
-    }
-
-    /**
      * Replace the current Sky with a new one.
      *
      * @param newSky the desired Sky (not null, loaded)
@@ -245,6 +225,26 @@ public class Main extends SimpleApplication {
         vehicle.detachFromScene();
         vehicle = newVehicle;
         vehicle.attachToScene(rootNode);
+    }
+
+    /**
+     * Replace the current World with a new one.
+     *
+     * @param newWorld the desired world (not null, loaded)
+     */
+    public void setWorld(World newWorld) {
+        sky.detachFromScene();
+        vehicle.detachFromScene();
+        world.detachFromScene();
+
+        world = newWorld;
+        attachAllToScene();
+        /*
+         * Re-use the existing input state with the new Vehicle instance.
+         */
+        NonDrivingInputState inputState
+                = Main.findAppState(NonDrivingInputState.class);
+        inputState.setVehicle(vehicle);
     }
     // *************************************************************************
     // SimpleApplication methods
