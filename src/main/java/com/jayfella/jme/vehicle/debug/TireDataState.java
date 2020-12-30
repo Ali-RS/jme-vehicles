@@ -30,8 +30,8 @@ public class TireDataState extends BaseAppState {
 
     public TireDataState(Car vehicle) {
         this.vehicle = vehicle;
-        tireGraphs = new TireGraph[vehicle.getNumWheels()];
-        needles = new Geometry[vehicle.getNumWheels()][3];
+        tireGraphs = new TireGraph[vehicle.countWheels()];
+        needles = new Geometry[vehicle.countWheels()][3];
 
         node = new Node("Tire Data Node");
     }
@@ -134,7 +134,7 @@ public class TireDataState extends BaseAppState {
      */
     @Override
     public void update(float tpf) {
-        for (int i = 0; i < vehicle.getNumWheels(); i++) {
+        for (int i = 0; i < vehicle.countWheels(); ++i) {
 
             tireGraphs[i].drawGraph();
 

@@ -21,7 +21,7 @@ public class BrakesEditor extends VehicleEditor {
 
         PropertyPanel propertyPanel = new PropertyPanel("glass");
 
-        for (int i = 0; i < vehicle.getNumWheels(); i++) {
+        for (int i = 0; i < vehicle.countWheels(); ++i) {
             Brake mainBrake = vehicle.getWheel(i).getMainBrake();
             propertyPanel.addFloatProperty("Wheel " + i, mainBrake, "peakForce",
                     0f, 1_000f, 0.1f);

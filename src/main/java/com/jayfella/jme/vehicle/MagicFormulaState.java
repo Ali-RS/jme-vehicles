@@ -130,7 +130,7 @@ public class MagicFormulaState extends BaseAppState {
      */
     @Override
     protected void onEnable() {
-        maxLoad = new float[vehicle.getNumWheels()];
+        maxLoad = new float[vehicle.countWheels()];
 
         for (int i = 0; i < maxLoad.length; i++) {
             maxLoad[i] = vehicle.getWheel(i).getFriction();
@@ -150,7 +150,7 @@ public class MagicFormulaState extends BaseAppState {
         //}
 
         //if (isVehicleDataEnabled()) {
-        for (int i = 0; i < vehicle.getNumWheels(); i++) {
+        for (int i = 0; i < vehicle.countWheels(); ++i) {
             Wheel wheel = vehicle.getWheel(i);
 
             // the angle between the dir of the wheel and the dir the vehicle is travelling.
@@ -239,7 +239,7 @@ public class MagicFormulaState extends BaseAppState {
         float zAngle = chassisAngles[2];
 
         // the load starts by sharing it with each wheel. One quarter per wheel.
-        int wheelCount = vehicle.getNumWheels();
+        int wheelCount = vehicle.countWheels();
         float result = vehicle.getVehicleControl().getMass() / wheelCount;// * 0.25f;
 
         // front-back
@@ -293,7 +293,7 @@ public class MagicFormulaState extends BaseAppState {
     }
 
     private void createTireWeightLabels() {
-        tireWeightLabels = new Label[vehicle.getNumWheels()];
+        tireWeightLabels = new Label[vehicle.countWheels()];
 
         for (int i = 0; i < tireWeightLabels.length; i++) {
             Label label = new Label("wheel");

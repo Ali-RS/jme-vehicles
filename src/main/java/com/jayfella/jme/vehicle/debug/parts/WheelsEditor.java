@@ -22,7 +22,7 @@ public class WheelsEditor extends VehicleEditor {
 
         PropertyPanel propertyPanel = new PropertyPanel("glass");
 
-        for (int i = 0; i < vehicle.getNumWheels(); i++) {
+        for (int i = 0; i < vehicle.countWheels(); ++i) {
             propertyPanel.addFloatProperty("Wheel " + i, vehicle.getWheel(i), "grip", 0.01f, 1.0f, 0.01f);
         }
 
@@ -33,7 +33,7 @@ public class WheelsEditor extends VehicleEditor {
 
         PropertyPanel propertyPanel = new PropertyPanel("glass");
 
-        for (int i = 0; i < vehicle.getNumWheels(); i++) {
+        for (int i = 0; i < vehicle.countWheels(); ++i) {
             propertyPanel.addFloatProperty("Wheel " + i, vehicle.getWheel(i), "diameter", 0.25f, 4.0f, 0.1f);
         }
 
@@ -43,7 +43,7 @@ public class WheelsEditor extends VehicleEditor {
     private RollupPanel createPowerRollup() {
         PropertyPanel propertyPanel = new PropertyPanel("glass");
 
-        for (int i = 0; i < vehicle.getNumWheels(); i++) {
+        for (int i = 0; i < vehicle.countWheels(); ++i) {
             propertyPanel.addFloatProperty("Wheel " + i, vehicle.getWheel(i), "powerFraction", 0f, 1f, 0.01f);
         }
 

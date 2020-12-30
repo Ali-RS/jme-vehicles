@@ -46,7 +46,7 @@ public class AutomaticGearboxState extends BaseAppState {
      */
     @Override
     protected void initialize(Application app) {
-        wheelCount = car.getNumWheels();
+        wheelCount = car.countWheels();
     }
 
     /**

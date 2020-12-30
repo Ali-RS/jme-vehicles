@@ -51,7 +51,7 @@ public class SkidMarksState extends BaseAppState {
      */
     @Override
     protected void initialize(Application app) {
-        numWheels = vehicle.getNumWheels();
+        numWheels = vehicle.countWheels();
         skids = new WheelSkid[numWheels];
         AssetManager assetManager = app.getAssetManager();
 
