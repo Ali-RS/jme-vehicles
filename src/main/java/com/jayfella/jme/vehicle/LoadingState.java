@@ -30,7 +30,6 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
-import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
@@ -183,7 +182,8 @@ class LoadingState extends BaseAppState {
              */
             setupShutter();
 
-            Node rootNode = getRootNode();
+            Main application = Main.getApplication();
+            Node rootNode = application.getRootNode();
             rootNode.detachAllChildren();
             if (pointLight != null) {
                 rootNode.removeLight(pointLight);
@@ -192,7 +192,6 @@ class LoadingState extends BaseAppState {
                 rootNode.removeLight(spotlight);
             }
             if (shadowRenderer != null) {
-                Main application = Main.getApplication();
                 application.getViewPort().removeProcessor(shadowRenderer);
             }
 
@@ -203,19 +202,6 @@ class LoadingState extends BaseAppState {
     }
     // *************************************************************************
     // private methods
-
-    /**
-     * Access the root node of the main scene.
-     *
-     * @return the pre-existing instance (not null)
-     */
-    private static Node getRootNode() {
-        ViewPort viewport = Main.getApplication().getViewPort();
-        Node result = (Node) viewport.getScenes().get(0);
-
-        assert result != null;
-        return result;
-    }
 
     /**
      * Initialize the Lemur library with the "glass" style.
@@ -270,8 +256,9 @@ class LoadingState extends BaseAppState {
      * Set up the Cinematic.
      */
     private void setupCinematic(Node jaime) {
+        Node rootNode = Main.getApplication().getRootNode();
         float duration = 60f; // seconds
-        cinematic = new Cinematic(getRootNode(), duration);
+        cinematic = new Cinematic(rootNode, duration);
 
         cinematic.enqueueCinematicEvent(
                 new AnimationEvent(jaime, "Idle", 2f, LoopMode.DontLoop));
@@ -391,10 +378,11 @@ class LoadingState extends BaseAppState {
      * Set the stage for the Cinematic.
      */
     private void setupStage() {
-        Node rootNode = getRootNode();
+        Main application = Main.getApplication();
+        Node rootNode = application.getRootNode();
         setupLightsAndShadows(rootNode);
 
-        Camera camera = Main.getApplication().getCamera();
+        Camera camera = application.getCamera();
         camera.setLocation(new Vector3f(0f, 1.2f, 3f));
         camera.lookAt(new Vector3f(0f, 0.5f, 0f), Vector3f.UNIT_Y);
 
@@ -406,12 +394,13 @@ class LoadingState extends BaseAppState {
      * Set up and play a short Cinematic of Jaime.
      */
     private void startCinematic() {
+        Main application = Main.getApplication();
         Node jaime = loadJaime();
-        getRootNode().attachChild(jaime);
+        application.getRootNode().attachChild(jaime);
         jaime.move(0f, 0f, -3f);
         setupCinematic(jaime);
 
-        Main.getApplication().getStateManager().attach(cinematic);
+        application.getStateManager().attach(cinematic);
         cinematic.play();
     }
 
