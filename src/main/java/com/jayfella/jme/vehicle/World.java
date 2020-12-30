@@ -7,24 +7,23 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 
 /**
- * A game environment/world, such as the Vehicle Playground. Doesn't include
- * sky.
+ * A game world, such as the Vehicle Playground. Doesn't include sky.
  *
  * @author Stephen Gold sgold@sonic.net
  */
-abstract public class Environment implements Loadable {
+abstract public class World implements Loadable {
     // *************************************************************************
     // fields
 
     /**
-     * loaded C-G model of the environment
+     * loaded C-G model of the game world
      */
     protected Node loadedCgm;
     // *************************************************************************
     // new methods exposed
 
     /**
-     * Add this environment to the specified scene and also to the PhysicsSpace.
+     * Add this World to the specified scene and also to the PhysicsSpace.
      *
      * @param parent where to attach (not null)
      */
@@ -42,8 +41,8 @@ abstract public class Environment implements Loadable {
     }
 
     /**
-     * Remove this loaded environment from the scene-graph node and PhysicsSpace
-     * to which it has been added.
+     * Remove this World from the scene-graph node and PhysicsSpace to which it
+     * has been added.
      */
     void detachFromScene() {
         RigidBodyControl rigidBodyControl
@@ -87,7 +86,7 @@ abstract public class Environment implements Loadable {
 
     /**
      * Reposition the default Camera to the initial location and orientation for
-     * this Environment. The environment need not be loaded.
+     * this World. The world need not be loaded.
      */
     abstract public void resetCameraPosition();
 }

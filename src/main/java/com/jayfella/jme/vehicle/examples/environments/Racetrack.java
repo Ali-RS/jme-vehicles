@@ -1,7 +1,7 @@
 package com.jayfella.jme.vehicle.examples.environments;
 
-import com.jayfella.jme.vehicle.Environment;
 import com.jayfella.jme.vehicle.Main;
+import com.jayfella.jme.vehicle.World;
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.AssetNotFoundException;
 import com.jme3.bullet.collision.shapes.CollisionShape;
@@ -15,11 +15,11 @@ import com.jme3.scene.Node;
 import java.util.logging.Logger;
 
 /**
- * An Environment based on "race1.j3o", Adi Barda's racetrack model.
+ * A sample World, built around Adi Barda's racetrack model.
  *
  * @author Stephen Gold sgold@sonic.net
  */
-public class Racetrack extends Environment {
+public class Racetrack extends World {
     // *************************************************************************
     // constants and loggers
 
@@ -29,7 +29,7 @@ public class Racetrack extends Environment {
     final private static Logger logger
             = Logger.getLogger(Racetrack.class.getName());
     // *************************************************************************
-    // Environment methods
+    // World methods
 
     /**
      * Determine the preferred intensity for direct light.
@@ -64,7 +64,7 @@ public class Racetrack extends Environment {
     }
 
     /**
-     * Load this Environment from assets.
+     * Load this World from assets.
      */
     @Override
     public void load() {
@@ -89,7 +89,7 @@ public class Racetrack extends Environment {
 
     /**
      * Reposition the default Camera to the initial location and orientation for
-     * this Environment. The environment need not be loaded.
+     * this World. The world need not be loaded.
      */
     @Override
     public void resetCameraPosition() {

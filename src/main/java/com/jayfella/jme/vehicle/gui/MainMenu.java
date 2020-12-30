@@ -37,9 +37,9 @@ public class MainMenu extends AnimatedMenu {
         AppStateManager stateManager = getStateManager();
         List<Button> result = new ArrayList<>(7);
 
-        Button button = new Button("Change Environment");
+        Button button = new Button("Change Engine Sound");
         button.addClickCommands(source -> {
-            stateManager.attach(new EnvironmentMenu());
+            stateManager.attach(new EngineSoundMenu());
             stateManager.detach(this);
         });
         result.add(button);
@@ -47,13 +47,6 @@ public class MainMenu extends AnimatedMenu {
         button = new Button("Change Sky");
         button.addClickCommands(source -> {
             stateManager.attach(new SkyMenu());
-            stateManager.detach(this);
-        });
-        result.add(button);
-
-        button = new Button("Change Engine Sound");
-        button.addClickCommands(source -> {
-            stateManager.attach(new EngineSoundMenu());
             stateManager.detach(this);
         });
         result.add(button);
@@ -72,6 +65,13 @@ public class MainMenu extends AnimatedMenu {
         });
         result.add(button);
 
+        button = new Button("Change World");
+        button.addClickCommands(source -> {
+            stateManager.attach(new WorldMenu());
+            stateManager.detach(this);
+        });
+        result.add(button);
+
         button = new Button("Drive");
         button.addClickCommands(source -> drive());
         result.add(button);
@@ -86,7 +86,7 @@ public class MainMenu extends AnimatedMenu {
     // private methods
 
     /**
-     * Drive the selected vehicle in the selected environment.
+     * Drive the selected Vehicle in the selected World.
      */
     private void drive() {
         AppStateManager stateManager = getStateManager();

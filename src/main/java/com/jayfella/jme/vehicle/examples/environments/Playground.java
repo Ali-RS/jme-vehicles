@@ -1,7 +1,7 @@
 package com.jayfella.jme.vehicle.examples.environments;
 
-import com.jayfella.jme.vehicle.Environment;
 import com.jayfella.jme.vehicle.Main;
+import com.jayfella.jme.vehicle.World;
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.AssetNotFoundException;
 import com.jme3.bullet.collision.shapes.CollisionShape;
@@ -19,10 +19,9 @@ import com.jme3.texture.Texture;
 import java.util.logging.Logger;
 
 /**
- * An Environment based on "vehicle-playground.j3o", James Khan's Vehicle
- * Playground model.
+ * A sample World, build around James Khan's Vehicle Playground model.
  */
-public class Playground extends Environment {
+public class Playground extends World {
     // *************************************************************************
     // constants and loggers
 
@@ -32,7 +31,7 @@ public class Playground extends Environment {
     final private static Logger logger
             = Logger.getLogger(Playground.class.getName());
     // *************************************************************************
-    // Environment methods
+    // World methods
 
     /**
      * Determine the preferred intensity for direct light.
@@ -67,7 +66,7 @@ public class Playground extends Environment {
     }
 
     /**
-     * Load this Environment from assets.
+     * Load this World from assets.
      */
     @Override
     public void load() {
@@ -128,7 +127,7 @@ public class Playground extends Environment {
 
     /**
      * Reposition the default Camera to the initial location and orientation for
-     * this Environment. The environment need not be loaded.
+     * this World. The world need not be loaded.
      */
     @Override
     public void resetCameraPosition() {

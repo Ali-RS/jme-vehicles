@@ -198,7 +198,7 @@ public class DrivingInputState
         stateManager.attach(new MainMenu());
         stateManager.attach(new NonDrivingInputState());
 
-        Main.getEnvironment().resetCameraPosition();
+        Main.getWorld().resetCameraPosition();
     }
     // *************************************************************************
     // BaseAppState methods

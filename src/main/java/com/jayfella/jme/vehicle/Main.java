@@ -50,9 +50,9 @@ public class Main extends SimpleApplication {
     // fields
 
     /**
-     * selected game environment/world (not null)
+     * selected world (not null) TODO re-order fields
      */
-    private static Environment environment = new Racetrack();
+    private static World world = new Racetrack();
     /**
      * application instance
      */
@@ -112,7 +112,7 @@ public class Main extends SimpleApplication {
         float far = 1_800f;
         MyCamera.setNearFar(cam, near, far);
 
-        environment.resetCameraPosition();
+        world.resetCameraPosition();
     }
 
     /**
@@ -142,13 +142,13 @@ public class Main extends SimpleApplication {
     }
 
     /**
-     * Access the environment from a static context.
+     * Access the World from a static context.
      *
      * @return the pre-existing instance (not null)
      */
-    public static Environment getEnvironment() {
-        assert environment != null;
-        return environment;
+    public static World getWorld() {
+        assert world != null;
+        return world;
     }
 
     /**
@@ -206,16 +206,16 @@ public class Main extends SimpleApplication {
     }
 
     /**
-     * Replace the current Environment with a new one.
+     * Replace the current World with a new one. TODO re-order methods
      *
-     * @param newEnvironment the desired environment (not null, loaded)
+     * @param newWorld the desired world (not null, loaded)
      */
-    public void setEnvironment(Environment newEnvironment) {
+    public void setWorld(World newWorld) {
         sky.detachFromScene();
         vehicle.detachFromScene();
-        environment.detachFromScene();
+        world.detachFromScene();
 
-        environment = newEnvironment;
+        world = newWorld;
         attachAllToScene();
         /*
          * Re-use the existing input state with the new Vehicle instance.
@@ -274,13 +274,13 @@ public class Main extends SimpleApplication {
     // private methods
 
     /**
-     * Attach the selected Environment, Sky, and Vehicle to the scene.
+     * Attach the selected Sky, World, and Vehicle to the scene.
      */
     private void attachAllToScene() {
         sky.attachToScene(rootNode);
 
-        environment.resetCameraPosition();
-        environment.attachToScene(rootNode);
+        world.resetCameraPosition();
+        world.attachToScene(rootNode);
 
         vehicle.attachToScene(rootNode);
     }

@@ -127,10 +127,10 @@ abstract public class Vehicle implements Loadable {
         PhysicsSpace physicsSpace = bulletAppState.getPhysicsSpace();
         physicsSpace.add(vehicleControl);
     }
-    
+
     /**
      * Access the engine sound.
-     * 
+     *
      * @return the pre-existing Sound, or null for silence
      */
     public Sound getEngineSound() {
@@ -265,13 +265,13 @@ abstract public class Vehicle implements Loadable {
 
     /**
      * Alter the engine sound.
-     * 
+     *
      * @param sound the desired sound, or null for silence
      */
     public void setEngineSound(Sound sound) {
         this.engineSound = sound;
     }
-    
+
     /**
      * Update the status of the horn.
      *
@@ -345,7 +345,7 @@ abstract public class Vehicle implements Loadable {
         /*
          * Cast a physics ray downward from the drop location.
          */
-        Vector3f dropLocation = Main.getEnvironment().dropLocation();
+        Vector3f dropLocation = Main.getWorld().dropLocation();
         Vector3f endLocation = dropLocation.add(0f, -999f, 0f);
         BulletAppState bas = Main.findAppState(BulletAppState.class);
         PhysicsSpace physicsSpace = bas.getPhysicsSpace();
@@ -390,7 +390,7 @@ abstract public class Vehicle implements Loadable {
         }
         Vector3f startLocation = contactLocation.add(0f, yOffset, 0f);
         vehicleControl.setPhysicsLocation(startLocation);
-        float yRotation = Main.getEnvironment().dropYRotation();
+        float yRotation = Main.getWorld().dropYRotation();
         Quaternion orient = new Quaternion().fromAngles(0f, yRotation, 0f);
         vehicleControl.setPhysicsRotation(orient);
 

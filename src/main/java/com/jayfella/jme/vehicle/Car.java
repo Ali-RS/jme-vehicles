@@ -90,7 +90,7 @@ abstract public class Car extends Vehicle {
         return result;
     }
 
-    public int countWheels() { // TODO re-order methods
+    public int countWheels() {
         return wheels.size();
     }
 

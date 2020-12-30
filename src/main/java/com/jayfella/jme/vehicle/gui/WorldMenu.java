@@ -1,7 +1,7 @@
 package com.jayfella.jme.vehicle.gui;
 
-import com.jayfella.jme.vehicle.Environment;
 import com.jayfella.jme.vehicle.Main;
+import com.jayfella.jme.vehicle.World;
 import com.jayfella.jme.vehicle.examples.environments.Playground;
 import com.jayfella.jme.vehicle.examples.environments.Racetrack;
 import com.jme3.app.state.AppStateManager;
@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * An AnimatedMenu to choose among the available environments.
+ * An AnimatedMenu to choose among the available worlds.
  *
  * @author Stephen Gold sgold@sonic.net
  */
-class EnvironmentMenu extends AnimatedMenu {
+class WorldMenu extends AnimatedMenu {
     // *************************************************************************
     // constants and loggers
 
@@ -23,7 +23,7 @@ class EnvironmentMenu extends AnimatedMenu {
      * message logger for this class
      */
     final private static Logger logger
-            = Logger.getLogger(EnvironmentMenu.class.getName());
+            = Logger.getLogger(WorldMenu.class.getName());
     // *************************************************************************
     // AnimatedMenuState methods
 
@@ -38,11 +38,11 @@ class EnvironmentMenu extends AnimatedMenu {
         List<Button> result = new ArrayList<>(3);
 
         Button button = new Button("Playground");
-        button.addClickCommands(source -> setEnvironment(new Playground()));
+        button.addClickCommands(source -> setWorld(new Playground()));
         result.add(button);
 
         button = new Button("Racetrack");
-        button.addClickCommands(source -> setEnvironment(new Racetrack()));
+        button.addClickCommands(source -> setWorld(new Racetrack()));
         result.add(button);
 
         button = new Button("<< Back");
@@ -57,8 +57,8 @@ class EnvironmentMenu extends AnimatedMenu {
     // *************************************************************************
     // private methods
 
-    private void setEnvironment(Environment environment) {
-        environment.load();
-        Main.getApplication().setEnvironment(environment);
+    private void setWorld(World newWorld) {
+        newWorld.load();
+        Main.getApplication().setWorld(newWorld);
     }
 }

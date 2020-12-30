@@ -63,7 +63,7 @@ public class CreateShapes {
         createChassisShape("hcr2_buggy", "dune-buggy");
         createChassisShape("modern_hatchback", "hatchback");
         /*
-         * Create a collision shape for each Environment.
+         * Create a collision shape for each World.
          */
         createEnvShape("race1", "race1");
         createEnvShape("vehicle-playground", "vehicle-playground");
@@ -103,7 +103,7 @@ public class CreateShapes {
     }
 
     /**
-     * Create a collision shape for an Environment.
+     * Create a collision shape for a World.
      *
      * @param folderName the name of the folder containing the C-G model
      * @param cgmBaseFileName the base filename of the C-G model
@@ -116,7 +116,7 @@ public class CreateShapes {
                 cgmBaseFileName);
         Spatial cgmRoot = assetManager.loadModel(cgmAssetPath);
 
-        System.out.printf("%nCreate shape for the %s environment ... ",
+        System.out.printf("%nCreate shape for the %s world ... ",
                 cgmBaseFileName);
         System.out.flush();
 
