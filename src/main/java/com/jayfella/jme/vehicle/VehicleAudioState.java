@@ -1,6 +1,6 @@
 package com.jayfella.jme.vehicle;
 
-import com.jayfella.jme.vehicle.engine.Engine;
+import com.jayfella.jme.vehicle.part.Engine;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import java.util.logging.Logger;

@@ -1,7 +1,7 @@
 package com.jayfella.jme.vehicle;
 
-import com.jayfella.jme.vehicle.engine.Engine;
 import com.jayfella.jme.vehicle.gui.DriverHud;
+import com.jayfella.jme.vehicle.part.Engine;
 import com.jayfella.jme.vehicle.part.GearBox;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;

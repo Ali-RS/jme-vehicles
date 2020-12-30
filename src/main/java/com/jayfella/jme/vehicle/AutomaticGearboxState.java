@@ -1,6 +1,6 @@
 package com.jayfella.jme.vehicle;
 
-import com.jayfella.jme.vehicle.engine.Engine;
+import com.jayfella.jme.vehicle.part.Engine;
 import com.jayfella.jme.vehicle.part.Gear;
 import com.jayfella.jme.vehicle.part.GearBox;
 import com.jayfella.jme.vehicle.part.Wheel;

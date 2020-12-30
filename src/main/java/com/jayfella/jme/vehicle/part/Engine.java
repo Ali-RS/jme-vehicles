@@ -1,4 +1,4 @@
-package com.jayfella.jme.vehicle.engine;
+package com.jayfella.jme.vehicle.part;
 
 import com.jme3.math.FastMath;
 import com.jme3.math.Spline;
@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 import jme3utilities.Validate;
 
 /**
- * An engine to propel a Vehicle. TODO move to "vehicle.part" package
+ * An engine to propel a Vehicle.
  */
 abstract public class Engine {
     // *************************************************************************
