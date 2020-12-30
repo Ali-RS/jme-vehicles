@@ -42,7 +42,7 @@ abstract public class Engine {
      * crankshaft rotation rate at the redline (in revolutions per minute,
      * &ge;idleRpm)
      */
-    private float redlineRpm;
+    final private float redlineRpm;
     /**
      * rotational speed as a fraction of the redline (&ge;0)
      */
@@ -162,11 +162,11 @@ abstract public class Engine {
     }
 
     /**
-     * Determine the power output for the specified speed. TODO rename
+     * Determine the power output for the specified speed.
      *
      * @param rpm the crankshaft rotation rate (in revolutions per minute,
      * &ge;0)
-     * @return the power output (in Watts, between 0 and getPower())
+     * @return the fractional power output (between 0 and 1)
      */
     abstract public float powerFraction(float rpm);
 
@@ -178,17 +178,6 @@ abstract public class Engine {
     public void setMaxOutputWatts(float watts) {
         Validate.positive(watts, "watts");
         maxOutputWatts = watts;
-    }
-
-    /**
-     * Alter this engine's redline speed. TODO rename
-     *
-     * @param redlineRpm the desired crankshaft rotation rate (in revolutions
-     * per minute, &ge;idleRpm)
-     */
-    public void setMaxRevs(float redlineRpm) {
-        Validate.inRange(redlineRpm, "redline RPM", idleRpm, Float.MAX_VALUE);
-        this.redlineRpm = redlineRpm;
     }
 
     /**
