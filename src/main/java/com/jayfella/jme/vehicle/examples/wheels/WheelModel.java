@@ -12,7 +12,7 @@ import jme3utilities.Validate;
  * By convention, the model has radius=0.5 model units, and the local +X axis
  * points inward, toward the middle of the axle.
  */
-abstract public class WheelModel {
+public class WheelModel {
     // *************************************************************************
     // constants and loggers
 
@@ -74,7 +74,7 @@ abstract public class WheelModel {
     }
 
     /**
-     * Access the model's root spatial.
+     * Access the model's root spatial. TODO re-order methods
      *
      * @return the pre-existing instance
      */
