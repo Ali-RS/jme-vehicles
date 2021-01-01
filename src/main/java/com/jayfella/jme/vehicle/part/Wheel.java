@@ -182,6 +182,11 @@ public class Wheel {
         return vehicleWheel.getWheelSpatial().getLocalScale().y; // they should all be the same.
     }
 
+    /**
+     * Determine the friction between this wheel's tire and the ground.
+     *
+     * @return the coefficient of friction
+     */
     public float getFriction() {
         return vehicleWheel.getFrictionSlip();
     }
@@ -256,6 +261,17 @@ public class Wheel {
     public boolean isBraking() {
         float impulse = vehicleWheel.getBrake();
         if (impulse > +1f || impulse < -1f) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Test whether this wheel receives power from the Engine.
+     */
+    public boolean isPowered() {
+        if (powerFraction > 0f) {
             return true;
         } else {
             return false;
