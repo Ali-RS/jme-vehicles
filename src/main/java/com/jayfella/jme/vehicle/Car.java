@@ -133,11 +133,6 @@ abstract public class Car extends Vehicle {
         return atModes;
     }
 
-    public void removeWheel(int index) {
-        getVehicleControl().removeWheel(index);
-        wheels.remove(index);
-    }
-
     public void setTireSkidMarksEnabled(boolean enabled) {
         skidmarks.setSkidmarkEnabled(enabled);
     }
