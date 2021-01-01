@@ -67,7 +67,7 @@ public class HatchBack extends Car {
         String assetPath = "Models/modern_hatchback/hatchback.j3o";
         Spatial chassis = assetManager.loadModel(assetPath);
         float mass = 1_140f; // in kilos
-        float linearDamping = 0.05f;
+        float linearDamping = 0.004f;
         setChassis("modern_hatchback", chassis, mass, linearDamping);
         /*
          * By convention, wheels are modeled for the left side, so
@@ -91,14 +91,15 @@ public class HatchBack extends Car {
         boolean steeringFlipped = false;
         float mainBrake = 5_000f; // all 4 wheels
         float parkingBrake = 25_000f; // in front only
+        float damping = 0.025f; // extra linear damping
         addWheel(wheel_fl, new Vector3f(+wheelX, axleY, frontZ), front,
-                steeringFlipped, mainBrake, parkingBrake);
+                steeringFlipped, mainBrake, parkingBrake, damping);
         addWheel(wheel_fr, new Vector3f(-wheelX, axleY, frontZ), front,
-                steeringFlipped, mainBrake, parkingBrake);
+                steeringFlipped, mainBrake, parkingBrake, damping);
         addWheel(wheel_rl, new Vector3f(+wheelX, axleY, rearZ), rear,
-                steeringFlipped, mainBrake, 0f);
+                steeringFlipped, mainBrake, 0f, damping);
         addWheel(wheel_rr, new Vector3f(-wheelX, axleY, rearZ), rear,
-                steeringFlipped, mainBrake, 0f);
+                steeringFlipped, mainBrake, 0f, damping);
         /*
          * Configure the suspension.
          *

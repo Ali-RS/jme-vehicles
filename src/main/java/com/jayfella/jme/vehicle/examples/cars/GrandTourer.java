@@ -66,7 +66,7 @@ public class GrandTourer extends Car {
         String assetPath = "Models/GT/scene.gltf.j3o";
         Spatial chassis = assetManager.loadModel(assetPath);
         float mass = 1_525f; // in kilos
-        float linearDamping = 0.06f;
+        float linearDamping = 0.006f;
         setChassis("GT", chassis, mass, linearDamping);
         /*
          * By convention, wheels are modeled for the left side, so
@@ -91,14 +91,15 @@ public class GrandTourer extends Car {
         boolean steeringFlipped = false;
         float mainBrake = 6_000f; // in front only
         float parkingBrake = 25_000f; // in rear only
+        float damping = 0.02f; // extra linear damping
         addWheel(wheel_fl, new Vector3f(+wheelX, frontY, frontZ), front,
-                steeringFlipped, mainBrake, 0f);
+                steeringFlipped, mainBrake, 0f, damping);
         addWheel(wheel_fr, new Vector3f(-wheelX, frontY, frontZ), front,
-                steeringFlipped, mainBrake, 0f);
+                steeringFlipped, mainBrake, 0f, damping);
         addWheel(wheel_rl, new Vector3f(+wheelX, rearY, rearZ), rear,
-                steeringFlipped, 0f, parkingBrake);
+                steeringFlipped, 0f, parkingBrake, damping);
         addWheel(wheel_rr, new Vector3f(-wheelX, rearY, rearZ), rear,
-                steeringFlipped, 0f, parkingBrake);
+                steeringFlipped, 0f, parkingBrake, damping);
         /*
          * Configure the suspension.
          *

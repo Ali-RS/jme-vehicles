@@ -66,7 +66,7 @@ public class PickupTruck extends Car {
         String assetPath = "Models/ford_ranger/pickup.j3o";
         Spatial chassis = assetManager.loadModel(assetPath);
         float mass = 1_550f; // in kilos
-        float linearDamping = 0.15f;
+        float linearDamping = 0.01f;
         setChassis("ford_ranger", chassis, mass, linearDamping);
         /*
          * By convention, wheels are modeled for the left side, so
@@ -90,14 +90,15 @@ public class PickupTruck extends Car {
         boolean steeringFlipped = false;
         float mainBrake = 4_000f; // all 4 wheels
         float parkingBrake = 25_000f; // in rear only
+        float damping = 0.04f; // extra linear damping
         addWheel(wheel_fl, new Vector3f(+wheelX, axleY, frontZ), front,
-                steeringFlipped, mainBrake, 0f);
+                steeringFlipped, mainBrake, 0f, damping);
         addWheel(wheel_fr, new Vector3f(-wheelX, axleY, frontZ), front,
-                steeringFlipped, mainBrake, 0f);
+                steeringFlipped, mainBrake, 0f, damping);
         addWheel(wheel_rl, new Vector3f(+wheelX, axleY, rearZ), rear,
-                steeringFlipped, mainBrake, parkingBrake);
+                steeringFlipped, mainBrake, parkingBrake, damping);
         addWheel(wheel_rr, new Vector3f(-wheelX, axleY, rearZ), rear,
-                steeringFlipped, mainBrake, parkingBrake);
+                steeringFlipped, mainBrake, parkingBrake, damping);
         /*
          * Configure the suspension.
          *

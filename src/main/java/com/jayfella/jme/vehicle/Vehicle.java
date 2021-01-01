@@ -12,6 +12,7 @@ import com.jme3.audio.AudioSource;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
+import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.collision.PhysicsRayTestResult;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.VehicleControl;
@@ -29,9 +30,11 @@ import jme3utilities.Validate;
 import jme3utilities.math.MyVector3f;
 
 /**
- * A vehicle with a single Engine and a single GearBox.
+ * A vehicle based on Bullet's btRaycastVehicle, with a single Engine and a
+ * single GearBox.
  */
-abstract public class Vehicle implements Loadable {
+abstract public class Vehicle
+        implements Loadable, PhysicsTickListener {
     // *************************************************************************
     // constants and loggers
 
@@ -63,6 +66,10 @@ abstract public class Vehicle implements Loadable {
      * to +1 (full-throttle forward)
      */
     private float accelerateSignal;
+    /**
+     * damping to due air resistance on the chassis (&ge;0, &lt;1)
+     */
+    private float chassisDamping;
     private GearBox gearBox;
     final private Node node;
     /**
@@ -122,6 +129,7 @@ abstract public class Vehicle implements Loadable {
         BulletAppState bulletAppState = Main.findAppState(BulletAppState.class);
         PhysicsSpace physicsSpace = bulletAppState.getPhysicsSpace();
         physicsSpace.add(vehicleControl);
+        physicsSpace.addTickListener(this);
     }
 
     /**
@@ -131,6 +139,16 @@ abstract public class Vehicle implements Loadable {
      */
     public Sound getEngineSound() {
         return engineSound;
+    }
+
+    /**
+     * Determine the linear damping due to air resistance.
+     *
+     * @return a fraction (&ge;0, &lt;1)
+     */
+    public float chassisDamping() {
+        assert chassisDamping >= 0f && chassisDamping < 1f : chassisDamping;
+        return chassisDamping;
     }
 
     /**
@@ -144,6 +162,10 @@ abstract public class Vehicle implements Loadable {
         disable();
         vehicleControl.setPhysicsSpace(null);
         node.removeFromParent();
+
+        BulletAppState bulletAppState = Main.findAppState(BulletAppState.class);
+        PhysicsSpace physicsSpace = bulletAppState.getPhysicsSpace();
+        physicsSpace.removeTickListener(this);
     }
 
     /**
@@ -420,9 +442,24 @@ abstract public class Vehicle implements Loadable {
         stateManager.attach(vehicleAudioState);
     }
 
+    /**
+     * Configure the "chassis": the entire Vehicle except for any wheels.
+     *
+     * @param folderName the name of the folder containing the collision-shape
+     * asset (not null, not empty)
+     * @param chassis to visualize the chassis (not null, alias created)
+     * @param mass in (in kilos, &gt;0)
+     * @param damping to simulate drag due to air resistance (&ge;0, &lt;1)
+     */
     protected void setChassis(String folderName, Spatial chassis, float mass,
-            float linearDamping) {
+            float damping) {
+        Validate.nonEmpty(folderName, "folder name");
+        Validate.nonNull(chassis, "chassis");
+        Validate.positive(mass, "mass");
+        Validate.fraction(damping, "damping");
+
         this.chassis = chassis;
+        this.chassisDamping = damping;
 
         AssetManager assetManager = Main.getApplication().getAssetManager();
         String assetPath
@@ -440,7 +477,7 @@ abstract public class Vehicle implements Loadable {
          * Configure damping for the chassis,
          * to simulate drag due to air resistance.
          */
-        vehicleControl.setLinearDamping(linearDamping);
+        vehicleControl.setLinearDamping(damping);
         /*
          * Configure continuous collision detection (CCD) for the chassis.
          */

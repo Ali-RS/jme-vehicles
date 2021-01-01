@@ -66,7 +66,7 @@ public class GTRNismo extends Car {
         String assetPath = "Models/gtr_nismo/scene.gltf.j3o";
         Spatial chassis = assetManager.loadModel(assetPath);
         float mass = 1_525f; // in kilos
-        float linearDamping = 0.04f;
+        float linearDamping = 0.002f;
         setChassis("gtr_nismo", chassis, mass, linearDamping);
         /*
          * By convention, wheels are modeled for the left side, so
@@ -89,14 +89,15 @@ public class GTRNismo extends Car {
         boolean rear = false; // Rear wheels do not steer.
         boolean steeringFlipped = false;
         float parkingBrake = 25_000f; // in rear only
+        float damping = 0.009f; // extra linear damping
         addWheel(wheel_fl, new Vector3f(+wheelX, axleY, frontZ), front,
-                steeringFlipped, 6_750f, 0f);
+                steeringFlipped, 6_750f, 0f, damping);
         addWheel(wheel_fr, new Vector3f(-wheelX, axleY, frontZ), front,
-                steeringFlipped, 6_750f, 0f);
+                steeringFlipped, 6_750f, 0f, damping);
         addWheel(wheel_rl, new Vector3f(+wheelX, axleY, rearZ), rear,
-                steeringFlipped, 3_000f, parkingBrake);
+                steeringFlipped, 3_000f, parkingBrake, damping);
         addWheel(wheel_rr, new Vector3f(-wheelX, axleY, rearZ), rear,
-                steeringFlipped, 3_000f, parkingBrake);
+                steeringFlipped, 3_000f, parkingBrake, damping);
         /*
          * Configure the suspension.
          *

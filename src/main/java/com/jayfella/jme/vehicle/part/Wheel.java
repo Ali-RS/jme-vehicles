@@ -44,6 +44,11 @@ public class Wheel {
      */
     final private Brake parkingBrake;
     /**
+     * additional linear damping applied to the chassis when this wheel has
+     * traction
+     */
+    private float extraDamping;
+    /**
      * grip degradation: 1 = full grip the tire allows, 0 = worn-out tire
      */
     private float grip = 1f;
@@ -94,14 +99,16 @@ public class Wheel {
      * @param suspension the suspension spring (not null, alias created)
      * @param mainBrake the main brake (not null, alias created)
      * @param parkingBrake the parking brake (not null, alias created)
+     * @param extraDamping the additional linear damping (&ge;0, &lt;1)
      */
     public Wheel(VehicleControl vehicleControl, int wheelIndex,
             boolean isSteering, boolean steeringFlipped, Suspension suspension,
-            Brake mainBrake, Brake parkingBrake) {
+            Brake mainBrake, Brake parkingBrake, float extraDamping) {
         Validate.nonNegative(wheelIndex, "wheel index");
         Validate.nonNull(suspension, "suspension");
         Validate.nonNull(mainBrake, "main brake");
         Validate.nonNull(parkingBrake, "parking brake");
+        Validate.fraction(extraDamping, "extra damping");
 
         this.vehicleControl = vehicleControl;
 
@@ -115,6 +122,7 @@ public class Wheel {
         this.suspension = suspension;
         this.mainBrake = mainBrake;
         this.parkingBrake = parkingBrake;
+        this.extraDamping = extraDamping;
 
         setFriction(1f);
     }
@@ -269,6 +277,8 @@ public class Wheel {
 
     /**
      * Test whether this wheel receives power from the Engine.
+     *
+     * @return true if receives power, otherwise false
      */
     public boolean isPowered() {
         if (powerFraction > 0f) {
@@ -295,6 +305,24 @@ public class Wheel {
      */
     public boolean isSteeringFlipped() {
         return isSteeringFlipped;
+    }
+
+    /**
+     * Determine how much linear damping this Wheel contributes to its Car.
+     *
+     * @return (&ge;0, &lt;1)
+     */
+    public float linearDamping() {
+        float result;
+        float depth = vehicleControl.castRay(wheelIndex);
+        if (depth == -1f) {
+            result = 0f; // no supporting surface
+        } else {
+            float traction = vehicleWheel.getSkidInfo();
+            result = traction * extraDamping;
+        }
+
+        return result;
     }
 
     public void setDiameter(float diameter) {

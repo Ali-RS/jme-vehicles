@@ -7,7 +7,9 @@ import com.jayfella.jme.vehicle.part.Wheel;
 import com.jayfella.jme.vehicle.skid.SkidMarksState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bounding.BoundingBox;
+import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.VehicleControl;
+import com.jme3.bullet.objects.PhysicsVehicle;
 import com.jme3.bullet.objects.VehicleWheel;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
@@ -62,11 +64,13 @@ abstract public class Car extends Vehicle {
      * @param isSteeringFlipped
      * @param mainBrakePeakForce (in Newtons, &ge;0)
      * @param parkingBrakePeakForce (in Newtons, &ge;0)
+     * @param extraDamping (&ge;0, &lt;1)
      * @return the new Wheel
      */
     public Wheel addWheel(WheelModel wheelModel, Vector3f connectionLocation,
             boolean isSteering, boolean isSteeringFlipped,
-            float mainBrakePeakForce, float parkingBrakePeakForce) {
+            float mainBrakePeakForce, float parkingBrakePeakForce,
+            float extraDamping) {
         VehicleControl vehicleControl = getVehicleControl();
         Node wheelNode = wheelModel.getWheelNode();
         Vector3f suspensionDirection = new Vector3f(0f, -1f, 0f);
@@ -82,7 +86,8 @@ abstract public class Car extends Vehicle {
         Brake mainBrake = new Brake(mainBrakePeakForce);
         Brake parkingBrake = new Brake(parkingBrakePeakForce);
         Wheel result = new Wheel(vehicleControl, wheelIndex, isSteering,
-                isSteeringFlipped, suspension, mainBrake, parkingBrake);
+                isSteeringFlipped, suspension, mainBrake, parkingBrake,
+                extraDamping);
         wheels.add(result);
 
         getNode().attachChild(wheelNode);
@@ -96,8 +101,8 @@ abstract public class Car extends Vehicle {
 
     /**
      * Determine the circumference of the first drive wheel. (It's assumed
-     * they're all the same size.) Used to convert between axle
-     * angular speed and tread speed.
+     * they're all the same size.) Used to convert between axle angular speed
+     * and tread speed.
      *
      * @return the circumference (in world units, &gt;0)
      */
@@ -239,6 +244,37 @@ abstract public class Car extends Vehicle {
         manager.attach(skidmarks);
         manager.attach(magicFormulaState);
         manager.attach(wheelSpinState);
+    }
+
+    /**
+     * Callback from Bullet, invoked just before the physics is stepped.
+     *
+     * @param space the space that is about to be stepped (not null)
+     * @param timeStep the time per physics step (in seconds, &ge;0)
+     */
+    @Override
+    public void prePhysicsTick(PhysicsSpace space, float timeStep) {
+        /*
+         * Update the linear damping of the chassis.
+         */
+        float linearDamping = chassisDamping();
+        for (Wheel wheel : wheels) {
+            linearDamping += wheel.linearDamping();
+        }
+        //System.out.println("linearDamping = " + linearDamping);
+        PhysicsVehicle physicsVehicle = getVehicleControl();
+        physicsVehicle.setLinearDamping(linearDamping);
+    }
+
+    /**
+     * Callback from Bullet, invoked just after the physics has been stepped.
+     *
+     * @param space the space that was just stepped (not null)
+     * @param timeStep the time per physics step (in seconds, &ge;0)
+     */
+    @Override
+    public void physicsTick(PhysicsSpace space, float timeStep) {
+        // do nothing
     }
 
     /**

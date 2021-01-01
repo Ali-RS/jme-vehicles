@@ -67,7 +67,7 @@ public class DuneBuggy extends Car {
         String assetPath = "Models/hcr2_buggy/dune-buggy.j3o";
         Spatial chassis = assetManager.loadModel(assetPath);
         float mass = 525f; // in kilos
-        float linearDamping = 0.2f;
+        float linearDamping = 0.02f;
         setChassis("hcr2_buggy", chassis, mass, linearDamping);
         /*
          * By convention, wheels are modeled for the left side, so
@@ -93,14 +93,15 @@ public class DuneBuggy extends Car {
         boolean steeringFlipped = false;
         float mainBrake = 3_000f; // in front only
         float parkingBrake = 3_000f; // in front only
+        float damping = 0.09f; // extra linear damping
         addWheel(wheel_fl, new Vector3f(+wheelX, frontY, frontZ), front,
-                steeringFlipped, mainBrake, parkingBrake);
+                steeringFlipped, mainBrake, parkingBrake, damping);
         addWheel(wheel_fr, new Vector3f(-wheelX, frontY, frontZ), front,
-                steeringFlipped, mainBrake, parkingBrake);
+                steeringFlipped, mainBrake, parkingBrake, damping);
         addWheel(wheel_rl, new Vector3f(+wheelX, rearY, rearZ), rear,
-                steeringFlipped, 0f, 0f);
+                steeringFlipped, 0f, 0f, damping);
         addWheel(wheel_rr, new Vector3f(-wheelX, rearY, rearZ), rear,
-                steeringFlipped, 0f, 0f);
+                steeringFlipped, 0f, 0f, damping);
         /*
          * Configure the suspension.
          *
