@@ -94,7 +94,7 @@ public class Racetrack extends World {
     @Override
     public void resetCameraPosition() {
         Camera camera = Main.getApplication().getCamera();
-        camera.setLocation(new Vector3f(-92f, 6f, 700f));
+        camera.setLocation(new Vector3f(-116f, 8f, 682f));
         camera.lookAt(new Vector3f(-92f, 0f, 675f), Vector3f.UNIT_Y);
     }
 }

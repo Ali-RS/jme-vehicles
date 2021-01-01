@@ -132,7 +132,7 @@ public class Playground extends World {
     @Override
     public void resetCameraPosition() {
         Camera camera = Main.getApplication().getCamera();
-        camera.setLocation(new Vector3f(0f, 3f, -11f));
+        camera.setLocation(new Vector3f(-12.5f, 3.5f, -4.6f));
         camera.lookAt(new Vector3f(0f, 0f, 0f), Vector3f.UNIT_Y);
     }
 }
