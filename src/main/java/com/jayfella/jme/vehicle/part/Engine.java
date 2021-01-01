@@ -216,7 +216,7 @@ abstract public class Engine {
             float lowRpm = points.get(lowIndex).x;
             float highRpm = points.get(lowIndex + 1).x;
             if (rpm >= lowRpm && rpm <= highRpm) {
-                float t = MyMath.lerp(rpm, lowRpm, highRpm);
+                float t = FastMath.unInterpolateLinear(rpm, lowRpm, highRpm);
                 Vector3f interpolatedPoint
                         = powerCurve.interpolate(t, lowIndex, null);
                 assert FastMath.approximateEquals(interpolatedPoint.x, rpm);
