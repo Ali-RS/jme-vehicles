@@ -37,7 +37,25 @@ public class MainMenu extends AnimatedMenu {
         AppStateManager stateManager = getStateManager();
         List<Button> result = new ArrayList<>(7);
 
-        Button button = new Button("Change Engine Sound");
+        Button button = new Button("Drive");
+        button.addClickCommands(source -> drive());
+        result.add(button);
+
+        button = new Button("Change World");
+        button.addClickCommands(source -> {
+            stateManager.attach(new WorldMenu());
+            stateManager.detach(this);
+        });
+        result.add(button);
+
+        button = new Button("Change Vehicle");
+        button.addClickCommands(source -> {
+            stateManager.attach(new CarMenu());
+            stateManager.detach(this);
+        });
+        result.add(button);
+
+        button = new Button("Change Engine Sound");
         button.addClickCommands(source -> {
             stateManager.attach(new EngineSoundMenu());
             stateManager.detach(this);
@@ -51,29 +69,11 @@ public class MainMenu extends AnimatedMenu {
         });
         result.add(button);
 
-        button = new Button("Change Vehicle");
-        button.addClickCommands(source -> {
-            stateManager.attach(new CarMenu());
-            stateManager.detach(this);
-        });
-        result.add(button);
-
         button = new Button("Change Wheels");
         button.addClickCommands(source -> {
             stateManager.attach(new WheelMenu());
             stateManager.detach(this);
         });
-        result.add(button);
-
-        button = new Button("Change World");
-        button.addClickCommands(source -> {
-            stateManager.attach(new WorldMenu());
-            stateManager.detach(this);
-        });
-        result.add(button);
-
-        button = new Button("Drive");
-        button.addClickCommands(source -> drive());
         result.add(button);
 
         button = new Button("Exit Game");
