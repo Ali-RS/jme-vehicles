@@ -10,6 +10,7 @@ import com.jayfella.jme.vehicle.debug.VehicleEditorState;
 import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.gui.MainMenu;
 import com.jayfella.jme.vehicle.gui.PhysicsHud;
+import com.jayfella.jme.vehicle.part.GearBox;
 import com.jayfella.jme.vehicle.view.CameraController;
 import com.jayfella.jme.vehicle.view.CameraSignal;
 import com.jayfella.jme.vehicle.view.ChaseCamera;
@@ -347,7 +348,7 @@ public class DrivingInputState
         } else if (func == F_TURN_RIGHT) {
             turningRight = pressed;
 
-        } else if (func == F_RESET && pressed) {
+        } else if (func == F_RESET && pressed) { // TODO make this more reliable
             float[] angles = new float[3];
             vehicle.getVehicleControl().getPhysicsRotation().toAngles(angles);
 
@@ -478,18 +479,21 @@ public class DrivingInputState
         /*
          * Update the "accelerate" control signal.
          */
-        boolean isEngineRunning = vehicle.getEngine().isRunning();
         float kph = vehicle.getSpeed(SpeedUnit.KPH);
+        GearBox gearBox = vehicle.getGearBox();
+
         float acceleration = 0f;
+        boolean isEngineRunning = vehicle.getEngine().isRunning();
         if (isEngineRunning && accelerating) {
-            float maxKph = vehicle.getGearBox().getMaxSpeed(SpeedUnit.KPH);
+            float maxKph = gearBox.getMaxSpeed(SpeedUnit.KPH);
             if (kph < maxKph) {
                 acceleration = 1f;
             }
         }
 
-        if (isEngineRunning && vehicle.getGearBox().isInReverse()) {
-            if (kph > -40f) { // TODO maxKph based on engine and gearbox
+        if (isEngineRunning && gearBox.isInReverse()) {
+            float maxKph = gearBox.maxReverseSpeed(SpeedUnit.KPH);
+            if (kph > maxKph) {
                 acceleration = -1f;
             } else {
                 acceleration = 0f;
