@@ -13,7 +13,7 @@ public class GearBox {
         gears = new Gear[gearCount];
 
         for (int i = 0; i < gearCount; i++) {
-            gears[i] = new Gear(0, 0);
+            gears[i] = new Gear();
         }
     }
 
@@ -65,6 +65,7 @@ public class GearBox {
 
         gear.setMinKph(start);
         gear.setMaxKph(end);
+        gear.setRedlineKph(end);
     }
 
     public void setReversing(boolean setting) {
