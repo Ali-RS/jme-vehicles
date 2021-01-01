@@ -485,7 +485,7 @@ public class DrivingInputState
         float acceleration = 0f;
         boolean isEngineRunning = vehicle.getEngine().isRunning();
         if (isEngineRunning && accelerating) {
-            float maxKph = gearBox.getMaxSpeed(SpeedUnit.KPH);
+            float maxKph = gearBox.maxForwardSpeed(SpeedUnit.KPH);
             if (kph < maxKph) {
                 acceleration = 1f;
             }

@@ -174,7 +174,7 @@ class SpeedometerState extends BaseAppState {
     @Override
     public void update(float tpf) {
         float speed = vehicle.getSpeed(speedUnit);
-        float maxSpeed = vehicle.getGearBox().getMaxSpeed(speedUnit);
+        float maxSpeed = vehicle.getGearBox().maxForwardSpeed(speedUnit);
         float speedFraction = speed / maxSpeed;
         float theta = MyMath.lerp(speedFraction, theta0, thetaMin);
         /*
@@ -265,7 +265,7 @@ class SpeedometerState extends BaseAppState {
         material.setTexture("ColorMap", backgroundTexture);
         material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
 
-        int maxSpeed = (int) vehicle.getGearBox().getMaxSpeed(speedUnit);
+        int maxSpeed = (int) vehicle.getGearBox().maxForwardSpeed(speedUnit);
         int stepSpeed = 10 * (1 + maxSpeed / 160);
         Node result = buildNumNode(maxSpeed, stepSpeed, width / 2f - 20f);
         result.attachChild(backgroundGeom);

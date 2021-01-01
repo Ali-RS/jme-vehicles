@@ -132,12 +132,12 @@ public class GearBox {
     }
 
     /**
-     * Determine the maximum forward speed. TODO rename maxForwardSpeed()
+     * Determine the maximum forward speed.
      *
      * @param speedUnit (not null)
      * @return the tread speed (&gt;0, in the specified units)
      */
-    public float getMaxSpeed(SpeedUnit speedUnit) {
+    public float maxForwardSpeed(SpeedUnit speedUnit) {
         int topGearNum = forwardGears.length;
         Gear topGear = forwardGears[topGearNum - 1];
         float kph = topGear.getMaxKph();
