@@ -13,12 +13,10 @@ public class BrakesEditor extends VehicleEditor {
         super();
 
         this.vehicle = vehicle;
-
         addChild(createBrakesRollup());
     }
 
     private RollupPanel createBrakesRollup() {
-
         PropertyPanel propertyPanel = new PropertyPanel("glass");
 
         for (int i = 0; i < vehicle.countWheels(); ++i) {
@@ -29,7 +27,6 @@ public class BrakesEditor extends VehicleEditor {
 
         return new RollupPanel("Strength", propertyPanel, "glass");
     }
-
 
     @Override
     public void update(float tpf) {

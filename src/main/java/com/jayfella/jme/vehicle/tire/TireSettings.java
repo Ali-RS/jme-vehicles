@@ -3,7 +3,6 @@ package com.jayfella.jme.vehicle.tire;
 public class TireSettings {
 
     // LATERAL: default settings
-
     // public static float DEFAULT_COEFF_C = 1.3f;
     // public static float DEFAULT_COEFF_B = 15.2f;
     // public static float DEFAULT_COEFF_E = -1.6f;
@@ -28,19 +27,14 @@ public class TireSettings {
      * KA = 2.0<br>
      * KB = 0.000055
      *
-     * @param slipAngleCoefficientC
-     *            - coefficient C in the normalised slip angle curve function
-     *            f1.
-     * @param slipAngleCoefficientB
-     *            - coefficient B in the normalised slip angle curve function
-     *            f1.
-     * @param slipAngleCoefficientE
-     *            - coefficient E in the normalised slip angle curve function
-     *            f1.
-     * @param loadCoefficientKA
-     *            - coefficient KA in the load curve function f2.
-     * @param loadCoefficientKB
-     *            - coefficient KB in the load curve function f2.
+     * @param slipAngleCoefficientC - coefficient C in the normalised slip angle
+     * curve function f1.
+     * @param slipAngleCoefficientB - coefficient B in the normalised slip angle
+     * curve function f1.
+     * @param slipAngleCoefficientE - coefficient E in the normalised slip angle
+     * curve function f1.
+     * @param loadCoefficientKA - coefficient KA in the load curve function f2.
+     * @param loadCoefficientKB - coefficient KB in the load curve function f2.
      */
     public TireSettings(float slipAngleCoefficientC, float slipAngleCoefficientB, float slipAngleCoefficientE, float loadCoefficientKA, float loadCoefficientKB) {
         this.slipAngleCoefficientC = slipAngleCoefficientC;
@@ -106,5 +100,4 @@ public class TireSettings {
     abstract public static class ChangeListener {
         abstract public void valueChanged();
     }
-
 }

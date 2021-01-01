@@ -12,7 +12,6 @@ import com.jme3.texture.image.ImageRaster;
 import com.jme3.util.BufferUtils;
 
 public class TireGraph extends Geometry {
-
     final private PacejkaTireModel tireModel;
     final private int width, height;
 
@@ -96,15 +95,13 @@ public class TireGraph extends Geometry {
     }
 
     public void drawGraph() {
-
         // draw a background with lines
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
 
                 if (y == height / 2) {
                     imageRaster.setPixel(x, y, lineColor);
-                }
-                else {
+                } else {
                     imageRaster.setPixel(x, y, backgroundColor);
                 }
             }
@@ -112,7 +109,6 @@ public class TireGraph extends Geometry {
 
         // lateral
         for (int x = 0; x < width; x++) {
-
             float xUnit = x / (float) width;
             float slipAngle = map(xUnit, 0, 1, 0, maxSlipAngle);
 
@@ -123,10 +119,8 @@ public class TireGraph extends Geometry {
             imageRaster.setPixel(x, pixelY, lateralColor);
         }
 
-
         // longitudinal
         for (int x = 0; x < width; x++) {
-
             float xUnit = x / (float) width;
             float slipAngle = map(xUnit, 0, 1, 0, maxSlipAngle);
 
@@ -139,7 +133,6 @@ public class TireGraph extends Geometry {
 
         // align moment
         for (int x = 0; x < width; x++) {
-
             float xUnit = x / (float) width;
             float slipAngle = map(xUnit, 0, 1, 0, maxSlipAngle);
 
@@ -149,11 +142,9 @@ public class TireGraph extends Geometry {
 
             imageRaster.setPixel(x, pixelY, momentColor);
         }
-
     }
 
     private float map(float value, float oldMin, float oldMax, float newMin, float newMax) {
         return (((value - oldMin) * (newMax - newMin)) / (oldMax - oldMin)) + newMin;
     }
-
 }

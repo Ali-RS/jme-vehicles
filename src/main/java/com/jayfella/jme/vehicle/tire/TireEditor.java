@@ -51,7 +51,6 @@ public class TireEditor extends Container {
 
         // load / force
         // I'm not certain of the difference between these two...
-
         // affects how much load can be applied.
         result.addFloatProperty("Load KA", tireSettings, "loadCoefficientKA", 0, 10, 0.001f);
 

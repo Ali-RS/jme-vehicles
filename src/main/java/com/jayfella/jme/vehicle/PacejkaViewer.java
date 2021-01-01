@@ -39,12 +39,10 @@ public class PacejkaViewer extends SimpleApplication {
         pacejkaViewer.setPauseOnLostFocus(false);
 
         pacejkaViewer.start();
-
     }
 
     @Override
     public void simpleInitApp() {
-
         GuiGlobals.initialize(this);
         BaseStyles.loadGlassStyle();
         GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
@@ -67,15 +65,10 @@ public class PacejkaViewer extends SimpleApplication {
         tireModel.getLateral().setChangeListener(changeListener);
         tireModel.getAlignMoment().setChangeListener(changeListener);
 
-
         guiNode.attachChild(tireGraph);
 
         TireEditor tireEditor = new TireEditor(tireModel);
         tireEditor.setLocalTranslation(cam.getWidth() - tireEditor.getPreferredSize().x, tireEditor.getPreferredSize().y, 1);
         guiNode.attachChild(tireEditor);
     }
-
-
-
-
 }
