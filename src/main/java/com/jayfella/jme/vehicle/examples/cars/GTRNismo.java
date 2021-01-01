@@ -99,8 +99,9 @@ public class GTRNismo extends Car {
                 steeringFlipped, 3_000f, parkingBrake);
         /*
          * Configure the suspension.
+         *
          * This vehicle applies the same settings to each wheel,
-         * but you don't have to.
+         * but that isn't required.
          */
         for (int wheelIndex = 0; wheelIndex < countWheels(); ++wheelIndex) {
             Suspension suspension = getWheel(wheelIndex).getSuspension();
@@ -143,17 +144,20 @@ public class GTRNismo extends Car {
         getWheel(2).setPowerFraction(0.2f);
         getWheel(3).setPowerFraction(0.2f);
         /*
-         * Define the speed range for each gear.
-         * Successive gears should overlap.
-         * The "end" value of the last gear should determine the top speed.
+         * Specify the speed range for each gear.
+         * The min-max speeds of successive gears should overlap.
+         * The "min" speed of low gear should be zero.
+         * The "max" speed of high gear determines the top speed.
+         * The "red" speed of each gear is used to calculate its ratio.
          */
-        GearBox gearBox = new GearBox(6);
-        gearBox.setGear(0, 0f, 30f);
-        gearBox.setGear(1, 15f, 70f);
-        gearBox.setGear(2, 50f, 130f);
-        gearBox.setGear(3, 120f, 190f);
-        gearBox.setGear(4, 180f, 255f);
-        gearBox.setGear(5, 250f, 320f);
+        GearBox gearBox = new GearBox(6, 1);
+        gearBox.getGear(-1).setMinMaxRedKph(0f, -40f, -40f);
+        gearBox.getGear(1).setMinMaxRedKph(0f, 30f, 30f);
+        gearBox.getGear(2).setMinMaxRedKph(15f, 70f, 70f);
+        gearBox.getGear(3).setMinMaxRedKph(50f, 130f, 130f);
+        gearBox.getGear(4).setMinMaxRedKph(120f, 190f, 190f);
+        gearBox.getGear(5).setMinMaxRedKph(180f, 255f, 255f);
+        gearBox.getGear(6).setMinMaxRedKph(250f, 320f, 320f);
         setGearBox(gearBox);
 
         Engine engine = new Engine600HP();

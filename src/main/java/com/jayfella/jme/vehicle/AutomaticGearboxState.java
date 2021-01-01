@@ -9,6 +9,9 @@ import com.jme3.app.state.BaseAppState;
 import com.jme3.math.FastMath;
 import java.util.logging.Logger;
 
+/**
+ * The automatic transmission of a Car.
+ */
 public class AutomaticGearboxState extends BaseAppState {
     // *************************************************************************
     // constants and loggers
@@ -84,37 +87,44 @@ public class AutomaticGearboxState extends BaseAppState {
 
         GearBox gearbox = vehicle.getGearBox();
         float signedKph = vehicle.getSpeed(SpeedUnit.KPH);
-        float revs; // as a fraction of redline
-        if (gearbox.isInReverse()) {
-            float maxReverseKph = 40f; // TODO
-            revs = -signedKph / maxReverseKph;
 
-        } else { // in some forward driving gear
-            int numGears = gearbox.getGearCount();
-            int gearIndex = gearbox.getActiveGearNum();
-            Gear gear = gearBox.getGear(gearIndex);
-            float minKph = gear.getMinKph();
-            float maxKph = gear.getMaxKph();
-            if (signedKph < minKph && gearIndex > 0) {
-                --gearIndex;
-                //System.out.println("Downshifting to " + gearIndex);
-            } else if (signedKph > maxKph && gearIndex < numGears - 1) {
-                ++gearIndex;
-                //System.out.println("Upshifting to " + gearIndex);
+        int gearNum = gearbox.getEngagedGearNum();
+        Gear gear = gearBox.getGear(gearNum);
+        float minKph = gear.getMinKph();
+        float maxKph = gear.getMaxKph();
+        if (gear.isReverse()) {
+            int numGears = gearbox.countReverseGears();
+            if (signedKph > minKph && gearNum < -1) {
+                ++gearNum;
+                //System.out.println("Downshifting to " + gearNum);
+            } else if (signedKph < maxKph && gearNum > -numGears) {
+                --gearNum;
+                //System.out.println("Upshifting to " + gearNum);
             }
-            gearbox.setActiveGearNum(gearIndex); // TODO not instantaneous
+            gearbox.engageGearNum(gearNum); // TODO not instantaneous
 
-            gear = gearBox.getGear(gearIndex);
-            maxKph = gear.getMaxKph();
-            revs = signedKph / maxKph;
+        } else if (gear.isForward()) {
+            int numGears = gearbox.countForwardGears();
+            if (signedKph < minKph && gearNum > 1) {
+                --gearNum;
+                //System.out.println("Downshifting to " + gearNum);
+            } else if (signedKph > maxKph && gearNum < numGears) {
+                ++gearNum;
+                //System.out.println("Upshifting to " + gearNum);
+            }
+            gearbox.engageGearNum(gearNum); // TODO not instantaneous
         }
+        // TODO handle neutral gear
 
+        gear = gearBox.getGear(gearNum);
+        float redlineKph = gear.getRedlineKph();
+        float revs = signedKph / redlineKph; // as a fraction of redline
         float accelerateSignal = car.accelerateSignal();
-        accelerateSignal = FastMath.abs(accelerateSignal);
         if (accelerateSignal == 0f) { // coasting
             revs = 0f;
 
         } else if (wheelCount > 0) {
+            accelerateSignal = FastMath.abs(accelerateSignal);
             float boostRevs = 0f;
             for (int wheelIndex = 0; wheelIndex < wheelCount; ++wheelIndex) {
                 Wheel wheel = car.getWheel(wheelIndex);
@@ -137,14 +147,10 @@ public class AutomaticGearboxState extends BaseAppState {
         float oldRevs = engine.getRpmFraction();
         revs = FastMath.clamp(revs, oldRevs - 2f * tpf, oldRevs + 0.2f * tpf);
         /*
-         * Prevent the engine from stalling or passing the redline.
+         * Prevent the engine from stalling or exceeding its redline.
          */
         float idleFraction = engine.getIdleRpm() / engine.getRedlineRpm();
-        if (revs < idleFraction) {
-            revs = idleFraction;
-        } else if (revs > 1f) {
-            revs = 1f;
-        }
+        revs = FastMath.clamp(revs, idleFraction, 1f);
 
         engine.setRpmFraction(revs);
     }

@@ -100,8 +100,9 @@ public class PickupTruck extends Car {
                 steeringFlipped, mainBrake, parkingBrake);
         /*
          * Configure the suspension.
+         *
          * This vehicle applies the same settings to each wheel,
-         * but you don't have to.
+         * but that isn't required.
          */
         for (int wheelIndex = 0; wheelIndex < countWheels(); ++wheelIndex) {
             Suspension suspension = getWheel(wheelIndex).getSuspension();
@@ -137,15 +138,18 @@ public class PickupTruck extends Car {
         getWheel(2).setPowerFraction(0.2f);
         getWheel(3).setPowerFraction(0.2f);
         /*
-         * Define the speed range for each gear.
-         * Successive gears should overlap.
-         * The "end" value of the last gear should determine the top speed.
+         * Specify the speed range for each gear.
+         * The min-max speeds of successive gears should overlap.
+         * The "min" speed of low gear should be zero.
+         * The "max" speed of high gear determines the top speed.
+         * The "red" speed of each gear is used to calculate its ratio.
          */
-        GearBox gearBox = new GearBox(4);
-        gearBox.setGear(0, 0f, 19f);
-        gearBox.setGear(1, 12f, 50f);
-        gearBox.setGear(2, 40f, 80f);
-        gearBox.setGear(3, 70f, 110f);
+        GearBox gearBox = new GearBox(4, 1);
+        gearBox.getGear(-1).setMinMaxRedKph(0f, -40f, -40f);
+        gearBox.getGear(1).setMinMaxRedKph(0f, 19f, 19f);
+        gearBox.getGear(2).setMinMaxRedKph(12f, 50f, 50f);
+        gearBox.getGear(3).setMinMaxRedKph(40f, 80f, 80f);
+        gearBox.getGear(4).setMinMaxRedKph(70f, 110f, 110f);
         setGearBox(gearBox);
 
         Engine engine = new Engine450HP();

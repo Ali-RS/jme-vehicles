@@ -101,8 +101,9 @@ public class GrandTourer extends Car {
                 steeringFlipped, 0f, parkingBrake);
         /*
          * Configure the suspension.
+         *
          * This vehicle applies the same settings to each wheel,
-         * but you don't have to.
+         * but that isn't required.
          */
         for (int wheelIndex = 0; wheelIndex < countWheels(); ++wheelIndex) {
             Suspension suspension = getWheel(wheelIndex).getSuspension();
@@ -147,16 +148,19 @@ public class GrandTourer extends Car {
         getWheel(2).setPowerFraction(0.4f);
         getWheel(3).setPowerFraction(0.4f);
         /*
-         * Define the speed range for each gear.
-         * Successive gears should overlap.
-         * The "end" value of the last gear should determine the top speed.
+         * Specify the speed range for each gear.
+         * The min-max speeds of successive gears should overlap.
+         * The "min" speed of low gear should be zero.
+         * The "max" speed of high gear determines the top speed.
+         * The "red" speed of each gear is used to calculate its ratio.
          */
-        GearBox gearBox = new GearBox(5);
-        gearBox.setGear(0, 0f, 15f);
-        gearBox.setGear(1, 5f, 40f);
-        gearBox.setGear(2, 25f, 75f);
-        gearBox.setGear(3, 55f, 130f);
-        gearBox.setGear(4, 120f, 190f);
+        GearBox gearBox = new GearBox(5, 1);
+        gearBox.getGear(-1).setMinMaxRedKph(0f, -40f, -40f);
+        gearBox.getGear(1).setMinMaxRedKph(0f, 15f, 15f);
+        gearBox.getGear(2).setMinMaxRedKph(5f, 40f, 40f);
+        gearBox.getGear(3).setMinMaxRedKph(25f, 75f, 75f);
+        gearBox.getGear(4).setMinMaxRedKph(55f, 130f, 130f);
+        gearBox.getGear(5).setMinMaxRedKph(120f, 190f, 190f);
         setGearBox(gearBox);
 
         Engine engine = new Engine450HP();

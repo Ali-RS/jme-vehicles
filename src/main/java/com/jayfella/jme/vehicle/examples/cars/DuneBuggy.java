@@ -103,8 +103,9 @@ public class DuneBuggy extends Car {
                 steeringFlipped, 0f, 0f);
         /*
          * Configure the suspension.
+         *
          * This vehicle applies the same settings to each wheel,
-         * but you don't have to.
+         * but that isn't required.
          */
         for (int wheelIndex = 0; wheelIndex < countWheels(); ++wheelIndex) {
             Suspension suspension = getWheel(wheelIndex).getSuspension();
@@ -141,21 +142,27 @@ public class DuneBuggy extends Car {
          *  0 = no power, 1 = full power
          *
          * This vehicle has rear-wheel drive.
+         *
+         * 4-wheel drive would be problematic here because
+         * the diameters of the front wheels differ from those of the rear ones.
          */
         getWheel(0).setPowerFraction(0f);
         getWheel(1).setPowerFraction(0f);
         getWheel(2).setPowerFraction(0.4f);
         getWheel(3).setPowerFraction(0.4f);
         /*
-         * Define the speed range for each gear.
-         * Successive gears should overlap.
-         * The "end" value of the last gear should determine the top speed.
+         * Specify the speed range for each gear.
+         * The min-max speeds of successive gears should overlap.
+         * The "min" speed of low gear should be zero.
+         * The "max" speed of high gear determines the top speed.
+         * The "red" speed of each gear is used to calculate its ratio.
          */
-        GearBox gearBox = new GearBox(4);
-        gearBox.setGear(0, 0f, 15f);
-        gearBox.setGear(1, 5f, 30f);
-        gearBox.setGear(2, 25f, 50f);
-        gearBox.setGear(3, 45f, 90f);
+        GearBox gearBox = new GearBox(4, 1);
+        gearBox.getGear(-1).setMinMaxRedKph(0f, -40f, -40f);
+        gearBox.getGear(1).setMinMaxRedKph(0f, 15f, 15f);
+        gearBox.getGear(2).setMinMaxRedKph(5f, 30f, 30f);
+        gearBox.getGear(3).setMinMaxRedKph(25f, 50f, 50f);
+        gearBox.getGear(4).setMinMaxRedKph(45f, 90f, 90f);
         setGearBox(gearBox);
 
         Engine engine = new Engine180HP();
