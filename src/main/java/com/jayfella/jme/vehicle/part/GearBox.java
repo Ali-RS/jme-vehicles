@@ -132,6 +132,19 @@ public class GearBox {
     }
 
     /**
+     * Test whether this GearBox is in reverse.
+     *
+     * @return true if a reverse gear is engaged, otherwise false
+     */
+    public boolean isInReverse() {
+        if (engagedGearNum < 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Determine the maximum forward speed.
      *
      * @param speedUnit (not null)
@@ -158,19 +171,6 @@ public class GearBox {
         }
 
         return result;
-    }
-
-    /**
-     * Test whether this GearBox is in reverse.
-     *
-     * @return true if a reverse gear is engaged, otherwise false
-     */
-    public boolean isInReverse() {
-        if (engagedGearNum < 0) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     /**
