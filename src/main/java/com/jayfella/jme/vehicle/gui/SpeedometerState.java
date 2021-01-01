@@ -180,7 +180,7 @@ class SpeedometerState extends BaseAppState {
         /*
          * a slight lag, because a physical needle cannot pivot instantly
          */
-        prevTheta = FastMath.interpolateLinear(0.5f, prevTheta, theta);
+        prevTheta = MyMath.lerp(0.5f, prevTheta, theta);
 
         prevTheta = FastMath.clamp(prevTheta, thetaMin, theta0);
         tmpRotation.fromAngles(0f, 0f, prevTheta - FastMath.HALF_PI);

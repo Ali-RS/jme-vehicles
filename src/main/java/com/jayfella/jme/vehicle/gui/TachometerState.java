@@ -172,7 +172,7 @@ class TachometerState extends BaseAppState {
         /*
          * a slight lag, to prevent the needle from jiggling
          */
-        prevTheta = FastMath.interpolateLinear(0.3f, prevTheta, theta);
+        prevTheta = MyMath.lerp(0.3f, prevTheta, theta);
 
         tmpRotation.fromAngles(0f, 0f, prevTheta - FastMath.HALF_PI);
         needleNode.setLocalRotation(tmpRotation);

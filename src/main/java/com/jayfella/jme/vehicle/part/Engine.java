@@ -6,6 +6,7 @@ import com.jme3.math.Vector3f;
 import java.util.List;
 import java.util.logging.Logger;
 import jme3utilities.Validate;
+import jme3utilities.math.MyMath;
 
 /**
  * An engine to propel a Vehicle.
@@ -215,7 +216,7 @@ abstract public class Engine {
             float lowRpm = points.get(lowIndex).x;
             float highRpm = points.get(lowIndex + 1).x;
             if (rpm >= lowRpm && rpm <= highRpm) {
-                float t = FastMath.unInterpolateLinear(rpm, lowRpm, highRpm);
+                float t = MyMath.lerp(rpm, lowRpm, highRpm);
                 Vector3f interpolatedPoint
                         = powerCurve.interpolate(t, lowIndex, null);
                 assert FastMath.approximateEquals(interpolatedPoint.x, rpm);
