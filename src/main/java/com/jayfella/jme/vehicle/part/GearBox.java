@@ -115,6 +115,7 @@ public class GearBox {
      * Access a gear by number.
      *
      * @param gearNum the number of the gear
+     * @return the pre-existing instance (not null)
      */
     public Gear getGear(int gearNum) {
         Gear result;

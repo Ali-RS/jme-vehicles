@@ -27,7 +27,7 @@ class WheelSkid {
 
     void update(float tpf) {
         int wheelIndex = wheel.getIndex();
-        float distance = vehicleControl.castRay(wheelIndex);
+        float distance = vehicleControl.castRay(wheelIndex); // TODO Wheel.traction() method
         if (distance < 0f) {
             /*
              * There's nothing supporting the wheel.

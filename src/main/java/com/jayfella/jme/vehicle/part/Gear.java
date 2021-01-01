@@ -157,7 +157,7 @@ public class Gear {
     /**
      * Alter the name of this Gear.
      *
-     * @param name the desired name (not null, not empty)
+     * @param newName the desired name (not null, not empty)
      * @return this, for chaining
      */
     public Gear setName(String newName) {

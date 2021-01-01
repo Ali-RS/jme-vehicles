@@ -121,7 +121,7 @@ abstract public class Sky implements Loadable {
         fpp.addFilter(ssaoFilter);
     }
     // *************************************************************************
-    // protected methods
+    // new protected methods
 
     /**
      * Generate a sky geometry from an equirectangular texture asset. This
