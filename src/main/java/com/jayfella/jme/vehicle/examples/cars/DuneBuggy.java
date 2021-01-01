@@ -160,9 +160,9 @@ public class DuneBuggy extends Car {
          */
         GearBox gearBox = new GearBox(4, 1);
         gearBox.getGear(-1).setName("reverse").setMinMaxRedKph(0f, -40f, -40f);
-        gearBox.getGear(1).setName("low").setMinMaxRedKph(0f, 15f, 15f);
-        gearBox.getGear(2).setName("2nd").setMinMaxRedKph(5f, 30f, 30f);
-        gearBox.getGear(3).setName("3rd").setMinMaxRedKph(25f, 50f, 50f);
+        gearBox.getGear(1).setName("low").setMinMaxRedKph(0f, 15f, 20f);
+        gearBox.getGear(2).setName("2nd").setMinMaxRedKph(5f, 30f, 35f);
+        gearBox.getGear(3).setName("3rd").setMinMaxRedKph(25f, 50f, 60f);
         gearBox.getGear(4).setName("high").setMinMaxRedKph(45f, 90f, 90f);
         setGearBox(gearBox);
 

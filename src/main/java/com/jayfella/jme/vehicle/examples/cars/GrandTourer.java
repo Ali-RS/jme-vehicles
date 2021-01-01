@@ -157,10 +157,10 @@ public class GrandTourer extends Car {
          */
         GearBox gearBox = new GearBox(5, 1);
         gearBox.getGear(-1).setName("reverse").setMinMaxRedKph(0f, -40f, -40f);
-        gearBox.getGear(1).setName("low").setMinMaxRedKph(0f, 15f, 15f);
-        gearBox.getGear(2).setName("2nd").setMinMaxRedKph(5f, 40f, 40f);
-        gearBox.getGear(3).setName("3rd").setMinMaxRedKph(25f, 75f, 75f);
-        gearBox.getGear(4).setName("4th").setMinMaxRedKph(55f, 130f, 130f);
+        gearBox.getGear(1).setName("low").setMinMaxRedKph(0f, 15f, 20f);
+        gearBox.getGear(2).setName("2nd").setMinMaxRedKph(5f, 40f, 45f);
+        gearBox.getGear(3).setName("3rd").setMinMaxRedKph(25f, 75f, 80f);
+        gearBox.getGear(4).setName("4th").setMinMaxRedKph(55f, 130f, 140f);
         gearBox.getGear(5).setName("high").setMinMaxRedKph(120f, 190f, 190f);
         setGearBox(gearBox);
 

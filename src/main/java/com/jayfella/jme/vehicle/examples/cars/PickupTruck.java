@@ -147,9 +147,9 @@ public class PickupTruck extends Car {
          */
         GearBox gearBox = new GearBox(4, 1);
         gearBox.getGear(-1).setName("reverse").setMinMaxRedKph(0f, -40f, -40f);
-        gearBox.getGear(1).setName("low").setMinMaxRedKph(0f, 19f, 19f);
-        gearBox.getGear(2).setName("2nd").setMinMaxRedKph(12f, 50f, 50f);
-        gearBox.getGear(3).setName("3rd").setMinMaxRedKph(40f, 80f, 80f);
+        gearBox.getGear(1).setName("low").setMinMaxRedKph(0f, 19f, 25f);
+        gearBox.getGear(2).setName("2nd").setMinMaxRedKph(12f, 50f, 60f);
+        gearBox.getGear(3).setName("3rd").setMinMaxRedKph(40f, 80f, 90f);
         gearBox.getGear(4).setName("high").setMinMaxRedKph(70f, 110f, 110f);
         setGearBox(gearBox);
 

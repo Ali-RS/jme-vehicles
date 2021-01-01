@@ -153,11 +153,11 @@ public class GTRNismo extends Car {
          */
         GearBox gearBox = new GearBox(6, 1);
         gearBox.getGear(-1).setName("reverse").setMinMaxRedKph(0f, -40f, -40f);
-        gearBox.getGear(1).setName("low").setMinMaxRedKph(0f, 30f, 30f);
-        gearBox.getGear(2).setName("2nd").setMinMaxRedKph(15f, 70f, 70f);
-        gearBox.getGear(3).setName("3rd").setMinMaxRedKph(50f, 130f, 130f);
-        gearBox.getGear(4).setName("4th").setMinMaxRedKph(120f, 190f, 190f);
-        gearBox.getGear(5).setName("5th").setMinMaxRedKph(180f, 255f, 255f);
+        gearBox.getGear(1).setName("low").setMinMaxRedKph(0f, 30f, 35f);
+        gearBox.getGear(2).setName("2nd").setMinMaxRedKph(15f, 70f, 75f);
+        gearBox.getGear(3).setName("3rd").setMinMaxRedKph(50f, 130f, 140f);
+        gearBox.getGear(4).setName("4th").setMinMaxRedKph(120f, 190f, 200f);
+        gearBox.getGear(5).setName("5th").setMinMaxRedKph(180f, 255f, 275f);
         gearBox.getGear(6).setName("high").setMinMaxRedKph(250f, 320f, 320f);
         setGearBox(gearBox);
 

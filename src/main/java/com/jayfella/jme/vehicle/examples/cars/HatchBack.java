@@ -151,9 +151,9 @@ public class HatchBack extends Car {
          */
         GearBox gearBox = new GearBox(4, 1);
         gearBox.getGear(-1).setName("reverse").setMinMaxRedKph(0f, -40f, -40f);
-        gearBox.getGear(1).setName("low").setMinMaxRedKph(0f, 30f, 30f);
-        gearBox.getGear(2).setName("2nd").setMinMaxRedKph(20f, 60f, 60f);
-        gearBox.getGear(3).setName("3rd").setMinMaxRedKph(50f, 100f, 100f);
+        gearBox.getGear(1).setName("low").setMinMaxRedKph(0f, 30f, 40f);
+        gearBox.getGear(2).setName("2nd").setMinMaxRedKph(20f, 60f, 70f);
+        gearBox.getGear(3).setName("3rd").setMinMaxRedKph(50f, 100f, 120f);
         gearBox.getGear(4).setName("high").setMinMaxRedKph(80f, 140f, 140f);
         setGearBox(gearBox);
 
