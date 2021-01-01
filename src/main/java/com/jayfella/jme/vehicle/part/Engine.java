@@ -207,7 +207,7 @@ abstract public class Engine {
      *
      * @param powerCurve the spline to use (not null, unaffected)
      * @param rpm the crankshaft rotation rate (in revolutions per minute)
-     * @return the power output (in Watts)
+     * @return the power as a fraction of the maximum (&ge;0, &le;1)
      */
     protected static float evaluateSpline(Spline powerCurve, float rpm) {
         List<Vector3f> points = powerCurve.getControlPoints();
@@ -222,6 +222,7 @@ abstract public class Engine {
                 assert FastMath.approximateEquals(interpolatedPoint.x, rpm);
                 float result = interpolatedPoint.y;
 
+                assert result >= 0f && result <= 1f : result;
                 return result;
             }
         }
