@@ -94,6 +94,27 @@ abstract public class Car extends Vehicle {
         return wheels.size();
     }
 
+    /**
+     * Determine the circumference of the first drive wheel. (It's assumed
+     * they're all the same size.) Used to convert between axle
+     * angular speed and tread speed.
+     *
+     * @return the circumference (in world units, &gt;0)
+     */
+    public float driveWheelCircumference() {
+        for (Wheel wheel : wheels) {
+            if (wheel.isPowered()) {
+                float diameter = wheel.getDiameter();
+                float circumference = FastMath.PI * diameter;
+
+                assert circumference > 0f : circumference;
+                return circumference;
+            }
+        }
+
+        throw new IllegalStateException("No drive wheel found!");
+    }
+
     public Wheel getWheel(int index) {
         return wheels.get(index);
     }
