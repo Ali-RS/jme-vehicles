@@ -225,8 +225,7 @@ abstract public class Vehicle
     }
 
     /**
-     * Determine the forward component of this vehicle's airspeed as of the
-     * previous time step.
+     * Determine the forward component of this vehicle's inertial velocity.
      *
      * @param speedUnit the unit of measurement to use (not null)
      * @return the speed (may be negative)
@@ -447,18 +446,18 @@ abstract public class Vehicle
      *
      * @param folderName the name of the folder containing the collision-shape
      * asset (not null, not empty)
-     * @param chassis to visualize the chassis (not null, alias created)
+     * @param chassisCgm to visualize the chassis (not null, alias created)
      * @param mass in (in kilos, &gt;0)
      * @param damping to simulate drag due to air resistance (&ge;0, &lt;1)
      */
-    protected void setChassis(String folderName, Spatial chassis, float mass,
+    protected void setChassis(String folderName, Spatial chassisCgm, float mass,
             float damping) {
         Validate.nonEmpty(folderName, "folder name");
-        Validate.nonNull(chassis, "chassis");
+        Validate.nonNull(chassisCgm, "chassis");
         Validate.positive(mass, "mass");
         Validate.fraction(damping, "damping");
 
-        this.chassis = chassis;
+        this.chassis = chassisCgm;
         this.chassisDamping = damping;
 
         AssetManager assetManager = Main.getApplication().getAssetManager();
@@ -467,10 +466,10 @@ abstract public class Vehicle
         CollisionShape shape;
         try {
             shape = (CollisionShape) assetManager.loadAsset(assetPath);
-            Vector3f scale = chassis.getWorldScale();
+            Vector3f scale = chassisCgm.getWorldScale();
             shape.setScale(scale);
         } catch (AssetNotFoundException exception) {
-            shape = CollisionShapeFactory.createDynamicMeshShape(chassis);
+            shape = CollisionShapeFactory.createDynamicMeshShape(chassisCgm);
         }
         vehicleControl = new VehicleControl(shape, mass);
         /*
@@ -486,7 +485,7 @@ abstract public class Vehicle
         vehicleControl.setCcdSweptSphereRadius(radius);
 
         node.addControl(vehicleControl);
-        node.attachChild(chassis);
+        node.attachChild(chassisCgm);
     }
 
     protected void setEngine(Engine desiredEngine) {
