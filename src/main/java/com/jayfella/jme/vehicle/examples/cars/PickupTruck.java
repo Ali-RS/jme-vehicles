@@ -123,13 +123,13 @@ public class PickupTruck extends Car {
          * Give each wheel a tire with friction.
          */
         for (int wheelIndex = 0; wheelIndex < countWheels(); ++wheelIndex) {
-            Wheel w = getWheel(wheelIndex);
-            w.setTireModel(new Tire_01());
-            w.setFriction(1f);
+            Wheel wheel = getWheel(wheelIndex);
+            wheel.setTireModel(new Tire_01());
+            wheel.setFriction(1f);
         }
         /*
          * Distribute drive power across the wheels:
-         *  0 = no power, 1 = full power
+         *  0 = no power, 1 = all of the power
          *
          * This vehicle has 4-wheel drive.
          */
@@ -138,18 +138,18 @@ public class PickupTruck extends Car {
         getWheel(2).setPowerFraction(0.2f);
         getWheel(3).setPowerFraction(0.2f);
         /*
-         * Specify the speed range for each gear.
+         * Specify the name and speed range for each gear.
          * The min-max speeds of successive gears should overlap.
          * The "min" speed of low gear should be zero.
          * The "max" speed of high gear determines the top speed.
          * The "red" speed of each gear is used to calculate its ratio.
          */
         GearBox gearBox = new GearBox(4, 1);
-        gearBox.getGear(-1).setMinMaxRedKph(0f, -40f, -40f);
-        gearBox.getGear(1).setMinMaxRedKph(0f, 19f, 19f);
-        gearBox.getGear(2).setMinMaxRedKph(12f, 50f, 50f);
-        gearBox.getGear(3).setMinMaxRedKph(40f, 80f, 80f);
-        gearBox.getGear(4).setMinMaxRedKph(70f, 110f, 110f);
+        gearBox.getGear(-1).setName("reverse").setMinMaxRedKph(0f, -40f, -40f);
+        gearBox.getGear(1).setName("low").setMinMaxRedKph(0f, 19f, 19f);
+        gearBox.getGear(2).setName("2nd").setMinMaxRedKph(12f, 50f, 50f);
+        gearBox.getGear(3).setName("3rd").setMinMaxRedKph(40f, 80f, 80f);
+        gearBox.getGear(4).setName("high").setMinMaxRedKph(70f, 110f, 110f);
         setGearBox(gearBox);
 
         Engine engine = new Engine450HP();
