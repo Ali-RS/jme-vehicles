@@ -7,6 +7,7 @@ import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
 import com.jayfella.jme.vehicle.gui.CameraNameState;
 import com.jayfella.jme.vehicle.gui.CompassState;
 import com.jayfella.jme.vehicle.gui.DriverHud;
+import com.jayfella.jme.vehicle.gui.GearNameState;
 import com.jayfella.jme.vehicle.gui.MainMenu;
 import com.jayfella.jme.vehicle.gui.PhysicsHud;
 import com.jayfella.jme.vehicle.input.DumpInputState;
@@ -99,6 +100,7 @@ public class Main extends SimpleApplication {
                 new CompassState(),
                 new DriverHud(),
                 new DumpInputState(),
+                new GearNameState(),
                 new MainMenu(),
                 new NonDrivingInputState(),
                 new PhysicsHud()

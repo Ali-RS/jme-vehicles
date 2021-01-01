@@ -39,6 +39,7 @@ import jme3utilities.mesh.RectangleMesh;
  * It indirectly manages:
  * <ul>
  * <li>the automatic-transmision mode indicator</li>
+ * <li>the gear-name indicator</li>
  * <li>the speedometer</li>
  * <li>the tachometer</li>
  * </ul>
@@ -253,6 +254,7 @@ public class DriverHud extends BaseAppState {
     protected void onDisable() {
         atmiState.setEnabled(false);
         hideExitButton();
+        hideGearName();
         hideHornButton();
         hideMuteButton();
         hidePowerButton();
@@ -272,6 +274,7 @@ public class DriverHud extends BaseAppState {
 
         atmiState.setEnabled(true);
         showExitButton();
+        showGearName();
         showHornButton(false);
 
         boolean isEngineRunning = car.getEngine().isRunning();
@@ -321,6 +324,14 @@ public class DriverHud extends BaseAppState {
             exitButton.removeFromParent();
             exitButton = null;
         }
+    }
+
+    /**
+     * Hide the gear-name indicator.
+     */
+    private void hideGearName() {
+        GearNameState state = Main.findAppState(GearNameState.class);
+        state.setEnabled(false);
     }
 
     /**
@@ -420,6 +431,14 @@ public class DriverHud extends BaseAppState {
         };
         MouseEventControl control = new MouseEventControl(listener);
         exitButton.addControl(control);
+    }
+
+    /**
+     * Show the gear-name indicator.
+     */
+    private void showGearName() {
+        GearNameState state = Main.findAppState(GearNameState.class);
+        state.setEnabled(true);
     }
 
     /**
