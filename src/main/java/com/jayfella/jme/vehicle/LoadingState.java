@@ -211,7 +211,7 @@ class LoadingState extends BaseAppState {
      * Initialize the Lemur library with the "glass" style.
      */
     private static void initializeLemur() {
-        long startMillis = System.currentTimeMillis();
+//        long startMillis = System.currentTimeMillis();
 
         Main application = Main.getApplication();
         GuiGlobals.initialize(application);
@@ -221,9 +221,9 @@ class LoadingState extends BaseAppState {
         // This consumes joystick input. Why?
         Main.findAppState(FocusNavigationState.class).setEnabled(false);
 
-        long latencyMillis = System.currentTimeMillis() - startMillis;
-        float seconds = latencyMillis / 1_000f;
-        System.out.println("initialized Lemur in " + seconds + " seconds");
+//        long latencyMillis = System.currentTimeMillis() - startMillis;
+//        float seconds = latencyMillis / 1_000f;
+//        System.out.println("initialized Lemur in " + seconds + " seconds");
     }
 
     /**
