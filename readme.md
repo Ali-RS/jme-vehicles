@@ -18,7 +18,7 @@
 
 ## Important features
 
-+ 2 environments:
++ 2 worlds:
   + racetrack
   + vehicle playground
 + 5 vehicle models:
@@ -78,7 +78,7 @@
    + using Git:
      + `git clone https://github.com/stephengold/jme-vehicles.git`
      + `cd jme-vehicles`
-     + `git checkout -b latest v1.1.0`
+     + `git checkout -b latest v1.2.0`
    + using a web browser:
      + browse to https://github.com/stephengold/jme-vehicles/releases/latest
      + follow the "Source code (zip)" link
@@ -101,7 +101,14 @@
 
 ## Controls
 
-When a vehicle is loaded:
+General controls:
+
++ Numpad9 or wheel up : zoom in (narrow the field of view)
++ Numpad3 or wheel down : zoom out (widen the field of view)
++ Numpad6 : reset the field of view (to 90 degrees vertical angle)
++ F12 : capture a screenshot to the current working directory
+
+When driving a vehicle:
 
 + F5 : toggle viewpoints between dash camera and chase camera
 + Y : toggle the engine on/off
@@ -114,19 +121,20 @@ When a vehicle is loaded:
 + H : sound the horn
 + R : reset the vehicle to a parked state
 + Pause or . : toggle the simulation paused/running
-+ Numpad9 or wheel up : zoom in (narrow the field of view)
-+ Numpad3 or wheel down : zoom out (widen the field of view)
-+ Numpad6 : reset the field of view (to 90 degrees vertical angle)
-+ F12 : capture a screenshot to the current working directory
 + Esc : return to the Main Menu
 
-Additional controls when the chase camera is active:
+Additional controls when the chase camera or orbit camera is active:
 
  + Numpad7 : dolly forward (toward the vehicle)
  + Numpad1 : dolly back (away from the vehicle)
  + Numpad8 or drag upward with MMB : orbit upward (to look down on the vehicle)
  + Numpad2 or drag downward with MMB : orbit downward (to look up at the vehicle)
  + Numpad5 or RMB : reset the viewpoint's position relative to the vehicle
+
+Additional controls when the orbit camera is active:
+
+ + Drag left with MMB : orbit leftward
+ + Drag right with MMB : orbit rightward
 
 [Jump to table of contents](#toc)
 
@@ -151,17 +159,18 @@ Additional controls when the chase camera is active:
 This project is a work in progress.  Some ideas for future development:
 
 + More alternatives for:
-  + Environments, such as: off-road, urban, and parking garage
-  + Surface conditions, such as: wet, dirt, grass
-  + Propulsion, such as: four-wheel drive, front-wheel drive, and jets
-  + Vehicle physics, such as that used in RallyGame
-  + Vehicle types, such as: hovertanks, motorcycles, motorized tricycles, speedboats, airplanes, and helicopters
+  + Environments, such as: infinite world, off-road, parking garage, parking lot, showroom, and urban grid
+  + Surface conditions, such as: wet, dirt, and grass
+  + Propulsion, such as:  jets and propellers
+  + Vehicle dynamics, such as that used in RallyGame
+  + Vehicle types, such as: buses, tanks, hovertanks, motorcycles, motorized tricycles, aerial trams, speedboats, airplanes, and helicopters
   + Viewpoints, such as: FlyCam and plan view
 + More obstacles:
   + Other vehicles (parked or AI-controlled)
   + Animated non-vehicles, such as: gates, drawbridges, deer, and pedestrians
   + Passive non-vehicles, such as: traffic cones, portable barricades, and loose tires
 + More vehicle equipment:
+  + Anti-lock braking
   + Artificial horizon
   + Clock
   + Cruise control
@@ -173,19 +182,24 @@ This project is a work in progress.  Some ideas for future development:
   + Nitrous oxide
   + Odometer
   + Oil-temperature gauge
+  + Operable doors, hood, and trunk
   + Sirens
+  + Speed limiter
+  + Starter motor
   + Trailers
   + Weaponry
+  + Windshield wipers
 + More scenarios:
   + Crazy taxi
   + Demolition derby
   + Night driving
+  + Performance tests, such as: braking distance, turning radius, and zero-to-60
   + Player-vs-player over a network
   + Time trial
   + Career mode
 + More details:
   + Scoring for stunts
-  + Simulate damage and tire wear
+  + Simulate damage, brake wear, and tire wear
   + Sound effects for crashes and squealing tires
 
 See also
@@ -202,38 +216,42 @@ The source code has
 
 Resources/assets/media:
 
-+ The [Droid font](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Interface/Fonts)
++ The [Droid Serif font](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Interface/Fonts)
   has an Apache License, Version 2.0.
-+ The [GT model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/GT)
++ The [Opel GT Retopo model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/GT)
   has a CC Attribution-NonCommercial-ShareAlike license.
-+ The [gtr_nismo model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/gtr_nismo)
++ The [Jamie model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/Jaime)
+  has a BSD 3-Clause license.
++ The [Ford Ranger model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/ford_ranger)
+  has a CC Attribution license.
++ The [Nissan GT-R model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/gtr_nismo)
   has a CC Attribution-NonCommercial-ShareAlike license.
-+ The [ford_ranger model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/ford_ranger)
++ The [HCR2 Buggy model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/hcr2_buggy)
   has a CC Attribution license.
-+ The [hcr2_buggy model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/hcr2_buggy)
++ The [Modern Hatchback - Low Poly model model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/modern_hatchback)
   has a CC Attribution license.
-+ The [modern_hatchback model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/modern_hatchback)
-  has a CC Attribution license.
-+ The [racetrack model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/race1)
-  has an Unlicense and a Creative Commons Zero v1.0 Universal license.
-+ The [vehicle-playground model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/vehicle-playground)
-  has a CC Zero Universal license.
++ The [Race Track model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/race1)
+  has an Unlicense license.
++ The [Vehicle Playground model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/vehicle-playground)
+  has a CC0 license.
 + The [marble_01 textures](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Textures/Ground/Marble)
-  have a Creative Commons CC0 License.
-+ The [quarry_03 texture](https://github.com/stephengold/jme-vehicles/blob/master/src/main/resources/Textures/Sky/quarry_03)
-  has a CC0 1.0 Universal license.
-+ The [exit texture](https://github.com/stephengold/jme-vehicles/blob/master/src/main/resources/Textures/sgold)
-  has a CC0 1.0 Universal license.
+  have a CC0 license.
++ The [Quarry 03 texture](https://github.com/stephengold/jme-vehicles/blob/master/src/main/resources/Textures/Sky/quarry_03)
+  has a CC0 license.
++ The [Car-door Exit Button texture](https://github.com/stephengold/jme-vehicles/blob/master/src/main/resources/Textures/sgold)
+  has a CC0 license.
++ The [Lunar libration with phase Oct 2007 texture](https://github.com/stephengold/jme-vehicles/blob/master/src/main/resources/Textures/sgold)
+  has a PD-self license.
 + The following 15 textures were generated procedurally by
   [the Georg Project](https://github.com/stephengold/Georg), which has a BSD 3-Clause license:
   + compass.png
   + horn-silent.png
   + horn-sound.png
-  + loading.png
   + mute.png
   + pause.png
   + power-off.png
   + power-on.png
+  + powered-by.png
   + run.png
   + single-step.png
   + sound.png
@@ -270,17 +288,28 @@ The world (and physics-space) units of distance are *meters*.
   on which this project is based.
 + [Paul Speed (aka "pspeed42")][pspeed] created the Lemur libraries.
 + [Adam T. Ryder (aka "ATryder")][atryder] created the jME-TTF library.
-+ Rob Tuytel authored the marble_01 textures.
-+ [Sergej Majboroda][sergej] created the quarry_03 texture.
-+ [Thomas Glenn Thorne (aka "systmh")][tgt] created the GT model.
-+ "isteven" created the gtr_nismo model.
-+ [Mauro Zampaoli][zampaoli] created the ford_ranger model.
-+ "oakar258" created the hcr2_buggy model.
-+ This work is based on "Modern Hatchback - Low Poly model"
- (https://sketchfab.com/3d-models/modern-hatchback-low-poly-model-055ff8a21b8d4d279debca089e2fafcd)
- by Daniel Zhabotinsky (https://sketchfab.com/DanielZhabotinsky)
- licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).
++ Rémy Bouquet (aka "Nehon") created the "Jaime" model.
 + [Adi Barda (aka "adi.barda")][adi] created the racetrack model.
++ Rob Tuytel authored the "marble_01" textures.
++ [Sergej Majboroda][sergej] created the "Quarry 03" texture.
++ Tom Ruen created the "Lunar libration with phase Oct 2007" animation.
+
+### CC Attribution
+
++ This work is based on "Opel GT Retopo"
+  by [Thomas Glenn Thorne (aka "systmh")][tgt].
++ This work is based on "Ford Ranger"
+  (https://sketchfab.com/3d-models/ford-ranger-dade78dc96e34f1a8cbcf14dd47d84de)
+  by mauro.zampaoli (https://sketchfab.com/mauro.zampaoli)
+  licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).
++ This work is based on "Nissan GT-R" by iSteven.
++ This work is based on "HCR2 Buggy" by oakar258.
++ This work is based on "Modern Hatchback - Low Poly model"
+  (https://sketchfab.com/3d-models/modern-hatchback-low-poly-model-055ff8a21b8d4d279debca089e2fafcd)
+  by Daniel Zhabotinsky (https://sketchfab.com/DanielZhabotinsky)
+  licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).
+
+### Hosting
 
 I am grateful to [GitHub] and Imgur
 for providing free hosting for this project
