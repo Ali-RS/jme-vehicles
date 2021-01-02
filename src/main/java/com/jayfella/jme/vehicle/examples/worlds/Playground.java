@@ -51,7 +51,7 @@ public class Playground extends World {
      */
     @Override
     public Vector3f dropLocation() {
-        return new Vector3f(0f, 6f, 0f);
+        return new Vector3f(1f, 6f, 0f);
     }
 
     /**
@@ -132,7 +132,7 @@ public class Playground extends World {
     @Override
     public void resetCameraPosition() {
         Camera camera = Main.getApplication().getCamera();
-        camera.setLocation(new Vector3f(-4f, 1.6f, -1.5f));
-        camera.lookAt(new Vector3f(0f, 0f, 0f), Vector3f.UNIT_Y);
+        camera.setLocation(new Vector3f(-3f, 1.6f, -1.5f));
+        camera.lookAt(new Vector3f(1f, 0f, 0f), Vector3f.UNIT_Y);
     }
 }
