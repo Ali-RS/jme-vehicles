@@ -2,8 +2,8 @@ package com.jayfella.jme.vehicle.gui;
 
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.World;
-import com.jayfella.jme.vehicle.examples.environments.Playground;
-import com.jayfella.jme.vehicle.examples.environments.Racetrack;
+import com.jayfella.jme.vehicle.examples.worlds.Playground;
+import com.jayfella.jme.vehicle.examples.worlds.Racetrack;
 import com.jme3.app.state.AppStateManager;
 import com.simsilica.lemur.Button;
 import java.util.ArrayList;

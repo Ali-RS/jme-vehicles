@@ -1,4 +1,4 @@
-package com.jayfella.jme.vehicle.examples.environments;
+package com.jayfella.jme.vehicle.examples.worlds;
 
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.World;
@@ -8,20 +8,18 @@ import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.objects.PhysicsBody;
 import com.jme3.bullet.util.CollisionShapeFactory;
-import com.jme3.material.Material;
-import com.jme3.material.Materials;
-import com.jme3.material.RenderState;
+import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
-import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
-import com.jme3.texture.Texture;
 import java.util.logging.Logger;
 
 /**
- * A sample World, build around James Khan's Vehicle Playground model.
+ * A sample World, built around Adi Barda's racetrack model.
+ *
+ * @author Stephen Gold sgold@sonic.net
  */
-public class Playground extends World {
+public class Racetrack extends World {
     // *************************************************************************
     // constants and loggers
 
@@ -29,7 +27,7 @@ public class Playground extends World {
      * message logger for this class
      */
     final private static Logger logger
-            = Logger.getLogger(Playground.class.getName());
+            = Logger.getLogger(Racetrack.class.getName());
     // *************************************************************************
     // World methods
 
@@ -40,7 +38,7 @@ public class Playground extends World {
      */
     @Override
     public float directLightIntensity() {
-        return 1f;
+        return 2.5f;
     }
 
     /**
@@ -51,7 +49,7 @@ public class Playground extends World {
      */
     @Override
     public Vector3f dropLocation() {
-        return new Vector3f(0f, 6f, 0f);
+        return new Vector3f(-92f, 6f, 675f);
     }
 
     /**
@@ -62,7 +60,7 @@ public class Playground extends World {
      */
     @Override
     public float dropYRotation() {
-        return 0f;
+        return FastMath.PI;
     }
 
     /**
@@ -73,44 +71,9 @@ public class Playground extends World {
         assert loadedCgm == null : "The model is already loaded.";
 
         AssetManager assetManager = Main.getApplication().getAssetManager();
-        Material material = new Material(assetManager, Materials.PBR);
+        loadedCgm = (Node) assetManager.loadModel("/Models/race1/race1.j3o");
 
-        String prefix = "/Textures/Ground/Marble/marble_01_";
-        String assetPath = prefix + "diff_2k.png";
-        Texture baseColorMap = assetManager.loadTexture(assetPath);
-        baseColorMap.setWrap(Texture.WrapMode.Repeat);
-        material.setTexture("BaseColorMap", baseColorMap);
-
-        assetPath = prefix + "rough_2k.png";
-        Texture roughnessMap = assetManager.loadTexture(assetPath);
-        roughnessMap.setWrap(Texture.WrapMode.Repeat);
-        material.setTexture("RoughnessMap", roughnessMap);
-
-        assetPath = prefix + "AO_2k.png";
-        Texture aoMap = assetManager.loadTexture(assetPath);
-        aoMap.setWrap(Texture.WrapMode.Repeat);
-        material.setTexture("LightMap", aoMap);
-        material.setBoolean("LightMapAsAOMap", true);
-
-        assetPath = prefix + "nor_2k.png";
-        Texture normalMap = assetManager.loadTexture(assetPath);
-        normalMap.setWrap(Texture.WrapMode.Repeat);
-        material.setTexture("NormalMap", normalMap);
-        material.setFloat("NormalType", 1f);
-
-        material.setFloat("Metallic", 0.001f);
-
-        RenderState additional = material.getAdditionalRenderState();
-        additional.setFaceCullMode(RenderState.FaceCullMode.Off);
-
-        assetPath = "/Models/vehicle-playground/vehicle-playground.j3o";
-        loadedCgm = (Node) assetManager.loadModel(assetPath);
-        loadedCgm.setMaterial(material);
-
-        loadedCgm.breadthFirstTraversal(spatial
-                -> spatial.setShadowMode(RenderQueue.ShadowMode.CastAndReceive));
-
-        assetPath = "/Models/vehicle-playground/shapes/env-shape.j3o";
+        String assetPath = "/Models/race1/shapes/env-shape.j3o";
         CollisionShape shape;
         try {
             shape = (CollisionShape) assetManager.loadAsset(assetPath);
@@ -119,7 +82,6 @@ public class Playground extends World {
         } catch (AssetNotFoundException exception) {
             shape = CollisionShapeFactory.createMeshShape(loadedCgm);
         }
-
         RigidBodyControl rigidBodyControl
                 = new RigidBodyControl(shape, PhysicsBody.massForStatic);
         loadedCgm.addControl(rigidBodyControl);
@@ -132,7 +94,7 @@ public class Playground extends World {
     @Override
     public void resetCameraPosition() {
         Camera camera = Main.getApplication().getCamera();
-        camera.setLocation(new Vector3f(-4f, 1.6f, -1.5f));
-        camera.lookAt(new Vector3f(0f, 0f, 0f), Vector3f.UNIT_Y);
+        camera.setLocation(new Vector3f(-96.7f, 2.5f, 676.4f));
+        camera.lookAt(new Vector3f(-92f, 0f, 675f), Vector3f.UNIT_Y);
     }
 }
