@@ -29,7 +29,6 @@ import java.util.logging.Logger;
 import jme3utilities.Heart;
 import jme3utilities.MyCamera;
 import jme3utilities.MyString;
-import jme3utilities.SignalTracker;
 
 public class Main extends SimpleApplication {
     // *************************************************************************
@@ -191,7 +190,6 @@ public class Main extends SimpleApplication {
                             MyString.quote(arg));
             }
         }
-        SignalTracker.logger.setLevel(Level.WARNING);
 
         AppSettings appSettings = new AppSettings(true);
         appSettings.setResolution(1280, 720);
