@@ -1,6 +1,10 @@
 package com.jayfella.jme.vehicle.gui;
 
+import com.jayfella.jme.vehicle.Main;
+import com.jayfella.jme.vehicle.input.DrivingInputState;
 import com.jme3.renderer.Camera;
+import com.jme3.scene.Node;
+import com.simsilica.lemur.event.MouseEventControl;
 
 /**
  * A CartoucheState to display the name of the default camera.
@@ -19,6 +23,34 @@ public class CameraNameState extends CartoucheState {
     }
     // *************************************************************************
     // CartoucheState methods
+
+    /**
+     * Repopulate the Node from scratch.
+     *
+     * @param text the text to display (may be null)
+     */
+    @Override
+    protected void repopulateNode(String text) {
+        super.repopulateNode(text);
+        /*
+         * Add an Expander to advance to the next camera mode.
+         */
+        Node node = getNode();
+        Expander listener = new Expander(node) {
+            @Override
+            public void onClick(boolean isPressed) {
+                if (isPressed) {
+                    DrivingInputState inputState
+                            = Main.findAppState(DrivingInputState.class);
+                    if (inputState != null) {
+                        inputState.nextCameraMode();
+                    }
+                }
+            }
+        };
+        MouseEventControl control = new MouseEventControl(listener);
+        node.addControl(control);
+    }
 
     /**
      * Compare the default camera name to the displayed text and repopulate the

@@ -6,7 +6,6 @@ import com.atr.jme.font.shape.TrueTypeNode;
 import com.atr.jme.font.util.Style;
 import com.jayfella.jme.vehicle.Loadable;
 import com.jayfella.jme.vehicle.Main;
-import com.jayfella.jme.vehicle.input.DrivingInputState;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
@@ -18,7 +17,6 @@ import com.jme3.renderer.Camera;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
-import com.simsilica.lemur.event.MouseEventControl;
 import java.util.logging.Logger;
 import jme3utilities.MyAsset;
 import jme3utilities.mesh.RoundedRectangle;
@@ -98,6 +96,15 @@ abstract public class CartoucheState
     }
 
     /**
+     * Access the Node that gets attached to the GUI node.
+     *
+     * @return the pre-existing instance
+     */
+    protected Node getNode() {
+        return node;
+    }
+
+    /**
      * Repopulate the Node from scratch.
      *
      * @param text the text to display (may be null)
@@ -136,24 +143,6 @@ abstract public class CartoucheState
         Geometry background = new Geometry("camera name background", bgMesh);
         node.attachChild(background);
         background.setMaterial(bgMaterial);
-        /*
-         * Add an Expander to advance to the next camera mode.
-         */
-        Expander listener = new Expander(node) {
-            @Override
-            public void onClick(boolean isPressed) {
-                if (isPressed) {
-                    DrivingInputState inputState
-                            = Main.findAppState(DrivingInputState.class);
-                    if (inputState != null) {
-                        inputState.nextCameraMode();
-                    }
-                }
-            }
-        };
-        MouseEventControl control = new MouseEventControl(listener);
-        node.addControl(control);
-
         displayedText = text;
     }
 
