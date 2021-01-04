@@ -40,10 +40,10 @@ public class CameraNameState extends CartoucheState {
             @Override
             public void onClick(boolean isPressed) {
                 if (isPressed) {
-                    DrivingInputState inputState
+                    DrivingInputState mode
                             = Main.findAppState(DrivingInputState.class);
-                    if (inputState != null) {
-                        inputState.nextCameraMode();
+                    if (mode.isEnabled()) {
+                        mode.nextCameraMode();
                     }
                 }
             }
