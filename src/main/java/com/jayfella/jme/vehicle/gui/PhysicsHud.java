@@ -77,13 +77,25 @@ public class PhysicsHud extends BaseAppState {
     // new methods exposed
 
     /**
-     * Single-step the physics simulation.
+     * Test whether the physics simulation is paused.
      */
-    public void singleStepPhysics() {
+    public boolean isPhysicsPaused() {
         BulletAppState bas = Main.findAppState(BulletAppState.class);
         float physicsSpeed = bas.getSpeed();
-        assert physicsSpeed == 0f : physicsSpeed;
+        if (physicsSpeed == 0f) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
+    /**
+     * Single-step the physics simulation, assuming it's paused.
+     */
+    public void singleStepPhysics() {
+        assert isPhysicsPaused();
+
+        BulletAppState bas = Main.findAppState(BulletAppState.class);
         PhysicsSpace space = bas.getPhysicsSpace();
         float timeStep = space.getAccuracy();
         space.update(timeStep, 0);
@@ -94,15 +106,14 @@ public class PhysicsHud extends BaseAppState {
      */
     public void togglePhysicsPaused() {
         BulletAppState bas = Main.findAppState(BulletAppState.class);
-        float physicsSpeed = bas.getSpeed();
-        if (physicsSpeed > 0f) { // was running
-            bas.setSpeed(0f);
-            showPauseButton(true);
-            showSingleStepButton();
-        } else {
+        if (isPhysicsPaused()) {
             bas.setSpeed(1f);
             showPauseButton(false);
             hideSingleStepButton();
+        } else {
+            bas.setSpeed(0f);
+            showPauseButton(true);
+            showSingleStepButton();
         }
     }
     // *************************************************************************
@@ -180,23 +191,11 @@ public class PhysicsHud extends BaseAppState {
      */
     @Override
     protected void onEnable() {
-        BulletAppState bas = Main.findAppState(BulletAppState.class);
-        boolean isPaused = (bas.getSpeed() == 0f);
+        boolean isPaused = isPhysicsPaused();
         showPauseButton(isPaused);
         if (isPaused) {
             showSingleStepButton();
         }
-    }
-
-    /**
-     * Callback to update this AppState, invoked once per frame when the
-     * AppState is both attached and enabled.
-     *
-     * @param tpf the time interval between frames (in seconds, &ge;0)
-     */
-    @Override
-    public void update(float tpf) {
-        super.update(tpf);
     }
     // *************************************************************************
     // private methods
