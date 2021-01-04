@@ -147,7 +147,7 @@ abstract class InputMode extends BaseAppState {
      * shutdown if the state is still attached. onDisable() is called before
      * this cleanup() method if the state is enabled at the time of cleanup.
      *
-     * @param app the application instance (not null)
+     * @param application the application instance (not null)
      */
     @Override
     protected void cleanup(Application application) {
