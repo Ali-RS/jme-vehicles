@@ -78,6 +78,8 @@ public class PhysicsHud extends BaseAppState {
 
     /**
      * Test whether the physics simulation is paused.
+     * 
+     * @return true if paused, otherwise false
      */
     public boolean isPhysicsPaused() {
         BulletAppState bas = Main.findAppState(BulletAppState.class);
