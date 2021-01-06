@@ -20,7 +20,6 @@ import com.jayfella.jme.vehicle.view.VehicleCamView;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.app.state.ScreenshotAppState;
 import com.jme3.input.KeyInput;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
@@ -78,8 +77,6 @@ public class DrivingInputState
             = new FunctionId(G_VEHICLE, "Return to Main Menu");
     final private static FunctionId F_REVERSE
             = new FunctionId(G_VEHICLE, "Vehicle reverse");
-    final private static FunctionId F_SCREEN_SHOT
-            = new FunctionId(G_VEHICLE, "ScreenShot");
     final private static FunctionId F_START_ENGINE
             = new FunctionId(G_VEHICLE, "Vehicle Start Engine");
     final private static FunctionId F_TURN_LEFT
@@ -223,8 +220,6 @@ public class DrivingInputState
         inputMapper.map(F_PAUSE, KeyInput.KEY_PAUSE);
         inputMapper.map(F_PAUSE, KeyInput.KEY_PERIOD);
         inputMapper.map(F_RETURN, KeyInput.KEY_ESCAPE);
-        // Some Linux window managers block SYSRQ/PrtSc, so we map F12 instead.
-        inputMapper.map(F_SCREEN_SHOT, KeyInput.KEY_F12);
         /*
          * Add listeners for all functions in G_CAMERA and G_VEHICLE.
          */
@@ -331,11 +326,6 @@ public class DrivingInputState
         } else if (func == F_RETURN && !pressed) {
             // can't use InputState.Positive for this purpose
             returnToMainMenu();
-
-        } else if (func == F_SCREEN_SHOT && pressed) {
-            ScreenshotAppState screenshotAppState
-                    = Main.findAppState(ScreenshotAppState.class);
-            screenshotAppState.takeScreenshot();
 
         } else if (func == F_CAMVIEW && pressed) {
             nextCameraMode();

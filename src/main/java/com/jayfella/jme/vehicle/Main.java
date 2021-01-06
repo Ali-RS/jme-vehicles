@@ -12,13 +12,13 @@ import com.jayfella.jme.vehicle.gui.MainMenu;
 import com.jayfella.jme.vehicle.gui.PhysicsHud;
 import com.jayfella.jme.vehicle.input.DumpInputState;
 import com.jayfella.jme.vehicle.input.NonDrivingInputState;
+import com.jayfella.jme.vehicle.input.ScreenshotMode;
 import com.jayfella.jme.vehicle.input.SignalMode;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
 import com.jme3.app.state.AppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.ConstantVerifierState;
-import com.jme3.app.state.ScreenshotAppState;
 import com.jme3.audio.AudioListenerState;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.util.NativeLibrary;
@@ -41,14 +41,6 @@ public class Main extends SimpleApplication {
      * message logger for this class
      */
     final private static Logger logger = Logger.getLogger(Main.class.getName());
-    /**
-     * filesystem path to the directory where screenshots will be written
-     */
-    final private static String screenshotDirectory = "./";
-    /**
-     * filename prefix for numbered screen shots
-     */
-    final private static String screenshotPrefix = "screen_shot";
     // *************************************************************************
     // fields
 
@@ -79,7 +71,6 @@ public class Main extends SimpleApplication {
                 new AudioListenerState(),
                 new ConstantVerifierState(),
                 new LoadingState(),
-                new ScreenshotAppState(screenshotDirectory, screenshotPrefix),
                 new StatsAppState()
         );
     }
@@ -110,6 +101,7 @@ public class Main extends SimpleApplication {
         /*
          * Attach input modes.
          */
+        activateScreenshotMode();
         activateSignalMode();
         stateManager.attach(new NonDrivingInputState());
         /*
@@ -279,6 +271,20 @@ public class Main extends SimpleApplication {
     }
     // *************************************************************************
     // private methods
+
+    /**
+     * Configure, attach, and enable a new screenshot InputMode.
+     */
+    private static void activateScreenshotMode() {
+        ScreenshotMode mode = new ScreenshotMode();
+
+        // Some Linux window managers block SYSRQ/PrtSc, so map F12 instead.
+        mode.assign(ScreenshotMode.F_SCREEN_SHOT, KeyInput.KEY_F12);
+
+        AppStateManager manager = getApplication().getStateManager();
+        manager.attach(mode);
+        mode.setEnabled(true);
+    }
 
     /**
      * Configure, attach, and enable a new signal InputMode.

@@ -8,7 +8,6 @@ import com.jayfella.jme.vehicle.view.ChaseCamera;
 import com.jayfella.jme.vehicle.view.ChaseOption;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.app.state.ScreenshotAppState;
 import com.jme3.input.KeyInput;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
@@ -48,8 +47,6 @@ public class NonDrivingInputState
             = new FunctionId(G_ORBIT, "Camera Reset FOV");
     final private static FunctionId F_RETURN
             = new FunctionId(G_ORBIT, "Return to Main Menu");
-    final private static FunctionId F_SCREEN_SHOT
-            = new FunctionId(G_ORBIT, "ScreenShot");
     final private static FunctionId F_CAMERA_RESET_OFFSET
             = new FunctionId(G_ORBIT, "Camera Reset Offset");
     // *************************************************************************
@@ -127,8 +124,6 @@ public class NonDrivingInputState
         inputMapper.map(F_CAMERA_RESET_OFFSET, KeyInput.KEY_NUMPAD5);
 
         inputMapper.map(F_RETURN, KeyInput.KEY_ESCAPE);
-        // Some Linux window managers block SYSRQ/PrtSc, so we map F12 instead.
-        inputMapper.map(F_SCREEN_SHOT, KeyInput.KEY_F12);
         /*
          * Add listeners for all functions in G_ORBIT.
          */
@@ -187,11 +182,6 @@ public class NonDrivingInputState
         } else if (func == F_CAMERA_RESET_FOV && pressed) {
             Camera cam = getApplication().getCamera();
             MyCamera.setYTangent(cam, 1f);
-
-        } else if (func == F_SCREEN_SHOT && pressed) {
-            ScreenshotAppState screenshotAppState
-                    = Main.findAppState(ScreenshotAppState.class);
-            screenshotAppState.takeScreenshot();
         }
     }
     // *************************************************************************
