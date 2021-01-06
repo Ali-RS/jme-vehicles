@@ -12,6 +12,7 @@ import com.jayfella.jme.vehicle.gui.MainMenu;
 import com.jayfella.jme.vehicle.gui.PhysicsHud;
 import com.jayfella.jme.vehicle.input.DumpInputState;
 import com.jayfella.jme.vehicle.input.NonDrivingInputState;
+import com.jayfella.jme.vehicle.input.PhysicsMode;
 import com.jayfella.jme.vehicle.input.ScreenshotMode;
 import com.jayfella.jme.vehicle.input.SignalMode;
 import com.jme3.app.SimpleApplication;
@@ -101,6 +102,7 @@ public class Main extends SimpleApplication {
         /*
          * Attach input modes.
          */
+        activatePhysicsMode();
         activateScreenshotMode();
         activateSignalMode();
         stateManager.attach(new NonDrivingInputState());
@@ -271,6 +273,20 @@ public class Main extends SimpleApplication {
     }
     // *************************************************************************
     // private methods
+
+    /**
+     * Configure, attach, and enable a new physics InputMode.
+     */
+    private static void activatePhysicsMode() {
+        PhysicsMode mode = new PhysicsMode();
+        mode.assign(PhysicsMode.F_PAUSE,
+                KeyInput.KEY_PAUSE, KeyInput.KEY_PERIOD);
+        mode.assign(PhysicsMode.F_SINGLE_STEP, KeyInput.KEY_COMMA);
+
+        AppStateManager manager = getApplication().getStateManager();
+        manager.attach(mode);
+        mode.setEnabled(true);
+    }
 
     /**
      * Configure, attach, and enable a new screenshot InputMode.

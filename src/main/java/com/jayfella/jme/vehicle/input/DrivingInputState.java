@@ -9,7 +9,6 @@ import com.jayfella.jme.vehicle.debug.TireDataState;
 import com.jayfella.jme.vehicle.debug.VehicleEditorState;
 import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.gui.MainMenu;
-import com.jayfella.jme.vehicle.gui.PhysicsHud;
 import com.jayfella.jme.vehicle.part.GearBox;
 import com.jayfella.jme.vehicle.view.CameraController;
 import com.jayfella.jme.vehicle.view.CameraSignal;
@@ -69,8 +68,6 @@ public class DrivingInputState
             = new FunctionId(G_VEHICLE, "Vehicle Horn");
     final private static FunctionId F_FORWARD
             = new FunctionId(G_VEHICLE, "Vehicle Move");
-    final private static FunctionId F_PAUSE
-            = new FunctionId(G_VEHICLE, "Pause Simulation");
     final private static FunctionId F_RESET
             = new FunctionId(G_VEHICLE, "Vehicle Reset");
     final private static FunctionId F_RETURN
@@ -217,8 +214,6 @@ public class DrivingInputState
         inputMapper.map(F_CAMERA_RESET_OFFSET, Button.MOUSE_BUTTON2);
         inputMapper.map(F_CAMERA_RESET_OFFSET, KeyInput.KEY_NUMPAD5);
 
-        inputMapper.map(F_PAUSE, KeyInput.KEY_PAUSE);
-        inputMapper.map(F_PAUSE, KeyInput.KEY_PERIOD);
         inputMapper.map(F_RETURN, KeyInput.KEY_ESCAPE);
         /*
          * Add listeners for all functions in G_CAMERA and G_VEHICLE.
@@ -318,10 +313,6 @@ public class DrivingInputState
         } else if (func == F_CAMERA_RESET_FOV && pressed) {
             Camera cam = getApplication().getCamera();
             MyCamera.setYTangent(cam, 1f);
-
-        } else if (func == F_PAUSE && pressed) {
-            PhysicsHud physicsState = Main.findAppState(PhysicsHud.class);
-            physicsState.togglePhysicsPaused();
 
         } else if (func == F_RETURN && !pressed) {
             // can't use InputState.Positive for this purpose
