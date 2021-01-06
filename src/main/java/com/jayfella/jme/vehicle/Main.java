@@ -93,7 +93,6 @@ public class Main extends SimpleApplication {
                 new CameraNameState(),
                 new CompassState(),
                 new DriverHud(),
-                new DumpInputState(),
                 new GearNameState(),
                 new MainMenu(),
                 new PhysicsHud()
@@ -102,6 +101,7 @@ public class Main extends SimpleApplication {
         /*
          * Attach input modes.
          */
+        activateDumpMode();
         activatePhysicsMode();
         activateScreenshotMode();
         activateSignalMode();
@@ -273,6 +273,20 @@ public class Main extends SimpleApplication {
     }
     // *************************************************************************
     // private methods
+
+    /**
+     * Configure, attach, and enable a new dump InputMode.
+     */
+    private static void activateDumpMode() {
+        DumpInputState mode = new DumpInputState();
+        mode.assign(DumpInputState.F_DUMP_CAMERA, KeyInput.KEY_C);
+        mode.assign(DumpInputState.F_DUMP_PHYSICS, KeyInput.KEY_O);
+        mode.assign(DumpInputState.F_DUMP_VIEWPORT, KeyInput.KEY_P);
+
+        AppStateManager manager = getApplication().getStateManager();
+        manager.attach(mode);
+        mode.setEnabled(true);
+    }
 
     /**
      * Configure, attach, and enable a new physics InputMode.

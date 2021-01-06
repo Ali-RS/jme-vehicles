@@ -1,32 +1,22 @@
 package com.jayfella.jme.vehicle.input;
 
 import com.jayfella.jme.vehicle.Main;
-import com.jme3.app.Application;
-import com.jme3.app.state.BaseAppState;
 import com.jme3.bullet.BulletAppState;
-import com.jme3.input.KeyInput;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
-import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.input.FunctionId;
-import com.simsilica.lemur.input.InputMapper;
 import com.simsilica.lemur.input.InputState;
-import com.simsilica.lemur.input.StateFunctionListener;
-import java.util.Set;
 import java.util.logging.Logger;
 import jme3utilities.MyCamera;
-import jme3utilities.debug.Dumper;
 import jme3utilities.minie.PhysicsDumper;
 
 /**
- * A keyboard input state to dump information to the standard output stream, for
- * debugging. Each new instance is enabled by default.
+ * An InputMode to dump information to the standard output stream, for
+ * debugging. Each new instance is disabled by default. TODO rename DumpMode
  *
  * @author Stephen Gold sgold@sonic.net
  */
-public class DumpInputState
-        extends BaseAppState
-        implements StateFunctionListener {
+public class DumpInputState extends InputMode {
     // *************************************************************************
     // constants and loggers
 
@@ -35,115 +25,58 @@ public class DumpInputState
      */
     final public static Logger logger
             = Logger.getLogger(DumpInputState.class.getName());
-
-    final private static String G_DUMP = "G_DUMP";
     /**
-     * function IDs
+     * input functions handled by this mode
      */
-    final private static FunctionId F_DUMP_CAMERA
-            = new FunctionId(G_DUMP, "Dump Camera");
-    final private static FunctionId F_DUMP_PHYSICS
-            = new FunctionId(G_DUMP, "Dump Physics");
-    final private static FunctionId F_DUMP_VIEWPORT
-            = new FunctionId(G_DUMP, "Dump Viewport");
+    final public static FunctionId F_DUMP_CAMERA
+            = new FunctionId("Dump Camera");
+    final public static FunctionId F_DUMP_PHYSICS
+            = new FunctionId("Dump Physics");
+    final public static FunctionId F_DUMP_VIEWPORT
+            = new FunctionId("Dump Viewport");
     // *************************************************************************
-    // BaseAppState methods
+    // fields
 
     /**
-     * Callback invoked after this AppState is detached or during application
-     * shutdown if the state is still attached. onDisable() is called before
-     * this cleanup() method if the state is enabled at the time of cleanup.
-     *
-     * @param application the application instance (not null)
+     * dump debugging information to System.out
      */
-    @Override
-    protected void cleanup(Application application) {
-        /*
-         * Remove all input mappings/listeners in G_DUMP.
-         */
-        InputMapper inputMapper = GuiGlobals.getInstance().getInputMapper();
-        Set<FunctionId> functions = inputMapper.getFunctionIds();
-        for (FunctionId function : functions) {
-            String group = function.getGroup();
-            switch (group) {
-                case G_DUMP:
-                    Set<InputMapper.Mapping> mappings
-                            = inputMapper.getMappings(function);
-                    for (InputMapper.Mapping mapping : mappings) {
-                        inputMapper.removeMapping(mapping);
-                    }
-                    inputMapper.removeStateListener(this, function);
-            }
-        }
-    }
-
-    /**
-     * Callback invoked after this AppState is attached but before onEnable().
-     *
-     * @param application the application instance (not null)
-     */
-    @Override
-    protected void initialize(Application application) {
-        InputMapper inputMapper = GuiGlobals.getInstance().getInputMapper();
-
-        inputMapper.map(F_DUMP_CAMERA, KeyInput.KEY_C);
-        inputMapper.map(F_DUMP_PHYSICS, KeyInput.KEY_O);
-        inputMapper.map(F_DUMP_VIEWPORT, KeyInput.KEY_P);
-        /*
-         * Add listeners for all functions in G_DUMP.
-         */
-        Set<FunctionId> functions = inputMapper.getFunctionIds();
-        for (FunctionId function : functions) {
-            String group = function.getGroup();
-            switch (group) {
-                case G_DUMP:
-                    inputMapper.addStateListener(this, function);
-            }
-        }
-    }
-
-    /**
-     * Callback invoked whenever this AppState ceases to be both attached and
-     * enabled.
-     */
-    @Override
-    protected void onDisable() {
-        InputMapper inputMapper = GuiGlobals.getInstance().getInputMapper();
-        inputMapper.deactivateGroup(G_DUMP);
-    }
-
-    /**
-     * Callback invoked whenever this AppState becomes both attached and
-     * enabled.
-     */
-    @Override
-    protected void onEnable() {
-        InputMapper inputMapper = GuiGlobals.getInstance().getInputMapper();
-        inputMapper.activateGroup(G_DUMP);
-    }
+    final private static PhysicsDumper dumper = new PhysicsDumper();
     // *************************************************************************
-    // StateFunctionListener methods
+    // constructors
 
-    @Override
-    public void valueChanged(FunctionId function, InputState value,
-            double tpf) {
-        boolean pressed = (value == InputState.Positive);
+    /**
+     * Instantiate a disabled InputMode.
+     */
+    public DumpInputState() {
+        super("Dump Mode", F_DUMP_CAMERA, F_DUMP_PHYSICS, F_DUMP_VIEWPORT);
 
-        if (function == F_DUMP_CAMERA && pressed) {
-            dumpCamera();
+        dumper.setDumpShadow(true)
+                .setDumpTransform(true);
 
-        } else if (function == F_DUMP_PHYSICS && pressed) {
-            BulletAppState bas = Main.findAppState(BulletAppState.class);
-            new PhysicsDumper().dump(bas);
-            System.out.println();
-            System.out.flush();
+        assign((FunctionId function, InputState inputState, double tpf) -> {
+            if (inputState == InputState.Positive) {
+                dumpCamera();
+            }
+        }, F_DUMP_CAMERA);
 
-        } else if (function == F_DUMP_VIEWPORT && pressed) {
-            ViewPort viewPort = getApplication().getViewPort();
-            new Dumper().setDumpShadow(true).dump(viewPort);
-            System.out.println();
-            System.out.flush();
-        }
+        assign((FunctionId function, InputState inputState, double tpf) -> {
+            if (inputState == InputState.Positive) {
+                BulletAppState bas
+                        = Main.findAppState(BulletAppState.class);
+                dumper.dump(bas);
+                System.out.println();
+                System.out.flush();
+            }
+        }, F_DUMP_PHYSICS);
+
+        assign((FunctionId function, InputState inputState, double tpf) -> {
+            if (inputState == InputState.Positive) {
+                ViewPort viewPort = getApplication().getViewPort();
+                dumper.dump(viewPort);
+                System.out.println();
+                System.out.flush();
+            }
+        }, F_DUMP_VIEWPORT);
     }
     // *************************************************************************
     // private methods
