@@ -157,9 +157,8 @@ abstract public class Car extends Vehicle {
         Wheel wheel = wheels.get(wheelIndex);
         VehicleWheel vehicleWheel = wheel.getVehicleWheel();
 
-        Spatial oldSpatial = vehicleWheel.getWheelSpatial();
-        assert oldSpatial.getParent() == getNode();
-        oldSpatial.removeFromParent();
+        Node oldNode = (Node) vehicleWheel.getWheelSpatial();
+        oldNode.removeFromParent();
 
         Constructor<? extends WheelModel>[] constructors
                 = (Constructor<? extends WheelModel>[]) modelClass
@@ -181,13 +180,17 @@ abstract public class Car extends Vehicle {
         /*
          * Copy the local rotation of the old Spatial.
          */
+        int numChildren = oldNode.getChildren().size();
+        assert numChildren == 1 : numChildren;
+        Spatial oldSpatial = oldNode.getChild(0);
+        Spatial newSpatial = wheelModel.getSpatial();
         Quaternion localRotation = oldSpatial.getLocalRotation();
-        wheelModel.getSpatial().setLocalRotation(localRotation);
+        newSpatial.setLocalRotation(localRotation);
 
-        Node wheelNode = wheelModel.getWheelNode();
-        vehicleWheel.setWheelSpatial(wheelNode);
+        Node newNode = wheelModel.getWheelNode();
+        vehicleWheel.setWheelSpatial(newNode);
 
-        getNode().attachChild(wheelNode);
+        getNode().attachChild(newNode);
     }
 
     /**
