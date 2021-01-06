@@ -15,6 +15,8 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
+import com.jme3.system.JmeSystem;
+import com.jme3.system.Platform;
 import com.jme3.texture.Texture;
 import java.util.logging.Logger;
 
@@ -103,14 +105,21 @@ public class Playground extends World {
         RenderState additional = material.getAdditionalRenderState();
         additional.setFaceCullMode(RenderState.FaceCullMode.Off);
 
-        assetPath = "/Models/vehicle-playground/vehicle-playground.j3o";
+        String assetFolder = "/Models/vehicle-playground/";
+        assetPath = assetFolder + "vehicle-playground.j3o";
         loadedCgm = (Node) assetManager.loadModel(assetPath);
         loadedCgm.setMaterial(material);
 
         loadedCgm.breadthFirstTraversal(spatial
                 -> spatial.setShadowMode(RenderQueue.ShadowMode.CastAndReceive));
 
-        assetPath = "/Models/vehicle-playground/shapes/env-shape.j3o";
+        Platform platform = JmeSystem.getPlatform();
+        if (platform == Platform.Windows64) {
+            assetPath = assetFolder + "shapes/env-shape-Windows64.j3o";
+        } else {
+            assetPath = assetFolder + "shapes/env-shape.j3o";
+        }
+
         CollisionShape shape;
         try {
             shape = (CollisionShape) assetManager.loadAsset(assetPath);
@@ -120,7 +129,7 @@ public class Playground extends World {
             shape = CollisionShapeFactory.createMeshShape(loadedCgm);
         }
 
-        RigidBodyControl rigidBodyControl
+        RigidBodyControl rigidBodyControl // TODO PhysicsRigidBody
                 = new RigidBodyControl(shape, PhysicsBody.massForStatic);
         loadedCgm.addControl(rigidBodyControl);
     }

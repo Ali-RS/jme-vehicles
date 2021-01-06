@@ -9,7 +9,9 @@ import com.jme3.bullet.util.NativeLibrary;
 import com.jme3.export.binary.BinaryLoader;
 import com.jme3.material.plugins.J3MLoader;
 import com.jme3.scene.Spatial;
+import com.jme3.system.JmeSystem;
 import com.jme3.system.NativeLibraryLoader;
+import com.jme3.system.Platform;
 import com.jme3.texture.plugins.AWTLoader;
 import java.util.logging.Logger;
 import jme3utilities.Heart;
@@ -103,7 +105,7 @@ public class CreateShapes {
     }
 
     /**
-     * Create a collision shape for a World.
+     * Create a collision shape for a World. TODO rename
      *
      * @param folderName the name of the folder containing the C-G model
      * @param cgmBaseFileName the base filename of the C-G model
@@ -129,8 +131,16 @@ public class CreateShapes {
         /*
          * Save the shape in J3O format.
          */
+        String assetName;
+        Platform platform = JmeSystem.getPlatform();
+        if (platform == Platform.Windows64) {
+            assetName = "env-shape-Windows64.j3o";
+        } else {
+            assetName = "env-shape.j3o";
+        }
+
         String writeFilePath = "src/main/resources/Models/" + folderName
-                + "/shapes/env-shape.j3o";
+                + "/shapes/" + assetName;
         Heart.writeJ3O(writeFilePath, collisionShape);
     }
 }

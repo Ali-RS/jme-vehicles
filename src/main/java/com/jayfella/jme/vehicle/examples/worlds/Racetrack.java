@@ -12,6 +12,8 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
+import com.jme3.system.JmeSystem;
+import com.jme3.system.Platform;
 import java.util.logging.Logger;
 
 /**
@@ -71,9 +73,17 @@ public class Racetrack extends World {
         assert loadedCgm == null : "The model is already loaded.";
 
         AssetManager assetManager = Main.getApplication().getAssetManager();
-        loadedCgm = (Node) assetManager.loadModel("/Models/race1/race1.j3o");
+        String assetFolder = "/Models/race1/";
+        String assetPath = assetFolder + "race1.j3o";
+        loadedCgm = (Node) assetManager.loadModel(assetPath);
 
-        String assetPath = "/Models/race1/shapes/env-shape.j3o";
+        Platform platform = JmeSystem.getPlatform();
+        if (platform == Platform.Windows64) {
+            assetPath = assetFolder + "shapes/env-shape-Windows64.j3o";
+        } else {
+            assetPath = assetFolder + "shapes/env-shape.j3o";
+        }
+
         CollisionShape shape;
         try {
             shape = (CollisionShape) assetManager.loadAsset(assetPath);
@@ -82,7 +92,8 @@ public class Racetrack extends World {
         } catch (AssetNotFoundException exception) {
             shape = CollisionShapeFactory.createMeshShape(loadedCgm);
         }
-        RigidBodyControl rigidBodyControl
+
+        RigidBodyControl rigidBodyControl // TODO PhysicsRigidBody
                 = new RigidBodyControl(shape, PhysicsBody.massForStatic);
         loadedCgm.addControl(rigidBodyControl);
     }
