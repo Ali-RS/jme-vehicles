@@ -12,6 +12,7 @@ import com.jayfella.jme.vehicle.gui.MainMenu;
 import com.jayfella.jme.vehicle.gui.PhysicsHud;
 import com.jayfella.jme.vehicle.input.DumpInputState;
 import com.jayfella.jme.vehicle.input.NonDrivingInputState;
+import com.jayfella.jme.vehicle.input.SignalMode;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
 import com.jme3.app.state.AppState;
@@ -23,7 +24,9 @@ import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.util.NativeLibrary;
 import com.jme3.input.Joystick;
 import com.jme3.input.JoystickConnectionListener;
+import com.jme3.input.KeyInput;
 import com.jme3.system.AppSettings;
+import com.simsilica.lemur.input.Button;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jme3utilities.Heart;
@@ -101,10 +104,14 @@ public class Main extends SimpleApplication {
                 new DumpInputState(),
                 new GearNameState(),
                 new MainMenu(),
-                new NonDrivingInputState(),
                 new PhysicsHud()
         );
-        //application.stateManager.attach(new VehiclePointsState());
+        //stateManager.attach(new VehiclePointsState());
+        /*
+         * Attach input modes.
+         */
+        activateSignalMode();
+        stateManager.attach(new NonDrivingInputState());
         /*
          * The dash camera sits close to the bodywork, so set the near clipping
          * plane accordingly.
@@ -272,6 +279,26 @@ public class Main extends SimpleApplication {
     }
     // *************************************************************************
     // private methods
+
+    /**
+     * Configure, attach, and enable a new signal InputMode.
+     */
+    private static void activateSignalMode() {
+        SignalMode mode = new SignalMode();
+        mode.assign(SignalMode.F_CAMERA_BACK1, KeyInput.KEY_NUMPAD1);
+        mode.assign(SignalMode.F_CAMERA_DOWN1, KeyInput.KEY_NUMPAD2);
+        mode.assign(SignalMode.F_CAMERA_DRAG_TO_ORBIT1, Button.MOUSE_BUTTON3);
+        mode.assign(SignalMode.F_CAMERA_FORWARD1, KeyInput.KEY_NUMPAD7);
+        mode.assign(SignalMode.F_CAMERA_UP1, KeyInput.KEY_NUMPAD8);
+        mode.assign(SignalMode.F_CAMERA_XRAY1, KeyInput.KEY_NUMPAD0);
+        mode.assign(SignalMode.F_CAMERA_ZOOM_IN1, KeyInput.KEY_NUMPAD9);
+        mode.assign(SignalMode.F_CAMERA_ZOOM_OUT1, KeyInput.KEY_NUMPAD3);
+        mode.assign(SignalMode.F_HORN1, KeyInput.KEY_H);
+
+        AppStateManager manager = getApplication().getStateManager();
+        manager.attach(mode);
+        mode.setEnabled(true);
+    }
 
     /**
      * Attach the selected Sky, World, and Vehicle to the scene.

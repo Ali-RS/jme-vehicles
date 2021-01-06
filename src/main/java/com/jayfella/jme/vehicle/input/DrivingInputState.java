@@ -60,10 +60,6 @@ public class DrivingInputState
      */
     final private static FunctionId F_CAMERA_RESET_FOV
             = new FunctionId(G_VEHICLE, "Camera Reset FOV");
-    final private static FunctionId F_CAMERA_ZOOM_IN1
-            = new FunctionId(G_VEHICLE, CameraSignal.ZoomIn.toString());
-    final private static FunctionId F_CAMERA_ZOOM_OUT1
-            = new FunctionId(G_VEHICLE, CameraSignal.ZoomOut.toString());
     final private static FunctionId F_CAMVIEW
             = new FunctionId(G_VEHICLE, "Camera View");
     final private static FunctionId F_MAIN_BRAKE
@@ -93,20 +89,8 @@ public class DrivingInputState
     /**
      * ChaseCamera function IDs
      */
-    final private static FunctionId F_CAMERA_BACK1
-            = new FunctionId(G_CAMERA, CameraSignal.Back.toString());
-    final private static FunctionId F_CAMERA_DOWN1
-            = new FunctionId(G_CAMERA, CameraSignal.OrbitDown.toString());
-    final private static FunctionId F_CAMERA_DRAG_TO_ORBIT1
-            = new FunctionId(G_CAMERA, CameraSignal.DragToOrbit.toString());
-    final private static FunctionId F_CAMERA_FORWARD1
-            = new FunctionId(G_CAMERA, CameraSignal.Forward.toString());
     final private static FunctionId F_CAMERA_RESET_OFFSET
             = new FunctionId(G_CAMERA, "Camera Reset Offset");
-    final private static FunctionId F_CAMERA_UP1
-            = new FunctionId(G_CAMERA, CameraSignal.OrbitUp.toString());
-    final private static FunctionId F_CAMERA_XRAY1
-            = new FunctionId(G_CAMERA, CameraSignal.Xray.toString());
     // *************************************************************************
     // fields
 
@@ -122,7 +106,6 @@ public class DrivingInputState
     private float steeringAngle = 0f;
 
     private InputMapper inputMapper;
-    final private SignalTracker signalTracker;
     final private Vehicle vehicle;
     private VehicleCamView cameraMode = VehicleCamView.ChaseCam;
     // *************************************************************************
@@ -135,25 +118,9 @@ public class DrivingInputState
      */
     public DrivingInputState(Vehicle vehicle) {
         this.vehicle = vehicle;
-
-        signalTracker = new SignalTracker();
-        signalTracker.add("horn");
-        for (CameraSignal function : CameraSignal.values()) {
-            String signalName = function.toString();
-            signalTracker.add(signalName);
-        }
     }
     // *************************************************************************
     // public methods
-
-    /**
-     * Access the SignalTracker.
-     *
-     * @return the pre-existing instance (not null)
-     */
-    public SignalTracker getSignalTracker() {
-        return signalTracker;
-    }
 
     /**
      * Advance to the next camera mode.
@@ -249,17 +216,9 @@ public class DrivingInputState
         inputMapper.map(F_CAMVIEW, KeyInput.KEY_F5);
         inputMapper.map(F_HORN, KeyInput.KEY_H);
 
-        inputMapper.map(F_CAMERA_BACK1, KeyInput.KEY_NUMPAD1);
-        inputMapper.map(F_CAMERA_DOWN1, KeyInput.KEY_NUMPAD2);
-        inputMapper.map(F_CAMERA_DRAG_TO_ORBIT1, Button.MOUSE_BUTTON3);
-        inputMapper.map(F_CAMERA_FORWARD1, KeyInput.KEY_NUMPAD7);
         inputMapper.map(F_CAMERA_RESET_FOV, KeyInput.KEY_NUMPAD6);
         inputMapper.map(F_CAMERA_RESET_OFFSET, Button.MOUSE_BUTTON2);
         inputMapper.map(F_CAMERA_RESET_OFFSET, KeyInput.KEY_NUMPAD5);
-        inputMapper.map(F_CAMERA_UP1, KeyInput.KEY_NUMPAD8);
-        inputMapper.map(F_CAMERA_XRAY1, KeyInput.KEY_NUMPAD0);
-        inputMapper.map(F_CAMERA_ZOOM_IN1, KeyInput.KEY_NUMPAD9);
-        inputMapper.map(F_CAMERA_ZOOM_OUT1, KeyInput.KEY_NUMPAD3);
 
         inputMapper.map(F_PAUSE, KeyInput.KEY_PAUSE);
         inputMapper.map(F_PAUSE, KeyInput.KEY_PERIOD);
@@ -313,8 +272,10 @@ public class DrivingInputState
 
         activeCam.update(tpf);
 
-        boolean hornIsRequested = signalTracker.test("horn");
-        vehicle.setHornStatus(hornIsRequested);
+        SignalMode signalMode = Main.findAppState(SignalMode.class);
+        SignalTracker signalTracker = signalMode.getSignalTracker();
+        boolean requested = signalTracker.test(SignalMode.F_HORN1.getId());
+        Main.getVehicle().setHornStatus(requested);
     }
     // *************************************************************************
     // StateFunctionListener methods
@@ -324,10 +285,7 @@ public class DrivingInputState
         boolean pressed = (value == InputState.Positive);
         DriverHud driverHud = Main.findAppState(DriverHud.class);
 
-        if (func == F_HORN) {
-            signalTracker.setActive("horn", KeyInput.KEY_H, pressed);
-
-        } else if (func == F_START_ENGINE && !pressed) {
+        if (func == F_START_ENGINE && !pressed) {
             driverHud.toggleEngineStarted();
 
         } else if (func == F_FORWARD) {
@@ -359,42 +317,12 @@ public class DrivingInputState
             vehicle.getVehicleControl().setAngularVelocity(Vector3f.ZERO);
             vehicle.getVehicleControl().setLinearVelocity(Vector3f.ZERO);
 
-        } else if (func == F_CAMERA_BACK1) {
-            signalTracker.setActive(CameraSignal.Back.toString(), 1, pressed);
-
-        } else if (func == F_CAMERA_DOWN1) {
-            signalTracker.setActive(CameraSignal.OrbitDown.toString(),
-                    1, pressed);
-
-        } else if (func == F_CAMERA_DRAG_TO_ORBIT1) {
-            signalTracker.setActive(CameraSignal.DragToOrbit.toString(),
-                    1, pressed);
-
-        } else if (func == F_CAMERA_FORWARD1) {
-            signalTracker.setActive(CameraSignal.Forward.toString(),
-                    1, pressed);
-
         } else if (func == F_CAMERA_RESET_OFFSET && pressed) {
             resetCameraOffset();
 
         } else if (func == F_CAMERA_RESET_FOV && pressed) {
             Camera cam = getApplication().getCamera();
             MyCamera.setYTangent(cam, 1f);
-
-        } else if (func == F_CAMERA_UP1) {
-            signalTracker.setActive(CameraSignal.OrbitUp.toString(),
-                    1, pressed);
-
-        } else if (func == F_CAMERA_XRAY1) {
-            signalTracker.setActive(CameraSignal.Xray.toString(), 1, pressed);
-
-        } else if (func == F_CAMERA_ZOOM_IN1) {
-            signalTracker.setActive(CameraSignal.ZoomIn.toString(),
-                    1, pressed);
-
-        } else if (func == F_CAMERA_ZOOM_OUT1) {
-            signalTracker.setActive(CameraSignal.ZoomOut.toString(),
-                    1, pressed);
 
         } else if (func == F_PAUSE && pressed) {
             PhysicsHud physicsState = Main.findAppState(PhysicsHud.class);
@@ -437,6 +365,10 @@ public class DrivingInputState
 
         Camera cam = getApplication().getCamera();
         MyCamera.setYTangent(cam, 1f);
+
+        SignalMode signalMode = Main.findAppState(SignalMode.class);
+        SignalTracker signalTracker = signalMode.getSignalTracker();
+
         switch (camView) {
             case ChaseCam:
                 float rearBias = 1f;

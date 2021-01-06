@@ -46,32 +46,17 @@ public class NonDrivingInputState
      */
     final private static FunctionId F_CAMERA_RESET_FOV
             = new FunctionId(G_ORBIT, "Camera Reset FOV");
-    final private static FunctionId F_CAMERA_ZOOM_IN1
-            = new FunctionId(G_ORBIT, CameraSignal.ZoomIn.toString());
-    final private static FunctionId F_CAMERA_ZOOM_OUT1
-            = new FunctionId(G_ORBIT, CameraSignal.ZoomOut.toString());
     final private static FunctionId F_RETURN
             = new FunctionId(G_ORBIT, "Return to Main Menu");
     final private static FunctionId F_SCREEN_SHOT
             = new FunctionId(G_ORBIT, "ScreenShot");
-    final private static FunctionId F_CAMERA_BACK1
-            = new FunctionId(G_ORBIT, CameraSignal.Back.toString());
-    final private static FunctionId F_CAMERA_DOWN1
-            = new FunctionId(G_ORBIT, CameraSignal.OrbitDown.toString());
-    final private static FunctionId F_CAMERA_DRAG_TO_ORBIT1
-            = new FunctionId(G_ORBIT, CameraSignal.DragToOrbit.toString());
-    final private static FunctionId F_CAMERA_FORWARD1
-            = new FunctionId(G_ORBIT, CameraSignal.Forward.toString());
     final private static FunctionId F_CAMERA_RESET_OFFSET
             = new FunctionId(G_ORBIT, "Camera Reset Offset");
-    final private static FunctionId F_CAMERA_UP1
-            = new FunctionId(G_ORBIT, CameraSignal.OrbitUp.toString());
     // *************************************************************************
     // fields
 
     final private CameraController activeCam;
     private InputMapper inputMapper;
-    final private SignalTracker signalTracker;
     // *************************************************************************
     // constructors
 
@@ -81,11 +66,8 @@ public class NonDrivingInputState
     public NonDrivingInputState() {
         Camera cam = Main.getApplication().getCamera();
 
-        signalTracker = new SignalTracker();
-        for (CameraSignal function : CameraSignal.values()) {
-            String signalName = function.toString();
-            signalTracker.add(signalName);
-        }
+        SignalMode signalMode = Main.findAppState(SignalMode.class);
+        SignalTracker signalTracker = signalMode.getSignalTracker();
 
         float rearBias = 0f;
         FilterAll filter = new FilterAll(true);
@@ -98,15 +80,6 @@ public class NonDrivingInputState
     }
     // *************************************************************************
     // public methods
-
-    /**
-     * Access the SignalTracker.
-     *
-     * @return the pre-existing instance (not null)
-     */
-    public SignalTracker getSignalTracker() {
-        return signalTracker;
-    }
 
     /**
      * Alter which Vehicle is associated with the camera.
@@ -149,16 +122,9 @@ public class NonDrivingInputState
     protected void initialize(Application app) {
         inputMapper = GuiGlobals.getInstance().getInputMapper();
 
-        inputMapper.map(F_CAMERA_BACK1, KeyInput.KEY_NUMPAD1);
-        inputMapper.map(F_CAMERA_DOWN1, KeyInput.KEY_NUMPAD2);
-        inputMapper.map(F_CAMERA_DRAG_TO_ORBIT1, Button.MOUSE_BUTTON3);
-        inputMapper.map(F_CAMERA_FORWARD1, KeyInput.KEY_NUMPAD7);
         inputMapper.map(F_CAMERA_RESET_FOV, KeyInput.KEY_NUMPAD6);
         inputMapper.map(F_CAMERA_RESET_OFFSET, Button.MOUSE_BUTTON2);
         inputMapper.map(F_CAMERA_RESET_OFFSET, KeyInput.KEY_NUMPAD5);
-        inputMapper.map(F_CAMERA_UP1, KeyInput.KEY_NUMPAD8);
-        inputMapper.map(F_CAMERA_ZOOM_IN1, KeyInput.KEY_NUMPAD9);
-        inputMapper.map(F_CAMERA_ZOOM_OUT1, KeyInput.KEY_NUMPAD3);
 
         inputMapper.map(F_RETURN, KeyInput.KEY_ESCAPE);
         // Some Linux window managers block SYSRQ/PrtSc, so we map F12 instead.
@@ -215,39 +181,12 @@ public class NonDrivingInputState
     public void valueChanged(FunctionId func, InputState value, double tpf) {
         boolean pressed = (value == InputState.Positive);
 
-        if (func == F_CAMERA_BACK1) {
-            signalTracker.setActive(CameraSignal.Back.toString(), 1, pressed);
-
-        } else if (func == F_CAMERA_DOWN1) {
-            signalTracker.setActive(CameraSignal.OrbitDown.toString(),
-                    1, pressed);
-
-        } else if (func == F_CAMERA_DRAG_TO_ORBIT1) {
-            signalTracker.setActive(CameraSignal.DragToOrbit.toString(),
-                    1, pressed);
-
-        } else if (func == F_CAMERA_FORWARD1) {
-            signalTracker.setActive(CameraSignal.Forward.toString(),
-                    1, pressed);
-
-        } else if (func == F_CAMERA_RESET_OFFSET && pressed) {
+        if (func == F_CAMERA_RESET_OFFSET && pressed) {
             resetCameraOffset();
 
         } else if (func == F_CAMERA_RESET_FOV && pressed) {
             Camera cam = getApplication().getCamera();
             MyCamera.setYTangent(cam, 1f);
-
-        } else if (func == F_CAMERA_UP1) {
-            signalTracker.setActive(CameraSignal.OrbitUp.toString(),
-                    1, pressed);
-
-        } else if (func == F_CAMERA_ZOOM_IN1) {
-            signalTracker.setActive(CameraSignal.ZoomIn.toString(),
-                    1, pressed);
-
-        } else if (func == F_CAMERA_ZOOM_OUT1) {
-            signalTracker.setActive(CameraSignal.ZoomOut.toString(),
-                    1, pressed);
 
         } else if (func == F_SCREEN_SHOT && pressed) {
             ScreenshotAppState screenshotAppState

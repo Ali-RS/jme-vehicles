@@ -5,6 +5,7 @@ import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.VehicleAudioState;
 import com.jayfella.jme.vehicle.input.DrivingInputState;
+import com.jayfella.jme.vehicle.input.SignalMode;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
@@ -224,10 +225,10 @@ public class DriverHud extends BaseAppState {
         Expander listener = new Expander(hornButton) {
             @Override
             public void onClick(boolean isPressed) {
-                DrivingInputState inputState
-                        = Main.findAppState(DrivingInputState.class);
-                SignalTracker signalTracker = inputState.getSignalTracker();
-                signalTracker.setActive("horn", 999, isPressed);
+                SignalMode mode = Main.findAppState(SignalMode.class);
+                SignalTracker signalTracker = mode.getSignalTracker();
+                String signalName = SignalMode.F_HORN1.getId();
+                signalTracker.setActive(signalName, 999, isPressed);
             }
         };
         MouseEventControl control = new MouseEventControl(listener);
