@@ -145,6 +145,13 @@ public class ChaseCamera
     // new methods exposed
 
     /**
+     * Determiner the configured ChaseOption.
+     */
+    public ChaseOption getChaseOption() {
+        return chaseOption;
+    }
+
+    /**
      * Alter the offset of the camera from the target vehicle.
      *
      * @param desiredOffset the desired offset (in world coordinates)
