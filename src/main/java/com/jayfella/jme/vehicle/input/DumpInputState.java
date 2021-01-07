@@ -21,11 +21,6 @@ public class DumpInputState extends InputMode {
     // constants and loggers
 
     /**
-     * message logger for this class
-     */
-    final public static Logger logger
-            = Logger.getLogger(DumpInputState.class.getName());
-    /**
      * input functions handled by this mode
      */
     final public static FunctionId F_DUMP_CAMERA
@@ -34,6 +29,11 @@ public class DumpInputState extends InputMode {
             = new FunctionId("Dump Physics");
     final public static FunctionId F_DUMP_VIEWPORT
             = new FunctionId("Dump Viewport");
+    /**
+     * message logger for this class
+     */
+    final public static Logger logger2
+            = Logger.getLogger(DumpInputState.class.getName());
     // *************************************************************************
     // fields
 
