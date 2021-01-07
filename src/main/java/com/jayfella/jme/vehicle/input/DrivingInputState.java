@@ -100,18 +100,15 @@ public class DrivingInputState
     private float steeringAngle = 0f;
 
     private InputMapper inputMapper;
-    final private Vehicle vehicle;
     private VehicleCamView cameraMode = VehicleCamView.ChaseCam;
     // *************************************************************************
     // constructors
 
     /**
-     * Instantiate an input state to drive the specified Vehicle.
-     *
-     * @param vehicle the Vehicle to drive (not null)
+     * Instantiate a disabled input state to drive the selected Vehicle.
      */
-    public DrivingInputState(Vehicle vehicle) {
-        this.vehicle = vehicle;
+    public DrivingInputState() {
+        setEnabled(false);
     }
     // *************************************************************************
     // public methods
@@ -129,7 +126,7 @@ public class DrivingInputState
      */
     public void returnToMainMenu() {
         AppStateManager stateManager = getStateManager();
-        stateManager.detach(this);
+        setEnabled(false);
 
         EnginePowerGraphState enginePowerGraphState
                 = Main.findAppState(EnginePowerGraphState.class);
@@ -148,6 +145,7 @@ public class DrivingInputState
         DriverHud hud = Main.findAppState(DriverHud.class);
         hud.setEnabled(false);
 
+        Vehicle vehicle = Main.getVehicle();
         Vehicle newVehicle;
         try {
             newVehicle = vehicle.getClass().newInstance();
@@ -158,16 +156,15 @@ public class DrivingInputState
         Main.getApplication().setVehicle(newVehicle);
 
         stateManager.attach(new MainMenu());
-        stateManager.attach(new NonDrivingInputState());
-
-        Main.getWorld().resetCameraPosition();
+        NonDrivingInputState cameraState
+                = Main.findAppState(NonDrivingInputState.class);
+        cameraState.setEnabled(true);
     }
     // *************************************************************************
     // BaseAppState methods
 
     @Override
     protected void cleanup(Application app) {
-        activeCam.detach();
         /*
          * Remove all input mappings/listeners in G_CAMERA and G_VEHICLE.
          */
@@ -227,8 +224,6 @@ public class DrivingInputState
                     inputMapper.addStateListener(this, function);
             }
         }
-
-        setCamera(cameraMode);
     }
 
     /**
@@ -238,6 +233,8 @@ public class DrivingInputState
     @Override
     protected void onDisable() {
         inputMapper.deactivateGroup(G_VEHICLE);
+        activeCam.detach();
+        activeCam = null;
     }
 
     /**
@@ -247,6 +244,7 @@ public class DrivingInputState
     @Override
     protected void onEnable() {
         inputMapper.activateGroup(G_VEHICLE);
+        setCamera(cameraMode);
     }
 
     /**
@@ -274,6 +272,7 @@ public class DrivingInputState
     public void valueChanged(FunctionId func, InputState value, double tpf) {
         boolean pressed = (value == InputState.Positive);
         DriverHud driverHud = Main.findAppState(DriverHud.class);
+        Vehicle vehicle = Main.getVehicle();
 
         if (func == F_START_ENGINE && !pressed) {
             driverHud.toggleEngineStarted();
@@ -330,7 +329,7 @@ public class DrivingInputState
             /*
              * Locate the camera 20 wu behind and 5 wu above the target vehicle.
              */
-            Vector3f offset = vehicle.forwardDirection(null);
+            Vector3f offset = Main.getVehicle().forwardDirection(null);
             offset.multLocal(-20f);
             offset.y += 5f;
 
@@ -364,6 +363,7 @@ public class DrivingInputState
                 break;
 
             case DashCam:
+                Vehicle vehicle = Main.getVehicle();
                 DashCamera dashCam
                         = new DashCamera(vehicle, cam, signalTracker);
                 activeCam = dashCam;
@@ -383,6 +383,7 @@ public class DrivingInputState
     }
 
     private void updateBrakeAndAccelerate() {
+        Vehicle vehicle = Main.getVehicle();
         /*
          * Update the brake control signals.
          */
@@ -437,6 +438,6 @@ public class DrivingInputState
             steeringAngle = Math.min(steeringAngle, 0f);
         }
 
-        vehicle.steer(steeringAngle);
+        Main.getVehicle().steer(steeringAngle);
     }
 }

@@ -2,8 +2,6 @@ package com.jayfella.jme.vehicle.view;
 
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Vehicle;
-import com.jayfella.jme.vehicle.input.DrivingInputState;
-import com.jayfella.jme.vehicle.input.NonDrivingInputState;
 import com.jme3.bullet.CollisionSpace;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.collision.PhysicsRayTestResult;
@@ -16,8 +14,6 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
-import com.simsilica.lemur.GuiGlobals;
-import com.simsilica.lemur.input.InputMapper;
 import java.util.List;
 import java.util.logging.Logger;
 import jme3utilities.MyCamera;
@@ -231,25 +227,11 @@ public class ChaseCamera
 
     @Override
     public void attach() {
-        InputMapper inputMapper = GuiGlobals.getInstance().getInputMapper();
-        if (chaseOption == ChaseOption.FreeOrbit) {
-            inputMapper.activateGroup(NonDrivingInputState.G_ORBIT);
-        } else {
-            inputMapper.activateGroup(DrivingInputState.G_CAMERA);
-        }
-
         enable();
     }
 
     @Override
     public void detach() {
-        InputMapper inputMapper = GuiGlobals.getInstance().getInputMapper();
-        if (chaseOption == ChaseOption.FreeOrbit) {
-            inputMapper.deactivateGroup(NonDrivingInputState.G_ORBIT);
-        } else {
-            inputMapper.deactivateGroup(DrivingInputState.G_CAMERA);
-        }
-
         disable();
     }
 

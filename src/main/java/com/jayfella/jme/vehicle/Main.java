@@ -10,6 +10,7 @@ import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.gui.GearNameState;
 import com.jayfella.jme.vehicle.gui.MainMenu;
 import com.jayfella.jme.vehicle.gui.PhysicsHud;
+import com.jayfella.jme.vehicle.input.DrivingInputState;
 import com.jayfella.jme.vehicle.input.DumpInputState;
 import com.jayfella.jme.vehicle.input.NonDrivingInputState;
 import com.jayfella.jme.vehicle.input.PhysicsMode;
@@ -105,6 +106,7 @@ public class Main extends SimpleApplication {
         activatePhysicsMode();
         activateScreenshotMode();
         activateSignalMode();
+        stateManager.attach(new DrivingInputState());
         stateManager.attach(new NonDrivingInputState());
         /*
          * The dash camera sits close to the bodywork, so set the near clipping
@@ -114,6 +116,7 @@ public class Main extends SimpleApplication {
         float far = 1_800f;
         MyCamera.setNearFar(cam, near, far);
 
+        MyCamera.setYTangent(cam, 1f);
         world.resetCameraPosition();
     }
 
@@ -341,10 +344,7 @@ public class Main extends SimpleApplication {
      */
     private void attachAllToScene() {
         sky.attachToScene(rootNode);
-
-        world.resetCameraPosition();
         world.attachToScene(rootNode);
-
         vehicle.attachToScene(rootNode);
     }
 }

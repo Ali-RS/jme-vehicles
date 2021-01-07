@@ -92,7 +92,7 @@ public class MainMenu extends AnimatedMenu {
         AppStateManager stateManager = getStateManager();
         NonDrivingInputState orbit
                 = stateManager.getState(NonDrivingInputState.class);
-        stateManager.detach(orbit);
+        orbit.setEnabled(false);
 
         Car vehicle = (Car) Main.getVehicle();
         vehicle.getEngine().setRunning(true);
@@ -101,8 +101,9 @@ public class MainMenu extends AnimatedMenu {
         hud.setEnabled(true);
 
         // handle keyboard/mouse inputs
-        DrivingInputState inputState = new DrivingInputState(vehicle);
-        stateManager.attach(inputState);
+        DrivingInputState inputState
+                = stateManager.getState(DrivingInputState.class);
+        inputState.setEnabled(true);
 
         // engine graph GUI for viewing torque/power @ revs
         EnginePowerGraphState enginePowerGraphState = new EnginePowerGraphState(vehicle);

@@ -76,7 +76,7 @@ public class NonDrivingInputState
         }
     }
     // *************************************************************************
-    // public methods
+    // new methods exposed
 
     /**
      * Alter which Vehicle is associated with the camera.
@@ -85,6 +85,10 @@ public class NonDrivingInputState
      */
     public void setVehicle(Vehicle newVehicle) {
         Validate.nonNull(newVehicle, "new vehicle");
+
+        Camera cam = getApplication().getCamera();
+        MyCamera.setYTangent(cam, 1f);
+        Main.getWorld().resetCameraPosition();
         activeCam.setVehicle(newVehicle);
     }
     // *************************************************************************
@@ -135,10 +139,6 @@ public class NonDrivingInputState
                     inputMapper.addStateListener(this, function);
             }
         }
-
-        Camera cam = app.getCamera();
-        MyCamera.setYTangent(cam, 1f);
-        resetCameraOffset();
     }
 
     /**
@@ -147,6 +147,7 @@ public class NonDrivingInputState
      */
     @Override
     protected void onDisable() {
+        inputMapper.deactivateGroup(G_ORBIT);
         activeCam.detach();
     }
 
@@ -156,6 +157,15 @@ public class NonDrivingInputState
      */
     @Override
     protected void onEnable() {
+        inputMapper.activateGroup(G_ORBIT);
+
+        Camera cam = getApplication().getCamera();
+        MyCamera.setYTangent(cam, 1f);
+        Main.getWorld().resetCameraPosition();
+
+        Vehicle vehicle = Main.getVehicle();
+        activeCam.setVehicle(vehicle);
+
         activeCam.attach();
     }
 
@@ -167,6 +177,7 @@ public class NonDrivingInputState
      */
     @Override
     public void update(float tpf) {
+        super.update(tpf);
         activeCam.update(tpf);
     }
     // *************************************************************************
