@@ -2,7 +2,6 @@ package com.jayfella.jme.vehicle.view;
 
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Vehicle;
-import com.jayfella.jme.vehicle.input.DrivingInputState;
 import com.jme3.input.InputManager;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.AnalogListener;
@@ -10,8 +9,6 @@ import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.math.FastMath;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.CameraNode;
-import com.simsilica.lemur.GuiGlobals;
-import com.simsilica.lemur.input.InputMapper;
 import java.util.logging.Logger;
 import jme3utilities.MyCamera;
 import jme3utilities.SignalTracker;
@@ -90,20 +87,12 @@ public class DashCamera
     public void attach() {
         cameraNode.setLocalTranslation(vehicle.dashCamOffset());
         vehicle.getNode().attachChild(cameraNode);
-
-        InputMapper inputMapper = GuiGlobals.getInstance().getInputMapper();
-        inputMapper.activateGroup(DrivingInputState.G_CAMERA);
-
         enable();
     }
 
     @Override
     public void detach() {
         cameraNode.removeFromParent();
-
-        InputMapper inputMapper = GuiGlobals.getInstance().getInputMapper();
-        inputMapper.deactivateGroup(DrivingInputState.G_CAMERA);
-
         disable();
     }
 

@@ -106,8 +106,8 @@ public class Main extends SimpleApplication {
         activatePhysicsMode();
         activateScreenshotMode();
         activateSignalMode();
-        stateManager.attach(new DrivingInputState());
         activateCameraMode();
+        attachDrivingMode(); // needs the SignalTracker of the SignalMode
         /*
          * The dash camera sits close to the bodywork, so set the near clipping
          * plane accordingly.
@@ -361,5 +361,28 @@ public class Main extends SimpleApplication {
         sky.attachToScene(rootNode);
         world.attachToScene(rootNode);
         vehicle.attachToScene(rootNode);
+    }
+
+    /**
+     * Configure and attach a new (disabled) driving InputMode.
+     */
+    private static void attachDrivingMode() {
+        DrivingInputState mode = new DrivingInputState();
+        mode.assign(NonDrivingInputState.F_CAMERA_RESET_FOV, KeyInput.KEY_NUMPAD6);
+        mode.assign(NonDrivingInputState.F_CAMERA_RESET_OFFSET, Button.MOUSE_BUTTON2);
+        mode.assign(NonDrivingInputState.F_CAMERA_RESET_OFFSET, KeyInput.KEY_NUMPAD5);
+        mode.assign(NonDrivingInputState.F_CAMVIEW, KeyInput.KEY_F5);
+        mode.assign(DrivingInputState.F_FORWARD, KeyInput.KEY_W);
+        mode.assign(DrivingInputState.F_MAIN_BRAKE, KeyInput.KEY_S);
+        mode.assign(DrivingInputState.F_PARKING_BRAKE, KeyInput.KEY_SPACE);
+        mode.assign(DrivingInputState.F_RESET, KeyInput.KEY_R);
+        mode.assign(DrivingInputState.F_RETURN, KeyInput.KEY_ESCAPE);
+        mode.assign(DrivingInputState.F_REVERSE, KeyInput.KEY_E);
+        mode.assign(DrivingInputState.F_START_ENGINE, KeyInput.KEY_Y);
+        mode.assign(DrivingInputState.F_TURN_LEFT, KeyInput.KEY_A);
+        mode.assign(DrivingInputState.F_TURN_RIGHT, KeyInput.KEY_D);
+
+        AppStateManager manager = getApplication().getStateManager();
+        manager.attach(mode);
     }
 }
