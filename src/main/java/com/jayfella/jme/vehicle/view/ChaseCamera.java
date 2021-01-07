@@ -162,6 +162,16 @@ public class ChaseCamera
     }
 
     /**
+     * Alter the preferred range.
+     *
+     * @param range the desired distance (in world units, &gt;0)
+     */
+    public void setPreferredRange(float range) {
+        Validate.positive(range, "range");
+        this.preferredRange = range;
+    }
+
+    /**
      * Alter which Vehicle the camera is targeting.
      *
      * @param newVehicle the desired target vehicle (not null)
