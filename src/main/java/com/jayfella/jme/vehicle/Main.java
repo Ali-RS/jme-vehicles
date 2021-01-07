@@ -107,7 +107,7 @@ public class Main extends SimpleApplication {
         activateScreenshotMode();
         activateSignalMode();
         stateManager.attach(new DrivingInputState());
-        stateManager.attach(new NonDrivingInputState());
+        activateCameraMode();
         /*
          * The dash camera sits close to the bodywork, so set the near clipping
          * plane accordingly.
@@ -276,6 +276,21 @@ public class Main extends SimpleApplication {
     }
     // *************************************************************************
     // private methods
+
+    /**
+     * Configure, attach, and enable a new camera InputMode.
+     */
+    private static void activateCameraMode() {
+        NonDrivingInputState mode = new NonDrivingInputState();
+        mode.assign(NonDrivingInputState.F_CAMERA_RESET_FOV, KeyInput.KEY_NUMPAD6);
+        mode.assign(NonDrivingInputState.F_CAMERA_RESET_OFFSET, Button.MOUSE_BUTTON2);
+        mode.assign(NonDrivingInputState.F_CAMERA_RESET_OFFSET, KeyInput.KEY_NUMPAD5);
+        mode.assign(NonDrivingInputState.F_CAMVIEW, KeyInput.KEY_F5);
+
+        AppStateManager manager = getApplication().getStateManager();
+        manager.attach(mode);
+        mode.setEnabled(true);
+    }
 
     /**
      * Configure, attach, and enable a new dump InputMode.

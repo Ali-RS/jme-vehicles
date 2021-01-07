@@ -6,18 +6,11 @@ import com.jayfella.jme.vehicle.view.CameraController;
 import com.jayfella.jme.vehicle.view.CameraSignal;
 import com.jayfella.jme.vehicle.view.ChaseCamera;
 import com.jayfella.jme.vehicle.view.ChaseOption;
-import com.jme3.app.Application;
-import com.jme3.app.state.BaseAppState;
-import com.jme3.input.KeyInput;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
-import com.simsilica.lemur.GuiGlobals;
-import com.simsilica.lemur.input.Button;
 import com.simsilica.lemur.input.FunctionId;
 import com.simsilica.lemur.input.InputMapper;
 import com.simsilica.lemur.input.InputState;
-import com.simsilica.lemur.input.StateFunctionListener;
-import java.util.Set;
 import java.util.logging.Logger;
 import jme3utilities.MyCamera;
 import jme3utilities.SignalTracker;
@@ -25,44 +18,41 @@ import jme3utilities.Validate;
 import jme3utilities.minie.FilterAll;
 
 /**
- * An AppState to handle input when not driving a Vehicle.
+ * An InputMode to manage camera controllers. TODO rename CameraMode
  */
-public class NonDrivingInputState
-        extends BaseAppState
-        implements StateFunctionListener {
+public class NonDrivingInputState extends InputMode {
     // *************************************************************************
     // constants and loggers
 
+    /**
+     * input functions handled by this mode
+     */
+    final public static FunctionId F_CAMERA_RESET_FOV
+            = new FunctionId("Camera Reset FOV");
+    final public static FunctionId F_CAMERA_RESET_OFFSET
+            = new FunctionId("Camera Reset Offset");
+    final public static FunctionId F_CAMVIEW
+            = new FunctionId("Camera View");
     /**
      * message logger for this class
      */
     final public static Logger logger
             = Logger.getLogger(NonDrivingInputState.class.getName());
-
-    final public static String G_ORBIT = "GROUP_ORBIT";
-    /**
-     * Function IDs
-     */
-    final private static FunctionId F_CAMERA_RESET_FOV
-            = new FunctionId(G_ORBIT, "Camera Reset FOV");
-    final private static FunctionId F_RETURN
-            = new FunctionId(G_ORBIT, "Return to Main Menu");
-    final private static FunctionId F_CAMERA_RESET_OFFSET
-            = new FunctionId(G_ORBIT, "Camera Reset Offset");
     // *************************************************************************
     // fields
 
     final private CameraController activeCam;
-    private InputMapper inputMapper;
     // *************************************************************************
     // constructors
 
     /**
-     * Instantiate an input state to orbit the selected Vehicle.
+     * Instantiate a disabled InputMode.
      */
     public NonDrivingInputState() {
-        Camera cam = Main.getApplication().getCamera();
+        super("Camera Mode", F_CAMERA_RESET_FOV, F_CAMERA_RESET_OFFSET,
+                F_CAMVIEW);
 
+        Camera cam = Main.getApplication().getCamera();
         SignalMode signalMode = Main.findAppState(SignalMode.class);
         SignalTracker signalTracker = signalMode.getSignalTracker();
 
@@ -74,6 +64,17 @@ public class NonDrivingInputState
             String signalName = function.toString();
             activeCam.setSignalName(function, signalName);
         }
+        assign((FunctionId function, InputState inputState, double tpf) -> {
+            if (inputState == InputState.Positive) {
+                MyCamera.setYTangent(cam, 1f);
+            }
+        }, F_CAMERA_RESET_FOV);
+
+        assign((FunctionId function, InputState inputState, double tpf) -> {
+            if (inputState == InputState.Positive) {
+                resetCameraOffset();
+            }
+        }, F_CAMERA_RESET_OFFSET);
     }
     // *************************************************************************
     // new methods exposed
@@ -92,54 +93,7 @@ public class NonDrivingInputState
         activeCam.setVehicle(newVehicle);
     }
     // *************************************************************************
-    // BaseAppState methods
-
-    @Override
-    protected void cleanup(Application app) {
-        /*
-         * Remove all input mappings/listeners in G_ORBIT.
-         */
-        Set<FunctionId> functions = inputMapper.getFunctionIds();
-        for (FunctionId function : functions) {
-            String group = function.getGroup();
-            switch (group) {
-                case G_ORBIT:
-                    Set<InputMapper.Mapping> mappings
-                            = inputMapper.getMappings(function);
-                    for (InputMapper.Mapping mp : mappings) {
-                        inputMapper.removeMapping(mp);
-                    }
-                    inputMapper.removeStateListener(this, function);
-            }
-        }
-    }
-
-    /**
-     * Callback invoked after this AppState is attached but before onEnable().
-     *
-     * @param app the application instance (not null)
-     */
-    @Override
-    protected void initialize(Application app) {
-        inputMapper = GuiGlobals.getInstance().getInputMapper();
-
-        inputMapper.map(F_CAMERA_RESET_FOV, KeyInput.KEY_NUMPAD6);
-        inputMapper.map(F_CAMERA_RESET_OFFSET, Button.MOUSE_BUTTON2);
-        inputMapper.map(F_CAMERA_RESET_OFFSET, KeyInput.KEY_NUMPAD5);
-
-        inputMapper.map(F_RETURN, KeyInput.KEY_ESCAPE);
-        /*
-         * Add listeners for all functions in G_ORBIT.
-         */
-        Set<FunctionId> functions = inputMapper.getFunctionIds();
-        for (FunctionId function : functions) {
-            String group = function.getGroup();
-            switch (group) {
-                case G_ORBIT:
-                    inputMapper.addStateListener(this, function);
-            }
-        }
-    }
+    // InputMode methods
 
     /**
      * Callback invoked whenever this AppState ceases to be both attached and
@@ -147,7 +101,7 @@ public class NonDrivingInputState
      */
     @Override
     protected void onDisable() {
-        inputMapper.deactivateGroup(G_ORBIT);
+        super.onDisable();
         activeCam.detach();
     }
 
@@ -157,8 +111,6 @@ public class NonDrivingInputState
      */
     @Override
     protected void onEnable() {
-        inputMapper.activateGroup(G_ORBIT);
-
         Camera cam = getApplication().getCamera();
         MyCamera.setYTangent(cam, 1f);
         Main.getWorld().resetCameraPosition();
@@ -167,6 +119,7 @@ public class NonDrivingInputState
         activeCam.setVehicle(vehicle);
 
         activeCam.attach();
+        super.onEnable();
     }
 
     /**
@@ -179,21 +132,6 @@ public class NonDrivingInputState
     public void update(float tpf) {
         super.update(tpf);
         activeCam.update(tpf);
-    }
-    // *************************************************************************
-    // StateFunctionListener methods
-
-    @Override
-    public void valueChanged(FunctionId func, InputState value, double tpf) {
-        boolean pressed = (value == InputState.Positive);
-
-        if (func == F_CAMERA_RESET_OFFSET && pressed) {
-            resetCameraOffset();
-
-        } else if (func == F_CAMERA_RESET_FOV && pressed) {
-            Camera cam = getApplication().getCamera();
-            MyCamera.setYTangent(cam, 1f);
-        }
     }
     // *************************************************************************
     // private methods
