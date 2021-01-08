@@ -253,47 +253,47 @@ public class DrivingInputMode extends InputMode {
         control.setLinearVelocity(Vector3f.ZERO);
     }
 
-    private void setCamera(VehicleCamView camView) { // TODO rename setCameraMode, rename arg
+    private void setCamera(VehicleCamView controlMode) { // TODO rename setCameraMode
         NonDrivingInputState cameraInputMode
                 = Main.findAppState(NonDrivingInputState.class);
-        CameraController activeCam = cameraInputMode.getActiveCamera(); // TODO rename activeCamera
+        CameraController activeCamera = cameraInputMode.getActiveCamera();
 
-        Camera cam = getApplication().getCamera(); // TODO rename camera
-        MyCamera.setYTangent(cam, 1f);
+        Camera camera = getApplication().getCamera();
+        MyCamera.setYTangent(camera, 1f);
 
         SignalMode signalMode = Main.findAppState(SignalMode.class);
         SignalTracker signalTracker = signalMode.getSignalTracker();
 
-        switch (camView) {
+        switch (controlMode) {
             case ChaseCam:
                 float rearBias = 1f;
                 FilterAll obstructionFilter = new FilterAll(true);
-                ChaseCamera chaseCam = new ChaseCamera(cam, signalTracker,
+                ChaseCamera chaseCamera = new ChaseCamera(camera, signalTracker,
                         ChaseOption.StrictChase, rearBias, obstructionFilter);
-                activeCam = chaseCam;
+                activeCamera = chaseCamera;
                 for (CameraSignal function : CameraSignal.values()) {
                     String signalName = function.toString();
-                    chaseCam.setSignalName(function, signalName);
+                    chaseCamera.setSignalName(function, signalName);
                 }
                 break;
 
             case DashCam:
                 Vehicle vehicle = Main.getVehicle();
-                DashCamera dashCam
-                        = new DashCamera(vehicle, cam, signalTracker);
-                activeCam = dashCam;
-                dashCam.setSignalName(CameraSignal.ZoomIn,
+                DashCamera dashCamera
+                        = new DashCamera(vehicle, camera, signalTracker);
+                activeCamera = dashCamera;
+                dashCamera.setSignalName(CameraSignal.ZoomIn,
                         CameraSignal.ZoomIn.toString());
-                dashCam.setSignalName(CameraSignal.ZoomOut,
+                dashCamera.setSignalName(CameraSignal.ZoomOut,
                         CameraSignal.ZoomOut.toString());
                 break;
 
             default:
                 throw new IllegalArgumentException(
-                        "Unknown Camera View: " + camView);
+                        "Unknown camera-control mode: " + controlMode);
         }
 
-        cameraInputMode.setActiveCamera(activeCam);
+        cameraInputMode.setActiveCamera(activeCamera);
     }
 
     private void updateBrakeAndAccelerate() {
