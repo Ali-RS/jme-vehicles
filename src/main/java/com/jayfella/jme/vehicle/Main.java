@@ -11,7 +11,7 @@ import com.jayfella.jme.vehicle.gui.GearNameState;
 import com.jayfella.jme.vehicle.gui.MainMenu;
 import com.jayfella.jme.vehicle.gui.PhysicsHud;
 import com.jayfella.jme.vehicle.input.DrivingInputMode;
-import com.jayfella.jme.vehicle.input.DumpInputState;
+import com.jayfella.jme.vehicle.input.DumpMode;
 import com.jayfella.jme.vehicle.input.NonDrivingInputState;
 import com.jayfella.jme.vehicle.input.PhysicsMode;
 import com.jayfella.jme.vehicle.input.ScreenshotMode;
@@ -296,10 +296,10 @@ public class Main extends SimpleApplication {
      * Configure, attach, and enable a new dump InputMode.
      */
     private static void activateDumpMode() {
-        DumpInputState mode = new DumpInputState();
-        mode.assign(DumpInputState.F_DUMP_CAMERA, KeyInput.KEY_C);
-        mode.assign(DumpInputState.F_DUMP_PHYSICS, KeyInput.KEY_O);
-        mode.assign(DumpInputState.F_DUMP_VIEWPORT, KeyInput.KEY_P);
+        DumpMode mode = new DumpMode();
+        mode.assign(DumpMode.F_DUMP_CAMERA, KeyInput.KEY_C);
+        mode.assign(DumpMode.F_DUMP_PHYSICS, KeyInput.KEY_O);
+        mode.assign(DumpMode.F_DUMP_VIEWPORT, KeyInput.KEY_P);
 
         AppStateManager manager = getApplication().getStateManager();
         manager.attach(mode);

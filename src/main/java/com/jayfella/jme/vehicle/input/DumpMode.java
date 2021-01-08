@@ -12,11 +12,11 @@ import jme3utilities.minie.PhysicsDumper;
 
 /**
  * An InputMode to dump information to the standard output stream, for
- * debugging. Each new instance is disabled by default. TODO rename DumpMode
+ * debugging. Each new instance is disabled by default.
  *
  * @author Stephen Gold sgold@sonic.net
  */
-public class DumpInputState extends InputMode {
+public class DumpMode extends InputMode {
     // *************************************************************************
     // constants and loggers
 
@@ -33,7 +33,7 @@ public class DumpInputState extends InputMode {
      * message logger for this class
      */
     final public static Logger logger2
-            = Logger.getLogger(DumpInputState.class.getName());
+            = Logger.getLogger(DumpMode.class.getName());
     // *************************************************************************
     // fields
 
@@ -47,7 +47,7 @@ public class DumpInputState extends InputMode {
     /**
      * Instantiate a disabled InputMode.
      */
-    public DumpInputState() {
+    public DumpMode() {
         super("Dump Mode", F_DUMP_CAMERA, F_DUMP_PHYSICS, F_DUMP_VIEWPORT);
 
         dumper.setDumpShadow(true)
