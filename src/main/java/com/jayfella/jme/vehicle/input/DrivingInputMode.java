@@ -30,10 +30,9 @@ import jme3utilities.minie.FilterAll;
 
 /**
  * An InputMode that's enabled while the user is driving a Vehicle. It uses 2
- * camera modes: one for the dash camera and one for the chase camera. TODO
- * rename
+ * camera modes: one for the dash camera and one for the chase camera.
  */
-public class DrivingInputState extends InputMode {
+public class DrivingInputMode extends InputMode {
     // *************************************************************************
     // constants and loggers
 
@@ -64,7 +63,7 @@ public class DrivingInputState extends InputMode {
      * message logger for this class
      */
     final public static Logger logger2
-            = Logger.getLogger(DrivingInputState.class.getName());
+            = Logger.getLogger(DrivingInputMode.class.getName());
     // *************************************************************************
     // fields
 
@@ -84,7 +83,7 @@ public class DrivingInputState extends InputMode {
     /**
      * Instantiate a disabled InputMode to drive the selected Vehicle.
      */
-    public DrivingInputState() {
+    public DrivingInputMode() {
         super("Driving Mode", F_FORWARD, F_MAIN_BRAKE, F_PARKING_BRAKE, F_RESET,
                 F_RETURN, F_REVERSE, F_START_ENGINE, F_TURN_LEFT, F_TURN_RIGHT);
 

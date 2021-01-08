@@ -4,7 +4,7 @@ import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.VehicleAudioState;
-import com.jayfella.jme.vehicle.input.DrivingInputState;
+import com.jayfella.jme.vehicle.input.DrivingInputMode;
 import com.jayfella.jme.vehicle.input.SignalMode;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -395,9 +395,7 @@ public class DriverHud extends BaseAppState {
      * Exit the car and return to the main menu.
      */
     private void returnToMainMenu() {
-        DrivingInputState inputState
-                = Main.findAppState(DrivingInputState.class);
-        inputState.returnToMainMenu();
+        Main.findAppState(DrivingInputMode.class).returnToMainMenu();
     }
 
     /**

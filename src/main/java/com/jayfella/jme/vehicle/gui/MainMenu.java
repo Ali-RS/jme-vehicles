@@ -6,7 +6,7 @@ import com.jayfella.jme.vehicle.debug.DebugTabState;
 import com.jayfella.jme.vehicle.debug.EnginePowerGraphState;
 import com.jayfella.jme.vehicle.debug.TireDataState;
 import com.jayfella.jme.vehicle.debug.VehicleEditorState;
-import com.jayfella.jme.vehicle.input.DrivingInputState;
+import com.jayfella.jme.vehicle.input.DrivingInputMode;
 import com.jme3.app.state.AppStateManager;
 import com.simsilica.lemur.Button;
 import java.util.ArrayList;
@@ -95,9 +95,7 @@ public class MainMenu extends AnimatedMenu {
         hud.setEnabled(true);
 
         AppStateManager stateManager = getStateManager();
-        DrivingInputState inputState
-                = stateManager.getState(DrivingInputState.class);
-        inputState.setEnabled(true);
+        stateManager.getState(DrivingInputMode.class).setEnabled(true);
 
         // engine graph GUI for viewing torque/power @ revs
         EnginePowerGraphState enginePowerGraphState = new EnginePowerGraphState(vehicle);
