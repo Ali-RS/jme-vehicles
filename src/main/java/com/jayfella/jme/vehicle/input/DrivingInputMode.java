@@ -163,7 +163,7 @@ public class DrivingInputMode extends InputMode {
      */
     public void nextCameraMode() {
         cameraMode = cameraMode.next();
-        setCamera(cameraMode);
+        setCameraControlMode(cameraMode);
     }
 
     /**
@@ -215,7 +215,7 @@ public class DrivingInputMode extends InputMode {
     @Override
     protected void onEnable() {
         super.onEnable();
-        setCamera(cameraMode);
+        setCameraControlMode(cameraMode);
     }
 
     /**
@@ -253,7 +253,7 @@ public class DrivingInputMode extends InputMode {
         control.setLinearVelocity(Vector3f.ZERO);
     }
 
-    private void setCamera(VehicleCamView controlMode) { // TODO rename setCameraMode
+    private void setCameraControlMode(VehicleCamView controlMode) {
         NonDrivingInputState cameraInputMode
                 = Main.findAppState(NonDrivingInputState.class);
         CameraController activeCamera = cameraInputMode.getActiveCamera();
