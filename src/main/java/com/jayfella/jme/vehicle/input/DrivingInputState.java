@@ -9,9 +9,6 @@ import com.jayfella.jme.vehicle.debug.TireDataState;
 import com.jayfella.jme.vehicle.debug.VehicleEditorState;
 import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.gui.MainMenu;
-import static com.jayfella.jme.vehicle.input.NonDrivingInputState.F_CAMERA_RESET_FOV;
-import static com.jayfella.jme.vehicle.input.NonDrivingInputState.F_CAMERA_RESET_OFFSET;
-import static com.jayfella.jme.vehicle.input.NonDrivingInputState.F_CAMVIEW;
 import com.jayfella.jme.vehicle.part.GearBox;
 import com.jayfella.jme.vehicle.view.CameraController;
 import com.jayfella.jme.vehicle.view.CameraSignal;
@@ -71,10 +68,6 @@ public class DrivingInputState extends InputMode {
     // *************************************************************************
     // fields
 
-    private CameraController activeCam;
-    final private ChaseCamera chaseCam;
-    final private DashCamera dashCam;
-
     final private float maxSteeringAngle = 1f; // radians
     final private float returnRate = 2f; // radians per second
     final private float turnRate = 0.5f; // radians per second
@@ -92,47 +85,8 @@ public class DrivingInputState extends InputMode {
      * Instantiate a disabled InputMode to drive the selected Vehicle.
      */
     public DrivingInputState() {
-        super("Driving Mode", F_CAMERA_RESET_FOV, F_CAMERA_RESET_OFFSET,
-                F_CAMVIEW, F_FORWARD, F_MAIN_BRAKE, F_PARKING_BRAKE, F_RESET,
+        super("Driving Mode", F_FORWARD, F_MAIN_BRAKE, F_PARKING_BRAKE, F_RESET,
                 F_RETURN, F_REVERSE, F_START_ENGINE, F_TURN_LEFT, F_TURN_RIGHT);
-
-        Camera camera = Main.getApplication().getCamera();
-        SignalMode signalMode = Main.findAppState(SignalMode.class);
-        SignalTracker signalTracker = signalMode.getSignalTracker();
-
-        float rearBias = 1f;
-        FilterAll obstructionFilter = new FilterAll(true);
-        chaseCam = new ChaseCamera(camera, signalTracker,
-                ChaseOption.StrictChase, rearBias, obstructionFilter);
-        for (CameraSignal function : CameraSignal.values()) {
-            String signalName = function.toString();
-            chaseCam.setSignalName(function, signalName);
-        }
-
-        Vehicle vehicle = Main.getVehicle();
-        dashCam = new DashCamera(vehicle, camera, signalTracker);
-        dashCam.setSignalName(CameraSignal.ZoomIn,
-                CameraSignal.ZoomIn.toString());
-        dashCam.setSignalName(CameraSignal.ZoomOut,
-                CameraSignal.ZoomOut.toString());
-
-        assign((FunctionId function, InputState inputState, double tpf) -> {
-            if (inputState == InputState.Positive) {
-                MyCamera.setYTangent(camera, 1f);
-            }
-        }, F_CAMERA_RESET_FOV);
-
-        assign((FunctionId function, InputState inputState, double tpf) -> {
-            if (inputState == InputState.Positive) {
-                resetCameraOffset();
-            }
-        }, F_CAMERA_RESET_OFFSET);
-
-        assign((FunctionId function, InputState inputState, double tpf) -> {
-            if (inputState == InputState.Positive) {
-                nextCameraMode();
-            }
-        }, F_CAMVIEW);
 
         assign((FunctionId function, InputState inputState, double tpf) -> {
             if (inputState == InputState.Positive) {
@@ -250,21 +204,10 @@ public class DrivingInputState extends InputMode {
         stateManager.attach(new MainMenu());
         NonDrivingInputState cameraState
                 = Main.findAppState(NonDrivingInputState.class);
-        cameraState.setEnabled(true);
+        cameraState.orbit();
     }
     // *************************************************************************
     // InputMode methods
-
-    /**
-     * Callback invoked whenever this InputMode ceases to be both attached and
-     * enabled.
-     */
-    @Override
-    protected void onDisable() {
-        super.onDisable();
-        activeCam.detach();
-        activeCam = null;
-    }
 
     /**
      * Callback invoked whenever this InputMode becomes both attached and
@@ -287,8 +230,6 @@ public class DrivingInputState extends InputMode {
         updateTurn(tpf);
         updateBrakeAndAccelerate();
 
-        activeCam.update(tpf);
-
         SignalMode signalMode = Main.findAppState(SignalMode.class);
         SignalTracker signalTracker = signalMode.getSignalTracker();
         boolean requested = signalTracker.test(SignalMode.F_HORN1.getId());
@@ -296,20 +237,6 @@ public class DrivingInputState extends InputMode {
     }
     // *************************************************************************
     // private methods
-
-    private void resetCameraOffset() {
-        if (activeCam instanceof ChaseCamera) {
-            /*
-             * Locate the camera 20 wu behind and 5 wu above the target vehicle.
-             */
-            Vector3f offset = Main.getVehicle().forwardDirection(null);
-            offset.multLocal(-20f);
-            offset.y += 5f;
-
-            ChaseCamera chaseCam = (ChaseCamera) activeCam;
-            chaseCam.setOffset(offset);
-        }
-    }
 
     private void resetVehicle() {
         // TODO make this more reliable
@@ -327,12 +254,12 @@ public class DrivingInputState extends InputMode {
         control.setLinearVelocity(Vector3f.ZERO);
     }
 
-    private void setCamera(VehicleCamView camView) {
-        if (activeCam != null) {
-            activeCam.detach();
-        }
+    private void setCamera(VehicleCamView camView) { // TODO rename setCameraMode, rename arg
+        NonDrivingInputState cameraInputMode
+                = Main.findAppState(NonDrivingInputState.class);
+        CameraController activeCam = cameraInputMode.getActiveCamera(); // TODO rename activeCamera
 
-        Camera cam = getApplication().getCamera();
+        Camera cam = getApplication().getCamera(); // TODO rename camera
         MyCamera.setYTangent(cam, 1f);
 
         SignalMode signalMode = Main.findAppState(SignalMode.class);
@@ -367,8 +294,7 @@ public class DrivingInputState extends InputMode {
                         "Unknown Camera View: " + camView);
         }
 
-        activeCam.attach();
-        resetCameraOffset();
+        cameraInputMode.setActiveCamera(activeCam);
     }
 
     private void updateBrakeAndAccelerate() {

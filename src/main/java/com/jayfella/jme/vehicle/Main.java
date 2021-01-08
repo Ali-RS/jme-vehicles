@@ -368,10 +368,6 @@ public class Main extends SimpleApplication {
      */
     private static void attachDrivingMode() {
         DrivingInputState mode = new DrivingInputState();
-        mode.assign(NonDrivingInputState.F_CAMERA_RESET_FOV, KeyInput.KEY_NUMPAD6);
-        mode.assign(NonDrivingInputState.F_CAMERA_RESET_OFFSET, Button.MOUSE_BUTTON2);
-        mode.assign(NonDrivingInputState.F_CAMERA_RESET_OFFSET, KeyInput.KEY_NUMPAD5);
-        mode.assign(NonDrivingInputState.F_CAMVIEW, KeyInput.KEY_F5);
         mode.assign(DrivingInputState.F_FORWARD, KeyInput.KEY_W);
         mode.assign(DrivingInputState.F_MAIN_BRAKE, KeyInput.KEY_S);
         mode.assign(DrivingInputState.F_PARKING_BRAKE, KeyInput.KEY_SPACE);

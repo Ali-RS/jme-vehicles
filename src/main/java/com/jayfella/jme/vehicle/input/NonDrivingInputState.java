@@ -2,6 +2,7 @@ package com.jayfella.jme.vehicle.input;
 
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Vehicle;
+import com.jayfella.jme.vehicle.World;
 import com.jayfella.jme.vehicle.view.CameraController;
 import com.jayfella.jme.vehicle.view.CameraSignal;
 import com.jayfella.jme.vehicle.view.ChaseCamera;
@@ -9,7 +10,6 @@ import com.jayfella.jme.vehicle.view.ChaseOption;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.simsilica.lemur.input.FunctionId;
-import com.simsilica.lemur.input.InputMapper;
 import com.simsilica.lemur.input.InputState;
 import java.util.logging.Logger;
 import jme3utilities.MyCamera;
@@ -18,7 +18,7 @@ import jme3utilities.Validate;
 import jme3utilities.minie.FilterAll;
 
 /**
- * An InputMode to manage camera controllers. TODO rename CameraMode
+ * An InputMode to manage the Camera. TODO rename CameraMode
  */
 public class NonDrivingInputState extends InputMode {
     // *************************************************************************
@@ -36,12 +36,19 @@ public class NonDrivingInputState extends InputMode {
     /**
      * message logger for this class
      */
-    final public static Logger logger
+    final public static Logger logger2
             = Logger.getLogger(NonDrivingInputState.class.getName());
     // *************************************************************************
     // fields
 
-    final private CameraController activeCam;
+    /**
+     * active controller TODO rename
+     */
+    private CameraController activeCam;
+    /**
+     * orbit controller (active when not driving a Vehicle)
+     */
+    final private ChaseCamera orbitCamera;
     // *************************************************************************
     // constructors
 
@@ -52,18 +59,20 @@ public class NonDrivingInputState extends InputMode {
         super("Camera Mode", F_CAMERA_RESET_FOV, F_CAMERA_RESET_OFFSET,
                 F_CAMVIEW);
 
-        Camera cam = Main.getApplication().getCamera();
+        Camera cam = Main.getApplication().getCamera(); // TODO rename
         SignalMode signalMode = Main.findAppState(SignalMode.class);
         SignalTracker signalTracker = signalMode.getSignalTracker();
 
         float rearBias = 0f;
         FilterAll filter = new FilterAll(true);
-        activeCam = new ChaseCamera(cam, signalTracker, ChaseOption.FreeOrbit,
+        orbitCamera = new ChaseCamera(cam, signalTracker, ChaseOption.FreeOrbit,
                 rearBias, filter);
         for (CameraSignal function : CameraSignal.values()) {
             String signalName = function.toString();
-            activeCam.setSignalName(function, signalName);
+            orbitCamera.setSignalName(function, signalName);
         }
+        activeCam = orbitCamera;
+
         assign((FunctionId function, InputState inputState, double tpf) -> {
             if (inputState == InputState.Positive) {
                 MyCamera.setYTangent(cam, 1f);
@@ -75,19 +84,57 @@ public class NonDrivingInputState extends InputMode {
                 resetCameraOffset();
             }
         }, F_CAMERA_RESET_OFFSET);
+
+        assign((FunctionId function, InputState inputState, double tpf) -> {
+            if (inputState == InputState.Positive) {
+                nextCameraMode();
+            }
+        }, F_CAMVIEW);
     }
     // *************************************************************************
     // new methods exposed
 
     /**
-     * Alter which Vehicle is associated with the camera.
+     * Access the active CameraController.
+     *
+     * @return the pre-existing instance (not null)
+     */
+    public CameraController getActiveCamera() {
+        return activeCam;
+    }
+
+    /**
+     * Switch to the built-in orbit camera.
+     */
+    public void orbit() {
+        setActiveCamera(orbitCamera);
+    }
+
+    /**
+     * Alter which CameraController is active.
+     *
+     * @param newActive (not null, alias created)
+     */
+    public void setActiveCamera(CameraController newActive) {
+        activeCam.detach();
+        activeCam = newActive;
+        activeCam.attach();
+
+        Camera camera = getApplication().getCamera();
+        MyCamera.setYTangent(camera, 1f);
+
+        resetCameraOffset();
+    }
+
+    /**
+     * Alter which Vehicle is associated with the active camera.
      *
      * @param newVehicle the vehicle to associate (not null)
      */
     public void setVehicle(Vehicle newVehicle) {
         Validate.nonNull(newVehicle, "new vehicle");
 
-        Camera cam = getApplication().getCamera();
+        Camera cam = getApplication().getCamera(); // TODO rename
         MyCamera.setYTangent(cam, 1f);
         Main.getWorld().resetCameraPosition();
         activeCam.setVehicle(newVehicle);
@@ -111,13 +158,6 @@ public class NonDrivingInputState extends InputMode {
      */
     @Override
     protected void onEnable() {
-        Camera cam = getApplication().getCamera();
-        MyCamera.setYTangent(cam, 1f);
-        Main.getWorld().resetCameraPosition();
-
-        Vehicle vehicle = Main.getVehicle();
-        activeCam.setVehicle(vehicle);
-
         activeCam.attach();
         super.onEnable();
     }
@@ -136,17 +176,38 @@ public class NonDrivingInputState extends InputMode {
     // *************************************************************************
     // private methods
 
+    /**
+     * Cycle through the available camera modes.
+     */
+    private void nextCameraMode() {
+        DrivingInputState driving = Main.findAppState(DrivingInputState.class);
+        if (driving.isEnabled()) {
+            driving.nextCameraMode();
+        }
+    }
+
     private void resetCameraOffset() {
         if (activeCam instanceof ChaseCamera) {
-            /*
-             * Locate the camera 20 wu behind and 5 wu above the target vehicle.
-             */
-            Vector3f offset = Main.getVehicle().forwardDirection(null);
-            offset.multLocal(-20f);
-            offset.y += 5f;
+            ChaseCamera chaseCam = (ChaseCamera) activeCam;
+            if (chaseCam.getChaseOption() == ChaseOption.StrictChase) {
+                /*
+                 * Locate the camera 20 wu behind and 5 wu above
+                 * the target vehicle.
+                 */
+                Vector3f offset = Main.getVehicle().forwardDirection(null);
+                offset.multLocal(-20f);
+                offset.y += 5f;
+                chaseCam.setOffset(offset);
 
-            ChaseCamera orbitCam = (ChaseCamera) activeCam;
-            orbitCam.setOffset(offset);
+            } else { // orbiting
+                World world = Main.getWorld();
+                world.resetCameraPosition();
+
+                chaseCam.setPreferredRange(5f);
+
+                Vehicle vehicle = Main.getVehicle();
+                chaseCam.setVehicle(vehicle);
+            }
         }
     }
 }

@@ -7,7 +7,6 @@ import com.jayfella.jme.vehicle.debug.EnginePowerGraphState;
 import com.jayfella.jme.vehicle.debug.TireDataState;
 import com.jayfella.jme.vehicle.debug.VehicleEditorState;
 import com.jayfella.jme.vehicle.input.DrivingInputState;
-import com.jayfella.jme.vehicle.input.NonDrivingInputState;
 import com.jme3.app.state.AppStateManager;
 import com.simsilica.lemur.Button;
 import java.util.ArrayList;
@@ -89,18 +88,13 @@ public class MainMenu extends AnimatedMenu {
      * Drive the selected Vehicle in the selected World.
      */
     private void drive() {
-        AppStateManager stateManager = getStateManager();
-        NonDrivingInputState orbit
-                = stateManager.getState(NonDrivingInputState.class);
-        orbit.setEnabled(false);
-
         Car vehicle = (Car) Main.getVehicle();
         vehicle.getEngine().setRunning(true);
         DriverHud hud = Main.findAppState(DriverHud.class);
         hud.setCar(vehicle);
         hud.setEnabled(true);
 
-        // handle keyboard/mouse inputs
+        AppStateManager stateManager = getStateManager();
         DrivingInputState inputState
                 = stateManager.getState(DrivingInputState.class);
         inputState.setEnabled(true);
