@@ -59,14 +59,14 @@ public class NonDrivingInputState extends InputMode {
         super("Camera Mode", F_CAMERA_RESET_FOV, F_CAMERA_RESET_OFFSET,
                 F_CAMVIEW);
 
-        Camera cam = Main.getApplication().getCamera(); // TODO rename
+        Camera camera = Main.getApplication().getCamera();
         SignalMode signalMode = Main.findAppState(SignalMode.class);
         SignalTracker signalTracker = signalMode.getSignalTracker();
 
         float rearBias = 0f;
         FilterAll filter = new FilterAll(true);
-        orbitCamera = new ChaseCamera(cam, signalTracker, ChaseOption.FreeOrbit,
-                rearBias, filter);
+        orbitCamera = new ChaseCamera(camera, signalTracker,
+                ChaseOption.FreeOrbit, rearBias, filter);
         for (CameraSignal function : CameraSignal.values()) {
             String signalName = function.toString();
             orbitCamera.setSignalName(function, signalName);
@@ -75,7 +75,7 @@ public class NonDrivingInputState extends InputMode {
 
         assign((FunctionId function, InputState inputState, double tpf) -> {
             if (inputState == InputState.Positive) {
-                MyCamera.setYTangent(cam, 1f);
+                MyCamera.setYTangent(camera, 1f);
             }
         }, F_CAMERA_RESET_FOV);
 
@@ -134,8 +134,8 @@ public class NonDrivingInputState extends InputMode {
     public void setVehicle(Vehicle newVehicle) {
         Validate.nonNull(newVehicle, "new vehicle");
 
-        Camera cam = getApplication().getCamera(); // TODO rename
-        MyCamera.setYTangent(cam, 1f);
+        Camera camera = getApplication().getCamera();
+        MyCamera.setYTangent(camera, 1f);
         Main.getWorld().resetCameraPosition();
         activeCam.setVehicle(newVehicle);
     }
