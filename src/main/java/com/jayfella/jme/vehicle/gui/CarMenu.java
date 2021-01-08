@@ -7,7 +7,7 @@ import com.jayfella.jme.vehicle.examples.cars.GTRNismo;
 import com.jayfella.jme.vehicle.examples.cars.GrandTourer;
 import com.jayfella.jme.vehicle.examples.cars.HatchBack;
 import com.jayfella.jme.vehicle.examples.cars.PickupTruck;
-import com.jayfella.jme.vehicle.input.NonDrivingInputState;
+import com.jayfella.jme.vehicle.input.CameraInputMode;
 import com.jme3.app.state.AppStateManager;
 import com.simsilica.lemur.Button;
 import java.util.ArrayList;
@@ -70,8 +70,6 @@ class CarMenu extends AnimatedMenu {
         vehicle.load();
         Main.getApplication().setVehicle(vehicle);
 
-        NonDrivingInputState orbitCam
-                = Main.findAppState(NonDrivingInputState.class);
-        orbitCam.setVehicle(vehicle);
+        Main.findAppState(CameraInputMode.class).setVehicle(vehicle);
     }
 }

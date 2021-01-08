@@ -10,9 +10,9 @@ import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.gui.GearNameState;
 import com.jayfella.jme.vehicle.gui.MainMenu;
 import com.jayfella.jme.vehicle.gui.PhysicsHud;
+import com.jayfella.jme.vehicle.input.CameraInputMode;
 import com.jayfella.jme.vehicle.input.DrivingInputMode;
 import com.jayfella.jme.vehicle.input.DumpMode;
-import com.jayfella.jme.vehicle.input.NonDrivingInputState;
 import com.jayfella.jme.vehicle.input.PhysicsMode;
 import com.jayfella.jme.vehicle.input.ScreenshotMode;
 import com.jayfella.jme.vehicle.input.SignalMode;
@@ -246,9 +246,7 @@ public class Main extends SimpleApplication {
         /*
          * Re-use the existing input state with the new Vehicle instance.
          */
-        NonDrivingInputState inputState
-                = Main.findAppState(NonDrivingInputState.class);
-        inputState.setVehicle(vehicle);
+        Main.findAppState(CameraInputMode.class).setVehicle(vehicle);
     }
     // *************************************************************************
     // SimpleApplication methods
@@ -281,11 +279,11 @@ public class Main extends SimpleApplication {
      * Configure, attach, and enable a new camera InputMode.
      */
     private static void activateCameraMode() {
-        NonDrivingInputState mode = new NonDrivingInputState();
-        mode.assign(NonDrivingInputState.F_CAMERA_RESET_FOV, KeyInput.KEY_NUMPAD6);
-        mode.assign(NonDrivingInputState.F_CAMERA_RESET_OFFSET, Button.MOUSE_BUTTON2);
-        mode.assign(NonDrivingInputState.F_CAMERA_RESET_OFFSET, KeyInput.KEY_NUMPAD5);
-        mode.assign(NonDrivingInputState.F_CAMVIEW, KeyInput.KEY_F5);
+        CameraInputMode mode = new CameraInputMode();
+        mode.assign(CameraInputMode.F_CAMERA_RESET_FOV, KeyInput.KEY_NUMPAD6);
+        mode.assign(CameraInputMode.F_CAMERA_RESET_OFFSET, Button.MOUSE_BUTTON2);
+        mode.assign(CameraInputMode.F_CAMERA_RESET_OFFSET, KeyInput.KEY_NUMPAD5);
+        mode.assign(CameraInputMode.F_CAMVIEW, KeyInput.KEY_F5);
 
         AppStateManager manager = getApplication().getStateManager();
         manager.attach(mode);

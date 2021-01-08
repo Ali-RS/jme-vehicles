@@ -18,9 +18,9 @@ import jme3utilities.Validate;
 import jme3utilities.minie.FilterAll;
 
 /**
- * An InputMode to manage the Camera. TODO rename CameraMode
+ * An InputMode to manage the Camera.
  */
-public class NonDrivingInputState extends InputMode {
+public class CameraInputMode extends InputMode {
     // *************************************************************************
     // constants and loggers
 
@@ -37,7 +37,7 @@ public class NonDrivingInputState extends InputMode {
      * message logger for this class
      */
     final public static Logger logger2
-            = Logger.getLogger(NonDrivingInputState.class.getName());
+            = Logger.getLogger(CameraInputMode.class.getName());
     // *************************************************************************
     // fields
 
@@ -55,7 +55,7 @@ public class NonDrivingInputState extends InputMode {
     /**
      * Instantiate a disabled InputMode.
      */
-    public NonDrivingInputState() {
+    public CameraInputMode() {
         super("Camera Mode", F_CAMERA_RESET_FOV, F_CAMERA_RESET_OFFSET,
                 F_CAMVIEW);
 

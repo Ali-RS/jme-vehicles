@@ -201,9 +201,7 @@ public class DrivingInputMode extends InputMode {
         Main.getApplication().setVehicle(newVehicle);
 
         stateManager.attach(new MainMenu());
-        NonDrivingInputState cameraState
-                = Main.findAppState(NonDrivingInputState.class);
-        cameraState.orbit();
+        Main.findAppState(CameraInputMode.class).orbit();
     }
     // *************************************************************************
     // InputMode methods
@@ -254,8 +252,8 @@ public class DrivingInputMode extends InputMode {
     }
 
     private void setCameraControlMode(VehicleCamView controlMode) {
-        NonDrivingInputState cameraInputMode
-                = Main.findAppState(NonDrivingInputState.class);
+        CameraInputMode cameraInputMode
+                = Main.findAppState(CameraInputMode.class);
         CameraController activeCamera = cameraInputMode.getActiveCamera();
 
         Camera camera = getApplication().getCamera();
