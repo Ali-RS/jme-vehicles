@@ -32,7 +32,7 @@ abstract public class Car extends Vehicle {
     /**
      * message logger for this class
      */
-    final private static Logger logger = Logger.getLogger(Car.class.getName());
+    final private static Logger logger2 = Logger.getLogger(Car.class.getName());
     // *************************************************************************
     // fields
 
