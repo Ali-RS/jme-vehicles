@@ -42,9 +42,9 @@ public class CameraInputMode extends InputMode {
     // fields
 
     /**
-     * active controller TODO rename
+     * active controller
      */
-    private CameraController activeCam;
+    private CameraController activeController;
     /**
      * orbit controller (active when not driving a Vehicle)
      */
@@ -71,7 +71,7 @@ public class CameraInputMode extends InputMode {
             String signalName = function.toString();
             orbitCamera.setSignalName(function, signalName);
         }
-        activeCam = orbitCamera;
+        activeController = orbitCamera;
 
         assign((FunctionId function, InputState inputState, double tpf) -> {
             if (inputState == InputState.Positive) {
@@ -100,7 +100,7 @@ public class CameraInputMode extends InputMode {
      * @return the pre-existing instance (not null)
      */
     public CameraController getActiveCamera() {
-        return activeCam;
+        return activeController;
     }
 
     /**
@@ -116,9 +116,9 @@ public class CameraInputMode extends InputMode {
      * @param newActive (not null, alias created)
      */
     public void setActiveCamera(CameraController newActive) {
-        activeCam.detach();
-        activeCam = newActive;
-        activeCam.attach();
+        activeController.detach();
+        activeController = newActive;
+        activeController.attach();
 
         Camera camera = getApplication().getCamera();
         MyCamera.setYTangent(camera, 1f);
@@ -137,7 +137,7 @@ public class CameraInputMode extends InputMode {
         Camera camera = getApplication().getCamera();
         MyCamera.setYTangent(camera, 1f);
         Main.getWorld().resetCameraPosition();
-        activeCam.setVehicle(newVehicle);
+        activeController.setVehicle(newVehicle);
     }
     // *************************************************************************
     // InputMode methods
@@ -149,7 +149,7 @@ public class CameraInputMode extends InputMode {
     @Override
     protected void onDisable() {
         super.onDisable();
-        activeCam.detach();
+        activeController.detach();
     }
 
     /**
@@ -158,7 +158,7 @@ public class CameraInputMode extends InputMode {
      */
     @Override
     protected void onEnable() {
-        activeCam.attach();
+        activeController.attach();
         super.onEnable();
     }
 
@@ -171,7 +171,7 @@ public class CameraInputMode extends InputMode {
     @Override
     public void update(float tpf) {
         super.update(tpf);
-        activeCam.update(tpf);
+        activeController.update(tpf);
     }
     // *************************************************************************
     // private methods
@@ -187,8 +187,8 @@ public class CameraInputMode extends InputMode {
     }
 
     private void resetCameraOffset() {
-        if (activeCam instanceof ChaseCamera) {
-            ChaseCamera chaseCam = (ChaseCamera) activeCam;
+        if (activeController instanceof ChaseCamera) {
+            ChaseCamera chaseCam = (ChaseCamera) activeController;
             if (chaseCam.getChaseOption() == ChaseOption.StrictChase) {
                 /*
                  * Locate the camera 20 wu behind and 5 wu above
