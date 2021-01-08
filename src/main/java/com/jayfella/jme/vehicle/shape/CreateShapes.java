@@ -67,8 +67,8 @@ public class CreateShapes {
         /*
          * Create a collision shape for each World.
          */
-        createEnvShape("race1", "race1");
-        createEnvShape("vehicle-playground", "vehicle-playground");
+        createWorldShape("race1", "race1");
+        createWorldShape("vehicle-playground", "vehicle-playground");
     }
     // *************************************************************************
     // private methods
@@ -105,12 +105,12 @@ public class CreateShapes {
     }
 
     /**
-     * Create a collision shape for a World. TODO rename
+     * Create a collision shape for a World.
      *
      * @param folderName the name of the folder containing the C-G model
      * @param cgmBaseFileName the base filename of the C-G model
      */
-    private static void createEnvShape(String folderName,
+    private static void createWorldShape(String folderName,
             String cgmBaseFileName) {
         assetManager.clearCache(); // to reclaim direct buffer memory
 
