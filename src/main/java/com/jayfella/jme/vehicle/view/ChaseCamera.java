@@ -145,7 +145,9 @@ public class ChaseCamera
     // new methods exposed
 
     /**
-     * Determiner the configured ChaseOption.
+     * Determine the configured ChaseOption.
+     *
+     * @return the enum value
      */
     public ChaseOption getChaseOption() {
         return chaseOption;
@@ -172,7 +174,8 @@ public class ChaseCamera
     }
 
     /**
-     * Alter which Vehicle the camera is targeting.
+     * Alter which Vehicle the camera is targeting. May modify the "offset" and
+     * "tmpCameraLocation" fields.
      *
      * @param newVehicle the desired target vehicle (not null)
      */

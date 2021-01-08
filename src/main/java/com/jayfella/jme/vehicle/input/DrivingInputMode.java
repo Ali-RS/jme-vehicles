@@ -156,7 +156,7 @@ public class DrivingInputMode extends InputMode {
         }, F_TURN_RIGHT);
     }
     // *************************************************************************
-    // public methods
+    // new methods exposed
 
     /**
      * Advance to the next camera mode.

@@ -52,6 +52,8 @@ abstract public class CameraController {
      * Vehicle with which the Camera is associated
      */
     protected Vehicle vehicle;
+    // *************************************************************************
+    // constructor
 
     protected CameraController(Vehicle vehicle, Camera camera,
             SignalTracker tracker) {
