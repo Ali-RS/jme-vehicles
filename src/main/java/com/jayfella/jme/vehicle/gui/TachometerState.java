@@ -106,7 +106,7 @@ class TachometerState extends BaseAppState {
         Node fixedNode = buildFixedNode(assetManager);
         node.attachChild(fixedNode);
 
-        String needlePath = "Textures/Vehicles/Speedometer/speedo_needle_2.png";
+        String needlePath = "/Textures/Georg/speedo_needle_2.png";
         Texture needleTexture = assetManager.loadTexture(needlePath);
         Image image = needleTexture.getImage();
         int width = image.getWidth();
@@ -238,7 +238,7 @@ class TachometerState extends BaseAppState {
      * background and numbers.
      */
     private Node buildFixedNode(AssetManager assetManager) {
-        String path = "Textures/Vehicles/Speedometer/tachometer_bg.png";
+        String path = "/Textures/Georg/tachometer_bg.png";
         Texture backgroundTexture = assetManager.loadTexture(path);
         Image image = backgroundTexture.getImage();
         int height = image.getHeight();
