@@ -381,6 +381,25 @@ public class Wheel {
         this.tireModel = tireModel;
     }
 
+    /**
+     * Determine how much the wheel is skidding.
+     *
+     * @return the relative amount of skidding (&ge;0, &le;1, 0&rarr;
+     * unsupported or full traction, 1&rarr;complete slippage)
+     */
+    public float skidFraction() {
+        float result;
+        float depth = vehicleControl.castRay(wheelIndex);
+        if (depth == -1f) {
+            result = 0f; // no supporting surface
+        } else {
+            result = 1f - vehicleWheel.getSkidInfo();
+        }
+
+        assert result >= 0f && result <= 1f : result;
+        return result;
+    }
+
     public void steer(float strength) {
         if (isSteering()) {
             if (isSteeringFlipped) {
