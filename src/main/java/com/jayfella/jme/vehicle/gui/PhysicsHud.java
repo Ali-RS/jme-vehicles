@@ -78,7 +78,7 @@ public class PhysicsHud extends BaseAppState {
 
     /**
      * Test whether the physics simulation is paused.
-     * 
+     *
      * @return true if paused, otherwise false
      */
     public boolean isPhysicsPaused() {
@@ -147,10 +147,10 @@ public class PhysicsHud extends BaseAppState {
          * pre-load unshaded materials for buttons
          */
         AssetManager manager = app.getAssetManager();
-        Texture texture = manager.loadTexture("Textures/pause.png");
+        Texture texture = manager.loadTexture("/Textures/Georg/pause.png");
         pauseMaterial = MyAsset.createUnshadedMaterial(manager, texture);
 
-        texture = manager.loadTexture("Textures/run.png");
+        texture = manager.loadTexture("/Textures/Georg/run.png");
         runMaterial = MyAsset.createUnshadedMaterial(manager, texture);
         /*
          * Construct a Geometry for the single-step button.
@@ -159,7 +159,7 @@ public class PhysicsHud extends BaseAppState {
         int numVertices = 25;
         Mesh mesh = new DiscMesh(radius, numVertices);
         singleStepButton = new Geometry("single-step button", mesh);
-        texture = manager.loadTexture("Textures/single-step.png");
+        texture = manager.loadTexture("/Textures/Georg/single-step.png");
         Material material = MyAsset.createUnshadedMaterial(manager, texture);
         singleStepButton.setMaterial(material);
         /*

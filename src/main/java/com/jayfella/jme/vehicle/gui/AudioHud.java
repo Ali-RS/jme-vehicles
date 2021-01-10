@@ -165,10 +165,10 @@ public class AudioHud extends BaseAppState {
          * pre-load unshaded materials for buttons
          */
         AssetManager manager = app.getAssetManager();
-        Texture texture = manager.loadTexture("Textures/mute.png");
+        Texture texture = manager.loadTexture("/Textures/Georg/mute.png");
         muteMaterial = MyAsset.createUnshadedMaterial(manager, texture);
 
-        texture = manager.loadTexture("Textures/sound.png");
+        texture = manager.loadTexture("/Textures/Georg/sound.png");
         soundMaterial = MyAsset.createUnshadedMaterial(manager, texture);
         /*
          * pre-load the master-volume materials

@@ -312,7 +312,8 @@ class LoadingState extends BaseAppState {
         Main application = Main.getApplication();
         AssetManager assetManager = application.getAssetManager();
 
-        Texture tex = assetManager.loadTexture("/Textures/powered-by.png");
+        String assetPath = "/Textures/Georg/powered-by.png";
+        Texture tex = assetManager.loadTexture(assetPath);
         Material material = new Material(assetManager, Materials.LIGHTING);
         material.setTexture("DiffuseMap", tex);
 

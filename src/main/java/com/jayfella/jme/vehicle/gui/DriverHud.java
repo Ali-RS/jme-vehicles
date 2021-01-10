@@ -177,16 +177,16 @@ public class DriverHud extends BaseAppState {
         Texture texture = manager.loadTexture("Textures/sgold/exit.png");
         exitMaterial = MyAsset.createUnshadedMaterial(manager, texture);
 
-        texture = manager.loadTexture("Textures/horn-silent.png");
+        texture = manager.loadTexture("/Textures/Georg/horn-silent.png");
         hornSilentMaterial = MyAsset.createUnshadedMaterial(manager, texture);
 
-        texture = manager.loadTexture("Textures/horn-sound.png");
+        texture = manager.loadTexture("/Textures/Georg/horn-sound.png");
         hornSoundMaterial = MyAsset.createUnshadedMaterial(manager, texture);
 
-        texture = manager.loadTexture("Textures/power-off.png");
+        texture = manager.loadTexture("/Textures/Georg/power-off.png");
         powerOffMaterial = MyAsset.createUnshadedMaterial(manager, texture);
 
-        texture = manager.loadTexture("Textures/power-on.png");
+        texture = manager.loadTexture("/Textures/Georg/power-on.png");
         powerOnMaterial = MyAsset.createUnshadedMaterial(manager, texture);
 
         AppStateManager stateManager = getApplication().getStateManager();
@@ -219,7 +219,7 @@ public class DriverHud extends BaseAppState {
         mesh = new RectangleMesh(-radius, +radius, -radius, +radius, +1f);
         steering = new Geometry("steering wheel", mesh);
 
-        texture = manager.loadTexture("Textures/steering.png");
+        texture = manager.loadTexture("/Textures/Georg/steering.png");
         Material material = MyAsset.createUnshadedMaterial(manager, texture);
         RenderState ars = material.getAdditionalRenderState();
         ars.setBlendMode(RenderState.BlendMode.Alpha);

@@ -149,7 +149,8 @@ public class CompassState extends BaseAppState {
         }
 
         geometry = new Geometry("compass", mesh);
-        Texture texture = assetManager.loadTexture("Textures/compass.png");
+        String assetPath = "/Textures/Georg/compass.png";
+        Texture texture = assetManager.loadTexture(assetPath);
         Material material
                 = MyAsset.createUnshadedMaterial(assetManager, texture);
         geometry.setMaterial(material);
