@@ -292,14 +292,17 @@ class LoadingState extends BaseAppState {
                 new AnimationEvent(jaime, "Idle", 0.2f, LoopMode.DontLoop));
 
         cinematic.addListener(new CinematicEventListener() {
+            @Override
             public void onPlay(CinematicEvent c) {
                 // do nothing
             }
 
+            @Override
             public void onPause(CinematicEvent c) {
                 // do nothing
             }
 
+            @Override
             public void onStop(CinematicEvent c) {
                 jaime.removeFromParent();
             }
