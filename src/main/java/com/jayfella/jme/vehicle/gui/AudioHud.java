@@ -1,7 +1,6 @@
 package com.jayfella.jme.vehicle.gui;
 
 import com.jayfella.jme.vehicle.Main;
-import com.jayfella.jme.vehicle.VehicleAudioState;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
@@ -39,6 +38,10 @@ public class AudioHud extends BaseAppState {
     // fields
 
     /**
+     * true&arr;audio is globally muted, false&rarr;audio enabled
+     */
+    private static boolean isGloballyMuted = false;
+    /**
      * height of the GUI viewport (in pixels)
      */
     private float viewPortHeight;
@@ -74,10 +77,26 @@ public class AudioHud extends BaseAppState {
      * Toggle the audio between enabled and muted.
      */
     public void toggleAudioMuted() {
-        VehicleAudioState.toggleMuted();
+        isGloballyMuted = !isGloballyMuted;
+        showMuteButton();
+    }
+    // *************************************************************************
+    // new methods exposed
 
-        boolean isMuted = VehicleAudioState.isMuted();
-        showMuteButton(isMuted);
+    /**
+     * Test whether sound is globally muted.
+     *
+     * @return true&rarr;muted, false&rarr;enabled
+     */
+    public static boolean isMuted() {
+        return isGloballyMuted;
+    }
+
+    /**
+     * Toggle the sound between muted and enabled.
+     */
+    public static void toggleMuted() {
+        isGloballyMuted = !isGloballyMuted;
     }
     // *************************************************************************
     // BaseAppState methods
@@ -130,8 +149,7 @@ public class AudioHud extends BaseAppState {
      */
     @Override
     protected void onEnable() {
-        boolean isMuted = VehicleAudioState.isMuted();
-        showMuteButton(isMuted);
+        showMuteButton();
     }
     // *************************************************************************
     // private methods
@@ -158,11 +176,8 @@ public class AudioHud extends BaseAppState {
 
     /**
      * Display the mute/sound button.
-     *
-     * @param muted true &rarr; show it in the "muted" state, false &rarr; show
-     * it in the "enabled" state
      */
-    private void showMuteButton(boolean muted) {
+    private void showMuteButton() {
         hideMuteButton();
 
         float radius = 0.025f * viewPortHeight;
@@ -171,7 +186,7 @@ public class AudioHud extends BaseAppState {
         muteButton = new Geometry("mute button", mesh);
         attachToGui(muteButton);
 
-        if (muted) {
+        if (isGloballyMuted) {
             muteButton.setMaterial(muteMaterial);
         } else {
             muteButton.setMaterial(soundMaterial);

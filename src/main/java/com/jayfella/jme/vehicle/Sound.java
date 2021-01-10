@@ -82,6 +82,9 @@ public class Sound {
      * @param volume the desired relative volume (linear scale, &ge;0)
      */
     public void setPitchAndVolume(float pitch, float volume) {
+        Validate.positive(pitch, "pitch");
+        Validate.nonNegative(volume, "volume");
+
         if (volume == 0f) {
             mute();
             return;
@@ -107,7 +110,15 @@ public class Sound {
                     new Object[]{getClass().getSimpleName(), pitch}
             );
         }
-        activeNode.setPitch(clampedSpeed);
+        float oldSpeed = activeNode.getPitch();
+        if (clampedSpeed != oldSpeed) {
+            activeNode.setPitch(clampedSpeed);
+        }
+
+        float oldVolume = activeNode.getVolume();
+        if (volume != oldVolume) {
+            activeNode.setVolume(volume);
+        }
 
         if (activeNode.getStatus() != AudioSource.Status.Playing) {
             activeNode.play();

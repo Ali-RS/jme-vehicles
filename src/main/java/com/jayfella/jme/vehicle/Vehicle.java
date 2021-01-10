@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle;
 
+import com.jayfella.jme.vehicle.gui.AudioHud;
 import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.part.Engine;
 import com.jayfella.jme.vehicle.part.GearBox;
@@ -304,7 +305,7 @@ abstract public class Vehicle
 
         AudioSource.Status status = hornAudio.getStatus();
         boolean isSounding = (status == AudioSource.Status.Playing);
-        if (VehicleAudioState.isMuted()) {
+        if (AudioHud.isMuted()) {
             isRequested = false;
         }
         if (isSounding && !isRequested) {

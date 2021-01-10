@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle;
 
+import com.jayfella.jme.vehicle.gui.AudioHud;
 import com.jayfella.jme.vehicle.part.Engine;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
@@ -17,35 +18,12 @@ public class VehicleAudioState extends BaseAppState {
     // *************************************************************************
     // fields
 
-    /**
-     * true&arr;sound globally muted, false&rarr;sound enabled
-     */
-    private static boolean isGloballyMuted = false;
-
     final private Vehicle vehicle;
     // *************************************************************************
     // constructors
 
     public VehicleAudioState(Vehicle vehicle) {
         this.vehicle = vehicle;
-    }
-    // *************************************************************************
-    // new methods exposed
-
-    /**
-     * Test whether sound is globally muted.
-     *
-     * @return true&rarr;muted, false&rarr;enabled
-     */
-    public static boolean isMuted() {
-        return isGloballyMuted;
-    }
-
-    /**
-     * Toggle the sound between muted and enabled.
-     */
-    public static void toggleMuted() {
-        isGloballyMuted = !isGloballyMuted;
     }
     // *************************************************************************
     // BaseAppState methods
@@ -97,7 +75,7 @@ public class VehicleAudioState extends BaseAppState {
         Sound engineAudio = vehicle.getEngineSound();
         if (engineAudio != null) {
             Engine engine = vehicle.getEngine();
-            boolean mute = isGloballyMuted || !engine.isRunning();
+            boolean mute = AudioHud.isMuted() || !engine.isRunning();
             if (mute) {
                 engineAudio.mute();
             } else {
