@@ -242,11 +242,12 @@ Resources/assets/media:
   has a CC0 license.
 + The [Lunar libration with phase Oct 2007 texture](https://github.com/stephengold/jme-vehicles/blob/master/src/main/resources/Textures/sgold)
   has a PD-self license.
-+ The following 15 textures were generated procedurally by
++ The following 16 textures were generated procedurally by
   [the Georg Project](https://github.com/stephengold/Georg), which has a BSD 3-Clause license:
   + compass.png
   + horn-silent.png
   + horn-sound.png
+  + left-triangle.png
   + mute.png
   + pause.png
   + power-off.png
