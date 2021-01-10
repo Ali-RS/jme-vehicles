@@ -4,7 +4,11 @@ import com.jayfella.jme.vehicle.Main;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
+import com.jme3.input.InputManager;
 import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.FastMath;
+import com.jme3.math.Vector2f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
@@ -15,11 +19,12 @@ import com.simsilica.lemur.event.MouseEventControl;
 import java.util.logging.Logger;
 import jme3utilities.MyAsset;
 import jme3utilities.mesh.DiscMesh;
+import jme3utilities.mesh.RoundedRectangle;
 
 /**
  * Heads-up display (HUD) for controlling audio. This AppState should be
  * instantiated once and then enabled/disabled as needed. It directly manages
- * the mute button.
+ * the mute button and the master-volume control.
  */
 public class AudioHud extends BaseAppState {
     // *************************************************************************
@@ -38,9 +43,21 @@ public class AudioHud extends BaseAppState {
     // fields
 
     /**
+     * true&rarr;the slider is being dragged
+     */
+    private boolean isDraggingSlider = false;
+    /**
      * true&rarr;audio is globally muted, false&rarr;audio enabled
      */
     private static boolean isGloballyMuted = false;
+    /**
+     * overall audio volume when not muted (log scale, &ge;0, &le;1)
+     */
+    private static float masterVolume = 0.5f;
+    /**
+     * distance the slider travels (in pixels)
+     */
+    private float sliderTravel;
     /**
      * height of the GUI viewport (in pixels)
      */
@@ -50,9 +67,21 @@ public class AudioHud extends BaseAppState {
      */
     private float viewPortWidth;
     /**
+     * visualize the expanding/sliding part of the master-volume GUI control
+     */
+    private Geometry mvSlider;
+    /**
      * visualize the mute button
      */
     private Geometry muteButton;
+    /**
+     * pre-loaded Material for the master-volume background
+     */
+    private Material mvBackgroundMaterial;
+    /**
+     * pre-loaded Material for the master-volume slider
+     */
+    private Material mvSliderMaterial;
     /**
      * indicate audio is muted
      */
@@ -61,6 +90,10 @@ public class AudioHud extends BaseAppState {
      * indicate audio is sounding
      */
     private Material soundMaterial;
+    /*
+     * visualize the master-volume GUI control
+     */
+    final private Node mvNode = new Node("Audio Master-Volume Node");
     // *************************************************************************
     // constructors
 
@@ -83,7 +116,7 @@ public class AudioHud extends BaseAppState {
         if (isGloballyMuted) {
             result = 0f;
         } else {
-            result = 1f;
+            result = FastMath.pow(0.003f, 1f - masterVolume);
         }
 
         return result;
@@ -96,6 +129,11 @@ public class AudioHud extends BaseAppState {
         isGloballyMuted = !isGloballyMuted;
         if (isEnabled()) {
             showMuteButton();
+            if (isGloballyMuted) {
+                hideMvControl();
+            } else {
+                showMvControl();
+            }
         }
     }
     // *************************************************************************
@@ -132,6 +170,68 @@ public class AudioHud extends BaseAppState {
 
         texture = manager.loadTexture("Textures/sound.png");
         soundMaterial = MyAsset.createUnshadedMaterial(manager, texture);
+        /*
+         * pre-load the master-volume materials
+         */
+        texture = manager.loadTexture("/Textures/Georg/left-triangle.png");
+        mvBackgroundMaterial
+                = MyAsset.createUnshadedMaterial(manager, texture);
+        ColorRGBA color = new ColorRGBA(1f, 1f, 0f, 1f);
+        mvSliderMaterial = MyAsset.createUnshadedMaterial(manager, color);
+        /*
+         * Position the MV control in the viewport.
+         */
+        float x = 0.713f * viewPortWidth;
+        float y = 0.95f * viewPortHeight;
+        mvNode.setLocalTranslation(x, y, guiZ);
+        /*
+         * Attach a rounded-rectangle Geometry for the background.
+         */
+        sliderTravel = 0.088f * viewPortHeight;
+        float cornerRadius = 0.005f * viewPortHeight;
+        float bgWidth = 0.1f * viewPortHeight;
+        float bgHeight = 0.05f * viewPortHeight;
+        float x1 = -bgWidth / 2;
+        float x2 = bgWidth / 2;
+        float y1 = -bgHeight / 2;
+        float y2 = bgHeight / 2;
+        float zNormal = +1f;
+        Mesh bgMesh
+                = new RoundedRectangle(x1, x2, y1, y2, cornerRadius, zNormal);
+        Geometry background = new Geometry("Master-volume Background", bgMesh);
+        mvNode.attachChild(background);
+        background.setMaterial(mvBackgroundMaterial);
+        background.move(0f, 0f, -0.1f); // slightly behind the slider
+        /*
+         * Attach a rounded-rectangle Geometry for the slider.
+         */
+        float sliderWidth = bgWidth - sliderTravel;
+        assert sliderWidth >= 2 * cornerRadius;
+        float sliderHeight = bgHeight;
+        x1 = -sliderWidth / 2;
+        x2 = sliderWidth / 2;
+        y1 = -sliderHeight / 2;
+        y2 = sliderHeight / 2;
+        zNormal = +1f;
+        Mesh sliderMesh
+                = new RoundedRectangle(x1, x2, y1, y2, cornerRadius, zNormal);
+        mvSlider = new Geometry("Master-volume Slider", sliderMesh);
+        mvNode.attachChild(mvSlider);
+        mvSlider.setMaterial(mvSliderMaterial);
+
+        float dx = sliderTravel * (masterVolume - 0.5f);
+        mvSlider.setLocalTranslation(dx, 0f, 0f);
+        /*
+         * Add an Expander to the slider, to enable dragging.
+         */
+        Expander listener = new Expander(mvSlider) {
+            @Override
+            public void onClick(boolean isPressed) {
+                isDraggingSlider = isPressed;
+            }
+        };
+        MouseEventControl control = new MouseEventControl(listener);
+        mvSlider.addControl(control);
     }
 
     /**
@@ -140,6 +240,7 @@ public class AudioHud extends BaseAppState {
      */
     @Override
     protected void onDisable() {
+        hideMvControl();
         hideMuteButton();
     }
 
@@ -149,7 +250,32 @@ public class AudioHud extends BaseAppState {
      */
     @Override
     protected void onEnable() {
+        if (!isGloballyMuted) {
+            showMvControl();
+        }
         showMuteButton();
+    }
+
+    /**
+     * Callback to update this AppState, invoked once per frame when the
+     * AppState is both attached and enabled.
+     *
+     * @param tpf the time interval between frames (in seconds, &ge;0)
+     */
+    @Override
+    public void update(float tpf) {
+        super.update(tpf);
+
+        if (isDraggingSlider) {
+            InputManager inputManager = getApplication().getInputManager();
+            Vector2f cursor = inputManager.getCursorPosition();
+            float dx = cursor.x - mvNode.getWorldTranslation().x;
+            float halfWidth = 0.044f * viewPortHeight;
+            dx = FastMath.clamp(dx, -halfWidth, halfWidth);
+            mvSlider.setLocalTranslation(dx, 0f, 0f);
+
+            masterVolume = (dx + halfWidth) / (2 * halfWidth);
+        }
     }
     // *************************************************************************
     // private methods
@@ -165,6 +291,13 @@ public class AudioHud extends BaseAppState {
     }
 
     /**
+     * Hide the master-volume control.
+     */
+    private void hideMvControl() {
+        mvNode.removeFromParent();
+    }
+
+    /**
      * Hide the mute button.
      */
     private void hideMuteButton() {
@@ -172,6 +305,14 @@ public class AudioHud extends BaseAppState {
             muteButton.removeFromParent();
             muteButton = null;
         }
+    }
+
+    /**
+     * Display the master-volume control.
+     */
+    private void showMvControl() {
+        hideMvControl();
+        attachToGui(mvNode);
     }
 
     /**
