@@ -1,17 +1,22 @@
 package com.jayfella.jme.vehicle;
 
+import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
+import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.objects.VehicleWheel;
 import com.jme3.effect.ParticleEmitter;
 import com.jme3.effect.ParticleMesh;
+import com.jme3.effect.influencers.ParticleInfluencer;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
+import com.jme3.texture.Texture;
 import java.util.logging.Logger;
 
 public class TireSmokeEmitter extends BaseAppState {
@@ -41,23 +46,33 @@ public class TireSmokeEmitter extends BaseAppState {
 
     // TODO re-order methods
     private ParticleEmitter createEmitter(AssetManager assetManager) {
-        ParticleEmitter result = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
+        int numParticles = 30;
+        ParticleEmitter result = new ParticleEmitter("Emitter",
+                ParticleMesh.Type.Triangle, numParticles);
 
-        Material mat_red = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
-        mat_red.setTexture("Texture", assetManager.loadTexture("Textures/Particles/smoke_line.png"));
+        Material mat_red = new Material(assetManager,
+                "Common/MatDefs/Misc/Particle.j3md");
+        String assetPath = "Textures/Particles/smoke_line.png";
+        Texture smokeLine = assetManager.loadTexture(assetPath);
+        mat_red.setTexture("Texture", smokeLine);
 
-        result.setMaterial(mat_red);
-        result.setImagesX(15);
-        result.setImagesY(1); // 2x2 texture animation
-        result.setEndColor(new ColorRGBA(99 / 255f, 68 / 255f, 45 / 255f, 0.4f));   // red
-        result.setStartColor(new ColorRGBA(183 / 255f, 130 / 255f, 89 / 255f, 0.05f)); // yellow
-        result.getParticleInfluencer().setInitialVelocity(new Vector3f(0, 2, 0));
-        result.setStartSize(1.0f);
-        result.setEndSize(0.0f);
-        result.setGravity(0, 0, 0);
-        result.setLowLife(0.1f);
+        ColorRGBA red = new ColorRGBA(99 / 255f, 68 / 255f, 45 / 255f, 0.4f);
+        ColorRGBA yellow = new ColorRGBA(183 / 255f, 130 / 255f, 89 / 255f, 0.05f);
+
+        result.setEndColor(red);
+        result.setEndSize(0f);
+        result.setGravity(0f, 0f, 0f);
         result.setHighLife(2f);
-        result.getParticleInfluencer().setVelocityVariation(0.3f);
+        result.setImagesX(15);
+        result.setImagesY(1);
+        result.setLowLife(0.1f);
+        result.setMaterial(mat_red);
+        result.setStartColor(yellow);
+        result.setStartSize(1f);
+
+        ParticleInfluencer influencer = result.getParticleInfluencer();
+        influencer.setInitialVelocity(new Vector3f(0f, 2f, 0f));
+        influencer.setVelocityVariation(0.3f);
 
         return result;
     }
@@ -83,16 +98,20 @@ public class TireSmokeEmitter extends BaseAppState {
      */
     @Override
     protected void initialize(Application app) {
-        int wheelCount = vehicle.countWheels();
-        emitters = new ParticleEmitter[wheelCount];
+        int numWheels = vehicle.countWheels();
+        emitters = new ParticleEmitter[numWheels];
 
         rootNode = ((SimpleApplication) getApplication()).getRootNode();
+        AssetManager assetManager = app.getAssetManager();
 
-        for (int i = 0; i < wheelCount; i++) {
-            ParticleEmitter smoke = createEmitter(app.getAssetManager());
-            smoke.setLocalTranslation(vehicle.getVehicleControl().getWheel(i).getLocation());
+        for (int wheelIndex = 0; wheelIndex < numWheels; wheelIndex++) {
+            ParticleEmitter smoke = createEmitter(assetManager);
+            emitters[wheelIndex] = smoke;
+
+            Wheel wheel = vehicle.getWheel(wheelIndex);
+            Vector3f location = wheel.getVehicleWheel().getLocation();
+            smoke.setLocalTranslation(location);
             smoke.setShadowMode(RenderQueue.ShadowMode.Receive);
-            emitters[i] = smoke;
         }
     }
 
@@ -102,8 +121,9 @@ public class TireSmokeEmitter extends BaseAppState {
      */
     @Override
     protected void onDisable() {
-        for (int i = 0; i < emitters.length; i++) {
-            emitters[i].removeFromParent();
+        int numWheels = vehicle.countWheels();
+        for (int wheelIndex = 0; wheelIndex < numWheels; wheelIndex++) {
+            emitters[wheelIndex].removeFromParent();
         }
     }
 
@@ -113,8 +133,9 @@ public class TireSmokeEmitter extends BaseAppState {
      */
     @Override
     protected void onEnable() {
-        for (int i = 0; i < emitters.length; i++) {
-            rootNode.attachChild(emitters[i]);
+        int numWheels = vehicle.countWheels();
+        for (int wheelIndex = 0; wheelIndex < numWheels; wheelIndex++) {
+            rootNode.attachChild(emitters[wheelIndex]);
         }
     }
 
@@ -126,24 +147,27 @@ public class TireSmokeEmitter extends BaseAppState {
      */
     @Override
     public void update(float tpf) {
-        int wheelCount = vehicle.countWheels();
-        for (int i = 0; i < wheelCount; i++) {
-            VehicleWheel wheel = vehicle.getVehicleControl().getWheel(i);
+        VehicleControl vehicleControl = vehicle.getVehicleControl();
+        Quaternion orientation = vehicleControl.getPhysicsRotation();
+        Vector3f rearDirection = orientation.getRotationColumn(2).negate();
 
-            ParticleEmitter smoke = emitters[i];
+        int numWheels = vehicle.countWheels();
+        for (int wheelIndex = 0; wheelIndex < numWheels; wheelIndex++) {
+            VehicleWheel wheel = vehicleControl.getWheel(wheelIndex);
+
+            ParticleEmitter smoke = emitters[wheelIndex];
             smoke.setLocalTranslation(wheel.getCollisionLocation());
 
             float traction = wheel.getSkidInfo();
             if (traction < 0.5f) {
                 float scale = 1f - traction;
+                smoke.emitParticles((int) (scale * 20f));
 
-                smoke.emitParticles((int) (scale * 20));
-                // smoke.getParticleInfluencer().setInitialVelocity(vehicle.getVehicleControl().getLinearVelocity().negate().mult(scale * 0.25f));
-                smoke.getParticleInfluencer().setInitialVelocity(vehicle.getVehicleControl().getPhysicsRotation().getRotationColumn(2).negate()
-                        .mult(scale * (vehicle.getSpeed(SpeedUnit.KPH) / 10)));
+                float speed = scale * vehicle.getSpeed(SpeedUnit.KPH) / 10f;
+                Vector3f velocity = rearDirection.mult(speed);
+                smoke.getParticleInfluencer().setInitialVelocity(velocity);
 
             } else {
-                // smoke.emitParticles(0);
                 smoke.setParticlesPerSec(0);
             }
         }
