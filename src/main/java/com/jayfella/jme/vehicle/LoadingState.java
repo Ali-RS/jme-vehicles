@@ -423,12 +423,14 @@ class LoadingState extends BaseAppState {
         Queue<Loadable> queue = new ArrayBlockingQueue<>(numLoadables);
         queue.addAll(Arrays.asList(allLoadables));
 
-        int numThreadsToCreate = numLoadables + 1;
+        int maxPreloaders = 2;
+        int numPreloaders = Math.min(numLoadables, maxPreloaders);
+        int numThreadsToCreate = numPreloaders + 1;
         latch = new CountDownLatch(numThreadsToCreate);
         /*
          * Start preload threads to warm up the AssetCache.
          */
-        for (int threadIndex = 0; threadIndex < numLoadables; ++threadIndex) {
+        for (int threadIndex = 0; threadIndex < numPreloaders; ++threadIndex) {
             Thread thread = new Preloader(queue, latch);
             thread.setPriority(Thread.MIN_PRIORITY);
             thread.start();
