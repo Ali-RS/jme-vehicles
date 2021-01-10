@@ -107,6 +107,12 @@ public class Easings {
     }
 
     /**
+     * A private constructor to inhibit instantiation of this class.
+     */
+    private Easings() {
+    }
+
+    /**
      *
      * @param function the easing function to use.
      * @param action   the action or direction of the function.

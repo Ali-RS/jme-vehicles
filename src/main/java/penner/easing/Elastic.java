@@ -2,6 +2,12 @@ package penner.easing;
 
 public class Elastic {
 
+    /**
+     * A private constructor to inhibit instantiation of this class.
+     */
+    private Elastic() {
+    }
+
     public static float  easeIn(float t,float b , float c, float d ) {
         if (t==0) return b;  if ((t/=d)==1) return b+c;
         float p=d*.3f;

@@ -2,6 +2,12 @@ package penner.easing;
 
 public class Quint {
 
+    /**
+     * A private constructor to inhibit instantiation of this class.
+     */
+    private Quint() {
+    }
+
     public static float easeIn (float t,float b , float c, float d) {
         return c*(t/=d)*t*t*t*t + b;
     }

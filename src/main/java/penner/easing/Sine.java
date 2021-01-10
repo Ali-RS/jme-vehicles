@@ -2,6 +2,12 @@ package penner.easing;
 
 public class Sine {
 
+    /**
+     * A private constructor to inhibit instantiation of this class.
+     */
+    private Sine() {
+    }
+
     public static float  easeIn(float t,float b , float c, float d) {
         return -c * (float)Math.cos(t/d * (Math.PI/2)) + c + b;
     }

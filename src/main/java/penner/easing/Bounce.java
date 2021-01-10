@@ -2,6 +2,12 @@ package penner.easing;
 
 public class Bounce {
 
+    /**
+     * A private constructor to inhibit instantiation of this class.
+     */
+    private Bounce() {
+    }
+
     public static float  easeIn(float t,float b , float c, float d) {
         return c - easeOut (d-t, 0, c, d) + b;
     }

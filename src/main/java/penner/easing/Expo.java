@@ -2,6 +2,12 @@ package penner.easing;
 
 public class Expo {
 
+    /**
+     * A private constructor to inhibit instantiation of this class.
+     */
+    private Expo() {
+    }
+
     public static float  easeIn(float t,float b , float c, float d) {
         return (t==0) ? b : c * (float)Math.pow(2, 10 * (t/d - 1)) + b;
     }

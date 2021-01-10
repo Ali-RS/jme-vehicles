@@ -2,6 +2,12 @@ package penner.easing;
 
 public class Cubic {
 
+    /**
+     * A private constructor to inhibit instantiation of this class.
+     */
+    private Cubic() {
+    }
+
     public static float easeIn (float t,float b , float c, float d) {
         return c*(t/=d)*t*t + b;
     }

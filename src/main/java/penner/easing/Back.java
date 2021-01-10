@@ -2,6 +2,12 @@ package penner.easing;
 
 public class Back {
 
+    /**
+     * A private constructor to inhibit instantiation of this class.
+     */
+    private Back() {
+    }
+
     public static float  easeIn(float t,float b , float c, float d) {
         float s = 1.70158f;
         return c*(t/=d)*t*((s+1)*t - s) + b;

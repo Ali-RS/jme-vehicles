@@ -2,6 +2,12 @@ package penner.easing;
 
 public class Circ {
 
+    /**
+     * A private constructor to inhibit instantiation of this class.
+     */
+    private Circ() {
+    }
+
     public static float  easeIn(float t,float b , float c, float d) {
         return -c * ((float)Math.sqrt(1 - (t/=d)*t) - 1) + b;
     }
