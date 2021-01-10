@@ -252,16 +252,13 @@ public class DrivingInputMode extends InputMode {
     }
 
     private void setCameraControlMode(VehicleCamView controlMode) {
-        CameraInputMode cameraInputMode
-                = Main.findAppState(CameraInputMode.class);
-        CameraController activeCamera = cameraInputMode.getActiveCamera();
-
         Camera camera = getApplication().getCamera();
         MyCamera.setYTangent(camera, 1f);
 
         SignalMode signalMode = Main.findAppState(SignalMode.class);
         SignalTracker signalTracker = signalMode.getSignalTracker();
 
+        CameraController activeCamera;
         switch (controlMode) {
             case ChaseCam:
                 float rearBias = 1f;
@@ -291,7 +288,7 @@ public class DrivingInputMode extends InputMode {
                         "Unknown camera-control mode: " + controlMode);
         }
 
-        cameraInputMode.setActiveCamera(activeCamera);
+        Main.findAppState(CameraInputMode.class).setActiveCamera(activeCamera);
     }
 
     private void updateBrakeAndAccelerate() {
