@@ -6,7 +6,6 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.control.VehicleControl;
-import com.jme3.bullet.objects.VehicleWheel;
 import com.jme3.effect.ParticleEmitter;
 import com.jme3.effect.ParticleMesh;
 import com.jme3.effect.influencers.ParticleInfluencer;
@@ -19,6 +18,9 @@ import com.jme3.scene.Node;
 import com.jme3.texture.Texture;
 import java.util.logging.Logger;
 
+/**
+ * Visualize a car's tire smoke, with one ParticleEmitter per wheel.
+ */
 public class TireSmokeEmitter extends BaseAppState {
     // *************************************************************************
     // constants and loggers
@@ -33,6 +35,9 @@ public class TireSmokeEmitter extends BaseAppState {
 
     final private Car vehicle;
     private Node rootNode;
+    /**
+     * emitters, one for each wheel
+     */
     private ParticleEmitter[] emitters;
     // *************************************************************************
     // constructors
@@ -120,17 +125,17 @@ public class TireSmokeEmitter extends BaseAppState {
 
         int numWheels = vehicle.countWheels();
         for (int wheelIndex = 0; wheelIndex < numWheels; wheelIndex++) {
-            VehicleWheel wheel = vehicleControl.getWheel(wheelIndex);
+            Wheel wheel = vehicle.getWheel(wheelIndex);
 
             ParticleEmitter smoke = emitters[wheelIndex];
-            smoke.setLocalTranslation(wheel.getCollisionLocation());
+            Vector3f location = wheel.getVehicleWheel().getCollisionLocation();
+            smoke.setLocalTranslation(location);
 
-            float traction = wheel.getSkidInfo();
-            if (traction < 0.5f) {
-                float scale = 1f - traction;
-                smoke.emitParticles((int) (scale * 20f));
+            float skidFraction = wheel.skidFraction();
+            if (skidFraction > 0.5f) {
+                smoke.emitParticles((int) (skidFraction * 20f));
 
-                float speed = scale * vehicle.getSpeed(SpeedUnit.KPH) / 10f;
+                float speed = skidFraction * vehicle.getSpeed(SpeedUnit.KPH) / 10f;
                 Vector3f velocity = rearDirection.mult(speed);
                 smoke.getParticleInfluencer().setInitialVelocity(velocity);
 
