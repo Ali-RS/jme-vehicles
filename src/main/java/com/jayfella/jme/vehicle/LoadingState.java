@@ -58,7 +58,7 @@ class LoadingState extends BaseAppState {
     /**
      * enumerate preload tasks
      */
-    final private static Loadable[] allLoadables = new Loadable[]{
+    private static Loadable[] allLoadables = new Loadable[]{
         new AnimatedNightSky(),
         new CameraNameState(),
         new DuneBuggy(),
@@ -185,6 +185,7 @@ class LoadingState extends BaseAppState {
              * Lemur has been initialized, and all asynchronous asset loads
              * have completed.
              */
+            allLoadables = null; // release for garbage collection
             setupShutter();
 
             Main application = Main.getApplication();
