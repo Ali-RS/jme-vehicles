@@ -1,7 +1,8 @@
-package com.jayfella.jme.vehicle.gui;
+package com.jayfella.jme.vehicle.gui.menu;
 
 import com.jayfella.easing.Easings;
 import com.jayfella.jme.vehicle.Main;
+import com.jayfella.jme.vehicle.gui.AnimCompleteEvent;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.math.FastMath;
@@ -17,7 +18,7 @@ import java.util.List;
 /**
  * A Lemur menu whose buttons slide in and out of the display.
  */
-abstract public class AnimatedMenu extends BaseAppState {
+abstract class AnimatedMenu extends BaseAppState {
     // *************************************************************************
     // constants and loggers
 

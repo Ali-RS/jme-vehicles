@@ -1,4 +1,4 @@
-package com.jayfella.jme.vehicle.gui;
+package com.jayfella.jme.vehicle.gui.menu;
 
 import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Main;

@@ -13,8 +13,8 @@ import java.util.logging.Logger;
 import jme3utilities.Validate;
 
 /**
- * An AppState which, when enabled, handles state changes for a set of
- * functions. New instances are disabled by default.
+ * An AppState which, when enabled, handles state changes for a set of Lemur
+ * input functions. New instances are disabled by default.
  *
  * @author Stephen Gold sgold@sonic.net
  */
