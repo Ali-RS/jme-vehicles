@@ -55,7 +55,7 @@ abstract public class CartoucheState
     /**
      * relevant spatials, to be attached to the GUI node
      */
-    final private Node node = new Node("camera name");
+    final private Node node;
     /**
      * text currently displayed, or null if the Node isn't populated
      */
@@ -77,6 +77,7 @@ abstract public class CartoucheState
     protected CartoucheState(String name, float xFraction, float yFraction) {
         super(name);
 
+        this.node = new Node(name + " Node");
         this.xFraction = xFraction;
         this.yFraction = yFraction;
     }
