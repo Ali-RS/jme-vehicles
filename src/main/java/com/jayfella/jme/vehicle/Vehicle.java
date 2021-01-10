@@ -305,13 +305,20 @@ abstract public class Vehicle
 
         AudioSource.Status status = hornAudio.getStatus();
         boolean isSounding = (status == AudioSource.Status.Playing);
-        if (AudioHud.isMuted()) {
-            isRequested = false;
+
+        float volume = AudioHud.effectiveVolume();
+        if (!isRequested) {
+            volume = 0f;
         }
-        if (isSounding && !isRequested) {
+
+        if (isSounding && volume == 0f) {
             hornAudio.stop();
-        } else if (isRequested && !isSounding) {
+        } else if (isRequested && volume > 0f) {
             hornAudio.play();
+        }
+
+        if (isRequested) {
+            hornAudio.setVolume(volume);
         }
     }
 

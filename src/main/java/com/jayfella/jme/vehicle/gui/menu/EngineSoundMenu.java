@@ -135,13 +135,8 @@ class EngineSoundMenu extends AnimatedMenu {
      * Configure the selected sound and attach it to the scene graph.
      */
     private void configureSelectedSound() {
-        float volume;
-        if (AudioHud.isMuted()) {
-            volume = 0f;
-        } else {
-            volume = 1f;
-        }
         float pitch = 60f;
+        float volume = AudioHud.effectiveVolume();
         selectedSound.setPitchAndVolume(pitch, volume);
 
         Node rootNode = Main.getApplication().getRootNode();

@@ -38,7 +38,7 @@ public class AudioHud extends BaseAppState {
     // fields
 
     /**
-     * true&arr;audio is globally muted, false&rarr;audio enabled
+     * true&rarr;audio is globally muted, false&rarr;audio enabled
      */
     private static boolean isGloballyMuted = false;
     /**
@@ -74,29 +74,29 @@ public class AudioHud extends BaseAppState {
     // new methods exposed
 
     /**
-     * Toggle the audio between enabled and muted.
+     * Determine the effective global audio volume.
+     *
+     * @return the volume (linear scale, &ge;0, &le;1)
+     */
+    public static float effectiveVolume() {
+        float result;
+        if (isGloballyMuted) {
+            result = 0f;
+        } else {
+            result = 1f;
+        }
+
+        return result;
+    }
+
+    /**
+     * Toggle the audio between enabled and muted. TODO rename toggleMuted()
      */
     public void toggleAudioMuted() {
         isGloballyMuted = !isGloballyMuted;
-        showMuteButton();
-    }
-    // *************************************************************************
-    // new methods exposed
-
-    /**
-     * Test whether sound is globally muted.
-     *
-     * @return true&rarr;muted, false&rarr;enabled
-     */
-    public static boolean isMuted() {
-        return isGloballyMuted;
-    }
-
-    /**
-     * Toggle the sound between muted and enabled.
-     */
-    public static void toggleMuted() {
-        isGloballyMuted = !isGloballyMuted;
+        if (isEnabled()) {
+            showMuteButton();
+        }
     }
     // *************************************************************************
     // BaseAppState methods

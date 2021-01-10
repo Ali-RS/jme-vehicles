@@ -73,16 +73,13 @@ public class VehicleAudioState extends BaseAppState {
     @Override
     public void update(float tpf) {
         Sound engineAudio = vehicle.getEngineSound();
-        if (engineAudio != null) {
-            Engine engine = vehicle.getEngine();
-            boolean mute = AudioHud.isMuted() || !engine.isRunning();
-            if (mute) {
-                engineAudio.mute();
-            } else {
-                float pitch = engine.getRpm() / 60;
-                float volume = 1f; // TODO
-                engineAudio.setPitchAndVolume(pitch, volume);
-            }
+        Engine engine = vehicle.getEngine();
+        if (engine.isRunning() && engineAudio != null) {
+            float pitch = engine.getRpm() / 60;
+            float masterVolume = AudioHud.effectiveVolume();
+            engineAudio.setPitchAndVolume(pitch, masterVolume);
+        } else {
+            engineAudio.mute();
         }
     }
 }
