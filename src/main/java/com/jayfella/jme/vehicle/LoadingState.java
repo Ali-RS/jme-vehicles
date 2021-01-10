@@ -42,6 +42,9 @@ import com.jme3.texture.Texture;
 import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.focus.FocusNavigationState;
 import com.simsilica.lemur.style.BaseStyles;
+import java.util.Arrays;
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Logger;
 
@@ -84,7 +87,7 @@ class LoadingState extends BaseAppState {
     /**
      * monitor how many locally-created created threads are running
      */
-    final CountDownLatch latch = new CountDownLatch(allLoadables.length + 1);
+    private CountDownLatch latch;
     /**
      * hide what happens in the main scene
      */
@@ -163,7 +166,7 @@ class LoadingState extends BaseAppState {
         switch (updateCount) {
             case 1:
                 setupStage();
-                break;
+                return;
             case 2:
                 startThreads();
                 break;
@@ -417,8 +420,14 @@ class LoadingState extends BaseAppState {
         /*
          * Start threads to warm up the AssetCache.
          */
-        for (Loadable loadable : allLoadables) {
-            Thread thread = new Preloader(loadable, latch);
+        int numLoadables = allLoadables.length;
+        Queue<Loadable> queue = new ArrayBlockingQueue<>(numLoadables);
+        queue.addAll(Arrays.asList(allLoadables));
+
+        int numThreadsToCreate = numLoadables + 1;
+        latch = new CountDownLatch(numThreadsToCreate);
+        for (int threadIndex = 0; threadIndex < numLoadables; ++threadIndex) {
+            Thread thread = new Preloader(queue, latch);
             thread.setPriority(Thread.MIN_PRIORITY);
             thread.start();
         }
