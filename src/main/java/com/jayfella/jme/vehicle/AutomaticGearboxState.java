@@ -132,8 +132,7 @@ public class AutomaticGearboxState extends BaseAppState {
                 float scaledSignal = wheelFraction * accelerateSignal;
 
                 // how much the tire is slipping (0-1, 0=full traction)
-                float slipFraction = 1f - wheel.getVehicleWheel().getSkidInfo();
-                assert slipFraction >= 0f && slipFraction <= 1f : slipFraction;
+                float slipFraction = 1f - wheel.traction();
 
                 // If both accelerating and slipping, boost the revs.
                 boostRevs += scaledSignal * slipFraction;

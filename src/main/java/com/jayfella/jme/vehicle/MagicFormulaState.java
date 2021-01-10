@@ -191,7 +191,7 @@ public class MagicFormulaState extends BaseAppState {
                     lateral / 10000,
                     longitudinal / 10000,
                     wheel.getFriction(),
-                    1.0f - wheel.getVehicleWheel().getSkidInfo(),
+                    1f - wheel.traction(),
                     wheel.getRotationDelta()
             ));
         }

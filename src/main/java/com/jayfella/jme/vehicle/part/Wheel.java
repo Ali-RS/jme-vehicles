@@ -313,15 +313,7 @@ public class Wheel {
      * @return (&ge;0, &lt;1)
      */
     public float linearDamping() {
-        float result;
-        float depth = vehicleControl.castRay(wheelIndex);
-        if (depth == -1f) {
-            result = 0f; // no supporting surface
-        } else {
-            float traction = vehicleWheel.getSkidInfo();
-            result = traction * extraDamping;
-        }
-
+        float result = traction() * extraDamping;
         return result;
     }
 
@@ -399,6 +391,25 @@ public class Wheel {
 
             vehicleControl.steer(wheelIndex, steeringAngle);
         }
+    }
+
+    /**
+     * Determine how much traction this wheel has.
+     *
+     * @return the relative amount of traction (&ge;0, &le;1, 0&rarr;unsupported
+     * or complete slippage, 1&rarr;full traction)
+     */
+    public float traction() {
+        float result;
+        float depth = vehicleControl.castRay(wheelIndex);
+        if (depth == -1f) {
+            result = 0f; // no supporting surface
+        } else {
+            result = vehicleWheel.getSkidInfo();
+        }
+
+        assert result >= 0f && result <= 1f : result;
+        return result;
     }
 
     /**

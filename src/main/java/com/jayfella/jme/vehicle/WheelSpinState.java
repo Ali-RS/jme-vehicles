@@ -141,7 +141,7 @@ public class WheelSpinState extends BaseAppState {
                 float acceleration = car.accelerateSignal();
 
                 // how much this wheel is "skidding".
-                float skid = 1.0f - wheel.getVehicleWheel().getSkidInfo();
+                float skid = 1.0f - wheel.traction();
 
                 // would equal at most 57 degrees in one frame (one radian).
                 float skidForce = (acceleration * wheelforce) * skid;

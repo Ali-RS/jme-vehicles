@@ -123,8 +123,9 @@ public class TireSmokeEmitter extends BaseAppState {
             ParticleEmitter smoke = emitters[i];
             smoke.setLocalTranslation(wheel.getCollisionLocation());
 
-            if (wheel.getSkidInfo() < 0.5) {
-                float scale = 1.0f - wheel.getSkidInfo();
+            float traction = wheel.getSkidInfo();
+            if (traction < 0.5f) {
+                float scale = 1f - traction;
 
                 smoke.emitParticles((int) (scale * 20));
                 // smoke.getParticleInfluencer().setInitialVelocity(vehicle.getVehicleControl().getLinearVelocity().negate().mult(scale * 0.25f));
