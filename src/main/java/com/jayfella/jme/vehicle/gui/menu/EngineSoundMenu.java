@@ -6,7 +6,7 @@ import com.jayfella.jme.vehicle.examples.sounds.EngineSound1;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound2;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound4;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound5;
-import com.jme3.app.Application;
+import com.jayfella.jme.vehicle.gui.AudioHud;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.scene.Node;
 import com.simsilica.lemur.Button;
@@ -79,27 +79,6 @@ class EngineSoundMenu extends AnimatedMenu {
     }
 
     /**
-     * Callback invoked after this menu is attached but before onEnable().
-     *
-     * @param application the application instance (not null)
-     */
-    @Override
-    protected void initialize(Application application) {
-        super.initialize(application);
-
-        Sound engineSound = Main.getVehicle().getEngineSound();
-        if (engineSound == null) {
-            selectedSound = null;
-        } else {
-            try {
-                selectedSound = engineSound.getClass().newInstance();
-            } catch (IllegalAccessException | InstantiationException exception) {
-                throw new RuntimeException(exception);
-            }
-        }
-    }
-
-    /**
      * Callback invoked whenever this AppState ceases to be both attached and
      * enabled.
      */
@@ -110,6 +89,7 @@ class EngineSoundMenu extends AnimatedMenu {
             selectedSound.detach();
         }
         Main.getVehicle().setEngineSound(selectedSound);
+        selectedSound = null;
 
         super.onDisable();
     }
@@ -120,6 +100,29 @@ class EngineSoundMenu extends AnimatedMenu {
     @Override
     protected void onEnable() {
         super.onEnable();
+
+        Sound engineSound = Main.getVehicle().getEngineSound();
+        if (engineSound == null) {
+            selectedSound = null;
+        } else {
+            try {
+                selectedSound = engineSound.getClass().newInstance();
+            } catch (IllegalAccessException | InstantiationException exception) {
+                throw new RuntimeException(exception);
+            }
+            configureSelectedSound();
+        }
+    }
+
+    /**
+     * Callback to update this AppState, invoked once per frame when the
+     * AppState is both attached and enabled.
+     *
+     * @param tpf the time interval between frames (in seconds, &ge;0)
+     */
+    @Override
+    public void update(float tpf) {
+        super.update(tpf);
 
         if (selectedSound != null) {
             configureSelectedSound();
@@ -132,8 +135,13 @@ class EngineSoundMenu extends AnimatedMenu {
      * Configure the selected sound and attach it to the scene graph.
      */
     private void configureSelectedSound() {
+        float volume;
+        if (AudioHud.isMuted()) {
+            volume = 0f;
+        } else {
+            volume = 1f;
+        }
         float pitch = 60f;
-        float volume = 1f;
         selectedSound.setPitchAndVolume(pitch, volume);
 
         Node rootNode = Main.getApplication().getRootNode();
