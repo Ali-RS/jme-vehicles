@@ -26,15 +26,20 @@ public class TireSmokeEmitter extends BaseAppState {
     // *************************************************************************
     // fields
 
-    private int wheelCount;
+    final private Car vehicle;
     private Node rootNode;
     private ParticleEmitter[] emitters;
-    final private Vehicle vehicle;
+    // *************************************************************************
+    // constructors
 
-    public TireSmokeEmitter(Vehicle vehicle) {
-        this.vehicle = vehicle;
+    /**
+     * Instantiate an AppState for the specfied Car.
+     */
+    public TireSmokeEmitter(Car car) {
+        this.vehicle = car;
     }
 
+    // TODO re-order methods
     private ParticleEmitter createEmitter(AssetManager assetManager) {
         ParticleEmitter result = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
 
@@ -56,7 +61,16 @@ public class TireSmokeEmitter extends BaseAppState {
 
         return result;
     }
+    // *************************************************************************
+    // BaseAppState methods
 
+    /**
+     * Callback invoked after this AppState is detached or during application
+     * shutdown if the state is still attached. onDisable() is called before
+     * this cleanup() method if the state is enabled at the time of cleanup.
+     *
+     * @param app the application instance (not null)
+     */
     @Override
     protected void cleanup(Application app) {
         // do nothing
@@ -69,7 +83,7 @@ public class TireSmokeEmitter extends BaseAppState {
      */
     @Override
     protected void initialize(Application app) {
-        wheelCount = vehicle.getVehicleControl().getNumWheels();
+        int wheelCount = vehicle.countWheels();
 
         if (rootNode == null) {
             rootNode = ((SimpleApplication) getApplication()).getRootNode();
@@ -117,6 +131,7 @@ public class TireSmokeEmitter extends BaseAppState {
      */
     @Override
     public void update(float tpf) {
+        int wheelCount = vehicle.countWheels();
         for (int i = 0; i < wheelCount; i++) {
             VehicleWheel wheel = vehicle.getVehicleControl().getWheel(i);
 
