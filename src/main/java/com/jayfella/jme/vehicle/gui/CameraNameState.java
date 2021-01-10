@@ -19,7 +19,7 @@ public class CameraNameState extends CartoucheState {
      * Instantiate an enabled AppState.
      */
     public CameraNameState() {
-        super("Camera Name", 0.62f, 0.95f);
+        super("Camera Name", 0.615f, 0.95f);
     }
     // *************************************************************************
     // CartoucheState methods
