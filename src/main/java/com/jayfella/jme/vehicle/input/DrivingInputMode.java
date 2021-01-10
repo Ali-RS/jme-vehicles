@@ -17,6 +17,7 @@ import com.jayfella.jme.vehicle.view.ChaseOption;
 import com.jayfella.jme.vehicle.view.DashCamera;
 import com.jayfella.jme.vehicle.view.VehicleCamView;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.VehicleControl;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
@@ -26,6 +27,7 @@ import com.simsilica.lemur.input.InputState;
 import java.util.logging.Logger;
 import jme3utilities.MyCamera;
 import jme3utilities.SignalTracker;
+import jme3utilities.math.noise.Generator;
 import jme3utilities.minie.FilterAll;
 
 /**
@@ -75,6 +77,10 @@ public class DrivingInputMode extends InputMode {
     private boolean turningLeft, turningRight;
 
     private float steeringAngle = 0f;
+    /**
+     * generate pseudo-random offsets for resetVehicle()
+     */
+    final private static Generator generator = new Generator();
 
     private VehicleCamView cameraMode = VehicleCamView.ChaseCam;
     // *************************************************************************
@@ -236,8 +242,6 @@ public class DrivingInputMode extends InputMode {
     // private methods
 
     private void resetVehicle() {
-        // TODO make this more reliable
-
         Vehicle vehicle = Main.getVehicle();
         VehicleControl control = vehicle.getVehicleControl();
         float[] angles = new float[3];
@@ -249,6 +253,22 @@ public class DrivingInputMode extends InputMode {
 
         control.setAngularVelocity(Vector3f.ZERO);
         control.setLinearVelocity(Vector3f.ZERO);
+
+        Vector3f location = control.getPhysicsLocation();
+        PhysicsSpace space = (PhysicsSpace) control.getCollisionSpace();
+        control.setPhysicsSpace(null);
+        if (space.contactTest(control, null) > 0) {
+            Vector3f newLocation = location.add(0f, 1f, 0f);
+            for (int iteration = 0; iteration < 9; ++iteration) {
+                control.setPhysicsLocation(newLocation);
+                if (space.contactTest(control, null) == 0) {
+                    break;
+                }
+                Vector3f offset = generator.nextVector3f();
+                newLocation.addLocal(offset);
+            }
+        }
+        control.setPhysicsSpace(space);
     }
 
     private void setCameraControlMode(VehicleCamView controlMode) {
