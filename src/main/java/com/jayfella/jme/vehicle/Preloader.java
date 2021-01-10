@@ -24,7 +24,7 @@ class Preloader extends Thread {
     /**
      * notify the creator when done
      */
-    final private CountDownLatch latch;
+    final private CountDownLatch completionLatch;
     /**
      * things to load
      */
@@ -36,11 +36,11 @@ class Preloader extends Thread {
      * Instantiate a Thread to load loadables from the specified Queue.
      *
      * @param loadables the things to load (not null)
-     * @param latch notify the creator when done
+     * @param completionLatch to notify the creator when done
      */
-    Preloader(Queue<Loadable> loadables, CountDownLatch latch) {
+    Preloader(Queue<Loadable> loadables, CountDownLatch completionLatch) {
         this.loadables = loadables;
-        this.latch = latch;
+        this.completionLatch = completionLatch;
     }
     // *************************************************************************
     // new methods exposed
@@ -63,6 +63,6 @@ class Preloader extends Thread {
 //            System.out.println("loaded " + name + " in " + seconds + " sec.");
         }
 
-        latch.countDown();
+        completionLatch.countDown();
     }
 }
