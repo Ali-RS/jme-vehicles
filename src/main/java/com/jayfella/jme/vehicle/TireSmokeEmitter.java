@@ -43,39 +43,6 @@ public class TireSmokeEmitter extends BaseAppState {
     public TireSmokeEmitter(Car car) {
         this.vehicle = car;
     }
-
-    // TODO re-order methods
-    private ParticleEmitter createEmitter(AssetManager assetManager) {
-        int numParticles = 30;
-        ParticleEmitter result = new ParticleEmitter("Emitter",
-                ParticleMesh.Type.Triangle, numParticles);
-
-        Material mat_red = new Material(assetManager,
-                "Common/MatDefs/Misc/Particle.j3md");
-        String assetPath = "Textures/Particles/smoke_line.png";
-        Texture smokeLine = assetManager.loadTexture(assetPath);
-        mat_red.setTexture("Texture", smokeLine);
-
-        ColorRGBA red = new ColorRGBA(99 / 255f, 68 / 255f, 45 / 255f, 0.4f);
-        ColorRGBA yellow = new ColorRGBA(183 / 255f, 130 / 255f, 89 / 255f, 0.05f);
-
-        result.setEndColor(red);
-        result.setEndSize(0f);
-        result.setGravity(0f, 0f, 0f);
-        result.setHighLife(2f);
-        result.setImagesX(15);
-        result.setImagesY(1);
-        result.setLowLife(0.1f);
-        result.setMaterial(mat_red);
-        result.setStartColor(yellow);
-        result.setStartSize(1f);
-
-        ParticleInfluencer influencer = result.getParticleInfluencer();
-        influencer.setInitialVelocity(new Vector3f(0f, 2f, 0f));
-        influencer.setVelocityVariation(0.3f);
-
-        return result;
-    }
     // *************************************************************************
     // BaseAppState methods
 
@@ -171,5 +138,39 @@ public class TireSmokeEmitter extends BaseAppState {
                 smoke.setParticlesPerSec(0);
             }
         }
+    }
+    // *************************************************************************
+    // private methods
+
+    private ParticleEmitter createEmitter(AssetManager assetManager) {
+        int numParticles = 30;
+        ParticleEmitter result = new ParticleEmitter("Emitter",
+                ParticleMesh.Type.Triangle, numParticles);
+
+        Material mat_red = new Material(assetManager,
+                "Common/MatDefs/Misc/Particle.j3md");
+        String assetPath = "Textures/Particles/smoke_line.png";
+        Texture smokeLine = assetManager.loadTexture(assetPath);
+        mat_red.setTexture("Texture", smokeLine);
+
+        ColorRGBA red = new ColorRGBA(99 / 255f, 68 / 255f, 45 / 255f, 0.4f);
+        ColorRGBA yellow = new ColorRGBA(183 / 255f, 130 / 255f, 89 / 255f, 0.05f);
+
+        result.setEndColor(red);
+        result.setEndSize(0f);
+        result.setGravity(0f, 0f, 0f);
+        result.setHighLife(2f);
+        result.setImagesX(15);
+        result.setImagesY(1);
+        result.setLowLife(0.1f);
+        result.setMaterial(mat_red);
+        result.setStartColor(yellow);
+        result.setStartSize(1f);
+
+        ParticleInfluencer influencer = result.getParticleInfluencer();
+        influencer.setInitialVelocity(new Vector3f(0f, 2f, 0f));
+        influencer.setVelocityVariation(0.3f);
+
+        return result;
     }
 }
