@@ -22,7 +22,7 @@ import jme3utilities.MyAsset;
 import jme3utilities.mesh.RoundedRectangle;
 
 /**
- * AppState to display white text on a blue cartouche, updating it as needed.
+ * AppState to display white text on a blue oval, updating it as needed.
  *
  * @author Stephen Gold sgold@sonic.net
  */
@@ -144,6 +144,7 @@ abstract public class CartoucheState
         Geometry background = new Geometry("camera name background", bgMesh);
         node.attachChild(background);
         background.setMaterial(bgMaterial);
+
         displayedText = text;
     }
 

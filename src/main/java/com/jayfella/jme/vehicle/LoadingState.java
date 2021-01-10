@@ -57,7 +57,7 @@ class LoadingState extends BaseAppState {
     // constants and loggers
 
     /**
-     * enumerate all known loadables
+     * enumerate preload tasks
      */
     final private static Loadable[] allLoadables = new Loadable[]{
         new AnimatedNightSky(),
@@ -85,7 +85,7 @@ class LoadingState extends BaseAppState {
      */
     Cinematic cinematic;
     /**
-     * monitor how many locally-created created threads are running
+     * monitor how many locally-created threads are running
      */
     private CountDownLatch latch;
     /**
@@ -173,7 +173,7 @@ class LoadingState extends BaseAppState {
             case 3:
                 startCinematic();
                 break;
-            default:
+            default: // 4 or more
                 if (cinematic.getPlayState() == PlayState.Playing) {
                     return;
                 }
@@ -418,7 +418,7 @@ class LoadingState extends BaseAppState {
 
     private void startThreads() {
         /*
-         * Start threads to warm up the AssetCache.
+         * Add all loadables to a queue.
          */
         int numLoadables = allLoadables.length;
         Queue<Loadable> queue = new ArrayBlockingQueue<>(numLoadables);
@@ -426,13 +426,16 @@ class LoadingState extends BaseAppState {
 
         int numThreadsToCreate = numLoadables + 1;
         latch = new CountDownLatch(numThreadsToCreate);
+        /*
+         * Start preload threads to warm up the AssetCache.
+         */
         for (int threadIndex = 0; threadIndex < numLoadables; ++threadIndex) {
             Thread thread = new Preloader(queue, latch);
             thread.setPriority(Thread.MIN_PRIORITY);
             thread.start();
         }
         /*
-         * Start a thread to initialize Lemur.
+         * Start an additional thread to initialize Lemur.
          */
         Thread thread = new Thread() {
             @Override
