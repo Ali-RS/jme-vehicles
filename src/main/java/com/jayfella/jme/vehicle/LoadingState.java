@@ -10,7 +10,6 @@ import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
 import com.jayfella.jme.vehicle.examples.worlds.Playground;
 import com.jayfella.jme.vehicle.examples.worlds.Racetrack;
 import com.jayfella.jme.vehicle.gui.CameraNameState;
-import com.jayfella.jme.vehicle.gui.GearNameState;
 import com.jme3.animation.AnimControl;
 import com.jme3.animation.Animation;
 import com.jme3.animation.AnimationFactory;
@@ -63,7 +62,6 @@ class LoadingState extends BaseAppState {
         new AnimatedNightSky(),
         new CameraNameState(),
         new DuneBuggy(),
-        new GearNameState(),
         new GrandTourer(),
         new GTRNismo(),
         new HatchBack(),
