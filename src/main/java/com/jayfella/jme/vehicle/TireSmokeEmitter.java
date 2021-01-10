@@ -84,20 +84,15 @@ public class TireSmokeEmitter extends BaseAppState {
     @Override
     protected void initialize(Application app) {
         int wheelCount = vehicle.countWheels();
+        emitters = new ParticleEmitter[wheelCount];
 
-        if (rootNode == null) {
-            rootNode = ((SimpleApplication) getApplication()).getRootNode();
-        }
+        rootNode = ((SimpleApplication) getApplication()).getRootNode();
 
-        if (emitters == null) {
-            emitters = new ParticleEmitter[wheelCount];
-
-            for (int i = 0; i < wheelCount; i++) {
-                ParticleEmitter smoke = createEmitter(app.getAssetManager());
-                smoke.setLocalTranslation(vehicle.getVehicleControl().getWheel(i).getLocation());
-                smoke.setShadowMode(RenderQueue.ShadowMode.Receive);
-                emitters[i] = smoke;
-            }
+        for (int i = 0; i < wheelCount; i++) {
+            ParticleEmitter smoke = createEmitter(app.getAssetManager());
+            smoke.setLocalTranslation(vehicle.getVehicleControl().getWheel(i).getLocation());
+            smoke.setShadowMode(RenderQueue.ShadowMode.Receive);
+            emitters[i] = smoke;
         }
     }
 
