@@ -6,6 +6,7 @@ import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.objects.VehicleWheel;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
@@ -43,6 +44,11 @@ public class Wheel {
      * parking (aka hand or emergency) brake
      */
     final private Brake parkingBrake;
+    /**
+     * color of tire smoke
+     */
+    final private ColorRGBA tireSmokeColor
+            = new ColorRGBA(0.6f, 0.6f, 0.6f, 0.3f);
     /**
      * additional linear damping applied to the chassis when this wheel has
      * traction
@@ -382,6 +388,15 @@ public class Wheel {
     }
 
     /**
+     * Alter the color of smoke produced by the tire.
+     *
+     * @param color the desired color (not null, unaffected)
+     */
+    public void setTireSmokeColor(ColorRGBA color) {
+        tireSmokeColor.set(color);
+    }
+
+    /**
      * Determine how much the wheel is skidding.
      *
      * @return the relative amount of skidding (&ge;0, &le;1, 0&rarr;
@@ -409,6 +424,20 @@ public class Wheel {
             }
 
             vehicleControl.steer(wheelIndex, steeringAngle);
+        }
+    }
+
+    /**
+     * Determine the color of smoke produced by the tire.
+     *
+     * @param storeResult storage for the result (modified if not null)
+     * @return the color (either storeResult or a new instance)
+     */
+    public ColorRGBA tireSmokeColor(ColorRGBA storeResult) {
+        if (storeResult == null) {
+            return tireSmokeColor.clone();
+        } else {
+            return storeResult.set(tireSmokeColor);
         }
     }
 

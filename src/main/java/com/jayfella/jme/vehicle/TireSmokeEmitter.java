@@ -75,10 +75,11 @@ public class TireSmokeEmitter extends BaseAppState {
         AssetManager assetManager = app.getAssetManager();
 
         for (int wheelIndex = 0; wheelIndex < numWheels; wheelIndex++) {
-            ParticleEmitter smoke = createEmitter(assetManager);
+            Wheel wheel = vehicle.getWheel(wheelIndex);
+            ColorRGBA tmpColor = wheel.tireSmokeColor(null);
+            ParticleEmitter smoke = createEmitter(assetManager, tmpColor);
             emitters[wheelIndex] = smoke;
 
-            Wheel wheel = vehicle.getWheel(wheelIndex);
             Vector3f location = wheel.getVehicleWheel().getLocation();
             smoke.setLocalTranslation(location);
             smoke.setShadowMode(RenderQueue.ShadowMode.Receive);
@@ -129,6 +130,9 @@ public class TireSmokeEmitter extends BaseAppState {
             float particlesPerSecond;
             if (skidFraction > 0.25f) {
                 particlesPerSecond = 100f * (skidFraction - 0.25f);
+                ColorRGBA tmpColor = wheel.tireSmokeColor(null);
+                emitter.setStartColor(tmpColor);
+
             } else {
                 particlesPerSecond = 0f;
             }
@@ -138,7 +142,8 @@ public class TireSmokeEmitter extends BaseAppState {
     // *************************************************************************
     // private methods
 
-    private ParticleEmitter createEmitter(AssetManager assetManager) {
+    private ParticleEmitter createEmitter(AssetManager assetManager,
+            ColorRGBA startColor) {
         int numParticles = 250;
         ParticleEmitter result = new ParticleEmitter("Emitter",
                 ParticleMesh.Type.Triangle, numParticles);
@@ -159,8 +164,7 @@ public class TireSmokeEmitter extends BaseAppState {
         result.setHighLife(3f);
         result.setLowLife(1f);
 
-        ColorRGBA weakGray = new ColorRGBA(0.6f, 0.6f, 0.6f, 0.3f);
-        result.setStartColor(weakGray);
+        result.setStartColor(startColor);
         ColorRGBA clear = new ColorRGBA(1f, 1f, 1f, 0f);
         result.setEndColor(clear);
 
