@@ -15,6 +15,7 @@ import com.simsilica.lemur.Insets3f;
 import com.simsilica.lemur.Panel;
 import com.simsilica.lemur.component.TbtQuadBackgroundComponent;
 import java.util.List;
+import java.util.logging.Logger;
 import jme3utilities.math.MyMath;
 
 /**
@@ -36,6 +37,11 @@ abstract class AnimatedMenu extends BaseAppState {
      * delay before the first animation starts (in seconds)
      */
     final private static float startupDelay = 0.1f;
+    /**
+     * message logger for this class
+     */
+    final public static Logger logger0
+            = Logger.getLogger(AnimatedMenu.class.getName());
     // *************************************************************************
     // fields
 
