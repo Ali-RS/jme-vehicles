@@ -34,7 +34,7 @@ public class MainMenu extends AnimatedMenu {
     @Override
     protected List<Button> createItems() {
         Main application = Main.getApplication();
-        List<Button> result = new ArrayList<>(8);
+        List<Button> result = new ArrayList<>(6);
 
         Button button = new Button("Drive");
         button.addClickCommands(source -> animateOut(()
@@ -57,6 +57,12 @@ public class MainMenu extends AnimatedMenu {
         button = new Button("Customize");
         button.addClickCommands(source -> animateOut(()
                 -> goTo(new CustomizationMenu())
+        ));
+        result.add(button);
+
+        button = new Button("Attribution");
+        button.addClickCommands(source -> animateOut(()
+                -> goTo(new AttributionMenu())
         ));
         result.add(button);
 
