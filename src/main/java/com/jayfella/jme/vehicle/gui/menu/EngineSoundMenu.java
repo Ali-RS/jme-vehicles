@@ -7,7 +7,6 @@ import com.jayfella.jme.vehicle.examples.sounds.EngineSound2;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound4;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound5;
 import com.jayfella.jme.vehicle.gui.AudioHud;
-import com.jme3.app.state.AppStateManager;
 import com.jme3.scene.Node;
 import com.simsilica.lemur.Button;
 import java.util.ArrayList;
@@ -45,7 +44,6 @@ class EngineSoundMenu extends AnimatedMenu {
      */
     @Override
     protected List<Button> createItems() {
-        AppStateManager stateManager = getStateManager();
         List<Button> result = new ArrayList<>(5);
 
         Button button = new Button("Engine-1");
@@ -69,10 +67,9 @@ class EngineSoundMenu extends AnimatedMenu {
         result.add(button);
 
         button = new Button("<< Back");
-        button.addClickCommands(source -> {
-            stateManager.attach(new MainMenu());
-            stateManager.detach(this);
-        });
+        button.addClickCommands(source -> animateOut(()
+                -> goTo(new MainMenu())
+        ));
         result.add(button);
 
         return result;

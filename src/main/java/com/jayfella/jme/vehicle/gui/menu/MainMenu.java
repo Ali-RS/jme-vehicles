@@ -34,57 +34,54 @@ public class MainMenu extends AnimatedMenu {
     @Override
     protected List<Button> createItems() {
         Main application = Main.getApplication();
-        AppStateManager stateManager = getStateManager();
         List<Button> result = new ArrayList<>(8);
 
         Button button = new Button("Drive");
-        button.addClickCommands(source -> drive());
+        button.addClickCommands(source -> animateOut(()
+                -> drive()
+        ));
         result.add(button);
 
         button = new Button("Change World");
-        button.addClickCommands(source -> {
-            stateManager.attach(new WorldMenu());
-            stateManager.detach(this);
-        });
+        button.addClickCommands(source -> animateOut(()
+                -> goTo(new WorldMenu())
+        ));
         result.add(button);
 
         button = new Button("Change Vehicle");
-        button.addClickCommands(source -> {
-            stateManager.attach(new CarMenu());
-            stateManager.detach(this);
-        });
+        button.addClickCommands(source -> animateOut(()
+                -> goTo(new CarMenu())
+        ));
         result.add(button);
 
         button = new Button("Change Engine Sound");
-        button.addClickCommands(source -> {
-            stateManager.attach(new EngineSoundMenu());
-            stateManager.detach(this);
-        });
+        button.addClickCommands(source -> animateOut(()
+                -> goTo(new EngineSoundMenu())
+        ));
         result.add(button);
 
         button = new Button("Change Sky");
-        button.addClickCommands(source -> {
-            stateManager.attach(new SkyMenu());
-            stateManager.detach(this);
-        });
+        button.addClickCommands(source -> animateOut(()
+                -> goTo(new SkyMenu())
+        ));
         result.add(button);
 
         button = new Button("Change Tire Smoke Color");
-        button.addClickCommands(source -> {
-            stateManager.attach(new TireSmokeColorMenu());
-            stateManager.detach(this);
-        });
+        button.addClickCommands(source -> animateOut(()
+                -> goTo(new TireSmokeColorMenu())
+        ));
         result.add(button);
 
         button = new Button("Change Wheels");
-        button.addClickCommands(source -> {
-            stateManager.attach(new WheelMenu());
-            stateManager.detach(this);
-        });
+        button.addClickCommands(source -> animateOut(()
+                -> goTo(new WheelMenu())
+        ));
         result.add(button);
 
         button = new Button("Exit Game");
-        button.addClickCommands(source -> application.stop());
+        button.addClickCommands(source -> animateOut(()
+                -> application.stop()
+        ));
         result.add(button);
 
         return result;

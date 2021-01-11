@@ -10,7 +10,6 @@ import com.jayfella.jme.vehicle.examples.wheels.DarkAlloyWheel;
 import com.jayfella.jme.vehicle.examples.wheels.HatchbackWheel;
 import com.jayfella.jme.vehicle.examples.wheels.RangerWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
-import com.jme3.app.state.AppStateManager;
 import com.simsilica.lemur.Button;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +39,6 @@ class WheelMenu extends AnimatedMenu {
      */
     @Override
     protected List<Button> createItems() {
-        AppStateManager stateManager = getStateManager();
         List<Button> result = new ArrayList<>(8);
 
         Button button = new Button("Basic Alloy");
@@ -72,10 +70,9 @@ class WheelMenu extends AnimatedMenu {
         result.add(button);
 
         button = new Button("<< Back");
-        button.addClickCommands(source -> {
-            stateManager.attach(new MainMenu());
-            stateManager.detach(this);
-        });
+        button.addClickCommands(source -> animateOut(()
+                -> goTo(new MainMenu())
+        ));
         result.add(button);
 
         return result;

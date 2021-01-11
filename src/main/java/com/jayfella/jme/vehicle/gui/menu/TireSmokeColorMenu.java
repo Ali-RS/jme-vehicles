@@ -2,7 +2,6 @@ package com.jayfella.jme.vehicle.gui.menu;
 
 import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Main;
-import com.jme3.app.state.AppStateManager;
 import com.jme3.math.ColorRGBA;
 import com.simsilica.lemur.Button;
 import java.util.ArrayList;
@@ -33,8 +32,7 @@ class TireSmokeColorMenu extends AnimatedMenu {
      */
     @Override
     protected List<Button> createItems() {
-        AppStateManager stateManager = getStateManager();
-        List<Button> result = new ArrayList<>(6);
+        List<Button> result = new ArrayList<>(8);
 
         Button button = new Button("Black");
         button.addClickCommands(source -> setColor(0f, 0f, 0f));
@@ -65,10 +63,9 @@ class TireSmokeColorMenu extends AnimatedMenu {
         result.add(button);
 
         button = new Button("<< Back");
-        button.addClickCommands(source -> {
-            stateManager.attach(new MainMenu());
-            stateManager.detach(this);
-        });
+        button.addClickCommands(source -> animateOut(()
+                -> goTo(new MainMenu())
+        ));
         result.add(button);
 
         return result;

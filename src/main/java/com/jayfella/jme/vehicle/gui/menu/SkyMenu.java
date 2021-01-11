@@ -4,7 +4,6 @@ import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Sky;
 import com.jayfella.jme.vehicle.examples.skies.AnimatedNightSky;
 import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
-import com.jme3.app.state.AppStateManager;
 import com.simsilica.lemur.Button;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +33,6 @@ class SkyMenu extends AnimatedMenu {
      */
     @Override
     protected List<Button> createItems() {
-        AppStateManager stateManager = getStateManager();
         List<Button> result = new ArrayList<>(3);
 
         Button button = new Button("Animated Night");
@@ -46,10 +44,9 @@ class SkyMenu extends AnimatedMenu {
         result.add(button);
 
         button = new Button("<< Back");
-        button.addClickCommands(source -> {
-            stateManager.attach(new MainMenu());
-            stateManager.detach(this);
-        });
+        button.addClickCommands(source -> animateOut(()
+                -> goTo(new MainMenu())
+        ));
         result.add(button);
 
         return result;
