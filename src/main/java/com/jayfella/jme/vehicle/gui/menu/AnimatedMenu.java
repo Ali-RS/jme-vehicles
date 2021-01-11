@@ -3,6 +3,8 @@ package com.jayfella.jme.vehicle.gui.menu;
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.gui.AnimCompleteEvent;
 import com.jme3.app.Application;
+import com.jme3.app.state.AppState;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
@@ -73,6 +75,17 @@ abstract class AnimatedMenu extends BaseAppState {
      * @return a new array of GUI buttons
      */
     abstract protected List<Button> createItems();
+
+    /**
+     * Detach this menu and attach the specified AppState.
+     *
+     * @param next what to attach (not null)
+     */
+    protected void goTo(AppState next) {
+        AppStateManager stateManager = getStateManager();
+        stateManager.attach(next);
+        stateManager.detach(this);
+    }
     // *************************************************************************
     // BaseAppState methods
 
