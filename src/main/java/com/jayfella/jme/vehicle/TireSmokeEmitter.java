@@ -142,6 +142,8 @@ public class TireSmokeEmitter extends BaseAppState {
 
                 wheel.tireSmokeColor(tmpColor);
                 emitter.setStartColor(tmpColor);
+                tmpColor.a = 0f;
+                emitter.setEndColor(tmpColor);
 
             } else {
                 particlesPerSecond = 0f;
@@ -175,8 +177,9 @@ public class TireSmokeEmitter extends BaseAppState {
         result.setLowLife(1f);
 
         result.setStartColor(startColor);
-        ColorRGBA clear = new ColorRGBA(1f, 1f, 1f, 0f);
-        result.setEndColor(clear);
+        ColorRGBA endColor = startColor.clone();
+        endColor.a = 0f;
+        result.setEndColor(endColor);
 
         result.setStartSize(0f);
         result.setEndSize(3f);
