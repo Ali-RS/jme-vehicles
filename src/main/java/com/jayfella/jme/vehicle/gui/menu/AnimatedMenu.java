@@ -1,6 +1,5 @@
 package com.jayfella.jme.vehicle.gui.menu;
 
-import com.jayfella.easing.Easings;
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.gui.AnimCompleteEvent;
 import com.jme3.app.Application;
@@ -14,6 +13,7 @@ import com.simsilica.lemur.Insets3f;
 import com.simsilica.lemur.Panel;
 import com.simsilica.lemur.component.TbtQuadBackgroundComponent;
 import java.util.List;
+import jme3utilities.math.MyMath;
 
 /**
  * A Lemur menu whose buttons slide in and out of the display.
@@ -163,20 +163,19 @@ abstract class AnimatedMenu extends BaseAppState {
                 continue;
             }
 
-            float currentTime = FastMath.clamp(time - currentDelay, 0f, duration);
+            float easeTime = FastMath.clamp(time - currentDelay, 0f, duration);
             Panel item = buttons.get(i);
 
             Vector3f translation = item.getLocalTranslation();
-            Easings.Function function = Easings.Function.Quart;
             if (in) {
-                float x = function.easeOut(currentTime, 0f, maxWidth + 20f, duration);
-                item.setLocalTranslation(-maxWidth + x, translation.y, translation.z);
+                float x = easeInQuartic(easeTime, -maxWidth, 20f, duration);
+                item.setLocalTranslation(x, translation.y, translation.z);
             } else {
-                float x = function.easeOut(currentTime, 0f, -maxWidth, duration);
+                float x = easeOutQuartic(easeTime, 20f, -maxWidth, duration);
                 item.setLocalTranslation(x, translation.y, translation.z);
             }
 
-            if (i == numButtons - 1 && currentTime == duration) {
+            if (i == numButtons - 1 && easeTime == duration) {
                 allComplete = true;
 
                 if (completeEvent != null) {
@@ -188,6 +187,26 @@ abstract class AnimatedMenu extends BaseAppState {
     }
     // *************************************************************************
     // private methods
+
+    private static float easeInQuartic(float time, float start, float end,
+            float duration) {
+        float t = time / duration; // goes from 0 -> 1
+        float t2 = t * t;
+        float fraction = t2 * t2; // goes from 0 -> 1
+        float result = MyMath.lerp(fraction, start, end);
+
+        return result;
+    }
+
+    private static float easeOutQuartic(float time, float start, float end,
+            float duration) {
+        float t = time / duration - 1f; // goes from -1 -> 0
+        float t2 = t * t;
+        float fraction = 1f - t2 * t2; // goes from 0 -> 1
+        float result = MyMath.lerp(fraction, start, end);
+
+        return result;
+    }
 
     private void formatButton(Button item) {
         item.setTextHAlignment(HAlignment.Center);
