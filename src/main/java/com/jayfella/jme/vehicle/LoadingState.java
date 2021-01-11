@@ -268,7 +268,7 @@ class LoadingState extends BaseAppState {
         cinematic = new Cinematic(rootNode, duration);
 
         cinematic.enqueueCinematicEvent(
-                new AnimationEvent(jaime, "Idle", 2f, LoopMode.DontLoop));
+                new AnimationEvent(jaime, "Idle", 0.5f, LoopMode.DontLoop));
         float jumpStart = cinematic.enqueueCinematicEvent(
                 new AnimationEvent(jaime, "JumpStart")
         );
