@@ -36,6 +36,11 @@ abstract public class Car extends Vehicle {
     // *************************************************************************
     // fields
 
+    /**
+     * for testing TireSmokeEmitter
+     */
+    private boolean isBurningRubber = false;
+
     // wheel-related stuff. This isn't really "vehicle" related since a vehicle can be a boat or a helicopter.
     final private List<Wheel> wheels = new ArrayList<>(4);
     private MagicFormulaState magicFormulaState;
@@ -125,12 +130,30 @@ abstract public class Car extends Vehicle {
     }
 
     /**
+     * Test whether the tires are forced to emit smoke.
+     *
+     * @return true if forced, otherwise false
+     */
+    public boolean isBurningRubber() {
+        return isBurningRubber;
+    }
+
+    /**
      * Enumerate all available modes in the automatic transmission.
      *
      * @return the pre-existing array (not null)
      */
     public String[] listAtModes() {
         return atModes;
+    }
+
+    /**
+     * Alter whether the tires are forced to emit smoke.
+     *
+     * @param setting true&rarr;forced, false&rarr;not forced
+     */
+    public void setBurningRubber(boolean setting) {
+        this.isBurningRubber = setting;
     }
 
     public void setTireSkidMarksEnabled(boolean enabled) {

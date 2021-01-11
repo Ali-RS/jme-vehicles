@@ -131,12 +131,15 @@ public class TireSmokeEmitter extends BaseAppState {
             ParticleEmitter emitter = emitters[wheelIndex];
 
             Wheel wheel = vehicle.getWheel(wheelIndex);
-            float skidFraction = wheel.skidFraction();
-
             float particlesPerSecond;
-            if (skidFraction > 0.25f) {
+            if (vehicle.isBurningRubber()) {
+                particlesPerSecond = 30f;
+            } else {
+                float skidFraction = wheel.skidFraction();
                 particlesPerSecond = 100f * (skidFraction - 0.25f);
+            }
 
+            if (particlesPerSecond > 0f) {
                 wheel.getVehicleWheel().getCollisionLocation(tmpLocation);
                 emitter.setLocalTranslation(tmpLocation);
 

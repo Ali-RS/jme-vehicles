@@ -73,6 +73,29 @@ class TireSmokeColorMenu extends AnimatedMenu {
 
         return result;
     }
+
+    /**
+     * Callback invoked whenever this AppState ceases to be both attached and
+     * enabled.
+     */
+    @Override
+    protected void onDisable() {
+        Car car = (Car) Main.getVehicle();
+        car.setBurningRubber(false);
+
+        super.onDisable();
+    }
+
+    /**
+     * Callback invoked whenever this menu becomes both attached and enabled.
+     */
+    @Override
+    protected void onEnable() {
+        super.onEnable();
+
+        Car car = (Car) Main.getVehicle();
+        car.setBurningRubber(true);
+    }
     // *************************************************************************
     // private methods
 
