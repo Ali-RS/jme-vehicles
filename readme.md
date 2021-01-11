@@ -286,12 +286,8 @@ The world (and physics-space) units of distance are *meters*.
 ## Acknowledgments
 
 + James Khan (aka "jayfella") initiated
-  [the Advanced Vehicles Project](https://github.com/jMonkeyEngine-archive/jme-vehicles-jayfella-github)
-  and [jme-easing](https://github.com/jMonkeyEngine-archive/jme-easings-jayfella-github),
+  [the Advanced Vehicles Project](https://github.com/jMonkeyEngine-archive/jme-vehicles-jayfella-github),
   on which this project is based.
-+ Robert Penner created the
-  [Easing Equations](https://github.com/stephengold/jme-vehicles/tree/master/src/main/java/penner/easing)
-  included in this project.
 + [Paul Speed (aka "pspeed42")][pspeed] created the Lemur libraries.
 + [Adam T. Ryder (aka "ATryder")][atryder] created the jME-TTF library.
 + Rémy Bouquet (aka "Nehon") created the "Jaime" model.
