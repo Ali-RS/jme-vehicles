@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle.skid;
 
 import com.jayfella.jme.vehicle.Car;
+import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
@@ -56,7 +57,8 @@ public class SkidMarksState extends BaseAppState {
         AssetManager assetManager = app.getAssetManager();
 
         for (int i = 0; i < numWheels; ++i) {
-            skids[i] = new WheelSkid(vehicle, i, assetManager, tireWidth);
+            Wheel wheel = vehicle.getWheel(i);
+            skids[i] = new WheelSkid(wheel, assetManager, tireWidth);
         }
     }
 

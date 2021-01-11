@@ -1,8 +1,7 @@
 package com.jayfella.jme.vehicle.skid;
 
-import com.jayfella.jme.vehicle.Car;
+import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.asset.AssetManager;
-import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.objects.VehicleWheel;
 import com.jme3.math.Vector3f;
 
@@ -11,13 +10,10 @@ class WheelSkid {
     final private static float SKID_FX_SPEED = 0.25f; // Min side slip speed in m/s to start showing a skid
     private int lastSkid = -1; // Array index for the skidmarks controller. Index of last skidmark piece this wheel used
     final private SkidMarkManager manager;
-    final private VehicleControl vehicleControl;
-    final private VehicleWheel wheel;
+    final private Wheel wheel;
 
-    WheelSkid(Car car, int wheelIndex, AssetManager assetManager,
-            float tireWidth) {
-        vehicleControl = car.getVehicleControl();
-        wheel = car.getWheel(wheelIndex).getVehicleWheel();
+    WheelSkid(Wheel wheel, AssetManager assetManager, float tireWidth) {
+        this.wheel = wheel;
         manager = new SkidMarkManager(assetManager, tireWidth);
     }
 
@@ -26,35 +22,17 @@ class WheelSkid {
     }
 
     void update(float tpf) {
-        int wheelIndex = wheel.getIndex();
-        float distance = vehicleControl.castRay(wheelIndex); // TODO Wheel.traction() method
-        if (distance < 0f) {
-            /*
-             * There's nothing supporting the wheel.
-             */
+        float skidFraction = wheel.skidFraction();
+        if (skidFraction < SKID_FX_SPEED) {
             lastSkid = -1;
-            return;
-        }
-
-        float traction = wheel.getSkidInfo();
-        if (traction >= 1f) {
-            /*
-             * The tire has full traction.
-             */
-            lastSkid = -1;
-            return;
-        }
-
-        float wheelspin = 1f - traction;
-        if (wheelspin > SKID_FX_SPEED) {
-            wheelspin = smoothstep(SKID_FX_SPEED, 1f, wheelspin);
-            Vector3f normal = wheel.getCollisionNormal();
-            assert normal.isUnitVector() : normal;
-            Vector3f location = wheel.getCollisionLocation();
-            lastSkid = manager.addSection(location, normal, wheelspin,
-                    lastSkid);
         } else {
-            lastSkid = -1;
+            skidFraction = smoothstep(SKID_FX_SPEED, 1f, skidFraction);
+            VehicleWheel vehicleWheel = wheel.getVehicleWheel();
+            Vector3f normal = vehicleWheel.getCollisionNormal();
+            assert normal.isUnitVector() : normal;
+            Vector3f location = vehicleWheel.getCollisionLocation();
+            lastSkid = manager.addSection(location, normal, skidFraction,
+                    lastSkid);
         }
     }
 
