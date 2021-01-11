@@ -56,9 +56,9 @@ public class SkidMarksState extends BaseAppState {
         skids = new WheelSkid[numWheels];
         AssetManager assetManager = app.getAssetManager();
 
-        for (int i = 0; i < numWheels; ++i) {
-            Wheel wheel = vehicle.getWheel(i);
-            skids[i] = new WheelSkid(wheel, assetManager, tireWidth);
+        for (int wheelIndex = 0; wheelIndex < numWheels; ++wheelIndex) {
+            Wheel wheel = vehicle.getWheel(wheelIndex);
+            skids[wheelIndex] = new WheelSkid(wheel, assetManager, tireWidth);
         }
     }
 
@@ -68,10 +68,9 @@ public class SkidMarksState extends BaseAppState {
      */
     @Override
     protected void onDisable() {
-        for (int i = 0; i < numWheels; ++i) {
-            WheelSkid skid = skids[i];
-            Geometry geometry = skid.getManager().getGeometry();
-
+        for (int wheelIndex = 0; wheelIndex < numWheels; ++wheelIndex) {
+            WheelSkid skid = skids[wheelIndex];
+            Geometry geometry = skid.getGeometry();
             if (geometry != null) {
                 geometry.removeFromParent();
             }
@@ -95,9 +94,9 @@ public class SkidMarksState extends BaseAppState {
      */
     @Override
     public void update(float tpf) {
-        for (int i = 0; i < numWheels; ++i) {
-            WheelSkid skid = skids[i];
-            Geometry geometry = skid.getManager().getGeometry();
+        for (int wheelIndex = 0; wheelIndex < numWheels; ++wheelIndex) {
+            WheelSkid skid = skids[wheelIndex];
+            Geometry geometry = skid.getGeometry();
 
             // kind of annoying, but we can't attach a geometry that doesn't exist if the car hasn't skidded yet.
             if (geometry != null && geometry.getParent() == null) {
