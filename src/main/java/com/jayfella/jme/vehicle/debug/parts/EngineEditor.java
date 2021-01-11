@@ -26,7 +26,7 @@ public class EngineEditor extends VehicleEditor {
         }
          */
         propertyPanel.addFloatProperty("Power", vehicle.getEngine(),
-                "maxOutputWatts", 0f, 10_000f, 0.01f);
+                "maxOutputWatts", 100f, 500_000f, 1f);
 
         return new RollupPanel("Power", propertyPanel, "glass");
     }
