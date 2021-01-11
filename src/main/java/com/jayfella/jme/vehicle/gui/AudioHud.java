@@ -123,9 +123,9 @@ public class AudioHud extends BaseAppState {
     }
 
     /**
-     * Toggle the audio between enabled and muted. TODO rename toggleMuted()
+     * Toggle the audio between enabled and muted.
      */
-    public void toggleAudioMuted() {
+    public void toggleMuted() {
         isGloballyMuted = !isGloballyMuted;
         if (isEnabled()) {
             showMuteButton();
@@ -345,7 +345,7 @@ public class AudioHud extends BaseAppState {
             @Override
             public void onClick(boolean isPressed) {
                 if (isPressed) {
-                    toggleAudioMuted();
+                    toggleMuted();
                 }
             }
         };
