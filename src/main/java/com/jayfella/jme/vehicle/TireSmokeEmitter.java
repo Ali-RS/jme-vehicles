@@ -5,13 +5,11 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
-import com.jme3.bullet.control.VehicleControl;
 import com.jme3.effect.ParticleEmitter;
 import com.jme3.effect.ParticleMesh;
-import com.jme3.effect.influencers.ParticleInfluencer;
 import com.jme3.material.Material;
+import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
@@ -119,62 +117,55 @@ public class TireSmokeEmitter extends BaseAppState {
      */
     @Override
     public void update(float tpf) {
-        VehicleControl vehicleControl = vehicle.getVehicleControl();
-        Quaternion orientation = vehicleControl.getPhysicsRotation();
-        Vector3f rearDirection = orientation.getRotationColumn(2).negate();
-
         int numWheels = vehicle.countWheels();
         for (int wheelIndex = 0; wheelIndex < numWheels; wheelIndex++) {
             Wheel wheel = vehicle.getWheel(wheelIndex);
+            ParticleEmitter emitter = emitters[wheelIndex];
 
-            ParticleEmitter smoke = emitters[wheelIndex];
             Vector3f location = wheel.getVehicleWheel().getCollisionLocation();
-            smoke.setLocalTranslation(location);
+            emitter.setLocalTranslation(location);
 
             float skidFraction = wheel.skidFraction();
-            if (skidFraction > 0.5f) {
-                smoke.emitParticles((int) (skidFraction * 20f));
-
-                float speed = skidFraction * vehicle.getSpeed(SpeedUnit.KPH) / 10f;
-                Vector3f velocity = rearDirection.mult(speed);
-                smoke.getParticleInfluencer().setInitialVelocity(velocity);
-
+            float particlesPerSecond;
+            if (skidFraction > 0.25f) {
+                particlesPerSecond = 100f * (skidFraction - 0.25f);
             } else {
-                smoke.setParticlesPerSec(0);
+                particlesPerSecond = 0f;
             }
+            emitter.setParticlesPerSec(particlesPerSecond);
         }
     }
     // *************************************************************************
     // private methods
 
     private ParticleEmitter createEmitter(AssetManager assetManager) {
-        int numParticles = 30;
+        int numParticles = 250;
         ParticleEmitter result = new ParticleEmitter("Emitter",
                 ParticleMesh.Type.Triangle, numParticles);
 
-        Material mat_red = new Material(assetManager,
+        Material material = new Material(assetManager,
                 "Common/MatDefs/Misc/Particle.j3md");
+        result.setMaterial(material);
+        RenderState ars = material.getAdditionalRenderState();
+        ars.setBlendMode(RenderState.BlendMode.Alpha);
+
         String assetPath = "Textures/Particles/smoke_line.png";
         Texture smokeLine = assetManager.loadTexture(assetPath);
-        mat_red.setTexture("Texture", smokeLine);
-
-        ColorRGBA red = new ColorRGBA(99 / 255f, 68 / 255f, 45 / 255f, 0.4f);
-        ColorRGBA yellow = new ColorRGBA(183 / 255f, 130 / 255f, 89 / 255f, 0.05f);
-
-        result.setEndColor(red);
-        result.setEndSize(0f);
-        result.setGravity(0f, 0f, 0f);
-        result.setHighLife(2f);
+        material.setTexture("Texture", smokeLine);
         result.setImagesX(15);
         result.setImagesY(1);
-        result.setLowLife(0.1f);
-        result.setMaterial(mat_red);
-        result.setStartColor(yellow);
-        result.setStartSize(1f);
 
-        ParticleInfluencer influencer = result.getParticleInfluencer();
-        influencer.setInitialVelocity(new Vector3f(0f, 2f, 0f));
-        influencer.setVelocityVariation(0.3f);
+        result.setGravity(0f, -0.2f, 0f); // less dense than the ambient air
+        result.setHighLife(3f);
+        result.setLowLife(1f);
+
+        ColorRGBA weakGray = new ColorRGBA(0.6f, 0.6f, 0.6f, 0.3f);
+        result.setStartColor(weakGray);
+        ColorRGBA clear = new ColorRGBA(1f, 1f, 1f, 0f);
+        result.setEndColor(clear);
+
+        result.setStartSize(0f);
+        result.setEndSize(3f);
 
         return result;
     }
