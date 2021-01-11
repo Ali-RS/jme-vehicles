@@ -106,8 +106,8 @@ public class HatchBack extends Car {
          * This vehicle applies the same settings to each wheel,
          * but that isn't required.
          */
-        for (int wheelIndex = 0; wheelIndex < countWheels(); ++wheelIndex) {
-            Suspension suspension = getWheel(wheelIndex).getSuspension();
+        for (Wheel wheel : listWheels()) {
+            Suspension suspension = wheel.getSuspension();
 
             // the rest-length or "height" of the suspension
             suspension.setRestLength(0.01f);
@@ -127,8 +127,7 @@ public class HatchBack extends Car {
         /*
          * Give each wheel a tire with friction.
          */
-        for (int wheelIndex = 0; wheelIndex < countWheels(); ++wheelIndex) {
-            Wheel wheel = getWheel(wheelIndex);
+        for (Wheel wheel : listWheels()) {
             wheel.setTireModel(new Tire_02());
             wheel.setFriction(0.9f);
         }

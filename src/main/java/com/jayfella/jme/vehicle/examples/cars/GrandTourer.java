@@ -106,8 +106,8 @@ public class GrandTourer extends Car {
          * This vehicle applies the same settings to each wheel,
          * but that isn't required.
          */
-        for (int wheelIndex = 0; wheelIndex < countWheels(); ++wheelIndex) {
-            Suspension suspension = getWheel(wheelIndex).getSuspension();
+        for (Wheel wheel : listWheels()) {
+            Suspension suspension = wheel.getSuspension();
 
             // how much weight the suspension can take before it bottoms out
             // Setting this too low will make the wheels sink into the ground.
@@ -133,8 +133,7 @@ public class GrandTourer extends Car {
         /*
          * Give each wheel a tire with friction.
          */
-        for (int wheelIndex = 0; wheelIndex < countWheels(); ++wheelIndex) {
-            Wheel wheel = getWheel(wheelIndex);
+        for (Wheel wheel : listWheels()) {
             wheel.setTireModel(new Tire_01());
             wheel.setFriction(1.6f);
         }

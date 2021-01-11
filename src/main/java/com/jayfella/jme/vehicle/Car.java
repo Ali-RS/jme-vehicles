@@ -148,6 +148,19 @@ abstract public class Car extends Vehicle {
     }
 
     /**
+     * Enumerate all wheels.
+     *
+     * @return a new array (not null)
+     */
+    public Wheel[] listWheels() {
+        int numWheels = countWheels();
+        Wheel[] result = new Wheel[numWheels];
+        wheels.toArray(result);
+
+        return result;
+    }
+
+    /**
      * Alter whether the tires are forced to emit smoke.
      *
      * @param setting true&rarr;forced, false&rarr;not forced

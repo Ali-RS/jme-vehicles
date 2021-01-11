@@ -2,6 +2,7 @@ package com.jayfella.jme.vehicle.gui.menu;
 
 import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Main;
+import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.math.ColorRGBA;
 import com.simsilica.lemur.Button;
 import java.util.ArrayList;
@@ -101,9 +102,8 @@ class TireSmokeColorMenu extends AnimatedMenu {
         ColorRGBA color = new ColorRGBA(red, green, blue, alpha);
 
         Car vehicle = (Car) Main.getVehicle();
-        int numWheels = vehicle.countWheels();
-        for (int i = 0; i < numWheels; ++i) {
-            vehicle.getWheel(i).setTireSmokeColor(color);
+        for (Wheel wheel : vehicle.listWheels()) {
+            wheel.setTireSmokeColor(color);
         }
     }
 }
