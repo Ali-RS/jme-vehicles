@@ -1,8 +1,10 @@
 package com.jayfella.jme.vehicle.input;
 
 import com.jayfella.jme.vehicle.Main;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.renderer.Camera;
+import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.simsilica.lemur.input.FunctionId;
 import com.simsilica.lemur.input.InputState;
@@ -23,10 +25,16 @@ public class DumpMode extends InputMode {
     /**
      * input functions handled by this mode
      */
+    final public static FunctionId F_DUMP_APPSTATES
+            = new FunctionId("Dump AppStates");
     final public static FunctionId F_DUMP_CAMERA
             = new FunctionId("Dump Camera");
+    final public static FunctionId F_DUMP_GUI_VIEWPORT
+            = new FunctionId("Dump GUI Viewport");
     final public static FunctionId F_DUMP_PHYSICS
             = new FunctionId("Dump Physics");
+    final public static FunctionId F_DUMP_RENDER_MANAGER
+            = new FunctionId("Dump Render Manager");
     final public static FunctionId F_DUMP_VIEWPORT
             = new FunctionId("Dump Viewport");
     /**
@@ -48,10 +56,21 @@ public class DumpMode extends InputMode {
      * Instantiate a disabled InputMode.
      */
     public DumpMode() {
-        super("Dump Mode", F_DUMP_CAMERA, F_DUMP_PHYSICS, F_DUMP_VIEWPORT);
+        super("Dump Mode", F_DUMP_APPSTATES, F_DUMP_CAMERA, F_DUMP_GUI_VIEWPORT,
+                F_DUMP_PHYSICS, F_DUMP_RENDER_MANAGER, F_DUMP_VIEWPORT);
 
         dumper.setDumpShadow(true)
                 .setDumpTransform(true);
+
+        assign((FunctionId function, InputState inputState, double tpf) -> {
+            if (inputState == InputState.Positive) {
+                AppStateManager stateManager
+                        = getApplication().getStateManager();
+                dumper.dump(stateManager);
+                System.out.println();
+                System.out.flush();
+            }
+        }, F_DUMP_APPSTATES);
 
         assign((FunctionId function, InputState inputState, double tpf) -> {
             if (inputState == InputState.Positive) {
@@ -61,13 +80,31 @@ public class DumpMode extends InputMode {
 
         assign((FunctionId function, InputState inputState, double tpf) -> {
             if (inputState == InputState.Positive) {
-                BulletAppState bas
-                        = Main.findAppState(BulletAppState.class);
+                ViewPort guiViewPort = getApplication().getGuiViewPort();
+                dumper.dump(guiViewPort);
+                System.out.println();
+                System.out.flush();
+            }
+        }, F_DUMP_VIEWPORT);
+
+        assign((FunctionId function, InputState inputState, double tpf) -> {
+            if (inputState == InputState.Positive) {
+                BulletAppState bas = Main.findAppState(BulletAppState.class);
                 dumper.dump(bas);
                 System.out.println();
                 System.out.flush();
             }
         }, F_DUMP_PHYSICS);
+
+        assign((FunctionId function, InputState inputState, double tpf) -> {
+            if (inputState == InputState.Positive) {
+                RenderManager renderManager
+                        = getApplication().getRenderManager();
+                dumper.dump(renderManager);
+                System.out.println();
+                System.out.flush();
+            }
+        }, F_DUMP_RENDER_MANAGER);
 
         assign((FunctionId function, InputState inputState, double tpf) -> {
             if (inputState == InputState.Positive) {
