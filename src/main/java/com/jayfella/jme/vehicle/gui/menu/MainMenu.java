@@ -35,7 +35,7 @@ public class MainMenu extends AnimatedMenu {
     protected List<Button> createItems() {
         Main application = Main.getApplication();
         AppStateManager stateManager = getStateManager();
-        List<Button> result = new ArrayList<>(7);
+        List<Button> result = new ArrayList<>(8);
 
         Button button = new Button("Drive");
         button.addClickCommands(source -> drive());
@@ -65,6 +65,13 @@ public class MainMenu extends AnimatedMenu {
         button = new Button("Change Sky");
         button.addClickCommands(source -> {
             stateManager.attach(new SkyMenu());
+            stateManager.detach(this);
+        });
+        result.add(button);
+
+        button = new Button("Change Tire Smoke Color");
+        button.addClickCommands(source -> {
+            stateManager.attach(new TireSmokeColorMenu());
             stateManager.detach(this);
         });
         result.add(button);
