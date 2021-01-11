@@ -64,7 +64,7 @@ class TireSmokeColorMenu extends AnimatedMenu {
 
         button = new Button("<< Back");
         button.addClickCommands(source -> animateOut(()
-                -> goTo(new MainMenu())
+                -> goTo(new CustomizationMenu())
         ));
         result.add(button);
 

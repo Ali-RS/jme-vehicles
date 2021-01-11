@@ -54,27 +54,9 @@ public class MainMenu extends AnimatedMenu {
         ));
         result.add(button);
 
-        button = new Button("Change Engine Sound");
+        button = new Button("Customize");
         button.addClickCommands(source -> animateOut(()
-                -> goTo(new EngineSoundMenu())
-        ));
-        result.add(button);
-
-        button = new Button("Change Sky");
-        button.addClickCommands(source -> animateOut(()
-                -> goTo(new SkyMenu())
-        ));
-        result.add(button);
-
-        button = new Button("Change Tire Smoke Color");
-        button.addClickCommands(source -> animateOut(()
-                -> goTo(new TireSmokeColorMenu())
-        ));
-        result.add(button);
-
-        button = new Button("Change Wheels");
-        button.addClickCommands(source -> animateOut(()
-                -> goTo(new WheelMenu())
+                -> goTo(new CustomizationMenu())
         ));
         result.add(button);
 
