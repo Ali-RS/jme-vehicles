@@ -22,6 +22,10 @@ import com.jme3.cinematic.PlayState;
 import com.jme3.cinematic.events.AnimationEvent;
 import com.jme3.cinematic.events.CinematicEvent;
 import com.jme3.cinematic.events.CinematicEventListener;
+import com.jme3.input.InputManager;
+import com.jme3.input.KeyInput;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
 import com.jme3.light.PointLight;
 import com.jme3.light.SpotLight;
 import com.jme3.material.Material;
@@ -75,13 +79,30 @@ class LoadingState extends BaseAppState {
      */
     final private static Logger logger
             = Logger.getLogger(LoadingState.class.getName());
+    /**
+     * name of the input mapping to cancel the Cinematic
+     */
+    final private static String cancelAction = "cancel cinematic";
     // *************************************************************************
     // fields
 
     /**
+     * listen for the Tab key
+     */
+    private ActionListener listener = new ActionListener() {
+        @Override
+        public void onAction(String name, boolean keyPressed, float tpf) {
+            isCinematicCancelled = true;
+        }
+    };
+    /**
+     * true if the Tab key has been pressed or released, otherwise false
+     */
+    private boolean isCinematicCancelled;
+    /**
      * entertain the user
      */
-    Cinematic cinematic;
+    private Cinematic cinematic;
     /**
      * monitor how many locally-created threads are running
      */
@@ -141,6 +162,10 @@ class LoadingState extends BaseAppState {
             shutter.removeFromParent();
             shutter = null;
         }
+
+        InputManager inputManager = getApplication().getInputManager();
+        inputManager.deleteMapping(cancelAction);
+        inputManager.removeListener(listener);
     }
 
     /**
@@ -149,7 +174,10 @@ class LoadingState extends BaseAppState {
      */
     @Override
     protected void onEnable() {
-        // do nothing
+        InputManager inputManager = getApplication().getInputManager();
+        inputManager.addListener(listener, cancelAction);
+        KeyTrigger trigger = new KeyTrigger(KeyInput.KEY_TAB);
+        inputManager.addMapping(cancelAction, trigger);
     }
 
     /**
@@ -171,13 +199,18 @@ class LoadingState extends BaseAppState {
             case 3:
                 startCinematic();
                 break;
+
             default: // 4 or more
                 if (cinematic.getPlayState() == PlayState.Playing) {
-                    return;
+                    if (isCinematicCancelled) {
+                        cinematic.stop();
+                    } else { // still playing
+                        return;
+                    }
                 }
         }
         /*
-         * The Cinematic has completed.
+         * The Cinematic completed or was cancelled by the user.
          */
         long latchCount = latch.getCount();
         if (latchCount < 1L) {
