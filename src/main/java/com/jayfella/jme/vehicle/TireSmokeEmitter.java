@@ -32,11 +32,19 @@ public class TireSmokeEmitter extends BaseAppState {
     // fields
 
     final private Car vehicle;
+    /**
+     * reusable temporary ColorRGBA
+     */
+    final private static ColorRGBA tmpColor = new ColorRGBA();
     private Node rootNode;
     /**
      * emitters, one for each wheel
      */
     private ParticleEmitter[] emitters;
+    /**
+     * reusable temporary Vector3f
+     */
+    final private static Vector3f tmpLocation = new Vector3f();
     // *************************************************************************
     // constructors
 
@@ -76,12 +84,12 @@ public class TireSmokeEmitter extends BaseAppState {
 
         for (int wheelIndex = 0; wheelIndex < numWheels; wheelIndex++) {
             Wheel wheel = vehicle.getWheel(wheelIndex);
-            ColorRGBA tmpColor = wheel.tireSmokeColor(null);
+            wheel.tireSmokeColor(tmpColor);
             ParticleEmitter smoke = createEmitter(assetManager, tmpColor);
             emitters[wheelIndex] = smoke;
 
-            Vector3f location = wheel.getVehicleWheel().getLocation();
-            smoke.setLocalTranslation(location);
+            wheel.getVehicleWheel().getLocation(tmpLocation);
+            smoke.setLocalTranslation(tmpLocation);
             smoke.setShadowMode(RenderQueue.ShadowMode.Receive);
         }
     }
@@ -120,17 +128,19 @@ public class TireSmokeEmitter extends BaseAppState {
     public void update(float tpf) {
         int numWheels = vehicle.countWheels();
         for (int wheelIndex = 0; wheelIndex < numWheels; wheelIndex++) {
-            Wheel wheel = vehicle.getWheel(wheelIndex);
             ParticleEmitter emitter = emitters[wheelIndex];
 
-            Vector3f location = wheel.getVehicleWheel().getCollisionLocation();
-            emitter.setLocalTranslation(location);
-
+            Wheel wheel = vehicle.getWheel(wheelIndex);
             float skidFraction = wheel.skidFraction();
+
             float particlesPerSecond;
             if (skidFraction > 0.25f) {
                 particlesPerSecond = 100f * (skidFraction - 0.25f);
-                ColorRGBA tmpColor = wheel.tireSmokeColor(null);
+
+                wheel.getVehicleWheel().getCollisionLocation(tmpLocation);
+                emitter.setLocalTranslation(tmpLocation);
+
+                wheel.tireSmokeColor(tmpColor);
                 emitter.setStartColor(tmpColor);
 
             } else {
