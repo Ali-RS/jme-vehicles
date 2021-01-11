@@ -73,7 +73,6 @@ class TachometerState extends BaseAppState {
         this.vehicle = vehicle;
 
         node = new Node("Tachometer for " + vehicle.getName());
-        node.setQueueBucket(RenderQueue.Bucket.Gui);
     }
     // *************************************************************************
     // BaseAppState methods

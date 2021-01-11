@@ -72,7 +72,6 @@ class SpeedometerState extends BaseAppState {
         this.speedUnit = speedUnit;
 
         node = new Node("Speedometer for " + vehicle.getName());
-        node.setQueueBucket(RenderQueue.Bucket.Gui);
     }
     // *************************************************************************
     // BaseAppState methods

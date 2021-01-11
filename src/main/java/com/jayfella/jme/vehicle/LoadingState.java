@@ -380,7 +380,6 @@ class LoadingState extends BaseAppState {
         Mesh mesh = new Quad(camera.getWidth(), camera.getHeight());
         shutter = new Geometry("shutter", mesh);
         shutter.setMaterial(material);
-        shutter.setQueueBucket(RenderQueue.Bucket.Gui);
 
         application.getGuiNode().attachChild(shutter);
     }
