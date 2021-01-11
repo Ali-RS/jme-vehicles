@@ -299,7 +299,7 @@ public class Main extends SimpleApplication {
         DumpMode mode = new DumpMode();
         mode.assign(DumpMode.F_DUMP_CAMERA, KeyInput.KEY_C);
         mode.assign(DumpMode.F_DUMP_PHYSICS, KeyInput.KEY_O);
-        mode.assign(DumpMode.F_DUMP_VIEWPORT, KeyInput.KEY_P);
+        mode.assign(DumpMode.F_DUMP_RENDER_MANAGER, KeyInput.KEY_P);
 
         AppStateManager manager = getApplication().getStateManager();
         manager.attach(mode);
