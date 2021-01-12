@@ -136,10 +136,10 @@ public class TireSmokeEmitter extends BaseAppState {
             Wheel wheel = vehicle.getWheel(wheelIndex);
             float particlesPerSecond;
             if (vehicle.isBurningRubber()) {
-                particlesPerSecond = 30f;
+                particlesPerSecond = 15f;
             } else {
                 float skidFraction = wheel.skidFraction();
-                particlesPerSecond = 100f * (skidFraction - 0.25f);
+                particlesPerSecond = 50f * (skidFraction - 0.25f);
             }
 
             if (particlesPerSecond > 0f) {
@@ -162,7 +162,7 @@ public class TireSmokeEmitter extends BaseAppState {
 
     private ParticleEmitter createEmitter(AssetManager assetManager,
             ColorRGBA startColor) {
-        int numParticles = 250;
+        int numParticles = 80;
         ParticleEmitter result = new ParticleEmitter("Emitter",
                 ParticleMesh.Type.Triangle, numParticles);
 
