@@ -29,7 +29,7 @@ public class CustomizationMenu extends AnimatedMenu {
      */
     @Override
     protected List<Button> createItems() {
-        List<Button> result = new ArrayList<>(5);
+        List<Button> result = new ArrayList<>(6);
 
         Button button = new Button("Engine Sound");
         button.addClickCommands(source -> animateOut(()
@@ -40,6 +40,12 @@ public class CustomizationMenu extends AnimatedMenu {
         button = new Button("Sky");
         button.addClickCommands(source -> animateOut(()
                 -> goTo(new SkyMenu())
+        ));
+        result.add(button);
+
+        button = new Button("Speedometer");
+        button.addClickCommands(source -> animateOut(()
+                -> goTo(new SpeedometerMenu())
         ));
         result.add(button);
 
