@@ -17,6 +17,7 @@ import com.jayfella.jme.vehicle.input.DumpMode;
 import com.jayfella.jme.vehicle.input.PhysicsMode;
 import com.jayfella.jme.vehicle.input.ScreenshotMode;
 import com.jayfella.jme.vehicle.input.SignalMode;
+import com.jme3.app.DetailedProfilerState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
 import com.jme3.app.state.AppState;
@@ -73,6 +74,7 @@ public class Main extends SimpleApplication {
         super(
                 new AudioListenerState(),
                 new ConstantVerifierState(),
+                new DetailedProfilerState(),
                 new LoadingState(),
                 new StatsAppState()
         );
@@ -259,6 +261,7 @@ public class Main extends SimpleApplication {
         NativeLibrary.setStartupMessageEnabled(false);
         assetManager.registerLoader(TrueTypeLoader.class, "ttf");
         renderer.setDefaultAnisotropicFilter(4);
+        findAppState(DetailedProfilerState.class).setEnabled(false);
 
         inputManager.addJoystickConnectionListener(new JoystickConnectionListener() {
             @Override
