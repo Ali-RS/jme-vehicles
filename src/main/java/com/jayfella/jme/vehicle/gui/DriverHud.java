@@ -256,7 +256,10 @@ public class DriverHud extends BaseAppState {
         boolean isEngineRunning = car.getEngine().isRunning();
         showPowerButton(isEngineRunning);
 
-        showSpeedo(SpeedUnit.MPH);
+        SpeedUnit speedometerUnits = car.getSpeedometerUnits();
+        if (speedometerUnits != null) {
+            showSpeedo(speedometerUnits);
+        }
         showSteeringWheel();
         showTacho();
     }
@@ -447,7 +450,7 @@ public class DriverHud extends BaseAppState {
     }
 
     /**
-     * Display the speedometer using the specified speed unit.
+     * Display the speedometer using the specified speed unit. TODO rename
      *
      * @param speedUnit (not null)
      */

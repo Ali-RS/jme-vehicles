@@ -37,7 +37,7 @@ import jme3utilities.math.MyVector3f;
 abstract public class Vehicle
         implements Loadable, PhysicsTickListener {
     // *************************************************************************
-    // constants and loggers
+    // constants and loggers TODO move constants to the SpeedUnit class
 
     /**
      * factor to convert km/hr to miles per hour
@@ -82,6 +82,10 @@ abstract public class Vehicle
      * its wheels
      */
     private Spatial chassis;
+    /**
+     * units to use in the speedometer, or null for no speedometer
+     */
+    private SpeedUnit speedometerUnits = SpeedUnit.MPH;
     /**
      * descriptive name (not null)
      */
@@ -253,6 +257,15 @@ abstract public class Vehicle
     }
 
     /**
+     * Determine which units to use in the speedometer.
+     *
+     * @return an enum value, or null for no speedometer
+     */
+    public SpeedUnit getSpeedometerUnits() {
+        return speedometerUnits;
+    }
+
+    /**
      * Access the PhysicsControl.
      *
      * @return the pre-existing instance
@@ -271,7 +284,7 @@ abstract public class Vehicle
     public void setAccelerateSignal(float strength) {
         // TODO awkward interface - controls both the gearbox and the throttle
         Validate.inRange(strength, "strength", -1f, 1f);
-        accelerateSignal = strength;
+        this.accelerateSignal = strength;
     }
 
     /**
@@ -329,7 +342,16 @@ abstract public class Vehicle
      * applied)
      */
     public void setParkingBrakeApplied(boolean applied) {
-        parkingBrakeApplied = applied;
+        this.parkingBrakeApplied = applied;
+    }
+
+    /**
+     * Alter which units to use in the speedometer.
+     *
+     * @param units an enum value, or null for no speedometer
+     */
+    public void setSpeedometerUnits(SpeedUnit units) {
+        this.speedometerUnits = units;
     }
 
     public void startEngine() {
