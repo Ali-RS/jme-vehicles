@@ -39,7 +39,7 @@ class SkyMenu extends AnimatedMenu {
         button.addClickCommands(source -> setSky(new AnimatedNightSky()));
         result.add(button);
 
-        button = new Button("Quarry");
+        button = new Button("Quarry Day");
         button.addClickCommands(source -> setSky(new QuarrySky()));
         result.add(button);
 
