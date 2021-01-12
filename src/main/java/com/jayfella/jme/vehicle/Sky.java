@@ -147,9 +147,9 @@ abstract public class Sky implements Loadable {
         material.setTexture("Texture", texture);
         material.setVector3("NormalScale", new Vector3f(1f, 1f, 1f));
         /*
-         * Construct the BoundingVolume, an infinite sphere.
+         * Construct the BoundingVolume, a very large sphere.
          */
-        float boundRadius = Float.POSITIVE_INFINITY;
+        float boundRadius = 9e6f; // finite, to work around issue #1
         BoundingVolume boundingSphere
                 = new BoundingSphere(boundRadius, Vector3f.ZERO);
         /*
