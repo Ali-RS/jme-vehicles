@@ -8,7 +8,6 @@ import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
-import com.jme3.post.ssao.SSAOFilter;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
@@ -91,12 +90,12 @@ abstract public class Sky implements Loadable {
 
         rootNode.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         /*
-         * Create and add the DirectionalLight.
+         * Add a DirectionalLight.
          */
         directionalLight = new DirectionalLight();
         rootNode.addLight(directionalLight);
         /*
-         * Create and add the FilterPostProcessor.
+         * Add a FilterPostProcessor.
          */
         AssetManager assetManager = Main.getApplication().getAssetManager();
         FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
@@ -106,7 +105,7 @@ abstract public class Sky implements Loadable {
             fpp.setNumSamples(numSamples);
         }
         /*
-         * Create and add the DirectionalLightShadowFilter.
+         * Add a DirectionalLightShadowFilter.
          */
         shadowFilter = new DirectionalLightShadowFilter(assetManager, 4_096, 4);
         fpp.addFilter(shadowFilter);
@@ -114,11 +113,6 @@ abstract public class Sky implements Loadable {
         shadowFilter.setShadowIntensity(0.3f);
         shadowFilter.setShadowZExtend(256f);
         shadowFilter.setShadowZFadeLength(128f);
-        /*
-         * Create and add the SSAOFilter.
-         */
-        SSAOFilter ssaoFilter = new SSAOFilter();
-        fpp.addFilter(ssaoFilter);
     }
     // *************************************************************************
     // new protected methods
