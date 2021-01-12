@@ -50,6 +50,8 @@ public class TireSmokeEmitter extends BaseAppState {
 
     /**
      * Instantiate an AppState for the specfied Car.
+     *
+     * @param car which Car to visualize smoke for (not null)
      */
     public TireSmokeEmitter(Car car) {
         this.vehicle = car;
@@ -169,11 +171,9 @@ public class TireSmokeEmitter extends BaseAppState {
         RenderState ars = material.getAdditionalRenderState();
         ars.setBlendMode(RenderState.BlendMode.Alpha);
 
-        String assetPath = "Textures/Particles/smoke_line.png";
-        Texture smokeLine = assetManager.loadTexture(assetPath);
-        material.setTexture("Texture", smokeLine);
-        result.setImagesX(15);
-        result.setImagesY(1);
+        String assetPath = "/Textures/Georg/smoke.png";
+        Texture texture = assetManager.loadTexture(assetPath);
+        material.setTexture("Texture", texture);
 
         result.setGravity(0f, -0.2f, 0f); // less dense than the ambient air
         result.setHighLife(3f);
