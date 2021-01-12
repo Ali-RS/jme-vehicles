@@ -199,6 +199,7 @@ public class Main extends SimpleApplication {
 
         AppSettings appSettings = new AppSettings(true);
         appSettings.setResolution(1280, 720);
+        appSettings.setSamples(8);
         appSettings.setTitle("More Advanced Vehicles");
         appSettings.setUseJoysticks(true);
         appSettings.setVSync(true);
