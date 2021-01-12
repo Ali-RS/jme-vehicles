@@ -59,8 +59,11 @@ public class DumpMode extends InputMode {
         super("Dump Mode", F_DUMP_APPSTATES, F_DUMP_CAMERA, F_DUMP_GUI_VIEWPORT,
                 F_DUMP_PHYSICS, F_DUMP_RENDER_MANAGER, F_DUMP_VIEWPORT);
 
-        dumper.setDumpShadow(true)
+        dumper.setDumpBucket(true)
+                .setDumpCull(true)
+                .setDumpShadow(true)
                 .setDumpTransform(true);
+//        dumper.setDumpMatParam(true);
 
         assign((FunctionId function, InputState inputState, double tpf) -> {
             if (inputState == InputState.Positive) {
