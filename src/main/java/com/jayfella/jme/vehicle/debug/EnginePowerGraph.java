@@ -3,6 +3,7 @@ package com.jayfella.jme.vehicle.debug;
 import com.jayfella.jme.vehicle.part.Engine;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
+import com.jme3.material.Materials;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.scene.Geometry;
@@ -49,7 +50,7 @@ public class EnginePowerGraph extends Geometry {
 
         setMesh(new Quad(width, height));
 
-        setMaterial(new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
+        setMaterial(new Material(assetManager, Materials.UNSHADED));
         getMaterial().setTexture("ColorMap", texture);
 
         drawGraph();

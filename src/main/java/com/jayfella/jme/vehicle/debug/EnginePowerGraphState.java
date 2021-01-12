@@ -5,6 +5,7 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.material.Material;
+import com.jme3.material.Materials;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
@@ -36,7 +37,7 @@ public class EnginePowerGraphState extends BaseAppState {
         node.attachChild(enginePowerGraph);
 
         line = new Geometry("", new Quad(1, height));
-        line.setMaterial(new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md"));
+        line.setMaterial(new Material(app.getAssetManager(), Materials.UNSHADED));
         line.getMaterial().setColor("Color", ColorRGBA.Green);
         node.attachChild(line);
 

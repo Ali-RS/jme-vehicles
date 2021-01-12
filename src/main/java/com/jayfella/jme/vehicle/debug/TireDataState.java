@@ -8,6 +8,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
+import com.jme3.material.Materials;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.scene.Geometry;
@@ -38,7 +39,7 @@ public class TireDataState extends BaseAppState {
 
     private Geometry createNeedle(AssetManager assetManager, ColorRGBA color) {
         Geometry result = new Geometry("Needle", new Quad(1, graphHeight));
-        result.setMaterial(new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md"));
+        result.setMaterial(new Material(assetManager, Materials.UNSHADED));
         result.getMaterial().setColor("Color", color);
 
         return result;

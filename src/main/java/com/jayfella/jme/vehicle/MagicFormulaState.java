@@ -5,6 +5,7 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.material.Material;
+import com.jme3.material.Materials;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
@@ -273,7 +274,7 @@ public class MagicFormulaState extends BaseAppState {
     private Geometry createArrow(Vector3f dir, ColorRGBA color) {
         Arrow arrow = new Arrow(dir);
         Geometry result = new Geometry("arrow", arrow);
-        result.setMaterial(new Material(Main.getApplication().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md"));
+        result.setMaterial(new Material(Main.getApplication().getAssetManager(), Materials.UNSHADED));
         result.getMaterial().getAdditionalRenderState().setWireframe(true);
         result.getMaterial().getAdditionalRenderState().setLineWidth(4);
         result.getMaterial().setColor("Color", color);
@@ -287,7 +288,7 @@ public class MagicFormulaState extends BaseAppState {
         crosshair.setLocalTranslation(screenCenter.add(-crosshair.getPreferredSize().x * 0.5f, crosshair.getPreferredSize().y * 0.5f, 0));
 
         centerOfGravity = new Geometry("Center of Mass", new Quad(8, 8));
-        centerOfGravity.setMaterial(new Material(getApplication().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md"));
+        centerOfGravity.setMaterial(new Material(getApplication().getAssetManager(), Materials.UNSHADED));
         centerOfGravity.getMaterial().setColor("Color", ColorRGBA.Yellow);
         // guiNode.attachChild(centerOfGravity);
     }

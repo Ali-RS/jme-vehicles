@@ -7,12 +7,12 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
+import com.jme3.material.Materials;
 import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
-import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Line;
@@ -113,8 +113,7 @@ class SpeedometerState extends BaseAppState {
         Geometry needleGeometry = new Geometry("Speedometer Needle", needleMesh);
         needleNode.attachChild(needleGeometry);
 
-        Material material
-                = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material material = new Material(assetManager, Materials.UNSHADED);
         needleGeometry.setMaterial(material);
         material.setTexture("ColorMap", needleTexture);
         material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
@@ -258,8 +257,7 @@ class SpeedometerState extends BaseAppState {
                 new Quad(width, height));
         backgroundGeom.setLocalTranslation(-width / 2f, -height / 2f, -1f);
 
-        Material material = new Material(assetManager,
-                "Common/MatDefs/Misc/Unshaded.j3md");
+        Material material = new Material(assetManager, Materials.UNSHADED);
         backgroundGeom.setMaterial(material);
         material.setTexture("ColorMap", backgroundTexture);
         material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
