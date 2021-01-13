@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle.skid;
 
+import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.objects.VehicleWheel;
@@ -145,6 +146,9 @@ class WheelSkid {
 
         SkidMarkSection previous;
         if (prevIndex == -1) {
+            if (sections.size() > 1) {
+                Main.getWorld().getDecalManager().addCloneOf(geometry);
+            }
             sections.clear();
             clearMesh();
             previous = null;
