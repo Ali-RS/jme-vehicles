@@ -7,7 +7,8 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 
 /**
- * A game world, such as the Vehicle Playground. Doesn't include sky.
+ * A game world, such as the Vehicle Playground. Includes the collision object,
+ * but not lights, post-processing, or sky.
  *
  * @author Stephen Gold sgold@sonic.net
  */
@@ -15,6 +16,10 @@ abstract public class World implements Loadable {
     // *************************************************************************
     // fields
 
+    /**
+     * manage decals
+     */
+    final private DecalManager decalManager = new DecalManager();
     /**
      * loaded C-G model of the game world
      */
@@ -33,6 +38,9 @@ abstract public class World implements Loadable {
         }
         parent.attachChild(loadedCgm);
 
+        Node decalNode = decalManager.getNode();
+        parent.attachChild(decalNode);
+
         BulletAppState bulletAppState = Main.findAppState(BulletAppState.class);
         PhysicsSpace physicsSpace = bulletAppState.getPhysicsSpace();
         RigidBodyControl rigidBodyControl
@@ -49,6 +57,7 @@ abstract public class World implements Loadable {
                 = loadedCgm.getControl(RigidBodyControl.class);
         rigidBodyControl.setPhysicsSpace(null);
 
+        decalManager.getNode().removeFromParent();
         loadedCgm.removeFromParent();
     }
 
@@ -82,6 +91,15 @@ abstract public class World implements Loadable {
      */
     public Node getCgm() {
         return loadedCgm;
+    }
+
+    /**
+     * Access the decal manager.
+     *
+     * @return the pre-existing instance, or null if not yet loaded
+     */
+    public DecalManager getDecalManager() {
+        return decalManager;
     }
 
     /**
