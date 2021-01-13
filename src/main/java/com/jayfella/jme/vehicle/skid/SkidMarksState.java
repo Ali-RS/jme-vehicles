@@ -6,22 +6,45 @@ import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Geometry;
+import java.util.logging.Logger;
 
 /**
  * AppState to manage a car's active skidmarks, one skidmark for each wheel.
  */
 public class SkidMarksState extends BaseAppState {
     // *************************************************************************
+    // constants and loggers
+
+    /**
+     * message logger for this class
+     */
+    final public static Logger logger
+            = Logger.getLogger(SkidMarksState.class.getName());
+    // *************************************************************************
     // fields
 
     private boolean skidmarkEnabled = true;
+    /**
+     * Car that produces the skidmarks (not null)
+     */
     final private Car vehicle;
+    /**
+     * width of the tire (in world units, &gt;0)
+     */
     final private float tireWidth;
     private int numWheels;
+    /**
+     * active skid mark for each wheel
+     */
     private WheelSkid[] skids;
     // *************************************************************************
     // constructors
 
+    /**
+     * Instantiate an enabled AppState.
+     *
+     * @param vehicle the Car that will produce skidmarks (not null)
+     */
     public SkidMarksState(Car vehicle, float tireWidth) {
         this.vehicle = vehicle;
         this.tireWidth = tireWidth;
@@ -30,9 +53,9 @@ public class SkidMarksState extends BaseAppState {
     // new methods exposed
 
     /**
-     * Stop adding more skidmarks.
+     * Enable or disable adding skidmarks.
      *
-     * @param enabled whether or not to show more skidmarks.
+     * @param enabled true&rarr;keep adding skidmarks, false&rarr;stop adding
      */
     public void setSkidmarkEnabled(boolean enabled) {
         skidmarkEnabled = enabled;
@@ -40,6 +63,13 @@ public class SkidMarksState extends BaseAppState {
     // *************************************************************************
     // BaseAppState methods
 
+    /**
+     * Callback invoked after this AppState is detached or during application
+     * shutdown if the state is still attached. onDisable() is called before
+     * this cleanup() method if the state is enabled at the time of cleanup.
+     *
+     * @param app the application instance (not null)
+     */
     @Override
     protected void cleanup(Application app) {
         // do nothing
@@ -48,13 +78,13 @@ public class SkidMarksState extends BaseAppState {
     /**
      * Callback invoked after this AppState is attached but before onEnable().
      *
-     * @param app the application instance (not null)
+     * @param application the application instance (not null)
      */
     @Override
-    protected void initialize(Application app) {
+    protected void initialize(Application application) {
         numWheels = vehicle.countWheels();
         skids = new WheelSkid[numWheels];
-        AssetManager assetManager = app.getAssetManager();
+        AssetManager assetManager = application.getAssetManager();
 
         for (int wheelIndex = 0; wheelIndex < numWheels; ++wheelIndex) {
             Wheel wheel = vehicle.getWheel(wheelIndex);
@@ -68,8 +98,7 @@ public class SkidMarksState extends BaseAppState {
      */
     @Override
     protected void onDisable() {
-        for (int wheelIndex = 0; wheelIndex < numWheels; ++wheelIndex) {
-            WheelSkid skid = skids[wheelIndex];
+        for (WheelSkid skid : skids) {
             Geometry geometry = skid.getGeometry();
             if (geometry != null) {
                 geometry.removeFromParent();
@@ -94,8 +123,7 @@ public class SkidMarksState extends BaseAppState {
      */
     @Override
     public void update(float tpf) {
-        for (int wheelIndex = 0; wheelIndex < numWheels; ++wheelIndex) {
-            WheelSkid skid = skids[wheelIndex];
+        for (WheelSkid skid : skids) {
             Geometry geometry = skid.getGeometry();
 
             // kind of annoying, but we can't attach a geometry that doesn't exist if the car hasn't skidded yet.
