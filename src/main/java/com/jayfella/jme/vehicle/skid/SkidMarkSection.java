@@ -9,7 +9,7 @@ import java.nio.FloatBuffer;
 import jme3utilities.math.MyVector3f;
 
 /**
- * A single straight section within a continuous skid mark.
+ * A straight section within a continuous skidmark. TODO rename SkidmarkSection
  */
 class SkidMarkSection {
     // *************************************************************************
@@ -47,7 +47,7 @@ class SkidMarkSection {
     // constructors
 
     /**
-     * Instantiate a section.
+     * Instantiate a skidmark section.
      *
      * @param pavementLocation the final pavement location (in world
      * coordinates, not null, unaffected)
@@ -57,7 +57,8 @@ class SkidMarkSection {
      * @param opacity the final opacity (&ge;0, &le;1)
      * @param previous the previous section in the skid, or null if this is the
      * first
-     * @param halfWidth half of the width of the skid (in meters)
+     * @param halfWidth half of the width of the skidmark (in world units,
+     * &ge;0)
      */
     SkidMarkSection(Vector3f pavementLocation, Vector3f normal, float height,
             float opacity, SkidMarkSection previous, float halfWidth) {

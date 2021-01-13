@@ -20,24 +20,24 @@ import java.util.logging.Logger;
 import jme3utilities.math.MyBuffer;
 
 /**
- * A single continuous skid mark, composed of straight sections and rendered by
- * a single Geometry.
+ * A single continuous skidmark, composed of straight sections and rendered by a
+ * single Geometry.
  */
 class WheelSkid {
     // *************************************************************************
     // constants and loggers
 
     /**
-     * height of the skid above the pavement (in meters)
+     * height of the skidmark above the pavement (in world units)
      */
     final private static float height = 0.02f;
     /**
-     * minimum distance travelled before starting a new section (in meters),
-     * bigger means better performance but less smooth
+     * minimum distance travelled before starting a new section (in world
+     * units), bigger means better performance but less smooth
      */
     final private static float minLength = 0.5f;
     final private static float minLengthSquared = minLength * minLength;
-    final private static float SKID_FX_SPEED = 0.25f; // Min side slip speed in m/s to start showing a skid
+    final private static float SKID_FX_SPEED = 0.25f; // Min side slip speed in wu/s to start showing a skid
     /**
      * number of axes in the coordinate system
      */
@@ -55,14 +55,17 @@ class WheelSkid {
     // fields
 
     /**
-     * width of this skid mark (in meters), should match the width of the tire
+     * width of this skidmark (in world units)
      */
     final private float width;
     /**
-     * Geometry to visualize this skid mark
+     * Geometry to visualize this skidmark
      */
     final private Geometry geometry;
-    private int lastSkid = -1; // Array index for the skidmarks controller. Index of last skidmark piece this wheel used
+    /**
+     * index of last section used, or -1 if none TODO rename lastSectionUsed
+     */
+    private int lastSkid = -1;
     /**
      * capacity of the Mesh in terms of sections
      */
@@ -77,11 +80,12 @@ class WheelSkid {
     // constructors
 
     /**
-     * Instantiate a continuous skid mark with the specified width.
+     * Instantiate a continuous skidmark with the specified width.
      *
-     * @param wheel the wheel that's generating the skid mark (not null)
+     * @param wheel the wheel that's generating the skidmark (not null)
      * @param assetManager for loading assets (not null)
-     * @param tireWidth the desired width of this skid mark (in meters, &gt;0)
+     * @param tireWidth the desired width for this skidmark (in world units,
+     * &gt;0)
      */
     WheelSkid(Wheel wheel, AssetManager assetManager, float tireWidth) {
         this.wheel = wheel;
@@ -117,7 +121,7 @@ class WheelSkid {
     // private methods
 
     /**
-     * Add a section to this skid mark. The alpha component of the vertex color
+     * Add a section to this skidmark. The alpha component of the vertex color
      * indicates the skid intensity.
      *
      * @param pavementLocation the final pavement location for the new section
@@ -127,12 +131,12 @@ class WheelSkid {
      * @param opacity the final intensity for the new section (typically between
      * 0 and 1)
      * @param prevIndex the index of the previous final section (&ge;0,
-     * &lt;maxSections) or -1 to start a new skid mark
+     * &lt;maxSections) or -1 to start a new skidmark
      * @return the index of the final section (&ge;0, &lt;maxSections) or -1 if
      * the skid has ended
      */
-    private int addSection(Vector3f pavementLocation, Vector3f normal, float opacity,
-            int prevIndex) {
+    private int addSection(Vector3f pavementLocation, Vector3f normal,
+            float opacity, int prevIndex) {
         if (opacity < 0f) {
             return -1;
         }
@@ -180,7 +184,7 @@ class WheelSkid {
     }
 
     /**
-     * Reset the Mesh so that it can be reused for a new skid mark.
+     * Reset the Mesh so that it can be reused for a new skidmark.
      */
     private void clearMesh() {
         Mesh mesh = geometry.getMesh();
@@ -220,7 +224,8 @@ class WheelSkid {
         assert mesh.getVertexCount() == 0 : mesh.getVertexCount();
     }
 
-    private Geometry createGeometry(AssetManager assetManager, int numSections) {
+    private Geometry createGeometry(AssetManager assetManager,
+            int numSections) {
         Mesh mesh = createMesh(numSections);
         Geometry result = new Geometry("Skid Mark", mesh);
         /*
