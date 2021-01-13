@@ -3,7 +3,8 @@ subfolders
 
 Based on "Race Track Model":
 * download file:     race1.glb
-* downloaded from:   https://github.com/scenemax3d/3d-models/tree/main/race%20track%201
+* downloaded from:   https://github.com/scenemax3d/3d-models/blob/main/race%20track%201/race1.glb
+* download date:     12 January 2021
 * store URL:         https://store.jmonkeyengine.org/ebb00017-10ee-4fe9-9424-92448b44db63
 * author:            adibarda (Adi Barda)
 * author URL:        https://github.com/scenemax3d
@@ -12,6 +13,7 @@ Based on "Race Track Model":
 
 Derived files (also licensed The Unlicense):
 * env-shape.j3o
+* env-shape-Windows64.j3o
 * net.png
 * race1.j3o
 * red.png
