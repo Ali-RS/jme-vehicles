@@ -5,7 +5,9 @@ import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
+import com.jme3.bounding.BoundingBox;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Spatial;
 import java.util.logging.Logger;
 
 /**
@@ -29,10 +31,9 @@ public class SkidMarksState extends BaseAppState {
      */
     final private Car vehicle;
     /**
-     * width of the tire (in world units, &gt;0)
+     * width of the skid for each wheel (in world units, &gt;0)
      */
-    final private float tireWidth;
-    private int numWheels;
+    final private float[] skidWidths;
     /**
      * active skid mark for each wheel
      */
@@ -45,9 +46,18 @@ public class SkidMarksState extends BaseAppState {
      *
      * @param vehicle the Car that will produce skidmarks (not null)
      */
-    public SkidMarksState(Car vehicle, float tireWidth) {
+    public SkidMarksState(Car vehicle) {
         this.vehicle = vehicle;
-        this.tireWidth = tireWidth;
+
+        int numWheels = vehicle.countWheels();
+        this.skidWidths = new float[numWheels];
+        for (int wheelIndex = 0; wheelIndex < numWheels; ++wheelIndex) {
+            Wheel wheel = vehicle.getWheel(wheelIndex);
+            Spatial spatial = wheel.getVehicleWheel().getWheelSpatial();
+            BoundingBox bounds = (BoundingBox) spatial.getWorldBound();
+            float skidWidth = 0.75f * bounds.getZExtent();
+            skidWidths[wheelIndex] = skidWidth;
+        }
     }
     // *************************************************************************
     // new methods exposed
@@ -82,13 +92,14 @@ public class SkidMarksState extends BaseAppState {
      */
     @Override
     protected void initialize(Application application) {
-        numWheels = vehicle.countWheels();
+        int numWheels = vehicle.countWheels();
         skids = new WheelSkid[numWheels];
         AssetManager assetManager = application.getAssetManager();
 
         for (int wheelIndex = 0; wheelIndex < numWheels; ++wheelIndex) {
             Wheel wheel = vehicle.getWheel(wheelIndex);
-            skids[wheelIndex] = new WheelSkid(wheel, assetManager, tireWidth);
+            float width = skidWidths[wheelIndex];
+            skids[wheelIndex] = new WheelSkid(wheel, assetManager, width);
         }
     }
 

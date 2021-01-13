@@ -6,7 +6,6 @@ import com.jayfella.jme.vehicle.part.Suspension;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jayfella.jme.vehicle.skid.SkidMarksState;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.objects.PhysicsVehicle;
@@ -248,12 +247,7 @@ abstract public class Car extends Vehicle {
     public void build() {
         super.build();
         smokeEmitter = new TireSmokeEmitter(this);
-
-        Spatial wheelSpatial = getWheel(0).getVehicleWheel().getWheelSpatial();
-        BoundingBox bounds = (BoundingBox) wheelSpatial.getWorldBound();
-        float markWidth = 0.75f * bounds.getZExtent();
-        skidmarks = new SkidMarksState(this, markWidth);
-
+        skidmarks = new SkidMarksState(this);
         magicFormulaState = new MagicFormulaState(this);
         wheelSpinState = new WheelSpinState(this);
     }
