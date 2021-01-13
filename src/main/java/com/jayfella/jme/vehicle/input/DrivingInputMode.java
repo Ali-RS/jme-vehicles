@@ -241,6 +241,10 @@ public class DrivingInputMode extends InputMode {
     // *************************************************************************
     // private methods
 
+    /**
+     * Re-orient the Vehicle so that it is upright, reset its motion to zero,
+     * and attempt to locate it someplace it won't immediately collide.
+     */
     private void resetVehicle() {
         Vehicle vehicle = Main.getVehicle();
         VehicleControl control = vehicle.getVehicleControl();
@@ -265,6 +269,7 @@ public class DrivingInputMode extends InputMode {
                     break;
                 }
                 Vector3f offset = generator.nextVector3f();
+                offset.multLocal(0.1f * (iteration + 1));
                 newLocation.addLocal(offset);
             }
         }
