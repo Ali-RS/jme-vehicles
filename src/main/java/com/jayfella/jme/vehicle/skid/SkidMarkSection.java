@@ -194,22 +194,22 @@ class SkidMarkSection {
         uvBuffer.put(1f).put(1f);
         uvBuffer.flip();
         /*
-         * Update the mesh bounds.
+         * Update the bounds.
          */
         BoundingBox aabb = (BoundingBox) mesh.getBound();
-        if (aabb == null) {
-            aabb = new BoundingBox();
-            FloatBuffer positions
-                    = mesh.getFloatBuffer(VertexBuffer.Type.Position);
-            aabb.computeFromPoints(positions);
-            mesh.setBound(aabb);
-        } else {
-            Vector3f max = aabb.getMax(null); // TODO garbage
-            Vector3f min = aabb.getMin(null);
-            BoundingBox.checkMinMax(min, max, pLeft);
+        Vector3f max = new Vector3f(); // TODO garbage
+        Vector3f min = new Vector3f();
+        if (sectionIndex == 1) {
+            max.set(pLeft);
+            min.set(pLeft);
             BoundingBox.checkMinMax(min, max, pRight);
-            aabb.setMinMax(min, max);
+        } else {
+            aabb.getMax(max);
+            aabb.getMin(min);
         }
+        BoundingBox.checkMinMax(min, max, locationLeft);
+        BoundingBox.checkMinMax(min, max, locationRight);
+        aabb.setMinMax(min, max);
 
         mesh.setDynamic();
         mesh.updateCounts();

@@ -222,7 +222,6 @@ class WheelSkid {
         uvBuffer.clear();
         uvBuffer.flip();
 
-        mesh.setBound(null);
         mesh.setDynamic();
         mesh.updateCounts();
 
@@ -280,6 +279,8 @@ class WheelSkid {
         result.setBuffer(VertexBuffer.Type.Tangent, 4, tangentBuffer);
         result.setBuffer(VertexBuffer.Type.TexCoord, 2, uvBuffer);
 
+        result.updateBound();
+        result.updateCounts();
         meshSize = numSections;
 
         return result;
