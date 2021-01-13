@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle.skid;
 
+import com.jme3.bounding.BoundingBox;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.VertexBuffer;
@@ -192,6 +193,23 @@ class SkidMarkSection {
         uvBuffer.put(0f).put(1f);
         uvBuffer.put(1f).put(1f);
         uvBuffer.flip();
+        /*
+         * Update the mesh bounds.
+         */
+        BoundingBox aabb = (BoundingBox) mesh.getBound();
+        if (aabb == null) {
+            aabb = new BoundingBox();
+            FloatBuffer positions
+                    = mesh.getFloatBuffer(VertexBuffer.Type.Position);
+            aabb.computeFromPoints(positions);
+            mesh.setBound(aabb);
+        } else {
+            Vector3f max = aabb.getMax(null); // TODO garbage
+            Vector3f min = aabb.getMin(null);
+            BoundingBox.checkMinMax(min, max, pLeft);
+            BoundingBox.checkMinMax(min, max, pRight);
+            aabb.setMinMax(min, max);
+        }
 
         mesh.setDynamic();
         mesh.updateCounts();

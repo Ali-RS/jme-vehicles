@@ -8,7 +8,6 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
-import com.jme3.scene.Spatial;
 import com.jme3.scene.VertexBuffer;
 import com.jme3.scene.mesh.IndexBuffer;
 import com.jme3.util.BufferUtils;
@@ -162,23 +161,25 @@ class WheelSkid {
         sections.add(section);
         int numSections = sections.size();
         int sectionIndex = numSections - 1;
+        Mesh mesh;
         if (numSections - 1 > meshSize) {
             /*
              * Recreate the Mesh from sections, making each buffer 4x larger.
              */
-            Mesh mesh = createMesh(4 * meshSize);
-            geometry.setMesh(mesh);
+            mesh = createMesh(4 * meshSize);
             for (int i = 0; i < sectionIndex; ++i) {
                 SkidMarkSection s = sections.get(i);
                 s.appendToMesh(mesh, i);
             }
+        } else {
+            mesh = geometry.getMesh();
         }
         /*
          * Add 4 mesh vertices (2 triangles) in order to connect the new section
          * to its predecessor.
          */
-        Mesh mesh = geometry.getMesh();
         section.appendToMesh(mesh, sectionIndex);
+        geometry.setMesh(mesh); // This triggers the necessary bounds refresh.
 
         return sectionIndex;
     }
@@ -217,6 +218,7 @@ class WheelSkid {
         uvBuffer.clear();
         uvBuffer.flip();
 
+        mesh.setBound(null);
         mesh.setDynamic();
         mesh.updateCounts();
 
@@ -227,11 +229,7 @@ class WheelSkid {
     private Geometry createGeometry(AssetManager assetManager,
             int numSections) {
         Mesh mesh = createMesh(numSections);
-        Geometry result = new Geometry("Skid Mark", mesh);
-        /*
-         * Disable culling so we can skip updating the mesh bounds.
-         */
-        result.setCullHint(Spatial.CullHint.Never);
+        Geometry result = new Geometry("Skidmark", mesh);
 
         Material material
                 = assetManager.loadMaterial("Materials/Vehicles/SkidMark.j3m");
