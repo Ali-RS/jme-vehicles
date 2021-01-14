@@ -60,7 +60,7 @@ abstract class AnimatedMenu extends BaseAppState {
      */
     private float time = 0f;
     /**
-     * items in this menu
+     * buttons in this menu
      */
     private List<Button> buttons;
     final private Node node = new Node("Menu");
@@ -75,7 +75,7 @@ abstract class AnimatedMenu extends BaseAppState {
     }
 
     /**
-     * Generate the items for this menu.
+     * Generate the buttons for this menu.
      *
      * @return a new array of GUI buttons
      */
@@ -108,26 +108,26 @@ abstract class AnimatedMenu extends BaseAppState {
     protected void initialize(Application app) {
         buttons = createItems();
 
-        for (Button item : buttons) {
-            formatButton((Button) item);
-            node.attachChild(item);
+        for (Button button : buttons) {
+            formatButton(button);
+            node.attachChild(button);
 
             // find the widest button so we can move them all offscreen
-            float width = item.getPreferredSize().x;
+            float width = button.getPreferredSize().x;
             if (width > maxWidth) {
                 maxWidth = width;
             }
         }
 
         int height = app.getCamera().getHeight() - 20;
-        for (Button item : buttons) {
+        for (Button button : buttons) {
             // make all the buttons the same width
-            Vector3f preferredSize = item.getPreferredSize();
+            Vector3f preferredSize = button.getPreferredSize();
             preferredSize.x = maxWidth;
-            item.setPreferredSize(preferredSize);
+            button.setPreferredSize(preferredSize);
 
             // position them all one below the other.
-            item.setLocalTranslation(-maxWidth, height, 1f);
+            button.setLocalTranslation(-maxWidth, height, 1f);
             height -= preferredSize.y;
         }
     }
@@ -179,15 +179,15 @@ abstract class AnimatedMenu extends BaseAppState {
             }
 
             float easeTime = FastMath.clamp(time - currentDelay, 0f, duration);
-            Button item = buttons.get(i);
+            Button button = buttons.get(i);
 
-            Vector3f translation = item.getLocalTranslation();
+            Vector3f translation = button.getLocalTranslation();
             if (in) {
                 float x = easeInQuartic(easeTime, -maxWidth, 20f, duration);
-                item.setLocalTranslation(x, translation.y, translation.z);
+                button.setLocalTranslation(x, translation.y, translation.z);
             } else {
                 float x = easeOutQuartic(easeTime, 20f, -maxWidth, duration);
-                item.setLocalTranslation(x, translation.y, translation.z);
+                button.setLocalTranslation(x, translation.y, translation.z);
             }
 
             if (i == numButtons - 1 && easeTime == duration) {
@@ -223,10 +223,10 @@ abstract class AnimatedMenu extends BaseAppState {
         return result;
     }
 
-    private void formatButton(Button item) {
-        item.setTextHAlignment(HAlignment.Center);
-        ((TbtQuadBackgroundComponent) item.getBackground()).setMargin(10f, 5f);
-        item.setFontSize(16f);
-        item.setInsets(new Insets3f(0f, 0f, 5f, 0f));
+    private void formatButton(Button button) {
+        button.setTextHAlignment(HAlignment.Center);
+        ((TbtQuadBackgroundComponent) button.getBackground()).setMargin(10f, 5f);
+        button.setFontSize(16f);
+        button.setInsets(new Insets3f(0f, 0f, 5f, 0f));
     }
 }
