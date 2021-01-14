@@ -4,7 +4,7 @@ import com.atr.jme.font.TrueTypeMesh;
 import com.atr.jme.font.asset.TrueTypeKeyMesh;
 import com.atr.jme.font.shape.TrueTypeNode;
 import com.atr.jme.font.util.Style;
-import com.jayfella.jme.vehicle.Loadable;
+import com.github.stephengold.jmepower.Loadable;
 import com.jayfella.jme.vehicle.Main;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;

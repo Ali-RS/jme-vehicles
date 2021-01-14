@@ -1,8 +1,16 @@
 package com.jayfella.jme.vehicle;
 
 import com.atr.jme.font.asset.TrueTypeLoader;
+import com.github.stephengold.jmepower.Loadable;
+import com.github.stephengold.jmepower.lemur.LemurLoadingState;
+import com.jayfella.jme.vehicle.examples.cars.DuneBuggy;
+import com.jayfella.jme.vehicle.examples.cars.GTRNismo;
 import com.jayfella.jme.vehicle.examples.cars.GrandTourer;
+import com.jayfella.jme.vehicle.examples.cars.HatchBack;
+import com.jayfella.jme.vehicle.examples.cars.PickupTruck;
+import com.jayfella.jme.vehicle.examples.skies.AnimatedNightSky;
 import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
+import com.jayfella.jme.vehicle.examples.worlds.Playground;
 import com.jayfella.jme.vehicle.examples.worlds.Racetrack;
 import com.jayfella.jme.vehicle.gui.AudioHud;
 import com.jayfella.jme.vehicle.gui.CameraNameState;
@@ -49,6 +57,21 @@ public class Main extends SimpleApplication {
     // fields
 
     /**
+     * enumerate preload tasks
+     */
+    private static Loadable[] preloads = new Loadable[]{
+        new AnimatedNightSky(),
+        new CameraNameState(),
+        new DuneBuggy(),
+        new GrandTourer(),
+        new GTRNismo(),
+        new HatchBack(),
+        new Playground(),
+        new PickupTruck(),
+        new QuarrySky(),
+        new Racetrack()
+    };
+    /**
      * application instance
      */
     private static Main application;
@@ -75,54 +98,13 @@ public class Main extends SimpleApplication {
                 new AudioListenerState(),
                 new ConstantVerifierState(),
                 new DetailedProfilerState(),
-                new LoadingState(),
+                new LemurLoadingState(preloads),
                 new StatsAppState()
         );
+        preloads = null; // to allow garbage collection
     }
     // *************************************************************************
     // new methods exposed
-
-    /**
-     * Callback from LoadingState when it has finished warming up the AssetCache
-     * and initializing Lemur.
-     */
-    void doneLoading() {
-        BulletAppState bulletAppState = new BulletAppState();
-        stateManager.attach(bulletAppState);
-
-        Sky.initialize();
-        attachAllToScene();
-
-        stateManager.attachAll(
-                new AudioHud(),
-                new CameraNameState(),
-                new CompassState(),
-                new DriverHud(),
-                new GearNameState(),
-                new MainMenu(),
-                new PhysicsHud()
-        );
-        //stateManager.attach(new VehiclePointsState());
-        /*
-         * Attach input modes.
-         */
-        activateDumpMode();
-        activatePhysicsMode();
-        activateScreenshotMode();
-        activateSignalMode();
-        activateCameraMode();
-        attachDrivingMode(); // needs the SignalTracker of the SignalMode
-        /*
-         * The dash camera sits close to the bodywork, so set the near clipping
-         * plane accordingly.
-         */
-        float near = 0.1f;
-        float far = 1_800f;
-        MyCamera.setNearFar(cam, near, far);
-
-        MyCamera.setYTangent(cam, 1f);
-        world.resetCameraPosition();
-    }
 
     /**
      * Find the first attached AppState that's an instance of the specified
@@ -131,10 +113,12 @@ public class Main extends SimpleApplication {
      * @param <T> the kind of AppState
      * @param subclass the kind of AppState to search for (not null)
      * @return the pre-existing instance (not null)
+     * @throws IllegalArgumentException if the state is not attached
      */
     public static <T extends AppState> T findAppState(Class<T> subclass) {
         AppStateManager manager = application.getStateManager();
-        T result = manager.getState(subclass);
+        boolean failOnMiss = true;
+        T result = manager.getState(subclass, failOnMiss);
 
         assert result != null;
         return result;
@@ -278,6 +262,17 @@ public class Main extends SimpleApplication {
         inputManager.clearMappings();
         inputManager.clearRawInputListeners();
     }
+
+    @Override
+    public void simpleUpdate(float tpf) {
+        AppState loader = stateManager.getState(LemurLoadingState.class);
+        if (loader != null) {
+            if (!loader.isEnabled()) {
+                getStateManager().detach(loader);
+                doneLoading();
+            }
+        }
+    }
     // *************************************************************************
     // private methods
 
@@ -384,5 +379,47 @@ public class Main extends SimpleApplication {
 
         AppStateManager manager = getApplication().getStateManager();
         manager.attach(mode);
+    }
+
+    /**
+     * Finish initializing the application after LoadingState has warmed up the
+     * AssetCache and initialized Lemur.
+     */
+    private void doneLoading() {
+        BulletAppState bulletAppState = new BulletAppState();
+        stateManager.attach(bulletAppState);
+
+        Sky.initialize();
+        attachAllToScene();
+
+        stateManager.attachAll(
+                new AudioHud(),
+                new CameraNameState(),
+                new CompassState(),
+                new DriverHud(),
+                new GearNameState(),
+                new MainMenu(),
+                new PhysicsHud()
+        );
+        //stateManager.attach(new VehiclePointsState());
+        /*
+         * Attach input modes.
+         */
+        activateDumpMode();
+        activatePhysicsMode();
+        activateScreenshotMode();
+        activateSignalMode();
+        activateCameraMode();
+        attachDrivingMode(); // needs the SignalTracker of the SignalMode
+        /*
+         * The dash camera sits close to the bodywork, so set the near clipping
+         * plane accordingly.
+         */
+        float near = 0.1f;
+        float far = 1_800f;
+        MyCamera.setNearFar(cam, near, far);
+
+        MyCamera.setYTangent(cam, 1f);
+        world.resetCameraPosition();
     }
 }

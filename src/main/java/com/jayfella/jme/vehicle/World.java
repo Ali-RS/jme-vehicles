@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle;
 
+import com.github.stephengold.jmepower.Loadable;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
