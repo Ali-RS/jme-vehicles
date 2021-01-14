@@ -2,7 +2,7 @@ Material SkidMark: /Common/MatDefs/Light/PBRLighting.j3md {
 
     MaterialParameters {
         BaseColor: 0 0 0 1
-        BaseColorMap: Flip Repeat /Textures/Vehicles/Skidmarks2.png
+        BaseColorMap: Flip Repeat /Textures/Georg/skidmark.png
         Metallic: 1
         Roughness: 1
         UseVertexColor: true
