@@ -258,7 +258,7 @@ public class DriverHud extends BaseAppState {
 
         SpeedUnit speedometerUnits = car.getSpeedometerUnits();
         if (speedometerUnits != null) {
-            showSpeedo(speedometerUnits);
+            showSpeedometer(speedometerUnits);
         }
         showSteeringWheel();
         showTacho();
@@ -450,11 +450,11 @@ public class DriverHud extends BaseAppState {
     }
 
     /**
-     * Display the speedometer using the specified speed unit. TODO rename
+     * Display the speedometer using the specified speed unit.
      *
      * @param speedUnit (not null)
      */
-    private void showSpeedo(SpeedUnit speedUnit) {
+    private void showSpeedometer(SpeedUnit speedUnit) {
         hideSpeedometer();
 
         speedometer = new SpeedometerState(car, speedUnit);
