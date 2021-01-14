@@ -12,7 +12,6 @@ import com.jme3.scene.Node;
 import com.simsilica.lemur.Button;
 import com.simsilica.lemur.HAlignment;
 import com.simsilica.lemur.Insets3f;
-import com.simsilica.lemur.Panel;
 import com.simsilica.lemur.component.TbtQuadBackgroundComponent;
 import java.util.List;
 import java.util.logging.Logger;
@@ -109,11 +108,8 @@ abstract class AnimatedMenu extends BaseAppState {
     protected void initialize(Application app) {
         buttons = createItems();
 
-        for (Panel item : buttons) {
-            if (item instanceof Button) {
-                formatButton((Button) item);
-            }
-
+        for (Button item : buttons) {
+            formatButton((Button) item);
             node.attachChild(item);
 
             // find the widest button so we can move them all offscreen
@@ -124,7 +120,7 @@ abstract class AnimatedMenu extends BaseAppState {
         }
 
         int height = app.getCamera().getHeight() - 20;
-        for (Panel item : buttons) {
+        for (Button item : buttons) {
             // make all the buttons the same width
             Vector3f preferredSize = item.getPreferredSize();
             preferredSize.x = maxWidth;
@@ -183,7 +179,7 @@ abstract class AnimatedMenu extends BaseAppState {
             }
 
             float easeTime = FastMath.clamp(time - currentDelay, 0f, duration);
-            Panel item = buttons.get(i);
+            Button item = buttons.get(i);
 
             Vector3f translation = item.getLocalTranslation();
             if (in) {
