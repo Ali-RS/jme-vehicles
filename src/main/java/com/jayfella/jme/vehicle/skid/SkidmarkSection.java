@@ -10,16 +10,16 @@ import java.nio.FloatBuffer;
 import jme3utilities.math.MyVector3f;
 
 /**
- * A straight section within a continuous skidmark. TODO rename SkidmarkSection
+ * A straight section within a continuous skidmark.
  */
-class SkidMarkSection {
+class SkidmarkSection {
     // *************************************************************************
     // fields
 
     /**
      * previous section in the skid, or null if this is the first
      */
-    final private SkidMarkSection previous;
+    final private SkidmarkSection previous;
     /**
      * final opacity of this section (&ge;0, &lt;1)
      */
@@ -61,8 +61,8 @@ class SkidMarkSection {
      * @param halfWidth half of the width of the skidmark (in world units,
      * &ge;0)
      */
-    SkidMarkSection(Vector3f pavementLocation, Vector3f normal, float height,
-            float opacity, SkidMarkSection previous, float halfWidth) {
+    SkidmarkSection(Vector3f pavementLocation, Vector3f normal, float height,
+            float opacity, SkidmarkSection previous, float halfWidth) {
         assert opacity >= 0f : opacity;
         assert opacity <= 1f : opacity;
 

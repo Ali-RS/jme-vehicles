@@ -73,7 +73,7 @@ class WheelSkid {
     /**
      * list of sections
      */
-    final private List<SkidMarkSection> sections = new ArrayList<>(33);
+    final private List<SkidmarkSection> sections = new ArrayList<>(33);
 
     final private Wheel wheel;
     // *************************************************************************
@@ -144,7 +144,7 @@ class WheelSkid {
             opacity = 1f;
         }
 
-        SkidMarkSection previous;
+        SkidmarkSection previous;
         if (prevIndex == -1) {
             if (sections.size() > 1) {
                 Main.getWorld().getDecalManager().addCloneOf(geometry);
@@ -160,7 +160,7 @@ class WheelSkid {
             }
         }
 
-        SkidMarkSection section = new SkidMarkSection(pavementLocation, normal,
+        SkidmarkSection section = new SkidmarkSection(pavementLocation, normal,
                 height, opacity, previous, width / 2f);
         sections.add(section);
         int numSections = sections.size();
@@ -172,7 +172,7 @@ class WheelSkid {
              */
             mesh = createMesh(4 * meshSize);
             for (int i = 0; i < sectionIndex; ++i) {
-                SkidMarkSection s = sections.get(i);
+                SkidmarkSection s = sections.get(i);
                 s.appendToMesh(mesh, i);
             }
         } else {
