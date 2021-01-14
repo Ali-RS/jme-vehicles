@@ -63,9 +63,9 @@ class WheelSkid {
      */
     final private Geometry geometry;
     /**
-     * index of last section used, or -1 if none TODO rename lastSectionUsed
+     * index of last section used, or -1 if no section used
      */
-    private int lastSkid = -1;
+    private int lastSectionUsed = -1;
     /**
      * capacity of the Mesh in terms of sections
      */
@@ -107,14 +107,15 @@ class WheelSkid {
     void update(float tpf) {
         float skidFraction = wheel.skidFraction();
         if (skidFraction < SKID_FX_SPEED) {
-            lastSkid = -1;
+            lastSectionUsed = -1;
         } else {
             skidFraction = smoothstep(SKID_FX_SPEED, 1f, skidFraction);
             VehicleWheel vehicleWheel = wheel.getVehicleWheel();
             Vector3f normal = vehicleWheel.getCollisionNormal();
             assert normal.isUnitVector() : normal;
             Vector3f location = vehicleWheel.getCollisionLocation();
-            lastSkid = addSection(location, normal, skidFraction, lastSkid);
+            lastSectionUsed = addSection(location, normal, skidFraction,
+                    lastSectionUsed);
         }
     }
     // *************************************************************************
