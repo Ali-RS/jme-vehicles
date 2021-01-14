@@ -1,16 +1,11 @@
 package com.jayfella.jme.vehicle.gui.menu;
 
-import com.atr.jme.font.TrueTypeMesh;
-import com.atr.jme.font.asset.TrueTypeKeyMesh;
-import com.atr.jme.font.shape.TrueTypeNode;
-import com.atr.jme.font.util.Style;
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.gui.AudioHud;
 import com.jayfella.jme.vehicle.gui.CameraNameState;
 import com.jayfella.jme.vehicle.gui.CompassState;
 import com.jayfella.jme.vehicle.gui.PhysicsHud;
 import com.jme3.app.Application;
-import com.jme3.asset.AssetKey;
 import com.jme3.asset.AssetManager;
 import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
@@ -172,9 +167,9 @@ public class AttributionMenu extends AnimatedMenu {
     private void setupText() {
         Main application = Main.getApplication();
         AssetManager assetManager = application.getAssetManager();
-        BitmapFont bigFont 
+        BitmapFont bigFont
                 = assetManager.loadFont("/Interface/Fonts/Default.fnt");
-        
+
         BitmapText bitmapText = new BitmapText(bigFont);
         bitmapText.setText(attributionMessage);
         node.attachChild(bitmapText);
