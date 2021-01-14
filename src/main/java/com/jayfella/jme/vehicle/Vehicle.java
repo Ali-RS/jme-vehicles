@@ -38,7 +38,7 @@ import jme3utilities.math.MyVector3f;
 abstract public class Vehicle
         implements Loadable, PhysicsTickListener {
     // *************************************************************************
-    // constants and loggers TODO move constants to the SpeedUnit class
+    // constants and loggers
 
     /**
      * factor to convert km/hr to miles per hour
@@ -58,7 +58,6 @@ abstract public class Vehicle
 
     private AudioNode hornAudio;
     private AutomaticGearboxState gearboxState;
-    private boolean parkingBrakeApplied; // TODO remove this
     /**
      * engine model
      */
@@ -338,16 +337,6 @@ abstract public class Vehicle
         if (isRequested) {
             hornAudio.setVolume(volume);
         }
-    }
-
-    /**
-     * Alter whether the parking brake is applied.
-     *
-     * @param applied the desired state (true&rarr;applied, false&rarr; not
-     * applied)
-     */
-    public void setParkingBrakeApplied(boolean applied) {
-        this.parkingBrakeApplied = applied;
     }
 
     /**
