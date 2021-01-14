@@ -12,7 +12,7 @@ public class BasicAlloyWheel extends WheelModel {
     /**
      * message logger for this class
      */
-    final private static Logger logger
+    final private static Logger logger // TODO rename
             = Logger.getLogger(BasicAlloyWheel.class.getName());
     // *************************************************************************
     // constructors

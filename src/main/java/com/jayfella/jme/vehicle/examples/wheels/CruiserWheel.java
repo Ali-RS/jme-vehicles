@@ -5,6 +5,10 @@ import com.jme3.asset.AssetManager;
 import com.jme3.scene.Spatial;
 import java.util.logging.Logger;
 
+/**
+ * A WheelModel built around a wheel from Thomas Glenn Thorne's "Opel GT Retopo"
+ * model.
+ */
 public class CruiserWheel extends WheelModel {
     // *************************************************************************
     // constants and loggers
@@ -12,7 +16,7 @@ public class CruiserWheel extends WheelModel {
     /**
      * message logger for this class
      */
-    final private static Logger logger
+    final private static Logger logger // TODO rename
             = Logger.getLogger(CruiserWheel.class.getName());
     // *************************************************************************
     // constructors

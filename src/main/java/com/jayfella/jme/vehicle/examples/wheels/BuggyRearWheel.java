@@ -6,7 +6,7 @@ import com.jme3.scene.Spatial;
 import java.util.logging.Logger;
 
 /**
- * A WheelModel derived from the left rear wheel of oakar258's "HCR2 Buggy"
+ * A WheelModel built around the left rear wheel of oakar258's "HCR2 Buggy"
  * model.
  *
  * @author Stephen Gold sgold@sonic.net
@@ -18,7 +18,7 @@ public class BuggyRearWheel extends WheelModel {
     /**
      * message logger for this class
      */
-    final private static Logger logger
+    final private static Logger logger // TODO rename
             = Logger.getLogger(BuggyRearWheel.class.getName());
     // *************************************************************************
     // constructors

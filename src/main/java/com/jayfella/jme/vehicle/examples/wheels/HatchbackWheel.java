@@ -6,8 +6,8 @@ import com.jme3.scene.Spatial;
 import java.util.logging.Logger;
 
 /**
- * Encapsulate a single wheel from Daniel Zhabotinsky's "Modern Hatchback - Low
- * Poly" model.
+ * A WheelModel built around a wheel from Daniel Zhabotinsky's "Modern Hatchback
+ * - Low Poly" model.
  *
  * @author Stephen Gold sgold@sonic.net
  */
@@ -18,7 +18,7 @@ public class HatchbackWheel extends WheelModel {
     /**
      * message logger for this class
      */
-    final private static Logger logger
+    final private static Logger logger // TODO rename
             = Logger.getLogger(HatchbackWheel.class.getName());
     // *************************************************************************
     // constructors
