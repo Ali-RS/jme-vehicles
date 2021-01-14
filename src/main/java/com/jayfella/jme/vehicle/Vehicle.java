@@ -18,6 +18,7 @@ import com.jme3.bullet.collision.PhysicsRayTestResult;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.objects.VehicleWheel;
+import com.jme3.bullet.objects.infos.RigidBodyMotionState;
 import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.math.Matrix3f;
 import com.jme3.math.Quaternion;
@@ -57,7 +58,7 @@ abstract public class Vehicle
 
     private AudioNode hornAudio;
     private AutomaticGearboxState gearboxState;
-    private boolean parkingBrakeApplied;
+    private boolean parkingBrakeApplied; // TODO remove this
     /**
      * engine model
      */
@@ -72,6 +73,10 @@ abstract public class Vehicle
      */
     private float chassisDamping;
     private GearBox gearBox;
+    /**
+     * temporary storage for the vehicle's orientation
+     */
+    final private static Matrix3f tmpOrientation = new Matrix3f();
     final private Node node;
     /**
      * sound produced when the Engine is running, or null for silence
@@ -378,12 +383,15 @@ abstract public class Vehicle
      * storeResult or a new instance)
      */
     public Vector3f targetLocation(float bias, Vector3f storeResult) {
-        Vector3f offset = targetOffset();
-        offset.z *= bias;
-        Matrix3f orientation = vehicleControl.getPhysicsRotationMatrix(null);
-        orientation.mult(offset, offset);
+        Vector3f result = (storeResult == null) ? new Vector3f() : storeResult;
+        RigidBodyMotionState motion = vehicleControl.getMotionState();
 
-        Vector3f result = vehicleControl.getPhysicsLocation(storeResult);
+        motion.getOrientation(tmpOrientation);
+        Vector3f offset = targetOffset(); // TODO garbage
+        offset.z *= bias;
+        tmpOrientation.mult(offset, offset);
+
+        motion.getLocation(result);
         result.addLocal(offset);
 
         return result;
