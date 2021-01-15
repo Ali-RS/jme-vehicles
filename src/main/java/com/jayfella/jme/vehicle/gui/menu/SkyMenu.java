@@ -2,6 +2,7 @@ package com.jayfella.jme.vehicle.gui.menu;
 
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Sky;
+import com.jayfella.jme.vehicle.examples.skies.AnimatedDaySky;
 import com.jayfella.jme.vehicle.examples.skies.AnimatedNightSky;
 import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
 import com.simsilica.lemur.Button;
@@ -33,9 +34,13 @@ class SkyMenu extends AnimatedMenu {
      */
     @Override
     protected List<Button> createItems() {
-        List<Button> result = new ArrayList<>(3);
+        List<Button> result = new ArrayList<>(4);
 
-        Button button = new Button("Animated Night");
+        Button button = new Button("Animated Day");
+        button.addClickCommands(source -> setSky(new AnimatedDaySky()));
+        result.add(button);
+
+        button = new Button("Animated Night");
         button.addClickCommands(source -> setSky(new AnimatedNightSky()));
         result.add(button);
 

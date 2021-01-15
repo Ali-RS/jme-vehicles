@@ -12,6 +12,7 @@ Based on "Lunar libration with phase Oct 2007":
 
 Derived files (also licensed PD-self):
 * probe.j3o
+* probe-day.j3o
 * waxing-gibbous.png
 
 Added files (also licensed PD-self):
