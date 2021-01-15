@@ -2,6 +2,7 @@ package com.jayfella.jme.vehicle.examples.skies;
 
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Sky;
+import com.jme3.app.LegacyApplication;
 import com.jme3.asset.AssetManager;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
@@ -17,7 +18,7 @@ import jme3utilities.sky.StarsOption;
 import jme3utilities.sky.Updater;
 
 /**
- * A sample Sky using SkyControl.
+ * An example of a nighttime sky using SkyControl.
  *
  * @author Stephen Gold sgold@sonic.net
  */
@@ -50,7 +51,30 @@ public class AnimatedNightSky extends Sky {
     // new methods exposed
 
     /**
-     * Add this loaded Sky to the specified scene-graph node.
+     * Create and configure a SkyControl for this example.
+     *
+     * @param application (not null)
+     * @return a new instance
+     */
+    public static SkyControl createSkyControl(LegacyApplication application) {
+        AssetManager assetManager = application.getAssetManager();
+        Camera camera = application.getCamera();
+        float cloudFlattening = 0.8f;
+        boolean bottomDome = true;
+        SkyControl result = new SkyControl(assetManager, camera,
+                cloudFlattening, StarsOption.Cube, bottomDome);
+        result.setCloudiness(0.8f);
+        result.setCloudsYOffset(0.4f);
+        result.setPhase(LunarPhase.WAXING_GIBBOUS);
+        result.setStarMaps("equator16m");
+
+        return result;
+    }
+    // *************************************************************************
+    // Sky methods
+
+    /**
+     * Attach this loaded Sky to the specified scene-graph node.
      *
      * @param parent where to attach (not null)
      */
@@ -91,19 +115,11 @@ public class AnimatedNightSky extends Sky {
     public void load() {
         assert loadedCgm == null : "The model is already loaded.";
 
-        Main application = Main.getApplication();
+        LegacyApplication application = Main.getApplication();
         AssetManager assetManager = application.getAssetManager();
         probe = (LightProbe) assetManager.loadAsset(lightProbeAssetPath);
 
-        Camera camera = application.getCamera();
-        float cloudFlattening = 0.8f;
-        boolean bottomDome = true;
-        skyControl = new SkyControl(assetManager, camera, cloudFlattening,
-                StarsOption.Cube, bottomDome);
-        skyControl.setCloudiness(0.8f);
-        skyControl.setCloudsYOffset(0.4f);
-        skyControl.setPhase(LunarPhase.WAXING_GIBBOUS);
-        skyControl.setStarMaps("equator16m");
+        skyControl = createSkyControl(application);
 
         loadedCgm = new Node();
         loadedCgm.addControl(skyControl);

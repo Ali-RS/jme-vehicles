@@ -11,12 +11,10 @@ import com.jme3.light.LightProbe;
 import com.jme3.math.Vector3f;
 import java.io.File;
 import java.io.IOException;
-import jme3utilities.sky.LunarPhase;
 import jme3utilities.sky.SkyControl;
-import jme3utilities.sky.StarsOption;
 
 /**
- * A SimpleApplication to generate a LightProbe from a configured SkyControl.
+ * A SimpleApplication to generate a LightProbe for AnimatedNightSky.
  *
  * @author Stephen Gold sgold@sonic.net
  */
@@ -40,14 +38,7 @@ public class MakeNightProbe extends SimpleApplication {
     public void simpleInitApp() {
         stateManager.attach(envCam);
 
-        float cloudFlattening = 0.8f;
-        boolean bottomDome = true;
-        SkyControl skyControl = new SkyControl(assetManager, cam,
-                cloudFlattening, StarsOption.Cube, bottomDome);
-        skyControl.setCloudiness(0.8f);
-        skyControl.setCloudsYOffset(0.4f);
-        skyControl.setPhase(LunarPhase.WAXING_GIBBOUS);
-        skyControl.setStarMaps("equator16m");
+        SkyControl skyControl = AnimatedNightSky.createSkyControl(this);
         /*
          * Disable cloud motion for reproducibility.
          */
