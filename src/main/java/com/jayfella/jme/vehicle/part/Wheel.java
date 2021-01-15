@@ -409,6 +409,9 @@ public class Wheel {
             result = 0f; // no supporting surface
         } else {
             result = 1f - vehicleWheel.getSkidInfo();
+            if (result > 1f) {
+                result = 1f;
+            }
         }
 
         assert result >= 0f && result <= 1f : result;
@@ -454,6 +457,9 @@ public class Wheel {
             result = 0f; // no supporting surface
         } else {
             result = vehicleWheel.getSkidInfo();
+            if (result < 0f) {
+                result = 0f;
+            }
         }
 
         assert result >= 0f && result <= 1f : result;
