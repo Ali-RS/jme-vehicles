@@ -5,6 +5,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.asset.TextureKey;
 import com.jme3.bounding.BoundingSphere;
 import com.jme3.bounding.BoundingVolume;
+import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
@@ -34,6 +35,10 @@ abstract public class Sky implements Loadable {
     // *************************************************************************
     // fields
 
+    /**
+     * modulate the color/intensity of light probes
+     */
+    private static AmbientLight ambientLight;
     /**
      * main directional light
      */
@@ -81,6 +86,7 @@ abstract public class Sky implements Loadable {
      * Initialize the static fields. Can only be invoked once.
      */
     static void initialize() {
+        assert ambientLight == null : ambientLight;
         assert directionalLight == null : directionalLight;
         Main application = Main.getApplication();
         assert application.getViewPort().getProcessors().isEmpty();
@@ -90,6 +96,11 @@ abstract public class Sky implements Loadable {
         assert rootNode.getLocalLightList().size() == 0;
 
         rootNode.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
+        /*
+         * Add an AmbientLight.
+         */
+        ambientLight = new AmbientLight();
+        rootNode.addLight(ambientLight);
         /*
          * Add a DirectionalLight.
          */
@@ -172,6 +183,17 @@ abstract public class Sky implements Loadable {
         result.setShadowMode(RenderQueue.ShadowMode.Off);
 
         return result;
+    }
+
+    /**
+     * Access the ambient light, used to modulate the color/intensity of light
+     * probes.
+     *
+     * @return the pre-existing instance (not null)
+     */
+    final protected AmbientLight getAmbientLight() {
+        assert ambientLight != null;
+        return ambientLight;
     }
 
     /**

@@ -4,6 +4,7 @@ import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Sky;
 import com.jayfella.jme.vehicle.World;
 import com.jme3.asset.AssetManager;
+import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.light.LightProbe;
 import com.jme3.math.ColorRGBA;
@@ -52,7 +53,12 @@ public class QuarrySky extends Sky {
     public void attachToScene(Node parent) {
         super.attachToScene(parent);
         /*
-         * Configure the DirectionalLight that was added to the scene by Sky.initialize().
+         * Configure the AmbientLight that was added by Sky.initialize().
+         */
+        AmbientLight ambientLight = getAmbientLight();
+        ambientLight.setColor(ColorRGBA.White);
+        /*
+         * Configure the DirectionalLight that was added by Sky.initialize().
          */
         World world = Main.getWorld();
         float intensity = world.directLightIntensity();

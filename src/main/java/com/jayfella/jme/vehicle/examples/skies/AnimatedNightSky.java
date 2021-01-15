@@ -3,8 +3,10 @@ package com.jayfella.jme.vehicle.examples.skies;
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Sky;
 import com.jme3.asset.AssetManager;
+import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.light.LightProbe;
+import com.jme3.math.ColorRGBA;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 import com.jme3.shadow.DirectionalLightShadowFilter;
@@ -56,7 +58,14 @@ public class AnimatedNightSky extends Sky {
     public void attachToScene(Node parent) {
         super.attachToScene(parent);
         parent.addLight(probe);
-
+        /*
+         * Configure the AmbientLight that was added by Sky.initialize().
+         */
+        AmbientLight ambientLight = getAmbientLight();
+        ambientLight.setColor(ColorRGBA.White);
+        /*
+         * Configure the DirectionalLight that was added by Sky.initialize().
+         */
         Updater updater = skyControl.getUpdater();
         DirectionalLight mainLight = getDirectionalLight();
         updater.setMainLight(mainLight);
