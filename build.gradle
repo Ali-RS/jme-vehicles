@@ -30,7 +30,6 @@ jar.manifest.attributes('Main-Class': mainClassName)
 repositories {
     //mavenLocal()
     jcenter()
-    maven { url 'https://dl.bintray.com/stephengold/com.github.stephengold' } // for LemurPower
 }
 
 project.ext {
