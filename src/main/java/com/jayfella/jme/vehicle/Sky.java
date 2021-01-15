@@ -10,6 +10,7 @@ import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
+import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
@@ -17,6 +18,7 @@ import com.jme3.scene.Spatial;
 import com.jme3.shadow.DirectionalLightShadowFilter;
 import com.jme3.texture.Texture;
 import java.util.logging.Logger;
+import jme3utilities.Heart;
 import jme3utilities.MyMesh;
 import jme3utilities.mesh.Octasphere;
 
@@ -89,7 +91,8 @@ abstract public class Sky implements Loadable {
         assert ambientLight == null : ambientLight;
         assert directionalLight == null : directionalLight;
         Main application = Main.getApplication();
-        assert application.getViewPort().getProcessors().isEmpty();
+        ViewPort viewPort = application.getViewPort();
+        assert viewPort.getProcessors().isEmpty();
         Node rootNode = application.getRootNode();
         assert rootNode.getChildren().isEmpty();
         assert rootNode.getNumControls() == 0;
@@ -107,17 +110,14 @@ abstract public class Sky implements Loadable {
         directionalLight = new DirectionalLight();
         rootNode.addLight(directionalLight);
         /*
-         * Add a FilterPostProcessor.
+         * Access the existing FilterPostProcessor or create a new one.
          */
-        AssetManager assetManager = Main.getApplication().getAssetManager();
-        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
-        application.getViewPort().addProcessor(fpp);
+        AssetManager assetManager = application.getAssetManager();
         int numSamples = application.getContext().getSettings().getSamples();
-        if (numSamples > 0) {
-            fpp.setNumSamples(numSamples);
-        }
+        FilterPostProcessor fpp
+                = Heart.getFpp(viewPort, assetManager, numSamples);
         /*
-         * Add a DirectionalLightShadowFilter.
+         * Add shadows.
          */
         shadowFilter = new DirectionalLightShadowFilter(assetManager, 4_096, 4);
         fpp.addFilter(shadowFilter);
