@@ -23,10 +23,9 @@ import jme3utilities.math.MyMath;
 import jme3utilities.math.MyVector3f;
 
 /**
- * A VehicleCamera to control a Camera that orbits a target vehicle, jumping
- * forward as needed to maintain a clear line of sight in the vehicle's
- * CollisionSpace. Two chasing behaviors are implemented: FreeOrbit and
- * StrictChase.
+ * A CameraController to orbit a target vehicle, jumping forward as needed to
+ * maintain a clear line of sight in the vehicle's CollisionSpace. Two chasing
+ * behaviors are implemented: FreeOrbit and StrictChase.
  *
  * @author Stephen Gold sgold@sonic.net
  */
