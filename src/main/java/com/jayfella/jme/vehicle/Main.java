@@ -266,11 +266,9 @@ public class Main extends SimpleApplication {
     @Override
     public void simpleUpdate(float tpf) {
         AppState loader = stateManager.getState(LemurLoadingState.class);
-        if (loader != null) {
-            if (!loader.isEnabled()) {
-                getStateManager().detach(loader);
-                doneLoading();
-            }
+        if (loader != null && !loader.isEnabled()) {
+            getStateManager().detach(loader);
+            doneLoading();
         }
     }
     // *************************************************************************
