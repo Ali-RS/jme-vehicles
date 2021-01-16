@@ -46,7 +46,7 @@ abstract public class World implements Loadable {
         PhysicsSpace physicsSpace = bulletAppState.getPhysicsSpace();
         RigidBodyControl rigidBodyControl
                 = loadedCgm.getControl(RigidBodyControl.class);
-        physicsSpace.add(rigidBodyControl);
+        rigidBodyControl.setPhysicsSpace(physicsSpace);
     }
 
     /**

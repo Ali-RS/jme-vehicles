@@ -138,7 +138,7 @@ abstract public class Vehicle
 
         BulletAppState bulletAppState = Main.findAppState(BulletAppState.class);
         PhysicsSpace physicsSpace = bulletAppState.getPhysicsSpace();
-        physicsSpace.add(vehicleControl);
+        vehicleControl.setPhysicsSpace(physicsSpace);
         physicsSpace.addTickListener(this);
     }
 
