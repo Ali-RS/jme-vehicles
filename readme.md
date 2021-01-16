@@ -12,6 +12,7 @@
 + [Wish list](#wishlist)
 + [Licensing](#licensing)
 + [Conventions](#conventions)
++ [External links](#links)
 + [Acknowledgments](#acks)
 
 <a name="features"/>
@@ -266,6 +267,16 @@ The world (and physics-space) units of distance are *meters*.
 
 [Jump to table of contents](#toc)
 
+
+<a name="links"/>
+
+## External links
+
++ January 2021 [walkthru video](https://www.youtube.com/watch?v=RnfEhB3xOys)
+
+[Jump to table of contents](#toc)
+
+
 <a name="acks"/>
 
 ## Acknowledgments
@@ -306,7 +317,7 @@ The world (and physics-space) units of distance are *meters*.
 
 ### Hosting
 
-I am grateful to [GitHub] and Imgur
+I am grateful to [GitHub], Imgur, and YouTube
 for providing free hosting for this project
 and many other open-source projects.
 
