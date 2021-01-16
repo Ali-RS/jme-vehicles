@@ -66,7 +66,7 @@ public class MainMenu extends AnimatedMenu {
         ));
         result.add(button);
 
-        button = new Button("Exit Game");
+        button = new Button("Quit the Demo");
         button.addClickCommands(source -> animateOut(()
                 -> application.stop()
         ));
