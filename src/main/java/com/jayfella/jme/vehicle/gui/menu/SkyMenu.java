@@ -4,6 +4,7 @@ import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Sky;
 import com.jayfella.jme.vehicle.examples.skies.AnimatedDaySky;
 import com.jayfella.jme.vehicle.examples.skies.AnimatedNightSky;
+import com.jayfella.jme.vehicle.examples.skies.PurpleNebulaSky;
 import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
 import com.simsilica.lemur.Button;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ class SkyMenu extends AnimatedMenu {
      */
     @Override
     protected List<Button> createItems() {
-        List<Button> result = new ArrayList<>(4);
+        List<Button> result = new ArrayList<>(5);
 
         Button button = new Button("Animated Day");
         button.addClickCommands(source -> setSky(new AnimatedDaySky()));
@@ -42,6 +43,10 @@ class SkyMenu extends AnimatedMenu {
 
         button = new Button("Animated Night");
         button.addClickCommands(source -> setSky(new AnimatedNightSky()));
+        result.add(button);
+
+        button = new Button("Purple Nebula");
+        button.addClickCommands(source -> setSky(new PurpleNebulaSky()));
         result.add(button);
 
         button = new Button("Quarry Day");
