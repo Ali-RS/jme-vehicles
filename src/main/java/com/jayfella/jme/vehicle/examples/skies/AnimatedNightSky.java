@@ -81,7 +81,6 @@ public class AnimatedNightSky extends Sky {
     @Override
     public void attachToScene(Node parent) {
         super.attachToScene(parent);
-        parent.addLight(probe);
         /*
          * Configure the AmbientLight that was added by Sky.initialize().
          */
@@ -93,6 +92,13 @@ public class AnimatedNightSky extends Sky {
         Updater updater = skyControl.getUpdater();
         DirectionalLight mainLight = getDirectionalLight();
         updater.setMainLight(mainLight);
+        /*
+         * Add the LightProbe.
+         */
+        parent.addLight(probe);
+        /*
+         * Configure the shadow filter that was added by Sky.initialize().
+         */
         DirectionalLightShadowFilter shadowFilter = getShadowFilter();
         updater.addShadowFilter(shadowFilter);
     }

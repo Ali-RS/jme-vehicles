@@ -99,13 +99,15 @@ public class AnimatedDaySky extends Sky {
         updater.setMainLight(mainLight);
         float intensity = Main.getWorld().directLightIntensity();
         updater.setMainMultiplier(1.5f * intensity);
-
-        DirectionalLightShadowFilter shadowFilter = getShadowFilter();
-        updater.addShadowFilter(shadowFilter);
         /*
          * Add the LightProbe.
          */
         parent.addLight(probe);
+        /*
+         * Configure the shadow filter that was added by Sky.initialize().
+         */
+        DirectionalLightShadowFilter shadowFilter = getShadowFilter();
+        updater.addShadowFilter(shadowFilter);
     }
 
     /**
