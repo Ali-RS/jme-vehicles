@@ -1,7 +1,7 @@
 package com.jayfella.jme.vehicle.view;
 
 /**
- * Enumerate chase options for camera controllers.
+ * Enumerate chase-behavior options for ChaseCamera.
  *
  * @author Stephen Gold sgold@sonic.net
  */
@@ -10,7 +10,7 @@ public enum ChaseOption {
     // values
 
     /**
-     * Ignore the direction the target vehicle is facing.
+     * Ignore the target vehicle's forward direction.
      *
      * Freely orbit the target, including left/right, based on user input.
      *
@@ -24,5 +24,5 @@ public enum ChaseOption {
      *
      * If the target moves, maintain a constant distance and elevation from it.
      */
-    StrictChase;
+    StrictFollow;
 }

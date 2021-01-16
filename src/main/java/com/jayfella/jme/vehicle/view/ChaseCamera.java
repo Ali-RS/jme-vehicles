@@ -340,7 +340,7 @@ public class ChaseCamera
             float factor = range / offset.length();
             offset.multLocal(factor);
         }
-        if (chaseOption == ChaseOption.StrictChase) {
+        if (chaseOption == ChaseOption.StrictFollow) {
             yawAnalogSum = 0f;
         }
         if (pitchAnalogSum != 0f || yawAnalogSum != 0f) {
@@ -374,7 +374,7 @@ public class ChaseCamera
                 tmpLook.set(tmpProj);
             }
         }
-        if (chaseOption == ChaseOption.StrictChase) {
+        if (chaseOption == ChaseOption.StrictFollow) {
             /*
              * Rotate the "look" direction to stay
              * directly behind the target Vehicle.

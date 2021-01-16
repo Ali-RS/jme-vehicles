@@ -289,7 +289,7 @@ public class DrivingInputMode extends InputMode {
                 float rearBias = 1f;
                 FilterAll obstructionFilter = new FilterAll(true);
                 ChaseCamera chaseCamera = new ChaseCamera(camera, signalTracker,
-                        ChaseOption.StrictChase, rearBias, obstructionFilter);
+                        ChaseOption.StrictFollow, rearBias, obstructionFilter);
                 activeCamera = chaseCamera;
                 for (CameraSignal function : CameraSignal.values()) {
                     String signalName = function.toString();

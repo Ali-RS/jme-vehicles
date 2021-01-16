@@ -189,7 +189,7 @@ public class CameraInputMode extends InputMode {
     private void resetCameraOffset() {
         if (activeController instanceof ChaseCamera) {
             ChaseCamera chaseCam = (ChaseCamera) activeController;
-            if (chaseCam.getChaseOption() == ChaseOption.StrictChase) {
+            if (chaseCam.getChaseOption() == ChaseOption.StrictFollow) {
                 /*
                  * Locate the camera 20 wu behind and 5 wu above
                  * the target vehicle.
