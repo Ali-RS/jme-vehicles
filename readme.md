@@ -157,14 +157,16 @@ Additional controls when the orbit camera is active:
 
 ## Wish list
 
-This project is a work in progress.  Some ideas for future development:
+More Advanced Vehicles is a work in progress.  Some ideas for future development:
 
 + More alternatives for:
-  + Environments, such as: infinite world, off-road, parking garage, parking lot, showroom, and urban grid
+  + Worlds, such as: block world, drag strip, infinite world, off-road, parking garage, parking lot, showroom, and urban grid
   + Surface conditions, such as: wet, dirt, and grass
-  + Propulsion, such as:  jets and propellers
+  + Propulsion, such as: jets and propellers
+  + Skies, such as TehLeo's SevenSky
+  + User interface, such as: joystick and NiftyGUI
   + Vehicle dynamics, such as that used in RallyGame
-  + Vehicle types, such as: buses, tanks, hovertanks, motorcycles, motorized tricycles, aerial trams, speedboats, airplanes, and helicopters
+  + Vehicle types, such as: buses, tanks, golf carts, hovertanks, motorcycles, motorized tricycles, palanquins, rickshaws, aerial trams, snowmobiles, speedboats, airplanes, and helicopters
   + Viewpoints, such as: FlyCam and plan view
 + More obstacles:
   + Other vehicles (parked or AI-controlled)
@@ -173,7 +175,8 @@ This project is a work in progress.  Some ideas for future development:
 + More vehicle equipment:
   + Anti-lock braking
   + Artificial horizon
-  + Clock
+  + Brake lights and turn signals
+  + Clock/stopwatch/timer
   + Cruise control
   + Fuel gauge
   + Headlamps
@@ -184,6 +187,7 @@ This project is a work in progress.  Some ideas for future development:
   + Odometer
   + Oil-temperature gauge
   + Operable doors, hood, and trunk
+  + Passengers
   + Sirens
   + Speed limiter
   + Starter motor
@@ -201,7 +205,7 @@ This project is a work in progress.  Some ideas for future development:
 + More details:
   + Scoring for stunts
   + Simulate damage, brake wear, and tire wear
-  + Sound effects for crashes and squealing tires
+  + Sound effects for crashes, squealing tires, and wind
 
 See also
 [the project's issue tracker](https://github.com/stephengold/jme-vehicles/issues).
