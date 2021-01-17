@@ -230,6 +230,8 @@ public class DrivingInputMode extends InputMode {
      */
     @Override
     public void update(float tpf) {
+        super.update(tpf);
+
         updateTurn(tpf);
         updateBrakeAndAccelerate();
 

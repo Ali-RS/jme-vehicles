@@ -78,10 +78,10 @@ public class SkidMarksState extends BaseAppState {
      * shutdown if the state is still attached. onDisable() is called before
      * this cleanup() method if the state is enabled at the time of cleanup.
      *
-     * @param app the application instance (not null)
+     * @param application the application instance (not null)
      */
     @Override
-    protected void cleanup(Application app) {
+    protected void cleanup(Application application) {
         // do nothing
     }
 
@@ -134,6 +134,8 @@ public class SkidMarksState extends BaseAppState {
      */
     @Override
     public void update(float tpf) {
+        super.update(tpf);
+
         for (WheelSkid skid : skids) {
             Geometry geometry = skid.getGeometry();
 

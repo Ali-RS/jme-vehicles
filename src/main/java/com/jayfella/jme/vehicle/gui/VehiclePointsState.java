@@ -84,20 +84,20 @@ public class VehiclePointsState extends BaseAppState {
      * shutdown if the state is still attached. onDisable() is called before
      * this cleanup() method if the state is enabled at the time of cleanup.
      *
-     * @param app the application instance (not null)
+     * @param application the application instance (not null)
      */
     @Override
-    protected void cleanup(Application app) {
+    protected void cleanup(Application application) {
         // do nothing
     }
 
     /**
      * Callback invoked after this AppState is attached but before onEnable().
      *
-     * @param app the application instance (not null)
+     * @param application the application instance (not null)
      */
     @Override
-    protected void initialize(Application app) {
+    protected void initialize(Application application) {
         // do nothing
     }
 

@@ -81,22 +81,22 @@ public class SpeedometerState extends BaseAppState {
      * shutdown if the state is still attached. onDisable() is called before
      * this cleanup() method if the state is enabled at the time of cleanup.
      *
-     * @param app the application instance (not null)
+     * @param application the application instance (not null)
      */
     @Override
-    protected void cleanup(Application app) {
+    protected void cleanup(Application application) {
         // do nothing
     }
 
     /**
      * Callback invoked after this AppState is attached but before onEnable().
      *
-     * @param app the application instance (not null)
+     * @param application the application instance (not null)
      */
     @Override
-    protected void initialize(Application app) {
-        guiNode = ((SimpleApplication) app).getGuiNode();
-        AssetManager assetManager = app.getAssetManager();
+    protected void initialize(Application application) {
+        guiNode = ((SimpleApplication) application).getGuiNode();
+        AssetManager assetManager = application.getAssetManager();
 
         node.attachChild(needleNode);
         needleNode.setLocalTranslation(100f, 100f, 1f);
@@ -130,7 +130,7 @@ public class SpeedometerState extends BaseAppState {
         speedLabel.setLocalTranslation(100f - labelWidth / 2, 30f, 1f);
 
         node.setLocalTranslation(
-                app.getCamera().getWidth() - 200f - 20f,
+                application.getCamera().getWidth() - 200f - 20f,
                 20f,
                 0f
         );
@@ -171,6 +171,8 @@ public class SpeedometerState extends BaseAppState {
      */
     @Override
     public void update(float tpf) {
+        super.update(tpf);
+        
         float speed = vehicle.getSpeed(speedUnit);
         float maxSpeed = vehicle.getGearBox().maxForwardSpeed(speedUnit);
         float speedFraction = speed / maxSpeed;

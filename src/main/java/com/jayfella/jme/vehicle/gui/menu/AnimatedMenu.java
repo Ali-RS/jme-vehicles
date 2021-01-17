@@ -94,18 +94,25 @@ abstract class AnimatedMenu extends BaseAppState {
     // *************************************************************************
     // BaseAppState methods
 
+    /**
+     * Callback invoked after this AppState is detached or during application
+     * shutdown if the state is still attached. onDisable() is called before
+     * this cleanup() method if the state is enabled at the time of cleanup.
+     *
+     * @param application the application instance (not null)
+     */
     @Override
-    protected void cleanup(Application app) {
+    protected void cleanup(Application application) {
         // do nothing
     }
 
     /**
      * Callback invoked after this menu is attached but before onEnable().
      *
-     * @param app the application instance (not null)
+     * @param application the application instance (not null)
      */
     @Override
-    protected void initialize(Application app) {
+    protected void initialize(Application application) {
         buttons = createItems();
 
         for (Button button : buttons) {
@@ -119,7 +126,7 @@ abstract class AnimatedMenu extends BaseAppState {
             }
         }
 
-        int height = app.getCamera().getHeight() - 20;
+        int height = application.getCamera().getHeight() - 20;
         for (Button button : buttons) {
             // make all the buttons the same width
             Vector3f preferredSize = button.getPreferredSize();
@@ -157,6 +164,7 @@ abstract class AnimatedMenu extends BaseAppState {
      */
     @Override
     public void update(float tpf) {
+        super.update(tpf);
         if (allComplete) {
             return;
         }

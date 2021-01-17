@@ -14,10 +14,10 @@ public class DebugTabState extends BaseAppState {
     /**
      * Callback invoked after this AppState is attached but before onEnable().
      *
-     * @param app the application instance (not null)
+     * @param application the application instance (not null)
      */
     @Override
-    protected void initialize(Application app) {
+    protected void initialize(Application application) {
         Container container = new Container();
 
         BulletAppState bulletAppState = getState(BulletAppState.class);
@@ -41,8 +41,8 @@ public class DebugTabState extends BaseAppState {
         tabbedPanel.addTab("Debug", container);
 
         tabbedPanel.setLocalTranslation(
-                app.getCamera().getWidth() - 420,
-                app.getCamera().getHeight() - 60,
+                application.getCamera().getWidth() - 420,
+                application.getCamera().getHeight() - 60,
                 0
         );
     }
@@ -67,15 +67,24 @@ public class DebugTabState extends BaseAppState {
         this.displayStats = displayStats;
         getState(StatsAppState.class).setDisplayStatView(displayStats);
     }
+    // *************************************************************************
+    // BaseAppState methods
 
+    /**
+     * Callback invoked after this AppState is detached or during application
+     * shutdown if the state is still attached. onDisable() is called before
+     * this cleanup() method if the state is enabled at the time of cleanup.
+     *
+     * @param application the application instance (not null)
+     */
     @Override
-    protected void cleanup(Application app) {
+    protected void cleanup(Application application) {
         // do nothing
     }
 
     /**
      * Callback invoked whenever this AppState becomes both attached and
-     * enabled.
+     * enabled. TODO re-order methods
      */
     @Override
     protected void onEnable() {

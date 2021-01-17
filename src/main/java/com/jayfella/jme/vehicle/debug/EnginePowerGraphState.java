@@ -12,36 +12,43 @@ import com.jme3.scene.Node;
 import com.jme3.scene.shape.Quad;
 
 public class EnginePowerGraphState extends BaseAppState {
+    // *************************************************************************
+    // fields
 
     final private Vehicle vehicle;
     private Geometry line;
 
     final private Node node = new Node("Engine Graph Node");
+    // *************************************************************************
+    // constructors
 
     public EnginePowerGraphState(Vehicle vehicle) {
         this.vehicle = vehicle;
     }
 
-    final private static int width = 300;
+    final private static int width = 300; // TODO re-order
     final private static int height = 100;
+    // *************************************************************************
+    // BaseAppState methods
 
     /**
      * Callback invoked after this AppState is attached but before onEnable().
+     * TODO re-order
      *
-     * @param app the application instance (not null)
+     * @param application the application instance (not null)
      */
     @Override
-    protected void initialize(Application app) {
+    protected void initialize(Application application) {
         EnginePowerGraph enginePowerGraph = new EnginePowerGraph(
-                app.getAssetManager(), vehicle.getEngine(), width, height);
+                application.getAssetManager(), vehicle.getEngine(), width, height);
         node.attachChild(enginePowerGraph);
 
         line = new Geometry("", new Quad(1, height));
-        line.setMaterial(new Material(app.getAssetManager(), Materials.UNSHADED));
+        line.setMaterial(new Material(application.getAssetManager(), Materials.UNSHADED));
         line.getMaterial().setColor("Color", ColorRGBA.Green);
         node.attachChild(line);
 
-        node.setLocalTranslation(0, app.getCamera().getHeight() - height, 0);
+        node.setLocalTranslation(0, application.getCamera().getHeight() - height, 0);
     }
 
     /**
@@ -52,14 +59,23 @@ public class EnginePowerGraphState extends BaseAppState {
      */
     @Override
     public void update(float tpf) {
+        super.update(tpf);
+
         // float revs = vehicle.getEngine().getRevs() * vehicle.getEngine().getMaxRevs();
         float posX = vehicle.getEngine().getRpmFraction() * width;
         // float posY = getApplication().getCamera().getHeight() - height;
         line.setLocalTranslation(posX, 0, 2);
     }
 
+    /**
+     * Callback invoked after this AppState is detached or during application
+     * shutdown if the state is still attached. onDisable() is called before
+     * this cleanup() method if the state is enabled at the time of cleanup.
+     *
+     * @param application the application instance (not null)
+     */
     @Override
-    protected void cleanup(Application app) {
+    protected void cleanup(Application application) {
         // do nothing
     }
 

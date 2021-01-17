@@ -126,27 +126,27 @@ public class PhysicsHud extends BaseAppState {
      * shutdown if the state is still attached. onDisable() is called before
      * this cleanup() method if the state is enabled at the time of cleanup.
      *
-     * @param app the application instance (not null)
+     * @param application the application instance (not null)
      */
     @Override
-    protected void cleanup(Application app) {
+    protected void cleanup(Application application) {
         // do nothing
     }
 
     /**
      * Callback invoked after this AppState is attached but before onEnable().
      *
-     * @param app the application instance (not null)
+     * @param application the application instance (not null)
      */
     @Override
-    protected void initialize(Application app) {
-        Camera camera = app.getCamera();
+    protected void initialize(Application application) {
+        Camera camera = application.getCamera();
         viewPortHeight = camera.getHeight();
         viewPortWidth = camera.getWidth();
         /*
          * pre-load unshaded materials for buttons
          */
-        AssetManager manager = app.getAssetManager();
+        AssetManager manager = application.getAssetManager();
         Texture texture = manager.loadTexture("/Textures/Georg/pause.png");
         pauseMaterial = MyAsset.createUnshadedMaterial(manager, texture);
 

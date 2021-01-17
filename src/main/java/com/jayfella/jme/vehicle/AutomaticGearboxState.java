@@ -28,7 +28,14 @@ public class AutomaticGearboxState extends BaseAppState {
     private GearBox gearBox;
     private int wheelCount;
     final private Vehicle vehicle;
+    // *************************************************************************
+    // constructors
 
+    /**
+     * Instantiate an enabled AppState for the specified Vehicle.
+     *
+     * @param vehicle (alias created)
+     */
     public AutomaticGearboxState(Vehicle vehicle) {
         this.vehicle = vehicle;
 
@@ -36,19 +43,28 @@ public class AutomaticGearboxState extends BaseAppState {
             car = (Car) vehicle;
         }
     }
+    // *************************************************************************
+    // BaseAppState methods
 
+    /**
+     * Callback invoked after this AppState is detached or during application
+     * shutdown if the state is still attached. onDisable() is called before
+     * this cleanup() method if the state is enabled at the time of cleanup.
+     *
+     * @param application the application instance (not null)
+     */
     @Override
-    protected void cleanup(Application app) {
+    protected void cleanup(Application application) {
         // do nothing
     }
 
     /**
      * Callback invoked after this AppState is attached but before onEnable().
      *
-     * @param app the application instance (not null)
+     * @param application the application instance (not null)
      */
     @Override
-    protected void initialize(Application app) {
+    protected void initialize(Application application) {
         wheelCount = car.countWheels();
     }
 
@@ -78,6 +94,8 @@ public class AutomaticGearboxState extends BaseAppState {
      */
     @Override
     public void update(float tpf) {
+        super.update(tpf);
+
         Engine engine = vehicle.getEngine();
         boolean isEngineRunning = engine.isRunning();
         if (!isEngineRunning) {

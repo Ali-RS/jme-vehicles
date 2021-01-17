@@ -64,25 +64,25 @@ public class TireSmokeEmitter extends BaseAppState {
      * shutdown if the state is still attached. onDisable() is called before
      * this cleanup() method if the state is enabled at the time of cleanup.
      *
-     * @param app the application instance (not null)
+     * @param application the application instance (not null)
      */
     @Override
-    protected void cleanup(Application app) {
+    protected void cleanup(Application application) {
         // do nothing
     }
 
     /**
      * Callback invoked after this AppState is attached but before onEnable().
      *
-     * @param app the application instance (not null)
+     * @param application the application instance (not null)
      */
     @Override
-    protected void initialize(Application app) {
+    protected void initialize(Application application) {
         int numWheels = vehicle.countWheels();
         emitters = new ParticleEmitter[numWheels];
 
         rootNode = ((SimpleApplication) getApplication()).getRootNode();
-        AssetManager assetManager = app.getAssetManager();
+        AssetManager assetManager = application.getAssetManager();
 
         for (int wheelIndex = 0; wheelIndex < numWheels; wheelIndex++) {
             Wheel wheel = vehicle.getWheel(wheelIndex);
@@ -129,6 +129,8 @@ public class TireSmokeEmitter extends BaseAppState {
      */
     @Override
     public void update(float tpf) {
+        super.update(tpf);
+        
         int numWheels = vehicle.countWheels();
         for (int wheelIndex = 0; wheelIndex < numWheels; wheelIndex++) {
             ParticleEmitter emitter = emitters[wheelIndex];

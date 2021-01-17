@@ -47,13 +47,15 @@ public class MagicFormulaState extends BaseAppState {
     private Node rootNode;
     // private Node vehicleDataNode;
     private Vector3f screenCenter = new Vector3f();
+    // private boolean centerOfGravityEnabled = false;
+    // private boolean vehicleDataEnabled = false;
+    // *************************************************************************
+    // constructors
 
     public MagicFormulaState(Car vehicle) {
         this.vehicle = vehicle;
     }
 
-    // private boolean centerOfGravityEnabled = false;
-    // private boolean vehicleDataEnabled = false;
     public boolean isCenterOfGravityEnabled() {
         if (centerOfGravity != null) {
             return centerOfGravity.getParent() != null;
@@ -92,22 +94,29 @@ public class MagicFormulaState extends BaseAppState {
         }
     }
 
+    /**
+     * Callback invoked after this AppState is detached or during application
+     * shutdown if the state is still attached. onDisable() is called before
+     * this cleanup() method if the state is enabled at the time of cleanup.
+     *
+     * @param application the application instance (not null)
+     */
     @Override
-    protected void cleanup(Application app) {
+    protected void cleanup(Application application) {
         // do nothing
     }
 
     /**
      * Callback invoked after this AppState is attached but before onEnable().
      *
-     * @param app the application instance (not null)
+     * @param application the application instance (not null)
      */
     @Override
-    protected void initialize(Application app) {
-        rootNode = ((SimpleApplication) app).getRootNode();
-        guiNode = ((SimpleApplication) app).getGuiNode();
+    protected void initialize(Application application) {
+        rootNode = ((SimpleApplication) application).getRootNode();
+        guiNode = ((SimpleApplication) application).getGuiNode();
 
-        screenCenter.set(app.getCamera().getWidth() * 0.5f, app.getCamera().getHeight() * 0.5f, 1.0f);
+        screenCenter.set(application.getCamera().getWidth() * 0.5f, application.getCamera().getHeight() * 0.5f, 1.0f);
 
         vehicleDataContainer = new Container();
         vehicleDataContainer.setLocalTranslation(20, getApplication().getCamera().getHeight() - 250, 1);
@@ -146,6 +155,7 @@ public class MagicFormulaState extends BaseAppState {
      */
     @Override
     public void update(float tpf) {
+        super.update(tpf);
         //if (isCenterOfGravityEnabled()) {
         updateCenterOfGravityControl();
         //}

@@ -16,6 +16,8 @@ import com.jme3.scene.Node;
 import com.jme3.scene.shape.Quad;
 
 public class TireDataState extends BaseAppState {
+    // *************************************************************************
+    // fields
 
     final private Car vehicle;
 
@@ -28,6 +30,8 @@ public class TireDataState extends BaseAppState {
 
     // 3 needles per wheel.
     final private Geometry[][] needles;
+    // *************************************************************************
+    // constructors
 
     public TireDataState(Car vehicle) {
         this.vehicle = vehicle;
@@ -36,6 +40,8 @@ public class TireDataState extends BaseAppState {
 
         node = new Node("Tire Data Node");
     }
+    // *************************************************************************
+    // private methods
 
     private Geometry createNeedle(AssetManager assetManager, ColorRGBA color) {
         Geometry result = new Geometry("Needle", new Quad(1, graphHeight));
@@ -48,15 +54,18 @@ public class TireDataState extends BaseAppState {
     private void drawGraph(int i) {
         tireGraphs[i].drawGraph();
     }
+    // *************************************************************************
+    // BaseAppState methods
 
     /**
      * Callback invoked after this AppState is attached but before onEnable().
+     * TODO re-order methods
      *
-     * @param app the application instance (not null)
+     * @param application the application instance (not null)
      */
     @Override
-    protected void initialize(Application app) {
-        guiNode = ((SimpleApplication) app).getGuiNode();
+    protected void initialize(Application application) {
+        guiNode = ((SimpleApplication) application).getGuiNode();
 
         float space = 10;
 
@@ -75,7 +84,7 @@ public class TireDataState extends BaseAppState {
                 x = 0;
             }
 
-            TireGraph tireGraph = new TireGraph(app.getAssetManager(), vehicle.getWheel(i).getTireModel(), graphWidth, graphHeight);
+            TireGraph tireGraph = new TireGraph(application.getAssetManager(), vehicle.getWheel(i).getTireModel(), graphWidth, graphHeight);
             graphNode.attachChild(tireGraph);
 
             tireGraph.setBackgroundColor(ColorRGBA.DarkGray);
@@ -83,9 +92,9 @@ public class TireDataState extends BaseAppState {
             tireGraph.setLongitudinalColor(ColorRGBA.Yellow);
             tireGraph.setMomentColor(ColorRGBA.Green);
 
-            Geometry lateralNeedle = createNeedle(app.getAssetManager(), tireGraph.getLateralColor());
-            Geometry longitudeNeedle = createNeedle(app.getAssetManager(), tireGraph.getLongitudinalColor());
-            Geometry momentNeedle = createNeedle(app.getAssetManager(), tireGraph.getMomentColor());
+            Geometry lateralNeedle = createNeedle(application.getAssetManager(), tireGraph.getLateralColor());
+            Geometry longitudeNeedle = createNeedle(application.getAssetManager(), tireGraph.getLongitudinalColor());
+            Geometry momentNeedle = createNeedle(application.getAssetManager(), tireGraph.getMomentColor());
 
             graphNode.attachChild(lateralNeedle);
             graphNode.attachChild(longitudeNeedle);
@@ -101,11 +110,17 @@ public class TireDataState extends BaseAppState {
         }
 
         node.setLocalTranslation(space, (graphHeight) + (space * 2), -1);
-
     }
 
+    /**
+     * Callback invoked after this AppState is detached or during application
+     * shutdown if the state is still attached. onDisable() is called before
+     * this cleanup() method if the state is enabled at the time of cleanup.
+     *
+     * @param application the application instance (not null)
+     */
     @Override
-    protected void cleanup(Application app) {
+    protected void cleanup(Application application) {
         // do nothing
     }
 
@@ -135,6 +150,8 @@ public class TireDataState extends BaseAppState {
      */
     @Override
     public void update(float tpf) {
+        super.update(tpf);
+
         for (int i = 0; i < vehicle.countWheels(); ++i) {
 
             tireGraphs[i].drawGraph();
