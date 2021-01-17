@@ -26,18 +26,22 @@ public class WheelSpinState extends BaseAppState {
 
     private Quaternion[] rot;
     private float[][] angles;// = new float[3];
+    // *************************************************************************
+    // constructors
 
     public WheelSpinState(Car car) {
         this.car = car;
     }
+    // *************************************************************************
+    // BaseAppState methods
 
     /**
      * Callback invoked after this AppState is attached but before onEnable().
      *
-     * @param app the application instance (not null)
+     * @param application the application instance (not null)
      */
     @Override
-    protected void initialize(Application app) {
+    protected void initialize(Application application) {
         wheelCount = car.getVehicleControl().getNumWheels();
         angles = new float[wheelCount][3];
 
@@ -48,8 +52,15 @@ public class WheelSpinState extends BaseAppState {
         }
     }
 
+    /**
+     * Callback invoked after this AppState is detached or during application
+     * shutdown if the state is still attached. onDisable() is called before
+     * this cleanup() method if the state is enabled at the time of cleanup.
+     *
+     * @param application the application instance (not null)
+     */
     @Override
-    protected void cleanup(Application app) {
+    protected void cleanup(Application application) {
         // do nothing
     }
 
@@ -73,7 +84,7 @@ public class WheelSpinState extends BaseAppState {
 
     /**
      * Calculates how many radians per second the wheel should rotate at the
-     * speed the vehicle is travelling.
+     * speed the vehicle is travelling. TODO re-order methods
      *
      * @param wheel the wheel in question.
      * @return the amount in radians the wheel rotates in one second at the
@@ -108,6 +119,8 @@ public class WheelSpinState extends BaseAppState {
      */
     @Override
     public void update(float tpf) {
+        super.update(tpf);
+
         for (int i = 0; i < wheelCount; i++) {
             /*
             Wheel wheel = car.getWheel(i);
