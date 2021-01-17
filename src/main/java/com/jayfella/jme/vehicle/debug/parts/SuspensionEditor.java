@@ -1,12 +1,17 @@
 package com.jayfella.jme.vehicle.debug.parts;
 
 import com.jayfella.jme.vehicle.Car;
+import com.simsilica.lemur.Container;
 import com.simsilica.lemur.RollupPanel;
 import com.simsilica.lemur.props.PropertyPanel;
 
-public class SuspensionEditor extends VehicleEditor {
+public class SuspensionEditor extends Container {
+    // *************************************************************************
+    // fields
 
     final private Car vehicle;
+    // *************************************************************************
+    // constructors
 
     public SuspensionEditor(Car vehicle) {
         super();
@@ -19,6 +24,8 @@ public class SuspensionEditor extends VehicleEditor {
         addChild(createCompressionRollup());
         addChild(createDampingRollup());
     }
+    // *************************************************************************
+    // private methods
 
     private RollupPanel createRestLengthRollup() {
 
@@ -73,9 +80,5 @@ public class SuspensionEditor extends VehicleEditor {
         }
 
         return new RollupPanel("Damping", propertyPanel, "glass");
-    }
-
-    @Override
-    public void update(float tpf) {
     }
 }

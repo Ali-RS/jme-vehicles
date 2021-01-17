@@ -7,7 +7,6 @@ import com.jayfella.jme.vehicle.debug.parts.ChassisEditor;
 import com.jayfella.jme.vehicle.debug.parts.EngineEditor;
 import com.jayfella.jme.vehicle.debug.parts.GearboxEditor;
 import com.jayfella.jme.vehicle.debug.parts.SuspensionEditor;
-import com.jayfella.jme.vehicle.debug.parts.VehicleEditor;
 import com.jayfella.jme.vehicle.debug.parts.WheelsEditor;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
@@ -17,52 +16,60 @@ import com.simsilica.lemur.TabbedPanel;
 import com.simsilica.lemur.component.SpringGridLayout;
 
 public class VehicleEditorState extends BaseAppState {
+    // *************************************************************************
+    // fields
 
     final private Car vehicle;
     final private TabbedPanel tabbedPanel;
 
     final public static SpringGridLayout Layout = new SpringGridLayout(Axis.Y, Axis.X, FillMode.Even, FillMode.Last);
     final public static int Width = 350;
-
-    private VehicleEditor chassis;
-    private VehicleEditor engine;
-    private VehicleEditor gearbox;
-    private VehicleEditor suspension;
-    private VehicleEditor brakes;
-    private VehicleEditor wheels;
+    // *************************************************************************
+    // constructor
 
     public VehicleEditorState(Car vehicle) {
         this.vehicle = vehicle;
         tabbedPanel = new TabbedPanel();
     }
+    // *************************************************************************
+    // new methods exposed
 
     public TabbedPanel getTabbedPanel() {
         return tabbedPanel;
     }
+    // *************************************************************************
+    // BaseAppState methods
 
     /**
      * Callback invoked after this AppState is attached but before onEnable().
      *
-     * @param app the application instance (not null)
+     * @param application the application instance (not null)
      */
     @Override
-    protected void initialize(Application app) {
-        chassis = tabbedPanel.addTab("Chassis", new ChassisEditor(vehicle));
-        engine = tabbedPanel.addTab("Engine", new EngineEditor(vehicle));
-        gearbox = tabbedPanel.addTab("Gearbox", new GearboxEditor(vehicle));
-        suspension = tabbedPanel.addTab("Suspension", new SuspensionEditor(vehicle));
-        brakes = tabbedPanel.addTab("Brakes", new BrakesEditor(vehicle));
-        wheels = tabbedPanel.addTab("Wheels", new WheelsEditor(vehicle));
+    protected void initialize(Application application) {
+        tabbedPanel.addTab("Chassis", new ChassisEditor(vehicle));
+        tabbedPanel.addTab("Engine", new EngineEditor(vehicle));
+        tabbedPanel.addTab("Gearbox", new GearboxEditor(vehicle));
+        tabbedPanel.addTab("Suspension", new SuspensionEditor(vehicle));
+        tabbedPanel.addTab("Brakes", new BrakesEditor(vehicle));
+        tabbedPanel.addTab("Wheels", new WheelsEditor(vehicle));
 
         tabbedPanel.setLocalTranslation(
-                app.getCamera().getWidth() - 370,
-                app.getCamera().getHeight() - 20,
+                application.getCamera().getWidth() - 370,
+                application.getCamera().getHeight() - 20,
                 0
         );
     }
 
+    /**
+     * Callback invoked after this AppState is detached or during application
+     * shutdown if the state is still attached. onDisable() is called before
+     * this cleanup() method if the state is enabled at the time of cleanup.
+     *
+     * @param application the application instance (not null)
+     */
     @Override
-    protected void cleanup(Application app) {
+    protected void cleanup(Application application) {
         // do nothing
     }
 
@@ -77,7 +84,7 @@ public class VehicleEditorState extends BaseAppState {
 
     /**
      * Callback invoked whenever this AppState ceases to be both attached and
-     * enabled.
+     * enabled. TODO re-order methods
      */
     @Override
     protected void onDisable() {
@@ -86,11 +93,6 @@ public class VehicleEditorState extends BaseAppState {
 
     @Override
     public void update(float tpf) {
-        chassis.update(tpf);
-        engine.update(tpf);
-        gearbox.update(tpf);
-        suspension.update(tpf);
-        brakes.update(tpf);
-        wheels.update(tpf);
+        super.update(tpf);
     }
 }

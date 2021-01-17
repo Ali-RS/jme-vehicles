@@ -1,12 +1,17 @@
 package com.jayfella.jme.vehicle.debug.parts;
 
 import com.jayfella.jme.vehicle.Car;
+import com.simsilica.lemur.Container;
 import com.simsilica.lemur.RollupPanel;
 import com.simsilica.lemur.props.PropertyPanel;
 
-public class WheelsEditor extends VehicleEditor {
+public class WheelsEditor extends Container {
+    // *************************************************************************
+    // fields
 
     final private Car vehicle;
+    // *************************************************************************
+    // constructors
 
     public WheelsEditor(Car vehicle) {
         super();
@@ -17,6 +22,8 @@ public class WheelsEditor extends VehicleEditor {
         addChild(createSizeRollup());
         addChild(createPowerRollup());
     }
+    // *************************************************************************
+    // private methods
 
     private RollupPanel createGripRollup() {
 
@@ -48,10 +55,5 @@ public class WheelsEditor extends VehicleEditor {
         }
 
         return new RollupPanel("Power", propertyPanel, "glass");
-    }
-
-    @Override
-    public void update(float tpf) {
-
     }
 }

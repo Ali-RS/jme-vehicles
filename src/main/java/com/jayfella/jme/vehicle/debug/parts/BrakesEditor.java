@@ -2,12 +2,17 @@ package com.jayfella.jme.vehicle.debug.parts;
 
 import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.part.Brake;
+import com.simsilica.lemur.Container;
 import com.simsilica.lemur.RollupPanel;
 import com.simsilica.lemur.props.PropertyPanel;
 
-public class BrakesEditor extends VehicleEditor {
+public class BrakesEditor extends Container {
+    // *************************************************************************
+    // fields
 
     final private Car vehicle;
+    // *************************************************************************
+    // constructors
 
     public BrakesEditor(Car vehicle) {
         super();
@@ -15,6 +20,8 @@ public class BrakesEditor extends VehicleEditor {
         this.vehicle = vehicle;
         addChild(createBrakesRollup());
     }
+    // *************************************************************************
+    // private methods
 
     private RollupPanel createBrakesRollup() {
         PropertyPanel propertyPanel = new PropertyPanel("glass");
@@ -26,9 +33,5 @@ public class BrakesEditor extends VehicleEditor {
         }
 
         return new RollupPanel("Strength", propertyPanel, "glass");
-    }
-
-    @Override
-    public void update(float tpf) {
     }
 }

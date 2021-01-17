@@ -2,17 +2,24 @@ package com.jayfella.jme.vehicle.debug.parts;
 
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.part.Gear;
+import com.simsilica.lemur.Container;
 import com.simsilica.lemur.RollupPanel;
 import com.simsilica.lemur.props.PropertyPanel;
 
-public class GearboxEditor extends VehicleEditor {
+public class GearboxEditor extends Container {
+    // *************************************************************************
+    // fields
 
     final private Vehicle vehicle;
+    // *************************************************************************
+    // constructors
 
     public GearboxEditor(Vehicle vehicle) {
         this.vehicle = vehicle;
         addChild(createGearBoxRollup());
     }
+    // *************************************************************************
+    // private methods
 
     private RollupPanel createGearBoxRollup() {
 
@@ -28,10 +35,4 @@ public class GearboxEditor extends VehicleEditor {
 
         return new RollupPanel("Ratios", propertyPanel, "glass");
     }
-
-    @Override
-    public void update(float tpf) {
-
-    }
-
 }
