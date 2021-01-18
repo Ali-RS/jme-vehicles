@@ -20,10 +20,10 @@ public class VehicleEditorState extends BaseAppState {
     // fields
 
     final private Car vehicle;
-    final private TabbedPanel tabbedPanel;
-
-    final public static SpringGridLayout Layout = new SpringGridLayout(Axis.Y, Axis.X, FillMode.Even, FillMode.Last);
     final public static int Width = 350;
+    final public static SpringGridLayout Layout
+            = new SpringGridLayout(Axis.Y, Axis.X, FillMode.Even, FillMode.Last);
+    final private TabbedPanel tabbedPanel;
     // *************************************************************************
     // constructor
 
@@ -39,6 +39,18 @@ public class VehicleEditorState extends BaseAppState {
     }
     // *************************************************************************
     // BaseAppState methods
+
+    /**
+     * Callback invoked after this AppState is detached or during application
+     * shutdown if the state is still attached. onDisable() is called before
+     * this cleanup() method if the state is enabled at the time of cleanup.
+     *
+     * @param application the application instance (not null)
+     */
+    @Override
+    protected void cleanup(Application application) {
+        // do nothing
+    }
 
     /**
      * Callback invoked after this AppState is attached but before onEnable().
@@ -62,15 +74,12 @@ public class VehicleEditorState extends BaseAppState {
     }
 
     /**
-     * Callback invoked after this AppState is detached or during application
-     * shutdown if the state is still attached. onDisable() is called before
-     * this cleanup() method if the state is enabled at the time of cleanup.
-     *
-     * @param application the application instance (not null)
+     * Callback invoked whenever this AppState ceases to be both attached and
+     * enabled.
      */
     @Override
-    protected void cleanup(Application application) {
-        // do nothing
+    protected void onDisable() {
+        tabbedPanel.removeFromParent();
     }
 
     /**
@@ -80,19 +89,5 @@ public class VehicleEditorState extends BaseAppState {
     @Override
     protected void onEnable() {
         Main.getApplication().getGuiNode().attachChild(tabbedPanel);
-    }
-
-    /**
-     * Callback invoked whenever this AppState ceases to be both attached and
-     * enabled. TODO re-order methods
-     */
-    @Override
-    protected void onDisable() {
-        tabbedPanel.removeFromParent();
-    }
-
-    @Override
-    public void update(float tpf) {
-        super.update(tpf);
     }
 }
