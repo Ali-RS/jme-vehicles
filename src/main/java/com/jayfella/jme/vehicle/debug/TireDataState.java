@@ -21,15 +21,16 @@ public class TireDataState extends BaseAppState {
 
     final private Car vehicle;
 
-    final private static int graphWidth = 200;
     final private static int graphHeight = 100;
-    final private TireGraph[] tireGraphs;
+    final private static int graphWidth = 200;
+
+    // 3 needles per wheel.
+    final private Geometry[][] needles;
 
     private Node guiNode;
     final private Node node;
 
-    // 3 needles per wheel.
-    final private Geometry[][] needles;
+    final private TireGraph[] tireGraphs;
     // *************************************************************************
     // constructors
 
@@ -41,25 +42,22 @@ public class TireDataState extends BaseAppState {
         node = new Node("Tire Data Node");
     }
     // *************************************************************************
-    // private methods
-
-    private Geometry createNeedle(AssetManager assetManager, ColorRGBA color) {
-        Geometry result = new Geometry("Needle", new Quad(1, graphHeight));
-        result.setMaterial(new Material(assetManager, Materials.UNSHADED));
-        result.getMaterial().setColor("Color", color);
-
-        return result;
-    }
-
-    private void drawGraph(int i) {
-        tireGraphs[i].drawGraph();
-    }
-    // *************************************************************************
     // BaseAppState methods
 
     /**
+     * Callback invoked after this AppState is detached or during application
+     * shutdown if the state is still attached. onDisable() is called before
+     * this cleanup() method if the state is enabled at the time of cleanup.
+     *
+     * @param application the application instance (not null)
+     */
+    @Override
+    protected void cleanup(Application application) {
+        // do nothing
+    }
+
+    /**
      * Callback invoked after this AppState is attached but before onEnable().
-     * TODO re-order methods
      *
      * @param application the application instance (not null)
      */
@@ -113,15 +111,12 @@ public class TireDataState extends BaseAppState {
     }
 
     /**
-     * Callback invoked after this AppState is detached or during application
-     * shutdown if the state is still attached. onDisable() is called before
-     * this cleanup() method if the state is enabled at the time of cleanup.
-     *
-     * @param application the application instance (not null)
+     * Callback invoked whenever this AppState ceases to be both attached and
+     * enabled.
      */
     @Override
-    protected void cleanup(Application application) {
-        // do nothing
+    protected void onDisable() {
+        node.removeFromParent();
     }
 
     /**
@@ -131,15 +126,6 @@ public class TireDataState extends BaseAppState {
     @Override
     protected void onEnable() {
         guiNode.attachChild(node);
-    }
-
-    /**
-     * Callback invoked whenever this AppState ceases to be both attached and
-     * enabled.
-     */
-    @Override
-    protected void onDisable() {
-        node.removeFromParent();
     }
 
     /**
@@ -177,5 +163,19 @@ public class TireDataState extends BaseAppState {
             needles[i][1].setLocalTranslation(lng, 0, 0);
             needles[i][2].setLocalTranslation(mnt, 0, 0);
         }
+    }
+    // *************************************************************************
+    // private methods
+
+    private Geometry createNeedle(AssetManager assetManager, ColorRGBA color) {
+        Geometry result = new Geometry("Needle", new Quad(1, graphHeight));
+        result.setMaterial(new Material(assetManager, Materials.UNSHADED));
+        result.getMaterial().setColor("Color", color);
+
+        return result;
+    }
+
+    private void drawGraph(int i) {
+        tireGraphs[i].drawGraph();
     }
 }
