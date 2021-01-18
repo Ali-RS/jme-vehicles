@@ -36,6 +36,18 @@ public class WheelSpinState extends BaseAppState {
     // BaseAppState methods
 
     /**
+     * Callback invoked after this AppState is detached or during application
+     * shutdown if the state is still attached. onDisable() is called before
+     * this cleanup() method if the state is enabled at the time of cleanup.
+     *
+     * @param application the application instance (not null)
+     */
+    @Override
+    protected void cleanup(Application application) {
+        // do nothing
+    }
+
+    /**
      * Callback invoked after this AppState is attached but before onEnable().
      *
      * @param application the application instance (not null)
@@ -53,14 +65,11 @@ public class WheelSpinState extends BaseAppState {
     }
 
     /**
-     * Callback invoked after this AppState is detached or during application
-     * shutdown if the state is still attached. onDisable() is called before
-     * this cleanup() method if the state is enabled at the time of cleanup.
-     *
-     * @param application the application instance (not null)
+     * Callback invoked whenever this AppState ceases to be both attached and
+     * enabled.
      */
     @Override
-    protected void cleanup(Application application) {
+    protected void onDisable() {
         // do nothing
     }
 
@@ -71,44 +80,6 @@ public class WheelSpinState extends BaseAppState {
     @Override
     protected void onEnable() {
         // do nothing
-    }
-
-    /**
-     * Callback invoked whenever this AppState ceases to be both attached and
-     * enabled.
-     */
-    @Override
-    protected void onDisable() {
-        // do nothing
-    }
-
-    /**
-     * Calculates how many radians per second the wheel should rotate at the
-     * speed the vehicle is travelling. TODO re-order methods
-     *
-     * @param wheel the wheel in question.
-     * @return the amount in radians the wheel rotates in one second at the
-     * speed the vehicle is travelling.
-     */
-    private float calcWheelRotation(Wheel wheel) {
-        // https://sciencing.com/calculate-wheel-speed-7448165.html
-        float speed = car.getSpeed(SpeedUnit.MPH);
-
-        // convert mph to meters per minute
-        float metersPerHour = speed * 1609;
-        float metersPerMin = metersPerHour / 60;
-
-        // calculate the circumference of the wheel.
-        float c = wheel.getDiameter() * FastMath.PI;
-
-        // calc the wheel speed in revs per min
-        float revsPerMin = metersPerMin / c;
-        float revsPerSec = revsPerMin / 60;
-
-        // convert revolutions per second to radians.
-        float radPerSec = revsPerSec * FastMath.TWO_PI;
-
-        return radPerSec;
     }
 
     /**
@@ -238,5 +209,36 @@ public class WheelSpinState extends BaseAppState {
                 wheelGeom.setLocalRotation(rot[i]);
             }
         }
+    }
+    // *************************************************************************
+    // private methods
+
+    /**
+     * Calculates how many radians per second the wheel should rotate at the
+     * speed the vehicle is travelling.
+     *
+     * @param wheel the wheel in question.
+     * @return the amount in radians the wheel rotates in one second at the
+     * speed the vehicle is travelling.
+     */
+    private float calcWheelRotation(Wheel wheel) {
+        // https://sciencing.com/calculate-wheel-speed-7448165.html
+        float speed = car.getSpeed(SpeedUnit.MPH);
+
+        // convert mph to meters per minute
+        float metersPerHour = speed * 1609;
+        float metersPerMin = metersPerHour / 60;
+
+        // calculate the circumference of the wheel.
+        float c = wheel.getDiameter() * FastMath.PI;
+
+        // calc the wheel speed in revs per min
+        float revsPerMin = metersPerMin / c;
+        float revsPerSec = revsPerMin / 60;
+
+        // convert revolutions per second to radians.
+        float radPerSec = revsPerSec * FastMath.TWO_PI;
+
+        return radPerSec;
     }
 }
