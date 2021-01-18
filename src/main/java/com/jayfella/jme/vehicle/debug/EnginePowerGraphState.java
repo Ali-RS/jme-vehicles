@@ -15,25 +15,36 @@ public class EnginePowerGraphState extends BaseAppState {
     // *************************************************************************
     // fields
 
-    final private Vehicle vehicle;
     private Geometry line;
 
+    final private static int height = 100;
+    final private static int width = 300;
+
     final private Node node = new Node("Engine Graph Node");
+    final private Vehicle vehicle;
     // *************************************************************************
     // constructors
 
     public EnginePowerGraphState(Vehicle vehicle) {
         this.vehicle = vehicle;
     }
-
-    final private static int width = 300; // TODO re-order
-    final private static int height = 100;
     // *************************************************************************
     // BaseAppState methods
 
     /**
+     * Callback invoked after this AppState is detached or during application
+     * shutdown if the state is still attached. onDisable() is called before
+     * this cleanup() method if the state is enabled at the time of cleanup.
+     *
+     * @param application the application instance (not null)
+     */
+    @Override
+    protected void cleanup(Application application) {
+        // do nothing
+    }
+
+    /**
      * Callback invoked after this AppState is attached but before onEnable().
-     * TODO re-order
      *
      * @param application the application instance (not null)
      */
@@ -52,31 +63,12 @@ public class EnginePowerGraphState extends BaseAppState {
     }
 
     /**
-     * Callback to update this AppState, invoked once per frame when the
-     * AppState is both attached and enabled.
-     *
-     * @param tpf the time interval between frames (in seconds, &ge;0)
+     * Callback invoked whenever this AppState ceases to be both attached and
+     * enabled.
      */
     @Override
-    public void update(float tpf) {
-        super.update(tpf);
-
-        // float revs = vehicle.getEngine().getRevs() * vehicle.getEngine().getMaxRevs();
-        float posX = vehicle.getEngine().getRpmFraction() * width;
-        // float posY = getApplication().getCamera().getHeight() - height;
-        line.setLocalTranslation(posX, 0, 2);
-    }
-
-    /**
-     * Callback invoked after this AppState is detached or during application
-     * shutdown if the state is still attached. onDisable() is called before
-     * this cleanup() method if the state is enabled at the time of cleanup.
-     *
-     * @param application the application instance (not null)
-     */
-    @Override
-    protected void cleanup(Application application) {
-        // do nothing
+    protected void onDisable() {
+        node.removeFromParent();
     }
 
     /**
@@ -90,11 +82,18 @@ public class EnginePowerGraphState extends BaseAppState {
     }
 
     /**
-     * Callback invoked whenever this AppState ceases to be both attached and
-     * enabled.
+     * Callback to update this AppState, invoked once per frame when the
+     * AppState is both attached and enabled.
+     *
+     * @param tpf the time interval between frames (in seconds, &ge;0)
      */
     @Override
-    protected void onDisable() {
-        node.removeFromParent();
+    public void update(float tpf) {
+        super.update(tpf);
+
+        // float revs = vehicle.getEngine().getRevs() * vehicle.getEngine().getMaxRevs();
+        float posX = vehicle.getEngine().getRpmFraction() * width;
+        // float posY = getApplication().getCamera().getHeight() - height;
+        line.setLocalTranslation(posX, 0, 2);
     }
 }
