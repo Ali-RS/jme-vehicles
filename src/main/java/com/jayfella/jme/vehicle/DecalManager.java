@@ -7,8 +7,8 @@ import java.util.LinkedList;
 import java.util.logging.Logger;
 
 /**
- * AppState to manage decal geometries and "age them out" on a first-in,
- * first-out (FIFO) basis.
+ * Manage decal geometries and "age them out" on a first-in, first-out (FIFO)
+ * basis.
  *
  * @author Stephen Gold sgold@sonic.net
  */
@@ -84,7 +84,7 @@ public class DecalManager {
     }
 
     /**
-     * Access the scene-graph node with all the decals.
+     * Access the scene-graph node which parents all the decals.
      *
      * @return the pre-existing instance (not null)
      */

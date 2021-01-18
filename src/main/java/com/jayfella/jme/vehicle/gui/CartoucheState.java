@@ -68,7 +68,7 @@ abstract public class CartoucheState
     // constructors
 
     /**
-     * Instantiate an enabled AppState.
+     * Instantiate an enabled CartoucheState.
      *
      * @param name a name for the new AppState
      * @param xFraction the center X as a fraction of the viewport width
