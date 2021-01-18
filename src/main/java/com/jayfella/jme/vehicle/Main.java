@@ -22,6 +22,7 @@ import com.jayfella.jme.vehicle.gui.menu.MainMenu;
 import com.jayfella.jme.vehicle.input.CameraInputMode;
 import com.jayfella.jme.vehicle.input.DrivingInputMode;
 import com.jayfella.jme.vehicle.input.DumpMode;
+import com.jayfella.jme.vehicle.input.InputMode;
 import com.jayfella.jme.vehicle.input.PhysicsMode;
 import com.jayfella.jme.vehicle.input.ScreenshotMode;
 import com.jayfella.jme.vehicle.input.SignalMode;
@@ -235,7 +236,7 @@ public class Main extends SimpleApplication {
         /*
          * Re-use the existing input state with the new Vehicle instance.
          */
-        Main.findAppState(CameraInputMode.class).setVehicle(vehicle);
+        findAppState(CameraInputMode.class).setVehicle(vehicle);
     }
     // *************************************************************************
     // SimpleApplication methods
@@ -267,7 +268,7 @@ public class Main extends SimpleApplication {
     public void simpleUpdate(float tpf) {
         AppState loader = stateManager.getState(LemurLoadingState.class);
         if (loader != null && !loader.isEnabled()) {
-            getStateManager().detach(loader);
+            stateManager.detach(loader);
             doneLoading();
         }
     }
@@ -275,80 +276,75 @@ public class Main extends SimpleApplication {
     // private methods
 
     /**
-     * Configure, attach, and enable a new camera InputMode.
+     * Configure, attach, and enable a new InputMode for camera control.
      */
-    private static void activateCameraMode() {
-        CameraInputMode mode = new CameraInputMode();
-        mode.assign(CameraInputMode.F_CAMERA_RESET_FOV, KeyInput.KEY_NUMPAD6);
-        mode.assign(CameraInputMode.F_CAMERA_RESET_OFFSET, Button.MOUSE_BUTTON2);
-        mode.assign(CameraInputMode.F_CAMERA_RESET_OFFSET, KeyInput.KEY_NUMPAD5);
-        mode.assign(CameraInputMode.F_CAMVIEW, KeyInput.KEY_F5);
+    private void activateCameraMode() {
+        InputMode cameraInputMode = new CameraInputMode()
+                .assign(CameraInputMode.F_CAMERA_RESET_FOV, KeyInput.KEY_NUMPAD6)
+                .assign(CameraInputMode.F_CAMERA_RESET_OFFSET, Button.MOUSE_BUTTON2)
+                .assign(CameraInputMode.F_CAMERA_RESET_OFFSET, KeyInput.KEY_NUMPAD5)
+                .assign(CameraInputMode.F_CAMVIEW, KeyInput.KEY_F5);
 
-        AppStateManager manager = getApplication().getStateManager();
-        manager.attach(mode);
-        mode.setEnabled(true);
+        stateManager.attach(cameraInputMode);
+        cameraInputMode.setEnabled(true);
     }
 
     /**
-     * Configure, attach, and enable a new dump InputMode.
+     * Configure, attach, and enable a new InputMode for dumping.
      */
-    private static void activateDumpMode() {
-        DumpMode mode = new DumpMode();
-        mode.assign(DumpMode.F_DUMP_CAMERA, KeyInput.KEY_C);
-        mode.assign(DumpMode.F_DUMP_PHYSICS, KeyInput.KEY_O);
-        mode.assign(DumpMode.F_DUMP_RENDER_MANAGER, KeyInput.KEY_P);
+    private void activateDumpMode() {
+        InputMode dumpMode = new DumpMode()
+                .assign(DumpMode.F_DUMP_CAMERA, KeyInput.KEY_C)
+                .assign(DumpMode.F_DUMP_PHYSICS, KeyInput.KEY_O)
+                .assign(DumpMode.F_DUMP_RENDER_MANAGER, KeyInput.KEY_P);
 
-        AppStateManager manager = getApplication().getStateManager();
-        manager.attach(mode);
-        mode.setEnabled(true);
+        stateManager.attach(dumpMode);
+        dumpMode.setEnabled(true);
     }
 
     /**
-     * Configure, attach, and enable a new physics InputMode.
+     * Configure, attach, and enable a new InputMode for physics simulation.
      */
-    private static void activatePhysicsMode() {
-        PhysicsMode mode = new PhysicsMode();
-        mode.assign(PhysicsMode.F_PAUSE,
-                KeyInput.KEY_PAUSE, KeyInput.KEY_PERIOD);
-        mode.assign(PhysicsMode.F_SINGLE_STEP, KeyInput.KEY_COMMA);
+    private void activatePhysicsMode() {
+        InputMode physicsMode = new PhysicsMode()
+                .assign(PhysicsMode.F_PAUSE,
+                        KeyInput.KEY_PAUSE, KeyInput.KEY_PERIOD)
+                .assign(PhysicsMode.F_SINGLE_STEP, KeyInput.KEY_COMMA);
 
-        AppStateManager manager = getApplication().getStateManager();
-        manager.attach(mode);
-        mode.setEnabled(true);
+        stateManager.attach(physicsMode);
+        physicsMode.setEnabled(true);
     }
 
     /**
-     * Configure, attach, and enable a new screenshot InputMode.
+     * Configure, attach, and enable a new InputMode for screenshots.
      */
-    private static void activateScreenshotMode() {
-        ScreenshotMode mode = new ScreenshotMode();
+    private void activateScreenshotMode() {
+        ScreenshotMode screenshotMode = new ScreenshotMode();
 
         // Some Linux window managers block SYSRQ/PrtSc, so map F12 instead.
-        mode.assign(ScreenshotMode.F_SCREEN_SHOT, KeyInput.KEY_F12);
+        screenshotMode.assign(ScreenshotMode.F_SCREEN_SHOT, KeyInput.KEY_F12);
 
-        AppStateManager manager = getApplication().getStateManager();
-        manager.attach(mode);
-        mode.setEnabled(true);
+        stateManager.attach(screenshotMode);
+        screenshotMode.setEnabled(true);
     }
 
     /**
-     * Configure, attach, and enable a new signal InputMode.
+     * Configure, attach, and enable a new InputMode for signals.
      */
-    private static void activateSignalMode() {
-        SignalMode mode = new SignalMode();
-        mode.assign(SignalMode.F_CAMERA_BACK1, KeyInput.KEY_NUMPAD1);
-        mode.assign(SignalMode.F_CAMERA_DOWN1, KeyInput.KEY_NUMPAD2);
-        mode.assign(SignalMode.F_CAMERA_DRAG_TO_ORBIT1, Button.MOUSE_BUTTON3);
-        mode.assign(SignalMode.F_CAMERA_FORWARD1, KeyInput.KEY_NUMPAD7);
-        mode.assign(SignalMode.F_CAMERA_UP1, KeyInput.KEY_NUMPAD8);
-        mode.assign(SignalMode.F_CAMERA_XRAY1, KeyInput.KEY_NUMPAD0);
-        mode.assign(SignalMode.F_CAMERA_ZOOM_IN1, KeyInput.KEY_NUMPAD9);
-        mode.assign(SignalMode.F_CAMERA_ZOOM_OUT1, KeyInput.KEY_NUMPAD3);
-        mode.assign(SignalMode.F_HORN1, KeyInput.KEY_H);
+    private void activateSignalMode() {
+        InputMode signalMode = new SignalMode()
+                .assign(SignalMode.F_CAMERA_BACK1, KeyInput.KEY_NUMPAD1)
+                .assign(SignalMode.F_CAMERA_DOWN1, KeyInput.KEY_NUMPAD2)
+                .assign(SignalMode.F_CAMERA_DRAG_TO_ORBIT1, Button.MOUSE_BUTTON3)
+                .assign(SignalMode.F_CAMERA_FORWARD1, KeyInput.KEY_NUMPAD7)
+                .assign(SignalMode.F_CAMERA_UP1, KeyInput.KEY_NUMPAD8)
+                .assign(SignalMode.F_CAMERA_XRAY1, KeyInput.KEY_NUMPAD0)
+                .assign(SignalMode.F_CAMERA_ZOOM_IN1, KeyInput.KEY_NUMPAD9)
+                .assign(SignalMode.F_CAMERA_ZOOM_OUT1, KeyInput.KEY_NUMPAD3)
+                .assign(SignalMode.F_HORN1, KeyInput.KEY_H);
 
-        AppStateManager manager = getApplication().getStateManager();
-        manager.attach(mode);
-        mode.setEnabled(true);
+        stateManager.attach(signalMode);
+        signalMode.setEnabled(true);
     }
 
     /**
@@ -363,20 +359,19 @@ public class Main extends SimpleApplication {
     /**
      * Configure and attach a new (disabled) driving InputMode.
      */
-    private static void attachDrivingMode() {
-        DrivingInputMode mode = new DrivingInputMode();
-        mode.assign(DrivingInputMode.F_FORWARD, KeyInput.KEY_W);
-        mode.assign(DrivingInputMode.F_MAIN_BRAKE, KeyInput.KEY_S);
-        mode.assign(DrivingInputMode.F_PARKING_BRAKE, KeyInput.KEY_SPACE);
-        mode.assign(DrivingInputMode.F_RESET, KeyInput.KEY_R);
-        mode.assign(DrivingInputMode.F_RETURN, KeyInput.KEY_ESCAPE);
-        mode.assign(DrivingInputMode.F_REVERSE, KeyInput.KEY_E);
-        mode.assign(DrivingInputMode.F_START_ENGINE, KeyInput.KEY_Y);
-        mode.assign(DrivingInputMode.F_TURN_LEFT, KeyInput.KEY_A);
-        mode.assign(DrivingInputMode.F_TURN_RIGHT, KeyInput.KEY_D);
+    private void attachDrivingMode() {
+        InputMode drivingMode = new DrivingInputMode()
+                .assign(DrivingInputMode.F_FORWARD, KeyInput.KEY_W)
+                .assign(DrivingInputMode.F_MAIN_BRAKE, KeyInput.KEY_S)
+                .assign(DrivingInputMode.F_PARKING_BRAKE, KeyInput.KEY_SPACE)
+                .assign(DrivingInputMode.F_RESET, KeyInput.KEY_R)
+                .assign(DrivingInputMode.F_RETURN, KeyInput.KEY_ESCAPE)
+                .assign(DrivingInputMode.F_REVERSE, KeyInput.KEY_E)
+                .assign(DrivingInputMode.F_START_ENGINE, KeyInput.KEY_Y)
+                .assign(DrivingInputMode.F_TURN_LEFT, KeyInput.KEY_A)
+                .assign(DrivingInputMode.F_TURN_RIGHT, KeyInput.KEY_D);
 
-        AppStateManager manager = getApplication().getStateManager();
-        manager.attach(mode);
+        stateManager.attach(drivingMode);
     }
 
     /**
