@@ -18,7 +18,7 @@ import jme3utilities.Validate;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-abstract class InputMode extends BaseAppState {
+abstract public class InputMode extends BaseAppState {
     // *************************************************************************
     // constants and loggers
 
@@ -72,8 +72,9 @@ abstract class InputMode extends BaseAppState {
      *
      * @param function the desired function (not null, alias created)
      * @param button the Button (not null, alias created)
+     * @return this
      */
-    public void assign(FunctionId function, Button button) {
+    public InputMode assign(FunctionId function, Button button) {
         Validate.nonNull(function, "function");
         Validate.nonNull(button, "button");
         if (!functionToHandler.containsKey(function)) {
@@ -86,17 +87,20 @@ abstract class InputMode extends BaseAppState {
         }
 
         buttonToFunction.put(button, function);
+
+        return this;
     }
 
     /**
      * Assign the specified function to the specified hotkeys. Allowed only when
-     * the mode is disabled. Replaces any functions previously assigned to the
-     * hotkeys in this mode.
+     * the InputMode is disabled. Replaces any functions previously assigned to
+     * those hotkeys in this mode.
      *
      * @param function the desired function (not null, alias created)
      * @param keyCodes the codes of the hotkeys
+     * @return this
      */
-    public void assign(FunctionId function, int... keyCodes) {
+    public InputMode assign(FunctionId function, int... keyCodes) {
         Validate.nonNull(function, "function");
         if (!functionToHandler.containsKey(function)) {
             String message = "Function isn't handled by this mode: " + function;
@@ -110,6 +114,8 @@ abstract class InputMode extends BaseAppState {
         for (int keyCode : keyCodes) {
             keyToFunction.put(keyCode, function);
         }
+
+        return this;
     }
     // *************************************************************************
     // new protected methods
