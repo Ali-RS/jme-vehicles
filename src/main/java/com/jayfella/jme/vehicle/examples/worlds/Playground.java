@@ -5,8 +5,6 @@ import com.jayfella.jme.vehicle.World;
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.AssetNotFoundException;
 import com.jme3.bullet.collision.shapes.CollisionShape;
-import com.jme3.bullet.control.RigidBodyControl;
-import com.jme3.bullet.objects.PhysicsBody;
 import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.material.Material;
 import com.jme3.material.Materials;
@@ -46,8 +44,8 @@ public class Playground extends World {
     }
 
     /**
-     * Determine the drop location, which lies directly above the preferred
-     * initial location for vehicles.
+     * Locate the drop point, which lies directly above the preferred initial
+     * location for vehicles.
      *
      * @return a new location vector (in world coordinates)
      */
@@ -123,20 +121,15 @@ public class Playground extends World {
         CollisionShape shape;
         try {
             shape = (CollisionShape) assetManager.loadAsset(assetPath);
-            Vector3f scale = loadedCgm.getWorldScale();
-            shape.setScale(scale);
         } catch (AssetNotFoundException exception) {
             shape = CollisionShapeFactory.createMeshShape(loadedCgm);
         }
-
-        RigidBodyControl rigidBodyControl // TODO PhysicsRigidBody
-                = new RigidBodyControl(shape, PhysicsBody.massForStatic);
-        loadedCgm.addControl(rigidBodyControl);
+        setCollisionShape(shape);
     }
 
     /**
      * Reposition the default Camera to the initial location and orientation for
-     * this World. The world need not be loaded.
+     * this World. The World need not be loaded.
      */
     @Override
     public void resetCameraPosition() {

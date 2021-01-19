@@ -3,13 +3,15 @@ package com.jayfella.jme.vehicle;
 import com.github.stephengold.jmepower.Loadable;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
-import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.bullet.collision.shapes.CollisionShape;
+import com.jme3.bullet.objects.PhysicsBody;
+import com.jme3.bullet.objects.PhysicsRigidBody;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 
 /**
- * A game world, such as the Vehicle Playground. Includes the collision object,
- * but not lights, post-processing, or sky.
+ * A game world, such as the Vehicle Playground. Includes the C-G model and
+ * collision object, but not lights, post-processors, or sky.
  *
  * @author Stephen Gold sgold@sonic.net
  */
@@ -18,6 +20,10 @@ abstract public class World implements Loadable {
     // fields
 
     /**
+     * loaded CollisionShape
+     */
+    private CollisionShape loadedShape;
+    /**
      * manage decals
      */
     final private DecalManager decalManager = new DecalManager();
@@ -25,6 +31,10 @@ abstract public class World implements Loadable {
      * loaded C-G model of the game world
      */
     protected Node loadedCgm;
+    /**
+     * collision object
+     */
+    private PhysicsRigidBody rigidBody;
     // *************************************************************************
     // new methods exposed
 
@@ -44,9 +54,9 @@ abstract public class World implements Loadable {
 
         BulletAppState bulletAppState = Main.findAppState(BulletAppState.class);
         PhysicsSpace physicsSpace = bulletAppState.getPhysicsSpace();
-        RigidBodyControl rigidBodyControl
-                = loadedCgm.getControl(RigidBodyControl.class);
-        rigidBodyControl.setPhysicsSpace(physicsSpace);
+        rigidBody
+                = new PhysicsRigidBody(loadedShape, PhysicsBody.massForStatic);
+        physicsSpace.add(rigidBody);
     }
 
     /**
@@ -54,9 +64,8 @@ abstract public class World implements Loadable {
      * has been added.
      */
     void detachFromScene() {
-        RigidBodyControl rigidBodyControl
-                = loadedCgm.getControl(RigidBodyControl.class);
-        rigidBodyControl.setPhysicsSpace(null);
+        PhysicsSpace space = (PhysicsSpace) rigidBody.getCollisionSpace();
+        space.removeCollisionObject(rigidBody);
 
         decalManager.getNode().removeFromParent();
         loadedCgm.removeFromParent();
@@ -70,8 +79,8 @@ abstract public class World implements Loadable {
     abstract public float directLightIntensity();
 
     /**
-     * Determine the drop location, which lies directly above the preferred
-     * initial location for vehicles.
+     * Locate the drop point, which lies directly above the preferred initial
+     * location for vehicles. TODO rename locateDrop()
      *
      * @return a new location vector (in world coordinates)
      */
@@ -86,12 +95,21 @@ abstract public class World implements Loadable {
     abstract public float dropYRotation();
 
     /**
-     * Access the C-G model.
+     * Access the loaded C-G model.
      *
      * @return the pre-existing Node, or null if not yet loaded
      */
     public Node getCgm() {
         return loadedCgm;
+    }
+
+    /**
+     * Access the loaded CollisionShape.
+     *
+     * @return the pre-existing instance, or null if not yet loaded
+     */
+    public CollisionShape getCollisionShape() {
+        return loadedShape;
     }
 
     /**
@@ -105,7 +123,16 @@ abstract public class World implements Loadable {
 
     /**
      * Reposition the default Camera to the initial location and orientation for
-     * this World. The world need not be loaded.
+     * this World. The World need not be loaded.
      */
     abstract public void resetCameraPosition();
+
+    /**
+     * Alter the loaded CollisionShape.
+     *
+     * @param shape the desired shape
+     */
+    protected void setCollisionShape(CollisionShape shape) {
+        this.loadedShape = shape;
+    }
 }
