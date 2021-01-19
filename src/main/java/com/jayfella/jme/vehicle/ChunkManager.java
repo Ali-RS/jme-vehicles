@@ -1,9 +1,16 @@
 package com.jayfella.jme.vehicle;
 
+import com.jayfella.jme.vehicle.skid.SkidMarksState;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
+import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.PhysicsSpace;
+import com.jme3.bullet.collision.PhysicsCollisionObject;
+import com.jme3.bullet.objects.PhysicsRigidBody;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -32,28 +39,50 @@ public class ChunkManager extends BaseAppState {
      */
     private ChunkId originChunk = ChunkId.zero;
     /**
-     * map attached chunks to nodes
+     * map attached chunks to scene-graph nodes
      */
-    final private Map<ChunkId, Node> idToNode = new HashMap<>();
+    final private Map<ChunkId, Node> idToNode = new HashMap<>(99);
     /**
-     * where to attach chunks
+     * where to attach chunks in the scene graph
      */
-    final Node parent = new Node("Chunks");
+    final private Node parent = new Node("Chunks");
     /**
-     * dimensions of each chunk (in world units)
+     * dimensions of each chunk (in world units, all components positive)
      */
     final private Vector3f chunkDimensions = new Vector3f(1e9f, 1e9f, 1e9f);
-
+    /**
+     * reusable temporary vectors
+     */
+    final private static Vector3f tmpLocation = new Vector3f();
+    final private static Vector3f tmpOffset = new Vector3f();
+    /**
+     * World being managed
+     */
     private World world;
     // *************************************************************************
     // new methods exposed
 
-    public void setWorld(World world) {
+    /**
+     * Determine which chunk is at the scene's origin.
+     *
+     * @return the chunk's ID
+     */
+    public ChunkId originChunk() {
+        return originChunk;
+    }
+
+    /**
+     * Alter which World is managed.
+     *
+     * @param world the World to manage (may be null, alias created)
+     */
+    void setWorld(World world) {
         detachAll();
         this.world = world;
         if (world != null) {
             world.chunkDimensions(chunkDimensions);
         }
+        originChunk = ChunkId.zero;
     }
     // *************************************************************************
     // BaseAppState methods
@@ -109,25 +138,47 @@ public class ChunkManager extends BaseAppState {
     @Override
     public void update(float tpf) {
         super.update(tpf);
+        /*
+         * If the main camera has strayed too far from the scene origin,
+         * warp it one chunk closer.
+         */
+        Vector3f location = Main.getApplication().getCamera().getLocation();
+        if (location.x > +chunkDimensions.x) {
+            translateAll(-1, 0, 0);
+
+        } else if (location.x < -chunkDimensions.x) {
+            translateAll(+1, 0, 0);
+
+        } else if (location.y > +chunkDimensions.y) {
+            translateAll(0, -1, 0);
+
+        } else if (location.y < -chunkDimensions.y) {
+            translateAll(0, +1, 0);
+
+        } else if (location.z > +chunkDimensions.z) {
+            translateAll(0, 0, -1);
+
+        } else if (location.z < -chunkDimensions.z) {
+            translateAll(0, 0, +1);
+        }
 
         if (world == null) {
             return;
         }
 
-        Set<ChunkId> nearbySet = world.listNearbyChunks();
+        Set<ChunkId> visibleSet = world.listNearbyChunks();
 
         int numAttached = idToNode.size();
         ChunkId[] oldChunks = new ChunkId[numAttached];
         idToNode.keySet().toArray(oldChunks);
         for (ChunkId chunk : oldChunks) {
-            if (!nearbySet.contains(chunk)) {
+            if (!visibleSet.contains(chunk)) {
                 Node oldNode = idToNode.remove(chunk);
                 oldNode.removeFromParent();
             }
         }
 
-        Vector3f tmpOffset = new Vector3f(); // TODO static
-        for (ChunkId chunk : nearbySet) {
+        for (ChunkId chunk : visibleSet) {
             if (!idToNode.containsKey(chunk)) {
                 Node newNode = world.createChunk(chunk);
                 parent.attachChild(newNode);
@@ -169,5 +220,54 @@ public class ChunkManager extends BaseAppState {
         result.multLocal(chunkDimensions);
 
         return result;
+    }
+
+    /**
+     * Translate all non-plane physics objects by the specified number of chunks
+     * and translate the origin chunk by the opposite amount.
+     *
+     * @param deltaX the number of chunks in the +X direction
+     * @param deltaY the number of chunks in the +Y direction
+     * @param deltaZ the number of chunks in the +Z direction
+     */
+    private void translateAll(int deltaX, int deltaY, int deltaZ) {
+        originChunk = originChunk.subtract(deltaX, deltaY, deltaZ);
+
+        float xOffset = chunkDimensions.x * deltaX;
+        float yOffset = chunkDimensions.y * deltaY;
+        float zOffset = chunkDimensions.z * deltaZ;
+        tmpOffset.set(xOffset, yOffset, zOffset);
+
+        translateCameras(tmpOffset);
+        world.getDecalManager().translateAll(tmpOffset);
+        translatePcos(tmpOffset);
+        Main.findAppState(SkidMarksState.class).translateAll(tmpOffset);
+        Main.findAppState(TireSmokeEmitter.class).translateAll(tmpOffset);
+    }
+
+    private static void translateCameras(Vector3f offset) {
+        Camera camera = Main.getApplication().getCamera();
+        tmpLocation.set(camera.getLocation());
+        tmpLocation.addLocal(offset);
+        camera.setLocation(tmpLocation);
+    }
+
+    /**
+     * TODO handle parallel physics, characters, ghosts, etcetera
+     */
+    private static void translatePcos(Vector3f offset) {
+        BulletAppState bulletAppState = Main.findAppState(BulletAppState.class);
+        PhysicsSpace physicsSpace = bulletAppState.getPhysicsSpace();
+        Collection<PhysicsCollisionObject> pcos = physicsSpace.getPcoList();
+
+        for (PhysicsCollisionObject pco : pcos) {
+            if (pco instanceof PhysicsRigidBody
+                    && !pco.getCollisionShape().isInfinite()) {
+                PhysicsRigidBody body = (PhysicsRigidBody) pco;
+                body.getPhysicsLocation(tmpLocation);
+                tmpLocation.addLocal(offset);
+                body.setPhysicsLocation(tmpLocation);
+            }
+        }
     }
 }
