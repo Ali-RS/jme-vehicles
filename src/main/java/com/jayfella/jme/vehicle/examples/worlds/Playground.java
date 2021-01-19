@@ -6,6 +6,8 @@ import com.jme3.asset.AssetManager;
 import com.jme3.asset.AssetNotFoundException;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.util.CollisionShapeFactory;
+import com.jme3.light.Light;
+import com.jme3.light.LightList;
 import com.jme3.material.Material;
 import com.jme3.material.Materials;
 import com.jme3.material.RenderState;
@@ -19,7 +21,8 @@ import com.jme3.texture.Texture;
 import java.util.logging.Logger;
 
 /**
- * A sample World, build around James Khan's Vehicle Playground model.
+ * A single-chunk sample World, built around James Khan's Vehicle Playground
+ * model.
  */
 public class Playground extends World {
     // *************************************************************************
@@ -107,6 +110,10 @@ public class Playground extends World {
         assetPath = assetFolder + "vehicle-playground.j3o";
         loadedCgm = (Node) assetManager.loadModel(assetPath);
         loadedCgm.setMaterial(material);
+
+        LightList lights = loadedCgm.getLocalLightList();
+        Light light = lights.get(0);
+        loadedCgm.removeLight(light);
 
         loadedCgm.breadthFirstTraversal(spatial
                 -> spatial.setShadowMode(RenderQueue.ShadowMode.CastAndReceive));
