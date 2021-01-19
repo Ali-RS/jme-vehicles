@@ -68,11 +68,15 @@ public class QuarrySky extends Sky {
         directionalLight.setColor(directColor);
         directionalLight.setDirection(direction);
         /*
-         * configure and add the LightProbe
+         * Configure and add the LightProbe.
          */
         probe.setPosition(Vector3f.ZERO);
         probe.getArea().setRadius(9_999f);
         parent.addLight(probe);
+        /*
+         * Configure the shadow filter that was added by Sky.initialize().
+         */
+        getShadowFilter().setShadowIntensity(0.5f);
     }
 
     /**
