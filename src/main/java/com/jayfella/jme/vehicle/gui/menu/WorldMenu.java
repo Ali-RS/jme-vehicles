@@ -2,6 +2,7 @@ package com.jayfella.jme.vehicle.gui.menu;
 
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.World;
+import com.jayfella.jme.vehicle.examples.worlds.EndlessPlain;
 import com.jayfella.jme.vehicle.examples.worlds.Playground;
 import com.jayfella.jme.vehicle.examples.worlds.Racetrack;
 import com.simsilica.lemur.Button;
@@ -33,9 +34,13 @@ class WorldMenu extends AnimatedMenu {
      */
     @Override
     protected List<Button> createItems() {
-        List<Button> result = new ArrayList<>(3);
+        List<Button> result = new ArrayList<>(4);
 
-        Button button = new Button("Playground");
+        Button button = new Button("Endless Plain");
+        button.addClickCommands(source -> setWorld(new EndlessPlain()));
+        result.add(button);
+
+        button = new Button("Playground");
         button.addClickCommands(source -> setWorld(new Playground()));
         result.add(button);
 
