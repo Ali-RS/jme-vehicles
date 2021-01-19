@@ -62,11 +62,12 @@ abstract public class World implements Loadable {
     }
 
     /**
-     * Determine the dimensions of each scene chunk, in scene units.
+     * Determine the dimensions of each scene chunk, in scene units. For
+     * single-chunk worlds, the result is always (1e9,1e9,1e9).
      *
      * @param storeResult storage for the result (not null)
      */
-    void chunkDimensions(Vector3f storeResult) {
+    public void chunkDimensions(Vector3f storeResult) {
         storeResult.set(1e9f, 1e9f, 1e9f);
     }
 
