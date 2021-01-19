@@ -8,6 +8,8 @@ import com.jme3.bullet.objects.PhysicsBody;
 import com.jme3.bullet.objects.PhysicsRigidBody;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A game world, such as the Vehicle Playground. Includes the C-G model and
@@ -28,7 +30,7 @@ abstract public class World implements Loadable {
      */
     final private DecalManager decalManager = new DecalManager();
     /**
-     * loaded C-G model of the game world
+     * loaded C-G model of a prototypical chunk TODO privatize
      */
     protected Node loadedCgm;
     /**
@@ -47,7 +49,7 @@ abstract public class World implements Loadable {
         if (loadedCgm == null) {
             load();
         }
-        parent.attachChild(loadedCgm);
+        Main.findAppState(ChunkManager.class).setWorld(this);
 
         Node decalNode = decalManager.getNode();
         parent.attachChild(decalNode);
@@ -60,6 +62,27 @@ abstract public class World implements Loadable {
     }
 
     /**
+     * Determine the dimensions of each scene chunk, in scene units.
+     *
+     * @param storeResult storage for the result (not null)
+     */
+    void chunkDimensions(Vector3f storeResult) {
+        storeResult.set(1e9f, 1e9f, 1e9f);
+    }
+
+    /**
+     * Create a Node for the identified scene chunk.
+     *
+     * @param storeResult storage for the result (not null)
+     */
+    Node createChunk(ChunkId chunkId) {
+        boolean cloneMaterials = false;
+        Node result = loadedCgm.clone(cloneMaterials);
+
+        return result;
+    }
+
+    /**
      * Remove this World from the scene-graph node and PhysicsSpace to which it
      * has been added.
      */
@@ -68,7 +91,7 @@ abstract public class World implements Loadable {
         space.removeCollisionObject(rigidBody);
 
         decalManager.getNode().removeFromParent();
-        loadedCgm.removeFromParent();
+        Main.findAppState(ChunkManager.class).setWorld(null);
     }
 
     /**
@@ -119,6 +142,18 @@ abstract public class World implements Loadable {
      */
     public DecalManager getDecalManager() {
         return decalManager;
+    }
+
+    /**
+     * Enumerate all chunks that are nearby. For single-chunk worlds, the result
+     * is always (0,0,0).
+     *
+     * @return a new collection of IDs (not null)
+     */
+    protected Set<ChunkId> listNearbyChunks() {
+        Set<ChunkId> result = new HashSet<>();
+        result.add(ChunkId.zero);
+        return result;
     }
 
     /**

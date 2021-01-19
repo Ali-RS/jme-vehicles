@@ -382,12 +382,10 @@ public class Main extends SimpleApplication {
         BulletAppState bulletAppState = new BulletAppState();
         stateManager.attach(bulletAppState);
 
-        Sky.initialize();
-        attachAllToScene();
-
         stateManager.attachAll(
                 new AudioHud(),
                 new CameraNameState(),
+                new ChunkManager(),
                 new CompassState(),
                 new DriverHud(),
                 new GearNameState(),
@@ -395,6 +393,9 @@ public class Main extends SimpleApplication {
                 new PhysicsHud()
         );
         //stateManager.attach(new VehiclePointsState());
+
+        Sky.initialize();
+        attachAllToScene();
         /*
          * Attach input modes.
          */
