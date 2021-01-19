@@ -54,6 +54,19 @@ public class ChunkId {
     // new methods exposed
 
     /**
+     * Subtract from (inverse translate) this ID.
+     *
+     * @param deltaX the number of chunks in the -X direction
+     * @param deltaY the number of chunks in the -Y direction
+     * @param deltaZ the number of chunks in the -Z direction
+     * @return a new ID
+     */
+    public ChunkId subtract(int deltaX, int deltaY, int deltaZ) {
+        ChunkId result = new ChunkId(x - deltaX, y - deltaY, z - deltaZ);
+        return result;
+    }
+
+    /**
      * Determine the X coordinate.
      *
      * @return the coordinate value
