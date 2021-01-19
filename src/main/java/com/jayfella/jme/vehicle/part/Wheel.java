@@ -101,7 +101,7 @@ public class Wheel {
      * created)
      * @param wheelIndex the index among the vehicle's wheels (&ge;0)
      * @param isSteering true if used for steering, otherwise false
-     * @param steeringFlipped
+     * @param steeringFlipped true for rear-wheel steering, otherwise false
      * @param suspension the suspension spring (not null, alias created)
      * @param mainBrake the main brake (not null, alias created)
      * @param parkingBrake the parking brake (not null, alias created)

@@ -146,8 +146,8 @@ abstract public class World implements Loadable {
     }
 
     /**
-     * Enumerate all chunks that are nearby. For single-chunk worlds, the result
-     * is always (0,0,0).
+     * Enumerate all chunks that are near the scene origin. For single-chunk
+     * worlds, the result is always (0,0,0).
      *
      * @return a new collection of IDs (not null)
      */
@@ -164,7 +164,7 @@ abstract public class World implements Loadable {
     abstract public void resetCameraPosition();
 
     /**
-     * Alter the loaded CollisionShape.
+     * Alter which CollisionShape is loaded.
      *
      * @param shape the desired shape
      */

@@ -62,10 +62,11 @@ abstract public class Car extends Vehicle {
     /**
      * Add a single Wheel to this Car.
      *
-     * @param wheelModel
-     * @param connectionLocation
-     * @param isSteering
-     * @param isSteeringFlipped
+     * @param wheelModel the desired WheelModel (not null)
+     * @param connectionLocation the location where the suspension connects to
+     * the chassis (in chassis coordinates, not null, unaffected)
+     * @param isSteering true if used for steering, otherwise false
+     * @param isSteeringFlipped true for rear-wheel steering, otherwise false
      * @param mainBrakePeakForce (in Newtons, &ge;0)
      * @param parkingBrakePeakForce (in Newtons, &ge;0)
      * @param extraDamping (&ge;0, &lt;1)
@@ -246,6 +247,7 @@ abstract public class Car extends Vehicle {
     @Override
     public void build() {
         super.build();
+
         smokeEmitter = new TireSmokeEmitter(this);
         skidmarks = new SkidMarksState(this);
         magicFormulaState = new MagicFormulaState(this);
