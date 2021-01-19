@@ -364,7 +364,8 @@ abstract public class Vehicle
     }
 
     /**
-     * Determine the location of the ChaseCamera target.
+     * Determine the location of the ChaseCamera target. TODO rename
+     * locateTarget()
      *
      * @param bias how much to displace the target toward the rear (0=center of
      * mass, 1=back bumper)

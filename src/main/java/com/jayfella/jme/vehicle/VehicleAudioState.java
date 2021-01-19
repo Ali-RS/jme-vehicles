@@ -6,6 +6,9 @@ import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import java.util.logging.Logger;
 
+/**
+ * Manage the engine sound for a particular Vehicle.
+ */
 public class VehicleAudioState extends BaseAppState {
     // *************************************************************************
     // constants and loggers
@@ -23,9 +26,9 @@ public class VehicleAudioState extends BaseAppState {
     // constructors
 
     /**
-     * Instantiate an enabled AppState.
-     * 
-     * @param vehicle 
+     * Instantiate an enabled AppState for the specified Vehicle.
+     *
+     * @param vehicle the desired Vehicle
      */
     public VehicleAudioState(Vehicle vehicle) {
         this.vehicle = vehicle;
@@ -85,7 +88,7 @@ public class VehicleAudioState extends BaseAppState {
     @Override
     public void update(float tpf) {
         super.update(tpf);
-        
+
         Sound sound = vehicle.getEngineSound();
         if (sound == null) {
             return;
