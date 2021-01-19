@@ -104,6 +104,25 @@ class WheelSkid {
         return geometry;
     }
 
+    /**
+     * Translate the entire skidmark by the specified offset.
+     *
+     * @param offset the desired offset (in world coordinates, not null,
+     * unaffected)
+     */
+    public void translateAll(Vector3f offset) {
+        clearMesh();
+
+        Mesh mesh = geometry.getMesh();
+        int numSections = sections.size();
+        for (int sectionI = 0; sectionI < numSections; ++sectionI) {
+            SkidmarkSection section = sections.get(sectionI);
+            section.translate(offset);
+            section.appendToMesh(mesh, sectionI);
+        }
+        geometry.setMesh(mesh); // This triggers the necessary bounds refresh.
+    }
+
     void update(float tpf) {
         float skidFraction = wheel.skidFraction();
         if (skidFraction < SKID_FX_SPEED) {

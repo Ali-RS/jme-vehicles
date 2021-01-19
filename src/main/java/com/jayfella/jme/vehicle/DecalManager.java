@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle;
 
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import java.util.Deque;
@@ -7,7 +8,7 @@ import java.util.LinkedList;
 import java.util.logging.Logger;
 
 /**
- * Manage decal geometries and "age them out" on a first-in, first-out (FIFO)
+ * Manage decal geometries, "aging them out" on a first-in, first-out (FIFO)
  * basis.
  *
  * @author Stephen Gold sgold@sonic.net
@@ -90,5 +91,17 @@ public class DecalManager {
      */
     Node getNode() {
         return decalNode;
+    }
+
+    /**
+     * Translate all decals by the specified offset.
+     *
+     * @param offset the desired offset (in world coordinates, not null,
+     * unaffected)
+     */
+    void translateAll(Vector3f offset) {
+        for (Geometry geometry : fifo) {
+            geometry.move(offset);
+        }
     }
 }

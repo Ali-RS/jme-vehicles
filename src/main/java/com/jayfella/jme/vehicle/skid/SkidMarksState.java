@@ -6,6 +6,7 @@ import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
 import com.jme3.bounding.BoundingBox;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import java.util.logging.Logger;
@@ -69,6 +70,18 @@ public class SkidMarksState extends BaseAppState {
      */
     public void setSkidmarkEnabled(boolean enabled) {
         skidmarkEnabled = enabled;
+    }
+
+    /**
+     * Translate all skidmarks by the specified offset.
+     *
+     * @param offset the desired offset (in world coordinates, not null,
+     * unaffected)
+     */
+    public void translateAll(Vector3f offset) {
+        for (WheelSkid skid : skids) {
+            skid.translateAll(offset);
+        }
     }
     // *************************************************************************
     // BaseAppState methods

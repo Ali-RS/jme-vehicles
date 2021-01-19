@@ -57,6 +57,21 @@ public class TireSmokeEmitter extends BaseAppState {
         this.vehicle = car;
     }
     // *************************************************************************
+    // new methods exposed
+
+    /**
+     * Translate all emitters by the specified offset.
+     *
+     * @param offset the desired offset (in world coordinates, not null,
+     * unaffected)
+     */
+    public void translateAll(Vector3f offset) {
+        for (ParticleEmitter emitter : emitters) {
+            emitter.killAllParticles(); // TODO warp particles
+            emitter.move(offset);
+        }
+    }
+    // *************************************************************************
     // BaseAppState methods
 
     /**
@@ -130,7 +145,7 @@ public class TireSmokeEmitter extends BaseAppState {
     @Override
     public void update(float tpf) {
         super.update(tpf);
-        
+
         int numWheels = vehicle.countWheels();
         for (int wheelIndex = 0; wheelIndex < numWheels; wheelIndex++) {
             ParticleEmitter emitter = emitters[wheelIndex];

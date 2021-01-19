@@ -227,4 +227,16 @@ class SkidmarkSection {
         float result = worldLocation.distanceSquared(location);
         return result;
     }
+
+    /**
+     * Translate this section by the specified offset.
+     *
+     * @param offset the desired offset (in world coordinates, not null,
+     * unaffected)
+     */
+    void translate(Vector3f offset) {
+        location.addLocal(offset);
+        locationLeft.addLocal(offset);
+        locationRight.addLocal(offset);
+    }
 }
