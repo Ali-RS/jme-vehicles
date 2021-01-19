@@ -125,9 +125,17 @@ public class EndlessPlain extends World {
     public void load() {
         assert loadedCgm == null : "The model is already loaded.";
         /*
-         * Generate texture coordinates and vertex positions
+         * Generate normals, texture coordinates, and vertex positions
          * for a large square in the X-Z plane.
          */
+        FloatBuffer normals = BufferUtils.createFloatBuffer(
+                0f, 1f, 0f,
+                0f, 1f, 0f,
+                0f, 1f, 0f,
+                0f, 1f, 0f,
+                0f, 1f, 0f,
+                0f, 1f, 0f
+        );
         float uvDiameter = 5f;
         FloatBuffer uvs = BufferUtils.createFloatBuffer(
                 uvDiameter, uvDiameter,
@@ -147,6 +155,7 @@ public class EndlessPlain extends World {
                 -posRadius, 0f, -posRadius
         );
         Mesh mesh = new Mesh();
+        mesh.setBuffer(VertexBuffer.Type.Normal, numAxes, normals);
         mesh.setBuffer(VertexBuffer.Type.Position, numAxes, positions);
         mesh.setBuffer(VertexBuffer.Type.TexCoord, 2, uvs);
         mesh.updateBound();
