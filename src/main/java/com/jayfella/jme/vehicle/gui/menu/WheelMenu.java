@@ -9,6 +9,8 @@ import com.jayfella.jme.vehicle.examples.wheels.CruiserWheel;
 import com.jayfella.jme.vehicle.examples.wheels.DarkAlloyWheel;
 import com.jayfella.jme.vehicle.examples.wheels.HatchbackWheel;
 import com.jayfella.jme.vehicle.examples.wheels.RangerWheel;
+import com.jayfella.jme.vehicle.examples.wheels.RotatorFrontWheel;
+import com.jayfella.jme.vehicle.examples.wheels.RotatorRearWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.simsilica.lemur.Button;
 import java.util.ArrayList;
@@ -39,7 +41,7 @@ class WheelMenu extends AnimatedMenu {
      */
     @Override
     protected List<Button> createItems() {
-        List<Button> result = new ArrayList<>(8);
+        List<Button> result = new ArrayList<>(10);
 
         Button button = new Button("Basic Alloy");
         button.addClickCommands(source -> setModel(BasicAlloyWheel.class));
@@ -67,6 +69,14 @@ class WheelMenu extends AnimatedMenu {
 
         button = new Button("Ranger");
         button.addClickCommands(source -> setModel(RangerWheel.class));
+        result.add(button);
+
+        button = new Button("Rotator Front");
+        button.addClickCommands(source -> setModel(RotatorFrontWheel.class));
+        result.add(button);
+
+        button = new Button("Rotator Rear");
+        button.addClickCommands(source -> setModel(RotatorRearWheel.class));
         result.add(button);
 
         button = new Button("<< Back");
