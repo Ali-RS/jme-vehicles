@@ -57,17 +57,6 @@ public class EndlessPlain extends World {
     }
 
     /**
-     * Locate the drop point, which lies directly above the preferred initial
-     * location for vehicles. TODO re-order methods
-     *
-     * @param storeResult storage for the result (not null)
-     */
-    @Override
-    public void locateDrop(Vector3f storeResult) {
-        storeResult.set(0f, 9f, 0f);
-    }
-
-    /**
      * Determine the preferred initial orientation for vehicles.
      *
      * @return the Y rotation angle (in radians, measured counter-clockwise as
@@ -166,6 +155,17 @@ public class EndlessPlain extends World {
         Plane plane = new Plane(Vector3f.UNIT_Y, planeConstant);
         CollisionShape shape = new PlaneCollisionShape(plane);
         setCollisionShape(shape);
+    }
+
+    /**
+     * Locate the drop point, which lies directly above the preferred initial
+     * location for vehicles.
+     *
+     * @param storeResult storage for the result (not null)
+     */
+    @Override
+    public void locateDrop(Vector3f storeResult) {
+        storeResult.set(0f, 9f, 0f);
     }
 
     /**

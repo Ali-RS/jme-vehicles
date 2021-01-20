@@ -143,15 +143,6 @@ abstract public class Vehicle
     }
 
     /**
-     * Access the engine sound.
-     *
-     * @return the pre-existing Sound, or null for silence
-     */
-    public Sound getEngineSound() {
-        return engineSound;
-    }
-
-    /**
      * Determine the linear damping due to air resistance.
      *
      * @return a fraction (&ge;0, &lt;1)
@@ -206,6 +197,15 @@ abstract public class Vehicle
      */
     public Engine getEngine() {
         return engine;
+    }
+
+    /**
+     * Access the engine sound.
+     *
+     * @return the pre-existing Sound, or null for silence
+     */
+    public Sound getEngineSound() {
+        return engineSound;
     }
 
     /**
@@ -277,6 +277,30 @@ abstract public class Vehicle
      */
     public VehicleControl getVehicleControl() {
         return vehicleControl;
+    }
+
+    /**
+     * Determine the location of the ChaseCamera target.
+     *
+     * @param bias how much to displace the target toward the rear (0=center of
+     * mass, 1=back bumper)
+     * @param storeResult storage for the result (modified if not null)
+     * @return a location vector (in physics-space coordinates, either
+     * storeResult or a new instance)
+     */
+    public Vector3f locateTarget(float bias, Vector3f storeResult) {
+        Vector3f result = (storeResult == null) ? new Vector3f() : storeResult;
+        RigidBodyMotionState motion = vehicleControl.getMotionState();
+
+        motion.getOrientation(tmpOrientation);
+        Vector3f offset = targetOffset(); // TODO garbage
+        offset.z *= bias;
+        tmpOrientation.mult(offset, offset);
+
+        motion.getLocation(result);
+        result.addLocal(offset);
+
+        return result;
     }
 
     /**
@@ -361,30 +385,6 @@ abstract public class Vehicle
         if (engine.isRunning()) {
             engine.setRunning(false);
         }
-    }
-
-    /**
-     * Determine the location of the ChaseCamera target. TODO re-order methods
-     *
-     * @param bias how much to displace the target toward the rear (0=center of
-     * mass, 1=back bumper)
-     * @param storeResult storage for the result (modified if not null)
-     * @return a location vector (in physics-space coordinates, either
-     * storeResult or a new instance)
-     */
-    public Vector3f locateTarget(float bias, Vector3f storeResult) {
-        Vector3f result = (storeResult == null) ? new Vector3f() : storeResult;
-        RigidBodyMotionState motion = vehicleControl.getMotionState();
-
-        motion.getOrientation(tmpOrientation);
-        Vector3f offset = targetOffset(); // TODO garbage
-        offset.z *= bias;
-        tmpOrientation.mult(offset, offset);
-
-        motion.getLocation(result);
-        result.addLocal(offset);
-
-        return result;
     }
 
     /**

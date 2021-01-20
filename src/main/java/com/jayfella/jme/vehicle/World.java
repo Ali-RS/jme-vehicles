@@ -96,14 +96,6 @@ abstract public class World implements Loadable {
     }
 
     /**
-     * Locate the drop point, which lies directly above the preferred initial
-     * location for vehicles. TODO re-order methods
-     *
-     * @param storeResult storage for the result (not null)
-     */
-    abstract public void locateDrop(Vector3f storeResult);
-
-    /**
      * Determine the preferred initial orientation for vehicles.
      *
      * @return the Y rotation angle (in radians, measured counter-clockwise as
@@ -139,8 +131,24 @@ abstract public class World implements Loadable {
     }
 
     /**
+     * Locate the drop point, which lies directly above the preferred initial
+     * location for vehicles.
+     *
+     * @param storeResult storage for the result (not null)
+     */
+    abstract public void locateDrop(Vector3f storeResult);
+
+    /**
+     * Reposition the default Camera to the initial location and orientation for
+     * this World. The World need not be loaded.
+     */
+    abstract public void resetCameraPosition();
+    // *************************************************************************
+    // new methods exposed
+
+    /**
      * Enumerate all chunks that are near the scene origin. For single-chunk
-     * worlds, the result is always (0,0,0). TODO re-order methods
+     * worlds, the result is always (0,0,0).
      *
      * @return a new collection of IDs (not null)
      */
@@ -149,12 +157,6 @@ abstract public class World implements Loadable {
         result.add(ChunkId.zero);
         return result;
     }
-
-    /**
-     * Reposition the default Camera to the initial location and orientation for
-     * this World. The World need not be loaded.
-     */
-    abstract public void resetCameraPosition();
 
     /**
      * Alter which C-G model is loaded.
