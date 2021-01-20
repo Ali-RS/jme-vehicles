@@ -97,11 +97,11 @@ abstract public class World implements Loadable {
 
     /**
      * Locate the drop point, which lies directly above the preferred initial
-     * location for vehicles. TODO storeResult and rename locateDrop()
+     * location for vehicles. TODO re-order methods
      *
-     * @return a new location vector (in world coordinates)
+     * @param storeResult storage for the result (not null)
      */
-    abstract public Vector3f dropLocation();
+    abstract public void locateDrop(Vector3f storeResult);
 
     /**
      * Determine the preferred initial orientation for vehicles.

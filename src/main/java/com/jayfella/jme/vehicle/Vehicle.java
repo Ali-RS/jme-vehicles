@@ -394,7 +394,8 @@ abstract public class Vehicle
         /*
          * Cast a physics ray downward from the drop location.
          */
-        Vector3f dropLocation = Main.getWorld().dropLocation();
+        Vector3f dropLocation = new Vector3f();
+        Main.getWorld().locateDrop(dropLocation);
         Vector3f endLocation = dropLocation.add(0f, -999f, 0f);
         BulletAppState bas = Main.findAppState(BulletAppState.class);
         PhysicsSpace physicsSpace = bas.getPhysicsSpace();

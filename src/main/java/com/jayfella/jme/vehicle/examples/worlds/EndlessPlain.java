@@ -58,13 +58,13 @@ public class EndlessPlain extends World {
 
     /**
      * Locate the drop point, which lies directly above the preferred initial
-     * location for vehicles.
+     * location for vehicles. TODO re-order methods
      *
-     * @return a new location vector (in world coordinates)
+     * @param storeResult storage for the result (not null)
      */
     @Override
-    public Vector3f dropLocation() {
-        return new Vector3f(0f, 9f, 0f);
+    public void locateDrop(Vector3f storeResult) {
+        storeResult.set(0f, 9f, 0f);
     }
 
     /**
