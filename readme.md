@@ -233,6 +233,8 @@ Resources/assets/media:
   has a CC Attribution-NonCommercial-ShareAlike license.
 + The [HCR2 Buggy model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/hcr2_buggy)
   has a CC Attribution license.
++ The [HCR2 Rotator model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/hcr2_rotator)
+  has a CC Attribution license.
 + The [Modern Hatchback - Low Poly model model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/modern_hatchback)
   has a CC Attribution license.
 + The [Race Track model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/race1)
@@ -313,6 +315,10 @@ The world (and physics-space) units of distance are *meters*.
 + This work is based on "HCR2 Buggy"
   (https://sketchfab.com/3d-models/hcr2-buggy-a65fe5c27464448cbce7fe61c49159ef)
   by oakar258
+  licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).
++ This work is based on "HCR2 Rotator"
+  (https://sketchfab.com/3d-models/hcr2-rotator-f03e95525b4c48cfb659064a76d8cd53)
+  by oakar258 (https://sketchfab.com/oakar258)
   licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).
 + This work is based on "Modern Hatchback - Low Poly model"
   (https://sketchfab.com/3d-models/modern-hatchback-low-poly-model-055ff8a21b8d4d279debca089e2fafcd)

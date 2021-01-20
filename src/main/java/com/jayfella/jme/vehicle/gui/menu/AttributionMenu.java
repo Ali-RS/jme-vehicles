@@ -53,6 +53,10 @@ public class AttributionMenu extends AnimatedMenu {
             + "This work is based on \"HCR2 Buggy\"\n"
             + "(https://sketchfab.com/3d-models/hcr2-buggy-a65fe5c27464448cbce7fe61c49159ef)\n"
             + "by oakar258 licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).\n\n"
+            + "This work is based on \"HCR2 Rotator\"\n"
+            + "(https://sketchfab.com/3d-models/hcr2-rotator-f03e95525b4c48cfb659064a76d8cd53)\n"
+            + "by oakar258 (https://sketchfab.com/oakar258)\n"
+            + "licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).\n\n"
             + "This work is based on \"Modern Hatchback - Low Poly model\"\n"
             + "(https://sketchfab.com/3d-models/modern-hatchback-low-poly-model-055ff8a21b8d4d279debca089e2fafcd)\n"
             + "by Daniel Zhabotinsky (https://sketchfab.com/DanielZhabotinsky)\n"
@@ -174,7 +178,7 @@ public class AttributionMenu extends AnimatedMenu {
         bitmapText.setText(attributionMessage);
         node.attachChild(bitmapText);
 
-        float scaleFactor = 1.42f;
+        float scaleFactor = 1.31f;
         bitmapText.setLocalScale(scaleFactor);
 
         float textWidth = scaleFactor * bitmapText.getLineWidth();
