@@ -63,6 +63,7 @@ public class CreateShapes {
         createChassisShape("ford_ranger", "pickup");
         createChassisShape("gtr_nismo", "scene.gltf");
         createChassisShape("hcr2_buggy", "dune-buggy");
+        createChassisShape("hcr2_rotator", "chassis");
         createChassisShape("modern_hatchback", "hatchback");
         /*
          * Create a collision shape for each World.
@@ -87,7 +88,8 @@ public class CreateShapes {
                 cgmBaseFileName);
         Spatial cgmRoot = assetManager.loadModel(cgmAssetPath);
 
-        System.out.printf("%nCreate shape for %s chassis ... ", cgmBaseFileName);
+        System.out.printf("%nCreate shape for %s chassis ... ",
+                cgmBaseFileName);
         System.out.flush();
 
         CollisionShape collisionShape
