@@ -241,8 +241,8 @@ public class ChunkManager extends BaseAppState {
         translateCameras(tmpOffset);
         world.getDecalManager().translateAll(tmpOffset);
         translatePcos(tmpOffset);
-        Main.findAppState(SkidMarksState.class).translateAll(tmpOffset);
-        Main.findAppState(TireSmokeEmitter.class).translateAll(tmpOffset);
+        getState(SkidMarksState.class).translateAll(tmpOffset);
+        getState(TireSmokeEmitter.class).translateAll(tmpOffset);
     }
 
     private static void translateCameras(Vector3f offset) {
@@ -255,8 +255,8 @@ public class ChunkManager extends BaseAppState {
     /**
      * TODO handle parallel physics, characters, ghosts, etcetera
      */
-    private static void translatePcos(Vector3f offset) {
-        BulletAppState bulletAppState = Main.findAppState(BulletAppState.class);
+    private void translatePcos(Vector3f offset) {
+        BulletAppState bulletAppState = getState(BulletAppState.class);
         PhysicsSpace physicsSpace = bulletAppState.getPhysicsSpace();
         Collection<PhysicsCollisionObject> pcos = physicsSpace.getPcoList();
 

@@ -1,6 +1,5 @@
 package com.jayfella.jme.vehicle.gui;
 
-import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.input.DrivingInputMode;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
@@ -40,8 +39,7 @@ public class CameraNameState extends CartoucheState {
             @Override
             public void onClick(boolean isPressed) {
                 if (isPressed) {
-                    DrivingInputMode mode
-                            = Main.findAppState(DrivingInputMode.class);
+                    DrivingInputMode mode = getState(DrivingInputMode.class);
                     if (mode.isEnabled()) {
                         mode.nextCameraMode();
                     }

@@ -82,7 +82,7 @@ public class PhysicsHud extends BaseAppState {
      * @return true if paused, otherwise false
      */
     public boolean isPhysicsPaused() {
-        BulletAppState bas = Main.findAppState(BulletAppState.class);
+        BulletAppState bas = getState(BulletAppState.class);
         float physicsSpeed = bas.getSpeed();
         if (physicsSpeed == 0f) {
             return true;
@@ -97,7 +97,7 @@ public class PhysicsHud extends BaseAppState {
     public void singleStepPhysics() {
         assert isPhysicsPaused();
 
-        BulletAppState bas = Main.findAppState(BulletAppState.class);
+        BulletAppState bas = getState(BulletAppState.class);
         PhysicsSpace space = bas.getPhysicsSpace();
         float timeStep = space.getAccuracy();
         space.update(timeStep, 0);
@@ -107,7 +107,7 @@ public class PhysicsHud extends BaseAppState {
      * Toggle the physics simulation between running and paused.
      */
     public void togglePhysicsPaused() {
-        BulletAppState bas = Main.findAppState(BulletAppState.class);
+        BulletAppState bas = getState(BulletAppState.class);
         if (isPhysicsPaused()) {
             bas.setSpeed(1f);
             showPauseButton(false);

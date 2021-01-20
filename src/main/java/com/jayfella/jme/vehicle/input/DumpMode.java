@@ -1,6 +1,5 @@
 package com.jayfella.jme.vehicle.input;
 
-import com.jayfella.jme.vehicle.Main;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.renderer.Camera;
@@ -92,7 +91,7 @@ public class DumpMode extends InputMode {
 
         assign((FunctionId function, InputState inputState, double tpf) -> {
             if (inputState == InputState.Positive) {
-                BulletAppState bas = Main.findAppState(BulletAppState.class);
+                BulletAppState bas = getState(BulletAppState.class);
                 dumper.dump(bas);
                 System.out.println();
                 System.out.flush();

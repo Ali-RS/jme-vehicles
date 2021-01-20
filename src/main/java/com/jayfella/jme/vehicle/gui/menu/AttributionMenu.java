@@ -119,10 +119,10 @@ public class AttributionMenu extends AnimatedMenu {
     protected void onDisable() {
         node.removeFromParent();
 
-        Main.findAppState(AudioHud.class).setEnabled(true);
-        Main.findAppState(CameraNameState.class).setEnabled(true);
-        Main.findAppState(CompassState.class).setEnabled(true);
-        Main.findAppState(PhysicsHud.class).setEnabled(true);
+        getState(AudioHud.class).setEnabled(true);
+        getState(CameraNameState.class).setEnabled(true);
+        getState(CompassState.class).setEnabled(true);
+        getState(PhysicsHud.class).setEnabled(true);
 
         super.onDisable();
     }
@@ -134,10 +134,10 @@ public class AttributionMenu extends AnimatedMenu {
     protected void onEnable() {
         super.onEnable();
 
-        Main.findAppState(AudioHud.class).setEnabled(false);
-        Main.findAppState(CameraNameState.class).setEnabled(false);
-        Main.findAppState(CompassState.class).setEnabled(false);
-        Main.findAppState(PhysicsHud.class).setEnabled(false);
+        getState(AudioHud.class).setEnabled(false);
+        getState(CameraNameState.class).setEnabled(false);
+        getState(CompassState.class).setEnabled(false);
+        getState(PhysicsHud.class).setEnabled(false);
 
         node.detachAllChildren();
         setupShutter();

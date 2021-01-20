@@ -140,8 +140,7 @@ public class DrivingInputMode extends InputMode {
 
         assign((FunctionId function, InputState inputState, double tpf) -> {
             if (inputState == InputState.Positive) {
-                Main.findAppState(DriverHud.class)
-                        .toggleEngineStarted();
+                getState(DriverHud.class).toggleEngineStarted();
             }
         }, F_START_ENGINE);
 
@@ -180,21 +179,20 @@ public class DrivingInputMode extends InputMode {
         setEnabled(false);
 
         EnginePowerGraphState enginePowerGraphState
-                = Main.findAppState(EnginePowerGraphState.class);
+                = getState(EnginePowerGraphState.class);
         stateManager.detach(enginePowerGraphState);
 
-        TireDataState tireDataState = Main.findAppState(TireDataState.class);
+        TireDataState tireDataState = getState(TireDataState.class);
         stateManager.detach(tireDataState);
 
         VehicleEditorState vehicleEditorState
-                = Main.findAppState(VehicleEditorState.class);
+                = getState(VehicleEditorState.class);
         stateManager.detach(vehicleEditorState);
 
-        DebugTabState debugTabState = Main.findAppState(DebugTabState.class);
+        DebugTabState debugTabState = getState(DebugTabState.class);
         stateManager.detach(debugTabState);
 
-        DriverHud hud = Main.findAppState(DriverHud.class);
-        hud.setEnabled(false);
+        getState(DriverHud.class).setEnabled(false);
 
         Vehicle vehicle = Main.getVehicle();
         Vehicle newVehicle;
@@ -207,7 +205,7 @@ public class DrivingInputMode extends InputMode {
         Main.getApplication().setVehicle(newVehicle);
 
         stateManager.attach(new MainMenu());
-        Main.findAppState(CameraInputMode.class).orbit();
+        getState(CameraInputMode.class).orbit();
     }
     // *************************************************************************
     // InputMode methods
@@ -235,7 +233,7 @@ public class DrivingInputMode extends InputMode {
         updateTurn(tpf);
         updateBrakeAndAccelerate();
 
-        SignalMode signalMode = Main.findAppState(SignalMode.class);
+        SignalMode signalMode = getState(SignalMode.class);
         SignalTracker signalTracker = signalMode.getSignalTracker();
         boolean requested = signalTracker.test(SignalMode.F_HORN1.getId());
         Main.getVehicle().setHornStatus(requested);
@@ -282,7 +280,7 @@ public class DrivingInputMode extends InputMode {
         Camera camera = getApplication().getCamera();
         MyCamera.setYTangent(camera, 1f);
 
-        SignalMode signalMode = Main.findAppState(SignalMode.class);
+        SignalMode signalMode = getState(SignalMode.class);
         SignalTracker signalTracker = signalMode.getSignalTracker();
 
         CameraController activeCamera;
@@ -315,7 +313,7 @@ public class DrivingInputMode extends InputMode {
                         "Unknown camera-control mode: " + controlMode);
         }
 
-        Main.findAppState(CameraInputMode.class).setActiveCamera(activeCamera);
+        getState(CameraInputMode.class).setActiveCamera(activeCamera);
     }
 
     private void updateBrakeAndAccelerate() {

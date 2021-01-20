@@ -204,7 +204,7 @@ public class DriverHud extends BaseAppState {
         Expander listener = new Expander(hornButton) {
             @Override
             public void onClick(boolean isPressed) {
-                SignalMode mode = Main.findAppState(SignalMode.class);
+                SignalMode mode = getState(SignalMode.class);
                 SignalTracker signalTracker = mode.getSignalTracker();
                 String signalName = SignalMode.F_HORN1.getId();
                 signalTracker.setActive(signalName, 999, isPressed);
@@ -309,7 +309,7 @@ public class DriverHud extends BaseAppState {
      * Hide the gear-name indicator.
      */
     private void hideGearName() {
-        GearNameState state = Main.findAppState(GearNameState.class);
+        GearNameState state = getState(GearNameState.class);
         state.setEnabled(false);
     }
 
@@ -363,7 +363,7 @@ public class DriverHud extends BaseAppState {
      * Exit the car and return to the main menu.
      */
     private void returnToMainMenu() {
-        Main.findAppState(DrivingInputMode.class).returnToMainMenu();
+        getState(DrivingInputMode.class).returnToMainMenu();
     }
 
     /**
@@ -404,8 +404,7 @@ public class DriverHud extends BaseAppState {
      * Show the gear-name indicator.
      */
     private void showGearName() {
-        GearNameState state = Main.findAppState(GearNameState.class);
-        state.setEnabled(true);
+        getState(GearNameState.class).setEnabled(true);
     }
 
     /**

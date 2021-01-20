@@ -180,7 +180,7 @@ public class CameraInputMode extends InputMode {
      * Cycle through the available camera modes.
      */
     private void nextCameraMode() {
-        DrivingInputMode driving = Main.findAppState(DrivingInputMode.class);
+        DrivingInputMode driving = getState(DrivingInputMode.class);
         if (driving.isEnabled()) {
             driving.nextCameraMode();
         }

@@ -72,6 +72,6 @@ class CarMenu extends AnimatedMenu {
         vehicle.load();
         Main.getApplication().setVehicle(vehicle);
 
-        Main.findAppState(CameraInputMode.class).setVehicle(vehicle);
+        getState(CameraInputMode.class).setVehicle(vehicle);
     }
 }
