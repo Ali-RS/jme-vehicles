@@ -57,16 +57,6 @@ public class EndlessPlain extends World {
     }
 
     /**
-     * Determine the preferred intensity for direct light.
-     *
-     * @return the average color component (&ge;0)
-     */
-    @Override
-    public float directLightIntensity() {
-        return 1f;
-    }
-
-    /**
      * Locate the drop point, which lies directly above the preferred initial
      * location for vehicles.
      *

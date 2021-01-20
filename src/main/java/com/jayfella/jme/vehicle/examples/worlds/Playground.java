@@ -9,15 +9,12 @@ import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.light.Light;
 import com.jme3.light.LightList;
 import com.jme3.material.Material;
-import com.jme3.material.Materials;
-import com.jme3.material.RenderState;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import com.jme3.system.JmeSystem;
 import com.jme3.system.Platform;
-import com.jme3.texture.Texture;
 import java.util.logging.Logger;
 
 /**
@@ -35,16 +32,6 @@ public class Playground extends World {
             = Logger.getLogger(Playground.class.getName());
     // *************************************************************************
     // World methods
-
-    /**
-     * Determine the preferred intensity for direct light.
-     *
-     * @return the average color component (&ge;0)
-     */
-    @Override
-    public float directLightIntensity() {
-        return 1f;
-    }
 
     /**
      * Locate the drop point, which lies directly above the preferred initial
@@ -75,40 +62,13 @@ public class Playground extends World {
     public void load() {
         assert loadedCgm == null : "The model is already loaded.";
 
-        AssetManager assetManager = Main.getApplication().getAssetManager();
-        Material material = new Material(assetManager, Materials.PBR);
-
-        String prefix = "/Textures/Ground/Marble/marble_01_";
-        String assetPath = prefix + "diff_2k.png";
-        Texture baseColorMap = assetManager.loadTexture(assetPath);
-        baseColorMap.setWrap(Texture.WrapMode.Repeat);
-        material.setTexture("BaseColorMap", baseColorMap);
-
-        assetPath = prefix + "rough_2k.png";
-        Texture roughnessMap = assetManager.loadTexture(assetPath);
-        roughnessMap.setWrap(Texture.WrapMode.Repeat);
-        material.setTexture("RoughnessMap", roughnessMap);
-
-        assetPath = prefix + "AO_2k.png";
-        Texture aoMap = assetManager.loadTexture(assetPath);
-        aoMap.setWrap(Texture.WrapMode.Repeat);
-        material.setTexture("LightMap", aoMap);
-        material.setBoolean("LightMapAsAOMap", true);
-
-        assetPath = prefix + "nor_2k.png";
-        Texture normalMap = assetManager.loadTexture(assetPath);
-        normalMap.setWrap(Texture.WrapMode.Repeat);
-        material.setTexture("NormalMap", normalMap);
-        material.setFloat("NormalType", 1f);
-
-        material.setFloat("Metallic", 0.001f);
-
-        RenderState additional = material.getAdditionalRenderState();
-        additional.setFaceCullMode(RenderState.FaceCullMode.Off);
-
         String assetFolder = "/Models/vehicle-playground/";
-        assetPath = assetFolder + "vehicle-playground.j3o";
+        String assetPath = assetFolder + "vehicle-playground.j3o";
+        AssetManager assetManager = Main.getApplication().getAssetManager();
         loadedCgm = (Node) assetManager.loadModel(assetPath);
+
+        assetPath = "/Materials/Vehicles/marble_01.j3m";
+        Material material = assetManager.loadMaterial(assetPath);
         loadedCgm.setMaterial(material);
 
         LightList lights = loadedCgm.getLocalLightList();

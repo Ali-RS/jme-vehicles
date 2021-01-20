@@ -4,7 +4,6 @@ import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Sky;
 import com.jme3.app.LegacyApplication;
 import com.jme3.asset.AssetManager;
-import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.light.LightProbe;
 import com.jme3.math.ColorRGBA;
@@ -84,8 +83,8 @@ public class AnimatedNightSky extends Sky {
         /*
          * Configure the AmbientLight that was added by Sky.initialize().
          */
-        AmbientLight ambientLight = getAmbientLight();
-        ambientLight.setColor(ColorRGBA.White);
+        ColorRGBA ambientColor = new ColorRGBA(0.8f, 0.8f, 0.8f, 1f);
+        getAmbientLight().setColor(ambientColor);
         /*
          * Configure the DirectionalLight that was added by Sky.initialize().
          */

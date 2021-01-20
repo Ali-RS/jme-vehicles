@@ -2,9 +2,7 @@ package com.jayfella.jme.vehicle.examples.skies;
 
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Sky;
-import com.jayfella.jme.vehicle.World;
 import com.jme3.asset.AssetManager;
-import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.light.LightProbe;
 import com.jme3.math.ColorRGBA;
@@ -55,14 +53,12 @@ public class QuarrySky extends Sky {
         /*
          * Configure the AmbientLight that was added by Sky.initialize().
          */
-        AmbientLight ambientLight = getAmbientLight();
-        ambientLight.setColor(ColorRGBA.White);
+        ColorRGBA ambientColor = new ColorRGBA(1f, 1f, 1f, 1f);
+        getAmbientLight().setColor(ambientColor);
         /*
          * Configure the DirectionalLight that was added by Sky.initialize().
          */
-        World world = Main.getWorld();
-        float intensity = world.directLightIntensity();
-        ColorRGBA directColor = ColorRGBA.White.mult(intensity);
+        ColorRGBA directColor = new ColorRGBA(1f, 1f, 1f, 1f);
         Vector3f direction = new Vector3f(1f, -0.45f, 0.5f).normalizeLocal();
         DirectionalLight directionalLight = getDirectionalLight();
         directionalLight.setColor(directColor);

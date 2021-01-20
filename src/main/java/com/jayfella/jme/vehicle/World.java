@@ -96,15 +96,8 @@ abstract public class World implements Loadable {
     }
 
     /**
-     * Determine the preferred intensity for direct light.
-     *
-     * @return the average color component (&ge;0)
-     */
-    abstract public float directLightIntensity();
-
-    /**
      * Locate the drop point, which lies directly above the preferred initial
-     * location for vehicles. TODO rename locateDrop()
+     * location for vehicles. TODO storeResult and rename locateDrop()
      *
      * @return a new location vector (in world coordinates)
      */

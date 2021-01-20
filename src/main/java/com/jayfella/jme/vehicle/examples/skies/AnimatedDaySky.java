@@ -4,7 +4,6 @@ import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Sky;
 import com.jme3.app.LegacyApplication;
 import com.jme3.asset.AssetManager;
-import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.light.LightProbe;
 import com.jme3.math.ColorRGBA;
@@ -89,16 +88,15 @@ public class AnimatedDaySky extends Sky {
         /*
          * Configure the AmbientLight that was added by Sky.initialize().
          */
-        AmbientLight ambientLight = getAmbientLight();
-        ambientLight.setColor(new ColorRGBA(0.4f, 0.4f, 0.4f, 1f));
+        ColorRGBA ambientColor = new ColorRGBA(0.8f, 0.8f, 0.65f, 1f);
+        getAmbientLight().setColor(ambientColor);
         /*
          * Configure the DirectionalLight that was added by Sky.initialize().
          */
         Updater updater = skyControl.getUpdater();
         DirectionalLight mainLight = getDirectionalLight();
         updater.setMainLight(mainLight);
-        float intensity = Main.getWorld().directLightIntensity();
-        updater.setMainMultiplier(1.5f * intensity);
+        updater.setMainMultiplier(1.2f);
         /*
          * Add the LightProbe.
          */

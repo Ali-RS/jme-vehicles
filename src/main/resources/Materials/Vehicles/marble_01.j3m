@@ -1,7 +1,7 @@
 Material marble_01: /Common/MatDefs/Light/PBRLighting.j3md {
 
     MaterialParameters {
-        BaseColor: 2.9 3.2 4.2 1
+        BaseColor: 1.4 1.4 1.4 1
         BaseColorMap: Repeat /Textures/Ground/Marble/marble_01_diff_2k.png
         LightMap: Repeat /Textures/Ground/Marble/marble_01_AO_2k.png
         LightMapAsAOMap: true

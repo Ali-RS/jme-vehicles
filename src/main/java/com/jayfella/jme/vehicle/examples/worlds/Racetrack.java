@@ -32,16 +32,6 @@ public class Racetrack extends World {
     // World methods
 
     /**
-     * Determine the preferred intensity for direct light.
-     *
-     * @return the average color component (&ge;0)
-     */
-    @Override
-    public float directLightIntensity() {
-        return 2.5f;
-    }
-
-    /**
      * Locate the drop point, which lies directly above the preferred initial
      * location for vehicles.
      *

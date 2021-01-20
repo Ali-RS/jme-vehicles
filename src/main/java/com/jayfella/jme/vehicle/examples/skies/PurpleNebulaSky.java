@@ -55,8 +55,7 @@ public class PurpleNebulaSky extends Sky {
         /*
          * Configure the AmbientLight that was added by Sky.initialize().
          */
-        float intensity = Main.getWorld().directLightIntensity();
-        ColorRGBA ambientColor = ColorRGBA.White.mult(15f * intensity);
+        ColorRGBA ambientColor = new ColorRGBA(30f, 50f, 25f, 1f);
         getAmbientLight().setColor(ambientColor);
         /*
          * Configure the DirectionalLight that was added by Sky.initialize().
