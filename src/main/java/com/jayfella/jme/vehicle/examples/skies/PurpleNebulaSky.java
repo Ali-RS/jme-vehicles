@@ -68,9 +68,9 @@ public class PurpleNebulaSky extends Sky {
          */
         parent.addLight(probe);
         /*
-         * Configure the shadow filter that was added by Sky.initialize().
+         * Configure the shadow renderer that was added by Sky.initialize().
          */
-        getShadowFilter().setShadowIntensity(0f);
+        getShadowRenderer().setShadowIntensity(0f);
     }
 
     /**

@@ -9,16 +9,15 @@ import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
-import com.jme3.post.FilterPostProcessor;
 import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.shadow.DirectionalLightShadowFilter;
+import com.jme3.shadow.DirectionalLightShadowRenderer;
+import com.jme3.shadow.EdgeFilteringMode;
 import com.jme3.texture.Texture;
 import java.util.logging.Logger;
-import jme3utilities.Heart;
 import jme3utilities.MyMesh;
 import jme3utilities.mesh.Octasphere;
 
@@ -46,9 +45,9 @@ abstract public class Sky implements Loadable {
      */
     private static DirectionalLight directionalLight;
     /**
-     * shadow filter for the main light
+     * shadow renderer for the main light
      */
-    private static DirectionalLightShadowFilter shadowFilter;
+    private static DirectionalLightShadowRenderer shadowRenderer;
     /**
      * root of the loaded C-G model
      */
@@ -95,8 +94,8 @@ abstract public class Sky implements Loadable {
         assert viewPort.getProcessors().isEmpty();
         Node rootNode = application.getRootNode();
         assert rootNode.getChildren().isEmpty();
-        assert rootNode.getNumControls() == 0;
         assert rootNode.getLocalLightList().size() == 0;
+        assert rootNode.getNumControls() == 0;
 
         rootNode.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         /*
@@ -110,21 +109,17 @@ abstract public class Sky implements Loadable {
         directionalLight = new DirectionalLight();
         rootNode.addLight(directionalLight);
         /*
-         * Access the existing FilterPostProcessor or create a new one.
-         */
-        AssetManager assetManager = application.getAssetManager();
-        int numSamples = application.getContext().getSettings().getSamples();
-        FilterPostProcessor fpp
-                = Heart.getFpp(viewPort, assetManager, numSamples);
-        /*
          * Add shadows.
          */
-        shadowFilter = new DirectionalLightShadowFilter(assetManager, 4_096, 4);
-        fpp.addFilter(shadowFilter);
-        shadowFilter.setLight(directionalLight);
-        shadowFilter.setShadowIntensity(0.3f);
-        shadowFilter.setShadowZExtend(256f);
-        shadowFilter.setShadowZFadeLength(128f);
+        AssetManager assetManager = application.getAssetManager();
+        shadowRenderer
+                = new DirectionalLightShadowRenderer(assetManager, 4_096, 4);
+        viewPort.addProcessor(shadowRenderer);
+        shadowRenderer.setEdgeFilteringMode(EdgeFilteringMode.PCFPOISSON);
+        shadowRenderer.setLight(directionalLight);
+        shadowRenderer.setShadowIntensity(0.3f);
+        shadowRenderer.setShadowZExtend(256f);
+        shadowRenderer.setShadowZFadeLength(128f);
     }
     // *************************************************************************
     // new protected methods
@@ -207,12 +202,12 @@ abstract public class Sky implements Loadable {
     }
 
     /**
-     * Access the shadow filter.
+     * Access the shadow renderer.
      *
      * @return the pre-existing instance (not null)
      */
-    final protected DirectionalLightShadowFilter getShadowFilter() {
-        assert shadowFilter != null;
-        return shadowFilter;
+    final protected DirectionalLightShadowRenderer getShadowRenderer() {
+        assert shadowRenderer != null;
+        return shadowRenderer;
     }
 }

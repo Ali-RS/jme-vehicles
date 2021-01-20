@@ -43,7 +43,7 @@ public class QuarrySky extends Sky {
     // new methods exposed
 
     /**
-     * Add this loaded Sky to the specified scene-graph node.
+     * Attach this loaded Sky to the specified scene-graph node.
      *
      * @param parent where to attach (not null)
      */
@@ -70,9 +70,9 @@ public class QuarrySky extends Sky {
         probe.getArea().setRadius(9_999f);
         parent.addLight(probe);
         /*
-         * Configure the shadow filter that was added by Sky.initialize().
+         * Configure the shadow renderer that was added by Sky.initialize().
          */
-        getShadowFilter().setShadowIntensity(0.5f);
+        getShadowRenderer().setShadowIntensity(0.5f);
     }
 
     /**

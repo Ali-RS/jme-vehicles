@@ -108,7 +108,7 @@ public class TireSmokeEmitter extends BaseAppState {
             wheel.getVehicleWheel().getLocation(tmpLocation);
             smoke.setLocalTranslation(tmpLocation);
             smoke.setName("Tire Smoke");
-            smoke.setShadowMode(RenderQueue.ShadowMode.Receive);
+            smoke.setShadowMode(RenderQueue.ShadowMode.Off);
         }
     }
 

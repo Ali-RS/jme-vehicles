@@ -9,7 +9,7 @@ import com.jme3.light.LightProbe;
 import com.jme3.math.ColorRGBA;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
-import com.jme3.shadow.DirectionalLightShadowFilter;
+import com.jme3.shadow.DirectionalLightShadowRenderer;
 import java.util.logging.Logger;
 import jme3utilities.sky.LunarPhase;
 import jme3utilities.sky.SkyControl;
@@ -104,8 +104,8 @@ public class AnimatedDaySky extends Sky {
         /*
          * Configure the shadow filter that was added by Sky.initialize().
          */
-        DirectionalLightShadowFilter shadowFilter = getShadowFilter();
-        updater.addShadowFilter(shadowFilter);
+        DirectionalLightShadowRenderer shadowRenderer = getShadowRenderer();
+        updater.addShadowRenderer(shadowRenderer);
     }
 
     /**
