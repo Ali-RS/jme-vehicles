@@ -42,7 +42,6 @@ abstract public class Car extends Vehicle {
 
     // wheel-related stuff. This isn't really "vehicle" related since a vehicle can be a boat or a helicopter.
     final private List<Wheel> wheels = new ArrayList<>(4);
-    private MagicFormulaState magicFormulaState;
     private SkidMarksState skidmarks;
     /**
      * all available modes in the automatic transmission
@@ -250,7 +249,6 @@ abstract public class Car extends Vehicle {
 
         smokeEmitter = new TireSmokeEmitter(this);
         skidmarks = new SkidMarksState(this);
-        magicFormulaState = new MagicFormulaState(this);
         wheelSpinState = new WheelSpinState(this);
     }
 
@@ -261,7 +259,6 @@ abstract public class Car extends Vehicle {
         AppStateManager manager = Main.getApplication().getStateManager();
         manager.detach(smokeEmitter);
         manager.detach(skidmarks);
-        manager.detach(magicFormulaState);
         manager.detach(wheelSpinState);
     }
 
@@ -272,7 +269,6 @@ abstract public class Car extends Vehicle {
         AppStateManager manager = Main.getApplication().getStateManager();
         manager.attach(smokeEmitter);
         manager.attach(skidmarks);
-        manager.attach(magicFormulaState);
         manager.attach(wheelSpinState);
     }
 
