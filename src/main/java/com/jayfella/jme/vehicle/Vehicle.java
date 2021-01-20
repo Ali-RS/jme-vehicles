@@ -152,14 +152,6 @@ abstract public class Vehicle
         return chassisDamping;
     }
 
-    /**
-     * Determine the offset of the vehicle's DashCamera in scaled shape
-     * coordinates. TODO re-order methods
-     *
-     * @param storeResult storage for the result (not null)
-     */
-    abstract public void locateDashCam(Vector3f storeResult);
-
     public void detachFromScene() {
         disable();
         vehicleControl.setPhysicsSpace(null);
@@ -279,6 +271,14 @@ abstract public class Vehicle
     public VehicleControl getVehicleControl() {
         return vehicleControl;
     }
+
+    /**
+     * Determine the offset of the vehicle's DashCamera in scaled shape
+     * coordinates.
+     *
+     * @param storeResult storage for the result (not null)
+     */
+    abstract public void locateDashCam(Vector3f storeResult);
 
     /**
      * Determine the location of the ChaseCamera target.
@@ -473,6 +473,14 @@ abstract public class Vehicle
     }
 
     /**
+     * Determine the offset of the vehicle's ChaseCamera target in scaled shape
+     * coordinates.
+     *
+     * @param storeResult storage for the result (not null)
+     */
+    abstract protected void locateTarget(Vector3f storeResult);
+
+    /**
      * Configure the "chassis": the entire Vehicle except for any wheels.
      *
      * @param folderName the name of the folder containing the collision-shape
@@ -541,12 +549,4 @@ abstract public class Vehicle
         hornAudio.setDirectional(false);
         node.attachChild(hornAudio);
     }
-
-    /**
-     * Determine the offset of the vehicle's ChaseCamera target in scaled shape
-     * coordinates.
-     *
-     * @param storeResult storage for the result (not null)
-     */
-    abstract protected void locateTarget(Vector3f storeResult);
 }

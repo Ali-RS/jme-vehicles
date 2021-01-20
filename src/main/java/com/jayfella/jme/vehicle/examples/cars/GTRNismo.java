@@ -40,17 +40,6 @@ public class GTRNismo extends Car {
     // Car methods
 
     /**
-     * Determine the offset of the Nismo's DashCamera in scaled shape
-     * coordinates. TODO re-order methods
-     *
-     * @param storeResult storage for the result (not null)
-     */
-    @Override
-    public void locateDashCam(Vector3f storeResult) {
-        storeResult.set(0f, 1.5f, 0.5f);
-    }
-
-    /**
      * Load this Vehicle from assets.
      */
     @Override
@@ -172,6 +161,17 @@ public class GTRNismo extends Car {
          * build() must be invoked last, to complete the Vehicle
          */
         build();
+    }
+
+    /**
+     * Determine the offset of the Nismo's DashCamera in scaled shape
+     * coordinates.
+     *
+     * @param storeResult storage for the result (not null)
+     */
+    @Override
+    public void locateDashCam(Vector3f storeResult) {
+        storeResult.set(0f, 1.5f, 0.5f);
     }
 
     /**
