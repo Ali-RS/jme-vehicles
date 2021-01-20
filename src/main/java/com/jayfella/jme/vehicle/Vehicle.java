@@ -153,11 +153,12 @@ abstract public class Vehicle
     }
 
     /**
-     * Determine the offset of the vehicle's DashCamera.
+     * Determine the offset of the vehicle's DashCamera in scaled shape
+     * coordinates. TODO re-order methods
      *
-     * @return a new offset vector (in scaled shape coordinates)
+     * @param storeResult storage for the result (not null)
      */
-    abstract public Vector3f dashCamOffset();
+    abstract public void locateDashCam(Vector3f storeResult);
 
     public void detachFromScene() {
         disable();
@@ -293,7 +294,8 @@ abstract public class Vehicle
         RigidBodyMotionState motion = vehicleControl.getMotionState();
 
         motion.getOrientation(tmpOrientation);
-        Vector3f offset = targetOffset(); // TODO garbage
+        Vector3f offset = new Vector3f(); // TODO garbage
+        locateTarget(offset);
         offset.z *= bias;
         tmpOrientation.mult(offset, offset);
 
@@ -541,9 +543,10 @@ abstract public class Vehicle
     }
 
     /**
-     * Determine the offset of the vehicle's ChaseCamera target.
+     * Determine the offset of the vehicle's ChaseCamera target in scaled shape
+     * coordinates.
      *
-     * @return a new offset vector (in scaled shape coordinates)
+     * @param storeResult storage for the result (not null)
      */
-    abstract protected Vector3f targetOffset();
+    abstract protected void locateTarget(Vector3f storeResult);
 }

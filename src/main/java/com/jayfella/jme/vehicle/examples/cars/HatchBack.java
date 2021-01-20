@@ -41,13 +41,14 @@ public class HatchBack extends Car {
     // Car methods
 
     /**
-     * Determine the offset of the hatchback's DashCamera.
+     * Determine the offset of the hatchback's DashCamera in scaled shape
+     * coordinates. TODO re-order methods
      *
-     * @return a new offset vector (in scaled shape coordinates)
+     * @param storeResult storage for the result (not null)
      */
     @Override
-    public Vector3f dashCamOffset() {
-        return new Vector3f(0f, 1.2f, 0.7f);
+    public void locateDashCam(Vector3f storeResult) {
+        storeResult.set(0f, 1.2f, 0.7f);
     }
 
     /**
@@ -170,12 +171,13 @@ public class HatchBack extends Car {
     }
 
     /**
-     * Determine the offset of the hatchback's ChaseCamera target.
+     * Determine the offset of the hatchback's ChaseCamera target in scaled
+     * shape coordinates.
      *
-     * @return a new offset vector (in scaled shape coordinates)
+     * @param storeResult storage for the result (not null)
      */
     @Override
-    protected Vector3f targetOffset() {
-        return new Vector3f(0f, 0.52f, -1.7f);
+    protected void locateTarget(Vector3f storeResult) {
+        storeResult.set(0f, 0.52f, -1.7f);
     }
 }

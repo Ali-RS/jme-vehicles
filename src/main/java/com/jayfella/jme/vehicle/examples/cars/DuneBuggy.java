@@ -41,13 +41,14 @@ public class DuneBuggy extends Car {
     // Car methods
 
     /**
-     * Determine the offset of the dune buggy's DashCamera.
+     * Determine the offset of the dune buggy's DashCamera in scaled shape
+     * coordinates. TODO re-order methods
      *
-     * @return a new offset vector (in scaled shape coordinates)
+     * @param storeResult storage for the result (not null)
      */
     @Override
-    public Vector3f dashCamOffset() {
-        return new Vector3f(0f, 1.4f, -0.4f);
+    public void locateDashCam(Vector3f storeResult) {
+        storeResult.set(0f, 1.4f, -0.4f);
     }
 
     /**
@@ -179,12 +180,13 @@ public class DuneBuggy extends Car {
     }
 
     /**
-     * Determine the offset of the dune buggy's ChaseCamera target.
+     * Determine the offset of the dune buggy's ChaseCamera target in scaled
+     * shape coordinates.
      *
-     * @return a new offset vector (in scaled shape coordinates)
+     * @param storeResult storage for the result (not null)
      */
     @Override
-    protected Vector3f targetOffset() {
-        return new Vector3f(0f, 1.18f, -1.67f);
+    protected void locateTarget(Vector3f storeResult) {
+        storeResult.set(0f, 1.18f, -1.67f);
     }
 }

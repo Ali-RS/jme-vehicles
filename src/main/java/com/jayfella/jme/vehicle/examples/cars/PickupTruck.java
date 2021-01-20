@@ -26,7 +26,7 @@ public class PickupTruck extends Car {
     // constants and loggers
 
     /**
-     * message logger for this class
+     * message logger for this class TODO rename
      */
     final public static Logger logger
             = Logger.getLogger(PickupTruck.class.getName());
@@ -40,13 +40,14 @@ public class PickupTruck extends Car {
     // Car methods
 
     /**
-     * Determine the offset of the truck's DashCamera.
+     * Determine the offset of the truck's DashCamera in scaled shape
+     * coordinates. TODO re-order methods
      *
-     * @return a new offset vector (in scaled shape coordinates)
+     * @param storeResult storage for the result (not null)
      */
     @Override
-    public Vector3f dashCamOffset() {
-        return new Vector3f(0f, 1.5f, 1.1f);
+    public void locateDashCam(Vector3f storeResult) {
+        storeResult.set(0f, 1.5f, 1.1f);
     }
 
     /**
@@ -166,12 +167,13 @@ public class PickupTruck extends Car {
     }
 
     /**
-     * Determine the offset of the truck's ChaseCamera target.
+     * Determine the offset of the truck's ChaseCamera target target in scaled
+     * shape coordinates.
      *
-     * @return a new offset vector (in scaled shape coordinates)
+     * @param storeResult storage for the result (not null)
      */
     @Override
-    protected Vector3f targetOffset() {
-        return new Vector3f(0f, 0.91f, -2.75f);
+    protected void locateTarget(Vector3f storeResult) {
+        storeResult.set(0f, 0.91f, -2.75f);
     }
 }

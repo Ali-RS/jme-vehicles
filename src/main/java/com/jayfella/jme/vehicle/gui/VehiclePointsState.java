@@ -141,7 +141,8 @@ public class VehiclePointsState extends BaseAppState {
         vehicle.getVehicleControl().getPhysicsLocation(tmpLocation);
         centerOfMass.setLocalTranslation(tmpLocation);
 
-        Vector3f offset = vehicle.dashCamOffset();
+        Vector3f offset = new Vector3f(); // TODO garbage
+        vehicle.locateDashCam(offset);
         vehicle.getVehicleControl().getPhysicsRotation(tmpOrientation);
         tmpOrientation.mult(offset, offset);
         tmpLocation.addLocal(offset);

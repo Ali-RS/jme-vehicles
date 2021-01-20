@@ -7,6 +7,7 @@ import com.jme3.input.MouseInput;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.math.FastMath;
+import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.CameraNode;
 import java.util.logging.Logger;
@@ -85,7 +86,9 @@ public class DashCamera
 
     @Override
     public void attach() {
-        cameraNode.setLocalTranslation(vehicle.dashCamOffset());
+        Vector3f offset = new Vector3f();
+        vehicle.locateDashCam(offset);
+        cameraNode.setLocalTranslation(offset);
         vehicle.getNode().attachChild(cameraNode);
         enable();
     }
