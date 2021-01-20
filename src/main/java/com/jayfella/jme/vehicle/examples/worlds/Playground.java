@@ -60,12 +60,13 @@ public class Playground extends World {
      */
     @Override
     public void load() {
-        assert loadedCgm == null : "The model is already loaded.";
+        assert getCgm() == null : "The model is already loaded.";
 
         String assetFolder = "/Models/vehicle-playground/";
         String assetPath = assetFolder + "vehicle-playground.j3o";
         AssetManager assetManager = Main.getApplication().getAssetManager();
-        loadedCgm = (Node) assetManager.loadModel(assetPath);
+        Node loadedCgm = (Node) assetManager.loadModel(assetPath);
+        setCgm(loadedCgm);
 
         assetPath = "/Materials/Vehicles/marble_01.j3m";
         Material material = assetManager.loadMaterial(assetPath);

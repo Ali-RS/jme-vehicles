@@ -58,12 +58,13 @@ public class Racetrack extends World {
      */
     @Override
     public void load() {
-        assert loadedCgm == null : "The model is already loaded.";
+        assert getCgm() == null : "The model is already loaded.";
 
         AssetManager assetManager = Main.getApplication().getAssetManager();
         String assetFolder = "/Models/race1/";
         String assetPath = assetFolder + "race1.j3o";
-        loadedCgm = (Node) assetManager.loadModel(assetPath);
+        Node loadedCgm = (Node) assetManager.loadModel(assetPath);
+        setCgm(loadedCgm);
 
         Platform platform = JmeSystem.getPlatform();
         if (platform == Platform.Windows64) {

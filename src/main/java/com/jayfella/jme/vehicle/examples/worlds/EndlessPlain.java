@@ -113,7 +113,7 @@ public class EndlessPlain extends World {
      */
     @Override
     public void load() {
-        assert loadedCgm == null : "The model is already loaded.";
+        assert getCgm() == null : "The model is already loaded.";
         /*
          * Generate normals, texture coordinates, and vertex positions
          * for a large square in the X-Z plane.
@@ -150,16 +150,17 @@ public class EndlessPlain extends World {
         mesh.setBuffer(VertexBuffer.Type.TexCoord, 2, uvs);
         mesh.updateBound();
 
-        loadedCgm = new Node("Endless Plain");
-        loadedCgm.setShadowMode(RenderQueue.ShadowMode.Receive);
+        Node cgm = new Node("Endless Plain");
+        setCgm(cgm);
+        cgm.setShadowMode(RenderQueue.ShadowMode.Receive);
 
         Geometry geometry = new Geometry("Plain Chunk", mesh);
-        loadedCgm.attachChild(geometry);
+        cgm.attachChild(geometry);
 
         AssetManager assetManager = Main.getApplication().getAssetManager();
         String assetPath = "/Materials/Vehicles/marble_01.j3m";
         Material material = assetManager.loadMaterial(assetPath);
-        loadedCgm.setMaterial(material);
+        cgm.setMaterial(material);
 
         float planeConstant = 0f;
         Plane plane = new Plane(Vector3f.UNIT_Y, planeConstant);

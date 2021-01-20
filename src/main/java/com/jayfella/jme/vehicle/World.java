@@ -30,9 +30,9 @@ abstract public class World implements Loadable {
      */
     final private DecalManager decalManager = new DecalManager();
     /**
-     * loaded C-G model of a prototypical chunk TODO privatize
+     * loaded C-G model of a prototypical chunk
      */
-    protected Node loadedCgm;
+    private Node loadedCgm;
     /**
      * collision object
      */
@@ -140,7 +140,7 @@ abstract public class World implements Loadable {
 
     /**
      * Enumerate all chunks that are near the scene origin. For single-chunk
-     * worlds, the result is always (0,0,0).
+     * worlds, the result is always (0,0,0). TODO re-order methods
      *
      * @return a new collection of IDs (not null)
      */
@@ -155,6 +155,15 @@ abstract public class World implements Loadable {
      * this World. The World need not be loaded.
      */
     abstract public void resetCameraPosition();
+
+    /**
+     * Alter which C-G model is loaded.
+     *
+     * @param cgm the desired model
+     */
+    protected void setCgm(Node cgm) {
+        this.loadedCgm = cgm;
+    }
 
     /**
      * Alter which CollisionShape is loaded.
