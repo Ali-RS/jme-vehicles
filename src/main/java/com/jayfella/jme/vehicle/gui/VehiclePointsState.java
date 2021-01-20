@@ -135,7 +135,7 @@ public class VehiclePointsState extends BaseAppState {
         super.update(tpf);
 
         Vehicle vehicle = Main.getVehicle();
-        vehicle.targetLocation(1f, tmpLocation);
+        vehicle.locateTarget(1f, tmpLocation);
         cameraTarget.setLocalTranslation(tmpLocation);
 
         vehicle.getVehicleControl().getPhysicsLocation(tmpLocation);

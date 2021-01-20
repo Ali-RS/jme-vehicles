@@ -364,8 +364,7 @@ abstract public class Vehicle
     }
 
     /**
-     * Determine the location of the ChaseCamera target. TODO rename
-     * locateTarget()
+     * Determine the location of the ChaseCamera target. TODO re-order methods
      *
      * @param bias how much to displace the target toward the rear (0=center of
      * mass, 1=back bumper)
@@ -373,7 +372,7 @@ abstract public class Vehicle
      * @return a location vector (in physics-space coordinates, either
      * storeResult or a new instance)
      */
-    public Vector3f targetLocation(float bias, Vector3f storeResult) {
+    public Vector3f locateTarget(float bias, Vector3f storeResult) {
         Vector3f result = (storeResult == null) ? new Vector3f() : storeResult;
         RigidBodyMotionState motion = vehicleControl.getMotionState();
 

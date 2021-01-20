@@ -184,7 +184,7 @@ public class ChaseCamera
         super.setVehicle(newVehicle);
 
         tmpCameraLocation.set(camera.getLocation());
-        vehicle.targetLocation(rearBias, tmpTargetLocation);
+        vehicle.locateTarget(rearBias, tmpTargetLocation);
         tmpCameraLocation.subtract(tmpTargetLocation, offset);
     }
     // *************************************************************************
@@ -413,7 +413,7 @@ public class ChaseCamera
             range = maxRange;
         }
 
-        vehicle.targetLocation(rearBias, tmpTargetLocation);
+        vehicle.locateTarget(rearBias, tmpTargetLocation);
         if (!xrayVision) {
             /*
              * Test the sightline for obstructions.
@@ -478,7 +478,7 @@ public class ChaseCamera
          * Initialize the camera offset and preferred range.
          */
         tmpCameraLocation.set(camera.getLocation());
-        vehicle.targetLocation(rearBias, tmpTargetLocation);
+        vehicle.locateTarget(rearBias, tmpTargetLocation);
         tmpCameraLocation.subtract(tmpTargetLocation, offset);
         preferredRange = offset.length();
 
