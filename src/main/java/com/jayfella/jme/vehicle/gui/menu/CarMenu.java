@@ -7,6 +7,7 @@ import com.jayfella.jme.vehicle.examples.cars.GTRNismo;
 import com.jayfella.jme.vehicle.examples.cars.GrandTourer;
 import com.jayfella.jme.vehicle.examples.cars.HatchBack;
 import com.jayfella.jme.vehicle.examples.cars.PickupTruck;
+import com.jayfella.jme.vehicle.examples.cars.Rotator;
 import com.jayfella.jme.vehicle.input.CameraInputMode;
 import com.simsilica.lemur.Button;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ class CarMenu extends AnimatedMenu {
 
     @Override
     protected List<Button> createItems() {
-        List<Button> result = new ArrayList<>(6);
+        List<Button> result = new ArrayList<>(7);
 
         Button button = new Button("Grand Tourer");
         button.addClickCommands(source -> setVehicle(new GrandTourer()));
@@ -50,6 +51,10 @@ class CarMenu extends AnimatedMenu {
 
         button = new Button("Dune Buggy");
         button.addClickCommands(source -> setVehicle(new DuneBuggy()));
+        result.add(button);
+
+        button = new Button("Rotator");
+        button.addClickCommands(source -> setVehicle(new Rotator()));
         result.add(button);
 
         button = new Button("<< Back");

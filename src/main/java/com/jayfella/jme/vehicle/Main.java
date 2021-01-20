@@ -8,6 +8,7 @@ import com.jayfella.jme.vehicle.examples.cars.GTRNismo;
 import com.jayfella.jme.vehicle.examples.cars.GrandTourer;
 import com.jayfella.jme.vehicle.examples.cars.HatchBack;
 import com.jayfella.jme.vehicle.examples.cars.PickupTruck;
+import com.jayfella.jme.vehicle.examples.cars.Rotator;
 import com.jayfella.jme.vehicle.examples.skies.AnimatedNightSky;
 import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
 import com.jayfella.jme.vehicle.examples.worlds.Playground;
@@ -70,7 +71,8 @@ public class Main extends SimpleApplication {
         new Playground(),
         new PickupTruck(),
         new QuarrySky(),
-        new Racetrack()
+        new Racetrack(),
+        new Rotator()
     };
     /**
      * application instance
@@ -192,8 +194,8 @@ public class Main extends SimpleApplication {
         appSettings.setVSync(true);
 
         application = new Main();
-        application.setDisplayStatView(false);
         application.setDisplayFps(false);
+        application.setDisplayStatView(false);
         application.setSettings(appSettings);
         application.setShowSettings(forceDialog);
         application.start();
