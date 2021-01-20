@@ -1,0 +1,39 @@
+Licensing history for files in "src/main/resources/Models/hcr2_rotator" and its
+subfolders
+
+Based on "HCR2 Rotator":
+* download file:     hcr2_rotator.zip
+* downloaded from:   https://sketchfab.com/3d-models/hcr2-rotator-f03e95525b4c48cfb659064a76d8cd53
+* download options:  Autoconverted format (glTF)
+* download date:     19 January 2021
+* author:            oakar258
+* author URL:        https://sketchfab.com/oakar258
+* license type:      CC-BY-4.0 (Creative Commons Attribution)
+* license URL:       https://creativecommons.org/licenses/by/4.0/
+
+Extracted files used without modification:
+* HCR2_Rtt_Main_baseColor.png
+* HCR2_Rtt_Main_metallicRoughness.png
+* HCR2_Rtt_Wheel_baseColor.png
+* HCR2_Rtt_Wheel_metallicRoughness.png
+
+Derived files (also licensed CC-BY-4.0):
+* chassis.j3o
+* chassis-shape.j3o
+* front-wheel.j3o
+* license.txt
+* rear-wheel.j3o
+
+The original "license.txt" is appended below the fold.
+===============================================================================
+Model Information:
+* title:	HCR2 Rotator
+* source:	https://sketchfab.com/3d-models/hcr2-rotator-f03e95525b4c48cfb659064a76d8cd53
+* author:	oakar258 (https://sketchfab.com/oakar258)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "HCR2 Rotator" (https://sketchfab.com/3d-models/hcr2-rotator-f03e95525b4c48cfb659064a76d8cd53) by oakar258 (https://sketchfab.com/oakar258) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
