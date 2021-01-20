@@ -18,7 +18,7 @@ public class BuggyRearWheel extends WheelModel {
     /**
      * message logger for this class
      */
-    final private static Logger logger // TODO rename
+    final private static Logger logger2
             = Logger.getLogger(BuggyRearWheel.class.getName());
     // *************************************************************************
     // constructors

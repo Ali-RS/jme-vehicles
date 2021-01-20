@@ -17,7 +17,7 @@ public class RangerWheel extends WheelModel {
     /**
      * message logger for this class
      */
-    final private static Logger logger // TODO rename
+    final private static Logger logger2
             = Logger.getLogger(RangerWheel.class.getName());
     // *************************************************************************
     // constructors

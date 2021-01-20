@@ -16,7 +16,7 @@ public class CruiserWheel extends WheelModel {
     /**
      * message logger for this class
      */
-    final private static Logger logger // TODO rename
+    final private static Logger logger2
             = Logger.getLogger(CruiserWheel.class.getName());
     // *************************************************************************
     // constructors

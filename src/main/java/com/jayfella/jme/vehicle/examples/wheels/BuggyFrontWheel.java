@@ -18,7 +18,7 @@ public class BuggyFrontWheel extends WheelModel {
     /**
      * message logger for this class
      */
-    final private static Logger logger // TODO rename
+    final private static Logger logger2
             = Logger.getLogger(BuggyFrontWheel.class.getName());
     // *************************************************************************
     // constructors
