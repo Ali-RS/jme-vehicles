@@ -587,8 +587,12 @@ abstract public class Vehicle
 
         Node newNode = wheelModel.getWheelNode();
         vehicleWheel.setWheelSpatial(newNode);
-
         getNode().attachChild(newNode);
+
+        AppStateManager stateManager = Main.getApplication().getStateManager();
+        stateManager.detach(skidmarks);
+        skidmarks = new SkidMarksState(this);
+        stateManager.attach(skidmarks);
     }
 
     public void startEngine() {
@@ -601,7 +605,6 @@ abstract public class Vehicle
         for (Wheel wheel : wheels) {
             wheel.steer(strength);
         }
-
     }
 
     /**
