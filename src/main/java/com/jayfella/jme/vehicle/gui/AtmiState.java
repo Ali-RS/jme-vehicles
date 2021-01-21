@@ -83,7 +83,7 @@ class AtmiState extends BaseAppState {
      *
      * @param vehicle the Vehicle to use (or null for none)
      */
-    void setCar(Vehicle vehicle) {
+    void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
     }
     // *************************************************************************
