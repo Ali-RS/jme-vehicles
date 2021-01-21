@@ -1,8 +1,8 @@
 package com.jayfella.jme.vehicle.examples.cars;
 
-import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Sound;
+import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.examples.engines.Engine180HP;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound5;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
@@ -20,9 +20,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A sample Car, built around oakar258's "HCR2 Buggy" model.
+ * A sample Vehicle, built around oakar258's "HCR2 Buggy" model.
  */
-public class DuneBuggy extends Car {
+public class DuneBuggy extends Vehicle {
     // *************************************************************************
     // constants and loggers
 
@@ -38,7 +38,7 @@ public class DuneBuggy extends Car {
         super("Dune Buggy");
     }
     // *************************************************************************
-    // Car methods
+    // Vehicle methods
 
     /**
      * Load this Vehicle from assets.

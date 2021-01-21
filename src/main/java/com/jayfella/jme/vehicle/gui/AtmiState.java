@@ -4,8 +4,8 @@ import com.atr.jme.font.TrueTypeMesh;
 import com.atr.jme.font.asset.TrueTypeKeyMesh;
 import com.atr.jme.font.shape.TrueTypeNode;
 import com.atr.jme.font.util.Style;
-import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Main;
+import com.jayfella.jme.vehicle.Vehicle;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetKey;
@@ -44,7 +44,7 @@ class AtmiState extends BaseAppState {
     // *************************************************************************
     // fields
 
-    private Car car;
+    private Vehicle vehicle;
     /**
      * vertical spacing between indicator positions (in pixels)
      */
@@ -79,12 +79,12 @@ class AtmiState extends BaseAppState {
     // new methods exposed
 
     /**
-     * Associate a Car with this HUD prior to enabling it.
+     * Associate a Vehicle with this indicator prior to enabling it.
      *
-     * @param car the Car to use (or null for none)
+     * @param vehicle the Vehicle to use (or null for none)
      */
-    void setCar(Car car) {
-        this.car = car;
+    void setCar(Vehicle vehicle) {
+        this.vehicle = vehicle;
     }
     // *************************************************************************
     // BaseAppState methods
@@ -142,7 +142,7 @@ class AtmiState extends BaseAppState {
      */
     @Override
     protected void onEnable() {
-        String[] atModes = car.listAtModes();
+        String[] atModes = vehicle.listAtModes();
         showAtmi(atModes);
     }
 
@@ -159,12 +159,12 @@ class AtmiState extends BaseAppState {
          * Indicate the current mode of the automatic transmission.
          */
         String mode;
-        if (car.getGearBox().isInReverse()) {
+        if (vehicle.getGearBox().isInReverse()) {
             mode = "R";
         } else {
             mode = "D";
         }
-        String[] atModes = car.listAtModes();
+        String[] atModes = vehicle.listAtModes();
         setMode(atModes, mode);
     }
     // *************************************************************************

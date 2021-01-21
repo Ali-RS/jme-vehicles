@@ -1,7 +1,7 @@
 package com.jayfella.jme.vehicle.gui.menu;
 
-import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Main;
+import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.examples.cars.DuneBuggy;
 import com.jayfella.jme.vehicle.examples.cars.GTRNismo;
 import com.jayfella.jme.vehicle.examples.cars.GrandTourer;
@@ -68,7 +68,7 @@ class CarMenu extends AnimatedMenu {
     // *************************************************************************
     // private methods
 
-    private void setVehicle(Car vehicle) {
+    private void setVehicle(Vehicle vehicle) {
         vehicle.load();
         Main.getApplication().setVehicle(vehicle);
 

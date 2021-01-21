@@ -1,8 +1,8 @@
 package com.jayfella.jme.vehicle.examples.cars;
 
-import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Sound;
+import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.examples.engines.Engine450HP;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound1;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
@@ -19,9 +19,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A sample Car, built around Thomas Glenn Thorne's "Opel GT Retopo" model.
+ * A sample Vehicle, built around Thomas Glenn Thorne's "Opel GT Retopo" model.
  */
-public class GrandTourer extends Car {
+public class GrandTourer extends Vehicle {
     // *************************************************************************
     // constants and loggers
 
@@ -37,7 +37,7 @@ public class GrandTourer extends Car {
         super("Grand Tourer");
     }
     // *************************************************************************
-    // Car methods
+    // Vehicle methods
 
     /**
      * Load this Vehicle from assets.

@@ -1,7 +1,7 @@
 package com.jayfella.jme.vehicle.debug;
 
-import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Main;
+import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.debug.parts.BrakesEditor;
 import com.jayfella.jme.vehicle.debug.parts.ChassisEditor;
 import com.jayfella.jme.vehicle.debug.parts.EngineEditor;
@@ -19,15 +19,15 @@ public class VehicleEditorState extends BaseAppState {
     // *************************************************************************
     // fields
 
-    final private Car vehicle;
+    final private Vehicle vehicle;
     final public static int Width = 350;
-    final public static SpringGridLayout Layout
-            = new SpringGridLayout(Axis.Y, Axis.X, FillMode.Even, FillMode.Last);
+    final public static SpringGridLayout Layout = new SpringGridLayout(Axis.Y,
+            Axis.X, FillMode.Even, FillMode.Last);
     final private TabbedPanel tabbedPanel;
     // *************************************************************************
     // constructor
 
-    public VehicleEditorState(Car vehicle) {
+    public VehicleEditorState(Vehicle vehicle) {
         this.vehicle = vehicle;
         tabbedPanel = new TabbedPanel();
     }

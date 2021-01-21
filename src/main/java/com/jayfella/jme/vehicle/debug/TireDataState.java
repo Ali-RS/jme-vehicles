@@ -1,6 +1,6 @@
 package com.jayfella.jme.vehicle.debug;
 
-import com.jayfella.jme.vehicle.Car;
+import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jayfella.jme.vehicle.tire.TireGraph;
 import com.jme3.app.Application;
@@ -19,7 +19,7 @@ public class TireDataState extends BaseAppState {
     // *************************************************************************
     // fields
 
-    final private Car vehicle;
+    final private Vehicle vehicle;
 
     final private static int graphHeight = 100;
     final private static int graphWidth = 200;
@@ -34,7 +34,7 @@ public class TireDataState extends BaseAppState {
     // *************************************************************************
     // constructors
 
-    public TireDataState(Car vehicle) {
+    public TireDataState(Vehicle vehicle) {
         this.vehicle = vehicle;
         tireGraphs = new TireGraph[vehicle.countWheels()];
         needles = new Geometry[vehicle.countWheels()][3];

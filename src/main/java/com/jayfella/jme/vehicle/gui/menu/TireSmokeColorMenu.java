@@ -1,7 +1,7 @@
 package com.jayfella.jme.vehicle.gui.menu;
 
-import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Main;
+import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.math.ColorRGBA;
 import com.simsilica.lemur.Button;
@@ -78,9 +78,7 @@ class TireSmokeColorMenu extends AnimatedMenu {
      */
     @Override
     protected void onDisable() {
-        Car car = (Car) Main.getVehicle();
-        car.setBurningRubber(false);
-
+        Main.getVehicle().setBurningRubber(false);
         super.onDisable();
     }
 
@@ -90,9 +88,7 @@ class TireSmokeColorMenu extends AnimatedMenu {
     @Override
     protected void onEnable() {
         super.onEnable();
-
-        Car car = (Car) Main.getVehicle();
-        car.setBurningRubber(true);
+        Main.getVehicle().setBurningRubber(true);
     }
     // *************************************************************************
     // private methods
@@ -101,7 +97,7 @@ class TireSmokeColorMenu extends AnimatedMenu {
         float alpha = 0.3f;
         ColorRGBA color = new ColorRGBA(red, green, blue, alpha);
 
-        Car vehicle = (Car) Main.getVehicle();
+        Vehicle vehicle = Main.getVehicle();
         for (Wheel wheel : vehicle.listWheels()) {
             wheel.setTireSmokeColor(color);
         }

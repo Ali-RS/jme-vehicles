@@ -1,7 +1,7 @@
 package com.jayfella.jme.vehicle.gui.menu;
 
-import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Main;
+import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.examples.wheels.BasicAlloyWheel;
 import com.jayfella.jme.vehicle.examples.wheels.BuggyFrontWheel;
 import com.jayfella.jme.vehicle.examples.wheels.BuggyRearWheel;
@@ -91,7 +91,7 @@ class WheelMenu extends AnimatedMenu {
     // private methods
 
     private void setModel(Class<? extends WheelModel> wheelModelClass) {
-        Car vehicle = (Car) Main.getVehicle();
+        Vehicle vehicle = Main.getVehicle();
         int numWheels = vehicle.getVehicleControl().getNumWheels();
         for (int wheelIndex = 0; wheelIndex < numWheels; ++wheelIndex) {
             vehicle.setWheelModel(wheelIndex, wheelModelClass);

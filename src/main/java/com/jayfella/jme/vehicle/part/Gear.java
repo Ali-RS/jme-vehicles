@@ -1,6 +1,5 @@
 package com.jayfella.jme.vehicle.part;
 
-import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Vehicle;
 import java.util.logging.Logger;
 import jme3utilities.MyString;
@@ -74,14 +73,14 @@ public class Gear {
      * divided by crankshaft (input) angular rate: negative for reverse, 0 for
      * neutral, positive for a forward gear, and &gt;1 for overdrive
      *
-     * @param car the Car containing thie Gear (not null, unaffected)
+     * @param vehicle the Vehicle containing this Gear (not null, unaffected)
      * @return the ratio
      */
-    public float inverseRatio(Car car) {
+    public float inverseRatio(Vehicle vehicle) {
         float redlineWups = redlineKph * Vehicle.KPH_TO_WUPS;
-        float circumferenceWu = car.driveWheelCircumference();
+        float circumferenceWu = vehicle.driveWheelCircumference();
         float axleRedlineRpm = 60 * redlineWups / circumferenceWu;
-        float crankshaftRedlineRpm = car.getEngine().getRedlineRpm();
+        float crankshaftRedlineRpm = vehicle.getEngine().getRedlineRpm();
         float result = axleRedlineRpm / crankshaftRedlineRpm;
 
         return result;

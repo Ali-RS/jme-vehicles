@@ -21,7 +21,7 @@ public class WheelSpinState extends BaseAppState {
     // *************************************************************************
     // fields
 
-    final private Car car;
+    final private Vehicle vehicle;
     private int wheelCount;
 
     private Quaternion[] rot;
@@ -29,8 +29,8 @@ public class WheelSpinState extends BaseAppState {
     // *************************************************************************
     // constructors
 
-    public WheelSpinState(Car car) {
-        this.car = car;
+    public WheelSpinState(Vehicle vehicle) {
+        this.vehicle = vehicle;
     }
     // *************************************************************************
     // BaseAppState methods
@@ -54,7 +54,7 @@ public class WheelSpinState extends BaseAppState {
      */
     @Override
     protected void initialize(Application application) {
-        wheelCount = car.getVehicleControl().getNumWheels();
+        wheelCount = vehicle.getVehicleControl().getNumWheels();
         angles = new float[wheelCount][3];
 
         rot = new Quaternion[wheelCount];
@@ -94,7 +94,7 @@ public class WheelSpinState extends BaseAppState {
 
         for (int i = 0; i < wheelCount; i++) {
             /*
-            Wheel wheel = car.getWheel(i);
+            Wheel wheel = vehicle.getWheel(i);
 
             // rotation since last physics step
             float currentRot = wheel.getVehicleWheel().getDeltaRotation();
@@ -113,16 +113,16 @@ public class WheelSpinState extends BaseAppState {
 
             System.out.println(wheel.getVehicleWheel().getWheelSpatial().getName() + ": " + currentRot + " / " + potentialRot + " / " + diff);
              */
-            Wheel wheel = car.getWheel(i);
+            Wheel wheel = vehicle.getWheel(i);
 
             // only calculate wheelspin when the vehicle is actually accelerating.
-            if (car.accelerateSignal() > 0) {
+            if (vehicle.accelerateSignal() > 0) {
 
                 // the acceleration force this wheel can apply. 0 = it doesnt give power, 1 = it gives full power.
                 float wheelforce = wheel.getPowerFraction();
 
                 // the acceleration force of the accelerator pedal in 0-1 range.
-                float acceleration = car.accelerateSignal();
+                float acceleration = vehicle.accelerateSignal();
 
                 // how much this wheel is "skidding".
                 float skid = 1.0f - wheel.traction();
@@ -223,7 +223,7 @@ public class WheelSpinState extends BaseAppState {
      */
     private float calcWheelRotation(Wheel wheel) {
         // https://sciencing.com/calculate-wheel-speed-7448165.html
-        float speed = car.getSpeed(SpeedUnit.MPH);
+        float speed = vehicle.getSpeed(SpeedUnit.MPH); // TODO WUPS
 
         // convert mph to meters per minute
         float metersPerHour = speed * 1609;

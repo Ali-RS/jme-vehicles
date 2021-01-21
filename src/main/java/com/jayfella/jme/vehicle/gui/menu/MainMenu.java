@@ -1,7 +1,7 @@
 package com.jayfella.jme.vehicle.gui.menu;
 
-import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Main;
+import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.debug.DebugTabState;
 import com.jayfella.jme.vehicle.debug.EnginePowerGraphState;
 import com.jayfella.jme.vehicle.debug.TireDataState;
@@ -81,7 +81,7 @@ public class MainMenu extends AnimatedMenu {
      * Drive the selected Vehicle in the selected World.
      */
     private void drive() {
-        Car vehicle = (Car) Main.getVehicle();
+        Vehicle vehicle = Main.getVehicle();
         vehicle.getEngine().setRunning(true);
         DriverHud hud = getState(DriverHud.class);
         hud.setCar(vehicle);

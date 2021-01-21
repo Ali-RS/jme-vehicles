@@ -1,8 +1,8 @@
 package com.jayfella.jme.vehicle.examples.cars;
 
-import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Sound;
+import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.examples.engines.Engine250HP;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound4;
 import com.jayfella.jme.vehicle.examples.tires.Tire_02;
@@ -19,10 +19,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A sample Car, built around Daniel Zhabotinsky's "Modern Hatchback - Low Poly"
- * model.
+ * A sample Vehicle, built around Daniel Zhabotinsky's "Modern Hatchback - Low
+ * Poly" model.
  */
-public class HatchBack extends Car {
+public class HatchBack extends Vehicle {
     // *************************************************************************
     // constants and loggers
 
@@ -38,7 +38,7 @@ public class HatchBack extends Car {
         super("HatchBack");
     }
     // *************************************************************************
-    // Car methods
+    // Vehicle methods
 
     /**
      * Load this Vehicle from assets.

@@ -1,6 +1,6 @@
 package com.jayfella.jme.vehicle.skid;
 
-import com.jayfella.jme.vehicle.Car;
+import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
@@ -12,7 +12,7 @@ import com.jme3.scene.Spatial;
 import java.util.logging.Logger;
 
 /**
- * AppState to manage a car's active skidmarks, one skidmark for each wheel.
+ * AppState to manage a vehicle's active skidmarks, one skidmark for each Wheel.
  */
 public class SkidMarksState extends BaseAppState {
     // *************************************************************************
@@ -28,15 +28,15 @@ public class SkidMarksState extends BaseAppState {
 
     private boolean skidmarkEnabled = true;
     /**
-     * Car that produces the skidmarks (not null)
+     * Vehicle producing the skidmarks (not null)
      */
-    final private Car vehicle;
+    final private Vehicle vehicle;
     /**
-     * width of the skid for each wheel (in world units, &gt;0)
+     * width of the skidmark for each wheel (in world units, &gt;0)
      */
     final private float[] skidWidths;
     /**
-     * active skid mark for each wheel
+     * active skidmark for each wheel
      */
     private WheelSkid[] skids;
     // *************************************************************************
@@ -45,9 +45,9 @@ public class SkidMarksState extends BaseAppState {
     /**
      * Instantiate an enabled AppState.
      *
-     * @param vehicle the Car that will produce skidmarks (not null)
+     * @param vehicle the Vehicle that will produce skidmarks (not null)
      */
-    public SkidMarksState(Car vehicle) {
+    public SkidMarksState(Vehicle vehicle) {
         this.vehicle = vehicle;
 
         int numWheels = vehicle.countWheels();
@@ -152,7 +152,7 @@ public class SkidMarksState extends BaseAppState {
         for (WheelSkid skid : skids) {
             Geometry geometry = skid.getGeometry();
 
-            // kind of annoying, but we can't attach a geometry that doesn't exist if the car hasn't skidded yet.
+            // kind of annoying, but we can't attach a geometry that doesn't exist if the Vehicle hasn't skidded yet.
             if (geometry != null && geometry.getParent() == null) {
                 vehicle.getNode().getParent().attachChild(geometry);
             }

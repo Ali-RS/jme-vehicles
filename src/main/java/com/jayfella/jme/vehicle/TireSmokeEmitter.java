@@ -17,7 +17,7 @@ import com.jme3.texture.Texture;
 import java.util.logging.Logger;
 
 /**
- * Visualize a car's tire smoke, with one ParticleEmitter per wheel.
+ * Visualize a vehicle's tire smoke, with one ParticleEmitter per wheel.
  */
 public class TireSmokeEmitter extends BaseAppState {
     // *************************************************************************
@@ -31,7 +31,7 @@ public class TireSmokeEmitter extends BaseAppState {
     // *************************************************************************
     // fields
 
-    final private Car vehicle;
+    final private Vehicle vehicle;
     /**
      * reusable temporary ColorRGBA
      */
@@ -49,12 +49,12 @@ public class TireSmokeEmitter extends BaseAppState {
     // constructors
 
     /**
-     * Instantiate an AppState for the specfied Car.
+     * Instantiate an AppState for the specfied Vehicle.
      *
-     * @param car which Car to visualize smoke for (not null)
+     * @param vehicle which Vehicle to visualize smoke for (not null)
      */
-    public TireSmokeEmitter(Car car) {
-        this.vehicle = car;
+    public TireSmokeEmitter(Vehicle vehicle) {
+        this.vehicle = vehicle;
     }
     // *************************************************************************
     // new methods exposed

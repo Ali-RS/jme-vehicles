@@ -1,8 +1,8 @@
 package com.jayfella.jme.vehicle.gui;
 
-import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.SpeedUnit;
+import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.input.DrivingInputMode;
 import com.jayfella.jme.vehicle.input.SignalMode;
 import com.jme3.app.Application;
@@ -26,7 +26,7 @@ import jme3utilities.mesh.DiscMesh;
 import jme3utilities.mesh.RectangleMesh;
 
 /**
- * Heads-up display (HUD) for driving a vehicle. This AppState should be
+ * Heads-up display (HUD) for driving a Vehicle. This AppState should be
  * instantiated once and then enabled/disabled as needed. It directly manages
  * portions of the graphical user interface, namely:
  * <ul>
@@ -63,7 +63,7 @@ public class DriverHud extends BaseAppState {
      * Appstate to manage the automatic-transmission mode indicator
      */
     final private AtmiState atmiState = new AtmiState();
-    private Car car;
+    private Vehicle vehicle;
     /**
      * dimensions of the GUI viewport (in pixels)
      */
@@ -98,13 +98,13 @@ public class DriverHud extends BaseAppState {
     // new methods exposed
 
     /**
-     * Associate a Car with this HUD prior to enabling it.
+     * Associate a Vehicle with this HUD prior to enabling it.
      *
-     * @param car the Car to use (or null for none)
+     * @param vehicle the Vehicle to use (or null for none)
      */
-    public void setCar(Car car) {
-        this.car = car;
-        atmiState.setCar(car);
+    public void setCar(Vehicle vehicle) {
+        this.vehicle = vehicle;
+        atmiState.setCar(vehicle);
     }
 
     /**
@@ -135,12 +135,12 @@ public class DriverHud extends BaseAppState {
      * Toggle the engine between the started and stopped states.
      */
     public void toggleEngineStarted() {
-        boolean wasStarted = car.getEngine().isRunning();
+        boolean wasStarted = vehicle.getEngine().isRunning();
         if (wasStarted) {
-            car.stopEngine();
+            vehicle.stopEngine();
             showPowerButton(false);
         } else {
-            car.startEngine();
+            vehicle.startEngine();
             showPowerButton(true);
         }
     }
@@ -253,10 +253,10 @@ public class DriverHud extends BaseAppState {
         showGearName();
         showHornButton(false);
 
-        boolean isEngineRunning = car.getEngine().isRunning();
+        boolean isEngineRunning = vehicle.getEngine().isRunning();
         showPowerButton(isEngineRunning);
 
-        SpeedUnit speedometerUnits = car.getSpeedometerUnits();
+        SpeedUnit speedometerUnits = vehicle.getSpeedometerUnits();
         if (speedometerUnits != null) {
             showSpeedometer(speedometerUnits);
         }
@@ -276,7 +276,7 @@ public class DriverHud extends BaseAppState {
         /*
          * Re-orient the horn button and the steering-wheel indicator.
          */
-        float angle = car.steeringWheelAngle();
+        float angle = vehicle.steeringWheelAngle();
         Quaternion orientation = new Quaternion();
         orientation.fromAngles(0f, 0f, angle);
         hornButton.setLocalRotation(orientation);
@@ -360,7 +360,7 @@ public class DriverHud extends BaseAppState {
     }
 
     /**
-     * Exit the car and return to the main menu.
+     * Stop driving the Vehicle and return to the main menu.
      */
     private void returnToMainMenu() {
         getState(DrivingInputMode.class).returnToMainMenu();
@@ -456,7 +456,7 @@ public class DriverHud extends BaseAppState {
     private void showSpeedometer(SpeedUnit speedUnit) {
         hideSpeedometer();
 
-        speedometer = new SpeedometerState(car, speedUnit);
+        speedometer = new SpeedometerState(vehicle, speedUnit);
         getStateManager().attach(speedometer);
     }
 
@@ -479,7 +479,7 @@ public class DriverHud extends BaseAppState {
     private void showTacho() {
         hideTachometer();
 
-        tachometer = new TachometerState(car);
+        tachometer = new TachometerState(vehicle);
         getStateManager().attach(tachometer);
     }
 }

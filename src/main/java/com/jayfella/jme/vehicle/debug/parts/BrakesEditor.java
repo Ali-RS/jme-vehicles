@@ -1,6 +1,6 @@
 package com.jayfella.jme.vehicle.debug.parts;
 
-import com.jayfella.jme.vehicle.Car;
+import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.part.Brake;
 import com.simsilica.lemur.Container;
 import com.simsilica.lemur.RollupPanel;
@@ -10,11 +10,11 @@ public class BrakesEditor extends Container {
     // *************************************************************************
     // fields
 
-    final private Car vehicle;
+    final private Vehicle vehicle;
     // *************************************************************************
     // constructors
 
-    public BrakesEditor(Car vehicle) {
+    public BrakesEditor(Vehicle vehicle) {
         super();
 
         this.vehicle = vehicle;

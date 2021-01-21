@@ -10,7 +10,7 @@ import com.jme3.math.FastMath;
 import java.util.logging.Logger;
 
 /**
- * The automatic transmission of a Car.
+ * The automatic transmission of a Vehicle.
  */
 public class AutomaticGearboxState extends BaseAppState {
     // *************************************************************************
@@ -24,7 +24,6 @@ public class AutomaticGearboxState extends BaseAppState {
     // *************************************************************************
     // fields
 
-    private Car car;
     private GearBox gearBox;
     private int wheelCount;
     final private Vehicle vehicle;
@@ -38,10 +37,6 @@ public class AutomaticGearboxState extends BaseAppState {
      */
     public AutomaticGearboxState(Vehicle vehicle) {
         this.vehicle = vehicle;
-
-        if (vehicle instanceof Car) {
-            car = (Car) vehicle;
-        }
     }
     // *************************************************************************
     // BaseAppState methods
@@ -65,7 +60,7 @@ public class AutomaticGearboxState extends BaseAppState {
      */
     @Override
     protected void initialize(Application application) {
-        wheelCount = car.countWheels();
+        wheelCount = vehicle.countWheels();
     }
 
     /**
@@ -137,7 +132,7 @@ public class AutomaticGearboxState extends BaseAppState {
         gear = gearBox.getGear(gearNum);
         float redlineKph = gear.getRedlineKph();
         float revs = signedKph / redlineKph; // as a fraction of redline
-        float accelerateSignal = car.accelerateSignal();
+        float accelerateSignal = vehicle.accelerateSignal();
         if (accelerateSignal == 0f) { // coasting
             revs = 0f;
 
@@ -145,7 +140,7 @@ public class AutomaticGearboxState extends BaseAppState {
             accelerateSignal = FastMath.abs(accelerateSignal);
             float boostRevs = 0f;
             for (int wheelIndex = 0; wheelIndex < wheelCount; ++wheelIndex) {
-                Wheel wheel = car.getWheel(wheelIndex);
+                Wheel wheel = vehicle.getWheel(wheelIndex);
                 float wheelFraction = wheel.getPowerFraction();
                 float scaledSignal = wheelFraction * accelerateSignal;
 

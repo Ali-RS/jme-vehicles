@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 import jme3utilities.Validate;
 
 /**
- * A single wheel of a Car, including its suspension and brakes.
+ * A single wheel of a Vehicle, including its suspension and brakes.
  */
 public class Wheel {
     // *************************************************************************
@@ -314,7 +314,7 @@ public class Wheel {
     }
 
     /**
-     * Determine how much linear damping this Wheel contributes to its Car.
+     * Determine how much linear damping this Wheel contributes to its Vehicle.
      *
      * @return (&ge;0, &lt;1)
      */

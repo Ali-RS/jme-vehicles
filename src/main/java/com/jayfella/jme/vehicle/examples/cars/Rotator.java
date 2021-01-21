@@ -1,8 +1,8 @@
 package com.jayfella.jme.vehicle.examples.cars;
 
-import com.jayfella.jme.vehicle.Car;
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Sound;
+import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.examples.engines.Engine180HP;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound5;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
@@ -20,11 +20,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A sample Car, built around oakar258's "HCR2 Rotator" model.
+ * A sample Vehicle, built around oakar258's "HCR2 Rotator" model.
  *
  * @author Stephen Gold sgold@sonic.net
  */
-public class Rotator extends Car {
+public class Rotator extends Vehicle {
     // *************************************************************************
     // constants and loggers
 
@@ -40,7 +40,7 @@ public class Rotator extends Car {
         super("Rotator");
     }
     // *************************************************************************
-    // Car methods
+    // Vehicle methods
 
     /**
      * Load this Vehicle from assets.
