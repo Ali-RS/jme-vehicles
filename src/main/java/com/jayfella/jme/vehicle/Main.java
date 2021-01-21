@@ -186,6 +186,9 @@ public class Main extends SimpleApplication {
             }
         }
 
+        String status = Heart.areAssertionsEnabled() ? "enabled" : "disabled";
+        logger.log(Level.WARNING, "Assertions are {0}.", status);
+
         AppSettings appSettings = new AppSettings(true);
         appSettings.setResolution(1280, 720);
         appSettings.setSamples(8);
