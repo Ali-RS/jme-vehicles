@@ -1,4 +1,4 @@
-package com.jayfella.jme.vehicle.examples.cars;
+package com.jayfella.jme.vehicle.examples.vehicles;
 
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Sound;
@@ -6,8 +6,8 @@ import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.examples.engines.Engine180HP;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound5;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
-import com.jayfella.jme.vehicle.examples.wheels.BuggyFrontWheel;
-import com.jayfella.jme.vehicle.examples.wheels.BuggyRearWheel;
+import com.jayfella.jme.vehicle.examples.wheels.RotatorFrontWheel;
+import com.jayfella.jme.vehicle.examples.wheels.RotatorRearWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Engine;
 import com.jayfella.jme.vehicle.part.GearBox;
@@ -20,22 +20,24 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A sample Vehicle, built around oakar258's "HCR2 Buggy" model.
+ * A sample Vehicle, built around oakar258's "HCR2 Rotator" model.
+ *
+ * @author Stephen Gold sgold@sonic.net
  */
-public class DuneBuggy extends Vehicle {
+public class Rotator extends Vehicle {
     // *************************************************************************
     // constants and loggers
 
     /**
      * message logger for this class
      */
-    final public static Logger logger
-            = Logger.getLogger(DuneBuggy.class.getName());
+    final public static Logger logger2
+            = Logger.getLogger(Rotator.class.getName());
     // *************************************************************************
     // constructors
 
-    public DuneBuggy() {
-        super("Dune Buggy");
+    public Rotator() {
+        super("Rotator");
     }
     // *************************************************************************
     // Vehicle methods
@@ -54,39 +56,35 @@ public class DuneBuggy extends Vehicle {
          * Bullet refers to this as the "chassis".
          */
         AssetManager assetManager = Main.getApplication().getAssetManager();
-        String assetPath = "Models/hcr2_buggy/dune-buggy.j3o";
+        String assetPath = "/Models/hcr2_rotator/chassis.j3o";
         Spatial chassis = assetManager.loadModel(assetPath);
         float mass = 525f; // in kilos
         float linearDamping = 0.02f;
-        setChassis("hcr2_buggy", chassis, mass, linearDamping);
+        setChassis("hcr2_rotator", chassis, mass, linearDamping);
         /*
          * By convention, wheels are modeled for the left side, so
          * wheel models for the right side require a 180-degree rotation.
          */
-        float rearDiameter = 0.944f;
+        float rearDiameter = 1.087f;
         float frontDiameter = 0.77f;
-        WheelModel wheel_fl = new BuggyFrontWheel(frontDiameter);
-        WheelModel wheel_fr = new BuggyFrontWheel(frontDiameter).flip();
-        WheelModel wheel_rl = new BuggyRearWheel(rearDiameter);
-        WheelModel wheel_rr = new BuggyRearWheel(rearDiameter).flip();
+        WheelModel wheel_f = new RotatorFrontWheel(frontDiameter);
+        WheelModel wheel_rl = new RotatorRearWheel(rearDiameter);
+        WheelModel wheel_rr = new RotatorRearWheel(rearDiameter).flip();
         /*
          * Add the wheels to the vehicle.
-         * For rear-wheel steering, it will be necessary to "flip" the steering.
          */
-        float wheelX = 0.92f; // half of the axle track
-        float frontY = 0.53f; // height of front axle relative to vehicle's CoG
-        float rearY = 0.63f; // height of rear axle relative to vehicle's CoG
-        float frontZ = 1.12f;
-        float rearZ = -1.33f;
+        float wheelX = 0.972f; // half of the axle track
+        float frontY = 0.08f; // height of front axle relative to vehicle's CoG
+        float rearY = 0.33f; // height of rear axle relative to vehicle's CoG
+        float frontZ = 2.239f;
+        float rearZ = -1.138f;
         boolean front = true; // Front wheels are for steering.
         boolean rear = false; // Rear wheels do not steer.
         boolean steeringFlipped = false;
         float mainBrake = 3_000f; // in front only
         float parkingBrake = 3_000f; // in front only
         float damping = 0.09f; // extra linear damping
-        addWheel(wheel_fl, new Vector3f(+wheelX, frontY, frontZ), front,
-                steeringFlipped, mainBrake, parkingBrake, damping);
-        addWheel(wheel_fr, new Vector3f(-wheelX, frontY, frontZ), front,
+        addWheel(wheel_f, new Vector3f(0f, frontY, frontZ), front,
                 steeringFlipped, mainBrake, parkingBrake, damping);
         addWheel(wheel_rl, new Vector3f(+wheelX, rearY, rearZ), rear,
                 steeringFlipped, 0f, 0f, damping);
@@ -133,13 +131,12 @@ public class DuneBuggy extends Vehicle {
          *
          * This vehicle has rear-wheel drive.
          *
-         * 4-wheel drive would be problematic here because
-         * the diameters of the front wheels differ from those of the rear ones.
+         * All-wheel drive would be problematic here because
+         * the diameter of the front wheel differs from those of the rear ones.
          */
         getWheel(0).setPowerFraction(0f);
-        getWheel(1).setPowerFraction(0f);
+        getWheel(1).setPowerFraction(0.4f);
         getWheel(2).setPowerFraction(0.4f);
-        getWheel(3).setPowerFraction(0.4f);
         /*
          * Specify the name and speed range for each gear.
          * The min-max speeds of successive gears should overlap.
@@ -169,24 +166,24 @@ public class DuneBuggy extends Vehicle {
     }
 
     /**
-     * Determine the offset of the dune buggy's DashCamera in scaled shape
+     * Determine the offset of the rotator's DashCamera in scaled shape
      * coordinates.
      *
      * @param storeResult storage for the result (not null)
      */
     @Override
     public void locateDashCam(Vector3f storeResult) {
-        storeResult.set(0f, 1.4f, -0.4f);
+        storeResult.set(0f, 1.3f, 0.1f);
     }
 
     /**
-     * Determine the offset of the dune buggy's ChaseCamera target in scaled
-     * shape coordinates.
+     * Determine the offset of the rotator's ChaseCamera target in scaled shape
+     * coordinates.
      *
      * @param storeResult storage for the result (not null)
      */
     @Override
     protected void locateTarget(Vector3f storeResult) {
-        storeResult.set(0f, 1.18f, -1.67f);
+        storeResult.set(0f, 0.95f, -1.1f);
     }
 }

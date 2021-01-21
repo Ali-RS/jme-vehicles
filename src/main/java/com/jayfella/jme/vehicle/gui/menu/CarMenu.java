@@ -2,12 +2,12 @@ package com.jayfella.jme.vehicle.gui.menu;
 
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Vehicle;
-import com.jayfella.jme.vehicle.examples.cars.DuneBuggy;
-import com.jayfella.jme.vehicle.examples.cars.GTRNismo;
-import com.jayfella.jme.vehicle.examples.cars.GrandTourer;
-import com.jayfella.jme.vehicle.examples.cars.HatchBack;
-import com.jayfella.jme.vehicle.examples.cars.PickupTruck;
-import com.jayfella.jme.vehicle.examples.cars.Rotator;
+import com.jayfella.jme.vehicle.examples.vehicles.DuneBuggy;
+import com.jayfella.jme.vehicle.examples.vehicles.GTRNismo;
+import com.jayfella.jme.vehicle.examples.vehicles.GrandTourer;
+import com.jayfella.jme.vehicle.examples.vehicles.HatchBack;
+import com.jayfella.jme.vehicle.examples.vehicles.PickupTruck;
+import com.jayfella.jme.vehicle.examples.vehicles.Rotator;
 import com.jayfella.jme.vehicle.input.CameraInputMode;
 import com.simsilica.lemur.Button;
 import java.util.ArrayList;

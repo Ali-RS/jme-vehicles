@@ -1,12 +1,12 @@
-package com.jayfella.jme.vehicle.examples.cars;
+package com.jayfella.jme.vehicle.examples.vehicles;
 
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Sound;
 import com.jayfella.jme.vehicle.Vehicle;
-import com.jayfella.jme.vehicle.examples.engines.Engine450HP;
-import com.jayfella.jme.vehicle.examples.sounds.EngineSound1;
-import com.jayfella.jme.vehicle.examples.tires.Tire_01;
-import com.jayfella.jme.vehicle.examples.wheels.RangerWheel;
+import com.jayfella.jme.vehicle.examples.engines.Engine250HP;
+import com.jayfella.jme.vehicle.examples.sounds.EngineSound4;
+import com.jayfella.jme.vehicle.examples.tires.Tire_02;
+import com.jayfella.jme.vehicle.examples.wheels.HatchbackWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Engine;
 import com.jayfella.jme.vehicle.part.GearBox;
@@ -19,22 +19,23 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A sample Vehicle, built around mauro.zampaoli's "Ford Ranger" model.
+ * A sample Vehicle, built around Daniel Zhabotinsky's "Modern Hatchback - Low
+ * Poly" model.
  */
-public class PickupTruck extends Vehicle {
+public class HatchBack extends Vehicle {
     // *************************************************************************
     // constants and loggers
 
     /**
-     * message logger for this class TODO rename
+     * message logger for this class
      */
     final public static Logger logger
-            = Logger.getLogger(PickupTruck.class.getName());
+            = Logger.getLogger(HatchBack.class.getName());
     // *************************************************************************
     // constructors
 
-    public PickupTruck() {
-        super("Pickup Truck");
+    public HatchBack() {
+        super("HatchBack");
     }
     // *************************************************************************
     // Vehicle methods
@@ -53,42 +54,42 @@ public class PickupTruck extends Vehicle {
          * Bullet refers to this as the "chassis".
          */
         AssetManager assetManager = Main.getApplication().getAssetManager();
-        String assetPath = "Models/ford_ranger/pickup.j3o";
+        String assetPath = "Models/modern_hatchback/hatchback.j3o";
         Spatial chassis = assetManager.loadModel(assetPath);
-        float mass = 1_550f; // in kilos
-        float linearDamping = 0.01f;
-        setChassis("ford_ranger", chassis, mass, linearDamping);
+        float mass = 1_140f; // in kilos
+        float linearDamping = 0.004f;
+        setChassis("modern_hatchback", chassis, mass, linearDamping);
         /*
          * By convention, wheels are modeled for the left side, so
          * wheel models for the right side require a 180-degree rotation.
          */
-        float diameter = 0.8f;
-        WheelModel wheel_fl = new RangerWheel(diameter);
-        WheelModel wheel_fr = new RangerWheel(diameter).flip();
-        WheelModel wheel_rl = new RangerWheel(diameter);
-        WheelModel wheel_rr = new RangerWheel(diameter).flip();
+        float diameter = 0.65f;
+        WheelModel wheel_fl = new HatchbackWheel(diameter);
+        WheelModel wheel_fr = new HatchbackWheel(diameter).flip();
+        WheelModel wheel_rl = new HatchbackWheel(diameter);
+        WheelModel wheel_rr = new HatchbackWheel(diameter).flip();
         /*
          * Add the wheels to the vehicle.
          * For rear-wheel steering, it will be necessary to "flip" the steering.
          */
-        float wheelX = 0.75f; // half of the axle track
-        float axleY = 0.7f; // height of the axles relative to vehicle's CoG
-        float frontZ = 1.76f;
-        float rearZ = -1.42f;
+        float wheelX = 0.66f; // half of the axle track
+        float axleY = -0.02f; // height of the axles relative to vehicle's CoG
+        float frontZ = 1.2f;
+        float rearZ = -1.19f;
         boolean front = true; // Front wheels are for steering.
         boolean rear = false; // Rear wheels do not steer.
         boolean steeringFlipped = false;
-        float mainBrake = 4_000f; // all 4 wheels
-        float parkingBrake = 25_000f; // in rear only
-        float damping = 0.04f; // extra linear damping
+        float mainBrake = 5_000f; // all 4 wheels
+        float parkingBrake = 25_000f; // in front only
+        float damping = 0.025f; // extra linear damping
         addWheel(wheel_fl, new Vector3f(+wheelX, axleY, frontZ), front,
-                steeringFlipped, mainBrake, 0f, damping);
+                steeringFlipped, mainBrake, parkingBrake, damping);
         addWheel(wheel_fr, new Vector3f(-wheelX, axleY, frontZ), front,
-                steeringFlipped, mainBrake, 0f, damping);
+                steeringFlipped, mainBrake, parkingBrake, damping);
         addWheel(wheel_rl, new Vector3f(+wheelX, axleY, rearZ), rear,
-                steeringFlipped, mainBrake, parkingBrake, damping);
+                steeringFlipped, mainBrake, 0f, damping);
         addWheel(wheel_rr, new Vector3f(-wheelX, axleY, rearZ), rear,
-                steeringFlipped, mainBrake, parkingBrake, damping);
+                steeringFlipped, mainBrake, 0f, damping);
         /*
          * Configure the suspension.
          *
@@ -99,23 +100,26 @@ public class PickupTruck extends Vehicle {
             Suspension suspension = wheel.getSuspension();
 
             // the rest-length or "height" of the suspension
-            suspension.setRestLength(0.51f);
-            suspension.setMaxTravelCm(1_000f);
-
-            // how much weight the suspension can take before it bottoms out
-            // Setting this too low will make the wheels sink into the ground.
-            suspension.setMaxForce(20_000f);
+            suspension.setRestLength(0.01f);
 
             // the stiffness of the suspension
             // Setting this too low can cause odd behavior.
             suspension.setStiffness(20f);
+
+            // how fast the suspension will compress
+            // 1 = slow, 0 = fast.
+            suspension.setCompressDamping(0.6f);
+
+            // how quickly the suspension will rebound back to height
+            // 1 = slow, 0 = fast.
+            suspension.setRelaxDamping(0.8f);
         }
         /*
          * Give each wheel a tire with friction.
          */
         for (Wheel wheel : listWheels()) {
-            wheel.setTireModel(new Tire_01());
-            wheel.setFriction(1f);
+            wheel.setTireModel(new Tire_02());
+            wheel.setFriction(0.9f);
         }
         /*
          * Distribute drive power across the wheels:
@@ -136,16 +140,16 @@ public class PickupTruck extends Vehicle {
          */
         GearBox gearBox = new GearBox(4, 1);
         gearBox.getGear(-1).setName("reverse").setMinMaxRedKph(0f, -40f, -40f);
-        gearBox.getGear(1).setName("low").setMinMaxRedKph(0f, 19f, 25f);
-        gearBox.getGear(2).setName("2nd").setMinMaxRedKph(12f, 50f, 60f);
-        gearBox.getGear(3).setName("3rd").setMinMaxRedKph(40f, 80f, 90f);
-        gearBox.getGear(4).setName("high").setMinMaxRedKph(70f, 110f, 110f);
+        gearBox.getGear(1).setName("low").setMinMaxRedKph(0f, 30f, 40f);
+        gearBox.getGear(2).setName("2nd").setMinMaxRedKph(20f, 60f, 70f);
+        gearBox.getGear(3).setName("3rd").setMinMaxRedKph(50f, 100f, 120f);
+        gearBox.getGear(4).setName("high").setMinMaxRedKph(80f, 140f, 140f);
         setGearBox(gearBox);
 
-        Engine engine = new Engine450HP();
+        Engine engine = new Engine250HP();
         setEngine(engine);
 
-        Sound engineSound = new EngineSound1();
+        Sound engineSound = new EngineSound4();
         setEngineSound(engineSound);
 
         setHornAudio("/Audio/horn-1.ogg");
@@ -156,24 +160,24 @@ public class PickupTruck extends Vehicle {
     }
 
     /**
-     * Determine the offset of the truck's DashCamera in scaled shape
+     * Determine the offset of the hatchback's DashCamera in scaled shape
      * coordinates.
      *
      * @param storeResult storage for the result (not null)
      */
     @Override
     public void locateDashCam(Vector3f storeResult) {
-        storeResult.set(0f, 1.5f, 1.1f);
+        storeResult.set(0f, 1.2f, 0.7f);
     }
 
     /**
-     * Determine the offset of the truck's ChaseCamera target target in scaled
+     * Determine the offset of the hatchback's ChaseCamera target in scaled
      * shape coordinates.
      *
      * @param storeResult storage for the result (not null)
      */
     @Override
     protected void locateTarget(Vector3f storeResult) {
-        storeResult.set(0f, 0.91f, -2.75f);
+        storeResult.set(0f, 0.52f, -1.7f);
     }
 }

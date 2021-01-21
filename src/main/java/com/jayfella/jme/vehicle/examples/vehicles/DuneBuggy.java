@@ -1,12 +1,13 @@
-package com.jayfella.jme.vehicle.examples.cars;
+package com.jayfella.jme.vehicle.examples.vehicles;
 
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Sound;
 import com.jayfella.jme.vehicle.Vehicle;
-import com.jayfella.jme.vehicle.examples.engines.Engine600HP;
-import com.jayfella.jme.vehicle.examples.sounds.EngineSound2;
+import com.jayfella.jme.vehicle.examples.engines.Engine180HP;
+import com.jayfella.jme.vehicle.examples.sounds.EngineSound5;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
-import com.jayfella.jme.vehicle.examples.wheels.DarkAlloyWheel;
+import com.jayfella.jme.vehicle.examples.wheels.BuggyFrontWheel;
+import com.jayfella.jme.vehicle.examples.wheels.BuggyRearWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Engine;
 import com.jayfella.jme.vehicle.part.GearBox;
@@ -19,9 +20,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A sample Vehicle, built around iSteven's "Nissan GT-R" model.
+ * A sample Vehicle, built around oakar258's "HCR2 Buggy" model.
  */
-public class GTRNismo extends Vehicle {
+public class DuneBuggy extends Vehicle {
     // *************************************************************************
     // constants and loggers
 
@@ -29,12 +30,12 @@ public class GTRNismo extends Vehicle {
      * message logger for this class
      */
     final public static Logger logger
-            = Logger.getLogger(GTRNismo.class.getName());
+            = Logger.getLogger(DuneBuggy.class.getName());
     // *************************************************************************
     // constructors
 
-    public GTRNismo() {
-        super("GTR Nismo");
+    public DuneBuggy() {
+        super("Dune Buggy");
     }
     // *************************************************************************
     // Vehicle methods
@@ -53,41 +54,44 @@ public class GTRNismo extends Vehicle {
          * Bullet refers to this as the "chassis".
          */
         AssetManager assetManager = Main.getApplication().getAssetManager();
-        String assetPath = "Models/gtr_nismo/scene.gltf.j3o";
+        String assetPath = "Models/hcr2_buggy/dune-buggy.j3o";
         Spatial chassis = assetManager.loadModel(assetPath);
-        float mass = 1_525f; // in kilos
-        float linearDamping = 0.002f;
-        setChassis("gtr_nismo", chassis, mass, linearDamping);
+        float mass = 525f; // in kilos
+        float linearDamping = 0.02f;
+        setChassis("hcr2_buggy", chassis, mass, linearDamping);
         /*
          * By convention, wheels are modeled for the left side, so
          * wheel models for the right side require a 180-degree rotation.
          */
-        float diameter = 0.74f;
-        WheelModel wheel_fl = new DarkAlloyWheel(diameter);
-        WheelModel wheel_fr = new DarkAlloyWheel(diameter).flip();
-        WheelModel wheel_rl = new DarkAlloyWheel(diameter);
-        WheelModel wheel_rr = new DarkAlloyWheel(diameter).flip();
+        float rearDiameter = 0.944f;
+        float frontDiameter = 0.77f;
+        WheelModel wheel_fl = new BuggyFrontWheel(frontDiameter);
+        WheelModel wheel_fr = new BuggyFrontWheel(frontDiameter).flip();
+        WheelModel wheel_rl = new BuggyRearWheel(rearDiameter);
+        WheelModel wheel_rr = new BuggyRearWheel(rearDiameter).flip();
         /*
          * Add the wheels to the vehicle.
          * For rear-wheel steering, it will be necessary to "flip" the steering.
          */
-        float wheelX = 0.8f; // half of the axle track
-        float axleY = 0.15f; // height of the axles relative to vehicle's CoG
-        float frontZ = 1.42f;
-        float rearZ = -1.36f;
+        float wheelX = 0.92f; // half of the axle track
+        float frontY = 0.53f; // height of front axle relative to vehicle's CoG
+        float rearY = 0.63f; // height of rear axle relative to vehicle's CoG
+        float frontZ = 1.12f;
+        float rearZ = -1.33f;
         boolean front = true; // Front wheels are for steering.
         boolean rear = false; // Rear wheels do not steer.
         boolean steeringFlipped = false;
-        float parkingBrake = 25_000f; // in rear only
-        float damping = 0.009f; // extra linear damping
-        addWheel(wheel_fl, new Vector3f(+wheelX, axleY, frontZ), front,
-                steeringFlipped, 6_750f, 0f, damping);
-        addWheel(wheel_fr, new Vector3f(-wheelX, axleY, frontZ), front,
-                steeringFlipped, 6_750f, 0f, damping);
-        addWheel(wheel_rl, new Vector3f(+wheelX, axleY, rearZ), rear,
-                steeringFlipped, 3_000f, parkingBrake, damping);
-        addWheel(wheel_rr, new Vector3f(-wheelX, axleY, rearZ), rear,
-                steeringFlipped, 3_000f, parkingBrake, damping);
+        float mainBrake = 3_000f; // in front only
+        float parkingBrake = 3_000f; // in front only
+        float damping = 0.09f; // extra linear damping
+        addWheel(wheel_fl, new Vector3f(+wheelX, frontY, frontZ), front,
+                steeringFlipped, mainBrake, parkingBrake, damping);
+        addWheel(wheel_fr, new Vector3f(-wheelX, frontY, frontZ), front,
+                steeringFlipped, mainBrake, parkingBrake, damping);
+        addWheel(wheel_rl, new Vector3f(+wheelX, rearY, rearZ), rear,
+                steeringFlipped, 0f, 0f, damping);
+        addWheel(wheel_rr, new Vector3f(-wheelX, rearY, rearZ), rear,
+                steeringFlipped, 0f, 0f, damping);
         /*
          * Configure the suspension.
          *
@@ -98,41 +102,44 @@ public class GTRNismo extends Vehicle {
             Suspension suspension = wheel.getSuspension();
 
             // the rest-length or "height" of the suspension
-            suspension.setRestLength(0.01f);
+            suspension.setRestLength(0.25f);
 
             // how much weight the suspension can take before it bottoms out
             // Setting this too low will make the wheels sink into the ground.
-            suspension.setMaxForce(7_000f);
+            suspension.setMaxForce(12_000f);
 
             // the stiffness of the suspension
             // Setting this too low can cause odd behavior.
-            suspension.setStiffness(12.5f);
+            suspension.setStiffness(24f);
 
             // how fast the suspension will compress
             // 1 = slow, 0 = fast.
-            suspension.setCompressDamping(0.3f);
+            suspension.setCompressDamping(0.5f);
 
             // how quickly the suspension will rebound back to height
             // 1 = slow, 0 = fast.
-            suspension.setRelaxDamping(0.4f);
+            suspension.setRelaxDamping(0.65f);
         }
         /*
          * Give each wheel a tire with friction.
          */
         for (Wheel wheel : listWheels()) {
             wheel.setTireModel(new Tire_01());
-            wheel.setFriction(1.6f);
+            wheel.setFriction(1.3f);
         }
         /*
          * Distribute drive power across the wheels:
          *  0 = no power, 1 = all of the power
          *
-         * This vehicle has 4-wheel drive.
+         * This vehicle has rear-wheel drive.
+         *
+         * 4-wheel drive would be problematic here because
+         * the diameters of the front wheels differ from those of the rear ones.
          */
-        getWheel(0).setPowerFraction(0.2f);
-        getWheel(1).setPowerFraction(0.2f);
-        getWheel(2).setPowerFraction(0.2f);
-        getWheel(3).setPowerFraction(0.2f);
+        getWheel(0).setPowerFraction(0f);
+        getWheel(1).setPowerFraction(0f);
+        getWheel(2).setPowerFraction(0.4f);
+        getWheel(3).setPowerFraction(0.4f);
         /*
          * Specify the name and speed range for each gear.
          * The min-max speeds of successive gears should overlap.
@@ -140,20 +147,18 @@ public class GTRNismo extends Vehicle {
          * The "max" speed of high gear determines the top speed.
          * The "red" speed of each gear is used to calculate its ratio.
          */
-        GearBox gearBox = new GearBox(6, 1);
+        GearBox gearBox = new GearBox(4, 1);
         gearBox.getGear(-1).setName("reverse").setMinMaxRedKph(0f, -40f, -40f);
-        gearBox.getGear(1).setName("low").setMinMaxRedKph(0f, 30f, 35f);
-        gearBox.getGear(2).setName("2nd").setMinMaxRedKph(15f, 70f, 75f);
-        gearBox.getGear(3).setName("3rd").setMinMaxRedKph(50f, 130f, 140f);
-        gearBox.getGear(4).setName("4th").setMinMaxRedKph(120f, 190f, 200f);
-        gearBox.getGear(5).setName("5th").setMinMaxRedKph(180f, 255f, 275f);
-        gearBox.getGear(6).setName("high").setMinMaxRedKph(250f, 320f, 320f);
+        gearBox.getGear(1).setName("low").setMinMaxRedKph(0f, 15f, 20f);
+        gearBox.getGear(2).setName("2nd").setMinMaxRedKph(5f, 30f, 35f);
+        gearBox.getGear(3).setName("3rd").setMinMaxRedKph(25f, 50f, 60f);
+        gearBox.getGear(4).setName("high").setMinMaxRedKph(45f, 90f, 90f);
         setGearBox(gearBox);
 
-        Engine engine = new Engine600HP();
+        Engine engine = new Engine180HP();
         setEngine(engine);
 
-        Sound engineSound = new EngineSound2();
+        Sound engineSound = new EngineSound5();
         setEngineSound(engineSound);
 
         setHornAudio("/Audio/horn-1.ogg");
@@ -164,24 +169,24 @@ public class GTRNismo extends Vehicle {
     }
 
     /**
-     * Determine the offset of the Nismo's DashCamera in scaled shape
+     * Determine the offset of the dune buggy's DashCamera in scaled shape
      * coordinates.
      *
      * @param storeResult storage for the result (not null)
      */
     @Override
     public void locateDashCam(Vector3f storeResult) {
-        storeResult.set(0f, 1.5f, 0.5f);
+        storeResult.set(0f, 1.4f, -0.4f);
     }
 
     /**
-     * Determine the offset of the Nismo's ChaseCamera target in scaled shape
-     * coordinates.
+     * Determine the offset of the dune buggy's ChaseCamera target in scaled
+     * shape coordinates.
      *
      * @param storeResult storage for the result (not null)
      */
     @Override
     protected void locateTarget(Vector3f storeResult) {
-        storeResult.set(0f, 0.6f, -2.31f);
+        storeResult.set(0f, 1.18f, -1.67f);
     }
 }

@@ -1,13 +1,12 @@
-package com.jayfella.jme.vehicle.examples.cars;
+package com.jayfella.jme.vehicle.examples.vehicles;
 
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Sound;
 import com.jayfella.jme.vehicle.Vehicle;
-import com.jayfella.jme.vehicle.examples.engines.Engine180HP;
-import com.jayfella.jme.vehicle.examples.sounds.EngineSound5;
+import com.jayfella.jme.vehicle.examples.engines.Engine450HP;
+import com.jayfella.jme.vehicle.examples.sounds.EngineSound1;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
-import com.jayfella.jme.vehicle.examples.wheels.RotatorFrontWheel;
-import com.jayfella.jme.vehicle.examples.wheels.RotatorRearWheel;
+import com.jayfella.jme.vehicle.examples.wheels.RangerWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Engine;
 import com.jayfella.jme.vehicle.part.GearBox;
@@ -20,24 +19,22 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A sample Vehicle, built around oakar258's "HCR2 Rotator" model.
- *
- * @author Stephen Gold sgold@sonic.net
+ * A sample Vehicle, built around mauro.zampaoli's "Ford Ranger" model.
  */
-public class Rotator extends Vehicle {
+public class PickupTruck extends Vehicle {
     // *************************************************************************
     // constants and loggers
 
     /**
-     * message logger for this class
+     * message logger for this class TODO rename
      */
-    final public static Logger logger2
-            = Logger.getLogger(Rotator.class.getName());
+    final public static Logger logger
+            = Logger.getLogger(PickupTruck.class.getName());
     // *************************************************************************
     // constructors
 
-    public Rotator() {
-        super("Rotator");
+    public PickupTruck() {
+        super("Pickup Truck");
     }
     // *************************************************************************
     // Vehicle methods
@@ -56,40 +53,42 @@ public class Rotator extends Vehicle {
          * Bullet refers to this as the "chassis".
          */
         AssetManager assetManager = Main.getApplication().getAssetManager();
-        String assetPath = "/Models/hcr2_rotator/chassis.j3o";
+        String assetPath = "Models/ford_ranger/pickup.j3o";
         Spatial chassis = assetManager.loadModel(assetPath);
-        float mass = 525f; // in kilos
-        float linearDamping = 0.02f;
-        setChassis("hcr2_rotator", chassis, mass, linearDamping);
+        float mass = 1_550f; // in kilos
+        float linearDamping = 0.01f;
+        setChassis("ford_ranger", chassis, mass, linearDamping);
         /*
          * By convention, wheels are modeled for the left side, so
          * wheel models for the right side require a 180-degree rotation.
          */
-        float rearDiameter = 1.087f;
-        float frontDiameter = 0.77f;
-        WheelModel wheel_f = new RotatorFrontWheel(frontDiameter);
-        WheelModel wheel_rl = new RotatorRearWheel(rearDiameter);
-        WheelModel wheel_rr = new RotatorRearWheel(rearDiameter).flip();
+        float diameter = 0.8f;
+        WheelModel wheel_fl = new RangerWheel(diameter);
+        WheelModel wheel_fr = new RangerWheel(diameter).flip();
+        WheelModel wheel_rl = new RangerWheel(diameter);
+        WheelModel wheel_rr = new RangerWheel(diameter).flip();
         /*
          * Add the wheels to the vehicle.
+         * For rear-wheel steering, it will be necessary to "flip" the steering.
          */
-        float wheelX = 0.972f; // half of the axle track
-        float frontY = 0.08f; // height of front axle relative to vehicle's CoG
-        float rearY = 0.33f; // height of rear axle relative to vehicle's CoG
-        float frontZ = 2.239f;
-        float rearZ = -1.138f;
+        float wheelX = 0.75f; // half of the axle track
+        float axleY = 0.7f; // height of the axles relative to vehicle's CoG
+        float frontZ = 1.76f;
+        float rearZ = -1.42f;
         boolean front = true; // Front wheels are for steering.
         boolean rear = false; // Rear wheels do not steer.
         boolean steeringFlipped = false;
-        float mainBrake = 3_000f; // in front only
-        float parkingBrake = 3_000f; // in front only
-        float damping = 0.09f; // extra linear damping
-        addWheel(wheel_f, new Vector3f(0f, frontY, frontZ), front,
+        float mainBrake = 4_000f; // all 4 wheels
+        float parkingBrake = 25_000f; // in rear only
+        float damping = 0.04f; // extra linear damping
+        addWheel(wheel_fl, new Vector3f(+wheelX, axleY, frontZ), front,
+                steeringFlipped, mainBrake, 0f, damping);
+        addWheel(wheel_fr, new Vector3f(-wheelX, axleY, frontZ), front,
+                steeringFlipped, mainBrake, 0f, damping);
+        addWheel(wheel_rl, new Vector3f(+wheelX, axleY, rearZ), rear,
                 steeringFlipped, mainBrake, parkingBrake, damping);
-        addWheel(wheel_rl, new Vector3f(+wheelX, rearY, rearZ), rear,
-                steeringFlipped, 0f, 0f, damping);
-        addWheel(wheel_rr, new Vector3f(-wheelX, rearY, rearZ), rear,
-                steeringFlipped, 0f, 0f, damping);
+        addWheel(wheel_rr, new Vector3f(-wheelX, axleY, rearZ), rear,
+                steeringFlipped, mainBrake, parkingBrake, damping);
         /*
          * Configure the suspension.
          *
@@ -100,43 +99,34 @@ public class Rotator extends Vehicle {
             Suspension suspension = wheel.getSuspension();
 
             // the rest-length or "height" of the suspension
-            suspension.setRestLength(0.25f);
+            suspension.setRestLength(0.51f);
+            suspension.setMaxTravelCm(1_000f);
 
             // how much weight the suspension can take before it bottoms out
             // Setting this too low will make the wheels sink into the ground.
-            suspension.setMaxForce(12_000f);
+            suspension.setMaxForce(20_000f);
 
             // the stiffness of the suspension
             // Setting this too low can cause odd behavior.
-            suspension.setStiffness(24f);
-
-            // how fast the suspension will compress
-            // 1 = slow, 0 = fast.
-            suspension.setCompressDamping(0.5f);
-
-            // how quickly the suspension will rebound back to height
-            // 1 = slow, 0 = fast.
-            suspension.setRelaxDamping(0.65f);
+            suspension.setStiffness(20f);
         }
         /*
          * Give each wheel a tire with friction.
          */
         for (Wheel wheel : listWheels()) {
             wheel.setTireModel(new Tire_01());
-            wheel.setFriction(1.3f);
+            wheel.setFriction(1f);
         }
         /*
          * Distribute drive power across the wheels:
          *  0 = no power, 1 = all of the power
          *
-         * This vehicle has rear-wheel drive.
-         *
-         * All-wheel drive would be problematic here because
-         * the diameter of the front wheel differs from those of the rear ones.
+         * This vehicle has 4-wheel drive.
          */
-        getWheel(0).setPowerFraction(0f);
-        getWheel(1).setPowerFraction(0.4f);
-        getWheel(2).setPowerFraction(0.4f);
+        getWheel(0).setPowerFraction(0.2f);
+        getWheel(1).setPowerFraction(0.2f);
+        getWheel(2).setPowerFraction(0.2f);
+        getWheel(3).setPowerFraction(0.2f);
         /*
          * Specify the name and speed range for each gear.
          * The min-max speeds of successive gears should overlap.
@@ -146,16 +136,16 @@ public class Rotator extends Vehicle {
          */
         GearBox gearBox = new GearBox(4, 1);
         gearBox.getGear(-1).setName("reverse").setMinMaxRedKph(0f, -40f, -40f);
-        gearBox.getGear(1).setName("low").setMinMaxRedKph(0f, 15f, 20f);
-        gearBox.getGear(2).setName("2nd").setMinMaxRedKph(5f, 30f, 35f);
-        gearBox.getGear(3).setName("3rd").setMinMaxRedKph(25f, 50f, 60f);
-        gearBox.getGear(4).setName("high").setMinMaxRedKph(45f, 90f, 90f);
+        gearBox.getGear(1).setName("low").setMinMaxRedKph(0f, 19f, 25f);
+        gearBox.getGear(2).setName("2nd").setMinMaxRedKph(12f, 50f, 60f);
+        gearBox.getGear(3).setName("3rd").setMinMaxRedKph(40f, 80f, 90f);
+        gearBox.getGear(4).setName("high").setMinMaxRedKph(70f, 110f, 110f);
         setGearBox(gearBox);
 
-        Engine engine = new Engine180HP();
+        Engine engine = new Engine450HP();
         setEngine(engine);
 
-        Sound engineSound = new EngineSound5();
+        Sound engineSound = new EngineSound1();
         setEngineSound(engineSound);
 
         setHornAudio("/Audio/horn-1.ogg");
@@ -166,24 +156,24 @@ public class Rotator extends Vehicle {
     }
 
     /**
-     * Determine the offset of the rotator's DashCamera in scaled shape
+     * Determine the offset of the truck's DashCamera in scaled shape
      * coordinates.
      *
      * @param storeResult storage for the result (not null)
      */
     @Override
     public void locateDashCam(Vector3f storeResult) {
-        storeResult.set(0f, 1.3f, 0.1f);
+        storeResult.set(0f, 1.5f, 1.1f);
     }
 
     /**
-     * Determine the offset of the rotator's ChaseCamera target in scaled shape
-     * coordinates.
+     * Determine the offset of the truck's ChaseCamera target target in scaled
+     * shape coordinates.
      *
      * @param storeResult storage for the result (not null)
      */
     @Override
     protected void locateTarget(Vector3f storeResult) {
-        storeResult.set(0f, 0.95f, -1.1f);
+        storeResult.set(0f, 0.91f, -2.75f);
     }
 }

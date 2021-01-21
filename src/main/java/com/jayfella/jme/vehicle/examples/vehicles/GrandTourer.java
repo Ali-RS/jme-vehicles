@@ -1,4 +1,4 @@
-package com.jayfella.jme.vehicle.examples.cars;
+package com.jayfella.jme.vehicle.examples.vehicles;
 
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Sound;
