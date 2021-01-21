@@ -44,7 +44,6 @@ class AtmiState extends BaseAppState {
     // *************************************************************************
     // fields
 
-    private Vehicle vehicle;
     /**
      * vertical spacing between indicator positions (in pixels)
      */
@@ -65,6 +64,7 @@ class AtmiState extends BaseAppState {
     private Node node;
 
     private TrueTypeMesh droidFont;
+    private Vehicle vehicle;
     // *************************************************************************
     // constructors
 

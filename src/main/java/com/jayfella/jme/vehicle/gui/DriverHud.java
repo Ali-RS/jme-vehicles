@@ -63,7 +63,6 @@ public class DriverHud extends BaseAppState {
      * Appstate to manage the automatic-transmission mode indicator
      */
     final private AtmiState atmiState = new AtmiState();
-    private Vehicle vehicle;
     /**
      * dimensions of the GUI viewport (in pixels)
      */
@@ -84,6 +83,8 @@ public class DriverHud extends BaseAppState {
      */
     private SpeedometerState speedometer;
     private TachometerState tachometer;
+
+    private Vehicle vehicle;
     // *************************************************************************
     // constructors
 

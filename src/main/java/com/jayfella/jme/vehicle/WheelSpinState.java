@@ -21,11 +21,10 @@ public class WheelSpinState extends BaseAppState {
     // *************************************************************************
     // fields
 
-    final private Vehicle vehicle;
-    private int wheelCount;
-
-    private Quaternion[] rot;
     private float[][] angles;// = new float[3];
+    private int wheelCount;
+    private Quaternion[] rot;
+    final private Vehicle vehicle;
     // *************************************************************************
     // constructors
 

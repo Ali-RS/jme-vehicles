@@ -28,13 +28,13 @@ public class SkidMarksState extends BaseAppState {
 
     private boolean skidmarkEnabled = true;
     /**
-     * Vehicle producing the skidmarks (not null)
-     */
-    final private Vehicle vehicle;
-    /**
      * width of the skidmark for each wheel (in world units, &gt;0)
      */
     final private float[] skidWidths;
+    /**
+     * Vehicle producing the skidmarks (not null)
+     */
+    final private Vehicle vehicle;
     /**
      * active skidmark for each wheel
      */

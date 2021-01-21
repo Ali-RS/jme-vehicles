@@ -19,8 +19,6 @@ public class TireDataState extends BaseAppState {
     // *************************************************************************
     // fields
 
-    final private Vehicle vehicle;
-
     final private static int graphHeight = 100;
     final private static int graphWidth = 200;
 
@@ -31,6 +29,7 @@ public class TireDataState extends BaseAppState {
     final private Node node;
 
     final private TireGraph[] tireGraphs;
+    final private Vehicle vehicle;
     // *************************************************************************
     // constructors
 

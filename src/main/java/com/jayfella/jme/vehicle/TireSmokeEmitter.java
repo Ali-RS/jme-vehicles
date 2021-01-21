@@ -31,7 +31,6 @@ public class TireSmokeEmitter extends BaseAppState {
     // *************************************************************************
     // fields
 
-    final private Vehicle vehicle;
     /**
      * reusable temporary ColorRGBA
      */
@@ -45,6 +44,8 @@ public class TireSmokeEmitter extends BaseAppState {
      * reusable temporary Vector3f
      */
     final private static Vector3f tmpLocation = new Vector3f();
+
+    final private Vehicle vehicle;
     // *************************************************************************
     // constructors
 

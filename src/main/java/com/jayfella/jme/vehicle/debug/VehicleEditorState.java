@@ -19,11 +19,11 @@ public class VehicleEditorState extends BaseAppState {
     // *************************************************************************
     // fields
 
-    final private Vehicle vehicle;
     final public static int Width = 350;
     final public static SpringGridLayout Layout = new SpringGridLayout(Axis.Y,
             Axis.X, FillMode.Even, FillMode.Last);
     final private TabbedPanel tabbedPanel;
+    final private Vehicle vehicle;
     // *************************************************************************
     // constructor
 
