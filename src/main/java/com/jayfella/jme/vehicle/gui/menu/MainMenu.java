@@ -50,7 +50,7 @@ public class MainMenu extends AnimatedMenu {
 
         button = new Button("Change Vehicle");
         button.addClickCommands(source -> animateOut(()
-                -> goTo(new CarMenu())
+                -> goTo(new VehicleMenu())
         ));
         result.add(button);
 

@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 /**
  * An AnimatedMenu to choose among the available vehicles.
  */
-class CarMenu extends AnimatedMenu {
+class VehicleMenu extends AnimatedMenu {
     // *************************************************************************
     // constants and loggers
 
@@ -25,7 +25,7 @@ class CarMenu extends AnimatedMenu {
      * message logger for this class
      */
     final private static Logger logger
-            = Logger.getLogger(CarMenu.class.getName());
+            = Logger.getLogger(VehicleMenu.class.getName());
     // *************************************************************************
     // AnimatedMenuState methods
 
