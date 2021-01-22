@@ -227,7 +227,7 @@ Resources/assets/media:
   has an Apache License, Version 2.0.
 + The [Opel GT Retopo model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/GT)
   has a CC Attribution-NonCommercial-ShareAlike license.
-+ The [Jamie model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/Jaime)
++ The [HoverTank model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/Tank)
   has a BSD 3-Clause license.
 + The [Ford Ranger model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/ford_ranger)
   has a CC Attribution license.
@@ -294,9 +294,9 @@ The world (and physics-space) units of distance are *meters*.
   on which this project is based.
 + [Paul Speed (aka "pspeed42")][pspeed] created the Lemur libraries.
 + [Adam T. Ryder (aka "ATryder")][atryder] created the jME-TTF library.
-+ Rémy Bouquet (aka "Nehon") created the "Jaime" model.
++ Rémy Bouquet (aka "Nehon") created the "Jaime" and "Enhanced HoverTank" models.
 + [Adi Barda (aka "adi.barda")][adi] created the racetrack model.
-+ Rob Tuytel authored the "marble_01" textures.
++ Rob Tuytel created the "marble_01" textures.
 + [Sergej Majboroda][sergej] created the "Quarry 03" texture.
 + Tom Ruen created the "Lunar libration with phase Oct 2007" animation.
 

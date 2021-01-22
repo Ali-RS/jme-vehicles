@@ -1,0 +1,22 @@
+Licensing history for files in "src/main/resources/Models/Tank" and its
+subfolders
+
+Based on "Enhanced HoverTank":
+* downloaded from:   https://github.com/jMonkeyEngine/jmonkeyengine/tree/master/jme3-testdata/src/main/resources/Models/Tank
+* author:            Rémy Bouquet
+* author URL:        https://hub.jmonkeyengine.org/u/nehon/summary
+* license type:      BSD 3-Clause
+* license URL:       https://opensource.org/licenses/BSD-3-Clause
+
+Files used without modification:
+* Tank_Base_Color.png
+* Tank_Emissive.png
+* Tank_Normal.png
+* Tank_Occ_Rough_Metal.png
+
+Derived files (also licensed BSD 3-Clause):
+* chassis.j3o
+* chassis-shape.j3o
+
+Added files (also licensed BSD 3-Clause):
+* license.txt
