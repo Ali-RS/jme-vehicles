@@ -72,8 +72,8 @@ public class GrandTourer extends Vehicle {
          * For rear-wheel steering, it will be necessary to "flip" the steering.
          */
         float wheelX = 0.85f; // half of the axle track
-        float frontY = 0.35f; // height of front axle relative to vehicle's CoG
-        float rearY = 0.45f; // height of rear axle relative to vehicle's CoG
+        float frontY = 0.32f; // height of front axle relative to vehicle's CoG
+        float rearY = 0.40f; // height of rear axle relative to vehicle's CoG
         float frontZ = 1.6f;
         float rearZ = -1.6f;
         boolean front = true; // Front wheels are for steering.
@@ -115,11 +115,6 @@ public class GrandTourer extends Vehicle {
             // 1 = slow, 0 = fast.
             suspension.setRelaxDamping(0.45f);
         }
-        // the rest-length or "height" of the suspension
-        getWheel(0).getSuspension().setRestLength(0.225f);
-        getWheel(1).getSuspension().setRestLength(0.225f);
-        getWheel(2).getSuspension().setRestLength(0.285f);
-        getWheel(3).getSuspension().setRestLength(0.285f);
         /*
          * Give each wheel a tire with friction.
          */

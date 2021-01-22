@@ -72,7 +72,7 @@ public class PickupTruck extends Vehicle {
          * For rear-wheel steering, it will be necessary to "flip" the steering.
          */
         float wheelX = 0.75f; // half of the axle track
-        float axleY = 0.7f; // height of the axles relative to vehicle's CoG
+        float axleY = 0.45f; // height of the axles relative to vehicle's CoG
         float frontZ = 1.76f;
         float rearZ = -1.42f;
         boolean front = true; // Front wheels are for steering.
@@ -98,8 +98,6 @@ public class PickupTruck extends Vehicle {
         for (Wheel wheel : listWheels()) {
             Suspension suspension = wheel.getSuspension();
 
-            // the rest-length or "height" of the suspension
-            suspension.setRestLength(0.51f);
             suspension.setMaxTravelCm(1_000f);
 
             // how much weight the suspension can take before it bottoms out

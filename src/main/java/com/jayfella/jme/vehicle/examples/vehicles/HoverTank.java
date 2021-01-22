@@ -110,9 +110,6 @@ public class HoverTank extends Vehicle {
         for (Wheel wheel : listWheels()) {
             Suspension suspension = wheel.getSuspension();
 
-            // the rest-length or "height" of the suspension
-            suspension.setRestLength(0.6f);
-
             // how much weight the suspension can take before it bottoms out
             // Setting this too low will make the wheels sink into the ground.
             suspension.setMaxForce(50_000f);

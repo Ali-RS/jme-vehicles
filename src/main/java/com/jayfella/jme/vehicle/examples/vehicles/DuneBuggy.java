@@ -73,9 +73,9 @@ public class DuneBuggy extends Vehicle {
          * Add the wheels to the vehicle.
          * For rear-wheel steering, it will be necessary to "flip" the steering.
          */
-        float wheelX = 0.92f; // half of the axle track
-        float frontY = 0.53f; // height of front axle relative to vehicle's CoG
-        float rearY = 0.63f; // height of rear axle relative to vehicle's CoG
+        float wheelX = 0.9f; // half of the axle track
+        float frontY = 0.48f; // height of front axle relative to vehicle's CoG
+        float rearY = 0.6f; // height of rear axle relative to vehicle's CoG
         float frontZ = 1.12f;
         float rearZ = -1.33f;
         boolean front = true; // Front wheels are for steering.
@@ -100,9 +100,6 @@ public class DuneBuggy extends Vehicle {
          */
         for (Wheel wheel : listWheels()) {
             Suspension suspension = wheel.getSuspension();
-
-            // the rest-length or "height" of the suspension
-            suspension.setRestLength(0.25f);
 
             // how much weight the suspension can take before it bottoms out
             // Setting this too low will make the wheels sink into the ground.

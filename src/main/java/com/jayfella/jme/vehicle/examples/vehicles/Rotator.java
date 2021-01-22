@@ -73,11 +73,11 @@ public class Rotator extends Vehicle {
         /*
          * Add the wheels to the vehicle.
          */
-        float wheelX = 0.972f; // half of the axle track
-        float frontY = 0.08f; // height of front axle relative to vehicle's CoG
-        float rearY = 0.33f; // height of rear axle relative to vehicle's CoG
+        float wheelX = 0.972f; // half of the (rear) axle track
+        float frontY = 0.09f; // height of front axle relative to vehicle's CoG
+        float rearY = 0.25f; // height of rear axle relative to vehicle's CoG
         float frontZ = 2.239f;
-        float rearZ = -1.138f;
+        float rearZ = -1.15f;
         boolean front = true; // Front wheels are for steering.
         boolean rear = false; // Rear wheels do not steer.
         boolean steeringFlipped = false;
@@ -98,9 +98,6 @@ public class Rotator extends Vehicle {
          */
         for (Wheel wheel : listWheels()) {
             Suspension suspension = wheel.getSuspension();
-
-            // the rest-length or "height" of the suspension
-            suspension.setRestLength(0.25f);
 
             // how much weight the suspension can take before it bottoms out
             // Setting this too low will make the wheels sink into the ground.
