@@ -28,7 +28,7 @@ public class GTRNismo extends Vehicle {
     /**
      * message logger for this class
      */
-    final public static Logger logger
+    final public static Logger logger2
             = Logger.getLogger(GTRNismo.class.getName());
     // *************************************************************************
     // constructors

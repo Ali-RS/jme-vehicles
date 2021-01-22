@@ -26,9 +26,9 @@ public class PickupTruck extends Vehicle {
     // constants and loggers
 
     /**
-     * message logger for this class TODO rename
+     * message logger for this class
      */
-    final public static Logger logger
+    final public static Logger logger2
             = Logger.getLogger(PickupTruck.class.getName());
     // *************************************************************************
     // constructors

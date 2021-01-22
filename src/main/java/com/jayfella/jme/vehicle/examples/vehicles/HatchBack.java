@@ -29,7 +29,7 @@ public class HatchBack extends Vehicle {
     /**
      * message logger for this class
      */
-    final public static Logger logger
+    final public static Logger logger2
             = Logger.getLogger(HatchBack.class.getName());
     // *************************************************************************
     // constructors

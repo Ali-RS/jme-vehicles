@@ -28,7 +28,7 @@ public class GrandTourer extends Vehicle {
     /**
      * message logger for this class
      */
-    final public static Logger logger
+    final public static Logger logger2
             = Logger.getLogger(GrandTourer.class.getName());
     // *************************************************************************
     // constructors
