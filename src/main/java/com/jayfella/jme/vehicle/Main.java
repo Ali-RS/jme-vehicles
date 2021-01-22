@@ -9,6 +9,7 @@ import com.jayfella.jme.vehicle.examples.vehicles.DuneBuggy;
 import com.jayfella.jme.vehicle.examples.vehicles.GTRNismo;
 import com.jayfella.jme.vehicle.examples.vehicles.GrandTourer;
 import com.jayfella.jme.vehicle.examples.vehicles.HatchBack;
+import com.jayfella.jme.vehicle.examples.vehicles.HoverTank;
 import com.jayfella.jme.vehicle.examples.vehicles.PickupTruck;
 import com.jayfella.jme.vehicle.examples.vehicles.Rotator;
 import com.jayfella.jme.vehicle.examples.worlds.Playground;
@@ -68,6 +69,7 @@ public class Main extends SimpleApplication {
         new GrandTourer(),
         new GTRNismo(),
         new HatchBack(),
+        new HoverTank(),
         new Playground(),
         new PickupTruck(),
         new QuarrySky(),

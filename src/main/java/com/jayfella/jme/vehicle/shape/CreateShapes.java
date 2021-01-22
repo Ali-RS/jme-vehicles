@@ -60,6 +60,7 @@ public class CreateShapes {
          * Create a collision shape for each vehicle chassis.
          */
         createChassisShape("GT", "scene.gltf");
+        createChassisShape("Tank", "chassis");
         createChassisShape("ford_ranger", "pickup");
         createChassisShape("gtr_nismo", "scene.gltf");
         createChassisShape("hcr2_buggy", "dune-buggy");

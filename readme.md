@@ -23,13 +23,14 @@
   + endless plain
   + racetrack
   + vehicle playground
-+ 6 vehicle models:
++ 7 vehicle models:
   + Grand Tourer
   + GTR Nismo
   + pickup truck
   + hatchback
   + dune buggy
   + Rotator
+  + HoverTank
 + vehicle customization:
   + engine
   + brakes

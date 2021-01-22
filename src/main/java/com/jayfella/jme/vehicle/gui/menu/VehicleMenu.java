@@ -6,6 +6,7 @@ import com.jayfella.jme.vehicle.examples.vehicles.DuneBuggy;
 import com.jayfella.jme.vehicle.examples.vehicles.GTRNismo;
 import com.jayfella.jme.vehicle.examples.vehicles.GrandTourer;
 import com.jayfella.jme.vehicle.examples.vehicles.HatchBack;
+import com.jayfella.jme.vehicle.examples.vehicles.HoverTank;
 import com.jayfella.jme.vehicle.examples.vehicles.PickupTruck;
 import com.jayfella.jme.vehicle.examples.vehicles.Rotator;
 import com.jayfella.jme.vehicle.input.CameraInputMode;
@@ -31,7 +32,7 @@ class VehicleMenu extends AnimatedMenu {
 
     @Override
     protected List<Button> createItems() {
-        List<Button> result = new ArrayList<>(7);
+        List<Button> result = new ArrayList<>(8);
 
         Button button = new Button("Grand Tourer");
         button.addClickCommands(source -> setVehicle(new GrandTourer()));
@@ -55,6 +56,10 @@ class VehicleMenu extends AnimatedMenu {
 
         button = new Button("Rotator");
         button.addClickCommands(source -> setVehicle(new Rotator()));
+        result.add(button);
+
+        button = new Button("Hover Tank");
+        button.addClickCommands(source -> setVehicle(new HoverTank()));
         result.add(button);
 
         button = new Button("<< Back");
