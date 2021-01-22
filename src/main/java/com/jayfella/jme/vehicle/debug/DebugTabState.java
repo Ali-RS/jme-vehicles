@@ -3,7 +3,6 @@ package com.jayfella.jme.vehicle.debug;
 import com.jme3.app.Application;
 import com.jme3.app.StatsAppState;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.bullet.BulletAppState;
 import com.simsilica.lemur.Container;
 import com.simsilica.lemur.TabbedPanel;
 import com.simsilica.lemur.props.PropertyPanel;
@@ -56,8 +55,6 @@ public class DebugTabState extends BaseAppState {
     protected void initialize(Application application) {
         Container container = new Container();
 
-        BulletAppState bulletAppState = getState(BulletAppState.class);
-
         VehicleEditorState editorState = getState(VehicleEditorState.class);
         TabbedPanel tabbedPanel = editorState.getTabbedPanel();
 
@@ -67,7 +64,6 @@ public class DebugTabState extends BaseAppState {
         PropertyPanel propertyPanel = container.addChild(new PropertyPanel("glass"));
         propertyPanel.addBooleanProperty("Display FPS", this, "displayFps");
         propertyPanel.addBooleanProperty("Display Stats", this, "displayStats");
-        propertyPanel.addBooleanProperty("Bullet Debug", bulletAppState, "debugEnabled");
         propertyPanel.addBooleanProperty("Engine Graph", enginePowerGraphState, "enabled");
         propertyPanel.addBooleanProperty("Tire Graph", tireDataState, "enabled");
 

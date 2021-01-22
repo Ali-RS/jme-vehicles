@@ -316,7 +316,8 @@ public class Main extends SimpleApplication {
         InputMode physicsMode = new PhysicsMode()
                 .assign(PhysicsMode.F_PAUSE,
                         KeyInput.KEY_PAUSE, KeyInput.KEY_PERIOD)
-                .assign(PhysicsMode.F_SINGLE_STEP, KeyInput.KEY_COMMA);
+                .assign(PhysicsMode.F_SINGLE_STEP, KeyInput.KEY_COMMA)
+                .assign(PhysicsMode.F_TOGGLE_PHYSICS_DEBUG, KeyInput.KEY_SLASH);
 
         stateManager.attach(physicsMode);
         physicsMode.setEnabled(true);

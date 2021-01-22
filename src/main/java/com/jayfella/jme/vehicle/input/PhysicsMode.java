@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle.input;
 
 import com.jayfella.jme.vehicle.gui.PhysicsHud;
+import com.jme3.bullet.BulletAppState;
 import com.simsilica.lemur.input.FunctionId;
 import com.simsilica.lemur.input.InputState;
 import java.util.logging.Logger;
@@ -19,6 +20,8 @@ public class PhysicsMode extends InputMode {
             = new FunctionId("Pause Simulation");
     final public static FunctionId F_SINGLE_STEP
             = new FunctionId("Single-step Simulation");
+    final public static FunctionId F_TOGGLE_PHYSICS_DEBUG
+            = new FunctionId("Toggle Physics Debug");
     /**
      * message logger for this class
      */
@@ -31,20 +34,26 @@ public class PhysicsMode extends InputMode {
      * Instantiate a disabled InputMode to control the physics simulation.
      */
     public PhysicsMode() {
-        super("Physics Mode", F_PAUSE, F_SINGLE_STEP);
+        super("Physics Mode", F_PAUSE, F_SINGLE_STEP, F_TOGGLE_PHYSICS_DEBUG);
 
         assign((FunctionId function, InputState inputState, double tpf) -> {
             if (inputState == InputState.Positive) {
-                PhysicsHud hud = getStateManager().getState(PhysicsHud.class);
-                hud.togglePhysicsPaused();
+                getState(PhysicsHud.class).togglePhysicsPaused();
             }
         }, F_PAUSE);
 
         assign((FunctionId function, InputState inputState, double tpf) -> {
             if (inputState == InputState.Positive) {
-                PhysicsHud hud = getStateManager().getState(PhysicsHud.class);
-                hud.singleStepPhysics();
+                getState(PhysicsHud.class).singleStepPhysics();
             }
         }, F_SINGLE_STEP);
+
+        assign((FunctionId function, InputState inputState, double tpf) -> {
+            if (inputState == InputState.Positive) {
+                BulletAppState bas = getState(BulletAppState.class);
+                boolean wasEnabled = bas.isDebugEnabled();
+                bas.setDebugEnabled(!wasEnabled);
+            }
+        }, F_TOGGLE_PHYSICS_DEBUG);
     }
 }
