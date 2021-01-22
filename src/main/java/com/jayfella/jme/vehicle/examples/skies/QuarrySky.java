@@ -72,7 +72,7 @@ public class QuarrySky extends Sky {
         /*
          * Configure the shadow renderer that was added by Sky.initialize().
          */
-        getShadowRenderer().setShadowIntensity(0.5f);
+        getShadowRenderer().setShadowIntensity(0.3f);
     }
 
     /**
