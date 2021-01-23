@@ -190,7 +190,7 @@ public class HoverTank extends Vehicle {
         float accelerationValue = accelerateSignal();
         if (accelerationValue > 0f) {
             float maxSpeed = getGearBox().maxForwardSpeed(SpeedUnit.MPH);
-            float speed = getSpeed(SpeedUnit.MPH);
+            float speed = forwardSpeed(SpeedUnit.MPH);
             float speedFraction = speed / maxSpeed;
             if (speedFraction <= 1f) {
                 if (speedFraction > 0.8f) {

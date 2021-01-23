@@ -172,8 +172,8 @@ public class SpeedometerState extends BaseAppState {
     @Override
     public void update(float tpf) {
         super.update(tpf);
-        
-        float speed = vehicle.getSpeed(speedUnit);
+
+        float speed = vehicle.forwardSpeed(speedUnit);
         float maxSpeed = vehicle.getGearBox().maxForwardSpeed(speedUnit);
         float speedFraction = speed / maxSpeed;
         float theta = MyMath.lerp(speedFraction, theta0, thetaMin);

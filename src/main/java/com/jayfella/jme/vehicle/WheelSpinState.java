@@ -222,7 +222,7 @@ public class WheelSpinState extends BaseAppState {
      */
     private float calcWheelRotation(Wheel wheel) {
         // https://sciencing.com/calculate-wheel-speed-7448165.html
-        float speed = vehicle.getSpeed(SpeedUnit.MPH); // TODO WUPS
+        float speed = vehicle.forwardSpeed(SpeedUnit.MPH); // TODO WUPS
 
         // convert mph to meters per minute
         float metersPerHour = speed * 1609;

@@ -99,7 +99,7 @@ public class AutomaticGearboxState extends BaseAppState {
         }
 
         GearBox gearbox = vehicle.getGearBox();
-        float signedKph = vehicle.getSpeed(SpeedUnit.KPH);
+        float signedKph = vehicle.forwardSpeed(SpeedUnit.KPH);
 
         int gearNum = gearbox.getEngagedGearNum();
         Gear gear = gearBox.getGear(gearNum);

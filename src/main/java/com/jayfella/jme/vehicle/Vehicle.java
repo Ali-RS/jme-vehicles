@@ -315,12 +315,13 @@ abstract public class Vehicle
     }
 
     /**
-     * Determine the forward component of this vehicle's inertial velocity.
+     * Determine the forward component of this vehicle's inertial velocity. TODO
+     * re-order methods
      *
      * @param speedUnit the unit of measurement to use (not null)
      * @return the speed (may be negative)
      */
-    public float getSpeed(SpeedUnit speedUnit) {
+    public float forwardSpeed(SpeedUnit speedUnit) {
         float kph = vehicleControl.getCurrentVehicleSpeedKmHour();
 
         float result;
@@ -441,7 +442,7 @@ abstract public class Vehicle
         /*
          * Determine unsigned speed in world units per second.
          */
-        float speed = getSpeed(SpeedUnit.WUPS);
+        float speed = forwardSpeed(SpeedUnit.WUPS);
         speed = FastMath.abs(speed);
         if (speed < 0.1f) {
             speed = 0.1f; // avoid division by zero

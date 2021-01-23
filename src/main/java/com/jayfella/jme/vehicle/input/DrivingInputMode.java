@@ -327,7 +327,7 @@ public class DrivingInputMode extends InputMode {
         /*
          * Update the "accelerate" control signal.
          */
-        float kph = vehicle.getSpeed(SpeedUnit.KPH);
+        float kph = vehicle.forwardSpeed(SpeedUnit.KPH);
         GearBox gearBox = vehicle.getGearBox();
 
         float acceleration = 0f;
