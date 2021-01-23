@@ -54,7 +54,7 @@ public class MainMenu extends AnimatedMenu {
         ));
         result.add(button);
 
-        button = new Button("Customization");
+        button = new Button("Customize");
         button.addClickCommands(source -> animateOut(()
                 -> goTo(new CustomizationMenu())
         ));
