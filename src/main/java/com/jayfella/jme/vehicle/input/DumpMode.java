@@ -8,7 +8,6 @@ import com.jme3.renderer.ViewPort;
 import com.simsilica.lemur.input.FunctionId;
 import com.simsilica.lemur.input.InputState;
 import java.util.logging.Logger;
-import jme3utilities.MyCamera;
 import jme3utilities.minie.PhysicsDumper;
 
 /**
@@ -76,7 +75,10 @@ public class DumpMode extends InputMode {
 
         assign((FunctionId function, InputState inputState, double tpf) -> {
             if (inputState == InputState.Positive) {
-                dumpCamera();
+                Camera camera = getApplication().getCamera();
+                dumper.dump(camera);
+                System.out.println();
+                System.out.flush();
             }
         }, F_DUMP_CAMERA);
 
@@ -116,23 +118,5 @@ public class DumpMode extends InputMode {
                 System.out.flush();
             }
         }, F_DUMP_VIEWPORT);
-    }
-    // *************************************************************************
-    // private methods
-
-    /**
-     * Dump a camera description to the standard output stream.
-     */
-    private void dumpCamera() {
-        Camera camera = getApplication().getCamera();
-        String description = MyCamera.describe(camera);
-        System.out.println(description);
-
-        description = MyCamera.describeMore(camera);
-        System.out.println(description);
-
-        float degrees = MyCamera.yDegrees(camera);
-        System.out.printf("fovY=%.1f deg%n%n", degrees);
-        System.out.flush();
     }
 }
