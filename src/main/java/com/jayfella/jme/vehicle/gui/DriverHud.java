@@ -5,6 +5,7 @@ import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.input.DrivingInputMode;
 import com.jayfella.jme.vehicle.input.SignalMode;
+import com.jayfella.jme.vehicle.part.Engine;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
@@ -480,7 +481,8 @@ public class DriverHud extends BaseAppState {
     private void showTacho() {
         hideTachometer();
 
-        tachometer = new TachometerState(vehicle);
+        Engine engine = vehicle.getEngine();
+        tachometer = new TachometerState(engine);
         getStateManager().attach(tachometer);
     }
 }

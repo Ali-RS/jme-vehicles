@@ -161,7 +161,7 @@ public class AutomaticGearboxState extends BaseAppState {
         /*
          * Prevent the engine from stalling or exceeding its redline.
          */
-        float idleFraction = engine.idleRpm() / engine.redlineRpm();
+        float idleFraction = engine.idleFraction();
         revs = FastMath.clamp(revs, idleFraction, 1f);
 
         engine.setRpmFraction(revs);

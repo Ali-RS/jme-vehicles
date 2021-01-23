@@ -1,7 +1,6 @@
 package com.jayfella.jme.vehicle.gui;
 
-import com.jayfella.jme.vehicle.Vehicle;
-import com.jayfella.jme.vehicle.part.Engine;
+import com.jayfella.jme.vehicle.part.EngineSpeed;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
@@ -48,6 +47,11 @@ class TachometerState extends BaseAppState {
     // *************************************************************************
     // fields
 
+    /**
+     * corresponding engine
+     */
+    final private EngineSpeed engine;
+
     private float prevTheta = theta0;
     private Label revsLabel;
     private Node guiNode;
@@ -57,22 +61,17 @@ class TachometerState extends BaseAppState {
      * reusable temporary Quaternion
      */
     final private Quaternion tmpRotation = new Quaternion();
-    /**
-     * corresponding Vehicle
-     */
-    final private Vehicle vehicle;
     // *************************************************************************
     // constructors
 
     /**
-     * Instantiate an enabled tachometer for the specified Vehicle.
+     * Instantiate an enabled tachometer for the specified engine.
      *
-     * @param vehicle the corresponding Vehicle (not null)
+     * @param engine the corresponding engine (not null)
      */
-    TachometerState(Vehicle vehicle) {
-        this.vehicle = vehicle;
-
-        node = new Node("Tachometer for " + vehicle.getName());
+    TachometerState(EngineSpeed engine) {
+        this.engine = engine;
+        node = new Node("Tachometer");
     }
     // *************************************************************************
     // BaseAppState methods
@@ -166,7 +165,6 @@ class TachometerState extends BaseAppState {
     public void update(float tpf) {
         super.update(tpf);
 
-        Engine engine = vehicle.getEngine();
         float rpmFraction = engine.rpmFraction();
         float theta = MyMath.lerp(rpmFraction, theta0, thetaRedline);
         /*
@@ -251,9 +249,10 @@ class TachometerState extends BaseAppState {
         Material material = new Material(assetManager, Materials.UNSHADED);
         backgroundGeom.setMaterial(material);
         material.setTexture("ColorMap", backgroundTexture);
-        material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+        material.getAdditionalRenderState()
+                .setBlendMode(RenderState.BlendMode.Alpha);
 
-        int maxRevs = (int) vehicle.getEngine().redlineRpm();
+        int maxRevs = (int) engine.redlineRpm();
         float numbersRadius = 0.38f * width;
         Node result = buildNumNode(maxRevs, 1000, numbersRadius);
         result.attachChild(backgroundGeom);

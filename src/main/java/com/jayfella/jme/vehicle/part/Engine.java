@@ -10,7 +10,7 @@ import jme3utilities.Validate;
 /**
  * An engine to propel a Vehicle.
  */
-abstract public class Engine {
+abstract public class Engine implements EngineSpeed {
     // *************************************************************************
     // constants and loggers
 
@@ -77,17 +77,6 @@ abstract public class Engine {
     // new methods exposed
 
     /**
-     * Determine the idle speed.
-     *
-     * @return the crankshaft rotation rate (in revolutions per minute, &ge;0,
-     * &le;redlineRpm)
-     */
-    public float idleRpm() {
-        assert idleRpm >= 0f && idleRpm <= redlineRpm : idleRpm;
-        return idleRpm;
-    }
-
-    /**
      * Determine the maximum power output.
      *
      * @return the power (in Watts, &gt;0)
@@ -105,36 +94,6 @@ abstract public class Engine {
     public String getName() {
         assert name != null;
         return name;
-    }
-
-    /**
-     * Determine the redline speed.
-     *
-     * @return the crankshaft rotation rate (in revolutions per minute,
-     * &gt;idlRpm)
-     */
-    public float redlineRpm() {
-        assert redlineRpm > 0f : redlineRpm;
-        return redlineRpm;
-    }
-
-    /**
-     * Determine the current speed. TODO re-order methods
-     *
-     * @return the crankshaft rotation rate (in revolutions per minute, &ge;0)
-     */
-    public float rpm() {
-        return rpmFraction * redlineRpm;
-    }
-
-    /**
-     * Determine the current speed as a fraction of the redline.
-     *
-     * @return the fraction (&ge;0)
-     */
-    public float rpmFraction() {
-        assert rpmFraction >= 0f && rpmFraction <= 1f : rpmFraction;
-        return rpmFraction;
     }
 
     /**
@@ -227,5 +186,62 @@ abstract public class Engine {
         }
 
         throw new IllegalArgumentException("rpm = " + rpm);
+    }
+    // *************************************************************************
+    // EngineSpeed methods
+
+    /**
+     * Determine the idle speed as a fraction of the redline.
+     *
+     * @return the fraction (&ge;0)
+     */
+    public float idleFraction() {
+        float result = idleRpm / redlineRpm;
+        assert result >= 0f : result;
+        return result;
+    }
+
+    /**
+     * Determine the idle speed of the Engine.
+     *
+     * @return the crankshaft rotation rate (in revolutions per minute, &ge;0,
+     * &le;redlineRpm)
+     */
+    public float idleRpm() {
+        assert idleRpm >= 0f && idleRpm <= redlineRpm : idleRpm;
+        return idleRpm;
+    }
+
+    /**
+     * Determine the redline speed of the Engine.
+     *
+     * @return the crankshaft rotation rate (in revolutions per minute, &gt;0,
+     * &ge;idleRpm)
+     */
+    public float redlineRpm() {
+        assert redlineRpm > 0f : redlineRpm;
+        assert redlineRpm >= idleRpm : redlineRpm;
+        return redlineRpm;
+    }
+
+    /**
+     * Determine the current engine speed.
+     *
+     * @return the crankshaft rotation rate (in revolutions per minute, &ge;0)
+     */
+    public float rpm() {
+        float result = rpmFraction * redlineRpm;
+        assert result >= 0f : result;
+        return result;
+    }
+
+    /**
+     * Determine the current engine speed as a fraction of the redline.
+     *
+     * @return the fraction (&ge;0, &le;1)
+     */
+    public float rpmFraction() {
+        assert rpmFraction >= 0f && rpmFraction <= 1f : rpmFraction;
+        return rpmFraction;
     }
 }
