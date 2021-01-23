@@ -190,11 +190,12 @@ abstract class AnimatedMenu extends BaseAppState {
             Button button = buttons.get(i);
 
             Vector3f translation = button.getLocalTranslation();
+            float x;
             if (in) {
-                float x = easeInQuartic(easeTime, -maxWidth, 20f, duration);
+                x = MyMath.easeInQuartic(easeTime, -maxWidth, 20f, duration);
                 button.setLocalTranslation(x, translation.y, translation.z);
             } else {
-                float x = easeOutQuartic(easeTime, 20f, -maxWidth, duration);
+                x = MyMath.easeOutQuartic(easeTime, 20f, -maxWidth, duration);
                 button.setLocalTranslation(x, translation.y, translation.z);
             }
 
@@ -210,26 +211,6 @@ abstract class AnimatedMenu extends BaseAppState {
     }
     // *************************************************************************
     // private methods
-
-    private static float easeInQuartic(float time, float start, float end,
-            float duration) {
-        float t = time / duration; // goes from 0 -> 1
-        float t2 = t * t;
-        float fraction = t2 * t2; // goes from 0 -> 1
-        float result = MyMath.lerp(fraction, start, end);
-
-        return result;
-    }
-
-    private static float easeOutQuartic(float time, float start, float end,
-            float duration) {
-        float t = time / duration - 1f; // goes from -1 -> 0
-        float t2 = t * t;
-        float fraction = 1f - t2 * t2; // goes from 0 -> 1
-        float result = MyMath.lerp(fraction, start, end);
-
-        return result;
-    }
 
     private void formatButton(Button button) {
         button.setTextHAlignment(HAlignment.Center);
