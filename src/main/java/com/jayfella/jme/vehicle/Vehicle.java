@@ -47,7 +47,7 @@ import jme3utilities.math.MyVector3f;
  * single GearBox.
  */
 abstract public class Vehicle
-        implements Loadable, PhysicsTickListener {
+        implements Loadable, PhysicsTickListener, VehicleSpeed {
     // *************************************************************************
     // constants and loggers
 
@@ -312,34 +312,6 @@ abstract public class Vehicle
 
     public Quaternion getRotation() {
         return node.getLocalRotation();
-    }
-
-    /**
-     * Determine the forward component of this vehicle's inertial velocity. TODO
-     * re-order methods
-     *
-     * @param speedUnit the unit of measurement to use (not null)
-     * @return the speed (may be negative)
-     */
-    public float forwardSpeed(SpeedUnit speedUnit) {
-        float kph = vehicleControl.getCurrentVehicleSpeedKmHour();
-
-        float result;
-        switch (speedUnit) {
-            case KPH:
-                result = kph;
-                break;
-            case MPH:
-                result = kph * Vehicle.KPH_TO_MPH;
-                break;
-            case WUPS:
-                result = kph * Vehicle.KPH_TO_WUPS;
-                break;
-            default:
-                throw new RuntimeException("speedUnit = " + speedUnit);
-        }
-
-        return result;
     }
 
     /**
@@ -828,5 +800,61 @@ abstract public class Vehicle
     @Override
     public void physicsTick(PhysicsSpace space, float timeStep) {
         // do nothing
+    }
+    // *************************************************************************
+    // VehicleSpeed methods
+
+    /**
+     * Determine the forward component of the vehicle's inertial velocity.
+     *
+     * @param speedUnit the unit of measurement to use (not null)
+     * @return the speed (in the specified units, may be negative)
+     */
+    @Override
+    public float forwardSpeed(SpeedUnit speedUnit) {
+        float kph = vehicleControl.getCurrentVehicleSpeedKmHour();
+
+        float result;
+        switch (speedUnit) {
+            case KPH:
+                result = kph;
+                break;
+            case MPH:
+                result = kph * Vehicle.KPH_TO_MPH;
+                break;
+            case WUPS:
+                result = kph * Vehicle.KPH_TO_WUPS;
+                break;
+            default:
+                throw new RuntimeException("speedUnit = " + speedUnit);
+        }
+
+        return result;
+    }
+
+    /**
+     * Estimate the vehicle's maximum forward speed.
+     *
+     * @param speedUnit the unit of measurement to use (not null)
+     * @return the speed (in the specified units, &ge;0)
+     */
+    @Override
+    public float maxForwardSpeed(SpeedUnit speedUnit) {
+        float result = gearBox.maxForwardSpeed(speedUnit);
+        assert result >= 0f : result;
+        return result;
+    }
+
+    /**
+     * Estimate the vehicle's maximum reverse speed.
+     *
+     * @param speedUnit the unit of measurement to use (not null)
+     * @return the speed (in the specified units, &le;0)
+     */
+    @Override
+    public float maxReverseSpeed(SpeedUnit speedUnit) {
+        float result = gearBox.maxForwardSpeed(speedUnit);
+        assert result <= 0f : result;
+        return result;
     }
 }

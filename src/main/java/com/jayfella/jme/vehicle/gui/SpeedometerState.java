@@ -1,7 +1,7 @@
 package com.jayfella.jme.vehicle.gui;
 
 import com.jayfella.jme.vehicle.SpeedUnit;
-import com.jayfella.jme.vehicle.Vehicle;
+import com.jayfella.jme.vehicle.VehicleSpeed;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
@@ -55,23 +55,23 @@ public class SpeedometerState extends BaseAppState {
 
     final private SpeedUnit speedUnit;
     /**
-     * corresponding Vehicle
+     * corresponding vehicle
      */
-    final private Vehicle vehicle;
+    final private VehicleSpeed vehicle;
     // *************************************************************************
     // constructors
 
     /**
-     * Instantiate an enabled speedometer for the specified Vehicle.
+     * Instantiate an enabled speedometer for the specified vehicle.
      *
      * @param vehicle the corresponding Vehicle (not null)
      * @param speedUnit the units to display (not null)
      */
-    public SpeedometerState(Vehicle vehicle, SpeedUnit speedUnit) {
+    public SpeedometerState(VehicleSpeed vehicle, SpeedUnit speedUnit) {
         this.vehicle = vehicle;
         this.speedUnit = speedUnit;
 
-        node = new Node("Speedometer for " + vehicle.getName());
+        node = new Node("Speedometer");
     }
     // *************************************************************************
     // BaseAppState methods
@@ -174,7 +174,7 @@ public class SpeedometerState extends BaseAppState {
         super.update(tpf);
 
         float speed = vehicle.forwardSpeed(speedUnit);
-        float maxSpeed = vehicle.getGearBox().maxForwardSpeed(speedUnit);
+        float maxSpeed = vehicle.maxForwardSpeed(speedUnit);
         float speedFraction = speed / maxSpeed;
         float theta = MyMath.lerp(speedFraction, theta0, thetaMin);
         /*
@@ -262,9 +262,10 @@ public class SpeedometerState extends BaseAppState {
         Material material = new Material(assetManager, Materials.UNSHADED);
         backgroundGeom.setMaterial(material);
         material.setTexture("ColorMap", backgroundTexture);
-        material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+        material.getAdditionalRenderState()
+                .setBlendMode(RenderState.BlendMode.Alpha);
 
-        int maxSpeed = (int) vehicle.getGearBox().maxForwardSpeed(speedUnit);
+        int maxSpeed = (int) vehicle.maxForwardSpeed(speedUnit);
         int stepSpeed = 10 * (1 + maxSpeed / 160);
         Node result = buildNumNode(maxSpeed, stepSpeed, width / 2f - 20f);
         result.attachChild(backgroundGeom);
