@@ -8,7 +8,6 @@ import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
-import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import java.util.logging.Logger;
 import jme3utilities.debug.PointVisualizer;
@@ -64,15 +63,12 @@ public class VehiclePointsState extends BaseAppState {
 
         cameraTarget = new PointVisualizer(assetManager, indicatorSize,
                 ColorRGBA.Yellow, "ring");
-        cameraTarget.setQueueBucket(RenderQueue.Bucket.Translucent);
 
         centerOfMass = new PointVisualizer(assetManager, indicatorSize,
                 ColorRGBA.Black, "saltire");
-        centerOfMass.setQueueBucket(RenderQueue.Bucket.Translucent);
 
         dashCamera = new PointVisualizer(assetManager, indicatorSize,
                 ColorRGBA.Red, "square");
-        dashCamera.setQueueBucket(RenderQueue.Bucket.Translucent);
 
         setEnabled(true);
     }
