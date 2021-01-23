@@ -87,12 +87,12 @@ public class MainMenu extends AnimatedMenu {
         hud.setVehicle(vehicle);
         hud.setEnabled(true);
 
-        AppStateManager stateManager = getStateManager();
-        stateManager.getState(DrivingInputMode.class).setEnabled(true);
+        getState(DrivingInputMode.class).setEnabled(true);
 
         // engine graph GUI for viewing torque/power @ revs
         EnginePowerGraphState enginePowerGraphState = new EnginePowerGraphState(vehicle);
         enginePowerGraphState.setEnabled(false);
+        AppStateManager stateManager = getStateManager();
         stateManager.attach(enginePowerGraphState);
 
         // tire data GUI for viewing how much grip each tire has according to the Pacejka formula

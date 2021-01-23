@@ -93,7 +93,7 @@ class SpeedometerMenu extends AnimatedMenu {
 
     private void removeOldSpeedometer() {
         AppStateManager stateManager = getStateManager();
-        SpeedometerState old = stateManager.getState(SpeedometerState.class);
+        SpeedometerState old = getState(SpeedometerState.class);
         if (old != null) {
             stateManager.detach(old);
         }
