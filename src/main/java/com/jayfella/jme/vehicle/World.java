@@ -10,6 +10,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import java.util.HashSet;
 import java.util.Set;
+import jme3utilities.math.Vector3i;
 
 /**
  * A game world, such as the Vehicle Playground. Includes the C-G model and
@@ -76,7 +77,7 @@ abstract public class World implements Loadable {
      *
      * @param storeResult storage for the result (not null)
      */
-    Node createChunk(ChunkId chunkId) {
+    Node createChunk(Vector3i chunkId) {
         boolean cloneMaterials = false;
         Node result = loadedCgm.clone(cloneMaterials);
 
@@ -150,11 +151,11 @@ abstract public class World implements Loadable {
      * Enumerate all chunks that are near the scene origin. For single-chunk
      * worlds, the result is always (0,0,0).
      *
-     * @return a new collection of IDs (not null)
+     * @return a new collection of chunk IDs (not null)
      */
-    protected Set<ChunkId> listNearbyChunks() {
-        Set<ChunkId> result = new HashSet<>();
-        result.add(ChunkId.zero);
+    protected Set<Vector3i> listNearbyChunks() {
+        Set<Vector3i> result = new HashSet<>();
+        result.add(Vector3i.zero);
         return result;
     }
 

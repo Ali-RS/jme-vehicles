@@ -1,6 +1,5 @@
 package com.jayfella.jme.vehicle.examples.worlds;
 
-import com.jayfella.jme.vehicle.ChunkId;
 import com.jayfella.jme.vehicle.ChunkManager;
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.World;
@@ -21,6 +20,7 @@ import java.nio.FloatBuffer;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
+import jme3utilities.math.Vector3i;
 
 /**
  * A sample World, built around the "marble_01" material and the
@@ -71,25 +71,25 @@ public class EndlessPlain extends World {
      * Enumerate all chunks that are near the scene origin according to discrete
      * Chebyshev distance.
      *
-     * @return a new collection of IDs (not null)
+     * @return a new collection of chunk IDs (not null)
      */
     @Override
-    protected Set<ChunkId> listNearbyChunks() {
+    protected Set<Vector3i> listNearbyChunks() {
         Camera camera = Main.getApplication().getCamera();
         float cameraY = camera.getLocation().y;
         int discreteR = Math.round(1.5f + 4f * cameraY / chunkSize);
 
         ChunkManager chunkManager = Main.findAppState(ChunkManager.class);
-        ChunkId sceneOrigin = chunkManager.originChunk();
+        Vector3i sceneOrigin = chunkManager.originChunk();
         int originX = sceneOrigin.x();
         int originZ = sceneOrigin.z();
 
-        Set<ChunkId> result = new HashSet<>();
+        Set<Vector3i> result = new HashSet<>();
         for (int deltaX = -discreteR; deltaX <= discreteR; ++deltaX) {
             int chunkX = originX + deltaX;
             for (int deltaZ = -discreteR; deltaZ <= discreteR; ++deltaZ) {
                 int chunkZ = originZ + deltaZ;
-                ChunkId chunkId = new ChunkId(chunkX, 0, chunkZ);
+                Vector3i chunkId = new Vector3i(chunkX, 0, chunkZ);
                 result.add(chunkId);
             }
         }

@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
+import jme3utilities.math.Vector3i;
 
 /**
  * An AppState to manage a World that's decomposed into equal-sized, rectangular
@@ -37,11 +38,11 @@ public class ChunkManager extends BaseAppState {
     /**
      * chunk currently occupying the scene's origin
      */
-    private ChunkId originChunk = ChunkId.zero;
+    private Vector3i originChunk = Vector3i.zero;
     /**
      * map attached chunks to scene-graph nodes
      */
-    final private Map<ChunkId, Node> idToNode = new HashMap<>(99);
+    final private Map<Vector3i, Node> idToNode = new HashMap<>(99);
     /**
      * where to attach chunks in the scene graph
      */
@@ -67,7 +68,7 @@ public class ChunkManager extends BaseAppState {
      *
      * @return the chunk's ID
      */
-    public ChunkId originChunk() {
+    public Vector3i originChunk() {
         return originChunk;
     }
 
@@ -82,7 +83,7 @@ public class ChunkManager extends BaseAppState {
         if (world != null) {
             world.chunkDimensions(chunkDimensions);
         }
-        originChunk = ChunkId.zero;
+        originChunk = Vector3i.zero;
     }
     // *************************************************************************
     // BaseAppState methods
@@ -166,19 +167,19 @@ public class ChunkManager extends BaseAppState {
             return;
         }
 
-        Set<ChunkId> visibleSet = world.listNearbyChunks();
+        Set<Vector3i> visibleSet = world.listNearbyChunks();
 
         int numAttached = idToNode.size();
-        ChunkId[] oldChunks = new ChunkId[numAttached];
+        Vector3i[] oldChunks = new Vector3i[numAttached];
         idToNode.keySet().toArray(oldChunks);
-        for (ChunkId chunk : oldChunks) {
+        for (Vector3i chunk : oldChunks) {
             if (!visibleSet.contains(chunk)) {
                 Node oldNode = idToNode.remove(chunk);
                 oldNode.removeFromParent();
             }
         }
 
-        for (ChunkId chunk : visibleSet) {
+        for (Vector3i chunk : visibleSet) {
             if (!idToNode.containsKey(chunk)) {
                 Node newNode = world.createChunk(chunk);
                 parent.attachChild(newNode);
@@ -211,7 +212,7 @@ public class ChunkManager extends BaseAppState {
      * @return a location vector in scene coordinates (either storeResult or a
      * new instance)
      */
-    private Vector3f locateCenter(ChunkId chunk, Vector3f storeResult) {
+    private Vector3f locateCenter(Vector3i chunk, Vector3f storeResult) {
         Vector3f result = (storeResult == null) ? new Vector3f() : storeResult;
 
         result.x = chunk.xDiff(originChunk);
