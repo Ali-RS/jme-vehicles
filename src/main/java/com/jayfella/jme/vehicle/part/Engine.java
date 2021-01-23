@@ -82,7 +82,7 @@ abstract public class Engine {
      * @return the crankshaft rotation rate (in revolutions per minute, &ge;0,
      * &le;redlineRpm)
      */
-    public float getIdleRpm() {
+    public float idleRpm() {
         assert idleRpm >= 0f && idleRpm <= redlineRpm : idleRpm;
         return idleRpm;
     }
@@ -113,17 +113,17 @@ abstract public class Engine {
      * @return the crankshaft rotation rate (in revolutions per minute,
      * &gt;idlRpm)
      */
-    public float getRedlineRpm() {
+    public float redlineRpm() {
         assert redlineRpm > 0f : redlineRpm;
         return redlineRpm;
     }
 
     /**
-     * Determine the current speed.
+     * Determine the current speed. TODO re-order methods
      *
      * @return the crankshaft rotation rate (in revolutions per minute, &ge;0)
      */
-    public float getRpm() {
+    public float rpm() {
         return rpmFraction * redlineRpm;
     }
 
@@ -132,7 +132,7 @@ abstract public class Engine {
      *
      * @return the fraction (&ge;0)
      */
-    public float getRpmFraction() {
+    public float rpmFraction() {
         assert rpmFraction >= 0f && rpmFraction <= 1f : rpmFraction;
         return rpmFraction;
     }
@@ -152,8 +152,8 @@ abstract public class Engine {
      * @return the power (in Watts, &gt;0, &le;maxOutputWatts)
      */
     public float outputWatts() {
-        float revs = getRpm();
-        revs = FastMath.clamp(revs, 0, getRedlineRpm() - 0.01f);
+        float revs = rpm();
+        revs = FastMath.clamp(revs, 0, redlineRpm() - 0.01f);
         float powerFraction = powerFraction(revs);
         float result = powerFraction * getMaxOutputWatts();
 

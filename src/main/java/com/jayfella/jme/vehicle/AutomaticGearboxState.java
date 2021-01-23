@@ -156,12 +156,12 @@ public class AutomaticGearboxState extends BaseAppState {
          * The drivetrain has some rotational inertia, even when slipping,
          * so limit how quickly the engine speed can change.
          */
-        float oldRevs = engine.getRpmFraction();
+        float oldRevs = engine.rpmFraction();
         revs = FastMath.clamp(revs, oldRevs - 2f * tpf, oldRevs + 0.2f * tpf);
         /*
          * Prevent the engine from stalling or exceeding its redline.
          */
-        float idleFraction = engine.getIdleRpm() / engine.getRedlineRpm();
+        float idleFraction = engine.idleRpm() / engine.redlineRpm();
         revs = FastMath.clamp(revs, idleFraction, 1f);
 
         engine.setRpmFraction(revs);

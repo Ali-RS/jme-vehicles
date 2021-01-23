@@ -92,7 +92,7 @@ public class EnginePowerGraphState extends BaseAppState {
         super.update(tpf);
 
         // float revs = vehicle.getEngine().getRevs() * vehicle.getEngine().getMaxRevs();
-        float posX = vehicle.getEngine().getRpmFraction() * width;
+        float posX = vehicle.getEngine().rpmFraction() * width;
         // float posY = getApplication().getCamera().getHeight() - height;
         line.setLocalTranslation(posX, 0, 2);
     }

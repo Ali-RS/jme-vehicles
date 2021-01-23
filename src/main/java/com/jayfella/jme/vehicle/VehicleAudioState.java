@@ -96,7 +96,7 @@ public class VehicleAudioState extends BaseAppState {
 
         Engine engine = vehicle.getEngine();
         if (engine.isRunning()) {
-            float pitch = engine.getRpm() / 60;
+            float pitch = engine.rpm() / 60;
             float masterVolume = AudioHud.effectiveVolume();
             sound.setPitchAndVolume(pitch, masterVolume);
         } else {

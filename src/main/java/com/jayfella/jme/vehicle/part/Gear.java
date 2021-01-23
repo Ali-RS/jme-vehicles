@@ -80,7 +80,7 @@ public class Gear {
         float redlineWups = redlineKph * Vehicle.KPH_TO_WUPS;
         float circumferenceWu = vehicle.driveWheelCircumference();
         float axleRedlineRpm = 60 * redlineWups / circumferenceWu;
-        float crankshaftRedlineRpm = vehicle.getEngine().getRedlineRpm();
+        float crankshaftRedlineRpm = vehicle.getEngine().redlineRpm();
         float result = axleRedlineRpm / crankshaftRedlineRpm;
 
         return result;

@@ -167,7 +167,7 @@ class TachometerState extends BaseAppState {
         super.update(tpf);
 
         Engine engine = vehicle.getEngine();
-        float rpmFraction = engine.getRpmFraction();
+        float rpmFraction = engine.rpmFraction();
         float theta = MyMath.lerp(rpmFraction, theta0, thetaRedline);
         /*
          * a slight lag, to prevent the needle from jiggling
@@ -253,7 +253,7 @@ class TachometerState extends BaseAppState {
         material.setTexture("ColorMap", backgroundTexture);
         material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
 
-        int maxRevs = (int) vehicle.getEngine().getRedlineRpm();
+        int maxRevs = (int) vehicle.getEngine().redlineRpm();
         float numbersRadius = 0.38f * width;
         Node result = buildNumNode(maxRevs, 1000, numbersRadius);
         result.attachChild(backgroundGeom);
