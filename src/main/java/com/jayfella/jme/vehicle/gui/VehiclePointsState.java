@@ -13,7 +13,8 @@ import java.util.logging.Logger;
 import jme3utilities.debug.PointVisualizer;
 
 /**
- * AppState to visualize key points on the selected vehicle, for debugging.
+ * AppState to visualize key points on the selected vehicle, for debugging. Each
+ * new instance is disabled by default.
  *
  * @author Stephen Gold sgold@sonic.net
  */
@@ -53,7 +54,7 @@ public class VehiclePointsState extends BaseAppState {
     // constructors
 
     /**
-     * Instantiate an enabled set of points.
+     * Instantiate a disabled set of points.
      */
     public VehiclePointsState() {
         super("Vehicle Points");
@@ -70,7 +71,7 @@ public class VehiclePointsState extends BaseAppState {
         dashCamera = new PointVisualizer(assetManager, indicatorSize,
                 ColorRGBA.Red, "square");
 
-        setEnabled(true);
+        super.setEnabled(false);
     }
     // *************************************************************************
     // BaseAppState methods
