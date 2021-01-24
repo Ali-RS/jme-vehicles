@@ -64,10 +64,8 @@ public class VehiclePointsState extends BaseAppState {
 
         cameraTarget = new PointVisualizer(assetManager, indicatorSize,
                 ColorRGBA.Yellow, "ring");
-
         centerOfMass = new PointVisualizer(assetManager, indicatorSize,
-                ColorRGBA.Black, "saltire");
-
+                ColorRGBA.White, "saltire");
         dashCamera = new PointVisualizer(assetManager, indicatorSize,
                 ColorRGBA.Red, "square");
 
