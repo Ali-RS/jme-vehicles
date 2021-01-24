@@ -20,6 +20,7 @@ import com.jayfella.jme.vehicle.gui.CompassState;
 import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.gui.GearNameState;
 import com.jayfella.jme.vehicle.gui.PhysicsHud;
+import com.jayfella.jme.vehicle.gui.VehiclePointsState;
 import com.jayfella.jme.vehicle.gui.menu.MainMenu;
 import com.jayfella.jme.vehicle.input.CameraInputMode;
 import com.jayfella.jme.vehicle.input.DrivingInputMode;
@@ -398,9 +399,9 @@ public class Main extends SimpleApplication {
                 new DriverHud(),
                 new GearNameState(),
                 new MainMenu(),
-                new PhysicsHud()
+                new PhysicsHud(),
+                new VehiclePointsState()
         );
-        //stateManager.attach(new VehiclePointsState());
 
         Sky.initialize();
         attachAllToScene();
