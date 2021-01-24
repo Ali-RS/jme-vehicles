@@ -9,7 +9,7 @@ import jme3utilities.Validate;
 /**
  * A computer-graphics (C-G) model for a wheel.
  *
- * By convention, the model has radius=0.5 model units, and the local +X axis
+ * By convention, the model has radius=0.5 model units and the local +X axis
  * points inward, toward the middle of the axle.
  */
 public class WheelModel {

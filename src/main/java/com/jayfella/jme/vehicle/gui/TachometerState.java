@@ -137,9 +137,8 @@ class TachometerState extends BaseAppState {
     }
 
     /**
-     * Callback invoked when this AppState was previously enabled but is now
-     * disabled either because setEnabled(false) was called or the state is
-     * being cleaned up.
+     * Callback invoked whenever this AppState ceases to be both attached and
+     * enabled.
      */
     @Override
     protected void onDisable() {
@@ -201,7 +200,7 @@ class TachometerState extends BaseAppState {
             if (theta < thetaMin) {
                 break;
             }
-            String text = Integer.toString(intRpm / 1000);
+            String text = Integer.toString(intRpm / 1_000);
             Label label = new Label(text);
             result.attachChild(label);
             label.setColor(markingColor);
@@ -254,7 +253,7 @@ class TachometerState extends BaseAppState {
 
         int maxRevs = (int) engine.redlineRpm();
         float numbersRadius = 0.38f * width;
-        Node result = buildNumNode(maxRevs, 1000, numbersRadius);
+        Node result = buildNumNode(maxRevs, 1_000, numbersRadius);
         result.attachChild(backgroundGeom);
         result.setLocalTranslation(width / 2f, height / 2f, -1f);
 
