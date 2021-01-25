@@ -5,6 +5,7 @@ import com.jayfella.jme.vehicle.Vehicle;
 import com.jme3.bullet.CollisionSpace;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.collision.PhysicsRayTestResult;
+import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.debug.BulletDebugAppState;
 import com.jme3.input.InputManager;
 import com.jme3.input.MouseInput;
@@ -15,6 +16,7 @@ import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import jme3utilities.MyCamera;
 import jme3utilities.SignalTracker;
@@ -83,7 +85,7 @@ public class ChaseCamera
      */
     private float pitchAnalogSum = 0f;
     /**
-     * distance from the target vehicle if the camera had X-ray vision
+     * distance from the target if the camera had X-ray vision
      */
     private float preferredRange = 10f;
     /**
@@ -100,7 +102,11 @@ public class ChaseCamera
      */
     final private static Quaternion tmpRotation = new Quaternion();
     /**
-     * camera's offset relative to the target vehicle (in world coordinates)
+     * what's being orbited, or null if none
+     */
+    private Target target = null;
+    /**
+     * camera's offset relative to the target (in world coordinates)
      */
     final private static Vector3f offset = new Vector3f();
     /**
@@ -153,9 +159,10 @@ public class ChaseCamera
     }
 
     /**
-     * Alter the offset of the camera from the target vehicle.
+     * Alter the offset of the camera from the target.
      *
-     * @param desiredOffset the desired offset (in world coordinates)
+     * @param desiredOffset the desired offset from the target (in world
+     * coordinates)
      */
     public void setOffset(Vector3f desiredOffset) {
         Validate.finite(desiredOffset, "offset");
@@ -173,6 +180,24 @@ public class ChaseCamera
     }
 
     /**
+     * Alter which Target is being orbited.
+     *
+     * @param target the desired target (not null, alias created)
+     */
+    private void setTarget(Target target) {
+        Validate.nonNull(target, "target");
+
+        if (target != this.target) {
+            this.target = target;
+            logger.log(Level.INFO, "{0} is the new target.", target);
+
+            tmpCameraLocation.set(camera.getLocation());
+            target.target(tmpTargetLocation);
+            preferredRange = tmpCameraLocation.distance(tmpTargetLocation);
+        }
+    }
+
+    /**
      * Alter which Vehicle the camera is targeting. May modify the "offset" and
      * "tmpCameraLocation" fields.
      *
@@ -183,8 +208,29 @@ public class ChaseCamera
         Validate.nonNull(newVehicle, "new vehicle");
         super.setVehicle(newVehicle);
 
+        Target newTarget = new Target() {
+            @Override
+            public Vector3f forwardDirection(Vector3f storeResult) {
+                Vector3f result = newVehicle.forwardDirection(storeResult);
+                return result;
+            }
+
+            @Override
+            public PhysicsCollisionObject getTargetPco() {
+                VehicleControl result = newVehicle.getVehicleControl();
+                return result;
+            }
+
+            @Override
+            public Vector3f target(Vector3f storeResult) {
+                Vector3f result = newVehicle.locateTarget(rearBias, storeResult);
+                return result;
+            }
+        };
+        setTarget(newTarget);
+
         tmpCameraLocation.set(camera.getLocation());
-        vehicle.locateTarget(rearBias, tmpTargetLocation);
+        target.target(tmpTargetLocation);
         tmpCameraLocation.subtract(tmpTargetLocation, offset);
     }
     // *************************************************************************
@@ -376,10 +422,9 @@ public class ChaseCamera
         }
         if (chaseOption == ChaseOption.StrictFollow) {
             /*
-             * Rotate the "look" direction to stay
-             * directly behind the target Vehicle.
+             * Rotate the "look" direction to stay directly behind the Target.
              */
-            vehicle.forwardDirection(tmpRej);
+            target.forwardDirection(tmpRej);
             assert preferredUpDirection.equals(Vector3f.UNIT_Y) :
                     preferredUpDirection;
             float thetaForward = FastMath.atan2(tmpRej.x, tmpRej.z);
@@ -413,12 +458,12 @@ public class ChaseCamera
             range = maxRange;
         }
 
-        vehicle.locateTarget(rearBias, tmpTargetLocation);
+        target.target(tmpTargetLocation);
         if (!xrayVision) {
             /*
              * Test the sightline for obstructions.
              */
-            PhysicsCollisionObject targetPco = vehicle.getVehicleControl();
+            PhysicsCollisionObject targetPco = target.getTargetPco();
             range = testSightline(range, targetPco);
         }
         /*
@@ -478,7 +523,7 @@ public class ChaseCamera
          * Initialize the camera offset and preferred range.
          */
         tmpCameraLocation.set(camera.getLocation());
-        vehicle.locateTarget(rearBias, tmpTargetLocation);
+        target.target(tmpTargetLocation);
         tmpCameraLocation.subtract(tmpTargetLocation, offset);
         preferredRange = offset.length();
 

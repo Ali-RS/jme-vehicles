@@ -67,11 +67,13 @@ public class CameraInputMode extends InputMode {
         FilterAll filter = new FilterAll(true);
         orbitCamera = new ChaseCamera(camera, signalTracker,
                 ChaseOption.FreeOrbit, rearBias, filter);
+        activeController = orbitCamera;
+        Vehicle vehicle = Main.getVehicle();
+        orbitCamera.setVehicle(vehicle);
         for (CameraSignal function : CameraSignal.values()) {
             String signalName = function.toString();
             orbitCamera.setSignalName(function, signalName);
         }
-        activeController = orbitCamera;
 
         assign((FunctionId function, InputState inputState, double tpf) -> {
             if (inputState == InputState.Positive) {

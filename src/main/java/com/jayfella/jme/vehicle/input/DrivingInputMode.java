@@ -282,6 +282,7 @@ public class DrivingInputMode extends InputMode {
 
         SignalMode signalMode = getState(SignalMode.class);
         SignalTracker signalTracker = signalMode.getSignalTracker();
+        Vehicle vehicle = Main.getVehicle();
 
         CameraController activeCamera;
         switch (controlMode) {
@@ -291,6 +292,7 @@ public class DrivingInputMode extends InputMode {
                 ChaseCamera chaseCamera = new ChaseCamera(camera, signalTracker,
                         ChaseOption.StrictFollow, rearBias, obstructionFilter);
                 activeCamera = chaseCamera;
+                chaseCamera.setVehicle(vehicle);
                 for (CameraSignal function : CameraSignal.values()) {
                     String signalName = function.toString();
                     chaseCamera.setSignalName(function, signalName);
@@ -298,7 +300,6 @@ public class DrivingInputMode extends InputMode {
                 break;
 
             case DashCam:
-                Vehicle vehicle = Main.getVehicle();
                 DashCamera dashCamera
                         = new DashCamera(vehicle, camera, signalTracker);
                 activeCamera = dashCamera;
