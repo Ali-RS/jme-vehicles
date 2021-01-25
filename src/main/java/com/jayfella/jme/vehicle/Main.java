@@ -1,6 +1,8 @@
 package com.jayfella.jme.vehicle;
 
 import com.atr.jme.font.asset.TrueTypeLoader;
+import com.github.stephengold.garrett.CameraSignal;
+import com.github.stephengold.garrett.OrbitCamera;
 import com.github.stephengold.jmepower.Loadable;
 import com.github.stephengold.jmepower.lemur.LemurLoadingState;
 import com.jayfella.jme.vehicle.examples.skies.AnimatedNightSky;
@@ -48,6 +50,8 @@ import java.util.logging.Logger;
 import jme3utilities.Heart;
 import jme3utilities.MyCamera;
 import jme3utilities.MyString;
+import jme3utilities.SignalTracker;
+import jme3utilities.minie.FilterAll;
 
 public class Main extends SimpleApplication {
     // *************************************************************************
@@ -384,6 +388,39 @@ public class Main extends SimpleApplication {
     }
 
     /**
+     * Configure and attach a new (disabled) OrbitCamera.
+     */
+    private void attachOrbitCamera() {
+        SignalMode signalMode = findAppState(SignalMode.class);
+        SignalTracker tracker = signalMode.getSignalTracker();
+        OrbitCamera orbitCamera = new OrbitCamera(cam, tracker);
+
+        FilterAll filter = new FilterAll(true);
+        orbitCamera.setObstructionFilter(filter);
+
+        orbitCamera.setSignalName(CameraSignal.Back,
+                SignalMode.F_CAMERA_BACK1.getId());
+        orbitCamera.setSignalName(CameraSignal.DragToOrbit,
+                SignalMode.F_CAMERA_DRAG_TO_ORBIT1.getId());
+        orbitCamera.setSignalName(CameraSignal.Forward,
+                SignalMode.F_CAMERA_FORWARD1.getId());
+        orbitCamera.setSignalName(CameraSignal.OrbitCcw,
+                SignalMode.F_CAMERA_CCW1.getId());
+        orbitCamera.setSignalName(CameraSignal.OrbitCw,
+                SignalMode.F_CAMERA_CW1.getId());
+        orbitCamera.setSignalName(CameraSignal.OrbitDown,
+                SignalMode.F_CAMERA_DOWN1.getId());
+        orbitCamera.setSignalName(CameraSignal.OrbitUp,
+                SignalMode.F_CAMERA_UP1.getId());
+        orbitCamera.setSignalName(CameraSignal.ZoomIn,
+                SignalMode.F_CAMERA_ZOOM_IN1.getId());
+        orbitCamera.setSignalName(CameraSignal.ZoomOut,
+                SignalMode.F_CAMERA_ZOOM_OUT1.getId());
+
+        stateManager.attach(orbitCamera);
+    }
+
+    /**
      * Finish initializing the application after LoadingState has warmed up the
      * AssetCache and initialized Lemur.
      */
@@ -414,6 +451,7 @@ public class Main extends SimpleApplication {
         activateSignalMode();
         activateCameraMode();
         attachDrivingMode(); // needs the SignalTracker of the SignalMode
+        attachOrbitCamera(); // needs the SignalTracker of the SignalMode
         /*
          * The dash camera sits close to the bodywork, so set the near clipping
          * plane accordingly.

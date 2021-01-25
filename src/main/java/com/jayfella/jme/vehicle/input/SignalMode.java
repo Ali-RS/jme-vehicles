@@ -1,6 +1,6 @@
 package com.jayfella.jme.vehicle.input;
 
-import com.jayfella.jme.vehicle.view.CameraSignal;
+import com.github.stephengold.garrett.CameraSignal;
 import com.simsilica.lemur.input.FunctionId;
 import com.simsilica.lemur.input.InputState;
 import java.util.logging.Logger;

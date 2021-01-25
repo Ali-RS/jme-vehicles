@@ -1,5 +1,7 @@
 package com.jayfella.jme.vehicle.input;
 
+import com.github.stephengold.garrett.CameraSignal;
+import com.github.stephengold.garrett.ChaseOption;
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.Vehicle;
@@ -11,9 +13,7 @@ import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.gui.menu.MainMenu;
 import com.jayfella.jme.vehicle.part.GearBox;
 import com.jayfella.jme.vehicle.view.CameraController;
-import com.jayfella.jme.vehicle.view.CameraSignal;
 import com.jayfella.jme.vehicle.view.ChaseCamera;
-import com.jayfella.jme.vehicle.view.ChaseOption;
 import com.jayfella.jme.vehicle.view.DashCamera;
 import com.jayfella.jme.vehicle.view.VehicleCamView;
 import com.jme3.app.state.AppStateManager;
@@ -28,7 +28,6 @@ import java.util.logging.Logger;
 import jme3utilities.MyCamera;
 import jme3utilities.SignalTracker;
 import jme3utilities.math.noise.Generator;
-import jme3utilities.minie.FilterAll;
 
 /**
  * An InputMode that's enabled while the user is driving a Vehicle. It uses 2
@@ -288,9 +287,8 @@ public class DrivingInputMode extends InputMode {
         switch (controlMode) {
             case ChaseCam:
                 float rearBias = 1f;
-                FilterAll obstructionFilter = new FilterAll(true);
-                ChaseCamera chaseCamera = new ChaseCamera(camera, signalTracker,
-                        ChaseOption.StrictFollow, rearBias, obstructionFilter);
+                ChaseCamera chaseCamera
+                        = new ChaseCamera(ChaseOption.StrictFollow, rearBias);
                 activeCamera = chaseCamera;
                 chaseCamera.setVehicle(vehicle);
                 for (CameraSignal function : CameraSignal.values()) {

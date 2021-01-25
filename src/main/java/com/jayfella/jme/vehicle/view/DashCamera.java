@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle.view;
 
+import com.github.stephengold.garrett.CameraSignal;
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jme3.input.InputManager;

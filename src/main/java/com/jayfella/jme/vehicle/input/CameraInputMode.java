@@ -1,21 +1,19 @@
 package com.jayfella.jme.vehicle.input;
 
+import com.github.stephengold.garrett.CameraSignal;
+import com.github.stephengold.garrett.ChaseOption;
 import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.World;
 import com.jayfella.jme.vehicle.view.CameraController;
-import com.jayfella.jme.vehicle.view.CameraSignal;
 import com.jayfella.jme.vehicle.view.ChaseCamera;
-import com.jayfella.jme.vehicle.view.ChaseOption;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.simsilica.lemur.input.FunctionId;
 import com.simsilica.lemur.input.InputState;
 import java.util.logging.Logger;
 import jme3utilities.MyCamera;
-import jme3utilities.SignalTracker;
 import jme3utilities.Validate;
-import jme3utilities.minie.FilterAll;
 
 /**
  * An InputMode to manage the Camera.
@@ -59,14 +57,8 @@ public class CameraInputMode extends InputMode {
         super("Camera Mode", F_CAMERA_RESET_FOV, F_CAMERA_RESET_OFFSET,
                 F_CAMVIEW);
 
-        Camera camera = Main.getApplication().getCamera();
-        SignalMode signalMode = Main.findAppState(SignalMode.class);
-        SignalTracker signalTracker = signalMode.getSignalTracker();
-
         float rearBias = 0f;
-        FilterAll filter = new FilterAll(true);
-        orbitCamera = new ChaseCamera(camera, signalTracker,
-                ChaseOption.FreeOrbit, rearBias, filter);
+        orbitCamera = new ChaseCamera(ChaseOption.FreeOrbit, rearBias);
         activeController = orbitCamera;
         Vehicle vehicle = Main.getVehicle();
         orbitCamera.setVehicle(vehicle);
@@ -77,6 +69,7 @@ public class CameraInputMode extends InputMode {
 
         assign((FunctionId function, InputState inputState, double tpf) -> {
             if (inputState == InputState.Positive) {
+                Camera camera = Main.getApplication().getCamera();
                 MyCamera.setYTangent(camera, 1f);
             }
         }, F_CAMERA_RESET_FOV);

@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle.view;
 
+import com.github.stephengold.garrett.CameraSignal;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jme3.math.FastMath;
 import com.jme3.renderer.Camera;
@@ -58,7 +59,6 @@ abstract public class CameraController {
     protected CameraController(Vehicle vehicle, Camera camera,
             SignalTracker tracker) {
         Validate.nonNull(vehicle, "vehicle");
-        Validate.nonNull(camera, "camera");
 
         this.vehicle = vehicle;
         this.camera = camera;
