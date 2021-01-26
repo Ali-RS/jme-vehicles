@@ -5,11 +5,19 @@ import com.jayfella.jme.vehicle.Vehicle;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
+import com.jme3.bullet.objects.infos.RigidBodyMotionState;
+import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.Camera;
+import com.jme3.renderer.queue.RenderQueue;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.debug.WireFrustum;
+import com.jme3.shadow.ShadowUtil;
 import java.util.logging.Logger;
+import jme3utilities.MyAsset;
 import jme3utilities.debug.PointVisualizer;
 
 /**
@@ -30,8 +38,13 @@ public class VehiclePointsState extends BaseAppState {
     // *************************************************************************
     // fields
 
+    final private Camera tmpCamera;
     /**
-     * visualize the camera target
+     * visualize the dash-camera frustum
+     */
+    final private Geometry dcFrustum;
+    /**
+     * visualize the chase-camera target
      */
     final private PointVisualizer cameraTarget;
     /**
@@ -39,7 +52,7 @@ public class VehiclePointsState extends BaseAppState {
      */
     final private PointVisualizer centerOfMass;
     /**
-     * visualize the dash camera
+     * visualize the dash-camera location
      */
     final private PointVisualizer dashCamera;
     /**
@@ -50,6 +63,10 @@ public class VehiclePointsState extends BaseAppState {
      * reusable vector
      */
     final private static Vector3f tmpLocation = new Vector3f();
+    /**
+     * vertex locations in the dash-camera frustum
+     */
+    final private Vector3f[] dcFrustumVertices = new Vector3f[8];
     // *************************************************************************
     // constructors
 
@@ -68,6 +85,19 @@ public class VehiclePointsState extends BaseAppState {
                 ColorRGBA.White, "saltire");
         dashCamera = new PointVisualizer(assetManager, indicatorSize,
                 ColorRGBA.Red, "square");
+
+        for (int vertexIndex = 0; vertexIndex < 8; vertexIndex++) {
+            dcFrustumVertices[vertexIndex] = new Vector3f();
+        }
+
+        WireFrustum dcFrustumMesh = new WireFrustum(dcFrustumVertices);
+        dcFrustum = new Geometry("dash camera frustum", dcFrustumMesh);
+        Material dcfMaterial
+                = MyAsset.createUnshadedMaterial(assetManager, ColorRGBA.Red);
+        dcFrustum.setMaterial(dcfMaterial);
+        dcFrustum.setShadowMode(RenderQueue.ShadowMode.Off);
+
+        tmpCamera = Main.getApplication().getCamera().clone();
 
         super.setEnabled(false);
     }
@@ -105,6 +135,7 @@ public class VehiclePointsState extends BaseAppState {
         cameraTarget.removeFromParent();
         centerOfMass.removeFromParent();
         dashCamera.removeFromParent();
+        dcFrustum.removeFromParent();
     }
 
     /**
@@ -117,6 +148,7 @@ public class VehiclePointsState extends BaseAppState {
         rootNode.attachChild(cameraTarget);
         rootNode.attachChild(centerOfMass);
         rootNode.attachChild(dashCamera);
+        rootNode.attachChild(dcFrustum);
     }
 
     /**
@@ -133,14 +165,26 @@ public class VehiclePointsState extends BaseAppState {
         vehicle.locateTarget(1f, tmpLocation);
         cameraTarget.setLocalTranslation(tmpLocation);
 
-        vehicle.getVehicleControl().getPhysicsLocation(tmpLocation);
+        RigidBodyMotionState motionState
+                = vehicle.getVehicleControl().getMotionState();
+        motionState.getLocation(tmpLocation);
         centerOfMass.setLocalTranslation(tmpLocation);
 
         Vector3f offset = new Vector3f(); // TODO garbage
         vehicle.locateDashCam(offset);
-        vehicle.getVehicleControl().getPhysicsRotation(tmpOrientation);
+        motionState.getOrientation(tmpOrientation);
         tmpOrientation.mult(offset, offset);
         tmpLocation.addLocal(offset);
         dashCamera.setLocalTranslation(tmpLocation);
+
+        Camera defaultCamera = Main.getApplication().getCamera();
+        tmpCamera.copyFrom(defaultCamera);
+        tmpCamera.setLocation(tmpLocation);
+        tmpCamera.setRotation(tmpOrientation);
+        ShadowUtil.updateFrustumPoints2(tmpCamera, dcFrustumVertices);
+
+        WireFrustum frustumMesh = (WireFrustum) dcFrustum.getMesh();
+        frustumMesh.update(dcFrustumVertices);
+        dcFrustum.setMesh(frustumMesh);
     }
 }
