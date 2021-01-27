@@ -57,7 +57,7 @@ public class CreateShapes {
         assetManager.registerLoader(J3MLoader.class, "j3m", "j3md");
         assetManager.registerLocator(null, ClasspathLocator.class);
         /*
-         * Create a collision shape for each vehicle chassis.
+         * Create a CollisionShape for each vehicle chassis.
          */
         createChassisShape("GT", "scene.gltf");
         createChassisShape("Tank", "chassis");
@@ -67,7 +67,7 @@ public class CreateShapes {
         createChassisShape("hcr2_rotator", "chassis");
         createChassisShape("modern_hatchback", "hatchback");
         /*
-         * Create a collision shape for each World.
+         * Create a CollisionShape for each World.
          */
         createWorldShape("race1", "race1");
         createWorldShape("vehicle-playground", "vehicle-playground");
@@ -76,7 +76,7 @@ public class CreateShapes {
     // private methods
 
     /**
-     * Create a collision shape for a vehicle chassis.
+     * Create a CollisionShape for a vehicle chassis.
      *
      * @param folderName the name of the folder containing the C-G model
      * @param cgmBaseFileName the base filename of the C-G model
@@ -108,7 +108,7 @@ public class CreateShapes {
     }
 
     /**
-     * Create a collision shape for a World.
+     * Create a CollisionShape for a World.
      *
      * @param folderName the name of the folder containing the C-G model
      * @param cgmBaseFileName the base filename of the C-G model
