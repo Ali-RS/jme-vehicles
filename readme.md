@@ -242,6 +242,8 @@ Resources/assets/media:
   has a CC Attribution license.
 + The [Race Track model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/race1)
   has an Unlicense license.
++ The [terrain textures](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Textures/Terrain)
+  has a BSD 3-Clause license.
 + The [Vehicle Playground model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/vehicle-playground)
   has a CC0 license.
 + The [marble_01 textures](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Textures/Ground/Marble)
