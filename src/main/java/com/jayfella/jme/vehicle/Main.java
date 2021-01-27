@@ -14,6 +14,7 @@ import com.jayfella.jme.vehicle.examples.vehicles.HatchBack;
 import com.jayfella.jme.vehicle.examples.vehicles.HoverTank;
 import com.jayfella.jme.vehicle.examples.vehicles.PickupTruck;
 import com.jayfella.jme.vehicle.examples.vehicles.Rotator;
+import com.jayfella.jme.vehicle.examples.worlds.Mountains;
 import com.jayfella.jme.vehicle.examples.worlds.Playground;
 import com.jayfella.jme.vehicle.examples.worlds.Racetrack;
 import com.jayfella.jme.vehicle.gui.AudioHud;
@@ -75,6 +76,7 @@ public class Main extends SimpleApplication {
         new GTRNismo(),
         new HatchBack(),
         new HoverTank(),
+        new Mountains(),
         new Playground(),
         new PickupTruck(),
         new QuarrySky(),
@@ -96,7 +98,7 @@ public class Main extends SimpleApplication {
     /**
      * selected World (not null)
      */
-    private static World world = new Racetrack();
+    private static World world = new Mountains();
     // *************************************************************************
     // constructors
 

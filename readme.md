@@ -154,6 +154,7 @@ Additional controls when the orbit camera is active:
 [pspeed]: https://github.com/pspeed42 "Paul Speed"
 [sergej]: https://hdrihaven.com/hdris/?a=Sergej%20Majboroda "HDRIs by Sergej Majboroda"
 [tgt]: https://www.tgthorne.com/contact "Thomas Glenn Thorne"
+[yaRnMcDonuts]: https://hub.jmonkeyengine.org/u/yarnmcdonuts/summary "Ryan McDonough"
 [zampaoli]: https://sketchfab.com/mauro.zampaoli "Mauro Zampaoli"
 
 <a name="wishlist"/>
@@ -297,6 +298,7 @@ The world (and physics-space) units of distance are *meters*.
   on which this project is based.
 + [Paul Speed (aka "pspeed42")][pspeed] created the Lemur libraries.
 + [Adam T. Ryder (aka "ATryder")][atryder] created the jME-TTF library.
++ [Ryan McDonough][yaRnMcDonuts] created the PBRTerrain library.
 + Rémy Bouquet (aka "Nehon") created the "Jaime" and "Enhanced HoverTank" models.
 + [Adi Barda (aka "adi.barda")][adi] created the racetrack model.
 + Rob Tuytel created the "marble_01" textures.

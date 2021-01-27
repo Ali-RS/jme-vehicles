@@ -1,0 +1,45 @@
+Material Mountains: /MatDefs/shaders/AfflictedPBRTerrain.j3md {
+
+    MaterialParameters {
+        AlphaMap: /Textures/Terrain/splat/alpha1.png
+        AlphaMap_1: /Textures/Terrain/splat/alpha2.png
+        ProbeColor: 1 1 1 1
+        useTriPlanarMapping: true
+
+        AlbedoMap_0: Repeat /Textures/Terrain/splat/dirt.jpg
+        AlbedoMap_0_scale: 0.1
+        Metallic_0: 0
+        Roughness_0: 1
+
+        AlbedoMap_1: Repeat /Textures/Terrain/Rock2/rock.jpg
+        AlbedoMap_1_scale: 0.05
+        Metallic_1: 0
+        Roughness_1: 1
+
+        AlbedoMap_2: Repeat /Textures/Terrain/Rock/Rock.PNG
+        AlbedoMap_2_scale: 0.1
+        Metallic_2: 0
+        Roughness_2: 1
+
+        AlbedoMap_3: Repeat /Textures/Terrain/Pond/Pond.jpg
+        AlbedoMap_3_scale: 0.1
+        Metallic_3: 0
+        Roughness_3: 1
+
+        AlbedoMap_4: Repeat /Textures/Terrain/splat/grass.jpg
+        AlbedoMap_4_scale: 0.3
+        Metallic_4: 0
+        Roughness_4: 1
+
+        AlbedoMap_5: Repeat /Textures/Terrain/BrickWall/BrickWall.jpg
+        AlbedoMap_5_scale: 0.1
+        Metallic_5: 0
+        Roughness_5: 1
+
+        AlbedoMap_6: Repeat /Textures/Terrain/splat/road.jpg
+        AlbedoMap_6_scale: 0.5
+        Metallic_6: 0
+        Roughness_6: 1
+    }
+
+}
