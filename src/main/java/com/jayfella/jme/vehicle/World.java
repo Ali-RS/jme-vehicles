@@ -10,9 +10,11 @@ import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.objects.PhysicsBody;
 import com.jme3.bullet.objects.PhysicsRigidBody;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 import java.util.HashSet;
 import java.util.Set;
+import jme3utilities.MyCamera;
 import jme3utilities.math.Vector3i;
 
 /**
@@ -64,6 +66,16 @@ abstract public class World
         rigidBody
                 = new PhysicsRigidBody(loadedShape, PhysicsBody.massForStatic);
         physicsSpace.add(rigidBody);
+        /*
+         * Set the far clipping plane for this world.
+         *
+         * The dash camera sits close to the bodywork, so set the near clipping
+         * plane accordingly.
+         */
+        Camera cam = Main.getApplication().getCamera();
+        float near = 0.1f;
+        float far = farDistance();
+        MyCamera.setNearFar(cam, near, far);
     }
 
     /**
@@ -99,6 +111,13 @@ abstract public class World
         decalManager.getNode().removeFromParent();
         Main.findAppState(ChunkManager.class).setWorld(null);
     }
+
+    /**
+     * Determine the distance to the camera's far plane.
+     *
+     * @return the distance (in world units, &gt;0)
+     */
+    abstract public float farDistance();
 
     /**
      * Access the loaded C-G model.

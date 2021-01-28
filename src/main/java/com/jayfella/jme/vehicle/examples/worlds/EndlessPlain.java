@@ -68,6 +68,16 @@ public class EndlessPlain extends World {
     }
 
     /**
+     * Determine the distance to the camera's far plane.
+     *
+     * @return the distance (in world units, &gt;0)
+     */
+    @Override
+    public float farDistance() {
+        return 2_000f;
+    }
+    
+    /**
      * Enumerate all chunks that are near the scene origin according to discrete
      * Chebyshev distance.
      *

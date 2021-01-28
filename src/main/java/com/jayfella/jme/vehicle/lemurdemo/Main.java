@@ -458,13 +458,6 @@ public class Main extends SimpleApplication {
         activateCameraMode();
         attachDrivingMode(); // needs the SignalTracker of the SignalMode
         attachOrbitCamera(); // needs the SignalTracker of the SignalMode
-        /*
-         * The dash camera sits close to the bodywork, so set the near clipping
-         * plane accordingly.
-         */
-        float near = 0.1f;
-        float far = 1_800f;
-        MyCamera.setNearFar(cam, near, far);
 
         MyCamera.setYTangent(cam, 1f);
         world.resetCameraPosition();

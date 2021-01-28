@@ -47,6 +47,16 @@ public class Mountains extends World {
     }
 
     /**
+     * Determine the distance to the camera's far plane.
+     *
+     * @return the distance (in world units, &gt;0)
+     */
+    @Override
+    public float farDistance() {
+        return 3_700f;
+    }
+
+    /**
      * Load this World from assets.
      *
      * @param assetManager the AssetManager for loading (not null)
