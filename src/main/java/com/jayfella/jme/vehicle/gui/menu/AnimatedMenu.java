@@ -1,6 +1,5 @@
 package com.jayfella.jme.vehicle.gui.menu;
 
-import com.jayfella.jme.vehicle.gui.AnimCompleteEvent;
 import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppState;
