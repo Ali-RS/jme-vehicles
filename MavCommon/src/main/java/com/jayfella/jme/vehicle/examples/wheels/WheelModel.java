@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle.examples.wheels;
 
+import com.github.stephengold.jmepower.Loadable;
 import com.jme3.math.FastMath;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
@@ -12,7 +13,7 @@ import jme3utilities.Validate;
  * By convention, the model has radius=0.5 model units and the local +X axis
  * points inward, toward the middle of the axle.
  */
-public class WheelModel {
+abstract public class WheelModel implements Loadable {
     // *************************************************************************
     // constants and loggers
 

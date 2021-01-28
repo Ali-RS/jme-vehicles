@@ -41,7 +41,7 @@ public class PickupTruck extends Vehicle {
     /**
      * Load this Vehicle from assets.
      *
-     * @param assetManager the AssetManager for loading (not null)
+     * @param assetManager for loading assets (not null)
      */
     @Override
     public void load(AssetManager assetManager) {
@@ -58,15 +58,22 @@ public class PickupTruck extends Vehicle {
         float mass = 1_550f; // in kilos
         float linearDamping = 0.01f;
         setChassis("ford_ranger", chassis, mass, linearDamping);
+
+        float diameter = 0.8f;
+        WheelModel wheel_fl = new RangerWheel(diameter);
+        WheelModel wheel_fr = new RangerWheel(diameter);
+        WheelModel wheel_rl = new RangerWheel(diameter);
+        WheelModel wheel_rr = new RangerWheel(diameter);
+        wheel_fl.load(assetManager);
+        wheel_fr.load(assetManager);
+        wheel_rl.load(assetManager);
+        wheel_rr.load(assetManager);
         /*
          * By convention, wheels are modeled for the left side, so
          * wheel models for the right side require a 180-degree rotation.
          */
-        float diameter = 0.8f;
-        WheelModel wheel_fl = new RangerWheel(diameter);
-        WheelModel wheel_fr = new RangerWheel(diameter).flip();
-        WheelModel wheel_rl = new RangerWheel(diameter);
-        WheelModel wheel_rr = new RangerWheel(diameter).flip();
+        wheel_fr.flip();
+        wheel_rr.flip();
         /*
          * Add the wheels to the vehicle.
          * For rear-wheel steering, it will be necessary to "flip" the steering.

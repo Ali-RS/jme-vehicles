@@ -42,7 +42,7 @@ public class HatchBack extends Vehicle {
     /**
      * Load this Vehicle from assets.
      *
-     * @param assetManager the AssetManager for loading (not null)
+     * @param assetManager for loading assets (not null)
      */
     @Override
     public void load(AssetManager assetManager) {
@@ -59,15 +59,22 @@ public class HatchBack extends Vehicle {
         float mass = 1_140f; // in kilos
         float linearDamping = 0.004f;
         setChassis("modern_hatchback", chassis, mass, linearDamping);
+
+        float diameter = 0.65f;
+        WheelModel wheel_fl = new HatchbackWheel(diameter);
+        WheelModel wheel_fr = new HatchbackWheel(diameter);
+        WheelModel wheel_rl = new HatchbackWheel(diameter);
+        WheelModel wheel_rr = new HatchbackWheel(diameter);
+        wheel_fl.load(assetManager);
+        wheel_fr.load(assetManager);
+        wheel_rl.load(assetManager);
+        wheel_rr.load(assetManager);
         /*
          * By convention, wheels are modeled for the left side, so
          * wheel models for the right side require a 180-degree rotation.
          */
-        float diameter = 0.65f;
-        WheelModel wheel_fl = new HatchbackWheel(diameter);
-        WheelModel wheel_fr = new HatchbackWheel(diameter).flip();
-        WheelModel wheel_rl = new HatchbackWheel(diameter);
-        WheelModel wheel_rr = new HatchbackWheel(diameter).flip();
+        wheel_fr.flip();
+        wheel_rr.flip();
         /*
          * Add the wheels to the vehicle.
          * For rear-wheel steering, it will be necessary to "flip" the steering.

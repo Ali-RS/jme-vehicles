@@ -42,7 +42,7 @@ public class DuneBuggy extends Vehicle {
     /**
      * Load this Vehicle from assets.
      *
-     * @param assetManager the AssetManager for loading (not null)
+     * @param assetManager for loading assets (not null)
      */
     @Override
     public void load(AssetManager assetManager) {
@@ -59,16 +59,23 @@ public class DuneBuggy extends Vehicle {
         float mass = 525f; // in kilos
         float linearDamping = 0.02f;
         setChassis("hcr2_buggy", chassis, mass, linearDamping);
+
+        float rearDiameter = 0.944f;
+        float frontDiameter = 0.77f;
+        WheelModel wheel_fl = new BuggyFrontWheel(frontDiameter);
+        WheelModel wheel_fr = new BuggyFrontWheel(frontDiameter);
+        WheelModel wheel_rl = new BuggyRearWheel(rearDiameter);
+        WheelModel wheel_rr = new BuggyRearWheel(rearDiameter);
+        wheel_fl.load(assetManager);
+        wheel_fr.load(assetManager);
+        wheel_rl.load(assetManager);
+        wheel_rr.load(assetManager);
         /*
          * By convention, wheels are modeled for the left side, so
          * wheel models for the right side require a 180-degree rotation.
          */
-        float rearDiameter = 0.944f;
-        float frontDiameter = 0.77f;
-        WheelModel wheel_fl = new BuggyFrontWheel(frontDiameter);
-        WheelModel wheel_fr = new BuggyFrontWheel(frontDiameter).flip();
-        WheelModel wheel_rl = new BuggyRearWheel(rearDiameter);
-        WheelModel wheel_rr = new BuggyRearWheel(rearDiameter).flip();
+        wheel_fr.flip();
+        wheel_rr.flip();
         /*
          * Add the wheels to the vehicle.
          * For rear-wheel steering, it will be necessary to "flip" the steering.

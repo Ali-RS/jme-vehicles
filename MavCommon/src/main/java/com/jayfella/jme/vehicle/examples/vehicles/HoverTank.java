@@ -59,7 +59,7 @@ public class HoverTank extends Vehicle {
     /**
      * Load this Vehicle from assets.
      *
-     * @param assetManager the AssetManager for loading (not null)
+     * @param assetManager for loading assets (not null)
      */
     @Override
     public void load(AssetManager assetManager) {
@@ -77,9 +77,19 @@ public class HoverTank extends Vehicle {
 
         float wheelDiameter = 1.5f;
         WheelModel wheel_fl = new InvisibleWheel(wheelDiameter);
-        WheelModel wheel_fr = new InvisibleWheel(wheelDiameter).flip();
+        WheelModel wheel_fr = new InvisibleWheel(wheelDiameter);
         WheelModel wheel_rl = new InvisibleWheel(wheelDiameter);
-        WheelModel wheel_rr = new InvisibleWheel(wheelDiameter).flip();
+        WheelModel wheel_rr = new InvisibleWheel(wheelDiameter);
+        wheel_fl.load(assetManager);
+        wheel_fr.load(assetManager);
+        wheel_rl.load(assetManager);
+        wheel_rr.load(assetManager);
+        /*
+         * By convention, wheels are modeled for the left side, so
+         * wheel models for the right side require a 180-degree rotation.
+         */
+        wheel_fr.flip();
+        wheel_rr.flip();
         /*
          * Add the (invisible) wheels to the Vehicle.
          */

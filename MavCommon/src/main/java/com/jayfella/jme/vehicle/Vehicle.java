@@ -190,7 +190,7 @@ abstract public class Vehicle
     }
 
     /**
-     * Add this Vehicle to the specified world.
+     * Add this Vehicle to scene of the specified world.
      *
      * @param world where to attach (not null)
      */
@@ -557,6 +557,8 @@ abstract public class Vehicle
                 | InvocationTargetException exception) {
             throw new RuntimeException(exception);
         }
+        AssetManager assetManager = world.getAssetManager();
+        wheelModel.load(assetManager);
         /*
          * Copy the local rotation of the old Spatial.
          */

@@ -8,7 +8,6 @@ import com.jayfella.jme.vehicle.examples.tires.Tire_01;
 import com.jayfella.jme.vehicle.examples.wheels.RotatorFrontWheel;
 import com.jayfella.jme.vehicle.examples.wheels.RotatorRearWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
-import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jayfella.jme.vehicle.part.Engine;
 import com.jayfella.jme.vehicle.part.GearBox;
 import com.jayfella.jme.vehicle.part.Suspension;
@@ -45,7 +44,7 @@ public class Rotator extends Vehicle {
     /**
      * Load this Vehicle from assets.
      *
-     * @param assetManager the AssetManager for loading (not null)
+     * @param assetManager for loading assets (not null)
      */
     @Override
     public void load(AssetManager assetManager) {
@@ -62,15 +61,20 @@ public class Rotator extends Vehicle {
         float mass = 525f; // in kilos
         float linearDamping = 0.02f;
         setChassis("hcr2_rotator", chassis, mass, linearDamping);
-        /*
-         * By convention, wheels are modeled for the left side, so
-         * wheel models for the right side require a 180-degree rotation.
-         */
+
         float rearDiameter = 1.087f;
         float frontDiameter = 0.77f;
         WheelModel wheel_f = new RotatorFrontWheel(frontDiameter);
         WheelModel wheel_rl = new RotatorRearWheel(rearDiameter);
-        WheelModel wheel_rr = new RotatorRearWheel(rearDiameter).flip();
+        WheelModel wheel_rr = new RotatorRearWheel(rearDiameter);
+        wheel_f.load(assetManager);
+        wheel_rl.load(assetManager);
+        wheel_rr.load(assetManager);
+        /*
+         * By convention, wheels are modeled for the left side, so
+         * wheel models for the right side require a 180-degree rotation.
+         */
+        wheel_rr.flip();
         /*
          * Add the wheels to the vehicle.
          */

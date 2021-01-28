@@ -41,7 +41,7 @@ public class GrandTourer extends Vehicle {
     /**
      * Load this Vehicle from assets.
      *
-     * @param assetManager the AssetManager for loading (not null)
+     * @param assetManager for loading assets (not null)
      */
     @Override
     public void load(AssetManager assetManager) {
@@ -58,15 +58,22 @@ public class GrandTourer extends Vehicle {
         float mass = 1_525f; // in kilos
         float linearDamping = 0.006f;
         setChassis("GT", chassis, mass, linearDamping);
+
+        float diameter = 0.85f;
+        WheelModel wheel_fl = new CruiserWheel(diameter);
+        WheelModel wheel_fr = new CruiserWheel(diameter);
+        WheelModel wheel_rl = new CruiserWheel(diameter);
+        WheelModel wheel_rr = new CruiserWheel(diameter);
+        wheel_fl.load(assetManager);
+        wheel_fr.load(assetManager);
+        wheel_rl.load(assetManager);
+        wheel_rr.load(assetManager);
         /*
          * By convention, wheels are modeled for the left side, so
          * wheel models for the right side require a 180-degree rotation.
          */
-        float diameter = 0.85f;
-        WheelModel wheel_fl = new CruiserWheel(diameter);
-        WheelModel wheel_fr = new CruiserWheel(diameter).flip();
-        WheelModel wheel_rl = new CruiserWheel(diameter);
-        WheelModel wheel_rr = new CruiserWheel(diameter).flip();
+        wheel_fr.flip();
+        wheel_rr.flip();
         /*
          * Add the wheels to the vehicle.
          * For rear-wheel steering, it will be necessary to "flip" the steering.

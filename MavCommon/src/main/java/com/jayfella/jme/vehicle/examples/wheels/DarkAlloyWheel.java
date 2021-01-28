@@ -1,6 +1,5 @@
 package com.jayfella.jme.vehicle.examples.wheels;
 
-import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Spatial;
 import java.util.logging.Logger;
@@ -27,8 +26,17 @@ public class DarkAlloyWheel extends WheelModel {
      */
     public DarkAlloyWheel(float diameter) {
         super(diameter);
+    }
+    // *************************************************************************
+    // WheelModel methods
 
-        AssetManager assetManager = Main.getApplication().getAssetManager();
+    /**
+     * Load this WheelModel from assets.
+     *
+     * @param assetManager for loading assets (not null)
+     */
+    @Override
+    public void load(AssetManager assetManager) {
         String assetPath = "Models/gtr_nismo/dark_alloy.gltf.j3o";
         Spatial wheelSpatial = assetManager.loadModel(assetPath);
         setSpatial(wheelSpatial);

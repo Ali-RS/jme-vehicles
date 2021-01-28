@@ -41,7 +41,7 @@ public class GTRNismo extends Vehicle {
     /**
      * Load this Vehicle from assets.
      *
-     * @param assetManager the AssetManager for loading (not null)
+     * @param assetManager for loading assets (not null)
      */
     @Override
     public void load(AssetManager assetManager) {
@@ -58,15 +58,22 @@ public class GTRNismo extends Vehicle {
         float mass = 1_525f; // in kilos
         float linearDamping = 0.002f;
         setChassis("gtr_nismo", chassis, mass, linearDamping);
+
+        float diameter = 0.74f;
+        WheelModel wheel_fl = new DarkAlloyWheel(diameter);
+        WheelModel wheel_fr = new DarkAlloyWheel(diameter);
+        WheelModel wheel_rl = new DarkAlloyWheel(diameter);
+        WheelModel wheel_rr = new DarkAlloyWheel(diameter);
+        wheel_fl.load(assetManager);
+        wheel_fr.load(assetManager);
+        wheel_rl.load(assetManager);
+        wheel_rr.load(assetManager);
         /*
          * By convention, wheels are modeled for the left side, so
          * wheel models for the right side require a 180-degree rotation.
          */
-        float diameter = 0.74f;
-        WheelModel wheel_fl = new DarkAlloyWheel(diameter);
-        WheelModel wheel_fr = new DarkAlloyWheel(diameter).flip();
-        WheelModel wheel_rl = new DarkAlloyWheel(diameter);
-        WheelModel wheel_rr = new DarkAlloyWheel(diameter).flip();
+        wheel_fr.flip();
+        wheel_rr.flip();
         /*
          * Add the wheels to the vehicle.
          * For rear-wheel steering, it will be necessary to "flip" the steering.
