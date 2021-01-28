@@ -225,37 +225,37 @@ The source code has
 
 Resources/assets/media:
 
-+ The [Droid Serif font](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Interface/Fonts)
++ The [Droid Serif font](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Interface/Fonts)
   has an Apache License, Version 2.0.
-+ The [Opel GT Retopo model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/GT)
++ The [Opel GT Retopo model](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Models/GT)
   has a CC Attribution-NonCommercial-ShareAlike license.
-+ The [HoverTank model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/Tank)
++ The [HoverTank model](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Models/Tank)
   has a BSD 3-Clause license.
-+ The [Ford Ranger model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/ford_ranger)
++ The [Ford Ranger model](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Models/ford_ranger)
   has a CC Attribution license.
-+ The [Nissan GT-R model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/gtr_nismo)
++ The [Nissan GT-R model](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Models/gtr_nismo)
   has a CC Attribution-NonCommercial-ShareAlike license.
-+ The [HCR2 Buggy model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/hcr2_buggy)
++ The [HCR2 Buggy model](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Models/hcr2_buggy)
   has a CC Attribution license.
-+ The [HCR2 Rotator model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/hcr2_rotator)
++ The [HCR2 Rotator model](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Models/hcr2_rotator)
   has a CC Attribution license.
-+ The [Modern Hatchback - Low Poly model model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/modern_hatchback)
++ The [Modern Hatchback - Low Poly model model](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Models/modern_hatchback)
   has a CC Attribution license.
-+ The [Race Track model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/race1)
++ The [Race Track model](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Models/race1)
   has an Unlicense license.
-+ The [terrain textures](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Textures/Terrain)
++ The [terrain textures](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Textures/Terrain)
   has a BSD 3-Clause license.
-+ The [Vehicle Playground model](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Models/vehicle-playground)
++ The [Vehicle Playground model](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Models/vehicle-playground)
   has a CC0 license.
-+ The [marble_01 textures](https://github.com/stephengold/jme-vehicles/tree/master/src/main/resources/Textures/Ground/Marble)
++ The [marble_01 textures](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Textures/Ground/Marble)
   have a CC0 license.
-+ The [Quarry 03 texture](https://github.com/stephengold/jme-vehicles/blob/master/src/main/resources/Textures/Sky/quarry_03)
++ The [Quarry 03 texture](https://github.com/stephengold/jme-vehicles/blob/master/MavCommon/src/main/resources/Textures/Sky/quarry_03)
   has a CC0 license.
-+ The [Car-door Exit Button texture](https://github.com/stephengold/jme-vehicles/blob/master/src/main/resources/Textures/sgold)
++ The [Car-door Exit Button texture](https://github.com/stephengold/jme-vehicles/blob/master/MavCommon/src/main/resources/Textures/sgold)
   has a CC0 license.
-+ The [Lunar libration with phase Oct 2007 texture](https://github.com/stephengold/jme-vehicles/blob/master/src/main/resources/Textures/sgold)
++ The [Lunar libration with phase Oct 2007 texture](https://github.com/stephengold/jme-vehicles/blob/master/MavCommon/src/main/resources/Textures/sgold)
   has a PD-self license.
-+ The [Georg textures](https://github.com/stephengold/jme-vehicles/blob/master/src/main/resources/Textures/Georg)
++ The [Georg textures](https://github.com/stephengold/jme-vehicles/blob/master/MavCommon/src/main/resources/Textures/Georg)
   were generated procedurally using [the Georg Project](https://github.com/stephengold/Georg),
   which has a BSD 3-Clause license.
 

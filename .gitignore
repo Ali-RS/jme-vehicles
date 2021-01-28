@@ -1,6 +1,7 @@
 /.gradle/
 /.nb-gradle/
 /build/
-/*.dll
-/*.dylib
-/*.so
+/MavCommon/build/
+*.dll
+*.dylib
+*.so
