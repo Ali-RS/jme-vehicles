@@ -225,7 +225,7 @@ public class Main extends SimpleApplication {
     public void setSky(Sky newSky) {
         sky.detachFromScene();
         sky = newSky;
-        sky.attachToScene(rootNode);
+        sky.attachToScene(world);
     }
 
     /**
@@ -370,8 +370,8 @@ public class Main extends SimpleApplication {
      * Attach the selected Sky, World, and Vehicle to the scene.
      */
     private void attachAllToScene() {
-        sky.attachToScene(rootNode);
         world.attachToScene(rootNode);
+        sky.attachToScene(world);
         vehicle.attachToScene(world);
     }
 
@@ -446,7 +446,7 @@ public class Main extends SimpleApplication {
                 new VehiclePointsState()
         );
 
-        Sky.initialize();
+        Sky.initialize(this);
         attachAllToScene();
         /*
          * Attach input modes.

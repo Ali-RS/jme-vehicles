@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle.examples.skies;
 
 import com.jayfella.jme.vehicle.Sky;
+import com.jayfella.jme.vehicle.VehicleWorld;
 import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jme3.app.LegacyApplication;
 import com.jme3.asset.AssetManager;
@@ -73,13 +74,13 @@ public class AnimatedNightSky extends Sky {
     // Sky methods
 
     /**
-     * Attach this loaded Sky to the specified scene-graph node.
+     * Add this Sky to the scene of the specified world.
      *
-     * @param parent where to attach (not null)
+     * @param world where to add (not null)
      */
     @Override
-    public void attachToScene(Node parent) {
-        super.attachToScene(parent);
+    public void attachToScene(VehicleWorld world) {
+        super.attachToScene(world);
         /*
          * Configure the AmbientLight that was added by Sky.initialize().
          */
@@ -94,7 +95,8 @@ public class AnimatedNightSky extends Sky {
         /*
          * Add the LightProbe.
          */
-        parent.addLight(probe);
+        Node sceneNode = world.getSceneNode();
+        sceneNode.addLight(probe);
         /*
          * Configure the shadow filter that was added by Sky.initialize().
          */

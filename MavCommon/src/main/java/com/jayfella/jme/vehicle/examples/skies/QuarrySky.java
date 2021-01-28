@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle.examples.skies;
 
 import com.jayfella.jme.vehicle.Sky;
+import com.jayfella.jme.vehicle.VehicleWorld;
 import com.jme3.asset.AssetManager;
 import com.jme3.light.DirectionalLight;
 import com.jme3.light.LightProbe;
@@ -42,13 +43,13 @@ public class QuarrySky extends Sky {
     // new methods exposed
 
     /**
-     * Attach this loaded Sky to the specified scene-graph node.
+     * Add this Sky to the scene of the specified world.
      *
-     * @param parent where to attach (not null)
+     * @param world where to add (not null)
      */
     @Override
-    public void attachToScene(Node parent) {
-        super.attachToScene(parent);
+    public void attachToScene(VehicleWorld world) {
+        super.attachToScene(world);
         /*
          * Configure the AmbientLight that was added by Sky.initialize().
          */
@@ -67,7 +68,8 @@ public class QuarrySky extends Sky {
          */
         probe.setPosition(Vector3f.ZERO);
         probe.getArea().setRadius(9_999f);
-        parent.addLight(probe);
+        Node sceneNode = world.getSceneNode();
+        sceneNode.addLight(probe);
         /*
          * Configure the shadow renderer that was added by Sky.initialize().
          */
@@ -95,6 +97,6 @@ public class QuarrySky extends Sky {
         assert loadedCgm == null : "The model is already loaded.";
 
         probe = (LightProbe) assetManager.loadAsset(lightProbeAssetPath);
-        loadedCgm = createSky(imageAssetPath);
+        loadedCgm = createSky(assetManager, imageAssetPath);
     }
 }

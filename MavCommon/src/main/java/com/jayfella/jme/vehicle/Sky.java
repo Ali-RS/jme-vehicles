@@ -1,7 +1,7 @@
 package com.jayfella.jme.vehicle;
 
 import com.github.stephengold.jmepower.Loadable;
-import com.jayfella.jme.vehicle.lemurdemo.Main;
+import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.TextureKey;
 import com.jme3.bounding.BoundingSphere;
@@ -53,19 +53,27 @@ abstract public class Sky implements Loadable {
      * root of the loaded C-G model
      */
     protected Spatial loadedCgm;
+    /**
+     * VehicleWorld that contains this Sky, or null if none
+     */
+    private VehicleWorld world;
     // *************************************************************************
     // new methods exposed
 
     /**
-     * Add this Sky to the specified scene.
+     * Add this Sky to the scene of the specified world.
      *
-     * @param parent where to attach (not null)
+     * @param world where to add (not null)
      */
-    public void attachToScene(Node parent) {
+    public void attachToScene(VehicleWorld world) {
+        this.world = world;
+
         if (loadedCgm == null) {
-            AssetManager assetManager = Main.getApplication().getAssetManager();
+            AssetManager assetManager = world.getAssetManager();
             load(assetManager);
         }
+
+        Node parent = world.getSceneNode();
         parent.attachChild(loadedCgm);
     }
 
@@ -87,11 +95,12 @@ abstract public class Sky implements Loadable {
 
     /**
      * Initialize the static fields. Can only be invoked once.
+     *
+     * @param application (not null)
      */
-    public static void initialize() {
+    public static void initialize(SimpleApplication application) {
         assert ambientLight == null : ambientLight;
         assert directionalLight == null : directionalLight;
-        Main application = Main.getApplication();
         ViewPort viewPort = application.getViewPort();
         assert viewPort.getProcessors().isEmpty();
         Node rootNode = application.getRootNode();
@@ -135,15 +144,16 @@ abstract public class Sky implements Loadable {
      * <li>It uses a custom J3MD to avoid JME issue #1414.</li>
      * </ul>
      *
+     * @param assetManager for loading assets (not null)
      * @param textureAssetPath the path to the texture asset (not null, not
      * empty)
-     * @return a new orphaned Geometry
+     * @return a new orphan Geometry
      */
-    protected static Spatial createSky(String textureAssetPath) {
+    protected static Spatial createSky(AssetManager assetManager,
+            String textureAssetPath) {
         /*
          * Load and configure the Texture.
          */
-        AssetManager assetManager = Main.getApplication().getAssetManager();
         boolean flipY = true;
         TextureKey textureKey = new TextureKey(textureAssetPath, flipY);
         Texture texture = assetManager.loadTexture(textureKey);
