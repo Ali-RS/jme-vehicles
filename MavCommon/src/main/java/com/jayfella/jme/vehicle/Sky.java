@@ -50,13 +50,9 @@ abstract public class Sky implements Loadable {
      */
     private static DirectionalLightShadowRenderer shadowRenderer;
     /**
-     * root of the loaded C-G model
+     * root of the loaded C-G model TODO privatize
      */
     protected Spatial loadedCgm;
-    /**
-     * VehicleWorld that contains this Sky, or null if none
-     */
-    private VehicleWorld world;
     // *************************************************************************
     // new methods exposed
 
@@ -66,8 +62,6 @@ abstract public class Sky implements Loadable {
      * @param world where to add (not null)
      */
     public void attachToScene(VehicleWorld world) {
-        this.world = world;
-
         if (loadedCgm == null) {
             AssetManager assetManager = world.getAssetManager();
             load(assetManager);
