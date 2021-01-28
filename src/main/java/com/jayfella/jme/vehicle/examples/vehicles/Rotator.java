@@ -1,6 +1,5 @@
 package com.jayfella.jme.vehicle.examples.vehicles;
 
-import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Sound;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.examples.engines.Engine180HP;
@@ -9,6 +8,7 @@ import com.jayfella.jme.vehicle.examples.tires.Tire_01;
 import com.jayfella.jme.vehicle.examples.wheels.RotatorFrontWheel;
 import com.jayfella.jme.vehicle.examples.wheels.RotatorRearWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
+import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jayfella.jme.vehicle.part.Engine;
 import com.jayfella.jme.vehicle.part.GearBox;
 import com.jayfella.jme.vehicle.part.Suspension;

@@ -2,9 +2,9 @@ package com.jayfella.jme.vehicle.input;
 
 import com.github.stephengold.garrett.CameraSignal;
 import com.github.stephengold.garrett.ChaseOption;
-import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.World;
+import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jayfella.jme.vehicle.view.CameraController;
 import com.jayfella.jme.vehicle.view.ChaseCamera;
 import com.jme3.math.Vector3f;

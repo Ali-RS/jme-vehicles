@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle;
 
+import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jayfella.jme.vehicle.skid.SkidMarksState;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;

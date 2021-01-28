@@ -1,6 +1,6 @@
 package com.jayfella.jme.vehicle.gui;
 
-import com.jayfella.jme.vehicle.Main;
+import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;

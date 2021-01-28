@@ -1,6 +1,6 @@
 package com.jayfella.jme.vehicle.gui;
 
-import com.jayfella.jme.vehicle.Main;
+import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jayfella.jme.vehicle.part.Gear;
 import com.jayfella.jme.vehicle.part.GearBox;
 

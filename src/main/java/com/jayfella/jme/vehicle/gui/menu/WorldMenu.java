@@ -1,11 +1,11 @@
 package com.jayfella.jme.vehicle.gui.menu;
 
-import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.World;
 import com.jayfella.jme.vehicle.examples.worlds.EndlessPlain;
 import com.jayfella.jme.vehicle.examples.worlds.Mountains;
 import com.jayfella.jme.vehicle.examples.worlds.Playground;
 import com.jayfella.jme.vehicle.examples.worlds.Racetrack;
+import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.simsilica.lemur.Button;
 import java.util.ArrayList;
 import java.util.List;

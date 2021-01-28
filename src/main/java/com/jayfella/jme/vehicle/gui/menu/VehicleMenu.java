@@ -1,6 +1,5 @@
 package com.jayfella.jme.vehicle.gui.menu;
 
-import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.examples.vehicles.DuneBuggy;
 import com.jayfella.jme.vehicle.examples.vehicles.GTRNismo;
@@ -10,6 +9,7 @@ import com.jayfella.jme.vehicle.examples.vehicles.HoverTank;
 import com.jayfella.jme.vehicle.examples.vehicles.PickupTruck;
 import com.jayfella.jme.vehicle.examples.vehicles.Rotator;
 import com.jayfella.jme.vehicle.input.CameraInputMode;
+import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.simsilica.lemur.Button;
 import java.util.ArrayList;
 import java.util.List;

@@ -21,7 +21,7 @@ tasks.withType(JavaExec) { // Java runtime options:
     jvmArgs '-XX:+UseG1GC', '-XX:MaxGCPauseMillis=10'
 }
 
-mainClassName = 'com.jayfella.jme.vehicle.Main'
+mainClassName = 'com.jayfella.jme.vehicle.lemurdemo.Main'
 if (!hasProperty('mainClass')) {
     ext.mainClass = mainClassName
 }

@@ -2,7 +2,6 @@ package com.jayfella.jme.vehicle.input;
 
 import com.github.stephengold.garrett.CameraSignal;
 import com.github.stephengold.garrett.ChaseOption;
-import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.debug.DebugTabState;
@@ -11,6 +10,7 @@ import com.jayfella.jme.vehicle.debug.TireDataState;
 import com.jayfella.jme.vehicle.debug.VehicleEditorState;
 import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.gui.menu.MainMenu;
+import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jayfella.jme.vehicle.part.GearBox;
 import com.jayfella.jme.vehicle.view.CameraController;
 import com.jayfella.jme.vehicle.view.ChaseCamera;

@@ -4,6 +4,7 @@ import com.github.stephengold.jmepower.Loadable;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.gui.AudioHud;
 import com.jayfella.jme.vehicle.gui.DriverHud;
+import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jayfella.jme.vehicle.part.Brake;
 import com.jayfella.jme.vehicle.part.Engine;
 import com.jayfella.jme.vehicle.part.GearBox;

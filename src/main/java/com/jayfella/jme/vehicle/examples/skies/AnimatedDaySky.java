@@ -1,7 +1,7 @@
 package com.jayfella.jme.vehicle.examples.skies;
 
-import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Sky;
+import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jme3.app.LegacyApplication;
 import com.jme3.asset.AssetManager;
 import com.jme3.light.DirectionalLight;

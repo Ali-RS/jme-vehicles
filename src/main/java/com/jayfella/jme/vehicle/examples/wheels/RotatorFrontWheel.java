@@ -1,13 +1,12 @@
 package com.jayfella.jme.vehicle.examples.wheels;
 
-import com.jayfella.jme.vehicle.Main;
+import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Spatial;
 import java.util.logging.Logger;
 
 /**
- * A WheelModel built around the front wheel of oakar258's "HCR2 Rotator"
- * model.
+ * A WheelModel built around the front wheel of oakar258's "HCR2 Rotator" model.
  *
  * @author Stephen Gold sgold@sonic.net
  */

@@ -3,7 +3,7 @@ package com.jayfella.jme.vehicle.view;
 import com.github.stephengold.garrett.ChaseOption;
 import com.github.stephengold.garrett.OrbitCamera;
 import com.github.stephengold.garrett.Target;
-import com.jayfella.jme.vehicle.Main;
+import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.control.VehicleControl;

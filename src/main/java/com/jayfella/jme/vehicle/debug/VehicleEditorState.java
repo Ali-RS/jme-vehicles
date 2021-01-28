@@ -1,6 +1,5 @@
 package com.jayfella.jme.vehicle.debug;
 
-import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.debug.parts.BrakesEditor;
 import com.jayfella.jme.vehicle.debug.parts.ChassisEditor;
@@ -8,6 +7,7 @@ import com.jayfella.jme.vehicle.debug.parts.EngineEditor;
 import com.jayfella.jme.vehicle.debug.parts.GearboxEditor;
 import com.jayfella.jme.vehicle.debug.parts.SuspensionEditor;
 import com.jayfella.jme.vehicle.debug.parts.WheelsEditor;
+import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.simsilica.lemur.Axis;

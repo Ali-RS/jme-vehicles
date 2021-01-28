@@ -1,6 +1,5 @@
 package com.jayfella.jme.vehicle.gui.menu;
 
-import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.examples.wheels.BasicAlloyWheel;
 import com.jayfella.jme.vehicle.examples.wheels.BuggyFrontWheel;
@@ -13,6 +12,7 @@ import com.jayfella.jme.vehicle.examples.wheels.RangerWheel;
 import com.jayfella.jme.vehicle.examples.wheels.RotatorFrontWheel;
 import com.jayfella.jme.vehicle.examples.wheels.RotatorRearWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
+import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.simsilica.lemur.Button;
 import java.util.ArrayList;
 import java.util.List;

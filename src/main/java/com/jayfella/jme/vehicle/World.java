@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle;
 
 import com.github.stephengold.jmepower.Loadable;
+import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.CollisionShape;
@@ -46,7 +47,7 @@ abstract public class World implements Loadable {
      *
      * @param parent where to attach (not null)
      */
-    void attachToScene(Node parent) {
+    public void attachToScene(Node parent) {
         if (loadedCgm == null) {
             load();
         }
@@ -88,7 +89,7 @@ abstract public class World implements Loadable {
      * Remove this World from the scene-graph node and PhysicsSpace to which it
      * has been added.
      */
-    void detachFromScene() {
+    public void detachFromScene() {
         PhysicsSpace space = (PhysicsSpace) rigidBody.getCollisionSpace();
         space.removeCollisionObject(rigidBody);
 

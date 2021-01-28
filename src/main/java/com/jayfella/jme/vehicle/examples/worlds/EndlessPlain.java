@@ -1,8 +1,8 @@
 package com.jayfella.jme.vehicle.examples.worlds;
 
 import com.jayfella.jme.vehicle.ChunkManager;
-import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.World;
+import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.collision.shapes.PlaneCollisionShape;

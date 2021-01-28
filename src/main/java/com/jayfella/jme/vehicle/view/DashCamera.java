@@ -1,8 +1,8 @@
 package com.jayfella.jme.vehicle.view;
 
 import com.github.stephengold.garrett.CameraSignal;
-import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Vehicle;
+import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jme3.input.InputManager;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.AnalogListener;

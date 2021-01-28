@@ -1,11 +1,11 @@
 package com.jayfella.jme.vehicle.gui.menu;
 
-import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.Sky;
 import com.jayfella.jme.vehicle.examples.skies.AnimatedDaySky;
 import com.jayfella.jme.vehicle.examples.skies.AnimatedNightSky;
 import com.jayfella.jme.vehicle.examples.skies.PurpleNebulaSky;
 import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
+import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.simsilica.lemur.Button;
 import java.util.ArrayList;
 import java.util.List;

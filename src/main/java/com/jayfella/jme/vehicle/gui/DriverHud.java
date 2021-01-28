@@ -1,10 +1,10 @@
 package com.jayfella.jme.vehicle.gui;
 
-import com.jayfella.jme.vehicle.Main;
 import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.input.DrivingInputMode;
 import com.jayfella.jme.vehicle.input.SignalMode;
+import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jayfella.jme.vehicle.part.Engine;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;

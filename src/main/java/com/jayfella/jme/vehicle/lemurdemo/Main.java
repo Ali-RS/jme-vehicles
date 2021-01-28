@@ -1,10 +1,14 @@
-package com.jayfella.jme.vehicle;
+package com.jayfella.jme.vehicle.lemurdemo;
 
 import com.atr.jme.font.asset.TrueTypeLoader;
 import com.github.stephengold.garrett.CameraSignal;
 import com.github.stephengold.garrett.OrbitCamera;
 import com.github.stephengold.jmepower.Loadable;
 import com.github.stephengold.jmepower.lemur.LemurLoadingState;
+import com.jayfella.jme.vehicle.ChunkManager;
+import com.jayfella.jme.vehicle.Sky;
+import com.jayfella.jme.vehicle.Vehicle;
+import com.jayfella.jme.vehicle.World;
 import com.jayfella.jme.vehicle.examples.skies.AnimatedNightSky;
 import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
 import com.jayfella.jme.vehicle.examples.vehicles.DuneBuggy;

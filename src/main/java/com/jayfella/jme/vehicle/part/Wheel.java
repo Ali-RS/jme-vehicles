@@ -1,6 +1,6 @@
 package com.jayfella.jme.vehicle.part;
 
-import com.jayfella.jme.vehicle.Main;
+import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jayfella.jme.vehicle.tire.PacejkaTireModel;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;

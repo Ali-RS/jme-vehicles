@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle;
 
 import com.github.stephengold.jmepower.Loadable;
+import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.TextureKey;
 import com.jme3.bounding.BoundingSphere;
@@ -86,7 +87,7 @@ abstract public class Sky implements Loadable {
     /**
      * Initialize the static fields. Can only be invoked once.
      */
-    static void initialize() {
+    public static void initialize() {
         assert ambientLight == null : ambientLight;
         assert directionalLight == null : directionalLight;
         Main application = Main.getApplication();
