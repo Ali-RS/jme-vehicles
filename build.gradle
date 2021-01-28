@@ -30,7 +30,6 @@ jar.manifest.attributes('Main-Class': mainClassName)
 repositories {
     //mavenLocal()
     jcenter()
-    maven { url 'https://dl.bintray.com/yarnmcdonuts/net.aaaagames' }
 }
 
 project.ext {
