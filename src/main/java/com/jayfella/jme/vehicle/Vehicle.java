@@ -682,27 +682,6 @@ abstract public class Vehicle
     }
 
     /**
-     * TODO re-order methods
-     */
-    private void disable() {
-        AppStateManager stateManager = world.getStateManager();
-        stateManager.detach(gearboxState);
-        stateManager.detach(skidmarks);
-        stateManager.detach(smokeEmitter);
-        stateManager.detach(vehicleAudioState);
-        stateManager.detach(wheelSpinState);
-    }
-
-    private void enable() {
-        AppStateManager stateManager = world.getStateManager();
-        stateManager.attach(gearboxState);
-        stateManager.attach(skidmarks);
-        stateManager.attach(smokeEmitter);
-        stateManager.attach(vehicleAudioState);
-        stateManager.attach(wheelSpinState);
-    }
-
-    /**
      * Determine the offset of the vehicle's ChaseCamera target in scaled shape
      * coordinates.
      *
@@ -867,5 +846,31 @@ abstract public class Vehicle
         float result = gearBox.maxForwardSpeed(speedUnit);
         assert result <= 0f : result;
         return result;
+    }
+    // *************************************************************************
+    // private methods
+
+    /**
+     * Detach the AppStates associated with this Vehicle.
+     */
+    private void disable() {
+        AppStateManager stateManager = world.getStateManager();
+        stateManager.detach(gearboxState);
+        stateManager.detach(skidmarks);
+        stateManager.detach(smokeEmitter);
+        stateManager.detach(vehicleAudioState);
+        stateManager.detach(wheelSpinState);
+    }
+
+    /**
+     * Attach the AppStates associated with this Vehicle.
+     */
+    private void enable() {
+        AppStateManager stateManager = world.getStateManager();
+        stateManager.attach(gearboxState);
+        stateManager.attach(skidmarks);
+        stateManager.attach(smokeEmitter);
+        stateManager.attach(vehicleAudioState);
+        stateManager.attach(wheelSpinState);
     }
 }

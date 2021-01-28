@@ -179,37 +179,6 @@ abstract public class CartoucheState
     }
 
     /**
-     * Load the assets of this instance without attaching them to any scene.
-     * TODO re-order methods
-     *
-     * @param assetManager the AssetManager for loading (not null)
-     */
-    @Override
-    public void load(AssetManager assetManager) {
-        /*
-         * position the Node in the viewport
-         */
-        Application application = Main.getApplication();
-        Camera camera = application.getCamera();
-        float viewPortHeight = camera.getHeight();
-        float viewPortWidth = camera.getWidth();
-        float x = xFraction * viewPortWidth;
-        float y = yFraction * viewPortHeight;
-        node.setLocalTranslation(x, y, 0f);
-        /*
-         * pre-load the Droid font
-         */
-        AssetKey<TrueTypeMesh> assetKey = new TrueTypeKeyMesh(
-                "Interface/Fonts/DroidSerifBold-aMPE.ttf", Style.Plain, 18);
-        droidFont = assetManager.loadAsset(assetKey);
-        /*
-         * pre-load the background Material
-         */
-        ColorRGBA bgColor = new ColorRGBA(0.1f, 0.2f, 0.5f, 1f);
-        bgMaterial = MyAsset.createUnshadedMaterial(assetManager, bgColor);
-    }
-
-    /**
      * Callback invoked whenever this AppState ceases to be both attached and
      * enabled.
      */
@@ -246,5 +215,37 @@ abstract public class CartoucheState
     public void update(float tpf) {
         super.update(tpf);
         updateNode();
+    }
+    // *************************************************************************
+    // Loadable methods
+
+    /**
+     * Load the assets of this instance without attaching them to any scene.
+     *
+     * @param assetManager the AssetManager for loading (not null)
+     */
+    @Override
+    public void load(AssetManager assetManager) {
+        /*
+         * position the Node in the viewport
+         */
+        Application application = Main.getApplication();
+        Camera camera = application.getCamera();
+        float viewPortHeight = camera.getHeight();
+        float viewPortWidth = camera.getWidth();
+        float x = xFraction * viewPortWidth;
+        float y = yFraction * viewPortHeight;
+        node.setLocalTranslation(x, y, 0f);
+        /*
+         * pre-load the Droid font
+         */
+        AssetKey<TrueTypeMesh> assetKey = new TrueTypeKeyMesh(
+                "Interface/Fonts/DroidSerifBold-aMPE.ttf", Style.Plain, 18);
+        droidFont = assetManager.loadAsset(assetKey);
+        /*
+         * pre-load the background Material
+         */
+        ColorRGBA bgColor = new ColorRGBA(0.1f, 0.2f, 0.5f, 1f);
+        bgMaterial = MyAsset.createUnshadedMaterial(assetManager, bgColor);
     }
 }
