@@ -44,9 +44,11 @@ public class Rotator extends Vehicle {
 
     /**
      * Load this Vehicle from assets.
+     *
+     * @param assetManager the AssetManager for loading (not null)
      */
     @Override
-    public void load() {
+    public void load(AssetManager assetManager) {
         if (getVehicleControl() != null) {
             logger.log(Level.SEVERE, "The model is already loaded.");
             return;
@@ -55,7 +57,6 @@ public class Rotator extends Vehicle {
          * Load the C-G model with everything except the wheels.
          * Bullet refers to this as the "chassis".
          */
-        AssetManager assetManager = Main.getApplication().getAssetManager();
         String assetPath = "/Models/hcr2_rotator/chassis.j3o";
         Spatial chassis = assetManager.loadModel(assetPath);
         float mass = 525f; // in kilos

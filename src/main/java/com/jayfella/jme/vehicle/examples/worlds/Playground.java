@@ -46,14 +46,15 @@ public class Playground extends World {
 
     /**
      * Load this World from assets.
+     *
+     * @param assetManager the AssetManager for loading (not null)
      */
     @Override
-    public void load() {
+    public void load(AssetManager assetManager) {
         assert getCgm() == null : "The model is already loaded.";
 
         String assetFolder = "/Models/vehicle-playground/";
         String assetPath = assetFolder + "vehicle-playground.j3o";
-        AssetManager assetManager = Main.getApplication().getAssetManager();
         Node loadedCgm = (Node) assetManager.loadModel(assetPath);
         setCgm(loadedCgm);
 

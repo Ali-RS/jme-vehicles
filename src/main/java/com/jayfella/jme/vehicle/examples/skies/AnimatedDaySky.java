@@ -121,15 +121,16 @@ public class AnimatedDaySky extends Sky {
 
     /**
      * Load this Sky from assets.
+     *
+     * @param assetManager the AssetManager for loading (not null)
      */
     @Override
-    public void load() {
+    public void load(AssetManager assetManager) {
         assert loadedCgm == null : "The model is already loaded.";
 
-        LegacyApplication application = Main.getApplication();
-        AssetManager assetManager = application.getAssetManager();
         probe = (LightProbe) assetManager.loadAsset(lightProbeAssetPath);
 
+        LegacyApplication application = Main.getApplication();
         skyControl = createSkyControl(application);
 
         loadedCgm = new Node();

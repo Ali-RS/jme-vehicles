@@ -6,6 +6,7 @@ import com.jayfella.jme.vehicle.examples.worlds.Mountains;
 import com.jayfella.jme.vehicle.examples.worlds.Playground;
 import com.jayfella.jme.vehicle.examples.worlds.Racetrack;
 import com.jayfella.jme.vehicle.lemurdemo.Main;
+import com.jme3.asset.AssetManager;
 import com.simsilica.lemur.Button;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +66,10 @@ class WorldMenu extends AnimatedMenu {
     // private methods
 
     private void setWorld(World newWorld) {
-        newWorld.load();
-        Main.getApplication().setWorld(newWorld);
+        Main main = Main.getApplication();
+        AssetManager assetManager = main.getAssetManager();
+        newWorld.load(assetManager);
+
+        main.setWorld(newWorld);
     }
 }

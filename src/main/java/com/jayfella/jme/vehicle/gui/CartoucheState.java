@@ -174,11 +174,18 @@ abstract public class CartoucheState
      */
     @Override
     protected void initialize(Application application) {
-        load();
+        AssetManager assetManager = application.getAssetManager();
+        load(assetManager);
     }
 
+    /**
+     * Load the assets of this instance without attaching them to any scene.
+     * TODO re-order methods
+     *
+     * @param assetManager the AssetManager for loading (not null)
+     */
     @Override
-    public void load() {
+    public void load(AssetManager assetManager) {
         /*
          * position the Node in the viewport
          */
@@ -192,7 +199,6 @@ abstract public class CartoucheState
         /*
          * pre-load the Droid font
          */
-        AssetManager assetManager = application.getAssetManager();
         AssetKey<TrueTypeMesh> assetKey = new TrueTypeKeyMesh(
                 "Interface/Fonts/DroidSerifBold-aMPE.ttf", Style.Plain, 18);
         droidFont = assetManager.loadAsset(assetKey);

@@ -10,6 +10,7 @@ import com.jayfella.jme.vehicle.examples.vehicles.PickupTruck;
 import com.jayfella.jme.vehicle.examples.vehicles.Rotator;
 import com.jayfella.jme.vehicle.input.CameraInputMode;
 import com.jayfella.jme.vehicle.lemurdemo.Main;
+import com.jme3.asset.AssetManager;
 import com.simsilica.lemur.Button;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,8 +75,10 @@ class VehicleMenu extends AnimatedMenu {
     // private methods
 
     private void setVehicle(Vehicle vehicle) {
-        vehicle.load();
-        Main.getApplication().setVehicle(vehicle);
+        Main main = Main.getApplication();
+        AssetManager assetManager = main.getAssetManager();
+        vehicle.load(assetManager);
+        main.setVehicle(vehicle);
 
         getState(CameraInputMode.class).setVehicle(vehicle);
     }

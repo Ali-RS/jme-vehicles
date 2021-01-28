@@ -63,7 +63,8 @@ abstract public class Sky implements Loadable {
      */
     public void attachToScene(Node parent) {
         if (loadedCgm == null) {
-            load();
+            AssetManager assetManager = Main.getApplication().getAssetManager();
+            load(assetManager);
         }
         parent.attachChild(loadedCgm);
     }

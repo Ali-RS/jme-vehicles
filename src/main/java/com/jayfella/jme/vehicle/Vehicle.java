@@ -191,7 +191,8 @@ abstract public class Vehicle
      */
     public void attachToScene(Node parent) {
         if (vehicleControl == null) {
-            load();
+            AssetManager assetManager = Main.getApplication().getAssetManager();
+            load(assetManager);
         }
         parent.attachChild(node);
 

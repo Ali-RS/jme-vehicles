@@ -1,7 +1,6 @@
 package com.jayfella.jme.vehicle.examples.skies;
 
 import com.jayfella.jme.vehicle.Sky;
-import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jme3.asset.AssetManager;
 import com.jme3.light.DirectionalLight;
 import com.jme3.light.LightProbe;
@@ -88,12 +87,13 @@ public class QuarrySky extends Sky {
 
     /**
      * Load this Sky from assets.
+     *
+     * @param assetManager the AssetManager for loading (not null)
      */
     @Override
-    public void load() {
+    public void load(AssetManager assetManager) {
         assert loadedCgm == null : "The model is already loaded.";
 
-        AssetManager assetManager = Main.getApplication().getAssetManager();
         probe = (LightProbe) assetManager.loadAsset(lightProbeAssetPath);
         loadedCgm = createSky(imageAssetPath);
     }

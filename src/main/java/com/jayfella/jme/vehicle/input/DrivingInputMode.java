@@ -17,6 +17,7 @@ import com.jayfella.jme.vehicle.view.ChaseCamera;
 import com.jayfella.jme.vehicle.view.DashCamera;
 import com.jayfella.jme.vehicle.view.VehicleCamView;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.VehicleControl;
 import com.jme3.math.Quaternion;
@@ -200,8 +201,10 @@ public class DrivingInputMode extends InputMode {
         } catch (IllegalAccessException | InstantiationException exception) {
             throw new RuntimeException(exception);
         }
-        newVehicle.load();
-        Main.getApplication().setVehicle(newVehicle);
+        Main main = Main.getApplication();
+        AssetManager assetManager = main.getAssetManager();
+        newVehicle.load(assetManager);
+        main.setVehicle(newVehicle);
 
         stateManager.attach(new MainMenu());
         getState(CameraInputMode.class).orbit();

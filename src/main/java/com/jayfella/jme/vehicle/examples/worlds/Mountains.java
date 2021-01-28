@@ -48,9 +48,11 @@ public class Mountains extends World {
 
     /**
      * Load this World from assets.
+     *
+     * @param assetManager the AssetManager for loading (not null)
      */
     @Override
-    public void load() {
+    public void load(AssetManager assetManager) {
         assert getCgm() == null : "The model is already loaded.";
         /*
          * Load the heightmap image.
@@ -59,7 +61,6 @@ public class Mountains extends World {
         boolean flipY = false;
         TextureKey textureKey
                 = new TextureKey(assetFolder + "mountains512.png", flipY);
-        AssetManager assetManager = Main.getApplication().getAssetManager();
         Texture texture = assetManager.loadTexture(textureKey);
         Image image = texture.getImage();
         /*

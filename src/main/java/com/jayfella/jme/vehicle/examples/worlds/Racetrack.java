@@ -44,12 +44,13 @@ public class Racetrack extends World {
 
     /**
      * Load this World from assets.
+     *
+     * @param assetManager the AssetManager for loading (not null)
      */
     @Override
-    public void load() {
+    public void load(AssetManager assetManager) {
         assert getCgm() == null : "The model is already loaded.";
 
-        AssetManager assetManager = Main.getApplication().getAssetManager();
         String assetFolder = "/Models/race1/";
         String assetPath = assetFolder + "race1.j3o";
         Node loadedCgm = (Node) assetManager.loadModel(assetPath);

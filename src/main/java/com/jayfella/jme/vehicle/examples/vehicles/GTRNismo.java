@@ -7,7 +7,6 @@ import com.jayfella.jme.vehicle.examples.sounds.EngineSound2;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
 import com.jayfella.jme.vehicle.examples.wheels.DarkAlloyWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
-import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jayfella.jme.vehicle.part.Engine;
 import com.jayfella.jme.vehicle.part.GearBox;
 import com.jayfella.jme.vehicle.part.Suspension;
@@ -41,9 +40,11 @@ public class GTRNismo extends Vehicle {
 
     /**
      * Load this Vehicle from assets.
+     *
+     * @param assetManager the AssetManager for loading (not null)
      */
     @Override
-    public void load() {
+    public void load(AssetManager assetManager) {
         if (getVehicleControl() != null) {
             logger.log(Level.SEVERE, "The model is already loaded.");
             return;
@@ -52,7 +53,6 @@ public class GTRNismo extends Vehicle {
          * Load the C-G model with everything except the wheels.
          * Bullet refers to this as the "chassis".
          */
-        AssetManager assetManager = Main.getApplication().getAssetManager();
         String assetPath = "Models/gtr_nismo/scene.gltf.j3o";
         Spatial chassis = assetManager.loadModel(assetPath);
         float mass = 1_525f; // in kilos

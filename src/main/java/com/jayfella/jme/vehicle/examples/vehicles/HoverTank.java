@@ -6,7 +6,6 @@ import com.jayfella.jme.vehicle.examples.engines.Engine600HP;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
 import com.jayfella.jme.vehicle.examples.wheels.InvisibleWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
-import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jayfella.jme.vehicle.part.Engine;
 import com.jayfella.jme.vehicle.part.GearBox;
 import com.jayfella.jme.vehicle.part.Suspension;
@@ -59,15 +58,16 @@ public class HoverTank extends Vehicle {
 
     /**
      * Load this Vehicle from assets.
+     *
+     * @param assetManager the AssetManager for loading (not null)
      */
     @Override
-    public void load() {
+    public void load(AssetManager assetManager) {
         if (getVehicleControl() != null) {
             logger.log(Level.SEVERE, "The model is already loaded.");
             return;
         }
 
-        AssetManager assetManager = Main.getApplication().getAssetManager();
         Spatial chassis = assetManager.loadModel("/Models/Tank/chassis.j3o");
 
         float mass = 10_000f; // in kilos

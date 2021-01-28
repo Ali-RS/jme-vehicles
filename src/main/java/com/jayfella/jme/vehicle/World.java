@@ -2,6 +2,7 @@ package com.jayfella.jme.vehicle;
 
 import com.github.stephengold.jmepower.Loadable;
 import com.jayfella.jme.vehicle.lemurdemo.Main;
+import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.CollisionShape;
@@ -49,7 +50,8 @@ abstract public class World implements Loadable {
      */
     public void attachToScene(Node parent) {
         if (loadedCgm == null) {
-            load();
+            AssetManager assetManager = Main.getApplication().getAssetManager();
+            load(assetManager);
         }
         Main.findAppState(ChunkManager.class).setWorld(this);
 

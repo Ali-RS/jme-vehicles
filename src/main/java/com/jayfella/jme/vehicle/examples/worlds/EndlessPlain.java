@@ -99,9 +99,11 @@ public class EndlessPlain extends World {
 
     /**
      * Load this World from assets.
+     *
+     * @param assetManager the AssetManager for loading (not null)
      */
     @Override
-    public void load() {
+    public void load(AssetManager assetManager) {
         assert getCgm() == null : "The model is already loaded.";
         /*
          * Generate normals, texture coordinates, and vertex positions
@@ -146,7 +148,6 @@ public class EndlessPlain extends World {
         Geometry geometry = new Geometry("Plain Chunk", mesh);
         cgm.attachChild(geometry);
 
-        AssetManager assetManager = Main.getApplication().getAssetManager();
         String assetPath = "/Materials/Vehicles/marble_01.j3m";
         Material material = assetManager.loadMaterial(assetPath);
         cgm.setMaterial(material);
