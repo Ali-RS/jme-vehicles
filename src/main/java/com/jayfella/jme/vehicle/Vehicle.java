@@ -18,7 +18,6 @@ import com.jme3.audio.AudioData;
 import com.jme3.audio.AudioNode;
 import com.jme3.audio.AudioSource;
 import com.jme3.bounding.BoundingBox;
-import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.collision.PhysicsRayTestResult;
@@ -75,7 +74,7 @@ abstract public class Vehicle
      */
     private boolean isBurningRubber = false;
     /**
-     * engine model
+     * source of motive power
      */
     private Engine engine;
     /**
@@ -116,9 +115,15 @@ abstract public class Vehicle
      * all available modes in the automatic transmission
      */
     final private String[] atModes = new String[]{"R", "D"};
+
     private TireSmokeEmitter smokeEmitter;
     private VehicleAudioState vehicleAudioState;
     private VehicleControl vehicleControl;
+    /**
+     * VehicleWorld that contains this Vehicle, or null if none
+     */
+    private VehicleWorld world;
+
     private WheelSpinState wheelSpinState;
     // *************************************************************************
     // constructors
@@ -185,23 +190,26 @@ abstract public class Vehicle
     }
 
     /**
-     * Add this Vehicle to the specified scene-graph node.
+     * Add this Vehicle to the specified world.
      *
-     * @param parent where to attach (not null)
+     * @param world where to attach (not null)
      */
-    public void attachToScene(Node parent) {
+    public void attachToScene(VehicleWorld world) {
+        this.world = world;
+
         if (vehicleControl == null) {
-            AssetManager assetManager = Main.getApplication().getAssetManager();
+            AssetManager assetManager = world.getAssetManager();
             load(assetManager);
         }
+
+        Node parent = world.getSceneNode();
         parent.attachChild(node);
 
         warpToStart();
         getNode().setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         enable();
 
-        BulletAppState bulletAppState = Main.findAppState(BulletAppState.class);
-        PhysicsSpace physicsSpace = bulletAppState.getPhysicsSpace();
+        PhysicsSpace physicsSpace = world.getPhysicsSpace();
         vehicleControl.setPhysicsSpace(physicsSpace);
         physicsSpace.addTickListener(this);
     }
@@ -222,12 +230,11 @@ abstract public class Vehicle
 
     public void detachFromScene() {
         disable();
+        PhysicsSpace physicsSpace = vehicleControl.getPhysicsSpace();
+        physicsSpace.removeTickListener(this);
         vehicleControl.setPhysicsSpace(null);
         node.removeFromParent();
-
-        BulletAppState bulletAppState = Main.findAppState(BulletAppState.class);
-        PhysicsSpace physicsSpace = bulletAppState.getPhysicsSpace();
-        physicsSpace.removeTickListener(this);
+        world = null;
     }
 
     /**
@@ -475,7 +482,7 @@ abstract public class Vehicle
      * @param isRequested true &rarr; requested, false &rarr; not requested
      */
     public void setHornStatus(boolean isRequested) {
-        DriverHud hud = Main.findAppState(DriverHud.class);
+        DriverHud hud = world.getStateManager().getState(DriverHud.class);
         hud.showHornButton(isRequested);
 
         AudioSource.Status status = hornAudio.getStatus();
@@ -564,7 +571,7 @@ abstract public class Vehicle
         vehicleWheel.setWheelSpatial(newNode);
         getNode().attachChild(newNode);
 
-        AppStateManager stateManager = Main.getApplication().getStateManager();
+        AppStateManager stateManager = world.getStateManager();
         stateManager.detach(skidmarks);
         skidmarks = new SkidMarksState(this);
         stateManager.attach(skidmarks);
@@ -609,10 +616,9 @@ abstract public class Vehicle
          * Cast a physics ray downward from the drop location.
          */
         Vector3f dropLocation = new Vector3f();
-        Main.getWorld().locateDrop(dropLocation);
+        world.locateDrop(dropLocation);
         Vector3f endLocation = dropLocation.add(0f, -999f, 0f);
-        BulletAppState bas = Main.findAppState(BulletAppState.class);
-        PhysicsSpace physicsSpace = bas.getPhysicsSpace();
+        PhysicsSpace physicsSpace = world.getPhysicsSpace();
         List<PhysicsRayTestResult> rayTest
                 = physicsSpace.rayTestRaw(dropLocation, endLocation);
         /*
@@ -654,7 +660,7 @@ abstract public class Vehicle
         }
         Vector3f startLocation = contactLocation.add(0f, yOffset, 0f);
         vehicleControl.setPhysicsLocation(startLocation);
-        float yRotation = Main.getWorld().dropYRotation();
+        float yRotation = world.dropYRotation();
         Quaternion orient = new Quaternion().fromAngles(0f, yRotation, 0f);
         vehicleControl.setPhysicsRotation(orient);
 
@@ -675,8 +681,11 @@ abstract public class Vehicle
         wheelSpinState = new WheelSpinState(this);
     }
 
-    protected void disable() {
-        AppStateManager stateManager = Main.getApplication().getStateManager();
+    /**
+     * TODO re-order methods
+     */
+    private void disable() {
+        AppStateManager stateManager = world.getStateManager();
         stateManager.detach(gearboxState);
         stateManager.detach(skidmarks);
         stateManager.detach(smokeEmitter);
@@ -684,8 +693,8 @@ abstract public class Vehicle
         stateManager.detach(wheelSpinState);
     }
 
-    protected void enable() {
-        AppStateManager stateManager = Main.getApplication().getStateManager();
+    private void enable() {
+        AppStateManager stateManager = world.getStateManager();
         stateManager.attach(gearboxState);
         stateManager.attach(skidmarks);
         stateManager.attach(smokeEmitter);

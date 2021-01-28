@@ -2,6 +2,7 @@ package com.jayfella.jme.vehicle;
 
 import com.github.stephengold.jmepower.Loadable;
 import com.jayfella.jme.vehicle.lemurdemo.Main;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
@@ -20,7 +21,8 @@ import jme3utilities.math.Vector3i;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-abstract public class World implements Loadable {
+abstract public class World
+        implements Loadable, VehicleWorld {
     // *************************************************************************
     // fields
 
@@ -50,7 +52,7 @@ abstract public class World implements Loadable {
      */
     public void attachToScene(Node parent) {
         if (loadedCgm == null) {
-            AssetManager assetManager = Main.getApplication().getAssetManager();
+            AssetManager assetManager = getAssetManager();
             load(assetManager);
         }
         Main.findAppState(ChunkManager.class).setWorld(this);
@@ -58,8 +60,7 @@ abstract public class World implements Loadable {
         Node decalNode = decalManager.getNode();
         parent.attachChild(decalNode);
 
-        BulletAppState bulletAppState = Main.findAppState(BulletAppState.class);
-        PhysicsSpace physicsSpace = bulletAppState.getPhysicsSpace();
+        PhysicsSpace physicsSpace = getPhysicsSpace();
         rigidBody
                 = new PhysicsRigidBody(loadedShape, PhysicsBody.massForStatic);
         physicsSpace.add(rigidBody);
@@ -100,14 +101,6 @@ abstract public class World implements Loadable {
     }
 
     /**
-     * Determine the preferred initial orientation for vehicles.
-     *
-     * @return the Y rotation angle (in radians, measured counter-clockwise as
-     * seen from above)
-     */
-    abstract public float dropYRotation();
-
-    /**
      * Access the loaded C-G model.
      *
      * @return the pre-existing Node, or null if not yet loaded
@@ -135,20 +128,12 @@ abstract public class World implements Loadable {
     }
 
     /**
-     * Locate the drop point, which lies directly above the preferred initial
-     * location for vehicles.
-     *
-     * @param storeResult storage for the result (not null)
-     */
-    abstract public void locateDrop(Vector3f storeResult);
-
-    /**
      * Reposition the default Camera to the initial location and orientation for
      * this World. The World need not be loaded.
      */
     abstract public void resetCameraPosition();
     // *************************************************************************
-    // new methods exposed
+    // new protected methods
 
     /**
      * Enumerate all chunks that are near the scene origin. For single-chunk
@@ -178,5 +163,54 @@ abstract public class World implements Loadable {
      */
     protected void setCollisionShape(CollisionShape shape) {
         this.loadedShape = shape;
+    }
+    // *************************************************************************
+    // VehicleWorld methods
+
+    /**
+     * Access the AssetManager.
+     *
+     * @return the pre-existing instance (not null)
+     */
+    public AssetManager getAssetManager() {
+        AssetManager result = Main.getApplication().getAssetManager();
+
+        assert result != null;
+        return result;
+    }
+
+    /**
+     * Access the PhysicsSpace.
+     *
+     * @return the pre-existing instance (not null)
+     */
+    public PhysicsSpace getPhysicsSpace() {
+        BulletAppState bulletAppState = Main.findAppState(BulletAppState.class);
+        PhysicsSpace result = bulletAppState.getPhysicsSpace();
+
+        assert result != null;
+        return result;
+    }
+
+    /**
+     * Access the scene-graph node for visualization.
+     *
+     * @return the pre-existing instance (not null)
+     */
+    public Node getSceneNode() {
+        Node result = Main.getApplication().getRootNode();
+        assert result != null;
+        return result;
+    }
+
+    /**
+     * Access the AppStateManager.
+     *
+     * @return the pre-existing instance (not null)
+     */
+    public AppStateManager getStateManager() {
+        AppStateManager result = Main.getApplication().getStateManager();
+        assert result != null;
+        return result;
     }
 }

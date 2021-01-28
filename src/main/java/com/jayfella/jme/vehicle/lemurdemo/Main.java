@@ -236,7 +236,7 @@ public class Main extends SimpleApplication {
     public void setVehicle(Vehicle newVehicle) {
         vehicle.detachFromScene();
         vehicle = newVehicle;
-        vehicle.attachToScene(rootNode);
+        vehicle.attachToScene(world);
     }
 
     /**
@@ -372,7 +372,7 @@ public class Main extends SimpleApplication {
     private void attachAllToScene() {
         sky.attachToScene(rootNode);
         world.attachToScene(rootNode);
-        vehicle.attachToScene(rootNode);
+        vehicle.attachToScene(world);
     }
 
     /**
