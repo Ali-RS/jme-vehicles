@@ -1,8 +1,8 @@
 package com.jayfella.jme.vehicle;
 
-import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jayfella.jme.vehicle.skid.SkidMarksState;
 import com.jme3.app.Application;
+import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
@@ -108,8 +108,7 @@ public class ChunkManager extends BaseAppState {
      */
     @Override
     protected void initialize(Application application) {
-        Node rootNode = Main.getApplication().getRootNode();
-        rootNode.attachChild(parent);
+        // do nothing
     }
 
     /**
@@ -127,8 +126,8 @@ public class ChunkManager extends BaseAppState {
      */
     @Override
     protected void onEnable() {
-        Node rootNode = Main.getApplication().getRootNode();
-        rootNode.attachChild(parent);
+        SimpleApplication simple = (SimpleApplication) getApplication();
+        simple.getRootNode().attachChild(parent);
     }
 
     /**
@@ -144,7 +143,7 @@ public class ChunkManager extends BaseAppState {
          * If the main camera has strayed too far from the scene origin,
          * warp it one chunk closer.
          */
-        Vector3f location = Main.getApplication().getCamera().getLocation();
+        Vector3f location = getApplication().getCamera().getLocation();
         if (location.x > +chunkDimensions.x) {
             translateAll(-1, 0, 0);
 
@@ -247,8 +246,8 @@ public class ChunkManager extends BaseAppState {
         getState(TireSmokeEmitter.class).translateAll(tmpOffset);
     }
 
-    private static void translateCameras(Vector3f offset) {
-        Camera camera = Main.getApplication().getCamera();
+    private void translateCameras(Vector3f offset) {
+        Camera camera = getApplication().getCamera();
         tmpLocation.set(camera.getLocation());
         tmpLocation.addLocal(offset);
         camera.setLocation(tmpLocation);
