@@ -222,7 +222,7 @@ abstract public class CartoucheState
     /**
      * Load the assets of this instance without attaching them to any scene.
      *
-     * @param assetManager the AssetManager for loading (not null)
+     * @param assetManager for loading assets (not null)
      */
     @Override
     public void load(AssetManager assetManager) {
