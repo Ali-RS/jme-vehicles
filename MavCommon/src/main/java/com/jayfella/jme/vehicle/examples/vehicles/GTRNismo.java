@@ -4,6 +4,7 @@ import com.jayfella.jme.vehicle.Sound;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.examples.engines.Engine600HP;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound2;
+import com.jayfella.jme.vehicle.examples.sounds.HornSound1;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
 import com.jayfella.jme.vehicle.examples.wheels.DarkAlloyWheel;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
@@ -159,7 +160,9 @@ public class GTRNismo extends Vehicle {
         engineSound.load(assetManager);
         setEngineSound(engineSound);
 
-        setHornAudio("/Audio/horn-1.ogg");
+        Sound hornSound = new HornSound1();
+        hornSound.load(assetManager);
+        setHornSound(hornSound);
         /*
          * build() must be invoked last, to complete the Vehicle
          */

@@ -4,7 +4,6 @@ import com.github.stephengold.jmepower.Loadable;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.gui.AudioHud;
 import com.jayfella.jme.vehicle.gui.DriverHud;
-import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jayfella.jme.vehicle.part.Brake;
 import com.jayfella.jme.vehicle.part.Engine;
 import com.jayfella.jme.vehicle.part.GearBox;
@@ -14,9 +13,6 @@ import com.jayfella.jme.vehicle.skid.SkidMarksState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.AssetNotFoundException;
-import com.jme3.audio.AudioData;
-import com.jme3.audio.AudioNode;
-import com.jme3.audio.AudioSource;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
@@ -67,7 +63,6 @@ abstract public class Vehicle
     // *************************************************************************
     // fields
 
-    private AudioNode hornAudio;
     private AutomaticGearboxState gearboxState;
     /**
      * for testing TireSmokeEmitter
@@ -98,6 +93,10 @@ abstract public class Vehicle
      * sound produced when the Engine is running, or null for silence
      */
     private Sound engineSound;
+    /**
+     * sound produced when the horn is sounding, or null for silence
+     */
+    private Sound hornSound;
     /**
      * computer-graphics (C-G) model to visualize the whole Vehicle except for
      * its wheels
@@ -485,22 +484,16 @@ abstract public class Vehicle
         DriverHud hud = world.getStateManager().getState(DriverHud.class);
         hud.showHornButton(isRequested);
 
-        AudioSource.Status status = hornAudio.getStatus();
-        boolean isSounding = (status == AudioSource.Status.Playing);
-
-        float volume = AudioHud.effectiveVolume();
-        if (!isRequested) {
-            volume = 0f;
-        }
-
-        if (isSounding && volume == 0f) {
-            hornAudio.stop();
-        } else if (isRequested && volume > 0f) {
-            hornAudio.play();
+        if (hornSound == null) {
+            return;
         }
 
         if (isRequested) {
-            hornAudio.setVolume(volume);
+            float pitch = 823f;
+            float volume = AudioHud.effectiveVolume();
+            hornSound.setPitchAndVolume(pitch, volume);
+        } else {
+            hornSound.mute();
         }
     }
 
@@ -752,18 +745,18 @@ abstract public class Vehicle
     }
 
     /**
-     * Create and attach an audio node for the vehicle's horn.
+     * Alter the horn sound.
      *
-     * @param assetPath the path to the OGG asset (not null, not empty)
+     * @param sound the desired Sound (loaded), or null for silence
      */
-    protected void setHornAudio(String assetPath) {
-        AssetManager assetManager = Main.getApplication().getAssetManager();
-        hornAudio = new AudioNode(assetManager, assetPath,
-                AudioData.DataType.Stream);
-        hornAudio.setLooping(true);
-        hornAudio.setPositional(false);
-        hornAudio.setDirectional(false);
-        node.attachChild(hornAudio);
+    protected void setHornSound(Sound sound) {
+        if (hornSound != null) {
+            hornSound.detach();
+        }
+        this.hornSound = sound;
+        if (sound != null) {
+            sound.attachTo(node);
+        }
     }
     // *************************************************************************
     // PhysicsTickListener methods

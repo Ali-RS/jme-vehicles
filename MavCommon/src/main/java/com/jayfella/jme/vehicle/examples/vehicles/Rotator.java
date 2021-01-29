@@ -4,6 +4,7 @@ import com.jayfella.jme.vehicle.Sound;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.examples.engines.Engine180HP;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound5;
+import com.jayfella.jme.vehicle.examples.sounds.HornSound1;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
 import com.jayfella.jme.vehicle.examples.wheels.RotatorFrontWheel;
 import com.jayfella.jme.vehicle.examples.wheels.RotatorRearWheel;
@@ -159,7 +160,9 @@ public class Rotator extends Vehicle {
         engineSound.load(assetManager);
         setEngineSound(engineSound);
 
-        setHornAudio("/Audio/horn-1.ogg");
+        Sound hornSound = new HornSound1();
+        hornSound.load(assetManager);
+        setHornSound(hornSound);
         /*
          * build() must be invoked last, to complete the Vehicle
          */
