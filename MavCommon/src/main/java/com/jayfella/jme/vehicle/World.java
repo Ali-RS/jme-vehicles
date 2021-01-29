@@ -57,7 +57,7 @@ abstract public class World
             AssetManager assetManager = getAssetManager();
             load(assetManager);
         }
-        Main.findAppState(ChunkManager.class).setWorld(this);
+        getChunkManager().setWorld(this);
 
         Node decalNode = decalManager.getNode();
         parent.attachChild(decalNode);
@@ -167,13 +167,23 @@ abstract public class World
     }
 
     /**
+     * Access the ChunkManager.
+     *
+     * @return the pre-existing instance (not null)
+     */
+    protected ChunkManager getChunkManager() {
+        ChunkManager result = Main.findAppState(ChunkManager.class);
+        return result;
+    }
+
+    /**
      * Enumerate all chunks that are near the scene origin. For single-chunk
      * worlds, the result is always (0,0,0).
      *
      * @return a new collection of chunk IDs (not null)
      */
     protected Set<Vector3i> listNearbyChunks() {
-        Set<Vector3i> result = new HashSet<>();
+        Set<Vector3i> result = new HashSet<>(); // TODO garbage
         result.add(Vector3i.zero);
         return result;
     }

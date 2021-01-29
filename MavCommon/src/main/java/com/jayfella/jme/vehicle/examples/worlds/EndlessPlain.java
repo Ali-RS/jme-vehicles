@@ -1,8 +1,6 @@
 package com.jayfella.jme.vehicle.examples.worlds;
 
-import com.jayfella.jme.vehicle.ChunkManager;
 import com.jayfella.jme.vehicle.World;
-import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.collision.shapes.PlaneCollisionShape;
@@ -78,7 +76,7 @@ public class EndlessPlain extends World {
     }
 
     /**
-     * Enumerate all chunks that are near the scene origin according to discrete
+     * Enumerate all chunks that are near the scene origin based on discrete
      * Chebyshev distance.
      *
      * @return a new collection of chunk IDs (not null)
@@ -88,8 +86,7 @@ public class EndlessPlain extends World {
         float cameraY = getCamera().getLocation().y;
         int discreteR = Math.round(1.5f + 4f * cameraY / chunkSize);
 
-        ChunkManager chunkManager = Main.findAppState(ChunkManager.class);
-        Vector3i sceneOrigin = chunkManager.originChunk();
+        Vector3i sceneOrigin = getChunkManager().originChunk();
         int originX = sceneOrigin.x();
         int originZ = sceneOrigin.z();
 
