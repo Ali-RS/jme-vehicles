@@ -19,7 +19,6 @@ public class BasicAlloyWheel extends WheelModel {
     /**
      * Instantiate a model with the specified diameter.
      *
-     * @param assetManager for loading assets (not null)
      * @param diameter the desired diameter (in local units, &gt;0)
      */
     public BasicAlloyWheel(float diameter) {
