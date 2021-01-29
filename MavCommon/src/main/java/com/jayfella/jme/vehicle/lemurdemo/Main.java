@@ -224,9 +224,9 @@ public class Main extends SimpleApplication {
      * @param newSky the desired Sky (not null, loaded)
      */
     public void setSky(Sky newSky) {
-        sky.detachFromScene();
+        sky.removeFromWorld();
         sky = newSky;
-        sky.attachToScene(world);
+        sky.addToWorld(world);
     }
 
     /**
@@ -247,7 +247,7 @@ public class Main extends SimpleApplication {
      * @param newWorld the desired world (not null, loaded)
      */
     public void setWorld(World newWorld) {
-        sky.detachFromScene();
+        sky.removeFromWorld();
         vehicle.detachFromScene();
         world.detachFromScene();
 
@@ -374,7 +374,7 @@ public class Main extends SimpleApplication {
      */
     private void attachAllToScene() {
         world.attachToScene(this, rootNode);
-        sky.attachToScene(world);
+        sky.addToWorld(world);
         vehicle.attachToScene(world);
         findAppState(VehiclePointsState.class).setVehicle(vehicle);
     }

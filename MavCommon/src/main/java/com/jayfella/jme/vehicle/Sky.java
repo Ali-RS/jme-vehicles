@@ -67,11 +67,11 @@ abstract public class Sky implements Loadable {
     // new methods exposed
 
     /**
-     * Add this Sky to the scene of the specified world.
+     * Add this Sky to the specified world.
      *
      * @param world where to add (not null)
      */
-    public void attachToScene(VehicleWorld world) {
+    public void addToWorld(VehicleWorld world) {
         if (loadedCgm == null) {
             AssetManager assetManager = world.getAssetManager();
             load(assetManager);
@@ -83,9 +83,10 @@ abstract public class Sky implements Loadable {
     }
 
     /**
-     * Remove this loaded Sky from the scene.
+     * Remove this Sky from the world to which it was added. TODO re-order
+     * methods
      */
-    public void detachFromScene() {
+    public void removeFromWorld() {
         loadedCgm.getParent().removeLight(probe);
         loadedCgm.removeFromParent();
     }
@@ -100,7 +101,7 @@ abstract public class Sky implements Loadable {
     }
 
     /**
-     * Initialize the scene. Should only be invoked once.
+     * Add lights and shadows to the scene. Should only be invoked once.
      */
     public static void initialize() {
         assert ambientLight == null : ambientLight;
@@ -140,9 +141,9 @@ abstract public class Sky implements Loadable {
     }
 
     /**
-     * Initialize the static fields. Can only be invoked once.
+     * Initialize this class. Can only be invoked once.
      *
-     * @param application (not null, alias created)
+     * @param application the application instance (not null, alias created)
      */
     public static void setApplication(SimpleApplication application) {
         Validate.nonNull(application, "application");

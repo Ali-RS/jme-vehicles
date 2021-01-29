@@ -38,13 +38,13 @@ public class PurpleNebulaSky extends Sky {
     // new methods exposed
 
     /**
-     * Add this Sky to the scene of the specified world.
+     * Add this Sky to the specified world.
      *
      * @param world where to add (not null)
      */
     @Override
-    public void attachToScene(VehicleWorld world) {
-        super.attachToScene(world);
+    public void addToWorld(VehicleWorld world) {
+        super.addToWorld(world);
         /*
          * Configure the AmbientLight that was added by Sky.initialize().
          */

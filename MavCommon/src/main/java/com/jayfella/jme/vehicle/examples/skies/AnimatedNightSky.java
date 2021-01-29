@@ -48,8 +48,8 @@ public class AnimatedNightSky extends Sky {
     /**
      * Create and configure a SkyControl for this example.
      *
-     * @param application (not null)
-     * @return a new instance
+     * @param application the application instance (not null)
+     * @return a new Control
      */
     public static SkyControl createSkyControl(LegacyApplication application) {
         AssetManager assetManager = application.getAssetManager();
@@ -69,13 +69,13 @@ public class AnimatedNightSky extends Sky {
     // Sky methods
 
     /**
-     * Add this Sky to the scene of the specified world.
+     * Add this Sky to the specified world.
      *
      * @param world where to add (not null)
      */
     @Override
-    public void attachToScene(VehicleWorld world) {
-        super.attachToScene(world);
+    public void addToWorld(VehicleWorld world) {
+        super.addToWorld(world);
         /*
          * Configure the AmbientLight that was added by Sky.initialize().
          */
