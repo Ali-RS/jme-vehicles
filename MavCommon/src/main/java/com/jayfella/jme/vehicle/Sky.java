@@ -56,7 +56,11 @@ abstract public class Sky implements Loadable {
      */
     private LightProbe probe;
     /**
-     * root of the loaded C-G model
+     * application instance
+     */
+    private static SimpleApplication simpleApp;
+    /**
+     * root of the loaded sky model
      */
     private Spatial loadedCgm;
     // *************************************************************************
@@ -96,16 +100,16 @@ abstract public class Sky implements Loadable {
     }
 
     /**
-     * Initialize the static fields. Can only be invoked once.
-     *
-     * @param application (not null)
+     * Initialize the scene. Should only be invoked once.
      */
-    public static void initialize(SimpleApplication application) {
+    public static void initialize() {
         assert ambientLight == null : ambientLight;
         assert directionalLight == null : directionalLight;
-        ViewPort viewPort = application.getViewPort();
+
+        ViewPort viewPort = simpleApp.getViewPort();
         assert viewPort.getProcessors().isEmpty();
-        Node rootNode = application.getRootNode();
+
+        Node rootNode = simpleApp.getRootNode();
         assert rootNode.getChildren().isEmpty();
         assert rootNode.getLocalLightList().size() == 0;
         assert rootNode.getNumControls() == 0;
@@ -124,7 +128,7 @@ abstract public class Sky implements Loadable {
         /*
          * Add shadows.
          */
-        AssetManager assetManager = application.getAssetManager();
+        AssetManager assetManager = simpleApp.getAssetManager();
         shadowRenderer
                 = new DirectionalLightShadowRenderer(assetManager, 4_096, 4);
         viewPort.addProcessor(shadowRenderer);
@@ -133,6 +137,18 @@ abstract public class Sky implements Loadable {
         shadowRenderer.setShadowIntensity(0.3f);
         shadowRenderer.setShadowZExtend(256f);
         shadowRenderer.setShadowZFadeLength(128f);
+    }
+
+    /**
+     * Initialize the static fields. Can only be invoked once.
+     *
+     * @param application (not null, alias created)
+     */
+    public static void setApplication(SimpleApplication application) {
+        Validate.nonNull(application, "application");
+        assert simpleApp == null : simpleApp;
+
+        simpleApp = application;
     }
     // *************************************************************************
     // new protected methods
@@ -217,6 +233,16 @@ abstract public class Sky implements Loadable {
     final protected AmbientLight getAmbientLight() {
         assert ambientLight != null;
         return ambientLight;
+    }
+
+    /**
+     * Access the application instance.
+     *
+     * @return the pre-existing instance (not null)
+     */
+    final protected SimpleApplication getApplication() {
+        assert simpleApp != null;
+        return simpleApp;
     }
 
     /**

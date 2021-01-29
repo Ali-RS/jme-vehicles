@@ -265,6 +265,7 @@ public class Main extends SimpleApplication {
         assetManager.registerLoader(TrueTypeLoader.class, "ttf");
         renderer.setDefaultAnisotropicFilter(4);
         findAppState(DetailedProfilerState.class).setEnabled(false);
+        Sky.setApplication(this);
 
         inputManager.addJoystickConnectionListener(new JoystickConnectionListener() {
             @Override
@@ -446,7 +447,7 @@ public class Main extends SimpleApplication {
                 new VehiclePointsState()
         );
 
-        Sky.initialize(this);
+        Sky.initialize();
         attachAllToScene();
         /*
          * Attach input modes.
