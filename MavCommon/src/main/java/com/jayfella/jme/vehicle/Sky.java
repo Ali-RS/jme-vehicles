@@ -56,9 +56,9 @@ abstract public class Sky implements Loadable {
      */
     private LightProbe probe;
     /**
-     * root of the loaded C-G model TODO privatize
+     * root of the loaded C-G model
      */
-    protected Spatial loadedCgm;
+    private Spatial loadedCgm;
     // *************************************************************************
     // new methods exposed
 
