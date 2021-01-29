@@ -178,7 +178,7 @@ abstract public class Vehicle
         Suspension suspension = new Suspension(vehicleWheel);
         Brake mainBrake = new Brake(mainBrakePeakForce);
         Brake parkingBrake = new Brake(parkingBrakePeakForce);
-        Wheel result = new Wheel(vehicleControl, wheelIndex, isSteering,
+        Wheel result = new Wheel(this, wheelIndex, isSteering,
                 isSteeringFlipped, suspension, mainBrake, parkingBrake,
                 extraDamping);
         wheels.add(result);
@@ -233,7 +233,7 @@ abstract public class Vehicle
         physicsSpace.removeTickListener(this);
         vehicleControl.setPhysicsSpace(null);
         node.removeFromParent();
-        world = null;
+        this.world = null;
     }
 
     /**

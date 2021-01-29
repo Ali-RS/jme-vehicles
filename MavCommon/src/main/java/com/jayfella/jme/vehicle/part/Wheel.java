@@ -1,8 +1,8 @@
 package com.jayfella.jme.vehicle.part;
 
-import com.jayfella.jme.vehicle.lemurdemo.Main;
+import com.jayfella.jme.vehicle.Vehicle;
+import com.jayfella.jme.vehicle.VehicleWorld;
 import com.jayfella.jme.vehicle.tire.PacejkaTireModel;
-import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.objects.VehicleWheel;
@@ -84,6 +84,10 @@ public class Wheel {
      */
     final private Suspension suspension;
     /**
+     * Vehicle that contains this Wheel
+     */
+    final private Vehicle vehicle;
+    /**
      * vehicle's physics control
      */
     final private VehicleControl vehicleControl;
@@ -97,7 +101,7 @@ public class Wheel {
     /**
      * Instantiate a wheel with the specified parameters.
      *
-     * @param vehicleControl the vehicle's physics control (not null, alias
+     * @param vehicle the vehicle that will contain this Wheel (not null, alias
      * created)
      * @param wheelIndex the index among the vehicle's wheels (&ge;0)
      * @param isSteering true if used for steering, otherwise false
@@ -107,8 +111,8 @@ public class Wheel {
      * @param parkingBrake the parking brake (not null, alias created)
      * @param extraDamping the additional linear damping (&ge;0, &lt;1)
      */
-    public Wheel(VehicleControl vehicleControl, int wheelIndex,
-            boolean isSteering, boolean steeringFlipped, Suspension suspension,
+    public Wheel(Vehicle vehicle, int wheelIndex, boolean isSteering,
+            boolean steeringFlipped, Suspension suspension,
             Brake mainBrake, Brake parkingBrake, float extraDamping) {
         Validate.nonNegative(wheelIndex, "wheel index");
         Validate.nonNull(suspension, "suspension");
@@ -116,7 +120,8 @@ public class Wheel {
         Validate.nonNull(parkingBrake, "parking brake");
         Validate.fraction(extraDamping, "extra damping");
 
-        this.vehicleControl = vehicleControl;
+        this.vehicle = vehicle;
+        this.vehicleControl = vehicle.getVehicleControl();
 
         this.wheelIndex = wheelIndex;
         vehicleWheel = vehicleControl.getWheel(wheelIndex);
@@ -489,8 +494,8 @@ public class Wheel {
         Validate.fraction(mainStrength, "main strength");
         Validate.fraction(parkingStrength, "parking strength");
 
-        BulletAppState bas = Main.findAppState(BulletAppState.class);
-        PhysicsSpace physicsSpace = bas.getPhysicsSpace();
+        VehicleWorld world = vehicle.getWorld();
+        PhysicsSpace physicsSpace = world.getPhysicsSpace();
         float timeStep = physicsSpace.getAccuracy();
 
         float force = mainStrength * mainBrake.getPeakForce()
