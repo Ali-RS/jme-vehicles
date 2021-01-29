@@ -201,8 +201,8 @@ abstract public class Vehicle
             load(assetManager);
         }
 
-        Node parent = world.getSceneNode();
-        parent.attachChild(node);
+        Node parentNode = world.getParentNode();
+        parentNode.attachChild(node);
 
         warpToStart();
         getNode().setShadowMode(RenderQueue.ShadowMode.CastAndReceive);

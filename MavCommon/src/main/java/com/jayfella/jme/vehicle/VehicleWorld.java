@@ -45,11 +45,12 @@ public interface VehicleWorld {
     public PhysicsSpace getPhysicsSpace();
 
     /**
-     * Access the scene-graph node for visualizations.
+     * Access the scene-graph node for adding probes and attaching spatials.
+     * TODO re-order methods
      *
      * @return the pre-existing instance (not null)
      */
-    public Node getSceneNode();
+    public Node getParentNode();
 
     /**
      * Access the AppStateManager.

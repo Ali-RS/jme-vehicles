@@ -45,9 +45,9 @@ abstract public class World
      */
     private Node loadedCgm;
     /**
-     * where to attach spatials
+     * where to add probes and attach spatials
      */
-    private Node parent;
+    private Node parentNode;
     /**
      * collision object
      */
@@ -59,11 +59,12 @@ abstract public class World
      * Add this World to the specified scene and also to the PhysicsSpace.
      *
      * @param application the application instance (not null, alias created)
-     * @param parent where to attach spatials (not null, alias created)
+     * @param parentNode where to add probes and attach spatials (not null,
+     * alias created)
      */
-    public void attachToScene(Application application, Node parent) {
+    public void attachToScene(Application application, Node parentNode) {
         this.application = application;
-        this.parent = parent;
+        this.parentNode = parentNode;
 
         if (loadedCgm == null) {
             AssetManager assetManager = getAssetManager();
@@ -72,7 +73,7 @@ abstract public class World
         getChunkManager().setWorld(this);
 
         Node decalNode = decalManager.getNode();
-        parent.attachChild(decalNode);
+        parentNode.attachChild(decalNode);
 
         rigidBody
                 = new PhysicsRigidBody(loadedShape, PhysicsBody.massForStatic);
@@ -122,7 +123,7 @@ abstract public class World
         decalManager.getNode().removeFromParent();
         getChunkManager().setWorld(null);
 
-        parent = null;
+        parentNode = null;
         application = null;
     }
 
@@ -255,14 +256,15 @@ abstract public class World
     }
 
     /**
-     * Access the scene-graph node for attaching spatials. TODO rename?
+     * Access the scene-graph node for adding probes and attaching spatials.
+     * TODO re-order methods
      *
      * @return the pre-existing instance (not null)
      */
     @Override
-    public Node getSceneNode() {
-        assert parent != null;
-        return parent;
+    public Node getParentNode() {
+        assert parentNode != null;
+        return parentNode;
     }
 
     /**

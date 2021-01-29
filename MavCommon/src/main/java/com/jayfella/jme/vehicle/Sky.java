@@ -77,9 +77,9 @@ abstract public class Sky implements Loadable {
             load(assetManager);
         }
 
-        Node sceneNode = world.getSceneNode();
-        sceneNode.addLight(probe);
-        sceneNode.attachChild(loadedCgm);
+        Node parentNode = world.getParentNode();
+        parentNode.addLight(probe);
+        parentNode.attachChild(loadedCgm);
     }
 
     /**
