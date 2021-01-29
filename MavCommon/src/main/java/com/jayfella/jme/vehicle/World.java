@@ -191,6 +191,7 @@ abstract public class World
      *
      * @return the pre-existing instance (not null)
      */
+    @Override
     public AssetManager getAssetManager() {
         AssetManager result = Main.getApplication().getAssetManager();
 
@@ -203,6 +204,7 @@ abstract public class World
      *
      * @return the pre-existing instance (not null)
      */
+    @Override
     public PhysicsSpace getPhysicsSpace() {
         BulletAppState bulletAppState = Main.findAppState(BulletAppState.class);
         PhysicsSpace result = bulletAppState.getPhysicsSpace();
@@ -216,6 +218,7 @@ abstract public class World
      *
      * @return the pre-existing instance (not null)
      */
+    @Override
     public Node getSceneNode() {
         Node result = Main.getApplication().getRootNode();
         assert result != null;
@@ -227,6 +230,7 @@ abstract public class World
      *
      * @return the pre-existing instance (not null)
      */
+    @Override
     public AppStateManager getStateManager() {
         AppStateManager result = Main.getApplication().getStateManager();
         assert result != null;
