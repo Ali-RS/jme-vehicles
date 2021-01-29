@@ -149,6 +149,31 @@ abstract public class Vehicle
     }
 
     /**
+     * Add this Vehicle to the specified world.
+     *
+     * @param world where to attach (not null)
+     */
+    public void addToWorld(VehicleWorld world) {
+        this.world = world;
+
+        if (vehicleControl == null) {
+            AssetManager assetManager = world.getAssetManager();
+            load(assetManager);
+        }
+
+        Node parentNode = world.getParentNode();
+        parentNode.attachChild(node);
+
+        warpToStart();
+        getNode().setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
+        enable();
+
+        PhysicsSpace physicsSpace = world.getPhysicsSpace();
+        vehicleControl.setPhysicsSpace(physicsSpace);
+        physicsSpace.addTickListener(this);
+    }
+
+    /**
      * Add a single Wheel to this Vehicle.
      *
      * @param wheelModel the desired WheelModel (not null)
@@ -189,31 +214,6 @@ abstract public class Vehicle
     }
 
     /**
-     * Add this Vehicle to the specified world.
-     *
-     * @param world where to attach (not null)
-     */
-    public void addToWorld(VehicleWorld world) {
-        this.world = world;
-
-        if (vehicleControl == null) {
-            AssetManager assetManager = world.getAssetManager();
-            load(assetManager);
-        }
-
-        Node parentNode = world.getParentNode();
-        parentNode.attachChild(node);
-
-        warpToStart();
-        getNode().setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
-        enable();
-
-        PhysicsSpace physicsSpace = world.getPhysicsSpace();
-        vehicleControl.setPhysicsSpace(physicsSpace);
-        physicsSpace.addTickListener(this);
-    }
-
-    /**
      * Determine the linear damping due to air resistance.
      *
      * @return a fraction (&ge;0, &lt;1)
@@ -230,19 +230,6 @@ abstract public class Vehicle
      */
     public int countWheels() {
         return wheels.size();
-    }
-
-    /**
-     * Remove this Vehicle from the world to which it was added. TODO re-order
-     * methods
-     */
-    public void removeFromWorld() {
-        disable();
-        PhysicsSpace physicsSpace = vehicleControl.getPhysicsSpace();
-        physicsSpace.removeTickListener(this);
-        vehicleControl.setPhysicsSpace(null);
-        node.removeFromParent();
-        this.world = null;
     }
 
     /**
@@ -430,6 +417,18 @@ abstract public class Vehicle
         result.addLocal(offset);
 
         return result;
+    }
+
+    /**
+     * Remove this Vehicle from the world to which it was added.
+     */
+    public void removeFromWorld() {
+        disable();
+        PhysicsSpace physicsSpace = vehicleControl.getPhysicsSpace();
+        physicsSpace.removeTickListener(this);
+        vehicleControl.setPhysicsSpace(null);
+        node.removeFromParent();
+        this.world = null;
     }
 
     /**

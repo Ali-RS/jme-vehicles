@@ -242,6 +242,17 @@ abstract public class World
     }
 
     /**
+     * Access the scene-graph node for adding probes and attaching spatials.
+     *
+     * @return the pre-existing instance (not null)
+     */
+    @Override
+    public Node getParentNode() {
+        assert parentNode != null;
+        return parentNode;
+    }
+
+    /**
      * Access the PhysicsSpace.
      *
      * @return the pre-existing instance (not null)
@@ -254,18 +265,6 @@ abstract public class World
 
         assert result != null;
         return result;
-    }
-
-    /**
-     * Access the scene-graph node for adding probes and attaching spatials.
-     * TODO re-order methods
-     *
-     * @return the pre-existing instance (not null)
-     */
-    @Override
-    public Node getParentNode() {
-        assert parentNode != null;
-        return parentNode;
     }
 
     /**

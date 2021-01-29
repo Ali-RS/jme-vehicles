@@ -38,19 +38,18 @@ public interface VehicleWorld {
     public DecalManager getDecalManager();
 
     /**
+     * Access the scene-graph node for adding probes and attaching spatials.
+     *
+     * @return the pre-existing instance (not null)
+     */
+    public Node getParentNode();
+
+    /**
      * Access the PhysicsSpace.
      *
      * @return the pre-existing instance (not null)
      */
     public PhysicsSpace getPhysicsSpace();
-
-    /**
-     * Access the scene-graph node for adding probes and attaching spatials.
-     * TODO re-order methods
-     *
-     * @return the pre-existing instance (not null)
-     */
-    public Node getParentNode();
 
     /**
      * Access the AppStateManager.

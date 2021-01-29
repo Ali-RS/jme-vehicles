@@ -83,15 +83,6 @@ abstract public class Sky implements Loadable {
     }
 
     /**
-     * Remove this Sky from the world to which it was added. TODO re-order
-     * methods
-     */
-    public void removeFromWorld() {
-        loadedCgm.getParent().removeLight(probe);
-        loadedCgm.removeFromParent();
-    }
-
-    /**
      * Access the C-G model.
      *
      * @return the pre-existing Spatial, or null if not yet loaded
@@ -138,6 +129,14 @@ abstract public class Sky implements Loadable {
         shadowRenderer.setShadowIntensity(0.3f);
         shadowRenderer.setShadowZExtend(256f);
         shadowRenderer.setShadowZFadeLength(128f);
+    }
+
+    /**
+     * Remove this Sky from the world to which it was added.
+     */
+    public void removeFromWorld() {
+        loadedCgm.getParent().removeLight(probe);
+        loadedCgm.removeFromParent();
     }
 
     /**
