@@ -340,8 +340,23 @@ abstract public class Vehicle
         return vehicleControl;
     }
 
+    /**
+     * Access the indexed Wheel.
+     *
+     * @param index which Wheel to access (&ge;0)
+     * @return the pre-existing instance
+     */
     public Wheel getWheel(int index) {
         return wheels.get(index);
+    }
+
+    /**
+     * Access the world that contains this Vehicle.
+     *
+     * @return the pre-existing instance, or null if none
+     */
+    public VehicleWorld getWorld() {
+        return world;
     }
 
     /**
