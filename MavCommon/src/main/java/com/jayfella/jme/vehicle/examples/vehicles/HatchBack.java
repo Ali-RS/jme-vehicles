@@ -154,6 +154,7 @@ public class HatchBack extends Vehicle {
         setEngine(engine);
 
         Sound engineSound = new EngineSound4();
+        engineSound.load(assetManager);
         setEngineSound(engineSound);
 
         setHornAudio("/Audio/horn-1.ogg");

@@ -12,7 +12,7 @@ public class EngineSound5 extends Sound {
     // constructors
 
     /**
-     * Instantiate the Sound and load its assets.
+     * Instantiate the Sound.
      */
     public EngineSound5() {
         super.addOgg("engine-5d4", 14.4f);

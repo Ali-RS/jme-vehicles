@@ -7,6 +7,7 @@ import com.jayfella.jme.vehicle.examples.sounds.EngineSound4;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound5;
 import com.jayfella.jme.vehicle.gui.AudioHud;
 import com.jayfella.jme.vehicle.lemurdemo.Main;
+import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;
 import com.simsilica.lemur.Button;
 import java.util.ArrayList;
@@ -107,6 +108,8 @@ class EngineSoundMenu extends AnimatedMenu {
             } catch (IllegalAccessException | InstantiationException exception) {
                 throw new RuntimeException(exception);
             }
+            AssetManager assetManager = Main.getApplication().getAssetManager();
+            selectedSound.load(assetManager);
             configureSelectedSound();
         }
     }
@@ -129,7 +132,7 @@ class EngineSoundMenu extends AnimatedMenu {
     // private methods
 
     /**
-     * Configure the selected sound and attach it to the scene graph.
+     * Configure the selected Sound and attach it to the scene graph.
      */
     private void configureSelectedSound() {
         float pitch = 60f;
@@ -143,7 +146,8 @@ class EngineSoundMenu extends AnimatedMenu {
     /**
      * Alter which Sound is selected.
      *
-     * @param newSound the desired sound (alias created) or null for silence
+     * @param newSound the desired Sound (not loaded, alias created) or null for
+     * silence
      */
     private void setSound(Sound newSound) {
         if (selectedSound != null) {
@@ -153,6 +157,8 @@ class EngineSoundMenu extends AnimatedMenu {
 
         selectedSound = newSound;
         if (newSound != null) {
+            AssetManager assetManager = Main.getApplication().getAssetManager();
+            newSound.load(assetManager);
             configureSelectedSound();
         }
     }

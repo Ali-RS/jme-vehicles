@@ -470,7 +470,7 @@ abstract public class Vehicle
     /**
      * Alter the engine sound.
      *
-     * @param sound the desired sound, or null for silence
+     * @param sound the desired Sound (loaded), or null for silence
      */
     public void setEngineSound(Sound sound) {
         this.engineSound = sound;

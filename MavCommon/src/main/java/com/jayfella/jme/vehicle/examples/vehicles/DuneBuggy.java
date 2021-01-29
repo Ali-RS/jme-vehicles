@@ -163,6 +163,7 @@ public class DuneBuggy extends Vehicle {
         setEngine(engine);
 
         Sound engineSound = new EngineSound5();
+        engineSound.load(assetManager);
         setEngineSound(engineSound);
 
         setHornAudio("/Audio/horn-1.ogg");

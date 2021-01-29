@@ -1,6 +1,6 @@
 package com.jayfella.jme.vehicle;
 
-import com.jayfella.jme.vehicle.lemurdemo.Main;
+import com.github.stephengold.jmepower.Loadable;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioData;
 import com.jme3.audio.AudioNode;
@@ -21,7 +21,7 @@ import jme3utilities.math.MyMath;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-public class Sound {
+public class Sound implements Loadable {
     // *************************************************************************
     // constants and loggers
 
@@ -38,10 +38,14 @@ public class Sound {
      */
     private AudioNode activeNode;
     /**
-     * audio nodes mapped from their fundamental frequencies in cycles per
-     * second
+     * loaded audio nodes, mapped from their fundamental frequencies in cycles
+     * per second
      */
     final private Map<Float, AudioNode> pitchToNode = new HashMap<>(5);
+    /**
+     * paths to assets not yet loaded
+     */
+    final private Map<Float, String> pitchToAssetPath = new HashMap<>(5);
     // *************************************************************************
     // new methods exposed
 
@@ -135,23 +139,37 @@ public class Sound {
      * ".ogg" extension (not null, not empty)
      * @param recordedPitch the fundamental frequency of the asset (in cycles
      * per second, &gt;0)
-     * @return a new instance
      */
-    protected AudioNode addOgg(String baseFilename, float recordedPitch) {
+    protected void addOgg(String baseFilename, float recordedPitch) {
         Validate.nonEmpty(baseFilename, "base filename");
         Validate.positive(recordedPitch, "fundamental");
 
-        AssetManager assetManager = Main.getApplication().getAssetManager();
         String assetPath = String.format("/Audio/%s.ogg", baseFilename);
-        AudioNode node = new AudioNode(assetManager, assetPath,
-                AudioData.DataType.Buffer);
-        node.setDirectional(false);
-        node.setLooping(true);
-        node.setPositional(false);
+        pitchToAssetPath.put(recordedPitch, assetPath);
+    }
+    // *************************************************************************
+    // Loadable methods
 
-        pitchToNode.put(recordedPitch, node);
+    /**
+     * Load the assets of this Sound without attaching them to any scene.
+     *
+     * @param assetManager for loading assets (not null)
+     */
+    @Override
+    public void load(AssetManager assetManager) {
+        for (Map.Entry<Float, String> entry : pitchToAssetPath.entrySet()) {
+            String assetPath = entry.getValue();
+            AudioNode node = new AudioNode(assetManager, assetPath,
+                    AudioData.DataType.Buffer);
+            node.setDirectional(false);
+            node.setLooping(true);
+            node.setPositional(false);
 
-        return node;
+            float recordedPitch = entry.getKey();
+            pitchToNode.put(recordedPitch, node);
+        }
+
+        pitchToAssetPath.clear();
     }
     // *************************************************************************
     // private methods
