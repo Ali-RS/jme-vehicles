@@ -405,7 +405,9 @@ public class DriverHud extends BaseAppState {
      * Show the gear-name indicator.
      */
     private void showGearName() {
-        getState(GearNameState.class).setEnabled(true);
+        GearNameState state = getState(GearNameState.class);
+        state.setVehicle(vehicle);
+        state.setEnabled(true);
     }
 
     /**

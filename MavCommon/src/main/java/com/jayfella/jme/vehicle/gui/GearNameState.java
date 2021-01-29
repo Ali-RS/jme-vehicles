@@ -1,8 +1,9 @@
 package com.jayfella.jme.vehicle.gui;
 
-import com.jayfella.jme.vehicle.lemurdemo.Main;
+import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.part.Gear;
 import com.jayfella.jme.vehicle.part.GearBox;
+import jme3utilities.Validate;
 
 /**
  * A CartoucheState to display the name of the engaged gear.
@@ -10,6 +11,13 @@ import com.jayfella.jme.vehicle.part.GearBox;
  * @author Stephen Gold sgold@sonic.net
  */
 public class GearNameState extends CartoucheState {
+    // *************************************************************************
+    // fields
+
+    /**
+     * GearBox of the selected Vehicle
+     */
+    private GearBox gearBox;
     // *************************************************************************
     // constructors
 
@@ -21,6 +29,18 @@ public class GearNameState extends CartoucheState {
         setEnabled(false);
     }
     // *************************************************************************
+    // new methods exposed
+
+    /**
+     * Alter which Vehicle is associated with this indicator.
+     *
+     * @param newVehicle the Vehicle to associate (not null)
+     */
+    public void setVehicle(Vehicle newVehicle) {
+        Validate.nonNull(newVehicle, "new vehicle");
+        this.gearBox = newVehicle.getGearBox();
+    }
+    // *************************************************************************
     // CartoucheState methods
 
     /**
@@ -29,9 +49,14 @@ public class GearNameState extends CartoucheState {
      */
     @Override
     protected void updateNode() {
-        GearBox gearBox = Main.getVehicle().getGearBox();
-        Gear activeGear = gearBox.getEngagedGear();
-        String gearName = activeGear.name();
+        String gearName;
+        if (gearBox == null) {
+            gearName = "";
+        } else {
+            Gear activeGear = gearBox.getEngagedGear();
+            gearName = activeGear.name();
+        }
+
         displayText(gearName);
     }
 }
