@@ -123,6 +123,9 @@ abstract public class CartoucheState
         TrueTypeNode ttNode = droidFont.getText(text, kerning, textColor);
         node.attachChild(ttNode);
         float textWidth = ttNode.getWidth();
+        if (textWidth < 0.001f) {
+            textWidth = 0.001f;
+        }
         float x = -textWidth / 2;
         float textHeight = ttNode.getHeight();
         float y = textHeight / 2;
