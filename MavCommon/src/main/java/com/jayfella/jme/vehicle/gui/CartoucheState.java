@@ -5,7 +5,6 @@ import com.atr.jme.font.asset.TrueTypeKeyMesh;
 import com.atr.jme.font.shape.TrueTypeNode;
 import com.atr.jme.font.util.Style;
 import com.github.stephengold.jmepower.Loadable;
-import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
@@ -176,6 +175,16 @@ abstract public class CartoucheState
     protected void initialize(Application application) {
         AssetManager assetManager = application.getAssetManager();
         load(assetManager);
+        /*
+         * Position the Node in the viewport.
+         */
+        Camera camera = application.getCamera();
+        float viewPortHeight = camera.getHeight();
+        float viewPortWidth = camera.getWidth();
+        float x = xFraction * viewPortWidth;
+        float y = yFraction * viewPortHeight;
+        node.setLocalTranslation(x, y, 0f);
+
     }
 
     /**
@@ -226,16 +235,6 @@ abstract public class CartoucheState
      */
     @Override
     public void load(AssetManager assetManager) {
-        /*
-         * position the Node in the viewport
-         */
-        Application application = Main.getApplication();
-        Camera camera = application.getCamera();
-        float viewPortHeight = camera.getHeight();
-        float viewPortWidth = camera.getWidth();
-        float x = xFraction * viewPortWidth;
-        float y = yFraction * viewPortHeight;
-        node.setLocalTranslation(x, y, 0f);
         /*
          * pre-load the Droid font
          */
