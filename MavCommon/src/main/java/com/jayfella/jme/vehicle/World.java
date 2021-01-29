@@ -1,7 +1,7 @@
 package com.jayfella.jme.vehicle;
 
 import com.github.stephengold.jmepower.Loadable;
-import com.jayfella.jme.vehicle.lemurdemo.Main;
+import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
@@ -18,7 +18,7 @@ import jme3utilities.MyCamera;
 import jme3utilities.math.Vector3i;
 
 /**
- * A game world, such as the Vehicle Playground. Includes the C-G model and
+ * A 3-D world, such as the Vehicle Playground. Includes a C-G model and a
  * collision object, but not lights, post-processors, or sky.
  *
  * @author Stephen Gold sgold@sonic.net
@@ -28,6 +28,10 @@ abstract public class World
     // *************************************************************************
     // fields
 
+    /**
+     * provide access to the AppStateManager, AssetManager, default Camera, etc
+     */
+    private Application application;
     /**
      * loaded CollisionShape
      */
@@ -41,6 +45,10 @@ abstract public class World
      */
     private Node loadedCgm;
     /**
+     * where to attach spatials
+     */
+    private Node parent;
+    /**
      * collision object
      */
     private PhysicsRigidBody rigidBody;
@@ -50,9 +58,13 @@ abstract public class World
     /**
      * Add this World to the specified scene and also to the PhysicsSpace.
      *
-     * @param parent where to attach (not null)
+     * @param application the application instance (not null, alias created)
+     * @param parent where to attach spatials (not null, alias created)
      */
-    public void attachToScene(Node parent) {
+    public void attachToScene(Application application, Node parent) {
+        this.application = application;
+        this.parent = parent;
+
         if (loadedCgm == null) {
             AssetManager assetManager = getAssetManager();
             load(assetManager);
@@ -62,17 +74,16 @@ abstract public class World
         Node decalNode = decalManager.getNode();
         parent.attachChild(decalNode);
 
-        PhysicsSpace physicsSpace = getPhysicsSpace();
         rigidBody
                 = new PhysicsRigidBody(loadedShape, PhysicsBody.massForStatic);
-        physicsSpace.add(rigidBody);
+        getPhysicsSpace().add(rigidBody);
         /*
          * Set the far clipping plane for this world.
          *
          * The dash camera sits close to the bodywork, so set the near clipping
          * plane accordingly.
          */
-        Camera cam = Main.getApplication().getCamera();
+        Camera cam = getCamera();
         float near = 0.1f;
         float far = farDistance();
         MyCamera.setNearFar(cam, near, far);
@@ -109,7 +120,10 @@ abstract public class World
         space.removeCollisionObject(rigidBody);
 
         decalManager.getNode().removeFromParent();
-        Main.findAppState(ChunkManager.class).setWorld(null);
+        getChunkManager().setWorld(null);
+
+        parent = null;
+        application = null;
     }
 
     /**
@@ -151,7 +165,7 @@ abstract public class World
      * @return the pre-existing instance (not null)
      */
     protected Camera getCamera() {
-        Camera result = Main.getApplication().getCamera();
+        Camera result = application.getCamera();
 
         assert result != null;
         return result;
@@ -163,7 +177,9 @@ abstract public class World
      * @return the pre-existing instance (not null)
      */
     protected ChunkManager getChunkManager() {
-        ChunkManager result = Main.findAppState(ChunkManager.class);
+        ChunkManager result = getStateManager().getState(ChunkManager.class);
+
+        assert result != null;
         return result;
     }
 
@@ -206,7 +222,7 @@ abstract public class World
      */
     @Override
     public AssetManager getAssetManager() {
-        AssetManager result = Main.getApplication().getAssetManager();
+        AssetManager result = application.getAssetManager();
 
         assert result != null;
         return result;
@@ -217,6 +233,7 @@ abstract public class World
      *
      * @return the pre-existing instance (not null)
      */
+    @Override
     public DecalManager getDecalManager() {
         assert decalManager != null;
         return decalManager;
@@ -229,7 +246,8 @@ abstract public class World
      */
     @Override
     public PhysicsSpace getPhysicsSpace() {
-        BulletAppState bulletAppState = Main.findAppState(BulletAppState.class);
+        BulletAppState bulletAppState
+                = getStateManager().getState(BulletAppState.class);
         PhysicsSpace result = bulletAppState.getPhysicsSpace();
 
         assert result != null;
@@ -237,16 +255,14 @@ abstract public class World
     }
 
     /**
-     * Access the scene-graph node for visualization.
+     * Access the scene-graph node for attaching spatials. TODO rename?
      *
      * @return the pre-existing instance (not null)
      */
     @Override
     public Node getSceneNode() {
-        Node result = Main.getApplication().getRootNode();
-
-        assert result != null;
-        return result;
+        assert parent != null;
+        return parent;
     }
 
     /**
@@ -256,7 +272,7 @@ abstract public class World
      */
     @Override
     public AppStateManager getStateManager() {
-        AppStateManager result = Main.getApplication().getStateManager();
+        AppStateManager result = application.getStateManager();
         assert result != null;
         return result;
     }

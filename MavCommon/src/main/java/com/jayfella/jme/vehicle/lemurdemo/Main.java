@@ -373,7 +373,7 @@ public class Main extends SimpleApplication {
      * Attach the selected Sky, World, and Vehicle to the scene.
      */
     private void attachAllToScene() {
-        world.attachToScene(rootNode);
+        world.attachToScene(this, rootNode);
         sky.attachToScene(world);
         vehicle.attachToScene(world);
         findAppState(VehiclePointsState.class).setVehicle(vehicle);
