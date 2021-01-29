@@ -1,7 +1,7 @@
 package com.jayfella.jme.vehicle.gui;
 
-import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jme3.app.Application;
+import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
@@ -10,7 +10,6 @@ import com.jme3.material.Material;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
-import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.Control;
 import com.jme3.texture.Texture;
@@ -208,8 +207,8 @@ public class PhysicsHud extends BaseAppState {
      * @param spatial (not null, alias created)
      */
     private void attachToGui(Spatial spatial) {
-        Node guiNode = Main.getApplication().getGuiNode();
-        guiNode.attachChild(spatial);
+        SimpleApplication simpleApp = (SimpleApplication) getApplication();
+        simpleApp.getGuiNode().attachChild(spatial);
     }
 
     /**

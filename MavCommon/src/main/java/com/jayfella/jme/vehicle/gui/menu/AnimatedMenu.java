@@ -1,7 +1,7 @@
 package com.jayfella.jme.vehicle.gui.menu;
 
-import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jme3.app.Application;
+import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
@@ -152,7 +152,8 @@ abstract class AnimatedMenu extends BaseAppState {
      */
     @Override
     protected void onEnable() {
-        Main.getApplication().getGuiNode().attachChild(node);
+        SimpleApplication simpleApp = (SimpleApplication) getApplication();
+        simpleApp.getGuiNode().attachChild(node);
     }
 
     /**

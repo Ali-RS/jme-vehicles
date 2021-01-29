@@ -1,7 +1,7 @@
 package com.jayfella.jme.vehicle.gui;
 
-import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jme3.app.Application;
+import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
 import com.jme3.input.InputManager;
@@ -286,8 +286,8 @@ public class AudioHud extends BaseAppState {
      * @param spatial (not null, alias created)
      */
     private void attachToGui(Spatial spatial) {
-        Node guiNode = Main.getApplication().getGuiNode();
-        guiNode.attachChild(spatial);
+        SimpleApplication simpleApp = (SimpleApplication) getApplication();
+        simpleApp.getGuiNode().attachChild(spatial);
     }
 
     /**
