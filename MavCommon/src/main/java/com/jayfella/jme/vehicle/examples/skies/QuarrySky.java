@@ -7,7 +7,7 @@ import com.jme3.light.DirectionalLight;
 import com.jme3.light.LightProbe;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import java.util.logging.Logger;
 
 /**
@@ -33,13 +33,6 @@ public class QuarrySky extends Sky {
     final public static String lightProbeAssetPath
             = "/Textures/Sky/quarry_03/probe.j3o";
     // *************************************************************************
-    // fields
-
-    /**
-     * loaded LightProbe
-     */
-    private LightProbe probe;
-    // *************************************************************************
     // new methods exposed
 
     /**
@@ -64,27 +57,9 @@ public class QuarrySky extends Sky {
         directionalLight.setColor(directColor);
         directionalLight.setDirection(direction);
         /*
-         * Configure and add the LightProbe.
-         */
-        probe.setPosition(Vector3f.ZERO);
-        probe.getArea().setRadius(9_999f);
-        Node sceneNode = world.getSceneNode();
-        sceneNode.addLight(probe);
-        /*
          * Configure the shadow renderer that was added by Sky.initialize().
          */
         getShadowRenderer().setShadowIntensity(0.3f);
-    }
-
-    /**
-     * Remove this loaded Sky from the scene.
-     */
-    @Override
-    public void detachFromScene() {
-        Node parent = loadedCgm.getParent();
-        parent.removeLight(probe);
-
-        super.detachFromScene();
     }
 
     /**
@@ -94,9 +69,14 @@ public class QuarrySky extends Sky {
      */
     @Override
     public void load(AssetManager assetManager) {
-        assert loadedCgm == null : "The model is already loaded.";
+        super.load(assetManager);
 
-        probe = (LightProbe) assetManager.loadAsset(lightProbeAssetPath);
-        loadedCgm = createSky(assetManager, imageAssetPath);
+        LightProbe probe
+                = (LightProbe) assetManager.loadAsset(lightProbeAssetPath);
+        probe.setPosition(Vector3f.ZERO);
+        probe.getArea().setRadius(9_999f);
+
+        Spatial spatial = createSky(assetManager, imageAssetPath);
+        build(spatial, probe);
     }
 }

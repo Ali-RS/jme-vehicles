@@ -8,6 +8,7 @@ import com.jme3.bounding.BoundingSphere;
 import com.jme3.bounding.BoundingVolume;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
+import com.jme3.light.LightProbe;
 import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.ViewPort;
@@ -20,6 +21,7 @@ import com.jme3.shadow.EdgeFilteringMode;
 import com.jme3.texture.Texture;
 import java.util.logging.Logger;
 import jme3utilities.MyMesh;
+import jme3utilities.Validate;
 import jme3utilities.mesh.Octasphere;
 
 /**
@@ -50,6 +52,10 @@ abstract public class Sky implements Loadable {
      */
     private static DirectionalLightShadowRenderer shadowRenderer;
     /**
+     * loaded LightProbe
+     */
+    private LightProbe probe;
+    /**
      * root of the loaded C-G model TODO privatize
      */
     protected Spatial loadedCgm;
@@ -67,14 +73,16 @@ abstract public class Sky implements Loadable {
             load(assetManager);
         }
 
-        Node parent = world.getSceneNode();
-        parent.attachChild(loadedCgm);
+        Node sceneNode = world.getSceneNode();
+        sceneNode.addLight(probe);
+        sceneNode.attachChild(loadedCgm);
     }
 
     /**
      * Remove this loaded Sky from the scene.
      */
     public void detachFromScene() {
+        loadedCgm.getParent().removeLight(probe);
         loadedCgm.removeFromParent();
     }
 
@@ -128,6 +136,20 @@ abstract public class Sky implements Loadable {
     }
     // *************************************************************************
     // new protected methods
+
+    /**
+     * Configure the loaded C-G model and LightProbe.
+     *
+     * @param cgmRoot the root of the desired model (not null)
+     * @param probe the desired LightProbe (not null)
+     */
+    final protected void build(Spatial cgmRoot, LightProbe probe) {
+        Validate.nonNull(cgmRoot, "model root");
+        Validate.nonNull(probe, "probe");
+
+        this.loadedCgm = cgmRoot;
+        this.probe = probe;
+    }
 
     /**
      * Generate a sky geometry from an equirectangular texture asset. This
@@ -187,8 +209,8 @@ abstract public class Sky implements Loadable {
     }
 
     /**
-     * Access the ambient light, used to modulate the color/intensity of light
-     * probes.
+     * Access the AmbientLight that was added by initialize(), used to modulate
+     * the color/intensity of light probes.
      *
      * @return the pre-existing instance (not null)
      */
@@ -198,7 +220,7 @@ abstract public class Sky implements Loadable {
     }
 
     /**
-     * Access the main directional light.
+     * Access the DirectionalLight that was added by initialize().
      *
      * @return the pre-existing instance (not null)
      */
@@ -208,12 +230,24 @@ abstract public class Sky implements Loadable {
     }
 
     /**
-     * Access the shadow renderer.
+     * Access the shadow renderer that was added by initialize().
      *
      * @return the pre-existing instance (not null)
      */
     final protected DirectionalLightShadowRenderer getShadowRenderer() {
         assert shadowRenderer != null;
         return shadowRenderer;
+    }
+    // *************************************************************************
+    // Loadable methods
+
+    /**
+     * Load this Sky from assets.
+     *
+     * @param assetManager for loading assets (not null)
+     */
+    @Override
+    public void load(AssetManager assetManager) {
+        assert loadedCgm == null : "The model is already loaded.";
     }
 }

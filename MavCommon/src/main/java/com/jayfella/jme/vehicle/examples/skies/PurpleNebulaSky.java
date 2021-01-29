@@ -7,7 +7,7 @@ import com.jme3.light.DirectionalLight;
 import com.jme3.light.LightProbe;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Node;
+import com.jme3.scene.Geometry;
 import java.util.logging.Logger;
 import jme3utilities.MyAsset;
 
@@ -35,13 +35,6 @@ public class PurpleNebulaSky extends Sky {
     final public static String lightProbeAssetPath
             = "/Textures/skies/star-maps/purple-nebula-complex/probe.j3o";
     // *************************************************************************
-    // fields
-
-    /**
-     * loaded LightProbe
-     */
-    private LightProbe probe;
-    // *************************************************************************
     // new methods exposed
 
     /**
@@ -64,25 +57,9 @@ public class PurpleNebulaSky extends Sky {
         directionalLight.setColor(ColorRGBA.Black);
         directionalLight.setDirection(Vector3f.UNIT_Y);
         /*
-         * Add the LightProbe.
-         */
-        Node sceneNode = world.getSceneNode();
-        sceneNode.addLight(probe);
-        /*
          * Configure the shadow renderer that was added by Sky.initialize().
          */
         getShadowRenderer().setShadowIntensity(0f);
-    }
-
-    /**
-     * Remove this loaded Sky from the scene.
-     */
-    @Override
-    public void detachFromScene() {
-        Node parent = loadedCgm.getParent();
-        parent.removeLight(probe);
-
-        super.detachFromScene();
     }
 
     /**
@@ -92,10 +69,12 @@ public class PurpleNebulaSky extends Sky {
      */
     @Override
     public void load(AssetManager assetManager) {
-        assert loadedCgm == null : "The model is already loaded.";
+        super.load(assetManager);
 
-        probe = (LightProbe) assetManager.loadAsset(lightProbeAssetPath);
-        loadedCgm
+        Geometry geometry
                 = MyAsset.createStarMapSphere(assetManager, cubemapName, 100f);
+        LightProbe probe
+                = (LightProbe) assetManager.loadAsset(lightProbeAssetPath);
+        build(geometry, probe);
     }
 }

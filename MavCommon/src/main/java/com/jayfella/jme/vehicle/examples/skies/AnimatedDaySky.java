@@ -41,10 +41,6 @@ public class AnimatedDaySky extends Sky {
     // fields
 
     /**
-     * loaded LightProbe
-     */
-    private LightProbe probe;
-    /**
      * manage the sky simulation
      */
     private SkyControl skyControl;
@@ -99,26 +95,10 @@ public class AnimatedDaySky extends Sky {
         updater.setMainLight(mainLight);
         updater.setMainMultiplier(1.2f);
         /*
-         * Add the LightProbe.
-         */
-        Node sceneNode = world.getSceneNode();
-        sceneNode.addLight(probe);
-        /*
          * Configure the shadow filter that was added by Sky.initialize().
          */
         DirectionalLightShadowRenderer shadowRenderer = getShadowRenderer();
         updater.addShadowRenderer(shadowRenderer);
-    }
-
-    /**
-     * Remove this loaded Sky from the scene.
-     */
-    @Override
-    public void detachFromScene() {
-        Node parent = loadedCgm.getParent();
-        parent.removeLight(probe);
-
-        super.detachFromScene();
     }
 
     /**
@@ -128,15 +108,17 @@ public class AnimatedDaySky extends Sky {
      */
     @Override
     public void load(AssetManager assetManager) {
-        assert loadedCgm == null : "The model is already loaded.";
-
-        probe = (LightProbe) assetManager.loadAsset(lightProbeAssetPath);
+        super.load(assetManager);
 
         LegacyApplication application = Main.getApplication();
         skyControl = createSkyControl(application);
 
-        loadedCgm = new Node();
-        loadedCgm.addControl(skyControl);
+        Node node = new Node();
+        node.addControl(skyControl);
         skyControl.setEnabled(true);
+
+        LightProbe probe
+                = (LightProbe) assetManager.loadAsset(lightProbeAssetPath);
+        build(node, probe);
     }
 }
