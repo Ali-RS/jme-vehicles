@@ -1,7 +1,6 @@
 package com.jayfella.jme.vehicle.examples.worlds;
 
 import com.jayfella.jme.vehicle.World;
-import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.AssetNotFoundException;
 import com.jme3.bullet.collision.shapes.CollisionShape;
@@ -112,7 +111,7 @@ public class Playground extends World {
      */
     @Override
     public void resetCameraPosition() {
-        Camera camera = Main.getApplication().getCamera();
+        Camera camera = getCamera();
         camera.setLocation(new Vector3f(-3f, 1.6f, -1.5f));
         camera.lookAt(new Vector3f(1f, 0f, 0f), Vector3f.UNIT_Y);
     }

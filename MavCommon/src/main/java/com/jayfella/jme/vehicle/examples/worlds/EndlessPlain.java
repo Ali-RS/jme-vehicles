@@ -76,7 +76,7 @@ public class EndlessPlain extends World {
     public float farDistance() {
         return 2_000f;
     }
-    
+
     /**
      * Enumerate all chunks that are near the scene origin according to discrete
      * Chebyshev distance.
@@ -85,8 +85,7 @@ public class EndlessPlain extends World {
      */
     @Override
     protected Set<Vector3i> listNearbyChunks() {
-        Camera camera = Main.getApplication().getCamera();
-        float cameraY = camera.getLocation().y;
+        float cameraY = getCamera().getLocation().y;
         int discreteR = Math.round(1.5f + 4f * cameraY / chunkSize);
 
         ChunkManager chunkManager = Main.findAppState(ChunkManager.class);
@@ -185,7 +184,7 @@ public class EndlessPlain extends World {
      */
     @Override
     public void resetCameraPosition() {
-        Camera camera = Main.getApplication().getCamera();
+        Camera camera = getCamera();
         camera.setLocation(new Vector3f(-3.8f, 2.3f, -2.9f));
         camera.lookAt(new Vector3f(1f, 0f, 0f), Vector3f.UNIT_Y);
     }

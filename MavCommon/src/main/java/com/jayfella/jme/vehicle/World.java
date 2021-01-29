@@ -155,6 +155,18 @@ abstract public class World
     // new protected methods
 
     /**
+     * Access the application's default Camera.
+     *
+     * @return the pre-existing instance (not null)
+     */
+    protected Camera getCamera() {
+        Camera result = Main.getApplication().getCamera();
+
+        assert result != null;
+        return result;
+    }
+
+    /**
      * Enumerate all chunks that are near the scene origin. For single-chunk
      * worlds, the result is always (0,0,0).
      *
@@ -221,6 +233,7 @@ abstract public class World
     @Override
     public Node getSceneNode() {
         Node result = Main.getApplication().getRootNode();
+
         assert result != null;
         return result;
     }

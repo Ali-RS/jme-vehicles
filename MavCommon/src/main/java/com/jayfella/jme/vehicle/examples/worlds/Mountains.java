@@ -1,7 +1,6 @@
 package com.jayfella.jme.vehicle.examples.worlds;
 
 import com.jayfella.jme.vehicle.World;
-import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.TextureKey;
 import com.jme3.bullet.collision.shapes.CollisionShape;
@@ -123,7 +122,7 @@ public class Mountains extends World {
      */
     @Override
     public void resetCameraPosition() {
-        Camera camera = Main.getApplication().getCamera();
+        Camera camera = getCamera();
         camera.setLocation(new Vector3f(285f, 12f, 2_063f));
         camera.lookAt(new Vector3f(291f, 9f, 2_060f), Vector3f.UNIT_Y);
     }

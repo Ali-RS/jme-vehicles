@@ -1,7 +1,6 @@
 package com.jayfella.jme.vehicle.examples.worlds;
 
 import com.jayfella.jme.vehicle.World;
-import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.AssetNotFoundException;
 import com.jme3.bullet.collision.shapes.CollisionShape;
@@ -99,7 +98,7 @@ public class Racetrack extends World {
      */
     @Override
     public void resetCameraPosition() {
-        Camera camera = Main.getApplication().getCamera();
+        Camera camera = getCamera();
         camera.setLocation(new Vector3f(-96.7f, 2.5f, 676.4f));
         camera.lookAt(new Vector3f(-92f, 0f, 675f), Vector3f.UNIT_Y);
     }
