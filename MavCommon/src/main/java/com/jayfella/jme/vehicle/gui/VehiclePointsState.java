@@ -1,8 +1,9 @@
 package com.jayfella.jme.vehicle.gui;
 
+import com.github.stephengold.jmepower.Loadable;
 import com.jayfella.jme.vehicle.Vehicle;
-import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jme3.app.Application;
+import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.objects.infos.RigidBodyMotionState;
@@ -14,6 +15,7 @@ import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.debug.WireFrustum;
 import com.jme3.shadow.ShadowUtil;
 import java.util.logging.Logger;
@@ -26,7 +28,9 @@ import jme3utilities.debug.PointVisualizer;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-public class VehiclePointsState extends BaseAppState {
+public class VehiclePointsState
+        extends BaseAppState
+        implements Loadable {
     // *************************************************************************
     // constants and loggers
 
@@ -38,7 +42,10 @@ public class VehiclePointsState extends BaseAppState {
     // *************************************************************************
     // fields
 
-    final private Camera tmpCamera;
+    /**
+     * reusable Camera
+     */
+    final private Camera tmpCamera = new Camera(1280, 720);
     /**
      * visualize the dash-camera frustum
      */
@@ -46,15 +53,15 @@ public class VehiclePointsState extends BaseAppState {
     /**
      * visualize the chase-camera target
      */
-    final private PointVisualizer cameraTarget;
+    private PointVisualizer cameraTarget;
     /**
      * visualize the vehicle's center of mass
      */
-    final private PointVisualizer centerOfMass;
+    private PointVisualizer centerOfMass;
     /**
      * visualize the dash-camera location
      */
-    final private PointVisualizer dashCamera;
+    private PointVisualizer dashCamera;
     /**
      * reusable Quaternion
      */
@@ -67,39 +74,38 @@ public class VehiclePointsState extends BaseAppState {
      * vertex locations in the dash-camera frustum
      */
     final private Vector3f[] dcFrustumVertices = new Vector3f[8];
+    /**
+     * Vehicle that's being visualized, or null if none
+     */
+    private Vehicle vehicle;
     // *************************************************************************
     // constructors
 
     /**
-     * Instantiate a disabled set of points.
+     * Instantiate a disabled AppState.
      */
     public VehiclePointsState() {
         super("Vehicle Points");
 
-        AssetManager assetManager = Main.getApplication().getAssetManager();
-        int indicatorSize = 15; // in pixels
-
-        cameraTarget = new PointVisualizer(assetManager, indicatorSize,
-                ColorRGBA.Yellow, "ring");
-        centerOfMass = new PointVisualizer(assetManager, indicatorSize,
-                ColorRGBA.White, "saltire");
-        dashCamera = new PointVisualizer(assetManager, indicatorSize,
-                ColorRGBA.Red, "square");
-
         for (int vertexIndex = 0; vertexIndex < 8; vertexIndex++) {
             dcFrustumVertices[vertexIndex] = new Vector3f();
         }
-
         WireFrustum dcFrustumMesh = new WireFrustum(dcFrustumVertices);
         dcFrustum = new Geometry("dash camera frustum", dcFrustumMesh);
-        Material dcfMaterial
-                = MyAsset.createUnshadedMaterial(assetManager, ColorRGBA.Red);
-        dcFrustum.setMaterial(dcfMaterial);
         dcFrustum.setShadowMode(RenderQueue.ShadowMode.Off);
 
-        tmpCamera = Main.getApplication().getCamera().clone();
-
         super.setEnabled(false);
+    }
+    // *************************************************************************
+    // new methods exposed
+
+    /**
+     * Alter which Vehicle is being visualized.
+     *
+     * @param newVehicle the Vehicle to visualize, or null for none
+     */
+    public void setVehicle(Vehicle newVehicle) {
+        this.vehicle = newVehicle;
     }
     // *************************************************************************
     // BaseAppState methods
@@ -123,7 +129,10 @@ public class VehiclePointsState extends BaseAppState {
      */
     @Override
     protected void initialize(Application application) {
-        // do nothing
+        if (centerOfMass == null) {
+            AssetManager assetManager = application.getAssetManager();
+            load(assetManager);
+        }
     }
 
     /**
@@ -144,7 +153,8 @@ public class VehiclePointsState extends BaseAppState {
      */
     @Override
     protected void onEnable() {
-        Node rootNode = Main.getApplication().getRootNode();
+        SimpleApplication simpleApp = (SimpleApplication) getApplication();
+        Node rootNode = simpleApp.getRootNode();
         rootNode.attachChild(cameraTarget);
         rootNode.attachChild(centerOfMass);
         rootNode.attachChild(dashCamera);
@@ -161,7 +171,18 @@ public class VehiclePointsState extends BaseAppState {
     public void update(float tpf) {
         super.update(tpf);
 
-        Vehicle vehicle = Main.getVehicle();
+        if (vehicle == null) {
+            cameraTarget.setEnabled(false);
+            centerOfMass.setEnabled(false);
+            dashCamera.setEnabled(false);
+            dcFrustum.setCullHint(Spatial.CullHint.Always);
+            return;
+        }
+        cameraTarget.setEnabled(true);
+        centerOfMass.setEnabled(true);
+        dashCamera.setEnabled(true);
+        dcFrustum.setCullHint(Spatial.CullHint.Dynamic);
+
         vehicle.locateTarget(1f, tmpLocation);
         cameraTarget.setLocalTranslation(tmpLocation);
 
@@ -177,7 +198,7 @@ public class VehiclePointsState extends BaseAppState {
         tmpLocation.addLocal(offset);
         dashCamera.setLocalTranslation(tmpLocation);
 
-        Camera defaultCamera = Main.getApplication().getCamera();
+        Camera defaultCamera = getApplication().getCamera();
         tmpCamera.copyFrom(defaultCamera);
         tmpCamera.setLocation(tmpLocation);
         tmpCamera.setRotation(tmpOrientation);
@@ -186,5 +207,28 @@ public class VehiclePointsState extends BaseAppState {
         WireFrustum frustumMesh = (WireFrustum) dcFrustum.getMesh();
         frustumMesh.update(dcFrustumVertices);
         dcFrustum.setMesh(frustumMesh);
+    }
+    // *************************************************************************
+    // Loadable methods
+
+    /**
+     * Load this AppState from assets.
+     *
+     * @param assetManager for loading assets (not null)
+     */
+    @Override
+    public void load(AssetManager assetManager) {
+        int indicatorSize = 15; // in pixels
+
+        cameraTarget = new PointVisualizer(assetManager, indicatorSize,
+                ColorRGBA.Yellow, "ring");
+        centerOfMass = new PointVisualizer(assetManager, indicatorSize,
+                ColorRGBA.White, "saltire");
+        dashCamera = new PointVisualizer(assetManager, indicatorSize,
+                ColorRGBA.Red, "square");
+
+        Material dcfMaterial
+                = MyAsset.createUnshadedMaterial(assetManager, ColorRGBA.Red);
+        dcFrustum.setMaterial(dcfMaterial);
     }
 }

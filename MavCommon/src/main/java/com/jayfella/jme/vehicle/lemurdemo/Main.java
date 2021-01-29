@@ -85,7 +85,8 @@ public class Main extends SimpleApplication {
         new PickupTruck(),
         new QuarrySky(),
         new Racetrack(),
-        new Rotator()
+        new Rotator(),
+        new VehiclePointsState()
     };
     /**
      * application instance
@@ -237,6 +238,7 @@ public class Main extends SimpleApplication {
         vehicle.detachFromScene();
         vehicle = newVehicle;
         vehicle.attachToScene(world);
+        findAppState(VehiclePointsState.class).setVehicle(vehicle);
     }
 
     /**
@@ -374,6 +376,7 @@ public class Main extends SimpleApplication {
         world.attachToScene(rootNode);
         sky.attachToScene(world);
         vehicle.attachToScene(world);
+        findAppState(VehiclePointsState.class).setVehicle(vehicle);
     }
 
     /**
