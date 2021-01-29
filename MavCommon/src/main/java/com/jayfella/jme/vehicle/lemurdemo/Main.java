@@ -235,9 +235,9 @@ public class Main extends SimpleApplication {
      * @param newVehicle the desired Vehicle (not null, loaded)
      */
     public void setVehicle(Vehicle newVehicle) {
-        vehicle.detachFromScene();
+        vehicle.removeFromWorld();
         vehicle = newVehicle;
-        vehicle.attachToScene(world);
+        vehicle.addToWorld(world);
         findAppState(VehiclePointsState.class).setVehicle(vehicle);
     }
 
@@ -248,7 +248,7 @@ public class Main extends SimpleApplication {
      */
     public void setWorld(World newWorld) {
         sky.removeFromWorld();
-        vehicle.detachFromScene();
+        vehicle.removeFromWorld();
         world.detachFromScene();
 
         world = newWorld;
@@ -375,7 +375,7 @@ public class Main extends SimpleApplication {
     private void attachAllToScene() {
         world.attachToScene(this, rootNode);
         sky.addToWorld(world);
-        vehicle.attachToScene(world);
+        vehicle.addToWorld(world);
         findAppState(VehiclePointsState.class).setVehicle(vehicle);
     }
 

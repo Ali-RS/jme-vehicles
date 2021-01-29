@@ -189,11 +189,11 @@ abstract public class Vehicle
     }
 
     /**
-     * Add this Vehicle to scene of the specified world.
+     * Add this Vehicle to the specified world.
      *
      * @param world where to attach (not null)
      */
-    public void attachToScene(VehicleWorld world) {
+    public void addToWorld(VehicleWorld world) {
         this.world = world;
 
         if (vehicleControl == null) {
@@ -223,11 +223,20 @@ abstract public class Vehicle
         return chassisDamping;
     }
 
+    /**
+     * Count how many wheels this Vehicle has.
+     *
+     * @return the count (&ge;0)
+     */
     public int countWheels() {
         return wheels.size();
     }
 
-    public void detachFromScene() {
+    /**
+     * Remove this Vehicle from the world to which it was added. TODO re-order
+     * methods
+     */
+    public void removeFromWorld() {
         disable();
         PhysicsSpace physicsSpace = vehicleControl.getPhysicsSpace();
         physicsSpace.removeTickListener(this);
