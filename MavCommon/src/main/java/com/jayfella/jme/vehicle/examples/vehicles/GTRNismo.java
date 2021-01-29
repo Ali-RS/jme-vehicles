@@ -13,7 +13,6 @@ import com.jayfella.jme.vehicle.part.Suspension;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Spatial;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,11 +52,10 @@ public class GTRNismo extends Vehicle {
          * Load the C-G model with everything except the wheels.
          * Bullet refers to this as the "chassis".
          */
-        String assetPath = "Models/gtr_nismo/scene.gltf.j3o";
-        Spatial chassis = assetManager.loadModel(assetPath);
         float mass = 1_525f; // in kilos
         float linearDamping = 0.002f;
-        setChassis("gtr_nismo", chassis, mass, linearDamping);
+        setChassis("gtr_nismo", "scene.gltf", assetManager, mass,
+                linearDamping);
 
         float diameter = 0.74f;
         WheelModel wheel_fl = new DarkAlloyWheel(diameter);

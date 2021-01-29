@@ -14,7 +14,6 @@ import com.jayfella.jme.vehicle.part.Suspension;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Spatial;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -54,11 +53,10 @@ public class DuneBuggy extends Vehicle {
          * Load the C-G model with everything except the wheels.
          * Bullet refers to this as the "chassis".
          */
-        String assetPath = "Models/hcr2_buggy/dune-buggy.j3o";
-        Spatial chassis = assetManager.loadModel(assetPath);
         float mass = 525f; // in kilos
         float linearDamping = 0.02f;
-        setChassis("hcr2_buggy", chassis, mass, linearDamping);
+        setChassis("hcr2_buggy", "dune-buggy", assetManager, mass,
+                linearDamping);
 
         float rearDiameter = 0.944f;
         float frontDiameter = 0.77f;

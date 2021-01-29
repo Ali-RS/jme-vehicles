@@ -15,7 +15,6 @@ import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.objects.PhysicsVehicle;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Spatial;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -68,11 +67,9 @@ public class HoverTank extends Vehicle {
             return;
         }
 
-        Spatial chassis = assetManager.loadModel("/Models/Tank/chassis.j3o");
-
         float mass = 10_000f; // in kilos
         float linearDamping = 0.25f;
-        setChassis("Tank", chassis, mass, linearDamping);
+        setChassis("Tank", "chassis", assetManager, mass, linearDamping);
         getVehicleControl().setAngularDamping(0.4f);
 
         float wheelDiameter = 1.5f;

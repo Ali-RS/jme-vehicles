@@ -14,7 +14,6 @@ import com.jayfella.jme.vehicle.part.Suspension;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Spatial;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -56,11 +55,10 @@ public class Rotator extends Vehicle {
          * Load the C-G model with everything except the wheels.
          * Bullet refers to this as the "chassis".
          */
-        String assetPath = "/Models/hcr2_rotator/chassis.j3o";
-        Spatial chassis = assetManager.loadModel(assetPath);
         float mass = 525f; // in kilos
         float linearDamping = 0.02f;
-        setChassis("hcr2_rotator", chassis, mass, linearDamping);
+        setChassis("hcr2_rotator", "chassis", assetManager, mass,
+                linearDamping);
 
         float rearDiameter = 1.087f;
         float frontDiameter = 0.77f;

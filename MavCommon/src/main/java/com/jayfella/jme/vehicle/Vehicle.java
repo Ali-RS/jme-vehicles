@@ -694,32 +694,37 @@ abstract public class Vehicle
     /**
      * Configure the "chassis": the entire Vehicle except for any wheels.
      *
-     * @param folderName the name of the folder containing the collision-shape
-     * asset (not null, not empty)
-     * @param chassisCgm to visualize the chassis (not null, alias created)
+     * @param folderName the name of the folder containing the C-G model asset
+     * (not null, not empty)
+     * @param cgmBaseFileName the base filename of the C-G model asset (not
+     * null, not empty)
+     * @param assetManager to load assets (not null)
      * @param mass in (in kilos, &gt;0)
-     * @param damping to simulate drag due to air resistance (&ge;0, &lt;1)
+     * @param damping the drag on the chassis due to air resistance (&ge;0,
+     * &lt;1)
      */
-    protected void setChassis(String folderName, Spatial chassisCgm, float mass,
-            float damping) {
+    protected void setChassis(String folderName, String cgmBaseFileName,
+            AssetManager assetManager, float mass, float damping) {
         Validate.nonEmpty(folderName, "folder name");
-        Validate.nonNull(chassisCgm, "chassis");
+        Validate.nonEmpty(cgmBaseFileName, "base filename");
+        Validate.nonNull(assetManager, "asset manager");
         Validate.positive(mass, "mass");
         Validate.fraction(damping, "damping");
 
-        this.chassis = chassisCgm;
         this.chassisDamping = damping;
 
-        AssetManager assetManager = Main.getApplication().getAssetManager();
         String assetPath
-                = "/Models/" + folderName + "/shapes/chassis-shape.j3o";
+                = "/Models/" + folderName + "/" + cgmBaseFileName + ".j3o";
+        chassis = assetManager.loadModel(assetPath);
+
+        assetPath = "/Models/" + folderName + "/shapes/chassis-shape.j3o";
         CollisionShape shape;
         try {
             shape = (CollisionShape) assetManager.loadAsset(assetPath);
-            Vector3f scale = chassisCgm.getWorldScale();
+            Vector3f scale = chassis.getWorldScale();
             shape.setScale(scale);
         } catch (AssetNotFoundException exception) {
-            shape = CollisionShapeFactory.createDynamicMeshShape(chassisCgm);
+            shape = CollisionShapeFactory.createDynamicMeshShape(chassis);
         }
         vehicleControl = new VehicleControl(shape, mass);
         /*
@@ -735,7 +740,7 @@ abstract public class Vehicle
         vehicleControl.setCcdSweptSphereRadius(radius);
 
         node.addControl(vehicleControl);
-        node.attachChild(chassisCgm);
+        node.attachChild(chassis);
     }
 
     protected void setEngine(Engine desiredEngine) {

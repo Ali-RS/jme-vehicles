@@ -13,7 +13,6 @@ import com.jayfella.jme.vehicle.part.Suspension;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Spatial;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,11 +52,9 @@ public class GrandTourer extends Vehicle {
          * Load the C-G model with everything except the wheels.
          * Bullet refers to this as the "chassis".
          */
-        String assetPath = "Models/GT/scene.gltf.j3o";
-        Spatial chassis = assetManager.loadModel(assetPath);
         float mass = 1_525f; // in kilos
         float linearDamping = 0.006f;
-        setChassis("GT", chassis, mass, linearDamping);
+        setChassis("GT", "scene.gltf", assetManager, mass, linearDamping);
 
         float diameter = 0.85f;
         WheelModel wheel_fl = new CruiserWheel(diameter);

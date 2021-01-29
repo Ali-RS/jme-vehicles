@@ -13,7 +13,6 @@ import com.jayfella.jme.vehicle.part.Suspension;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Spatial;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -54,11 +53,10 @@ public class HatchBack extends Vehicle {
          * Load the C-G model with everything except the wheels.
          * Bullet refers to this as the "chassis".
          */
-        String assetPath = "Models/modern_hatchback/hatchback.j3o";
-        Spatial chassis = assetManager.loadModel(assetPath);
         float mass = 1_140f; // in kilos
         float linearDamping = 0.004f;
-        setChassis("modern_hatchback", chassis, mass, linearDamping);
+        setChassis("modern_hatchback", "hatchback", assetManager, mass,
+                linearDamping);
 
         float diameter = 0.65f;
         WheelModel wheel_fl = new HatchbackWheel(diameter);

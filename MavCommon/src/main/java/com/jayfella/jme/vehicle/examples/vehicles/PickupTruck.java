@@ -13,7 +13,6 @@ import com.jayfella.jme.vehicle.part.Suspension;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Spatial;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,11 +52,9 @@ public class PickupTruck extends Vehicle {
          * Load the C-G model with everything except the wheels.
          * Bullet refers to this as the "chassis".
          */
-        String assetPath = "Models/ford_ranger/pickup.j3o";
-        Spatial chassis = assetManager.loadModel(assetPath);
         float mass = 1_550f; // in kilos
         float linearDamping = 0.01f;
-        setChassis("ford_ranger", chassis, mass, linearDamping);
+        setChassis("ford_ranger", "pickup", assetManager, mass, linearDamping);
 
         float diameter = 0.8f;
         WheelModel wheel_fl = new RangerWheel(diameter);
