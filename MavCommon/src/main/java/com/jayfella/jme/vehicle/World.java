@@ -56,13 +56,14 @@ abstract public class World
     // new methods exposed
 
     /**
-     * Add this World to the specified scene and also to the PhysicsSpace.
+     * Attach this World to the scene and PhysicsSpace of the specified
+     * Application.
      *
      * @param application the application instance (not null, alias created)
      * @param parentNode where to add probes and attach spatials (not null,
      * alias created)
      */
-    public void attachToScene(Application application, Node parentNode) {
+    public void attach(Application application, Node parentNode) {
         this.application = application;
         this.parentNode = parentNode;
 
@@ -113,10 +114,10 @@ abstract public class World
     }
 
     /**
-     * Remove this World from the scene-graph node and PhysicsSpace to which it
-     * has been added.
+     * Detach this World from the scene and PhysicsSpace to which it was
+     * attached.
      */
-    public void detachFromScene() {
+    public void detach() {
         PhysicsSpace space = (PhysicsSpace) rigidBody.getCollisionSpace();
         space.removeCollisionObject(rigidBody);
 

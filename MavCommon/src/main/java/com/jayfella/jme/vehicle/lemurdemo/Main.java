@@ -249,7 +249,7 @@ public class Main extends SimpleApplication {
     public void setWorld(World newWorld) {
         sky.removeFromWorld();
         vehicle.removeFromWorld();
-        world.detachFromScene();
+        world.detach();
 
         world = newWorld;
         attachAllToScene();
@@ -373,7 +373,7 @@ public class Main extends SimpleApplication {
      * Attach the selected Sky, World, and Vehicle to the scene.
      */
     private void attachAllToScene() {
-        world.attachToScene(this, rootNode);
+        world.attach(this, rootNode);
         sky.addToWorld(world);
         vehicle.addToWorld(world);
         findAppState(VehiclePointsState.class).setVehicle(vehicle);
