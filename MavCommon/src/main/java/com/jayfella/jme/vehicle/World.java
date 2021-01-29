@@ -138,15 +138,6 @@ abstract public class World
     }
 
     /**
-     * Access the decal manager.
-     *
-     * @return the pre-existing instance, or null if not yet loaded
-     */
-    public DecalManager getDecalManager() {
-        return decalManager;
-    }
-
-    /**
      * Reposition the default Camera to the initial location and orientation for
      * this World. The World need not be loaded.
      */
@@ -219,6 +210,16 @@ abstract public class World
 
         assert result != null;
         return result;
+    }
+
+    /**
+     * Access the DecalManager.
+     *
+     * @return the pre-existing instance (not null)
+     */
+    public DecalManager getDecalManager() {
+        assert decalManager != null;
+        return decalManager;
     }
 
     /**

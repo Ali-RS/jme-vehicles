@@ -31,6 +31,13 @@ public interface VehicleWorld {
     public AssetManager getAssetManager();
 
     /**
+     * Access the DecalManager.
+     *
+     * @return the pre-existing instance (not null)
+     */
+    public DecalManager getDecalManager();
+
+    /**
      * Access the PhysicsSpace.
      *
      * @return the pre-existing instance (not null)
