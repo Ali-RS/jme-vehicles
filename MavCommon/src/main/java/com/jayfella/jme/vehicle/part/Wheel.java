@@ -267,6 +267,21 @@ public class Wheel {
         return tireModel;
     }
 
+    /**
+     * Access the Vehicle that contains this Wheel.
+     *
+     * @return the pre-existing instance (not null)
+     */
+    public Vehicle getVehicle() {
+        assert vehicle != null;
+        return vehicle;
+    }
+
+    /**
+     * Access the wheel's physics object.
+     *
+     * @return the pre-existing instance (not null)
+     */
     public VehicleWheel getVehicleWheel() {
         assert vehicleWheel != null;
         return vehicleWheel;
