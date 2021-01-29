@@ -53,7 +53,7 @@ public class Wheel {
      * additional linear damping applied to the chassis when this wheel has
      * traction
      */
-    private float extraDamping;
+    final private float extraDamping;
     /**
      * grip degradation: 1 = full grip the tire allows, 0 = worn-out tire
      */
