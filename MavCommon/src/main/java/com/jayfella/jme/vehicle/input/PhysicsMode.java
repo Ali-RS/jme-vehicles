@@ -1,6 +1,6 @@
 package com.jayfella.jme.vehicle.input;
 
-import com.jayfella.jme.vehicle.gui.PhysicsHud;
+import com.jayfella.jme.vehicle.gui.lemur.PhysicsHud;
 import com.jme3.bullet.BulletAppState;
 import com.simsilica.lemur.input.FunctionId;
 import com.simsilica.lemur.input.InputState;

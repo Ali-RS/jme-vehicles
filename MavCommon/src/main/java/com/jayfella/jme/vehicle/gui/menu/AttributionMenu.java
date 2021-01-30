@@ -1,9 +1,9 @@
 package com.jayfella.jme.vehicle.gui.menu;
 
-import com.jayfella.jme.vehicle.gui.AudioHud;
-import com.jayfella.jme.vehicle.gui.CameraNameState;
 import com.jayfella.jme.vehicle.gui.CompassState;
-import com.jayfella.jme.vehicle.gui.PhysicsHud;
+import com.jayfella.jme.vehicle.gui.lemur.AudioHud;
+import com.jayfella.jme.vehicle.gui.lemur.CameraNameState;
+import com.jayfella.jme.vehicle.gui.lemur.PhysicsHud;
 import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jme3.app.Application;
 import com.jme3.asset.AssetManager;

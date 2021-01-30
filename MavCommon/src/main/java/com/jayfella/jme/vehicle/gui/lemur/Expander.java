@@ -1,4 +1,4 @@
-package com.jayfella.jme.vehicle.gui;
+package com.jayfella.jme.vehicle.gui.lemur;
 
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.input.event.MouseMotionEvent;

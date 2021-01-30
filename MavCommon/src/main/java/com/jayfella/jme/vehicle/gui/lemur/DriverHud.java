@@ -1,7 +1,11 @@
-package com.jayfella.jme.vehicle.gui;
+package com.jayfella.jme.vehicle.gui.lemur;
 
 import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.Vehicle;
+import com.jayfella.jme.vehicle.gui.AtmiState;
+import com.jayfella.jme.vehicle.gui.GearNameState;
+import com.jayfella.jme.vehicle.gui.SpeedometerState;
+import com.jayfella.jme.vehicle.gui.TachometerState;
 import com.jayfella.jme.vehicle.input.DrivingInputMode;
 import com.jayfella.jme.vehicle.input.SignalMode;
 import com.jayfella.jme.vehicle.part.Engine;

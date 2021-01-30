@@ -5,7 +5,7 @@ import com.jayfella.jme.vehicle.examples.sounds.EngineSound1;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound2;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound4;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound5;
-import com.jayfella.jme.vehicle.gui.AudioHud;
+import com.jayfella.jme.vehicle.gui.lemur.AudioHud;
 import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;

@@ -5,7 +5,7 @@ import com.jayfella.jme.vehicle.debug.DebugTabState;
 import com.jayfella.jme.vehicle.debug.EnginePowerGraphState;
 import com.jayfella.jme.vehicle.debug.TireDataState;
 import com.jayfella.jme.vehicle.debug.VehicleEditorState;
-import com.jayfella.jme.vehicle.gui.DriverHud;
+import com.jayfella.jme.vehicle.gui.lemur.DriverHud;
 import com.jayfella.jme.vehicle.input.DrivingInputMode;
 import com.jayfella.jme.vehicle.lemurdemo.Main;
 import com.jme3.app.state.AppStateManager;
