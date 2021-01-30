@@ -181,13 +181,6 @@ public class TachometerState extends BaseAppState {
 
         tmpRotation.fromAngles(0f, 0f, prevTheta - FastMath.HALF_PI);
         needleNode.setLocalRotation(tmpRotation);
-        /*
-         * update the Lemur label, which is mainly for testing
-         */
-        //float redlineRpm = engine.getMaxRevs();
-        //float rpm = rpmFraction * redlineRpm;
-        //String labelText = String.format("%.0f rpm", rpm);
-        //revsLabel.setText(labelText);
     }
     // *************************************************************************
     // private methods
