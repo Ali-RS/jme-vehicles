@@ -5,6 +5,8 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
+import com.jme3.font.BitmapFont;
+import com.jme3.font.BitmapText;
 import com.jme3.material.Material;
 import com.jme3.material.Materials;
 import com.jme3.material.RenderState;
@@ -18,12 +20,11 @@ import com.jme3.scene.shape.Line;
 import com.jme3.scene.shape.Quad;
 import com.jme3.texture.Image;
 import com.jme3.texture.Texture;
-import com.simsilica.lemur.Label;
 import jme3utilities.MyAsset;
 import jme3utilities.math.MyMath;
 
 /**
- * Appstate to manage an analog tachometer in the DriverHud.
+ * Appstate to manage an analog tachometer in the GUI node.
  */
 public class TachometerState extends BaseAppState {
     // *************************************************************************
@@ -48,12 +49,17 @@ public class TachometerState extends BaseAppState {
     // fields
 
     /**
+     * font for labels
+     */
+    private BitmapFont font;
+
+    private BitmapText revsLabel;
+    /**
      * corresponding engine
      */
     final private EngineSpeed engine;
 
     private float prevTheta = theta0;
-    private Label revsLabel;
     private Node guiNode;
     final private Node needleNode = new Node("Tachometer Needle");
     final private Node node;
@@ -101,6 +107,7 @@ public class TachometerState extends BaseAppState {
         node.attachChild(needleNode);
         needleNode.setLocalTranslation(100f, 100f, 1f);
 
+        font = assetManager.loadFont("/Interface/Fonts/Default.fnt");
         Node fixedNode = buildFixedNode(assetManager);
         node.attachChild(fixedNode);
 
@@ -123,10 +130,11 @@ public class TachometerState extends BaseAppState {
                 -(width / 2f) - 7f,
                 0f);
 
-        revsLabel = new Label("RPM x1000");
+        revsLabel = new BitmapText(font);
         node.attachChild(revsLabel);
         revsLabel.setColor(markingColor);
-        float labelWidth = revsLabel.getPreferredSize().x;
+        revsLabel.setText("RPM x1000");
+        float labelWidth = revsLabel.getLineWidth();
         revsLabel.setLocalTranslation(100f - labelWidth / 2, 30f, 1f);
 
         node.setLocalTranslation(
@@ -201,15 +209,17 @@ public class TachometerState extends BaseAppState {
                 break;
             }
             String text = Integer.toString(intRpm / 1_000);
-            Label label = new Label(text);
+            BitmapText label = new BitmapText(font);
             result.attachChild(label);
             label.setColor(markingColor);
+            label.setText(text);
 
             float cos = FastMath.cos(theta);
             float sin = FastMath.sin(theta);
-            Vector3f size = label.getPreferredSize();
-            float x = radius * cos - size.x / 2;
-            float y = radius * sin + size.y / 2;
+            float lineHeight = label.getLineHeight();
+            float lineWidth = label.getLineWidth();
+            float x = radius * cos - lineWidth / 2;
+            float y = radius * sin + lineHeight / 2;
             label.setLocalTranslation(x, y, 0f);
             /*
              * Generate a Mesh for the corresponding radial marking.
