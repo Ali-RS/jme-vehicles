@@ -1,8 +1,7 @@
-package com.jayfella.jme.vehicle;
+package com.jayfella.jme.vehicle.viewer;
 
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
 import com.jayfella.jme.vehicle.tire.PacejkaTireModel;
-import com.jayfella.jme.vehicle.tire.TireEditor;
 import com.jayfella.jme.vehicle.tire.TireGraph;
 import com.jayfella.jme.vehicle.tire.TireSettings;
 import com.jme3.app.SimpleApplication;

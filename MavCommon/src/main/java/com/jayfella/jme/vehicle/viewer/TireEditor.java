@@ -1,5 +1,7 @@
-package com.jayfella.jme.vehicle.tire;
+package com.jayfella.jme.vehicle.viewer;
 
+import com.jayfella.jme.vehicle.tire.PacejkaTireModel;
+import com.jayfella.jme.vehicle.tire.TireSettings;
 import com.simsilica.lemur.Button;
 import com.simsilica.lemur.Container;
 import com.simsilica.lemur.TabbedPanel;
@@ -37,9 +39,7 @@ public class TireEditor extends Container {
 
         // maximum load
         // propertyPanel.addFloatProperty("Max Load", tireSettings, "maxLoad", 1, 20000, 0.001f);
-
         // slip angle
-
         // affects how quickly grip will drop
         result.addFloatProperty("SlipAngle C", tireSettings, "slipAngleCoefficientC", 0, 5, 0.001f);
 
