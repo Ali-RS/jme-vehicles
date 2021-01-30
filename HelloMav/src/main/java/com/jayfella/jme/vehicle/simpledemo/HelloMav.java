@@ -93,6 +93,9 @@ public class HelloMav extends SimpleApplication {
     // *************************************************************************
     // SimpleApplication methods
 
+    /**
+     * Initialize the HelloMav application.
+     */
     @Override
     public void simpleInitApp() {
         Sky.setApplication(this);
@@ -117,9 +120,10 @@ public class HelloMav extends SimpleApplication {
     }
 
     /**
-     * Convert input signals into control signals.
+     * Callback invoked once per frame, to convert input signals to
+     * vehicle-control signals.
      *
-     * @param unused
+     * @param unused the time interval between frames (in seconds, &ge;0)
      */
     @Override
     public void simpleUpdate(float unused) {
@@ -143,6 +147,9 @@ public class HelloMav extends SimpleApplication {
     // *************************************************************************
     // private methods
 
+    /**
+     * Initialize the default Camera and its controller.
+     */
     private void setupCamera() {
         cam.setLocation(new Vector3f(291f, 12f, 2_075f));
         cam.setRotation(new Quaternion(0f, 0.9987554f, -0.05f, 0f));

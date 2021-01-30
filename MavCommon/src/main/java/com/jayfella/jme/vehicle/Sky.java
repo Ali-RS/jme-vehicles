@@ -67,7 +67,7 @@ abstract public class Sky implements Loadable {
     // new methods exposed
 
     /**
-     * Add this Sky to the specified world.
+     * Add this Sky to the specified world. The class must first be initialized.
      *
      * @param world where to add (not null)
      */
@@ -92,7 +92,8 @@ abstract public class Sky implements Loadable {
     }
 
     /**
-     * Add lights and shadows to the scene. Should only be invoked once.
+     * Add lights and shadows to the scene. Should only be invoked once, after
+     * setApplication() but before addToWorld().
      */
     public static void initialize() {
         assert ambientLight == null : ambientLight;
@@ -140,7 +141,7 @@ abstract public class Sky implements Loadable {
     }
 
     /**
-     * Initialize this class. Can only be invoked once.
+     * Specify the application instance. Can only be invoked once.
      *
      * @param application the application instance (not null, alias created)
      */

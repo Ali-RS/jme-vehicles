@@ -107,7 +107,7 @@ public class Playground extends World {
 
     /**
      * Reposition the default Camera to the initial location and orientation for
-     * this World. The World need not be loaded.
+     * this World.
      */
     @Override
     public void resetCameraPosition() {

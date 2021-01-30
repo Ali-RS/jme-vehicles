@@ -19,7 +19,8 @@ import jme3utilities.math.Vector3i;
 
 /**
  * A 3-D world, such as the Vehicle Playground. Includes a C-G model and a
- * collision object, but not lights, post-processors, or sky.
+ * single rigid body, but no lights, post-processors, or sky. Requires 2
+ * appstates: a BulletAppState and a ChunkManager.
  *
  * @author Stephen Gold sgold@sonic.net
  */

@@ -23,6 +23,8 @@ import jme3utilities.math.Vector3i;
 /**
  * A sample World, built around the "marble_01" material and the
  * PlaneCollisionShape.
+ *
+ * @author Stephen Gold sgold@sonic.net
  */
 public class EndlessPlain extends World {
     // *************************************************************************
@@ -177,7 +179,7 @@ public class EndlessPlain extends World {
 
     /**
      * Reposition the default Camera to the initial location and orientation for
-     * this World. The World need not be loaded.
+     * this World.
      */
     @Override
     public void resetCameraPosition() {
