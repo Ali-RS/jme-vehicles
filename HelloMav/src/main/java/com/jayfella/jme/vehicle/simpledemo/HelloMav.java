@@ -6,10 +6,12 @@ import com.github.stephengold.garrett.Target;
 import com.jayfella.jme.vehicle.ChunkManager;
 import com.jayfella.jme.vehicle.GlobalAudio;
 import com.jayfella.jme.vehicle.Sky;
+import com.jayfella.jme.vehicle.Sound;
 import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.World;
 import com.jayfella.jme.vehicle.examples.skies.AnimatedDaySky;
+import com.jayfella.jme.vehicle.examples.sounds.EngineSound2;
 import com.jayfella.jme.vehicle.examples.vehicles.HoverTank;
 import com.jayfella.jme.vehicle.examples.worlds.Mountains;
 import com.jayfella.jme.vehicle.gui.CompassState;
@@ -111,6 +113,10 @@ public class HelloMav extends SimpleApplication {
         engine.setRunning(true);
         stateManager.attach(new SpeedometerState(vehicle, SpeedUnit.MPH));
         stateManager.attach(new TachometerState(engine));
+
+        Sound engineSound = new EngineSound2();
+        engineSound.load(assetManager);
+        vehicle.setEngineSound(engineSound);
 
         Sky.setApplication(this);
         Sky.initialize();
