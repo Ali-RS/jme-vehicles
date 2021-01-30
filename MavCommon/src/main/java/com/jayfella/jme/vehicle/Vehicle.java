@@ -791,6 +791,18 @@ abstract public class Vehicle
         }
     }
     // *************************************************************************
+    // Loadable methods
+
+    /**
+     * Load the assets of this Vehicle.
+     *
+     * @param assetManager for loading assets (not null)
+     */
+    @Override
+    public void load(AssetManager assetManager) {
+        // do nothing
+    }
+    // *************************************************************************
     // PhysicsTickListener methods
 
     /**

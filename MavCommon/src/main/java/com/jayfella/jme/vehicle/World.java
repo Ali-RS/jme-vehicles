@@ -155,7 +155,7 @@ abstract public class World
 
     /**
      * Reposition the default Camera to the initial location and orientation for
-     * this World. The World need not be loaded.
+     * this World.
      */
     abstract public void resetCameraPosition();
     // *************************************************************************
@@ -213,6 +213,18 @@ abstract public class World
      */
     protected void setCollisionShape(CollisionShape shape) {
         this.loadedShape = shape;
+    }
+    // *************************************************************************
+    // Loadable methods
+
+    /**
+     * Load the assets of this Vehicle.
+     *
+     * @param assetManager for loading assets (not null)
+     */
+    @Override
+    public void load(AssetManager assetManager) {
+        // do nothing
     }
     // *************************************************************************
     // VehicleWorld methods
