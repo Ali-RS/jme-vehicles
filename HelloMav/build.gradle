@@ -32,7 +32,6 @@ dependencies {
 
 // cleanup tasks
 clean.dependsOn('cleanDLLs', 'cleanDyLibs', 'cleanLogs', 'cleanSOs')
-clean.dependsOn('cleanScreenShots')
 task cleanDLLs(type: Delete) {
     delete fileTree(dir: '.', include: '*.dll')
 }
