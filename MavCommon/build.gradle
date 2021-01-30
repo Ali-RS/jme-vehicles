@@ -28,7 +28,7 @@ dependencies {
     implementation 'com.atr:jme-ttf:2.2.2'
     implementation 'com.github.stephengold:Garrett:0.1.0'
     implementation 'com.github.stephengold:Heart:6.3.0'
-    implementation 'com.github.stephengold:LemurPower:0.2.0'
+    implementation 'com.github.stephengold:LemurPower:0.3.0'
     implementation 'com.github.stephengold:Minie:3.1.0+big3'
     implementation 'com.github.stephengold:SkyControl:0.9.29'
     implementation 'com.simsilica:lemur:1.14.0'
