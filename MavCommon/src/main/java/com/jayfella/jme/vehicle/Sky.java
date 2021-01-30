@@ -101,7 +101,7 @@ abstract public class Sky implements Loadable {
      * Add lights and shadows to the scene. Should only be invoked once, after
      * setApplication() but before addToWorld().
      */
-    public static void initialize() {
+    public static synchronized void initialize() {
         if (simpleApp == null) {
             throw new IllegalStateException("The application is not set.");
         }
