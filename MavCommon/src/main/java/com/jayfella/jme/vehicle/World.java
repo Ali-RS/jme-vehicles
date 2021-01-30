@@ -181,8 +181,10 @@ abstract public class World
      */
     protected ChunkManager getChunkManager() {
         ChunkManager result = getStateManager().getState(ChunkManager.class);
+        if (result == null) {
+            throw new IllegalStateException("ChunkManager not found.");
+        }
 
-        assert result != null;
         return result;
     }
 
@@ -274,6 +276,9 @@ abstract public class World
     public PhysicsSpace getPhysicsSpace() {
         BulletAppState bulletAppState
                 = getStateManager().getState(BulletAppState.class);
+        if (bulletAppState == null) {
+            throw new IllegalStateException("BulletAppState not found.");
+        }
         PhysicsSpace result = bulletAppState.getPhysicsSpace();
 
         assert result != null;

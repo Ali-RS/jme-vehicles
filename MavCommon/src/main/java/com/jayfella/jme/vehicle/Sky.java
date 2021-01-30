@@ -72,6 +72,12 @@ abstract public class Sky implements Loadable {
      * @param world where to add (not null)
      */
     public void addToWorld(VehicleWorld world) {
+        if (ambientLight == null
+                || directionalLight == null
+                || shadowRenderer == null) {
+            throw new IllegalStateException("Class is not initialized.");
+        }
+
         if (loadedCgm == null) {
             AssetManager assetManager = world.getAssetManager();
             load(assetManager);
@@ -96,17 +102,17 @@ abstract public class Sky implements Loadable {
      * setApplication() but before addToWorld().
      */
     public static void initialize() {
-        assert ambientLight == null : ambientLight;
-        assert directionalLight == null : directionalLight;
-
-        ViewPort viewPort = simpleApp.getViewPort();
-        assert viewPort.getProcessors().isEmpty();
+        if (simpleApp == null) {
+            throw new IllegalStateException("The application is not set.");
+        }
+        if (ambientLight != null
+                || directionalLight != null
+                || shadowRenderer != null) {
+            String message = "The class is already initialized.";
+            throw new IllegalStateException(message);
+        }
 
         Node rootNode = simpleApp.getRootNode();
-        assert rootNode.getChildren().isEmpty();
-        assert rootNode.getLocalLightList().size() == 0;
-        assert rootNode.getNumControls() == 0;
-
         rootNode.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         /*
          * Add an AmbientLight.
@@ -124,6 +130,7 @@ abstract public class Sky implements Loadable {
         AssetManager assetManager = simpleApp.getAssetManager();
         shadowRenderer
                 = new DirectionalLightShadowRenderer(assetManager, 4_096, 4);
+        ViewPort viewPort = simpleApp.getViewPort();
         viewPort.addProcessor(shadowRenderer);
         shadowRenderer.setEdgeFilteringMode(EdgeFilteringMode.PCFPOISSON);
         shadowRenderer.setLight(directionalLight);
@@ -147,7 +154,9 @@ abstract public class Sky implements Loadable {
      */
     public static void setApplication(SimpleApplication application) {
         Validate.nonNull(application, "application");
-        assert simpleApp == null : simpleApp;
+        if (simpleApp != null) {
+            throw new IllegalStateException("The application is already set.");
+        }
 
         simpleApp = application;
     }
