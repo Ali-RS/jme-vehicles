@@ -12,6 +12,7 @@ import com.jme3.bullet.objects.PhysicsRigidBody;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import jme3utilities.MyCamera;
@@ -27,8 +28,18 @@ import jme3utilities.math.Vector3i;
 abstract public class World
         implements Loadable, VehicleWorld {
     // *************************************************************************
-    // fields
+    // constants and loggers
 
+    /**
+     * all chunks in a single-chunk world
+     */
+    final private static Set<Vector3i> defaultChunkSet = new HashSet<>(1, 1f);
+
+    static {
+        defaultChunkSet.add(Vector3i.zero);
+    }
+    // *************************************************************************
+    // fields
     /**
      * provide access to the AppStateManager, AssetManager, default Camera, etc
      */
@@ -192,12 +203,10 @@ abstract public class World
      * Enumerate all chunks that are near the scene origin. For single-chunk
      * worlds, the result is always (0,0,0).
      *
-     * @return a new collection of chunk IDs (not null)
+     * @return an unmodifiable collection of chunk IDs (not null)
      */
     protected Set<Vector3i> listNearbyChunks() {
-        Set<Vector3i> result = new HashSet<>(); // TODO garbage
-        result.add(Vector3i.zero);
-        return result;
+        return Collections.unmodifiableSet(defaultChunkSet);
     }
 
     /**
