@@ -5,3 +5,4 @@
 *.dll
 *.dylib
 *.so
+/MavDemo1/build/
