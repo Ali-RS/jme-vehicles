@@ -195,6 +195,7 @@ abstract public class Engine implements EngineSpeed {
      *
      * @return the fraction (&ge;0)
      */
+    @Override
     public float idleFraction() {
         float result = idleRpm / redlineRpm;
         assert result >= 0f : result;
@@ -207,6 +208,7 @@ abstract public class Engine implements EngineSpeed {
      * @return the crankshaft rotation rate (in revolutions per minute, &ge;0,
      * &le;redlineRpm)
      */
+    @Override
     public float idleRpm() {
         assert idleRpm >= 0f && idleRpm <= redlineRpm : idleRpm;
         return idleRpm;
@@ -218,6 +220,7 @@ abstract public class Engine implements EngineSpeed {
      * @return the crankshaft rotation rate (in revolutions per minute, &gt;0,
      * &ge;idleRpm)
      */
+    @Override
     public float redlineRpm() {
         assert redlineRpm > 0f : redlineRpm;
         assert redlineRpm >= idleRpm : redlineRpm;
@@ -229,6 +232,7 @@ abstract public class Engine implements EngineSpeed {
      *
      * @return the crankshaft rotation rate (in revolutions per minute, &ge;0)
      */
+    @Override
     public float rpm() {
         float result = rpmFraction * redlineRpm;
         assert result >= 0f : result;
@@ -240,6 +244,7 @@ abstract public class Engine implements EngineSpeed {
      *
      * @return the fraction (&ge;0, &le;1)
      */
+    @Override
     public float rpmFraction() {
         assert rpmFraction >= 0f && rpmFraction <= 1f : rpmFraction;
         return rpmFraction;
