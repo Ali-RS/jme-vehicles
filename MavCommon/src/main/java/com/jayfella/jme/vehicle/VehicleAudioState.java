@@ -1,6 +1,5 @@
 package com.jayfella.jme.vehicle;
 
-import com.jayfella.jme.vehicle.gui.AudioHud;
 import com.jayfella.jme.vehicle.part.Engine;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
@@ -9,7 +8,7 @@ import java.util.logging.Logger;
 /**
  * Manage the engine sound for a particular Vehicle.
  */
-public class VehicleAudioState extends BaseAppState {
+class VehicleAudioState extends BaseAppState {
     // *************************************************************************
     // constants and loggers
 
@@ -21,6 +20,7 @@ public class VehicleAudioState extends BaseAppState {
     // *************************************************************************
     // fields
 
+    private GlobalAudio globalAudio;
     final private Vehicle vehicle;
     // *************************************************************************
     // constructors
@@ -28,10 +28,21 @@ public class VehicleAudioState extends BaseAppState {
     /**
      * Instantiate an enabled AppState for the specified Vehicle.
      *
-     * @param vehicle the desired Vehicle
+     * @param vehicle the corresponding Vehicle (not null, alias created)
      */
-    public VehicleAudioState(Vehicle vehicle) {
+    VehicleAudioState(Vehicle vehicle) {
         this.vehicle = vehicle;
+    }
+    // *************************************************************************
+    // new methods exposed
+
+    /**
+     * Configure the global audio controls.
+     *
+     * @param globalAudio the desired controls (not null, alias created)
+     */
+    void setGlobalAudio(GlobalAudio globalAudio) {
+        this.globalAudio = globalAudio;
     }
     // *************************************************************************
     // BaseAppState methods
@@ -94,7 +105,7 @@ public class VehicleAudioState extends BaseAppState {
     public void update(float tpf) {
         super.update(tpf);
 
-        float masterVolume = AudioHud.effectiveVolume();
+        float masterVolume = globalAudio.effectiveVolume();
 
         Sound engineSound = vehicle.getEngineSound();
         if (engineSound != null) {

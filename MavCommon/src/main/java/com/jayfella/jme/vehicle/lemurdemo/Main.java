@@ -6,6 +6,7 @@ import com.github.stephengold.garrett.OrbitCamera;
 import com.github.stephengold.jmepower.Loadable;
 import com.github.stephengold.jmepower.lemur.LemurLoadingState;
 import com.jayfella.jme.vehicle.ChunkManager;
+import com.jayfella.jme.vehicle.GlobalAudio;
 import com.jayfella.jme.vehicle.Sky;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.World;
@@ -230,14 +231,17 @@ public class Main extends SimpleApplication {
     }
 
     /**
-     * Replace the current Vehicle with a new one.
+     * Select a Vehicle.
      *
-     * @param newVehicle the desired Vehicle (not null, loaded)
+     * @param newVehicle the Vehicle to select (not null, loaded)
      */
     public void setVehicle(Vehicle newVehicle) {
         vehicle.removeFromWorld();
         vehicle = newVehicle;
-        vehicle.addToWorld(world);
+
+        GlobalAudio globalAudio = findAppState(AudioHud.class);
+        vehicle.addToWorld(world, globalAudio);
+
         findAppState(VehiclePointsState.class).setVehicle(vehicle);
     }
 
@@ -375,7 +379,10 @@ public class Main extends SimpleApplication {
     private void attachAllToScene() {
         world.attach(this, rootNode);
         sky.addToWorld(world);
-        vehicle.addToWorld(world);
+
+        GlobalAudio globalAudio = findAppState(AudioHud.class);
+        vehicle.addToWorld(world, globalAudio);
+
         findAppState(VehiclePointsState.class).setVehicle(vehicle);
     }
 

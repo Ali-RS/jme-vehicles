@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle.gui;
 
+import com.jayfella.jme.vehicle.GlobalAudio;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
@@ -26,7 +27,9 @@ import jme3utilities.mesh.RoundedRectangle;
  * instantiated once and then enabled/disabled as needed. It directly manages
  * the mute button and the master-volume control.
  */
-public class AudioHud extends BaseAppState {
+public class AudioHud
+        extends BaseAppState
+        implements GlobalAudio {
     // *************************************************************************
     // constants and loggers
 
@@ -105,22 +108,6 @@ public class AudioHud extends BaseAppState {
     }
     // *************************************************************************
     // new methods exposed
-
-    /**
-     * Determine the effective global audio volume.
-     *
-     * @return the volume (linear scale, &ge;0, &le;1)
-     */
-    public static float effectiveVolume() {
-        float result;
-        if (isGloballyMuted) {
-            result = 0f;
-        } else {
-            result = FastMath.pow(0.003f, 1f - masterVolume);
-        }
-
-        return result;
-    }
 
     /**
      * Toggle the audio between enabled and muted.
@@ -276,6 +263,25 @@ public class AudioHud extends BaseAppState {
 
             masterVolume = (dx + halfWidth) / (2 * halfWidth);
         }
+    }
+    // *************************************************************************
+    // GlobalAudio methods
+
+    /**
+     * Determine the effective global audio volume.
+     *
+     * @return the volume (linear scale, &ge;0, &le;1)
+     */
+    @Override
+    public float effectiveVolume() {
+        float result;
+        if (isGloballyMuted) {
+            result = 0f;
+        } else {
+            result = FastMath.pow(0.003f, 1f - masterVolume);
+        }
+
+        return result;
     }
     // *************************************************************************
     // private methods

@@ -136,7 +136,7 @@ class EngineSoundMenu extends AnimatedMenu {
      */
     private void configureSelectedSound() {
         float pitch = 60f;
-        float volume = AudioHud.effectiveVolume();
+        float volume = getState(AudioHud.class).effectiveVolume();
         selectedSound.setPitchAndVolume(pitch, volume);
 
         Node rootNode = Main.getApplication().getRootNode();

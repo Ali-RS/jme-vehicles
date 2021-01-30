@@ -153,9 +153,10 @@ abstract public class Vehicle
     /**
      * Add this Vehicle to the specified world.
      *
-     * @param world where to attach (not null)
+     * @param world where to attach (not null, alias created)
+     * @param globalAudio the global audio controls (not null, alias created)
      */
-    public void addToWorld(VehicleWorld world) {
+    public void addToWorld(VehicleWorld world, GlobalAudio globalAudio) {
         this.world = world;
 
         if (vehicleControl == null) {
@@ -168,6 +169,7 @@ abstract public class Vehicle
 
         warpToStart();
         getNode().setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
+        vehicleAudioState.setGlobalAudio(globalAudio);
         enable();
 
         PhysicsSpace physicsSpace = world.getPhysicsSpace();
