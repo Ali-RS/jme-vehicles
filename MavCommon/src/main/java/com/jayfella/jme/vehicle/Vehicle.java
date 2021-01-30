@@ -2,8 +2,6 @@ package com.jayfella.jme.vehicle;
 
 import com.github.stephengold.jmepower.Loadable;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
-import com.jayfella.jme.vehicle.gui.AudioHud;
-import com.jayfella.jme.vehicle.gui.DriverHud;
 import com.jayfella.jme.vehicle.part.Brake;
 import com.jayfella.jme.vehicle.part.Engine;
 import com.jayfella.jme.vehicle.part.GearBox;
@@ -68,6 +66,10 @@ abstract public class Vehicle
      * for testing TireSmokeEmitter
      */
     private boolean isBurningRubber = false;
+    /**
+     * true when driver is sounding the horn, otherwise false
+     */
+    private boolean isHornRequested = false;
     /**
      * source of motive power
      */
@@ -302,6 +304,15 @@ abstract public class Vehicle
     }
 
     /**
+     * Access the horn sound.
+     *
+     * @return the pre-existing instance, or null for silence
+     */
+    public Sound getHornSound() {
+        return hornSound;
+    }
+
+    /**
      * Determine this vehicle's name.
      *
      * @return the descriptive name (not null)
@@ -362,6 +373,15 @@ abstract public class Vehicle
      */
     public boolean isBurningRubber() {
         return isBurningRubber;
+    }
+
+    /**
+     * Test whether the driver is sounding the horn.
+     *
+     * @return true if sounding, otherwise false
+     */
+    public boolean isHornRequested() {
+        return isHornRequested;
     }
 
     /**
@@ -504,20 +524,7 @@ abstract public class Vehicle
      * @param isRequested true &rarr; requested, false &rarr; not requested
      */
     public void setHornStatus(boolean isRequested) {
-        DriverHud hud = world.getStateManager().getState(DriverHud.class);
-        hud.showHornButton(isRequested);
-
-        if (hornSound == null) {
-            return;
-        }
-
-        if (isRequested) {
-            float pitch = 823f;
-            float volume = AudioHud.effectiveVolume();
-            hornSound.setPitchAndVolume(pitch, volume);
-        } else {
-            hornSound.mute();
-        }
+        this.isHornRequested = isRequested;
     }
 
     /**

@@ -252,7 +252,9 @@ public class DriverHud extends BaseAppState {
         atmiState.setEnabled(true);
         showExitButton();
         showGearName();
-        showHornButton(false);
+
+        boolean isHornRequested = vehicle.isHornRequested();
+        showHornButton(isHornRequested);
 
         boolean isEngineRunning = vehicle.getEngine().isRunning();
         showPowerButton(isEngineRunning);
@@ -282,6 +284,9 @@ public class DriverHud extends BaseAppState {
         orientation.fromAngles(0f, 0f, angle);
         hornButton.setLocalRotation(orientation);
         steering.setLocalRotation(orientation);
+
+        boolean isHornRequested = vehicle.isHornRequested();
+        showHornButton(isHornRequested);
     }
     // *************************************************************************
     // private methods

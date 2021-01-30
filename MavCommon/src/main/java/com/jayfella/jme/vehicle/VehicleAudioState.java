@@ -68,6 +68,11 @@ public class VehicleAudioState extends BaseAppState {
         if (sound != null) {
             sound.mute();
         }
+
+        sound = vehicle.getHornSound();
+        if (sound != null) {
+            sound.mute();
+        }
     }
 
     /**
@@ -89,18 +94,27 @@ public class VehicleAudioState extends BaseAppState {
     public void update(float tpf) {
         super.update(tpf);
 
-        Sound sound = vehicle.getEngineSound();
-        if (sound == null) {
-            return;
+        float masterVolume = AudioHud.effectiveVolume();
+
+        Sound engineSound = vehicle.getEngineSound();
+        if (engineSound != null) {
+            Engine engine = vehicle.getEngine();
+            if (engine.isRunning()) {
+                float pitch = engine.rpm() / 60;
+                engineSound.setPitchAndVolume(pitch, masterVolume);
+            } else {
+                engineSound.mute();
+            }
         }
 
-        Engine engine = vehicle.getEngine();
-        if (engine.isRunning()) {
-            float pitch = engine.rpm() / 60;
-            float masterVolume = AudioHud.effectiveVolume();
-            sound.setPitchAndVolume(pitch, masterVolume);
-        } else {
-            sound.mute();
+        Sound hornSound = vehicle.getHornSound();
+        if (hornSound != null) {
+            if (vehicle.isHornRequested()) {
+                float pitch = 823f;
+                hornSound.setPitchAndVolume(pitch, masterVolume);
+            } else {
+                hornSound.mute();
+            }
         }
     }
 }
