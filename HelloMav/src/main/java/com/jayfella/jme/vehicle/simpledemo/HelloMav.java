@@ -32,8 +32,7 @@ import jme3utilities.Heart;
 import jme3utilities.SignalTracker;
 
 /**
- * A SimpleApplication to illustrate some basic features of More Advanced
- * Vehicles.
+ * A single-class example of More Advanced Vehicles.
  *
  * @author Stephen Gold sgold@sonic.net
  */
