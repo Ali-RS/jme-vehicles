@@ -28,7 +28,7 @@ import jme3utilities.mesh.RoundedRectangle;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-class AtmiState extends BaseAppState {
+public class AtmiState extends BaseAppState {
     // *************************************************************************
     // constants and loggers
 
@@ -71,7 +71,7 @@ class AtmiState extends BaseAppState {
     /**
      * Instantiate a disabled indicator.
      */
-    AtmiState() {
+    public AtmiState() {
         super("Automatic-Transmission Mode Indicator");
         setEnabled(false);
     }
@@ -83,7 +83,7 @@ class AtmiState extends BaseAppState {
      *
      * @param vehicle the Vehicle to use (or null for none)
      */
-    void setVehicle(Vehicle vehicle) {
+    public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
     }
     // *************************************************************************
