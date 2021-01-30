@@ -1,8 +1,9 @@
+*.dll
+*.dylib
+*.so
 /.gradle/
 /.nb-gradle/
 /build/
 /MavCommon/build/
-*.dll
-*.dylib
-*.so
 /MavDemo1/build/
+/MavDemo2/build/
