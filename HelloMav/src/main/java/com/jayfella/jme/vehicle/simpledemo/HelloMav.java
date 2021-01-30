@@ -22,7 +22,6 @@ import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.system.AppSettings;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import jme3utilities.Heart;
 import jme3utilities.SignalTracker;
 
@@ -36,11 +35,6 @@ public class HelloMav extends SimpleApplication {
     // *************************************************************************
     // constants and loggers
 
-    /**
-     * message logger for this class
-     */
-    final private static Logger logger
-            = Logger.getLogger(HelloMav.class.getName());
     /**
      * names for the 3 input signals used to control the Vehicle
      */
@@ -98,25 +92,23 @@ public class HelloMav extends SimpleApplication {
      */
     @Override
     public void simpleInitApp() {
-        Sky.setApplication(this);
-        Sky.initialize();
-
         stateManager.attach(new BulletAppState());
         stateManager.attach(new ChunkManager());
 
         World world = new Mountains();
-        world.load(assetManager);
         world.attach(this, rootNode);
 
-        Sky sky = new AnimatedDaySky();
-        sky.load(assetManager);
-        sky.addToWorld(world);
-
-        vehicle.load(assetManager);
         vehicle.addToWorld(world, globalAudio);
 
-        setupCamera();
-        setupInput();
+        Sky.setApplication(this);
+        Sky.initialize();
+        new AnimatedDaySky().addToWorld(world);
+
+        initCamera();
+
+        mapKeyToSignal(KeyInput.KEY_W, forwardSignalName);
+        mapKeyToSignal(KeyInput.KEY_A, leftSignalName);
+        mapKeyToSignal(KeyInput.KEY_D, rightSignalName);
     }
 
     /**
@@ -150,7 +142,7 @@ public class HelloMav extends SimpleApplication {
     /**
      * Initialize the default Camera and its controller.
      */
-    private void setupCamera() {
+    private void initCamera() {
         cam.setLocation(new Vector3f(291f, 12f, 2_075f));
         cam.setRotation(new Quaternion(0f, 0.9987554f, -0.05f, 0f));
         flyCam.setEnabled(false);
@@ -181,51 +173,26 @@ public class HelloMav extends SimpleApplication {
         stateManager.attach(cameraController);
     }
 
-    private void setupInput() {
-        /*
-         * Initialize the 3 input signals.
-         */
-        signalTracker.add(forwardSignalName);
-        signalTracker.add(leftSignalName);
-        signalTracker.add(rightSignalName);
-        /*
-         * The "W" key activates the "forward" input signal.
-         */
-        ActionListener forwardListener = new ActionListener() {
-            @Override
-            public void onAction(String name, boolean keyPressed, float tpf) {
-                signalTracker.setActive(forwardSignalName, 0, keyPressed);
-            }
-        };
-        String forwardAction = "Forward";
-        inputManager.addListener(forwardListener, forwardAction);
-        KeyTrigger trigger = new KeyTrigger(KeyInput.KEY_W);
-        inputManager.addMapping(forwardAction, trigger);
-        /*
-         * The "A" key activates the "left" input signal.
-         */
-        ActionListener leftListener = new ActionListener() {
-            @Override
-            public void onAction(String name, boolean keyPressed, float tpf) {
-                signalTracker.setActive(leftSignalName, 0, keyPressed);
-            }
-        };
-        String leftAction = "Left";
-        inputManager.addListener(leftListener, leftAction);
-        trigger = new KeyTrigger(KeyInput.KEY_A);
-        inputManager.addMapping(leftAction, trigger);
-        /*
-         * The "D" key activates the "right" input signal.
-         */
+    /**
+     * Add an input mapping that causes the SignalTracker to track the specified
+     * key.
+     *
+     * @param key the key to be tracked
+     * @param signalName name for the input signal (not null)
+     */
+    private void mapKeyToSignal(int key, String signalName) {
+        signalTracker.add(signalName);
+
         ActionListener rightListener = new ActionListener() {
             @Override
-            public void onAction(String name, boolean keyPressed, float tpf) {
-                signalTracker.setActive(rightSignalName, 0, keyPressed);
+            public void onAction(String action, boolean keyPressed, float tpf) {
+                signalTracker.setActive(signalName, 0, keyPressed);
             }
         };
-        String rightAction = "Right";
-        inputManager.addListener(rightListener, rightAction);
-        trigger = new KeyTrigger(KeyInput.KEY_D);
-        inputManager.addMapping(rightAction, trigger);
+        String action = "signal " + signalName;
+        inputManager.addListener(rightListener, action);
+
+        KeyTrigger trigger = new KeyTrigger(key);
+        inputManager.addMapping(action, trigger);
     }
 }
