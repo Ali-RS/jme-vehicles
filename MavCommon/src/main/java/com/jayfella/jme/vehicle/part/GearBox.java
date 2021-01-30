@@ -2,6 +2,9 @@ package com.jayfella.jme.vehicle.part;
 
 import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.Vehicle;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Logger;
 import jme3utilities.Validate;
 
@@ -37,6 +40,11 @@ public class GearBox {
      * number of the gear that's currently engaged
      */
     private int engagedGearNum = 1;
+    /**
+     * names of all available modes in the automatic transmission, in
+     * top-to-bottom order
+     */
+    final private List<String> modeNames = new ArrayList<>(9);
     // *************************************************************************
     // constructors
 
@@ -49,6 +57,9 @@ public class GearBox {
     public GearBox(int numForwardGears, int numReverseGears) {
         Validate.positive(numForwardGears, "number of forward gears");
         Validate.nonNegative(numReverseGears, "number of reverse gears");
+
+        modeNames.add("R");
+        modeNames.add("D");
 
         forwardGears = new Gear[numForwardGears];
         for (int i = 0; i < numForwardGears; ++i) {
@@ -145,6 +156,15 @@ public class GearBox {
     }
 
     /**
+     * Enumerate all available modes of the automatic transmission.
+     *
+     * @return an unmodifiable list of names, in top-to-bottom order (not null)
+     */
+    public List<String> listAutomaticModes() {
+        return Collections.unmodifiableList(modeNames);
+    }
+
+    /**
      * Determine the maximum forward speed.
      *
      * @param speedUnit (not null)
@@ -209,7 +229,7 @@ public class GearBox {
      */
     public void setReversing(boolean reverse) {
         boolean isInReverse = isInReverse();
-        if (reverse && !isInReverse) {
+        if (reverse && !isInReverse && reverseGears.length > 0) {
             engageGearNum(-1);
         } else if (isInReverse && !reverse) {
             engageGearNum(1);

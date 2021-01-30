@@ -112,10 +112,6 @@ abstract public class Vehicle
      * descriptive name (not null)
      */
     final private String name;
-    /**
-     * all available modes in the automatic transmission
-     */
-    final private String[] atModes = new String[]{"R", "D"};
 
     private TireSmokeEmitter smokeEmitter;
     private VehicleAudioState vehicleAudioState;
@@ -384,15 +380,6 @@ abstract public class Vehicle
      */
     public boolean isHornRequested() {
         return isHornRequested;
-    }
-
-    /**
-     * Enumerate all available modes in the automatic transmission.
-     *
-     * @return the pre-existing array (not null)
-     */
-    public String[] listAtModes() {
-        return atModes;
     }
 
     /**

@@ -5,6 +5,7 @@ import com.atr.jme.font.asset.TrueTypeKeyMesh;
 import com.atr.jme.font.shape.TrueTypeNode;
 import com.atr.jme.font.util.Style;
 import com.jayfella.jme.vehicle.Vehicle;
+import com.jayfella.jme.vehicle.part.GearBox;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
@@ -17,6 +18,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import java.util.List;
 import java.util.logging.Logger;
 import jme3utilities.MyAsset;
 import jme3utilities.mesh.RectangleOutlineMesh;
@@ -142,8 +144,7 @@ public class AtmiState extends BaseAppState {
      */
     @Override
     protected void onEnable() {
-        String[] atModes = vehicle.listAtModes();
-        showAtmi(atModes);
+        showAtmi();
     }
 
     /**
@@ -158,14 +159,12 @@ public class AtmiState extends BaseAppState {
         /*
          * Indicate the current mode of the automatic transmission.
          */
-        String mode;
-        if (vehicle.getGearBox().isInReverse()) {
-            mode = "R";
+        GearBox gearBox = vehicle.getGearBox();
+        if (gearBox.isInReverse()) {
+            setMode("R");
         } else {
-            mode = "D";
+            setMode("D");
         }
-        String[] atModes = vehicle.listAtModes();
-        setMode(atModes, mode);
     }
     // *************************************************************************
     // private methods
@@ -193,13 +192,15 @@ public class AtmiState extends BaseAppState {
     /**
      * Indicate the specified automatic-transmission mode.
      *
-     * @param modes the array of modes, in top-to-bottom order
      * @param selectedMode which mode to indicate (not null)
      */
-    private void setMode(String modes[], String selectedMode) {
-        for (int i = 0; i < modes.length; ++i) {
-            if (selectedMode.equals(modes[i])) {
-                float y = (modes.length - i) * spacingY;
+    private void setMode(String selectedMode) {
+        List<String> allModes = vehicle.getGearBox().listAutomaticModes();
+        int numModes = allModes.size();
+        for (int i = 0; i < numModes; ++i) {
+            String name = allModes.get(i);
+            if (selectedMode.equals(name)) {
+                float y = (numModes - i) * spacingY;
                 lightGeometry.setLocalTranslation(0f, y, 0f);
                 lightGeometry.setCullHint(Spatial.CullHint.Never);
                 return;
@@ -211,10 +212,8 @@ public class AtmiState extends BaseAppState {
 
     /**
      * Display the automatic-transmission mode indicator.
-     *
-     * @param modes an array of modes, in top-to-bottom order
      */
-    private void showAtmi(String[] modes) {
+    private void showAtmi() {
         hideAtmi();
 
         node = new Node("Automatic-Transmission Mode Indicator");
@@ -223,15 +222,17 @@ public class AtmiState extends BaseAppState {
         float bottomY = 0.15f * viewPortHeight;
         node.setLocalTranslation(centerX, bottomY, guiZ);
 
+        List<String> allModes = vehicle.getGearBox().listAutomaticModes();
+        int numModes = allModes.size();
         spacingY = 0.032f * viewPortHeight;
-        float yModeCenter = modes.length * spacingY;
+        float yModeCenter = numModes * spacingY;
         float maxWidth = 0f;
         int kerning = 0;
         ColorRGBA textColor = ColorRGBA.White.clone();
         /*
          * Attach a TrueTypeNode for each mode.
          */
-        for (String mode : modes) {
+        for (String mode : allModes) {
             TrueTypeNode ttNode = droidFont.getText(mode, kerning, textColor);
             node.attachChild(ttNode);
             float width = ttNode.getWidth();
@@ -248,7 +249,7 @@ public class AtmiState extends BaseAppState {
         /*
          * Attach a rounded-rectangle Geometry for the background.
          */
-        float bgHeight = (modes.length + 1) * spacingY;
+        float bgHeight = (numModes + 1) * spacingY;
         float cornerRadius = 0.01f * viewPortWidth;
         float bgWidth = maxWidth + 2f * cornerRadius;
         Mesh bgMesh = new RoundedRectangle(-bgWidth / 2f, bgWidth / 2f, 0f,
