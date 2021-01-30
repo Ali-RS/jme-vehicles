@@ -89,6 +89,9 @@ public class Sound implements Loadable {
     public void setPitchAndVolume(float pitch, float volume) {
         Validate.positive(pitch, "pitch");
         Validate.nonNegative(volume, "volume");
+        if (pitchToAssetPath.size() > pitchToNode.size()) {
+            throw new IllegalStateException("The assets have not been loaded.");
+        }
 
         if (volume == 0f) {
             mute();
