@@ -92,7 +92,8 @@ public class EndlessPlain extends World {
         int originX = sceneOrigin.x();
         int originZ = sceneOrigin.z();
 
-        Set<Vector3i> result = new HashSet<>();
+        int numChunks = (2 * discreteR + 1) * (2 * discreteR + 1);
+        Set<Vector3i> result = new HashSet<>(numChunks);
         for (int deltaX = -discreteR; deltaX <= discreteR; ++deltaX) {
             int chunkX = originX + deltaX;
             for (int deltaZ = -discreteR; deltaZ <= discreteR; ++deltaZ) {
