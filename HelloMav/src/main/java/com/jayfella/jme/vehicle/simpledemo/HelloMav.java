@@ -6,11 +6,16 @@ import com.github.stephengold.garrett.Target;
 import com.jayfella.jme.vehicle.ChunkManager;
 import com.jayfella.jme.vehicle.GlobalAudio;
 import com.jayfella.jme.vehicle.Sky;
+import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.World;
 import com.jayfella.jme.vehicle.examples.skies.AnimatedDaySky;
 import com.jayfella.jme.vehicle.examples.vehicles.HoverTank;
 import com.jayfella.jme.vehicle.examples.worlds.Mountains;
+import com.jayfella.jme.vehicle.gui.CompassState;
+import com.jayfella.jme.vehicle.gui.SpeedometerState;
+import com.jayfella.jme.vehicle.gui.TachometerState;
+import com.jayfella.jme.vehicle.part.Engine;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
@@ -92,13 +97,20 @@ public class HelloMav extends SimpleApplication {
      */
     @Override
     public void simpleInitApp() {
-        stateManager.attach(new BulletAppState());
-        stateManager.attach(new ChunkManager());
+        stateManager.attachAll(
+                new BulletAppState(),
+                new ChunkManager(),
+                new CompassState()
+        );
 
         World world = new Mountains();
         world.attach(this, rootNode);
 
         vehicle.addToWorld(world, globalAudio);
+        Engine engine = vehicle.getEngine();
+        engine.setRunning(true);
+        stateManager.attach(new SpeedometerState(vehicle, SpeedUnit.MPH));
+        stateManager.attach(new TachometerState(engine));
 
         Sky.setApplication(this);
         Sky.initialize();
