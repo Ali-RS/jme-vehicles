@@ -4,7 +4,6 @@ import com.github.stephengold.garrett.ChaseOption;
 import com.github.stephengold.garrett.OrbitCamera;
 import com.github.stephengold.garrett.Target;
 import com.jayfella.jme.vehicle.ChunkManager;
-import com.jayfella.jme.vehicle.GlobalAudio;
 import com.jayfella.jme.vehicle.Sky;
 import com.jayfella.jme.vehicle.Sound;
 import com.jayfella.jme.vehicle.SpeedUnit;
@@ -52,22 +51,13 @@ public class HelloMav extends SimpleApplication {
     // fields
 
     /**
-     * dummy control for the global audio volume
-     */
-    final private GlobalAudio globalAudio = new GlobalAudio() {
-        @Override
-        public float effectiveVolume() {
-            return 0.1f;
-        }
-    };
-    /**
      * track which of the named input signals are active
      */
     final private SignalTracker signalTracker = new SignalTracker();
     /**
      * Vehicle that's being driven
      */
-    final private Vehicle vehicle = new HoverTank();
+    final Vehicle vehicle = new HoverTank();
     // *************************************************************************
     // new methods exposed
 
@@ -108,7 +98,9 @@ public class HelloMav extends SimpleApplication {
         World world = new Mountains();
         world.attach(this, rootNode);
 
-        vehicle.addToWorld(world, globalAudio);
+        vehicle.addToWorld(world, () -> {
+            return 0.1f;
+        });
         Engine engine = vehicle.getEngine();
         engine.setRunning(true);
         stateManager.attach(new SpeedometerState(vehicle, SpeedUnit.MPH));
@@ -201,11 +193,8 @@ public class HelloMav extends SimpleApplication {
     private void mapKeyToSignal(int key, String signalName) {
         signalTracker.add(signalName);
 
-        ActionListener rightListener = new ActionListener() {
-            @Override
-            public void onAction(String action, boolean keyPressed, float tpf) {
-                signalTracker.setActive(signalName, 0, keyPressed);
-            }
+        ActionListener rightListener = (action, keyPressed, tpf) -> {
+            signalTracker.setActive(signalName, 0, keyPressed);
         };
         String action = "signal " + signalName;
         inputManager.addListener(rightListener, action);
