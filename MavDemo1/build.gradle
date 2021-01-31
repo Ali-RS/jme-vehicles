@@ -33,6 +33,7 @@ dependencies {
     runtimeOnly 'org.codehaus.groovy:groovy-jsr223:3.0.7'
 
     implementation project(':MavCommon')
+    implementation project(':MavLibrary')
 }
 
 task debugForceDialog(type: JavaExec) {

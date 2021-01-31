@@ -1,0 +1,60 @@
+// Note: "common.gradle" in the root project contains additional initialization
+//   for this project. This initialization is applied in the "build.gradle"
+//   of the root project.
+
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+description = 'the MaVehicles library for jMonkeyEngine'
+ext {
+    artifact = 'MaVehicles'
+    version = maVehiclesVersion
+    baseName = "${artifact}-${version}" // for POM and class JAR
+}
+
+jar { archiveBaseName = project.ext.baseName }
+javadocJar { archiveBaseName = project.ext.baseName }
+sourcesJar { archiveBaseName = project.ext.baseName }
+
+dependencies {
+    api 'org.jmonkeyengine:jme3-core:' + jmonkeyengineVersion
+    api 'org.jmonkeyengine:jme3-effects:' + jmonkeyengineVersion
+
+    // non-JME dependencies:
+    api 'com.atr:jme-ttf:' + jmeTtfVersion
+    api 'com.github.stephengold:Heart:' + heartVersion
+    compileOnly 'com.github.stephengold:Minie:' + minieVersion
+}
+
+build.dependsOn('pom')
+task('pom', type: Copy) {
+    dependsOn 'generatePomFileForMavenPublication'
+    from "${buildDir}/publications/maven/pom-default.xml"
+    into "${buildDir}/libs"
+    rename '.*', baseName + '.pom'
+}
+
+publishToMavenLocal.doLast {
+    println 'published to ' + baseName
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifactId artifact
+            from components.java
+            pom {
+                licenses {
+                    license {
+                        distribution = 'repo'
+                        name = 'New BSD (3-clause) License'
+                        url = 'https://opensource.org/licenses/BSD-3-Clause'
+                    }
+                }
+            }
+            version project.ext.version
+        }
+    }
+}

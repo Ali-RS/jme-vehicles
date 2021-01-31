@@ -23,6 +23,7 @@ dependencies {
     runtimeOnly 'net.aaaagames:PBRTerrain:' + pbrTerrainVersion
 
     implementation project(':MavCommon')
+    implementation project(':MavLibrary')
 }
 
 // cleanup tasks

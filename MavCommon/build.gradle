@@ -10,9 +10,11 @@ dependencies {
 
     // non-JME dependencies:
     implementation 'com.atr:jme-ttf:' + jmeTtfVersion
-    implementation 'com.github.stephengold:Heart:6.4.0'
+    implementation 'com.github.stephengold:Heart:' + heartVersion
     implementation 'com.github.stephengold:Minie:' + minieVersion
     implementation 'com.github.stephengold:SkyControl:0.9.29'
+    
+    implementation project(':MavLibrary')
 }
 
 // cleanup tasks
