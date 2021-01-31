@@ -225,7 +225,7 @@ The source code has
 
 Resources/assets/media:
 
-+ The [Droid Serif font](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Interface/Fonts)
++ The [Droid Serif font](https://github.com/stephengold/jme-vehicles/tree/master/MavLibrary/src/main/resources/Interface/Fonts)
   has an Apache License, Version 2.0.
 + The [Opel GT Retopo model](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Models/GT)
   has a CC Attribution-NonCommercial-ShareAlike license.
@@ -255,7 +255,8 @@ Resources/assets/media:
   has a CC0 license.
 + The [Lunar libration with phase Oct 2007 texture](https://github.com/stephengold/jme-vehicles/blob/master/MavCommon/src/main/resources/Textures/sgold)
   has a PD-self license.
-+ The [Georg textures](https://github.com/stephengold/jme-vehicles/blob/master/MavCommon/src/main/resources/Textures/Georg)
++ The Georg textures ([here](https://github.com/stephengold/jme-vehicles/blob/master/MavCommon/src/main/resources/Textures/Georg)
+  and [here](https://github.com/stephengold/jme-vehicles/blob/master/MavLibrary/src/main/resources/Textures/Georg))
   were generated procedurally using [the Georg Project](https://github.com/stephengold/Georg),
   which has a BSD 3-Clause license.
 
