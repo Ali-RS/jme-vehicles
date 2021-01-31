@@ -1,6 +1,5 @@
 package com.jayfella.jme.vehicle;
 
-import com.github.stephengold.jmepower.Loadable;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
@@ -15,6 +14,7 @@ import com.jme3.scene.Node;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import jme3utilities.Loadable;
 import jme3utilities.MyCamera;
 import jme3utilities.math.Vector3i;
 

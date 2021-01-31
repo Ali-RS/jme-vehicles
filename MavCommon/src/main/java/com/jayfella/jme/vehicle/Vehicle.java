@@ -1,6 +1,5 @@
 package com.jayfella.jme.vehicle;
 
-import com.github.stephengold.jmepower.Loadable;
 import com.jayfella.jme.vehicle.examples.wheels.WheelModel;
 import com.jayfella.jme.vehicle.part.Brake;
 import com.jayfella.jme.vehicle.part.Engine;
@@ -33,6 +32,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import jme3utilities.Loadable;
 import jme3utilities.Validate;
 import jme3utilities.math.MyVector3f;
 

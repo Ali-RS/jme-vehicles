@@ -9,10 +9,9 @@ dependencies {
     implementation 'org.jmonkeyengine:jme3-effects:' + jmonkeyengineVersion
 
     // non-JME dependencies:
-    implementation 'com.atr:jme-ttf:2.2.2'
-    implementation 'com.github.stephengold:Heart:6.3.0'
-    implementation 'com.github.stephengold:JmePower:0.3.0'
-    implementation 'com.github.stephengold:Minie:3.1.0+big3'
+    implementation 'com.atr:jme-ttf:' + jmeTtfVersion
+    implementation 'com.github.stephengold:Heart:6.4.0'
+    implementation 'com.github.stephengold:Minie:' + minieVersion
     implementation 'com.github.stephengold:SkyControl:0.9.29'
 }
 

@@ -1,10 +1,10 @@
 package com.jayfella.jme.vehicle.examples.wheels;
 
-import com.github.stephengold.jmepower.Loadable;
 import com.jme3.math.FastMath;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import java.util.logging.Logger;
+import jme3utilities.Loadable;
 import jme3utilities.Validate;
 
 /**

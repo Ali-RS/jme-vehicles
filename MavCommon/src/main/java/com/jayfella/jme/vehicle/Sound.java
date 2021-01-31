@@ -1,6 +1,5 @@
 package com.jayfella.jme.vehicle;
 
-import com.github.stephengold.jmepower.Loadable;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioData;
 import com.jme3.audio.AudioNode;
@@ -11,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jme3utilities.Loadable;
 import jme3utilities.Validate;
 import jme3utilities.math.MyMath;
 

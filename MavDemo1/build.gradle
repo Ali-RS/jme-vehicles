@@ -23,12 +23,12 @@ dependencies {
     runtimeOnly 'org.jmonkeyengine:jme3-plugins:' + jmonkeyengineVersion
 
     // non-JME dependencies:
-    implementation 'com.atr:jme-ttf:2.2.2'
-    implementation 'com.github.stephengold:Garrett:0.1.0'
-    implementation 'com.github.stephengold:LemurPower:0.2.0'
-    implementation 'com.simsilica:lemur:1.14.0'
+    implementation 'com.atr:jme-ttf:' + jmeTtfVersion
+    implementation 'com.github.stephengold:Garrett:' + garrettVersion
+    implementation 'com.github.stephengold:LemurPower:0.4.0'
+    implementation 'com.github.stephengold:Minie:' + minieVersion
     implementation 'com.simsilica:lemur-props:1.1.1'
-    runtimeOnly 'net.aaaagames:PBRTerrain:1.0.1'
+    runtimeOnly 'net.aaaagames:PBRTerrain:' + pbrTerrainVersion
     runtimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl:2.14.0'
     runtimeOnly 'org.codehaus.groovy:groovy-jsr223:3.0.7'
 

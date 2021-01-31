@@ -4,7 +4,6 @@ import com.atr.jme.font.TrueTypeMesh;
 import com.atr.jme.font.asset.TrueTypeKeyMesh;
 import com.atr.jme.font.shape.TrueTypeNode;
 import com.atr.jme.font.util.Style;
-import com.github.stephengold.jmepower.Loadable;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.BaseAppState;
@@ -17,6 +16,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import java.util.logging.Logger;
+import jme3utilities.Loadable;
 import jme3utilities.MyAsset;
 import jme3utilities.mesh.RoundedRectangle;
 

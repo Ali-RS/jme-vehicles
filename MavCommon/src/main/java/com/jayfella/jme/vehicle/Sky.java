@@ -1,6 +1,5 @@
 package com.jayfella.jme.vehicle;
 
-import com.github.stephengold.jmepower.Loadable;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.TextureKey;
@@ -20,6 +19,7 @@ import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.jme3.shadow.EdgeFilteringMode;
 import com.jme3.texture.Texture;
 import java.util.logging.Logger;
+import jme3utilities.Loadable;
 import jme3utilities.MyMesh;
 import jme3utilities.Validate;
 import jme3utilities.mesh.Octasphere;

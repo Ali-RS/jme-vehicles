@@ -1,6 +1,5 @@
 package com.jayfella.jme.vehicle.gui;
 
-import com.github.stephengold.jmepower.Loadable;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -19,6 +18,7 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.debug.WireFrustum;
 import com.jme3.shadow.ShadowUtil;
 import java.util.logging.Logger;
+import jme3utilities.Loadable;
 import jme3utilities.MyAsset;
 import jme3utilities.debug.PointVisualizer;
 
