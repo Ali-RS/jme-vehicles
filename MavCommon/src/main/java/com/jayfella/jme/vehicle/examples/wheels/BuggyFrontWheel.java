@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle.examples.wheels;
 
+import com.jayfella.jme.vehicle.WheelModel;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Spatial;
 import java.util.logging.Logger;

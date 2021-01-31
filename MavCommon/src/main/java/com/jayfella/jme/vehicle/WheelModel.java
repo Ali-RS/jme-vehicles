@@ -1,4 +1,4 @@
-package com.jayfella.jme.vehicle.examples.wheels;
+package com.jayfella.jme.vehicle;
 
 import com.jme3.math.FastMath;
 import com.jme3.scene.Node;
