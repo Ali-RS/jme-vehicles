@@ -26,6 +26,8 @@ import jme3utilities.math.MyMath;
 
 /**
  * Appstate to manage an analog speedometer in the GUI node.
+ *
+ * Derived from the SpeedometerState class in the Advanced Vehicles project.
  */
 public class SpeedometerState extends BaseAppState {
     // *************************************************************************

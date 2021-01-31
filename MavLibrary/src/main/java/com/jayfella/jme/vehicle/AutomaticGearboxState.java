@@ -11,6 +11,9 @@ import java.util.logging.Logger;
 
 /**
  * The automatic transmission of a Vehicle.
+ *
+ * Derived from the AutomaticGearBoxState class in the Advanced Vehicles
+ * project.
  */
 public class AutomaticGearboxState extends BaseAppState {
     // *************************************************************************

@@ -9,6 +9,8 @@ import jme3utilities.Validate;
 
 /**
  * An engine to propel a Vehicle.
+ *
+ * Derived from the Engine class in the Advanced Vehicles project.
  */
 abstract public class Engine implements EngineSpeed {
     // *************************************************************************

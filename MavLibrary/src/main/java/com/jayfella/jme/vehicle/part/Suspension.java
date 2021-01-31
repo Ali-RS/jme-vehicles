@@ -13,6 +13,8 @@ import com.jme3.math.FastMath;
  * <li>setWheelsDampingRelaxation(), and</li>
  * <li>setSuspensionStiffness().</li>
  * </ul>
+ *
+ * Derived from the Suspension class in the Advanced Vehicles project.
  */
 public class Suspension {
     // *************************************************************************

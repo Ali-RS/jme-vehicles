@@ -18,6 +18,8 @@ import java.util.logging.Logger;
 
 /**
  * An AnimatedMenu to choose among the available vehicles.
+ *
+ * Derived from the CarSelectorState class in the Advanced Vehicles project.
  */
 class VehicleMenu extends AnimatedMenu {
     // *************************************************************************

@@ -22,6 +22,8 @@ import jme3utilities.math.MyBuffer;
 /**
  * A single continuous skidmark, composed of straight sections and rendered by a
  * single Geometry.
+ *
+ * Derived from the SkidMarkManager class in the Advanced Vehicles project.
  */
 class WheelSkid {
     // *************************************************************************

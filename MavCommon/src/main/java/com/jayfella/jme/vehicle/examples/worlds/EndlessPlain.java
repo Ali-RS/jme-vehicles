@@ -78,7 +78,7 @@ public class EndlessPlain extends World {
     }
 
     /**
-     * Enumerate all chunks that are near the scene origin based on discrete
+     * Enumerate all chunks that are near the scene origin, based on discrete
      * Chebyshev distance.
      *
      * @return a new collection of chunk IDs (not null)

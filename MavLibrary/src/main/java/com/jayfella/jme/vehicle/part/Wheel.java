@@ -15,6 +15,8 @@ import jme3utilities.Validate;
 
 /**
  * A single wheel of a Vehicle, including its suspension and brakes.
+ *
+ * Derived from the Wheel class in the Advanced Vehicles project.
  */
 public class Wheel {
     // *************************************************************************

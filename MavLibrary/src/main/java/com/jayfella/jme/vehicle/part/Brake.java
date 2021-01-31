@@ -4,6 +4,8 @@ import jme3utilities.Validate;
 
 /**
  * Model a single brake, such a disc brake on a Wheel.
+ *
+ * Derived from the Brake class in the Advanced Vehicles project.
  */
 public class Brake {
     // *************************************************************************

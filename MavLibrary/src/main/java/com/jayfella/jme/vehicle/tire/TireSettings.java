@@ -1,5 +1,8 @@
 package com.jayfella.jme.vehicle.tire;
 
+/**
+ * Derived from the TyreSettings class in the Advanced Vehicles project.
+ */
 public class TireSettings {
 
     // LATERAL: default settings

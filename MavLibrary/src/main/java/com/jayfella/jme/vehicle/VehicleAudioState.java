@@ -7,6 +7,8 @@ import java.util.logging.Logger;
 
 /**
  * Manage the engine sound for a particular Vehicle.
+ *
+ * Derived from the VehicleAudioState class in the Advanced Vehicles project.
  */
 class VehicleAudioState extends BaseAppState {
     // *************************************************************************

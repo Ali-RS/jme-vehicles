@@ -26,6 +26,8 @@ import jme3utilities.mesh.Octasphere;
 
 /**
  * A simulated sky with its associated lights and post-processing.
+ *
+ * Derived from the Main class in the Advanced Vehicles project.
  */
 abstract public class Sky implements Loadable {
     // *************************************************************************

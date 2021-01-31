@@ -9,6 +9,11 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import java.util.logging.Logger;
 
+/**
+ * Manage wheel rotation for a particular Vehicle.
+ *
+ * Derived from the WheelSpinState class in the Advanced Vehicles project.
+ */
 public class WheelSpinState extends BaseAppState {
     // *************************************************************************
     // constants and loggers

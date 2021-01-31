@@ -7,6 +7,8 @@ import jme3utilities.MyString;
 /**
  * A single configuration of a GearBox, including its redline speed and its
  * downshift/upshift speeds in the automatic transmission.
+ *
+ * Derived from the Gear class in the Advanced Vehicles project.
  */
 public class Gear {
     // *************************************************************************

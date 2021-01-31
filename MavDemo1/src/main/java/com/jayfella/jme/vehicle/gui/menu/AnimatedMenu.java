@@ -18,6 +18,8 @@ import jme3utilities.math.MyMath;
 
 /**
  * A Lemur menu whose buttons slide in and out of the display.
+ *
+ * Derived from the AnimatedMenuState class in the Advanced Vehicles project.
  */
 abstract class AnimatedMenu extends BaseAppState {
     // *************************************************************************

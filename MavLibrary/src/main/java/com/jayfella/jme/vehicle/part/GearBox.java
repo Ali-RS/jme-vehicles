@@ -10,6 +10,8 @@ import jme3utilities.Validate;
 
 /**
  * The gearbox (or transmission) of a Vehicle, including the differential.
+ *
+ * Derived from the GearBox class in the Advanced Vehicles project.
  */
 public class GearBox {
     // *************************************************************************

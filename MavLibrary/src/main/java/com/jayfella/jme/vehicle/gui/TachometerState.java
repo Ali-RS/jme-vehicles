@@ -25,6 +25,8 @@ import jme3utilities.math.MyMath;
 
 /**
  * Appstate to manage an analog tachometer in the GUI node.
+ *
+ * Derived from the TachometerState class in the Advanced Vehicles project.
  */
 public class TachometerState extends BaseAppState {
     // *************************************************************************

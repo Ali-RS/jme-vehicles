@@ -17,7 +17,9 @@ import com.jme3.texture.Texture;
 import java.util.logging.Logger;
 
 /**
- * Visualize a vehicle's tire smoke, with one ParticleEmitter per wheel.
+ * Visualize a vehicle's tire smoke, using one ParticleEmitter per wheel.
+ *
+ * Derived from the TyreSmokeEmitter class in the Advanced Vehicles project.
  */
 public class TireSmokeEmitter extends BaseAppState {
     // *************************************************************************

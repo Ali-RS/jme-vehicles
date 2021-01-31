@@ -38,6 +38,8 @@ import jme3utilities.math.MyVector3f;
 /**
  * A vehicle based on Bullet's btRaycastVehicle, with a single Engine and a
  * single GearBox.
+ *
+ * Derived from the Car and Vehicle classes in the Advanced Vehicles project.
  */
 abstract public class Vehicle
         implements Loadable, PhysicsTickListener, VehicleSpeed {

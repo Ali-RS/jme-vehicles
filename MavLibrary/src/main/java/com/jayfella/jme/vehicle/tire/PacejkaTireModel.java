@@ -2,6 +2,9 @@ package com.jayfella.jme.vehicle.tire;
 
 import com.jme3.math.FastMath;
 
+/**
+ * Derived from the PajeckaTireModel class in the Advanced Vehicles project.
+ */
 // https://github.com/chrisoco/M120/blob/master/RaceCar/RCAS/src/rcas/model/MagicFormulaTireModel.java
 public class PacejkaTireModel {
 

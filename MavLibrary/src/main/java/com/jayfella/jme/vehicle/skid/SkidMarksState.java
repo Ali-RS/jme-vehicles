@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 
 /**
  * AppState to manage a vehicle's active skidmarks, one skidmark for each Wheel.
+ *
+ * Derived from the VehicleSkidMarks class in the Advanced Vehicles project.
  */
 public class SkidMarksState extends BaseAppState {
     // *************************************************************************
