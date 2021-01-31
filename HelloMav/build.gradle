@@ -4,7 +4,7 @@
 
 apply plugin: 'application'
 
-description = 'a single-class example of More Advanced Vehicles'
+description = 'example assets for use with the MaVehicle library'
 
 mainClassName = 'com.jayfella.jme.vehicle.simpledemo.HelloMav'
 if (!hasProperty('mainClass')) {
@@ -23,8 +23,8 @@ dependencies {
     runtimeOnly 'net.aaaagames:PBRTerrain:' + pbrTerrainVersion
 
     implementation project(':MavCommon')
-    //implementation project(':MavLibrary')
-    implementation 'com.github.stephengold:MaVehicles:' + maVehiclesVersion
+    implementation project(':MavLibrary')
+    //implementation 'com.github.stephengold:MaVehicles:' + maVehiclesVersion
 }
 
 // cleanup tasks

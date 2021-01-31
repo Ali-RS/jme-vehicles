@@ -5,17 +5,11 @@
 description = 'a tech demo for jMonkeyEngine vehicles'
 
 dependencies {
-    //implementation 'org.jmonkeyengine:jme3-core:' + jmonkeyengineVersion
-    //implementation 'org.jmonkeyengine:jme3-effects:' + jmonkeyengineVersion
-
-    // non-JME dependencies:
-    //implementation 'com.atr:jme-ttf:' + jmeTtfVersion
-    //implementation 'com.github.stephengold:Heart:' + heartVersion
     implementation 'com.github.stephengold:Minie:' + minieVersion
     implementation 'com.github.stephengold:SkyControl:0.9.29'
 
-    //implementation project(':MavLibrary')
-    implementation 'com.github.stephengold:MaVehicles:' + maVehiclesVersion
+    implementation project(':MavLibrary')
+    //implementation 'com.github.stephengold:MaVehicles:' + maVehiclesVersion
 }
 
 // cleanup tasks
