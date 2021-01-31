@@ -1,12 +1,20 @@
 [The More Advanced Vehicles Project][mav] demonstrates vehicle simulation using
-[the jMonkeyEngine (JME) game engine][jme].
+[the jMonkeyEngine (JME) game engine][jme]
+and provides a library to support driving simulations.
+
+It contains 4 sub-projects:
+
+ 1. MavLibrary: the MaVehicle library
+ 2. MavDemo1: a demo application with a Lemur-based GUI
+ 3. HelloMav: a very simple application using the MaVehicle library
+ 4. MavCommon: examples of vehicles, worlds, skies, etcetera
 
 <a name="toc"/>
 
 ## Contents of this document
 
 + [Important features](#features)
-+ [How to download and run a pre-built release of More Advanced Vehicles](#prebuilt)
++ [How to download and run the MavDemo1 application](#prebuilt)
 + [How to build and run More Advanced Vehicles from source](#build)
 + [Controls](#controls)
 + [Wish list](#wishlist)
@@ -19,25 +27,15 @@
 
 ## Important features
 
-+ 3 worlds:
-  + endless plain
-  + racetrack
-  + vehicle playground
-+ 7 vehicle models:
-  + Grand Tourer
-  + GTR Nismo
-  + pickup truck
-  + hatchback
-  + dune buggy
-  + Rotator
-  + HoverTank
++ 4 example worlds, 7 example vehicles, and 4 example skies
 + vehicle customization:
   + engine
   + brakes
-  + automatic gearbox
+  + automatic transmission
   + wheels
   + tires with Pacejka model for friction (only the latitudinal forces are applied)
   + suspension
+  + speedometer unit
 + graphical user interface using [the Lemur UI Toolkit][lemur]:
   + buttons and animated menus
   + compass
@@ -57,18 +55,25 @@
 
 <a name="prebuilt"/>
 
-## How to download and run a pre-built release of More Advanced Vehicles
+## How to download and run the MavDemo1 application
 
 1. Install [Java], if you don't already have it.
-2. Browse to https://github.com/stephengold/jme-vehicles/releases/latest
-3. Follow the "jme-vehicles.zip" link.
+2. Browse to https://github.com/stephengold/jme-vehicles/releases/tag/project-1.3.0
+3. Follow the "MavDemo1.zip" link.
 4. Save the ZIP file.
 5. Extract the contents of the saved ZIP file.
-  + using Bash:  `unzip jme-vehicles.zip`
+  + using Bash:  `unzip MavDemo1.zip`
 6. `cd` to the extracted "bin" directory/folder
-  + using Bash:  `cd jme-vehicles/bin`
+  + using Bash:  `cd MavDemo1/bin`
 7. Run the shell script.
-  + using Bash:  `./jme-vehicles`
+  + using Bash:  `./MavDemo1`
+
+The demo runs in a 1280x720 window.
+After a brief loading animation,
+the Main Menu appears in the upper-left corner of the window.
+
++ Navigate menus by clicking with the left mouse button (LMB).
++ If you have a wheel mouse, use the wheel to change the field of view.
 
 [Jump to table of contents](#toc)
 
@@ -82,9 +87,9 @@
    + using Git:
      + `git clone https://github.com/stephengold/jme-vehicles.git`
      + `cd jme-vehicles`
-     + `git checkout -b latest v1.2.0`
+     + `git checkout -b latest project-1.3.0`
    + using a web browser:
-     + browse to https://github.com/stephengold/jme-vehicles/releases/latest
+     + browse to https://github.com/stephengold/jme-vehicles/releases/tag/project-1.3.0
      + follow the "Source code (zip)" link
      + save the ZIP file
      + extract the contents of the saved ZIP file
@@ -92,12 +97,26 @@
  3. Set the `JAVA_HOME` environment variable:
    + using Bash:  `export JAVA_HOME="` *path to your JDK* `"`
    + using Windows Command Prompt:  `set JAVA_HOME="` *path to your JDK* `"`
- 4. Build the application:
+ 4. Build the library and the applications:
    + using Bash:  `./gradlew build`
    + using Windows Command Prompt:  `.\gradlew build`
- 5. Run the application:
-   + using Bash:  `./gradlew run`
-   + using Windows Command Prompt:  `.\gradlew run`
+
+After a successful build,
+Maven artifacts will be found in `MavLibrary/build/libs`.
+To install the Maven artifacts to your local cache:
+
+ + using Bash:  `./gradlew :MavLibrary:publishToMavenLocal`
+ + using Windows Command Prompt:  `.\gradlew :MavLibrary:publishToMavenLocal`
+
+To run the MavDemo1 application:
+
+ + using Bash:  `./gradlew :MavDemo1:run`
+ + using Windows Command Prompt:  `.\gradlew :MavDemo1:run`
+
+To Run the HelloMav application:
+
+ + using Bash:  `./gradlew :HelloMav:run`
+ + using Windows Command Prompt:  `.\gradlew :HelloMav:run`
 
 [Jump to table of contents](#toc)
 
@@ -105,26 +124,41 @@
 
 ## Controls
 
+### In the MavDemo1 application
+
+During the JmePower loading animation:
+
++ Pause : pause the animation
++ Tab : cancel the animation
+
 General controls:
 
 + Numpad9 or wheel up : zoom in (narrow the field of view)
 + Numpad3 or wheel down : zoom out (widen the field of view)
 + Numpad6 : reset the field of view (to 90 degrees vertical angle)
++ "." or Pause : toggle the physics simulation paused/running
++ "/" : toggle physics debug visualization on/off
 + F12 : capture a screenshot to the current working directory
++ C : print details about the default `Camera` (viewpoint) to standard output
++ O : print details about the `BulletAppState` (physics) to standard output
++ P : print details about the `RenderManager` (graphics) to standard output
 
-When driving a vehicle:
+When the physics simulation is paused:
+
++ "," : single-step the physics simulation
+
+When driving:
 
 + F5 : toggle viewpoints between dash camera and chase camera
 + Y : toggle the engine on/off
 + W : accelerate forward
-+ S : apply brakes
-+ Space : apply handbrake
++ S : apply the main brakes
++ Space : apply the parking brake
 + E : accelerate in reverse
 + A : steer left
 + D : steer right
 + H : sound the horn
-+ R : reset the vehicle to a parked state
-+ Pause or . : toggle the simulation paused/running
++ R : reset the vehicle to a stable state
 + Esc : return to the Main Menu
 
 Additional controls when the chase camera or orbit camera is active:
@@ -140,9 +174,18 @@ Additional controls when the orbit camera is active:
  + Drag left with MMB : orbit leftward
  + Drag right with MMB : orbit rightward
 
+### In the HelloMav application
+
++ W : accelerate forward
++ A : steer left
++ D : steer right
++ Wheel up : zoom in (narrow the field of view)
++ Wheel down : zoom out (widen the field of view)
++ Esc : exit the application
+
 [Jump to table of contents](#toc)
 
-[adi]: https://github.com/scenemax3d "Adi Barda"
+[adi]: https://github.com/scenemax3d "Adi Barda and SceneMax3D"
 [atryder]: https://github.com/ATryder "Adam T. Ryder"
 [github]: https://github.com "GitHub"
 [gradle]: https://gradle.org "Gradle Project"
@@ -164,14 +207,17 @@ Additional controls when the orbit camera is active:
 More Advanced Vehicles is a work in progress.  Some ideas for future development:
 
 + More alternatives for:
-  + Worlds, such as: block world, drag strip, off-road, parking garage, parking lot, showroom, and urban grid
+  + Worlds, such as: 3-D maze, block world, drag strip, parking garage, parking lot, showroom, and urban grid
   + Surface conditions, such as: wet, dirt, and grass
-  + Propulsion, such as: jets and propellers
+  + Propulsion, such as: draft animals, jets, human power, propellers, and sails
   + Skies, such as TehLeo's SevenSky
   + User interface, such as: joystick and NiftyGUI
   + Vehicle dynamics, such as that used in Murph9's RallyGame
-  + Vehicle types, such as: buses, tanks, golf carts, hovertanks, motorcycles, palanquins, rickshaws, aerial trams, snowmobiles, speedboats, airplanes, and helicopters
-  + Viewpoints, such as: FlyCam and plan view
+  + Vehicle types, such as: buses, tanks, golf carts, motorcycles,
+    rolling chairs, tractors, rail locomotives, palanquins, rickshaws,
+    aerial trams, bulldozers, snowmobiles, snowplows, speedboats, airplanes,
+    boats, and helicopters
+  + Viewpoints, such as: FlyCam, front view, side view, and plan view
 + More obstacles:
   + Other vehicles (parked or AI-controlled)
   + Animated non-vehicles, such as: gates, drawbridges, deer, and pedestrians
@@ -182,6 +228,7 @@ More Advanced Vehicles is a work in progress.  Some ideas for future development
   + Brake lights and turn signals
   + Clock/stopwatch/timer
   + Cruise control
+  + Door/hood/trunk animation
   + Fuel gauge
   + Headlamps
   + Manual transmission with clutch
@@ -191,10 +238,12 @@ More Advanced Vehicles is a work in progress.  Some ideas for future development
   + Odometer
   + Oil-temperature gauge
   + Operable doors, hood, and trunk
-  + Passengers
+  + Passengers, cargo, and visible driver
   + Sirens
   + Speed limiter
   + Starter motor
+  + Steering-yoke animation
+  + Traction indicator
   + Trailers
   + Weaponry
   + Windshield wipers
@@ -204,6 +253,7 @@ More Advanced Vehicles is a work in progress.  Some ideas for future development
   + Night driving
   + Performance tests, such as: braking distance, turning radius, and zero-to-60
   + Player-vs-player over a network
+  + Pursuit and evasion
   + Time trial
   + Career mode
 + More details:
