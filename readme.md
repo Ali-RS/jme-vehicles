@@ -17,6 +17,7 @@ It contains 4 sub-projects:
 + [How to download and run the MavDemo1 application](#prebuilt)
 + [How to build and run More Advanced Vehicles from source](#build)
 + [Controls](#controls)
++ [How to add the MaVehicles library to an existing project](#add)
 + [Wish list](#wishlist)
 + [Licensing](#licensing)
 + [Conventions](#conventions)
@@ -184,6 +185,50 @@ Additional controls when the orbit camera is active:
 + Esc : exit the application
 
 [Jump to table of contents](#toc)
+
+<a name="add"/>
+
+## How to add the MaVehicles library to an existing project
+
+#### Gradle-built projects
+
+Add to the project’s "build.gradle" file:
+
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        implementation 'com.github.stephengold:MaVehicles:0.5.0'
+        implementation 'com.github.stephengold:Minie:3.1.0'
+    }
+
+#### Maven-built projects
+
+Add to the project’s "pom.xml" file:
+
+    <repositories>
+      <repository>
+        <id>jcenter</id>
+        <url>https://jcenter.bintray.com/</url>
+      </repository>
+    </repositories>
+
+    <dependency>
+      <groupId>com.github.stephengold</groupId>
+      <artifactId>MaVehicles</artifactId>
+      <version>0.5.0</version>
+      <type>pom</type>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.stephengold</groupId>
+      <artifactId>Minie</artifactId>
+      <version>3.1.0</version>
+      <type>pom</type>
+    </dependency>
+
+[Jump to table of contents](#toc)
+
 
 [adi]: https://github.com/scenemax3d "Adi Barda and SceneMax3D"
 [atryder]: https://github.com/ATryder "Adam T. Ryder"
