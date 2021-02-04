@@ -138,16 +138,15 @@ public class Sound implements Loadable {
     /**
      * Load an OGG asset and add it to this collection.
      *
-     * @param baseFilename the filename portion of the asset path, without the
-     * ".ogg" extension (not null, not empty)
+     * @param assetPath the asset path, including the ".ogg" extension (not
+     * null, not empty)
      * @param recordedPitch the fundamental frequency of the asset (in cycles
      * per second, &gt;0)
      */
-    protected void addOgg(String baseFilename, float recordedPitch) {
-        Validate.nonEmpty(baseFilename, "base filename");
+    protected void addAssetPath(String assetPath, float recordedPitch) {
+        Validate.nonEmpty(assetPath, "asset path");
         Validate.positive(recordedPitch, "fundamental");
 
-        String assetPath = String.format("/Audio/%s.ogg", baseFilename);
         pitchToAssetPath.put(recordedPitch, assetPath);
     }
     // *************************************************************************

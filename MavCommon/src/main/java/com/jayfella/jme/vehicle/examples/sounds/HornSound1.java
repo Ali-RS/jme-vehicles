@@ -15,6 +15,6 @@ public class HornSound1 extends Sound {
      * Instantiate the Sound.
      */
     public HornSound1() {
-        super.addOgg("horn-1", 823f);
+        super.addAssetPath("/Audio/horn-1.ogg", 823f);
     }
 }

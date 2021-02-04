@@ -15,9 +15,9 @@ public class EngineSound1 extends Sound {
      * Instantiate the Sound.
      */
     public EngineSound1() {
-        super.addOgg("engine-1d2", 13.4f);
-        super.addOgg("engine-1", 26.75f);
-        super.addOgg("engine-1x2", 53.5f);
-        super.addOgg("engine-1x4", 107f);
+        super.addAssetPath("/Audio/engine-1d2.ogg", 13.4f);
+        super.addAssetPath("/Audio/engine-1.ogg", 26.75f);
+        super.addAssetPath("/Audio/engine-1x2.ogg", 53.5f);
+        super.addAssetPath("/Audio/engine-1x4.ogg", 107f);
     }
 }
