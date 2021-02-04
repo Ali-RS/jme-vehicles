@@ -77,7 +77,7 @@ class VehicleAudioState extends BaseAppState {
      */
     @Override
     protected void onDisable() {
-        Sound sound = vehicle.getEngineSound();
+        Sound sound = vehicle.getEngine().getSound();
         if (sound != null) {
             sound.mute();
         }
@@ -109,7 +109,7 @@ class VehicleAudioState extends BaseAppState {
 
         float masterVolume = globalAudio.effectiveVolume();
 
-        Sound engineSound = vehicle.getEngineSound();
+        Sound engineSound = vehicle.getEngine().getSound();
         if (engineSound != null) {
             Engine engine = vehicle.getEngine();
             if (engine.isRunning()) {

@@ -158,7 +158,7 @@ public class GTRNismo extends Vehicle {
 
         Sound engineSound = new EngineSound2();
         engineSound.load(assetManager);
-        setEngineSound(engineSound);
+        engine.setSound(engineSound);
 
         Sound hornSound = new HornSound1();
         hornSound.load(assetManager);

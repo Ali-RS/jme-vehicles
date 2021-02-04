@@ -158,7 +158,7 @@ public class Rotator extends Vehicle {
 
         Sound engineSound = new EngineSound5();
         engineSound.load(assetManager);
-        setEngineSound(engineSound);
+        engine.setSound(engineSound);
 
         Sound hornSound = new HornSound1();
         hornSound.load(assetManager);

@@ -145,7 +145,7 @@ public class HoverTank extends Vehicle {
         Engine engine = new Engine600HP();
         setEngine(engine);
 
-        setEngineSound(null);
+        engine.setSound(null);
 
         Sound hornSound = new HornSound1();
         hornSound.load(assetManager);

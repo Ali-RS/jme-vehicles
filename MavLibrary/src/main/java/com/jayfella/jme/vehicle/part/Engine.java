@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle.part;
 
+import com.jayfella.jme.vehicle.Sound;
 import com.jme3.math.FastMath;
 import com.jme3.math.Spline;
 import com.jme3.math.Vector3f;
@@ -50,6 +51,10 @@ abstract public class Engine implements EngineSpeed {
      */
     private float rpmFraction;
     /**
+     * sound produced when the Engine is running, or null for silence
+     */
+    private Sound sound;
+    /**
      * descriptive name (not null)
      */
     final private String name;
@@ -96,6 +101,15 @@ abstract public class Engine implements EngineSpeed {
     public String getName() {
         assert name != null;
         return name;
+    }
+
+    /**
+     * Access the engine's sound.
+     *
+     * @return the pre-existing Sound, or null for silence
+     */
+    public Sound getSound() {
+        return sound;
     }
 
     /**
@@ -158,6 +172,15 @@ abstract public class Engine implements EngineSpeed {
      */
     public void setRunning(boolean newState) {
         isRunning = newState;
+    }
+
+    /**
+     * Alter the engine's sound.
+     *
+     * @param sound the desired Sound (loaded), or null for silence
+     */
+    public void setSound(Sound sound) {
+        this.sound = sound;
     }
     // *************************************************************************
     // new protected methods

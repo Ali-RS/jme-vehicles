@@ -93,10 +93,6 @@ abstract public class Vehicle
     final private Node node;
     private SkidMarksState skidmarks;
     /**
-     * sound produced when the Engine is running, or null for silence
-     */
-    private Sound engineSound;
-    /**
      * sound produced when the horn is sounding, or null for silence
      */
     private Sound hornSound;
@@ -282,15 +278,6 @@ abstract public class Vehicle
      */
     public Engine getEngine() {
         return engine;
-    }
-
-    /**
-     * Access the engine sound.
-     *
-     * @return the pre-existing Sound, or null for silence
-     */
-    public Sound getEngineSound() {
-        return engineSound;
     }
 
     /**
@@ -497,15 +484,6 @@ abstract public class Vehicle
      */
     public void setBurningRubber(boolean setting) {
         this.isBurningRubber = setting;
-    }
-
-    /**
-     * Alter the engine sound.
-     *
-     * @param sound the desired Sound (loaded), or null for silence
-     */
-    public void setEngineSound(Sound sound) {
-        this.engineSound = sound;
     }
 
     /**

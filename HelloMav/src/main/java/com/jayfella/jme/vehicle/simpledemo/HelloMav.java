@@ -112,7 +112,7 @@ public class HelloMav extends SimpleApplication {
 
         Sound engineSound = new EngineSound2();
         engineSound.load(assetManager);
-        vehicle.setEngineSound(engineSound);
+        engine.setSound(engineSound);
 
         Sky.setApplication(this);
         Sky.initialize();

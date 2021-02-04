@@ -150,7 +150,7 @@ public class PickupTruck extends Vehicle {
 
         Sound engineSound = new EngineSound1();
         engineSound.load(assetManager);
-        setEngineSound(engineSound);
+        engine.setSound(engineSound);
 
         Sound hornSound = new HornSound1();
         hornSound.load(assetManager);

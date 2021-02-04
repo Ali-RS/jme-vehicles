@@ -86,7 +86,7 @@ class EngineSoundMenu extends AnimatedMenu {
             selectedSound.mute();
             selectedSound.detach();
         }
-        Main.getVehicle().setEngineSound(selectedSound);
+        Main.getVehicle().getEngine().setSound(selectedSound);
         selectedSound = null;
 
         super.onDisable();
@@ -99,7 +99,7 @@ class EngineSoundMenu extends AnimatedMenu {
     protected void onEnable() {
         super.onEnable();
 
-        Sound engineSound = Main.getVehicle().getEngineSound();
+        Sound engineSound = Main.getVehicle().getEngine().getSound();
         if (engineSound == null) {
             selectedSound = null;
         } else {
