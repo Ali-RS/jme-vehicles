@@ -1,5 +1,6 @@
-package com.jayfella.jme.vehicle.tire;
+package com.jayfella.jme.vehicle.debug;
 
+import com.jayfella.jme.vehicle.tire.PacejkaTireModel;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.material.Materials;
@@ -14,8 +15,6 @@ import com.jme3.util.BufferUtils;
 
 /**
  * Derived from the TireGraph class in the Advanced Vehicles project.
- *
- * TODO move to MavDemo1
  */
 public class TireGraph extends Geometry {
     final private PacejkaTireModel tireModel;
