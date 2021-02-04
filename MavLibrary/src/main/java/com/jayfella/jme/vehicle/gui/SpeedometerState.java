@@ -21,11 +21,13 @@ import com.jme3.scene.shape.Line;
 import com.jme3.scene.shape.Quad;
 import com.jme3.texture.Image;
 import com.jme3.texture.Texture;
+import java.util.logging.Logger;
 import jme3utilities.MyAsset;
 import jme3utilities.math.MyMath;
 
 /**
- * Appstate to manage an analog speedometer in the GUI node.
+ * Appstate to manage an analog speedometer in the GUI node. New instances are
+ * enabled by default.
  *
  * Derived from the SpeedometerState class in the Advanced Vehicles project.
  */
@@ -42,6 +44,11 @@ public class SpeedometerState extends BaseAppState {
      * color for dial markings
      */
     final private static ColorRGBA markingColor = ColorRGBA.White.clone();
+    /**
+     * message logger for this class
+     */
+    final public static Logger logger
+            = Logger.getLogger(SpeedometerState.class.getName());
     // *************************************************************************
     // fields
 
@@ -62,7 +69,7 @@ public class SpeedometerState extends BaseAppState {
 
     final private SpeedUnit speedUnit;
     /**
-     * corresponding vehicle
+     * corresponding Vehicle
      */
     final private VehicleSpeed vehicle;
     // *************************************************************************
@@ -118,13 +125,15 @@ public class SpeedometerState extends BaseAppState {
         int width = image.getWidth();
         int height = image.getHeight();
         Quad needleMesh = new Quad(width, height);
-        Geometry needleGeometry = new Geometry("Speedometer Needle", needleMesh);
+        Geometry needleGeometry
+                = new Geometry("Speedometer Needle", needleMesh);
         needleNode.attachChild(needleGeometry);
 
         Material material = new Material(assetManager, Materials.UNSHADED);
         needleGeometry.setMaterial(material);
         material.setTexture("ColorMap", needleTexture);
-        material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+        material.getAdditionalRenderState()
+                .setBlendMode(RenderState.BlendMode.Alpha);
 
         needleGeometry.setLocalTranslation(
                 -(width / 2f),
@@ -164,8 +173,8 @@ public class SpeedometerState extends BaseAppState {
     }
 
     /**
-     * Called to update this AppState, invoked once per frame when the AppState
-     * is both attached and enabled.
+     * Callback to update this AppState, invoked once per frame when the
+     * AppState is both attached and enabled.
      *
      * @param tpf the time interval between frames (in seconds, &ge;0)
      */
