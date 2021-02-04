@@ -42,6 +42,11 @@ public class HelloMav extends SimpleApplication {
     // constants and loggers
 
     /**
+     * steering-control parameters
+     */
+    final private static float maxSteerForce = 1f;
+    final private static float turnSpeed = 0.5f;
+    /**
      * names for the 3 input signals used to control the Vehicle
      */
     final private static String forwardSignalName = "forward";
@@ -50,6 +55,10 @@ public class HelloMav extends SimpleApplication {
     // *************************************************************************
     // fields
 
+    /**
+     * steering force from the previous update
+     */
+    private float steeringForce = 0f;
     /**
      * track which of the named input signals are active
      */
@@ -166,6 +175,8 @@ public class HelloMav extends SimpleApplication {
             listener.setVelocity(cameraVelocity);
             oldCameraLocation.set(newLocation);
         }
+
+        updateTurn(tpf);
     }
     // *************************************************************************
     // private methods
@@ -222,5 +233,26 @@ public class HelloMav extends SimpleApplication {
 
         KeyTrigger trigger = new KeyTrigger(key);
         inputManager.addMapping(action, trigger);
+    }
+
+    /**
+     * Implement progressive steering, for better control and more fun.
+     *
+     * @param tpf the time interval between frames (in seconds, &ge;0)
+     */
+    private void updateTurn(float tpf) {
+        if (signalTracker.test(leftSignalName)) {
+            steeringForce = Math.min(steeringForce + (tpf * turnSpeed),
+                    maxSteerForce);
+
+        } else if (signalTracker.test(rightSignalName)) {
+            steeringForce = Math.max(steeringForce - (tpf * turnSpeed),
+                    -maxSteerForce);
+
+        } else {
+            steeringForce = 0f;
+        }
+
+        vehicle.steer(steeringForce);
     }
 }
