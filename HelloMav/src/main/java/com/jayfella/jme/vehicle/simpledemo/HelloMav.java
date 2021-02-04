@@ -55,9 +55,14 @@ public class HelloMav extends SimpleApplication {
      */
     final private SignalTracker signalTracker = new SignalTracker();
     /**
+     * calculate camera velocity
+     */
+    final private Vector3f cameraVelocity = new Vector3f();
+    final private Vector3f oldCameraLocation = new Vector3f();
+    /**
      * Vehicle that's being driven
      */
-    final Vehicle vehicle = new HoverTank();
+    final private Vehicle vehicle = new HoverTank();
     // *************************************************************************
     // new methods exposed
 
@@ -103,7 +108,7 @@ public class HelloMav extends SimpleApplication {
         world.attach(this, rootNode, physicsSpace);
 
         vehicle.addToWorld(world, () -> {
-            return 0.1f;
+            return 1f;
         });
         Engine engine = vehicle.getEngine();
         engine.setRunning(true);
@@ -129,10 +134,10 @@ public class HelloMav extends SimpleApplication {
      * Callback invoked once per frame, to convert input signals to
      * vehicle-control signals.
      *
-     * @param unused the time interval between frames (in seconds, &ge;0)
+     * @param tpf the time interval between frames (in seconds, &ge;0)
      */
     @Override
-    public void simpleUpdate(float unused) {
+    public void simpleUpdate(float tpf) {
         float strength;
         if (signalTracker.test(forwardSignalName)) {
             strength = 1f;
@@ -149,6 +154,18 @@ public class HelloMav extends SimpleApplication {
             steerAngle -= 0.5f;
         }
         vehicle.steer(steerAngle);
+        /*
+         * For 3-D audio, move the Listener with the default Camera.
+         */
+        listener.setRotation(cam.getRotation());
+        Vector3f newLocation = cam.getLocation(); // alias
+        listener.setLocation(newLocation);
+        if (tpf > 0f) {
+            newLocation.subtract(oldCameraLocation, cameraVelocity);
+            cameraVelocity.divide(tpf);
+            listener.setVelocity(cameraVelocity);
+            oldCameraLocation.set(newLocation);
+        }
     }
     // *************************************************************************
     // private methods

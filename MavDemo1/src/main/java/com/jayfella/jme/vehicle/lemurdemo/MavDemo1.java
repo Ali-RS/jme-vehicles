@@ -49,6 +49,7 @@ import com.jme3.bullet.util.NativeLibrary;
 import com.jme3.input.Joystick;
 import com.jme3.input.JoystickConnectionListener;
 import com.jme3.input.KeyInput;
+import com.jme3.math.Vector3f;
 import com.jme3.system.AppSettings;
 import com.simsilica.lemur.input.Button;
 import java.util.logging.Level;
@@ -105,6 +106,11 @@ public class MavDemo1 extends SimpleApplication {
      * selected sky, including lights and post-processing (not null)
      */
     private static Sky sky = new QuarrySky();
+    /**
+     * calculate camera velocity
+     */
+    final private Vector3f cameraVelocity = new Vector3f();
+    final private Vector3f oldCameraLocation = new Vector3f();
     /**
      * selected Vehicle (not null)
      */
@@ -303,6 +309,18 @@ public class MavDemo1 extends SimpleApplication {
         if (loader != null && !loader.isEnabled()) {
             stateManager.detach(loader);
             doneLoading();
+        }
+        /*
+         * For 3-D audio, move the Listener with the default Camera.
+         */
+        listener.setRotation(cam.getRotation());
+        Vector3f newLocation = cam.getLocation(); // alias
+        listener.setLocation(newLocation);
+        if (tpf > 0f) {
+            newLocation.subtract(oldCameraLocation, cameraVelocity);
+            cameraVelocity.divide(tpf);
+            listener.setVelocity(cameraVelocity);
+            oldCameraLocation.set(newLocation);
         }
     }
     // *************************************************************************
