@@ -44,6 +44,7 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.ConstantVerifierState;
 import com.jme3.audio.AudioListenerState;
 import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.util.NativeLibrary;
 import com.jme3.input.Joystick;
 import com.jme3.input.JoystickConnectionListener;
@@ -377,7 +378,11 @@ public class Main extends SimpleApplication {
      * Attach the selected Sky, World, and Vehicle to the scene.
      */
     private void attachAllToScene() {
-        world.attach(this, rootNode);
+        BulletAppState bulletAppState
+                = getStateManager().getState(BulletAppState.class);
+        PhysicsSpace physicsSpace = bulletAppState.getPhysicsSpace();
+        world.attach(this, rootNode, physicsSpace);
+
         sky.addToWorld(world);
 
         GlobalAudio globalAudio = findAppState(AudioHud.class);

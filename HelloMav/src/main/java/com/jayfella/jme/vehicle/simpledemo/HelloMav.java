@@ -19,6 +19,7 @@ import com.jayfella.jme.vehicle.gui.TachometerState;
 import com.jayfella.jme.vehicle.part.Engine;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.control.VehicleControl;
 import com.jme3.input.KeyInput;
@@ -95,7 +96,11 @@ public class HelloMav extends SimpleApplication {
         );
 
         World world = new Mountains();
-        world.attach(this, rootNode);
+
+        BulletAppState bulletAppState
+                = getStateManager().getState(BulletAppState.class);
+        PhysicsSpace physicsSpace = bulletAppState.getPhysicsSpace();
+        world.attach(this, rootNode, physicsSpace);
 
         vehicle.addToWorld(world, () -> {
             return 0.1f;

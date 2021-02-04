@@ -3,7 +3,6 @@ package com.jayfella.jme.vehicle;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
-import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.objects.PhysicsBody;
@@ -16,12 +15,13 @@ import java.util.HashSet;
 import java.util.Set;
 import jme3utilities.Loadable;
 import jme3utilities.MyCamera;
+import jme3utilities.Validate;
 import jme3utilities.math.Vector3i;
 
 /**
  * A 3-D world, such as the Vehicle Playground. Includes a C-G model and a
- * single rigid body, but no lights, post-processors, or sky. Requires 2
- * appstates: a BulletAppState and a ChunkManager.
+ * single rigid body, but no lights, post-processors, or sky. Requires a
+ * ChunkManager.
  *
  * @author Stephen Gold sgold@sonic.net
  */
@@ -40,6 +40,7 @@ abstract public class World
     }
     // *************************************************************************
     // fields
+
     /**
      * provide access to the AppStateManager, AssetManager, default Camera, etc
      */
@@ -64,6 +65,10 @@ abstract public class World
      * collision object
      */
     private PhysicsRigidBody rigidBody;
+    /**
+     * simulate dynamic physics
+     */
+    private PhysicsSpace physicsSpace;
     // *************************************************************************
     // new methods exposed
 
@@ -74,10 +79,18 @@ abstract public class World
      * @param application the application instance (not null, alias created)
      * @param parentNode where to add probes and attach spatials (not null,
      * alias created)
+     * @param physicsSpace where to add bodies and joints (not null, alias
+     * created)
      */
-    public void attach(Application application, Node parentNode) {
+    public void attach(Application application, Node parentNode,
+            PhysicsSpace physicsSpace) {
+        Validate.nonNull(application, "application");
+        Validate.nonNull(parentNode, "parent node");
+        Validate.nonNull(physicsSpace, "physics space");
+
         this.application = application;
         this.parentNode = parentNode;
+        this.physicsSpace = physicsSpace;
 
         if (loadedCgm == null) {
             AssetManager assetManager = getAssetManager();
@@ -283,15 +296,8 @@ abstract public class World
      */
     @Override
     public PhysicsSpace getPhysicsSpace() {
-        BulletAppState bulletAppState
-                = getStateManager().getState(BulletAppState.class);
-        if (bulletAppState == null) {
-            throw new IllegalStateException("BulletAppState not found.");
-        }
-        PhysicsSpace result = bulletAppState.getPhysicsSpace();
-
-        assert result != null;
-        return result;
+        assert physicsSpace != null;
+        return physicsSpace;
     }
 
     /**
