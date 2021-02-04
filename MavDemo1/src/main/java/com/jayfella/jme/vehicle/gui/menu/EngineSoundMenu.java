@@ -6,7 +6,7 @@ import com.jayfella.jme.vehicle.examples.sounds.EngineSound2;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound4;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound5;
 import com.jayfella.jme.vehicle.gui.lemur.AudioHud;
-import com.jayfella.jme.vehicle.lemurdemo.Main;
+import com.jayfella.jme.vehicle.lemurdemo.MavDemo1;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;
 import com.simsilica.lemur.Button;
@@ -86,7 +86,7 @@ class EngineSoundMenu extends AnimatedMenu {
             selectedSound.mute();
             selectedSound.detach();
         }
-        Main.getVehicle().getEngine().setSound(selectedSound);
+        MavDemo1.getVehicle().getEngine().setSound(selectedSound);
         selectedSound = null;
 
         super.onDisable();
@@ -99,7 +99,7 @@ class EngineSoundMenu extends AnimatedMenu {
     protected void onEnable() {
         super.onEnable();
 
-        Sound engineSound = Main.getVehicle().getEngine().getSound();
+        Sound engineSound = MavDemo1.getVehicle().getEngine().getSound();
         if (engineSound == null) {
             selectedSound = null;
         } else {
@@ -108,7 +108,8 @@ class EngineSoundMenu extends AnimatedMenu {
             } catch (IllegalAccessException | InstantiationException exception) {
                 throw new RuntimeException(exception);
             }
-            AssetManager assetManager = Main.getApplication().getAssetManager();
+            AssetManager assetManager
+                    = MavDemo1.getApplication().getAssetManager();
             selectedSound.load(assetManager);
             configureSelectedSound();
         }
@@ -139,7 +140,7 @@ class EngineSoundMenu extends AnimatedMenu {
         float volume = getState(AudioHud.class).effectiveVolume();
         selectedSound.setPitchAndVolume(pitch, volume);
 
-        Node rootNode = Main.getApplication().getRootNode();
+        Node rootNode = MavDemo1.getApplication().getRootNode();
         selectedSound.attachTo(rootNode);
     }
 
@@ -157,7 +158,8 @@ class EngineSoundMenu extends AnimatedMenu {
 
         selectedSound = newSound;
         if (newSound != null) {
-            AssetManager assetManager = Main.getApplication().getAssetManager();
+            AssetManager assetManager
+                    = MavDemo1.getApplication().getAssetManager();
             newSound.load(assetManager);
             configureSelectedSound();
         }

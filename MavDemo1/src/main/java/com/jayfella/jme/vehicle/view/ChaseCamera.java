@@ -4,7 +4,7 @@ import com.github.stephengold.garrett.ChaseOption;
 import com.github.stephengold.garrett.OrbitCamera;
 import com.github.stephengold.garrett.Target;
 import com.jayfella.jme.vehicle.Vehicle;
-import com.jayfella.jme.vehicle.lemurdemo.Main;
+import com.jayfella.jme.vehicle.lemurdemo.MavDemo1;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.control.VehicleControl;
 import com.jme3.math.Vector3f;
@@ -58,7 +58,8 @@ public class ChaseCamera extends CameraController {
      * 1=back bumper)
      */
     public ChaseCamera(ChaseOption chaseOption, float rearBias) {
-        super(Main.getVehicle(), Main.getApplication().getCamera(), null);
+        super(MavDemo1.getVehicle(), MavDemo1.getApplication().getCamera(),
+                null);
         Validate.nonNull(chaseOption, "chase option");
 
         this.chaseOption = chaseOption;
@@ -106,7 +107,7 @@ public class ChaseCamera extends CameraController {
 
     @Override
     public void attach() {
-        orbitCamera = Main.findAppState(OrbitCamera.class);
+        orbitCamera = MavDemo1.findAppState(OrbitCamera.class);
         orbitCamera.setChaseOption(chaseOption);
         orbitCamera.setTarget(target);
         orbitCamera.setEnabled(true);

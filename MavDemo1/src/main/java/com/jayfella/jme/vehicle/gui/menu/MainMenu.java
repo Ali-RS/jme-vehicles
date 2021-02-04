@@ -7,7 +7,7 @@ import com.jayfella.jme.vehicle.debug.TireDataState;
 import com.jayfella.jme.vehicle.debug.VehicleEditorState;
 import com.jayfella.jme.vehicle.gui.lemur.DriverHud;
 import com.jayfella.jme.vehicle.input.DrivingInputMode;
-import com.jayfella.jme.vehicle.lemurdemo.Main;
+import com.jayfella.jme.vehicle.lemurdemo.MavDemo1;
 import com.jme3.app.state.AppStateManager;
 import com.simsilica.lemur.Button;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class MainMenu extends AnimatedMenu {
      */
     @Override
     protected List<Button> createItems() {
-        Main application = Main.getApplication();
+        MavDemo1 application = MavDemo1.getApplication();
         List<Button> result = new ArrayList<>(6);
 
         Button button = new Button("Drive");
@@ -81,7 +81,7 @@ public class MainMenu extends AnimatedMenu {
      * Drive the selected Vehicle in the selected World.
      */
     private void drive() {
-        Vehicle vehicle = Main.getVehicle();
+        Vehicle vehicle = MavDemo1.getVehicle();
         vehicle.getEngine().setRunning(true);
         DriverHud hud = getState(DriverHud.class);
         hud.setVehicle(vehicle);

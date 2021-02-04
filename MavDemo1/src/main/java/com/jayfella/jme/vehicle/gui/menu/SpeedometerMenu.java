@@ -3,7 +3,7 @@ package com.jayfella.jme.vehicle.gui.menu;
 import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.gui.SpeedometerState;
-import com.jayfella.jme.vehicle.lemurdemo.Main;
+import com.jayfella.jme.vehicle.lemurdemo.MavDemo1;
 import com.jme3.app.state.AppStateManager;
 import com.simsilica.lemur.Button;
 import java.util.ArrayList;
@@ -83,7 +83,7 @@ class SpeedometerMenu extends AnimatedMenu {
     // private methods
 
     private void addNewSpeedometer() {
-        Vehicle vehicle = Main.getVehicle();
+        Vehicle vehicle = MavDemo1.getVehicle();
         SpeedUnit units = vehicle.getSpeedometerUnits();
         if (units != null) {
             SpeedometerState speedometer = new SpeedometerState(vehicle, units);
@@ -101,7 +101,7 @@ class SpeedometerMenu extends AnimatedMenu {
 
     private void setUnits(SpeedUnit units) {
         removeOldSpeedometer();
-        Main.getVehicle().setSpeedometerUnits(units);
+        MavDemo1.getVehicle().setSpeedometerUnits(units);
         addNewSpeedometer();
     }
 }

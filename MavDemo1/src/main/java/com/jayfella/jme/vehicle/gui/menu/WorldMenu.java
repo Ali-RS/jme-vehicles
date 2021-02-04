@@ -5,7 +5,7 @@ import com.jayfella.jme.vehicle.examples.worlds.EndlessPlain;
 import com.jayfella.jme.vehicle.examples.worlds.Mountains;
 import com.jayfella.jme.vehicle.examples.worlds.Playground;
 import com.jayfella.jme.vehicle.examples.worlds.Racetrack;
-import com.jayfella.jme.vehicle.lemurdemo.Main;
+import com.jayfella.jme.vehicle.lemurdemo.MavDemo1;
 import com.jme3.asset.AssetManager;
 import com.simsilica.lemur.Button;
 import java.util.ArrayList;
@@ -66,7 +66,7 @@ class WorldMenu extends AnimatedMenu {
     // private methods
 
     private void setWorld(World newWorld) {
-        Main main = Main.getApplication();
+        MavDemo1 main = MavDemo1.getApplication();
         AssetManager assetManager = main.getAssetManager();
         newWorld.load(assetManager);
 

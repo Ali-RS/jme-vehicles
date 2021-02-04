@@ -60,14 +60,21 @@ import jme3utilities.MyString;
 import jme3utilities.SignalTracker;
 import jme3utilities.minie.FilterAll;
 
-public class Main extends SimpleApplication {
+/**
+ * A simple application with a Lemur GUI to demonstrate the MaVehicles library.
+ * The application's main entry point is in this class.
+ *
+ * Derived from the Main class in the Advanced Vehicles project.
+ */
+public class MavDemo1 extends SimpleApplication {
     // *************************************************************************
     // constants and loggers
 
     /**
      * message logger for this class
      */
-    final private static Logger logger = Logger.getLogger(Main.class.getName());
+    final private static Logger logger
+            = Logger.getLogger(MavDemo1.class.getName());
     // *************************************************************************
     // fields
 
@@ -93,7 +100,7 @@ public class Main extends SimpleApplication {
     /**
      * application instance
      */
-    private static Main application;
+    private static MavDemo1 application;
     /**
      * selected sky, including lights and post-processing (not null)
      */
@@ -112,7 +119,7 @@ public class Main extends SimpleApplication {
     /**
      * Instantiate a SimpleApplication without FlyCam or debug keys.
      */
-    private Main() {
+    private MavDemo1() {
         super(
                 new AudioListenerState(),
                 new ConstantVerifierState(),
@@ -148,7 +155,7 @@ public class Main extends SimpleApplication {
      *
      * @return the pre-existing instance (not null)
      */
-    public static Main getApplication() {
+    public static MavDemo1 getApplication() {
         assert application != null;
         return application;
     }
@@ -174,7 +181,7 @@ public class Main extends SimpleApplication {
     }
 
     /**
-     * Main entry point for the More Advanced Vehicles application.
+     * Main entry point for the MavDemo1 application.
      *
      * @param args array of command-line arguments (not null)
      */
@@ -212,7 +219,7 @@ public class Main extends SimpleApplication {
         appSettings.setUseJoysticks(true);
         appSettings.setVSync(true);
 
-        application = new Main();
+        application = new MavDemo1();
         application.setDisplayFps(false);
         application.setDisplayStatView(false);
         application.setSettings(appSettings);

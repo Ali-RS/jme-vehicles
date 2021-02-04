@@ -2,7 +2,7 @@ package com.jayfella.jme.vehicle.view;
 
 import com.github.stephengold.garrett.CameraSignal;
 import com.jayfella.jme.vehicle.Vehicle;
-import com.jayfella.jme.vehicle.lemurdemo.Main;
+import com.jayfella.jme.vehicle.lemurdemo.MavDemo1;
 import com.jme3.input.InputManager;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.AnalogListener;
@@ -161,7 +161,7 @@ public class DashCamera
         /*
          * Configure the analog inputs.
          */
-        InputManager inputManager = Main.getApplication().getInputManager();
+        InputManager inputManager = MavDemo1.getApplication().getInputManager();
         inputManager.deleteMapping(analogZoomIn);
         inputManager.deleteMapping(analogZoomOut);
         inputManager.removeListener(this);
@@ -188,7 +188,7 @@ public class DashCamera
         /*
          * Configure the analog inputs.
          */
-        InputManager inputManager = Main.getApplication().getInputManager();
+        InputManager inputManager = MavDemo1.getApplication().getInputManager();
         inputManager.addMapping(analogZoomIn,
                 new MouseAxisTrigger(MouseInput.AXIS_WHEEL, false));
         inputManager.addMapping(analogZoomOut,

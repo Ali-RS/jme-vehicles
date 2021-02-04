@@ -10,7 +10,7 @@ import com.jayfella.jme.vehicle.debug.TireDataState;
 import com.jayfella.jme.vehicle.debug.VehicleEditorState;
 import com.jayfella.jme.vehicle.gui.lemur.DriverHud;
 import com.jayfella.jme.vehicle.gui.menu.MainMenu;
-import com.jayfella.jme.vehicle.lemurdemo.Main;
+import com.jayfella.jme.vehicle.lemurdemo.MavDemo1;
 import com.jayfella.jme.vehicle.part.GearBox;
 import com.jayfella.jme.vehicle.view.CameraController;
 import com.jayfella.jme.vehicle.view.ChaseCamera;
@@ -130,7 +130,7 @@ public class DrivingInputMode extends InputMode {
         }, F_RETURN);
 
         assign((FunctionId function, InputState inputState, double tpf) -> {
-            GearBox gearBox = Main.getVehicle().getGearBox();
+            GearBox gearBox = MavDemo1.getVehicle().getGearBox();
             if (inputState == InputState.Positive) {
                 gearBox.setReversing(true);
             } else {
@@ -194,14 +194,14 @@ public class DrivingInputMode extends InputMode {
 
         getState(DriverHud.class).setEnabled(false);
 
-        Vehicle vehicle = Main.getVehicle();
+        Vehicle vehicle = MavDemo1.getVehicle();
         Vehicle newVehicle;
         try {
             newVehicle = vehicle.getClass().newInstance();
         } catch (IllegalAccessException | InstantiationException exception) {
             throw new RuntimeException(exception);
         }
-        Main main = Main.getApplication();
+        MavDemo1 main = MavDemo1.getApplication();
         AssetManager assetManager = main.getAssetManager();
         newVehicle.load(assetManager);
         main.setVehicle(newVehicle);
@@ -238,7 +238,7 @@ public class DrivingInputMode extends InputMode {
         SignalMode signalMode = getState(SignalMode.class);
         SignalTracker signalTracker = signalMode.getSignalTracker();
         boolean requested = signalTracker.test(SignalMode.F_HORN1.getId());
-        Main.getVehicle().setHornStatus(requested);
+        MavDemo1.getVehicle().setHornStatus(requested);
     }
     // *************************************************************************
     // private methods
@@ -248,7 +248,7 @@ public class DrivingInputMode extends InputMode {
      * and attempt to locate it someplace it won't immediately collide.
      */
     private void resetVehicle() {
-        Vehicle vehicle = Main.getVehicle();
+        Vehicle vehicle = MavDemo1.getVehicle();
         VehicleControl control = vehicle.getVehicleControl();
         float[] angles = new float[3];
         control.getPhysicsRotation().toAngles(angles);
@@ -284,7 +284,7 @@ public class DrivingInputMode extends InputMode {
 
         SignalMode signalMode = getState(SignalMode.class);
         SignalTracker signalTracker = signalMode.getSignalTracker();
-        Vehicle vehicle = Main.getVehicle();
+        Vehicle vehicle = MavDemo1.getVehicle();
 
         CameraController activeCamera;
         switch (controlMode) {
@@ -319,7 +319,7 @@ public class DrivingInputMode extends InputMode {
     }
 
     private void updateBrakeAndAccelerate() {
-        Vehicle vehicle = Main.getVehicle();
+        Vehicle vehicle = MavDemo1.getVehicle();
         /*
          * Update the brake control signals.
          */
@@ -374,6 +374,6 @@ public class DrivingInputMode extends InputMode {
             steeringAngle = Math.min(steeringAngle, 0f);
         }
 
-        Main.getVehicle().steer(steeringAngle);
+        MavDemo1.getVehicle().steer(steeringAngle);
     }
 }

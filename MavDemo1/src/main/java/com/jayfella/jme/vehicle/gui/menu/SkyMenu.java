@@ -5,7 +5,7 @@ import com.jayfella.jme.vehicle.examples.skies.AnimatedDaySky;
 import com.jayfella.jme.vehicle.examples.skies.AnimatedNightSky;
 import com.jayfella.jme.vehicle.examples.skies.PurpleNebulaSky;
 import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
-import com.jayfella.jme.vehicle.lemurdemo.Main;
+import com.jayfella.jme.vehicle.lemurdemo.MavDemo1;
 import com.jme3.asset.AssetManager;
 import com.simsilica.lemur.Button;
 import java.util.ArrayList;
@@ -66,7 +66,7 @@ class SkyMenu extends AnimatedMenu {
     // private methods
 
     private void setSky(Sky sky) {
-        Main main = Main.getApplication();
+        MavDemo1 main = MavDemo1.getApplication();
         AssetManager assetManager = main.getAssetManager();
         sky.load(assetManager);
 

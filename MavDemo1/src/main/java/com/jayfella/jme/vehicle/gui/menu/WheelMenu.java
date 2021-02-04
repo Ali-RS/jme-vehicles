@@ -12,7 +12,7 @@ import com.jayfella.jme.vehicle.examples.wheels.InvisibleWheel;
 import com.jayfella.jme.vehicle.examples.wheels.RangerWheel;
 import com.jayfella.jme.vehicle.examples.wheels.RotatorFrontWheel;
 import com.jayfella.jme.vehicle.examples.wheels.RotatorRearWheel;
-import com.jayfella.jme.vehicle.lemurdemo.Main;
+import com.jayfella.jme.vehicle.lemurdemo.MavDemo1;
 import com.simsilica.lemur.Button;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +96,7 @@ class WheelMenu extends AnimatedMenu {
     // private methods
 
     private void setModel(Class<? extends WheelModel> wheelModelClass) {
-        Vehicle vehicle = Main.getVehicle();
+        Vehicle vehicle = MavDemo1.getVehicle();
         int numWheels = vehicle.getVehicleControl().getNumWheels();
         for (int wheelIndex = 0; wheelIndex < numWheels; ++wheelIndex) {
             vehicle.setWheelModel(wheelIndex, wheelModelClass);

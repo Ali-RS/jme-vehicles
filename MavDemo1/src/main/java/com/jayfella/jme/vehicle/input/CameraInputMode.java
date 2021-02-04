@@ -4,7 +4,7 @@ import com.github.stephengold.garrett.CameraSignal;
 import com.github.stephengold.garrett.ChaseOption;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.World;
-import com.jayfella.jme.vehicle.lemurdemo.Main;
+import com.jayfella.jme.vehicle.lemurdemo.MavDemo1;
 import com.jayfella.jme.vehicle.view.CameraController;
 import com.jayfella.jme.vehicle.view.ChaseCamera;
 import com.jme3.math.Vector3f;
@@ -60,7 +60,7 @@ public class CameraInputMode extends InputMode {
         float rearBias = 0f;
         orbitCamera = new ChaseCamera(ChaseOption.FreeOrbit, rearBias);
         activeController = orbitCamera;
-        Vehicle vehicle = Main.getVehicle();
+        Vehicle vehicle = MavDemo1.getVehicle();
         orbitCamera.setVehicle(vehicle);
         for (CameraSignal function : CameraSignal.values()) {
             String signalName = function.toString();
@@ -69,7 +69,7 @@ public class CameraInputMode extends InputMode {
 
         assign((FunctionId function, InputState inputState, double tpf) -> {
             if (inputState == InputState.Positive) {
-                Camera camera = Main.getApplication().getCamera();
+                Camera camera = MavDemo1.getApplication().getCamera();
                 MyCamera.setYTangent(camera, 1f);
             }
         }, F_CAMERA_RESET_FOV);
@@ -131,7 +131,7 @@ public class CameraInputMode extends InputMode {
 
         Camera camera = getApplication().getCamera();
         MyCamera.setYTangent(camera, 1f);
-        Main.getWorld().resetCameraPosition();
+        MavDemo1.getWorld().resetCameraPosition();
         activeController.setVehicle(newVehicle);
     }
     // *************************************************************************
@@ -189,18 +189,18 @@ public class CameraInputMode extends InputMode {
                  * Locate the camera 20 wu behind and 5 wu above
                  * the target vehicle.
                  */
-                Vector3f offset = Main.getVehicle().forwardDirection(null);
+                Vector3f offset = MavDemo1.getVehicle().forwardDirection(null);
                 offset.multLocal(-20f);
                 offset.y += 5f;
                 chaseCam.setOffset(offset);
 
             } else { // orbiting
-                World world = Main.getWorld();
+                World world = MavDemo1.getWorld();
                 world.resetCameraPosition();
 
                 chaseCam.setPreferredRange(5f);
 
-                Vehicle vehicle = Main.getVehicle();
+                Vehicle vehicle = MavDemo1.getVehicle();
                 chaseCam.setVehicle(vehicle);
             }
         }

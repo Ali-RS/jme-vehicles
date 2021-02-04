@@ -4,7 +4,7 @@ import com.jayfella.jme.vehicle.gui.CompassState;
 import com.jayfella.jme.vehicle.gui.lemur.AudioHud;
 import com.jayfella.jme.vehicle.gui.lemur.CameraNameState;
 import com.jayfella.jme.vehicle.gui.lemur.PhysicsHud;
-import com.jayfella.jme.vehicle.lemurdemo.Main;
+import com.jayfella.jme.vehicle.lemurdemo.MavDemo1;
 import com.jme3.app.Application;
 import com.jme3.asset.AssetManager;
 import com.jme3.font.BitmapFont;
@@ -142,7 +142,7 @@ public class AttributionMenu extends AnimatedMenu {
         node.detachAllChildren();
         setupShutter();
         setupText();
-        Main.getApplication().getGuiNode().attachChild(node);
+        MavDemo1.getApplication().getGuiNode().attachChild(node);
     }
     // *************************************************************************
     // private methods
@@ -153,7 +153,7 @@ public class AttributionMenu extends AnimatedMenu {
      * @return a new instance
      */
     private void setupShutter() {
-        AssetManager assetManager = Main.getApplication().getAssetManager();
+        AssetManager assetManager = MavDemo1.getApplication().getAssetManager();
         Material material = new Material(assetManager, Materials.UNSHADED);
         material.setColor("Color", new ColorRGBA(0f, 0f, 0f, 1f));
 
@@ -169,7 +169,7 @@ public class AttributionMenu extends AnimatedMenu {
      * Create and attach a TrueTypeNode containing the attribution message.
      */
     private void setupText() {
-        Main application = Main.getApplication();
+        MavDemo1 application = MavDemo1.getApplication();
         AssetManager assetManager = application.getAssetManager();
         BitmapFont bigFont
                 = assetManager.loadFont("/Interface/Fonts/Default.fnt");
