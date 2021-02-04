@@ -3,7 +3,7 @@ package com.jayfella.jme.vehicle.examples.vehicles;
 import com.jayfella.jme.vehicle.Sound;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.WheelModel;
-import com.jayfella.jme.vehicle.examples.engines.Engine250HP;
+import com.jayfella.jme.vehicle.examples.engines.FlexibleEngine;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound4;
 import com.jayfella.jme.vehicle.examples.sounds.HornSound1;
 import com.jayfella.jme.vehicle.examples.tires.Tire_02;
@@ -149,7 +149,10 @@ public class HatchBack extends Vehicle {
         gearBox.getGear(4).setName("high").setMinMaxRedKph(80f, 140f, 140f);
         setGearBox(gearBox);
 
-        Engine engine = new Engine250HP();
+        float idleRpm = 700f;
+        float redlineRpm = 4_500f;
+        Engine engine = new FlexibleEngine("250-hp diesel 700-4500 RPM",
+                250f * Engine.HP_TO_W, idleRpm, redlineRpm);
         setEngine(engine);
 
         Sound engineSound = new EngineSound4();

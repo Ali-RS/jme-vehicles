@@ -3,7 +3,7 @@ package com.jayfella.jme.vehicle.examples.vehicles;
 import com.jayfella.jme.vehicle.Sound;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.WheelModel;
-import com.jayfella.jme.vehicle.examples.engines.Engine180HP;
+import com.jayfella.jme.vehicle.examples.engines.PeakyEngine;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound5;
 import com.jayfella.jme.vehicle.examples.sounds.HornSound1;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A sample Vehicle, built around oakar258's "HCR2 Rotator" model.
+ * A sample 3-wheel Vehicle, built around oakar258's "HCR2 Rotator" model.
  *
  * @author Stephen Gold sgold@sonic.net
  */
@@ -153,7 +153,10 @@ public class Rotator extends Vehicle {
         gearBox.getGear(4).setName("high").setMinMaxRedKph(45f, 90f, 90f);
         setGearBox(gearBox);
 
-        Engine engine = new Engine180HP();
+        float idleRpm = 600f;
+        float redlineRpm = 5_000f;
+        Engine engine = new PeakyEngine("180-hp gasoline 600-5000 RPM",
+                180f * Engine.HP_TO_W, idleRpm, redlineRpm);
         setEngine(engine);
 
         Sound engineSound = new EngineSound5();

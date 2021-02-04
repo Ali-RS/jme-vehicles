@@ -4,7 +4,7 @@ import com.jayfella.jme.vehicle.Sound;
 import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.WheelModel;
-import com.jayfella.jme.vehicle.examples.engines.Engine600HP;
+import com.jayfella.jme.vehicle.examples.engines.FlexibleEngine;
 import com.jayfella.jme.vehicle.examples.sounds.HornSound1;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
 import com.jayfella.jme.vehicle.examples.wheels.InvisibleWheel;
@@ -142,7 +142,10 @@ public class HoverTank extends Vehicle {
         gearBox.getGear(1).setName("forward").setMinMaxRedKph(0f, 200f, 200f);
         setGearBox(gearBox);
 
-        Engine engine = new Engine600HP();
+        float idleRpm = 600f;
+        float redlineRpm = 9_000f;
+        Engine engine = new FlexibleEngine("800-hp diesel 600-9000 RPM",
+                800f * Engine.HP_TO_W, idleRpm, redlineRpm);
         setEngine(engine);
 
         engine.setSound(null);

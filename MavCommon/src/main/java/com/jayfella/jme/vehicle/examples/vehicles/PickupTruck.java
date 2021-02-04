@@ -3,7 +3,7 @@ package com.jayfella.jme.vehicle.examples.vehicles;
 import com.jayfella.jme.vehicle.Sound;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.WheelModel;
-import com.jayfella.jme.vehicle.examples.engines.Engine450HP;
+import com.jayfella.jme.vehicle.examples.engines.FlexibleEngine;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound1;
 import com.jayfella.jme.vehicle.examples.sounds.HornSound1;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
@@ -145,7 +145,10 @@ public class PickupTruck extends Vehicle {
         gearBox.getGear(4).setName("high").setMinMaxRedKph(70f, 110f, 110f);
         setGearBox(gearBox);
 
-        Engine engine = new Engine450HP();
+        float idleRpm = 800f;
+        float redlineRpm = 6_000f;
+        Engine engine = new FlexibleEngine("450-hp diesel 800-6000 RPM",
+                450f * Engine.HP_TO_W, idleRpm, redlineRpm);
         setEngine(engine);
 
         Sound engineSound = new EngineSound1();

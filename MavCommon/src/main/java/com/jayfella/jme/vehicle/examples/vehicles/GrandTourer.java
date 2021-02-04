@@ -3,7 +3,7 @@ package com.jayfella.jme.vehicle.examples.vehicles;
 import com.jayfella.jme.vehicle.Sound;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.WheelModel;
-import com.jayfella.jme.vehicle.examples.engines.Engine450HP;
+import com.jayfella.jme.vehicle.examples.engines.PeakyEngine;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound1;
 import com.jayfella.jme.vehicle.examples.sounds.HornSound1;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
@@ -153,7 +153,10 @@ public class GrandTourer extends Vehicle {
         gearBox.getGear(5).setName("high").setMinMaxRedKph(120f, 190f, 190f);
         setGearBox(gearBox);
 
-        Engine engine = new Engine450HP();
+        float idleRpm = 600f;
+        float redlineRpm = 7_500f;
+        Engine engine = new PeakyEngine("450-hp gasoline 600-7500 RPM",
+                450f * Engine.HP_TO_W, idleRpm, redlineRpm);
         setEngine(engine);
 
         Sound engineSound = new EngineSound1();

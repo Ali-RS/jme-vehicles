@@ -3,7 +3,7 @@ package com.jayfella.jme.vehicle.examples.vehicles;
 import com.jayfella.jme.vehicle.Sound;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.WheelModel;
-import com.jayfella.jme.vehicle.examples.engines.Engine600HP;
+import com.jayfella.jme.vehicle.examples.engines.PeakyEngine;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound2;
 import com.jayfella.jme.vehicle.examples.sounds.HornSound1;
 import com.jayfella.jme.vehicle.examples.tires.Tire_01;
@@ -153,7 +153,10 @@ public class GTRNismo extends Vehicle {
         gearBox.getGear(6).setName("high").setMinMaxRedKph(250f, 320f, 320f);
         setGearBox(gearBox);
 
-        Engine engine = new Engine600HP();
+        float idleRpm = 600f;
+        float redlineRpm = 9_000f;
+        Engine engine = new PeakyEngine("600-hp gasoline 600-9000 RPM",
+                600f * Engine.HP_TO_W, idleRpm, redlineRpm);
         setEngine(engine);
 
         Sound engineSound = new EngineSound2();
