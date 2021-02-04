@@ -17,7 +17,8 @@ import jme3utilities.math.MyMath;
 /**
  * A collection of audio nodes used to render a sound at different pitches
  * (fundamental frequencies) and volumes. Each node handles a specific range of
- * pitches. At any given moment, at most one node is playing.
+ * pitches. At any given moment, at most one node is playing. Positional audio
+ * is used by default.
  *
  * @author Stephen Gold sgold@sonic.net
  */
@@ -37,6 +38,11 @@ public class Sound implements Loadable {
      * AudioNode that's playing, or null if none
      */
     private AudioNode activeNode;
+    /**
+     * true&rarr;take position/velocity/distance into account when playing,
+     * false&rarr;play in "headspace"
+     */
+    private boolean isPositional = true;
     /**
      * loaded audio nodes, mapped from their fundamental frequencies in cycles
      * per second
@@ -67,6 +73,16 @@ public class Sound implements Loadable {
         for (AudioNode node : pitchToNode.values()) {
             node.removeFromParent();
         }
+    }
+
+    /**
+     * Test whether this Sound is positional.
+     *
+     * @return true if it takes position/velocity/distance into account when
+     * playing, false if it plays in "headspace"
+     */
+    public boolean isPositional() {
+        return isPositional;
     }
 
     /**
@@ -132,6 +148,21 @@ public class Sound implements Loadable {
             activeNode.play();
         }
     }
+
+    /**
+     * Alter whether this Sound is positional.
+     *
+     * @param newSetting true&rarr;take position/velocity/distance into account
+     * when playing, false&rarr;play in "headspace" (default=true)
+     */
+    public void setPositional(boolean newSetting) {
+        this.isPositional = newSetting;
+
+        for (Map.Entry<Float, AudioNode> entry : pitchToNode.entrySet()) {
+            AudioNode audioNode = entry.getValue();
+            audioNode.setPositional(newSetting);
+        }
+    }
     // *************************************************************************
     // new protected methods
 
@@ -165,7 +196,7 @@ public class Sound implements Loadable {
                     AudioData.DataType.Buffer);
             node.setDirectional(false);
             node.setLooping(true);
-            node.setPositional(false);
+            node.setPositional(isPositional);
 
             float recordedPitch = entry.getKey();
             pitchToNode.put(recordedPitch, node);
