@@ -683,14 +683,15 @@ abstract public class Vehicle
     abstract protected void locateTarget(Vector3f storeResult);
 
     /**
-     * Configure the "chassis": the entire Vehicle except for any wheels.
+     * Configure a "chassis" that's loaded from J3O assets in the usual folders.
+     * (Bullet refers to everything except the wheels as the "chassis".)
      *
      * @param folderName the name of the folder containing the C-G model asset
      * (not null, not empty)
      * @param cgmBaseFileName the base filename of the C-G model asset (not
      * null, not empty)
      * @param assetManager to load assets (not null)
-     * @param mass in (in kilos, &gt;0)
+     * @param mass the mass of the chassis (in kilos, &gt;0)
      * @param damping the drag on the chassis due to air resistance (&ge;0,
      * &lt;1)
      */
@@ -702,21 +703,43 @@ abstract public class Vehicle
         Validate.positive(mass, "mass");
         Validate.fraction(damping, "damping");
 
-        this.chassisDamping = damping;
-
         String assetPath
                 = "/Models/" + folderName + "/" + cgmBaseFileName + ".j3o";
-        chassis = assetManager.loadModel(assetPath);
+        Spatial cgmRoot = assetManager.loadModel(assetPath);
 
         assetPath = "/Models/" + folderName + "/shapes/chassis-shape.j3o";
         CollisionShape shape;
         try {
             shape = (CollisionShape) assetManager.loadAsset(assetPath);
-            Vector3f scale = chassis.getWorldScale();
+            Vector3f scale = cgmRoot.getWorldScale();
             shape.setScale(scale);
         } catch (AssetNotFoundException exception) {
-            shape = CollisionShapeFactory.createDynamicMeshShape(chassis);
+            shape = CollisionShapeFactory.createDynamicMeshShape(cgmRoot);
         }
+        setChassis(cgmRoot, shape, mass, damping);
+    }
+
+    /**
+     * Configure the "chassis". (Bullet refers to everything except the wheels
+     * as the "chassis".)
+     *
+     * @param cgmRoot the root of the C-G model to visualize the chassis (not
+     * null, alias created)
+     * @param shape the shape for the chassis (not null, alias created)
+     * @param mass the mass of the chassis (in kilos, &gt;0)
+     * @param damping the drag on the chassis due to air resistance (&ge;0,
+     * &lt;1)
+     */
+    protected void setChassis(Spatial cgmRoot, CollisionShape shape,
+            float mass, float damping) {
+        Validate.nonNull(cgmRoot, "C-G model root");
+        Validate.nonNull(shape, "shape");
+        Validate.positive(mass, "mass");
+        Validate.fraction(damping, "damping");
+
+        this.chassisDamping = damping;
+        this.chassis = cgmRoot;
+
         vehicleControl = new VehicleControl(shape, mass);
         /*
          * Configure damping for the chassis,
