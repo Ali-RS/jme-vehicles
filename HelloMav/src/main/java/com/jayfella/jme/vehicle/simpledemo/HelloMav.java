@@ -15,6 +15,7 @@ import com.jayfella.jme.vehicle.examples.vehicles.HoverTank;
 import com.jayfella.jme.vehicle.examples.worlds.Mountains;
 import com.jayfella.jme.vehicle.gui.CompassState;
 import com.jayfella.jme.vehicle.gui.SpeedometerState;
+import com.jayfella.jme.vehicle.gui.SteeringWheelState;
 import com.jayfella.jme.vehicle.gui.TachometerState;
 import com.jayfella.jme.vehicle.part.Engine;
 import com.jme3.app.SimpleApplication;
@@ -123,6 +124,16 @@ public class HelloMav extends SimpleApplication {
         engine.setRunning(true);
         stateManager.attach(new SpeedometerState(vehicle, SpeedUnit.MPH));
         stateManager.attach(new TachometerState(engine));
+
+        float radius = 120f; // pixels
+        float x = 0.5f * cam.getWidth();
+        float y = 0.18f * cam.getHeight();
+        float z = 1f;
+        SteeringWheelState steeringWheel
+                = new SteeringWheelState(radius, new Vector3f(x, y, z));
+        steeringWheel.setVehicle(vehicle);
+        steeringWheel.setEnabled(true);
+        stateManager.attach(steeringWheel);
 
         Sound engineSound = new EngineSound2();
         engineSound.load(assetManager);
