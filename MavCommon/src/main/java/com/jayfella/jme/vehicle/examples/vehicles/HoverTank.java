@@ -38,10 +38,6 @@ public class HoverTank extends Vehicle {
     // fields
 
     /**
-     * control signal for steering
-     */
-    private float steeringValue;
-    /**
      * reusable temporary vectors
      */
     final private Vector3f tmpForce = new Vector3f();
@@ -191,12 +187,13 @@ public class HoverTank extends Vehicle {
     public void prePhysicsTick(PhysicsSpace space, float timeStep) {
         PhysicsVehicle vehicleControl = getVehicleControl();
 
+        float steeringValue = steeringWheelAngle();
         if (steeringValue != 0f) {
             vehicleControl.getAngularVelocity(tmpVelocity);
             float turnRate = tmpVelocity.y;
             if (FastMath.sqr(turnRate) < 1f) {
                 vehicleControl.getInverseInertiaLocal(tmpInvInertia);
-                float torqueMagnitude = 2f * steeringValue / tmpInvInertia.y;
+                float torqueMagnitude = steeringValue / tmpInvInertia.y;
                 tmpTorque.set(0f, torqueMagnitude, 0f);
                 vehicleControl.applyTorque(tmpTorque);
             }
@@ -223,10 +220,5 @@ public class HoverTank extends Vehicle {
         }
 
         super.prePhysicsTick(space, timeStep);
-    }
-
-    @Override
-    public void steer(float strength) {
-        this.steeringValue = strength;
     }
 }
