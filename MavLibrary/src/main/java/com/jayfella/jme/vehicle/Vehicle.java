@@ -590,16 +590,6 @@ abstract public class Vehicle implements Loadable, PhysicsTickListener,
         }
     }
 
-    /**
-     * Determine the rotation angle of the steering wheel. TODO re-order methods
-     *
-     * @return the angle (in radians, negative = left, 0 = neutral, positive =
-     * right)
-     */
-    public float steeringWheelAngle() {
-        return steeringWheelAngle;
-    }
-
     public void stopEngine() {
         if (engine.isRunning()) {
             engine.setRunning(false);
@@ -800,8 +790,18 @@ abstract public class Vehicle implements Loadable, PhysicsTickListener,
     // PhysicsTickListener methods
 
     /**
-     * Callback from Bullet, invoked just before the physics is stepped. TODO
-     * re-order methods
+     * Callback from Bullet, invoked just after the physics has been stepped.
+     *
+     * @param space the space that was just stepped (not null)
+     * @param timeStep the time per physics step (in seconds, &ge;0)
+     */
+    @Override
+    public void physicsTick(PhysicsSpace space, float timeStep) {
+        // do nothing
+    }
+
+    /**
+     * Callback from Bullet, invoked just before the physics is stepped.
      *
      * @param space the space that is about to be stepped (not null)
      * @param timeStep the time per physics step (in seconds, &ge;0)
@@ -818,17 +818,6 @@ abstract public class Vehicle implements Loadable, PhysicsTickListener,
         //System.out.println("linearDamping = " + linearDamping);
         PhysicsVehicle physicsVehicle = getVehicleControl();
         physicsVehicle.setLinearDamping(linearDamping);
-    }
-
-    /**
-     * Callback from Bullet, invoked just after the physics has been stepped.
-     *
-     * @param space the space that was just stepped (not null)
-     * @param timeStep the time per physics step (in seconds, &ge;0)
-     */
-    @Override
-    public void physicsTick(PhysicsSpace space, float timeStep) {
-        // do nothing
     }
     // *************************************************************************
     // VehicleSpeed methods
@@ -885,6 +874,20 @@ abstract public class Vehicle implements Loadable, PhysicsTickListener,
         float result = gearBox.maxForwardSpeed(speedUnit);
         assert result <= 0f : result;
         return result;
+    }
+    // *************************************************************************
+    // VehicleSteering methods
+
+    /**
+     * Determine the rotation angle of the steering wheel, handlebars, or
+     * tiller.
+     *
+     * @return the angle (in radians, negative = left, 0 = neutral, positive =
+     * right)
+     */
+    @Override
+    public float steeringWheelAngle() {
+        return steeringWheelAngle;
     }
     // *************************************************************************
     // private methods
