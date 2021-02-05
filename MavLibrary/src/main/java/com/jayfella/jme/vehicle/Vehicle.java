@@ -736,6 +736,7 @@ abstract public class Vehicle implements Loadable, PhysicsTickListener,
         this.chassis = cgmRoot;
 
         vehicleControl = new VehicleControl(shape, mass);
+        vehicleControl.setApplicationData(this);
         /*
          * Configure damping for the chassis,
          * to simulate drag due to air resistance.

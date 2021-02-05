@@ -104,6 +104,7 @@ abstract public class World
         rigidBody
                 = new PhysicsRigidBody(loadedShape, PhysicsBody.massForStatic);
         getPhysicsSpace().add(rigidBody);
+        rigidBody.setApplicationData(this);
         /*
          * Set the far clipping plane for this world.
          *
