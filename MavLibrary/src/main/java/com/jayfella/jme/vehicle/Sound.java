@@ -179,18 +179,16 @@ public class Sound implements Loadable {
             audioNode.setPositional(newSetting);
         }
     }
-    // *************************************************************************
-    // new protected methods
 
     /**
-     * Add an audio asset to this Sound.
+     * Add an audio asset to this Sound. TODO re-order methods
      *
      * @param assetPath the asset path, including the extension (not null, not
      * empty)
      * @param recordedPitch the fundamental frequency of the asset (in cycles
      * per second, &gt;0)
      */
-    protected void addAssetPath(String assetPath, float recordedPitch) {
+    public void addAssetPath(String assetPath, float recordedPitch) {
         Validate.nonEmpty(assetPath, "asset path");
         Validate.positive(recordedPitch, "recorded pitch");
 
