@@ -65,6 +65,30 @@ public class Sound implements Loadable {
     // new methods exposed
 
     /**
+     * Add an audio asset to this Sound.
+     *
+     * @param assetPath the asset path, including the extension (not null, not
+     * empty)
+     * @param recordedPitch the fundamental frequency of the asset (in cycles
+     * per second, &gt;0)
+     */
+    public void addAssetPath(String assetPath, float recordedPitch) {
+        Validate.nonEmpty(assetPath, "asset path");
+        Validate.positive(recordedPitch, "recorded pitch");
+
+        if (assetManager == null) { // Sound not loaded yet
+            pitchToAssetPath.put(recordedPitch, assetPath);
+
+        } else { // Sound already loaded
+            AudioNode audioNode = addAudioNode(assetPath, recordedPitch);
+
+            if (parent != null) { // Sound already attached
+                parent.attachChild(audioNode);
+            }
+        }
+    }
+
+    /**
      * Attach the audio nodes to the specified scene-graph node.
      *
      * @param parent where to attach (not null, modified)
@@ -177,30 +201,6 @@ public class Sound implements Loadable {
         for (Map.Entry<Float, AudioNode> entry : pitchToNode.entrySet()) {
             AudioNode audioNode = entry.getValue();
             audioNode.setPositional(newSetting);
-        }
-    }
-
-    /**
-     * Add an audio asset to this Sound. TODO re-order methods
-     *
-     * @param assetPath the asset path, including the extension (not null, not
-     * empty)
-     * @param recordedPitch the fundamental frequency of the asset (in cycles
-     * per second, &gt;0)
-     */
-    public void addAssetPath(String assetPath, float recordedPitch) {
-        Validate.nonEmpty(assetPath, "asset path");
-        Validate.positive(recordedPitch, "recorded pitch");
-
-        if (assetManager == null) { // Sound not loaded yet
-            pitchToAssetPath.put(recordedPitch, assetPath);
-
-        } else { // Sound already loaded
-            AudioNode audioNode = addAudioNode(assetPath, recordedPitch);
-
-            if (parent != null) { // Sound already attached
-                parent.attachChild(audioNode);
-            }
         }
     }
     // *************************************************************************
