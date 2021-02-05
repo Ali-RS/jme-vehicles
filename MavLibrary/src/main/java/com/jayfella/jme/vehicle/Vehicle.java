@@ -84,6 +84,12 @@ abstract public class Vehicle
      * damping to due air resistance on the chassis (&ge;0, &lt;1)
      */
     private float chassisDamping;
+    /**
+     * rotation of the steering wheel (in radians, negative&rarr;left,
+     * 0&rarr;neutral, positive&rarr;right)
+     */
+    private float steeringWheelAngle;
+
     private GearBox gearBox;
     final private List<Wheel> wheels = new ArrayList<>(4);
     /**
@@ -576,23 +582,22 @@ abstract public class Vehicle
         }
     }
 
-    public void steer(float strength) {
+    public void steer(float wheelAngle) {
+        steeringWheelAngle = 2f * wheelAngle;
+
         for (Wheel wheel : wheels) {
-            wheel.steer(strength);
+            wheel.steer(wheelAngle);
         }
     }
 
     /**
-     * Determine the rotation angle for the steering wheel.
+     * Determine the rotation angle of the steering wheel.
      *
      * @return the angle (in radians, negative = left, 0 = neutral, positive =
      * right)
      */
     public float steeringWheelAngle() {
-        float steeringAngle = wheels.get(0).getSteeringAngle();
-        float result = 2f * steeringAngle;
-
-        return result;
+        return steeringWheelAngle;
     }
 
     public void stopEngine() {
@@ -795,7 +800,8 @@ abstract public class Vehicle
     // PhysicsTickListener methods
 
     /**
-     * Callback from Bullet, invoked just before the physics is stepped.
+     * Callback from Bullet, invoked just before the physics is stepped. TODO
+     * re-order methods
      *
      * @param space the space that is about to be stepped (not null)
      * @param timeStep the time per physics step (in seconds, &ge;0)
