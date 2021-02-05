@@ -35,6 +35,10 @@ public class Sound implements Loadable {
     // fields
 
     /**
+     * used to load assets, or null if not yet loaded
+     */
+    private AssetManager assetManager;
+    /**
      * AudioNode that's playing, or null if none
      */
     private AudioNode activeNode;
@@ -49,9 +53,14 @@ public class Sound implements Loadable {
      */
     final private Map<Float, AudioNode> pitchToNode = new HashMap<>(5);
     /**
-     * paths to assets not yet loaded
+     * paths to assets not yet loaded, mapped from their fundamental frequencies
+     * in cycles per second
      */
     final private Map<Float, String> pitchToAssetPath = new HashMap<>(5);
+    /**
+     * scene-graph node to which this Sound is attached, or null if unattached
+     */
+    private Node parent;
     // *************************************************************************
     // new methods exposed
 
@@ -61,6 +70,10 @@ public class Sound implements Loadable {
      * @param parent where to attach (not null, modified)
      */
     public void attachTo(Node parent) {
+        assert assetManager != null : "Not loaded.";
+        assert this.parent == null : "Already attached.";
+
+        this.parent = parent;
         for (AudioNode node : pitchToNode.values()) {
             parent.attachChild(node);
         }
@@ -70,9 +83,12 @@ public class Sound implements Loadable {
      * Detach the audio nodes from the scene graph.
      */
     public void detach() {
+        assert this.parent != null : "Not attached.";
+
         for (AudioNode node : pitchToNode.values()) {
             node.removeFromParent();
         }
+        this.parent = null;
     }
 
     /**
@@ -89,6 +105,8 @@ public class Sound implements Loadable {
      * Configure the audio nodes for silence.
      */
     public void mute() {
+        assert assetManager != null : "Not loaded.";
+
         if (activeNode != null) {
             activeNode.stop();
             activeNode = null;
@@ -103,11 +121,9 @@ public class Sound implements Loadable {
      * @param volume the desired relative volume (linear scale, &ge;0)
      */
     public void setPitchAndVolume(float pitch, float volume) {
+        assert assetManager != null : "Not loaded.";
         Validate.positive(pitch, "pitch");
         Validate.nonNegative(volume, "volume");
-        if (pitchToAssetPath.size() > pitchToNode.size()) {
-            throw new IllegalStateException("The assets have not been loaded.");
-        }
 
         if (volume == 0f) {
             mute();
@@ -167,10 +183,10 @@ public class Sound implements Loadable {
     // new protected methods
 
     /**
-     * Load an OGG asset and add it to this collection.
+     * Add an audio asset to this collection.
      *
-     * @param assetPath the asset path, including the ".ogg" extension (not
-     * null, not empty)
+     * @param assetPath the asset path, including the extension (not null, not
+     * empty)
      * @param recordedPitch the fundamental frequency of the asset (in cycles
      * per second, &gt;0)
      */
@@ -186,10 +202,15 @@ public class Sound implements Loadable {
     /**
      * Load the assets of this Sound without attaching them to any scene.
      *
-     * @param assetManager for loading assets (not null)
+     * @param assetManager for loading assets (not null, alias created)
      */
     @Override
     public void load(AssetManager assetManager) {
+        Validate.nonNull(assetManager, "asset manager");
+        assert this.assetManager == null : "Already loaded.";
+
+        this.assetManager = assetManager;
+
         for (Map.Entry<Float, String> entry : pitchToAssetPath.entrySet()) {
             String assetPath = entry.getValue();
             AudioNode node = new AudioNode(assetManager, assetPath,
@@ -265,7 +286,6 @@ public class Sound implements Loadable {
             }
         }
 
-        String message = "Not a member of this collection: " + node;
-        throw new IllegalArgumentException(message);
+        throw new IllegalArgumentException("Not part of this Sound: " + node);
     }
 }
