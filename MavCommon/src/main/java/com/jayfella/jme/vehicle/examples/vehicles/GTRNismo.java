@@ -18,7 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A sample Vehicle, built around iSteven's "Nissan GT-R" model.
+ * An example Vehicle, built around iSteven's "Nissan GT-R" model.
  */
 public class GTRNismo extends Vehicle {
     // *************************************************************************

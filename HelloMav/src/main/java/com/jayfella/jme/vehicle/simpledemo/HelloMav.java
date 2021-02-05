@@ -79,9 +79,9 @@ public class HelloMav extends SimpleApplication {
     /**
      * Main entry point for the HelloMav application.
      *
-     * @param args array of command-line arguments (not null)
+     * @param unused array of command-line arguments (not null)
      */
-    public static void main(String... args) {
+    public static void main(String... unused) {
         /*
          * Mute the chatty loggers found in some imported packages.
          */

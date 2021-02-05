@@ -18,7 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A sample Vehicle, built around Daniel Zhabotinsky's "Modern Hatchback - Low
+ * An example Vehicle, built around Daniel Zhabotinsky's "Modern Hatchback - Low
  * Poly" model.
  */
 public class HatchBack extends Vehicle {

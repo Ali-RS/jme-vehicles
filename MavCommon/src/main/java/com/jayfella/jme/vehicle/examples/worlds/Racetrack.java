@@ -14,7 +14,7 @@ import com.jme3.system.Platform;
 import java.util.logging.Logger;
 
 /**
- * A sample World, built around Adi Barda's racetrack model.
+ * A single-chunk example World, built around Adi Barda's racetrack model.
  *
  * @author Stephen Gold sgold@sonic.net
  */

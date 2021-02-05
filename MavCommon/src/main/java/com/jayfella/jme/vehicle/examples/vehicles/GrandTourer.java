@@ -18,7 +18,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A sample Vehicle, built around Thomas Glenn Thorne's "Opel GT Retopo" model.
+ * An example Vehicle, built around Thomas Glenn Thorne's "Opel GT Retopo"
+ * model.
  */
 public class GrandTourer extends Vehicle {
     // *************************************************************************

@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 import jme3utilities.MyAsset;
 
 /**
- * A sample Sky, built around the "Purple Nebula Complex" cubemap.
+ * An example Sky, built around the "Purple Nebula Complex" cubemap.
  *
  * @author Stephen Gold sgold@sonic.net
  */

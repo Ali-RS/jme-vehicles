@@ -17,7 +17,7 @@ import com.jme3.system.Platform;
 import java.util.logging.Logger;
 
 /**
- * A single-chunk sample World, built around James Khan's Vehicle Playground
+ * A single-chunk example World, built around James Khan's Vehicle Playground
  * model.
  */
 public class Playground extends World {

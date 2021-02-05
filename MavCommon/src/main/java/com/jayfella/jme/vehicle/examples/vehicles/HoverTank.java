@@ -21,7 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A sample Vehicle, built around Rémy Bouquet's "Enhanced HoverTank" model.
+ * An example Vehicle, built around Rémy Bouquet's "Enhanced HoverTank" model.
  *
  * @author Stephen Gold sgold@sonic.net
  */

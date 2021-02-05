@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A sample 3-wheel Vehicle, built around oakar258's "HCR2 Rotator" model.
+ * An example 3-wheel Vehicle, built around oakar258's "HCR2 Rotator" model.
  *
  * @author Stephen Gold sgold@sonic.net
  */

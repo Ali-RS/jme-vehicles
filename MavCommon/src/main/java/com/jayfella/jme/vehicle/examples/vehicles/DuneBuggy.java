@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A sample Vehicle, built around oakar258's "HCR2 Buggy" model.
+ * An example Vehicle, built around oakar258's "HCR2 Buggy" model.
  */
 public class DuneBuggy extends Vehicle {
     // *************************************************************************

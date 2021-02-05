@@ -11,7 +11,7 @@ import com.jme3.scene.Spatial;
 import java.util.logging.Logger;
 
 /**
- * A sample Sky, built around Sergej Majboroda's "Quarry 03" HDRI.
+ * An example Sky, built around Sergej Majboroda's "Quarry 03" HDRI.
  */
 public class QuarrySky extends Sky {
     // *************************************************************************

@@ -17,8 +17,8 @@ import com.jme3.texture.Texture;
 import java.util.logging.Logger;
 
 /**
- * A sample World, built around the "mountains512.png" heightmap and terrain
- * textures from jme3-testdata.
+ * A single-chunk example World, built around the "mountains512.png" heightmap
+ * and terrain textures from jme3-testdata.
  *
  * @author Stephen Gold sgold@sonic.net
  */

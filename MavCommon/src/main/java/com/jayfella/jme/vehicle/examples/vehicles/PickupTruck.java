@@ -18,7 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A sample Vehicle, built around mauro.zampaoli's "Ford Ranger" model.
+ * An example Vehicle, built around mauro.zampaoli's "Ford Ranger" model.
  */
 public class PickupTruck extends Vehicle {
     // *************************************************************************

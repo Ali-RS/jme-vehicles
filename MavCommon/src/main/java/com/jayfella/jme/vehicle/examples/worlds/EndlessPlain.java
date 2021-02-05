@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 import jme3utilities.math.Vector3i;
 
 /**
- * A sample World, built around the "marble_01" material and the
+ * An infinite example World, built around the "marble_01" material and the
  * PlaneCollisionShape.
  *
  * @author Stephen Gold sgold@sonic.net
