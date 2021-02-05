@@ -44,8 +44,8 @@ public class HelloMav extends SimpleApplication {
     /**
      * steering-control parameters
      */
-    final private static float maxSteerForce = 1f;
-    final private static float turnSpeed = 0.5f;
+    final private static float maxSteerAngle = 1f;
+    final private static float turnRate = 0.5f;
     /**
      * names for the 3 input signals used to control the Vehicle
      */
@@ -56,9 +56,9 @@ public class HelloMav extends SimpleApplication {
     // fields
 
     /**
-     * steering force from the previous update
+     * steer angle from the previous update
      */
-    private float steeringForce = 0f;
+    private float steerAngle = 0f;
     /**
      * track which of the named input signals are active
      */
@@ -155,14 +155,7 @@ public class HelloMav extends SimpleApplication {
         }
         vehicle.setAccelerateSignal(strength);
 
-        float steerAngle = 0f;
-        if (signalTracker.test(leftSignalName)) {
-            steerAngle += 0.5f;
-        }
-        if (signalTracker.test(rightSignalName)) {
-            steerAngle -= 0.5f;
-        }
-        vehicle.steer(steerAngle);
+        updateTurn(tpf);
         /*
          * For 3-D audio, move the Listener with the default Camera.
          */
@@ -175,8 +168,6 @@ public class HelloMav extends SimpleApplication {
             listener.setVelocity(cameraVelocity);
             oldCameraLocation.set(newLocation);
         }
-
-        updateTurn(tpf);
     }
     // *************************************************************************
     // private methods
@@ -242,17 +233,17 @@ public class HelloMav extends SimpleApplication {
      */
     private void updateTurn(float tpf) {
         if (signalTracker.test(leftSignalName)) {
-            steeringForce = Math.min(steeringForce + (tpf * turnSpeed),
-                    maxSteerForce);
+            steerAngle += tpf * turnRate;
+            steerAngle = Math.min(steerAngle, maxSteerAngle);
 
         } else if (signalTracker.test(rightSignalName)) {
-            steeringForce = Math.max(steeringForce - (tpf * turnSpeed),
-                    -maxSteerForce);
+            steerAngle -= tpf * turnRate;
+            steerAngle = Math.max(steerAngle, -maxSteerAngle);
 
         } else {
-            steeringForce = 0f;
+            steerAngle = 0f;
         }
 
-        vehicle.steer(steeringForce);
+        vehicle.steer(steerAngle);
     }
 }
