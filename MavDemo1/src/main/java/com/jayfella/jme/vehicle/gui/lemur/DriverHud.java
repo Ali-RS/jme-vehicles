@@ -5,6 +5,7 @@ import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.gui.AtmiState;
 import com.jayfella.jme.vehicle.gui.GearNameState;
 import com.jayfella.jme.vehicle.gui.SpeedometerState;
+import com.jayfella.jme.vehicle.gui.SteeringWheelState;
 import com.jayfella.jme.vehicle.gui.TachometerState;
 import com.jayfella.jme.vehicle.input.DrivingInputMode;
 import com.jayfella.jme.vehicle.input.SignalMode;
@@ -15,8 +16,8 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
-import com.jme3.material.RenderState;
 import com.jme3.math.Quaternion;
+import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
@@ -27,7 +28,6 @@ import java.util.logging.Logger;
 import jme3utilities.MyAsset;
 import jme3utilities.SignalTracker;
 import jme3utilities.mesh.DiscMesh;
-import jme3utilities.mesh.RectangleMesh;
 
 /**
  * Heads-up display (HUD) for driving a Vehicle. This AppState should be
@@ -37,13 +37,13 @@ import jme3utilities.mesh.RectangleMesh;
  * <li>the exit button</li>
  * <li>the horn button</li>
  * <li>the power button</li>
- * <li>the steering-wheel indicator</li>
  * </ul>
  * It indirectly manages:
  * <ul>
  * <li>the automatic-transmision mode indicator</li>
  * <li>the gear-name indicator</li>
  * <li>the speedometer</li>
+ * <li>the steering-wheel indicator</li>
  * <li>the tachometer</li>
  * </ul>
  */
@@ -75,7 +75,6 @@ public class DriverHud extends BaseAppState {
     private Geometry exitButton;
     private Geometry hornButton;
     private Geometry powerButton;
-    private Geometry steering;
     /**
      * pre-loaded materials for iconic buttons
      */
@@ -83,11 +82,14 @@ public class DriverHud extends BaseAppState {
     private Material hornSilentMaterial, hornSoundMaterial;
     private Material powerOffMaterial, powerOnMaterial;
     /**
-     * appstates to manage the dial indicators
+     * appstates to manage rotary indicators
      */
     private SpeedometerState speedometer;
+    private SteeringWheelState steeringWheel;
     private TachometerState tachometer;
-
+    /**
+     * corresponding Vehicle, or null if none assigned
+     */
     private Vehicle vehicle;
     // *************************************************************************
     // constructors
@@ -108,6 +110,7 @@ public class DriverHud extends BaseAppState {
      * @param vehicle the Vehicle to use (or null for none)
      */
     public void setVehicle(Vehicle vehicle) {
+        assert !isEnabled();
         this.vehicle = vehicle;
         atmiState.setVehicle(vehicle);
     }
@@ -217,18 +220,6 @@ public class DriverHud extends BaseAppState {
         };
         MouseEventControl control = new MouseEventControl(listener);
         hornButton.addControl(control);
-        /*
-         * Construct a Geometry for the steering-wheel indicator.
-         */
-        radius = 120f;
-        mesh = new RectangleMesh(-radius, +radius, -radius, +radius, +1f);
-        steering = new Geometry("steering wheel", mesh);
-
-        texture = manager.loadTexture("/Textures/Georg/steering.png");
-        Material material = MyAsset.createUnshadedMaterial(manager, texture);
-        RenderState ars = material.getAdditionalRenderState();
-        ars.setBlendMode(RenderState.BlendMode.Alpha);
-        steering.setMaterial(material);
     }
 
     /**
@@ -243,7 +234,7 @@ public class DriverHud extends BaseAppState {
         hideHornButton();
         hidePowerButton();
         hideSpeedometer();
-        hideSteering();
+        hideSteeringWheel();
         hideTachometer();
     }
 
@@ -284,10 +275,9 @@ public class DriverHud extends BaseAppState {
          * Re-orient the horn button and the steering-wheel indicator.
          */
         float angle = vehicle.steeringWheelAngle();
-        Quaternion orientation = new Quaternion();
+        Quaternion orientation = new Quaternion(); // TODO garbage
         orientation.fromAngles(0f, 0f, angle);
         hornButton.setLocalRotation(orientation);
-        steering.setLocalRotation(orientation);
 
         boolean isHornRequested = vehicle.isHornRequested();
         showHornButton(isHornRequested);
@@ -343,10 +333,13 @@ public class DriverHud extends BaseAppState {
     }
 
     /**
-     * Hide the steering-wheel indicator.
+     * Hide the steering wheel.
      */
-    private void hideSteering() {
-        steering.removeFromParent();
+    private void hideSteeringWheel() {
+        if (steeringWheel != null) {
+            getStateManager().detach(steeringWheel);
+            steeringWheel = null;
+        }
     }
 
     /**
@@ -473,16 +466,21 @@ public class DriverHud extends BaseAppState {
     }
 
     /**
-     * Display the steering-wheel indicator.
+     * Display the steering wheel.
      */
     private void showSteeringWheel() {
-        attachToGui(steering);
-        /*
-         * Position the indicator in the viewport.
-         */
+        hideSteeringWheel();
+
+        float radius = 120f; // pixels
         float x = 0.5f * viewPortWidth;
         float y = 0.18f * viewPortHeight;
-        steering.setLocalTranslation(x, y, 0.9f);
+        float z = guiZ - 0.1f; // behind the horn button
+        Vector3f location = new Vector3f(x, y, z);
+        steeringWheel = new SteeringWheelState(radius, location);
+        getStateManager().attach(steeringWheel);
+
+        steeringWheel.setVehicle(vehicle);
+        steeringWheel.setEnabled(true);
     }
 
     /**
