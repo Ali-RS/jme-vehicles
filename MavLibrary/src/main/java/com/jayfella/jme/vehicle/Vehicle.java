@@ -41,8 +41,8 @@ import jme3utilities.math.MyVector3f;
  *
  * Derived from the Car and Vehicle classes in the Advanced Vehicles project.
  */
-abstract public class Vehicle
-        implements Loadable, PhysicsTickListener, VehicleSpeed {
+abstract public class Vehicle implements Loadable, PhysicsTickListener,
+        VehicleSpeed, VehicleSteering {
     // *************************************************************************
     // constants and loggers
 
@@ -591,7 +591,7 @@ abstract public class Vehicle
     }
 
     /**
-     * Determine the rotation angle of the steering wheel.
+     * Determine the rotation angle of the steering wheel. TODO re-order methods
      *
      * @return the angle (in radians, negative = left, 0 = neutral, positive =
      * right)
