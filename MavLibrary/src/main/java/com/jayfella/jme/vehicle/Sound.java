@@ -183,7 +183,7 @@ public class Sound implements Loadable {
     // new protected methods
 
     /**
-     * Add an audio asset to this collection.
+     * Add an audio asset to this Sound.
      *
      * @param assetPath the asset path, including the extension (not null, not
      * empty)
@@ -192,9 +192,18 @@ public class Sound implements Loadable {
      */
     protected void addAssetPath(String assetPath, float recordedPitch) {
         Validate.nonEmpty(assetPath, "asset path");
-        Validate.positive(recordedPitch, "fundamental");
+        Validate.positive(recordedPitch, "recorded pitch");
 
-        pitchToAssetPath.put(recordedPitch, assetPath);
+        if (assetManager == null) { // Sound not loaded yet
+            pitchToAssetPath.put(recordedPitch, assetPath);
+
+        } else { // Sound already loaded
+            AudioNode audioNode = addAudioNode(assetPath, recordedPitch);
+
+            if (parent != null) { // Sound already attached
+                parent.attachChild(audioNode);
+            }
+        }
     }
     // *************************************************************************
     // Loadable methods
@@ -213,20 +222,37 @@ public class Sound implements Loadable {
 
         for (Map.Entry<Float, String> entry : pitchToAssetPath.entrySet()) {
             String assetPath = entry.getValue();
-            AudioNode node = new AudioNode(assetManager, assetPath,
-                    AudioData.DataType.Buffer);
-            node.setDirectional(false);
-            node.setLooping(true);
-            node.setPositional(isPositional);
-
             float recordedPitch = entry.getKey();
-            pitchToNode.put(recordedPitch, node);
+            addAudioNode(assetPath, recordedPitch);
         }
 
         pitchToAssetPath.clear();
     }
     // *************************************************************************
     // private methods
+
+    /**
+     * Create an AudioNode and add it to this Sound.
+     *
+     * @param assetPath the asset path, including the extension (not null, not
+     * empty)
+     * @param recordedPitch the fundamental frequency of the asset (in cycles
+     * per second, &gt;0)
+     * @return the new, non-directional instance
+     */
+    private AudioNode addAudioNode(String assetPath, float recordedPitch) {
+        assert assetManager != null;
+
+        AudioNode result = new AudioNode(assetManager, assetPath,
+                AudioData.DataType.Buffer);
+        pitchToNode.put(recordedPitch, result);
+
+        result.setDirectional(false);
+        result.setLooping(true);
+        result.setPositional(isPositional);
+
+        return result;
+    }
 
     /**
      * Test whether the specified AudioNode can accurately simulate the
