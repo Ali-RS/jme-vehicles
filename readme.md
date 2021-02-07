@@ -396,7 +396,8 @@ The world (and physics-space) units of distance are *meters*.
 + [Adam T. Ryder (aka "ATryder")][atryder] created the jME-TTF library.
 + [Ryan McDonough][yaRnMcDonuts] created the PBRTerrain library.
 + Rémy Bouquet (aka "Nehon") created the "Jaime" and "Enhanced HoverTank" models.
-+ [Adi Barda (aka "adi.barda")][adi] created the racetrack model.
++ [Adi Barda (aka "adi.barda")][adi] created the racetrack model
+  and helped shape the MaVehicle library.
 + Rob Tuytel created the "marble_01" textures.
 + [Sergej Majboroda][sergej] created the "Quarry 03" texture.
 + Tom Ruen created the "Lunar libration with phase Oct 2007" animation.
