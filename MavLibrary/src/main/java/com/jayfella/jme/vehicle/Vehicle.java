@@ -81,7 +81,7 @@ abstract public class Vehicle implements Loadable, PhysicsTickListener,
      */
     private float accelerateSignal;
     /**
-     * damping to due air resistance on the chassis (&ge;0, &lt;1)
+     * linear damping to due air resistance on the chassis (&ge;0, &lt;1)
      */
     private float chassisDamping;
     /**
@@ -89,8 +89,13 @@ abstract public class Vehicle implements Loadable, PhysicsTickListener,
      * 0&rarr;neutral, positive&rarr;right)
      */
     private float steeringWheelAngle;
-
+    /**
+     * convey engine power to the wheels
+     */
     private GearBox gearBox;
+    /**
+     * support the chassis and configure acceleration, steering, and braking
+     */
     final private List<Wheel> wheels = new ArrayList<>(4);
     /**
      * temporary storage for the vehicle's orientation
@@ -115,9 +120,17 @@ abstract public class Vehicle implements Loadable, PhysicsTickListener,
      * descriptive name (not null)
      */
     final private String name;
-
+    /**
+     * visualize tire smoke
+     */
     private TireSmokeEmitter smokeEmitter;
+    /**
+     * simulate vehicle sounds
+     */
     private VehicleAudioState vehicleAudioState;
+    /**
+     * PhysicsCollisionObject
+     */
     private VehicleControl vehicleControl;
     /**
      * VehicleWorld that contains this Vehicle, or null if none
@@ -451,7 +464,7 @@ abstract public class Vehicle implements Loadable, PhysicsTickListener,
         float speed = forwardSpeed(SpeedUnit.WUPS);
         speed = FastMath.abs(speed);
         if (speed < 0.1f) {
-            speed = 0.1f; // avoid division by zero
+            speed = 0.1f; // avoid division by zero below
         }
         /*
          * Distribute the total engine power across the wheels in accordance

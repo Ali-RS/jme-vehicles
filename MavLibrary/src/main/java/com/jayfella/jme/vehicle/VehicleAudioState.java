@@ -6,7 +6,7 @@ import com.jme3.app.state.BaseAppState;
 import java.util.logging.Logger;
 
 /**
- * Manage the engine sound for a particular Vehicle.
+ * Simulate the sounds of a particular Vehicle.
  *
  * Derived from the VehicleAudioState class in the Advanced Vehicles project.
  */
