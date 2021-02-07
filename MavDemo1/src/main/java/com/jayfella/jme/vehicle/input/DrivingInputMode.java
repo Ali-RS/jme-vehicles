@@ -132,9 +132,8 @@ public class DrivingInputMode extends InputMode {
         assign((FunctionId function, InputState inputState, double tpf) -> {
             GearBox gearBox = MavDemo1.getVehicle().getGearBox();
             if (inputState == InputState.Positive) {
-                gearBox.setReversing(true);
-            } else {
-                gearBox.setReversing(false);
+                boolean isInReverse = gearBox.isInReverse();
+                gearBox.setReversing(!isInReverse);
             }
         }, F_REVERSE);
 
@@ -329,24 +328,21 @@ public class DrivingInputMode extends InputMode {
         /*
          * Update the "accelerate" control signal.
          */
-        float kph = vehicle.forwardSpeed(SpeedUnit.KPH);
-        GearBox gearBox = vehicle.getGearBox();
-
         float acceleration = 0f;
         boolean isEngineRunning = vehicle.getEngine().isRunning();
         if (isEngineRunning && accelerating) {
-            float maxKph = gearBox.maxForwardSpeed(SpeedUnit.KPH);
-            if (kph < maxKph) {
-                acceleration = 1f;
-            }
-        }
-
-        if (isEngineRunning && gearBox.isInReverse()) {
-            float maxKph = gearBox.maxReverseSpeed(SpeedUnit.KPH);
-            if (kph > maxKph) {
-                acceleration = -1f;
+            float kph = vehicle.forwardSpeed(SpeedUnit.KPH);
+            GearBox gearBox = vehicle.getGearBox();
+            if (gearBox.isInReverse()) {
+                float maxKph = gearBox.maxReverseSpeed(SpeedUnit.KPH);
+                if (kph > maxKph) {
+                    acceleration = 1f;
+                }
             } else {
-                acceleration = 0f;
+                float maxKph = gearBox.maxForwardSpeed(SpeedUnit.KPH);
+                if (kph < maxKph) {
+                    acceleration = 1f;
+                }
             }
         }
         vehicle.setAccelerateSignal(acceleration);

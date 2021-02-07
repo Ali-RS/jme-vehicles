@@ -76,8 +76,8 @@ abstract public class Vehicle implements Loadable, PhysicsTickListener,
      */
     private Engine engine;
     /**
-     * control signal for acceleration, ranging from -1 (full-throttle reverse)
-     * to +1 (full-throttle forward)
+     * control signal for acceleration, ranging from 0 (coasting) to 1 (full
+     * throttle)
      */
     private float accelerateSignal;
     /**
@@ -156,7 +156,7 @@ abstract public class Vehicle implements Loadable, PhysicsTickListener,
     /**
      * Evaluate the "accelerate" control signal.
      *
-     * @return a value between -1 and +1 inclusive
+     * @return a signal strength, between 0 (coasting) and 1 (full throttle)
      */
     public float accelerateSignal() {
         return accelerateSignal;
@@ -451,12 +451,11 @@ abstract public class Vehicle implements Loadable, PhysicsTickListener,
      * Alter the "accelerate" control signal.
      *
      * @param strength the desired strength of the "accelerate" control signal:
-     * between -1 (full-throttle reverse) and +1 (full-throttle forward)
-     * inclusive
+     * between 0 (coasting) and 1 (full throttle)
      */
     public void setAccelerateSignal(float strength) {
-        // TODO awkward interface - controls both the gearbox and the throttle
-        Validate.inRange(strength, "strength", -1f, 1f);
+        Validate.fraction(strength, "strength");
+
         this.accelerateSignal = strength;
         /*
          * Determine unsigned speed in world units per second.
@@ -470,9 +469,9 @@ abstract public class Vehicle implements Loadable, PhysicsTickListener,
          * Distribute the total engine power across the wheels in accordance
          * with their configured power fractions.
          */
+        float signedSignal = gearBox.isInReverse() ? -strength : +strength;
         float maxWatts = getEngine().outputWatts();
-        //System.out.println("speed = " + speed + " rpm = " + getEngine().getRpm() + " maxWatts = " + maxWatts);
-        float totalWatts = strength * maxWatts; // signed so that <0 means reverse
+        float totalWatts = signedSignal * maxWatts; // signed so that <0 means reverse
         for (Wheel wheel : wheels) {
             float powerFraction = wheel.getPowerFraction();
             float wheelPower = powerFraction * totalWatts;

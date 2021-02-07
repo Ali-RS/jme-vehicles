@@ -140,7 +140,6 @@ public class AutomaticGearboxState extends BaseAppState {
             revs = 0f;
 
         } else if (wheelCount > 0) {
-            accelerateSignal = FastMath.abs(accelerateSignal);
             float boostRevs = 0f;
             for (int wheelIndex = 0; wheelIndex < wheelCount; ++wheelIndex) {
                 Wheel wheel = vehicle.getWheel(wheelIndex);
