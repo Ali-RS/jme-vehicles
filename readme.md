@@ -381,6 +381,8 @@ The world (and physics-space) units of distance are *meters*.
 ## External links
 
 + January 2021 [walkthru video](https://www.youtube.com/watch?v=RnfEhB3xOys)
++ [the More Advanced Vehicles page](https://store.jmonkeyengine.org/2d0fc6de-2e4d-49b1-8372-4f364d79e175)
+    at [the JmonkeyStore](https://store.jmonkeyengine.org)
 
 [Jump to table of contents](#toc)
 
