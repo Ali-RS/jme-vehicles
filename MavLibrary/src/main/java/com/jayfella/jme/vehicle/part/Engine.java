@@ -4,9 +4,11 @@ import com.jayfella.jme.vehicle.Sound;
 import com.jme3.math.FastMath;
 import com.jme3.math.Spline;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
 import java.util.List;
 import java.util.logging.Logger;
 import jme3utilities.Validate;
+import com.jayfella.jme.vehicle.HasNode;
 
 /**
  * An engine to propel a Vehicle.
@@ -58,6 +60,10 @@ abstract public class Engine implements EngineSpeed {
      * descriptive name (not null)
      */
     final private String name;
+    /**
+     * vehicle that contains this Engine, or null if none
+     */
+    private HasNode vehicle;
     // *************************************************************************
     // constructors
 
@@ -175,12 +181,35 @@ abstract public class Engine implements EngineSpeed {
     }
 
     /**
-     * Alter the engine's sound.
+     * Alter the engine's Sound.
      *
-     * @param sound the desired Sound (loaded), or null for silence
+     * @param desiredSound the desired Sound (loaded), or null for silence
      */
-    public void setSound(Sound sound) {
-        this.sound = sound;
+    public void setSound(Sound desiredSound) {
+        if (sound != null && vehicle != null) {
+            sound.detach();
+        }
+        this.sound = desiredSound;
+        if (sound != null && vehicle != null) {
+            Node parent = vehicle.getNode();
+            sound.attachTo(parent);
+        }
+    }
+
+    /**
+     * Alter which vehicle (if any) contains this Engine.
+     *
+     * @param desiredVehicle the desired Vehicle, or null for none
+     */
+    public void setVehicle(HasNode desiredVehicle) {
+        if (sound != null && vehicle != null) {
+            sound.detach();
+        }
+        this.vehicle = desiredVehicle;
+        if (sound != null && vehicle != null) {
+            Node parent = vehicle.getNode();
+            sound.attachTo(parent);
+        }
     }
     // *************************************************************************
     // new protected methods

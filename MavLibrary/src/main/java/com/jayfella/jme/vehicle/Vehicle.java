@@ -41,7 +41,7 @@ import jme3utilities.math.MyVector3f;
  *
  * Derived from the Car and Vehicle classes in the Advanced Vehicles project.
  */
-abstract public class Vehicle implements Loadable, PhysicsTickListener,
+abstract public class Vehicle implements HasNode, Loadable, PhysicsTickListener,
         VehicleSpeed, VehicleSteering {
     // *************************************************************************
     // constants and loggers
@@ -330,16 +330,6 @@ abstract public class Vehicle implements Loadable, PhysicsTickListener,
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * Access the scene-graph subtree that represents this Vehicle.
-     *
-     * @return the pre-existing instance (not null)
-     */
-    public Node getNode() {
-        assert node != null;
-        return node;
     }
 
     /**
@@ -773,10 +763,26 @@ abstract public class Vehicle implements Loadable, PhysicsTickListener,
         node.attachChild(chassis);
     }
 
+    /**
+     * Alter the vehicle's Engine.
+     *
+     * @param desiredEngine the desired Engine (not null)
+     */
     protected void setEngine(Engine desiredEngine) {
-        engine = desiredEngine;
+        Validate.nonNull(desiredEngine, "desired engine");
+
+        if (engine != null) {
+            engine.setVehicle(null);
+        }
+        this.engine = desiredEngine;
+        engine.setVehicle(this);
     }
 
+    /**
+     * Alter the vehicle's GearBox.
+     *
+     * @param gearBox the desired GearBox
+     */
     protected void setGearBox(GearBox gearBox) {
         this.gearBox = gearBox;
     }
@@ -794,6 +800,19 @@ abstract public class Vehicle implements Loadable, PhysicsTickListener,
         if (sound != null) {
             sound.attachTo(node);
         }
+    }
+    // *************************************************************************
+    // HasNode methods
+
+    /**
+     * Access the scene-graph subtree that represents this Vehicle.
+     *
+     * @return the pre-existing instance (not null)
+     */
+    @Override
+    public Node getNode() {
+        assert node != null;
+        return node;
     }
     // *************************************************************************
     // Loadable methods
