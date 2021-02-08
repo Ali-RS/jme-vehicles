@@ -112,6 +112,9 @@ class EngineSoundMenu extends AnimatedMenu {
                     = MavDemo1.getApplication().getAssetManager();
             selectedSound.load(assetManager);
             configureSelectedSound();
+
+            Node node = MavDemo1.getVehicle().getNode();
+            selectedSound.attachTo(node);
         }
     }
 
@@ -126,7 +129,7 @@ class EngineSoundMenu extends AnimatedMenu {
         super.update(tpf);
 
         if (selectedSound != null) {
-            configureSelectedSound();
+            configureSelectedSound(); // in case the effective volume changed
         }
     }
     // *************************************************************************
@@ -136,12 +139,9 @@ class EngineSoundMenu extends AnimatedMenu {
      * Configure the selected Sound and attach it to the scene graph.
      */
     private void configureSelectedSound() {
-        float pitch = 60f;
+        float pitch = 60f; // 3600 RPM
         float volume = getState(AudioHud.class).effectiveVolume();
         selectedSound.setPitchAndVolume(pitch, volume);
-
-        Node rootNode = MavDemo1.getApplication().getRootNode();
-        selectedSound.attachTo(rootNode);
     }
 
     /**
@@ -162,6 +162,9 @@ class EngineSoundMenu extends AnimatedMenu {
                     = MavDemo1.getApplication().getAssetManager();
             newSound.load(assetManager);
             configureSelectedSound();
+
+            Node node = MavDemo1.getVehicle().getNode();
+            selectedSound.attachTo(node);
         }
     }
 }
