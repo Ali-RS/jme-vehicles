@@ -101,7 +101,13 @@ abstract public class Vehicle implements Loadable, PhysicsTickListener,
      * temporary storage for the vehicle's orientation
      */
     final private static Matrix3f tmpOrientation = new Matrix3f();
+    /**
+     * scene-graph subtree that represents this Vehicle
+     */
     final private Node node;
+    /**
+     * manage this vehicle's active skidmarks
+     */
     private SkidMarksState skidmarks;
     /**
      * sound produced when the horn is sounding, or null for silence
@@ -326,12 +332,14 @@ abstract public class Vehicle implements Loadable, PhysicsTickListener,
         return name;
     }
 
+    /**
+     * Access the scene-graph subtree that represents this Vehicle.
+     *
+     * @return the pre-existing instance (not null)
+     */
     public Node getNode() {
+        assert node != null;
         return node;
-    }
-
-    public Quaternion getRotation() {
-        return node.getLocalRotation();
     }
 
     /**
