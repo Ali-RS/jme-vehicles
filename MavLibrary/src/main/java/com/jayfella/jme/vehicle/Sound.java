@@ -247,6 +247,7 @@ public class Sound implements Loadable {
 
         result.setDirectional(false);
         result.setLooping(true);
+        result.setName(assetPath);
         result.setPositional(isPositional);
 
         return result;
