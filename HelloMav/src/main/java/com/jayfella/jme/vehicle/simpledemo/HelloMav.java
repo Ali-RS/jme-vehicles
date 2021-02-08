@@ -65,11 +65,6 @@ public class HelloMav extends SimpleApplication {
      */
     final private SignalTracker signalTracker = new SignalTracker();
     /**
-     * calculate camera velocity
-     */
-    final private Vector3f cameraVelocity = new Vector3f();
-    final private Vector3f oldCameraLocation = new Vector3f();
-    /**
      * Vehicle that's being driven
      */
     final private Vehicle vehicle = new HoverTank();
@@ -167,18 +162,6 @@ public class HelloMav extends SimpleApplication {
         vehicle.setAccelerateSignal(strength);
 
         updateTurn(tpf);
-        /*
-         * For 3-D audio, move the Listener with the default Camera.
-         */
-        listener.setRotation(cam.getRotation());
-        Vector3f newLocation = cam.getLocation(); // alias
-        listener.setLocation(newLocation);
-        if (tpf > 0f) {
-            newLocation.subtract(oldCameraLocation, cameraVelocity);
-            cameraVelocity.divide(tpf);
-            listener.setVelocity(cameraVelocity);
-            oldCameraLocation.set(newLocation);
-        }
     }
     // *************************************************************************
     // private methods
