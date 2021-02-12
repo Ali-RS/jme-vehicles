@@ -24,17 +24,18 @@ gradle.projectsEvaluated {
 
 ext {
     // current versions of various libraries
-    garrettVersion = '0.1.1'
-    heartVersion = '6.4.0'
+    garrettVersion = '0.1.2'
+    heartVersion = '6.4.2'
     jmeTtfVersion = '2.2.2'
     jmonkeyengineVersion = '3.3.2-stable'
     maVehiclesVersion = '0.5.1-SNAPSHOT'
-    minieVersion = '3.1.0+big3'
+    minieVersion = '4.0.0+big3'
     pbrTerrainVersion = '1.0.1'
 }
 
 repositories {
     //mavenLocal()
+    mavenCentral()
     jcenter()
 }
 
