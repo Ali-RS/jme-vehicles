@@ -59,7 +59,7 @@ It contains 4 sub-projects:
 ## How to download and run the MavDemo1 application
 
 1. Install [Java], if you don't already have it.
-2. Browse to https://github.com/stephengold/jme-vehicles/releases/tag/project-1.3.0
+2. Browse to https://github.com/stephengold/jme-vehicles/releases/tag/project-1.4.0
 3. Follow the "MavDemo1.zip" link.
 4. Save the ZIP file.
 5. Extract the contents of the saved ZIP file.
@@ -88,9 +88,9 @@ the Main Menu appears in the upper-left corner of the window.
    + using Git:
      + `git clone https://github.com/stephengold/jme-vehicles.git`
      + `cd jme-vehicles`
-     + `git checkout -b latest project-1.3.0`
+     + `git checkout -b latest project-1.4.0`
    + using a web browser:
-     + browse to https://github.com/stephengold/jme-vehicles/releases/tag/project-1.3.0
+     + browse to https://github.com/stephengold/jme-vehicles/releases/tag/project-1.4.0
      + follow the "Source code (zip)" link
      + save the ZIP file
      + extract the contents of the saved ZIP file
@@ -155,7 +155,7 @@ When driving:
 + W : accelerate forward
 + S : apply the main brakes
 + Space : apply the parking brake
-+ E : accelerate in reverse
++ E : toggle the automatic transmission forward/reverse
 + A : steer left
 + D : steer right
 + H : sound the horn
@@ -195,11 +195,12 @@ Additional controls when the orbit camera is active:
 Add to the project’s "build.gradle" file:
 
     repositories {
+        mavenCentral()
         jcenter()
     }
     dependencies {
-        implementation 'com.github.stephengold:MaVehicles:0.5.0'
-        implementation 'com.github.stephengold:Minie:3.1.0'
+        implementation 'com.github.stephengold:MaVehicles:0.6.0'
+        implementation 'com.github.stephengold:Minie:4.0.0'
     }
 
 #### Maven-built projects
@@ -207,6 +208,10 @@ Add to the project’s "build.gradle" file:
 Add to the project’s "pom.xml" file:
 
     <repositories>
+      <repository>
+        <id>mvnrepository</id>
+        <url>https://repo1.maven.org/maven2/</url>
+      </repository>
       <repository>
         <id>jcenter</id>
         <url>https://jcenter.bintray.com/</url>
@@ -216,14 +221,14 @@ Add to the project’s "pom.xml" file:
     <dependency>
       <groupId>com.github.stephengold</groupId>
       <artifactId>MaVehicles</artifactId>
-      <version>0.5.0</version>
+      <version>0.6.0</version>
       <type>pom</type>
     </dependency>
 
     <dependency>
       <groupId>com.github.stephengold</groupId>
       <artifactId>Minie</artifactId>
-      <version>3.1.0</version>
+      <version>4.0.0</version>
       <type>pom</type>
     </dependency>
 
@@ -241,6 +246,7 @@ Add to the project’s "pom.xml" file:
 [openJDK]: https://openjdk.java.net "OpenJDK Project"
 [pspeed]: https://github.com/pspeed42 "Paul Speed"
 [sergej]: https://hdrihaven.com/hdris/?a=Sergej%20Majboroda "HDRIs by Sergej Majboroda"
+[sonatype]: https://www.sonatype.com "Sonatype"
 [tgt]: https://www.tgthorne.com/contact "Thomas Glenn Thorne"
 [yaRnMcDonuts]: https://hub.jmonkeyengine.org/u/yarnmcdonuts/summary "Ryan McDonough"
 [zampaoli]: https://sketchfab.com/mauro.zampaoli "Mauro Zampaoli"
@@ -433,7 +439,7 @@ The world (and physics-space) units of distance are *meters*.
 
 ### Hosting
 
-I am grateful to [GitHub], Imgur, and YouTube
+I am grateful to [GitHub], [Sonatype], Imgur, JCenter, and YouTube
 for providing free hosting for this project
 and many other open-source projects.
 
