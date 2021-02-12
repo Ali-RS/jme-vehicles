@@ -1,6 +1,6 @@
 # Release log for the MaVehicles library
 
-## Version 0.6.0 released on TBD
+## Version 0.6.0 released on 11 February 2021
 
 + API changes:
   + specify a `PhysicsSpace` in the `World.attach()` method
