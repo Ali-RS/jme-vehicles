@@ -8,11 +8,11 @@ plugins {
     id 'signing'
 }
 
-description = 'the MaVehicles library for jMonkeyEngine'
+description = 'the More Advanced Vehicles library for jMonkeyEngine'
 ext {
     artifact = 'MaVehicles'
     version = maVehiclesVersion
-    baseName = "${artifact}-${version}" // for POM and class JAR
+    baseName = "${artifact}-${version}"
 }
 
 jar { archiveBaseName = project.ext.baseName }
@@ -53,6 +53,13 @@ publishing {
             artifactId artifact
             from components.java
             pom {
+                description = project.description
+                developers {
+                    developer {
+                        email = 'sgold@sonic.net'
+                        name = 'Stephen Gold'
+                    }
+                }
                 licenses {
                     license {
                         distribution = 'repo'
@@ -60,6 +67,13 @@ publishing {
                         url = 'https://opensource.org/licenses/BSD-3-Clause'
                     }
                 }
+                name = 'com.github.stephengold:' + artifact
+                scm {
+                    connection = 'scm:git:git://github.com/stephengold/jme-vehicles.git'
+                    developerConnection = 'scm:git:ssh://github.com:stephengold/jme-vehicles.git'
+                    url = 'https://github.com/stephengold/jme-vehicles/tree/master'
+                }
+                url = 'https://github.com/stephengold/jme-vehicles'
             }
             version project.ext.version
         }
