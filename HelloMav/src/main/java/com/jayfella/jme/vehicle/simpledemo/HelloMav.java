@@ -210,11 +210,11 @@ public class HelloMav extends SimpleApplication {
     private void mapKeyToSignal(int key, String signalName) {
         signalTracker.add(signalName);
 
-        ActionListener rightListener = (action, keyPressed, tpf) -> {
+        ActionListener actionListener = (action, keyPressed, tpf) -> {
             signalTracker.setActive(signalName, 0, keyPressed);
         };
         String action = "signal " + signalName;
-        inputManager.addListener(rightListener, action);
+        inputManager.addListener(actionListener, action);
 
         KeyTrigger trigger = new KeyTrigger(key);
         inputManager.addMapping(action, trigger);
