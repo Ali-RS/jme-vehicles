@@ -3,7 +3,6 @@ Material Mountains: /MatDefs/shaders/AfflictedPBRTerrain.j3md {
     MaterialParameters {
         AlphaMap: /Textures/Terrain/splat/alpha1.png
         AlphaMap_1: /Textures/Terrain/splat/alpha2.png
-        ProbeColor: 1 1 1 1
         useTriPlanarMapping: true
 
         AlbedoMap_0: Repeat /Textures/Terrain/splat/dirt.jpg

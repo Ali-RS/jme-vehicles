@@ -30,7 +30,7 @@ ext {
     jmonkeyengineVersion = '3.3.2-stable'
     maVehiclesVersion = '0.6.1-SNAPSHOT'
     minieVersion = '4.0.1+big3'
-    pbrTerrainVersion = '1.0.2'
+    pbrTerrainVersion = '1.0.3'
 }
 
 repositories {
