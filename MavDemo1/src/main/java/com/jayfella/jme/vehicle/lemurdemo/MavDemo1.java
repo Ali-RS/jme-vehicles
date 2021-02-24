@@ -112,7 +112,7 @@ public class MavDemo1 extends SimpleApplication {
     /**
      * selected World (not null)
      */
-    private static World world = new Mountains();
+    private static World world = new Playground();
     // *************************************************************************
     // constructors
 
