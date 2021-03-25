@@ -83,6 +83,7 @@ public class HelloMav extends SimpleApplication {
         Heart.setLoggingLevels(Level.WARNING);
 
         AppSettings appSettings = new AppSettings(true);
+        appSettings.setGammaCorrection(true);
         appSettings.setResolution(1280, 720);
         appSettings.setVSync(true);
 

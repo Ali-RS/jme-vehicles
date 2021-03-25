@@ -213,6 +213,7 @@ public class MavDemo1 extends SimpleApplication {
         logger.log(Level.WARNING, "Assertions are {0}.", status);
 
         AppSettings appSettings = new AppSettings(true);
+        appSettings.setGammaCorrection(true);
         appSettings.setResolution(1280, 720);
         appSettings.setSamples(8);
         appSettings.setTitle("More Advanced Vehicles");
