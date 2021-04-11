@@ -36,7 +36,7 @@ ext {
 repositories {
     //mavenLocal()
     mavenCentral()
-    jcenter()
+    maven { url 'https://jcenter.bintray.com/' } // for Lemur
 }
 
 // custom tasks for creating source/javadoc JARs
@@ -51,9 +51,4 @@ task javadocJar(type: Jar) {
     dependsOn 'javadoc'
     description 'Create a JAR of javadoc.'
     from javadoc.destinationDir
-}
-
-// add javadoc/source jar tasks as artifacts
-artifacts {
-    archives jar, sourcesJar, javadocJar
 }
