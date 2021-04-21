@@ -9,6 +9,7 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.simsilica.lemur.Button;
+import com.simsilica.lemur.Command;
 import com.simsilica.lemur.HAlignment;
 import com.simsilica.lemur.Insets3f;
 import com.simsilica.lemur.component.TbtQuadBackgroundComponent;
@@ -67,6 +68,22 @@ abstract class AnimatedMenu extends BaseAppState {
     final private Node node = new Node("Menu");
     // *************************************************************************
     // new protected methods
+
+    /**
+     * Convenience method to create a GUI Button and add it to the specified
+     * list.
+     *
+     * @param list the list to extend (not null, modified)
+     * @param label the text to display on the Button
+     * @param command the command to execute when the Button is clicked
+     */
+    @SuppressWarnings("unchecked")
+    protected static void addButton(List<Button> list, String label,
+            Command<? super Button> command) {
+        Button button = new Button(label);
+        button.addClickCommands(command);
+        list.add(button);
+    }
 
     protected void animateOut(AnimCompleteEvent animComplete) {
         time = 0f;
