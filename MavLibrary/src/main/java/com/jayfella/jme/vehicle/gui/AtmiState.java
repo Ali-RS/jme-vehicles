@@ -109,6 +109,7 @@ public class AtmiState extends BaseAppState {
      * @param application the application instance (not null)
      */
     @Override
+    @SuppressWarnings("unchecked")
     protected void initialize(Application application) {
         Camera camera = application.getCamera();
         viewPortHeight = camera.getHeight();

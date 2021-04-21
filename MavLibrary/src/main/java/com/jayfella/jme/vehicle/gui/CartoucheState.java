@@ -237,6 +237,7 @@ abstract public class CartoucheState
      * @param assetManager for loading assets (not null)
      */
     @Override
+    @SuppressWarnings("unchecked")
     public void load(AssetManager assetManager) {
         /*
          * pre-load the Droid font

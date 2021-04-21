@@ -539,6 +539,7 @@ abstract public class Vehicle implements HasNode, Loadable, PhysicsTickListener,
      * @param wheelIndex which wheel to replace (&ge;0, &lt;numWheels-1)
      * @param modelClass the desired type of wheel (not null)
      */
+    @SuppressWarnings("unchecked")
     public void setWheelModel(int wheelIndex,
             Class<? extends WheelModel> modelClass) {
         Wheel wheel = wheels.get(wheelIndex);
