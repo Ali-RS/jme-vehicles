@@ -36,41 +36,18 @@ public class MainMenu extends AnimatedMenu {
         MavDemo1 application = MavDemo1.getApplication();
         List<Button> result = new ArrayList<>(6);
 
-        Button button = new Button("Drive");
-        button.addClickCommands(source -> animateOut(()
-                -> drive()
-        ));
-        result.add(button);
-
-        button = new Button("Change World");
-        button.addClickCommands(source -> animateOut(()
-                -> goTo(new WorldMenu())
-        ));
-        result.add(button);
-
-        button = new Button("Change Vehicle");
-        button.addClickCommands(source -> animateOut(()
-                -> goTo(new VehicleMenu())
-        ));
-        result.add(button);
-
-        button = new Button("Customize");
-        button.addClickCommands(source -> animateOut(()
-                -> goTo(new CustomizationMenu())
-        ));
-        result.add(button);
-
-        button = new Button("Attribution");
-        button.addClickCommands(source -> animateOut(()
-                -> goTo(new AttributionMenu())
-        ));
-        result.add(button);
-
-        button = new Button("Quit the Demo");
-        button.addClickCommands(source -> animateOut(()
-                -> application.stop()
-        ));
-        result.add(button);
+        addButton(result, "Drive",
+                source -> animateOut(() -> drive()));
+        addButton(result, "Change World",
+                source -> animateOut(() -> goTo(new WorldMenu())));
+        addButton(result, "Change Vehicle",
+                source -> animateOut(() -> goTo(new VehicleMenu())));
+        addButton(result, "Customize",
+                source -> animateOut(() -> goTo(new CustomizationMenu())));
+        addButton(result, "Attribution",
+                source -> animateOut(() -> goTo(new AttributionMenu())));
+        addButton(result, "Quit the Demo",
+                source -> animateOut(() -> application.stop()));
 
         return result;
     }

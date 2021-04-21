@@ -87,12 +87,8 @@ public class AttributionMenu extends AnimatedMenu {
     @Override
     protected List<Button> createItems() {
         List<Button> result = new ArrayList<>(1);
-
-        Button button = new Button("<< Back");
-        button.addClickCommands(source -> animateOut(()
-                -> goTo(new MainMenu())
-        ));
-        result.add(button);
+        addButton(result, "<< Back",
+                source -> animateOut(() -> goTo(new MainMenu())));
 
         return result;
     }

@@ -33,43 +33,31 @@ class VehicleMenu extends AnimatedMenu {
     // *************************************************************************
     // AnimatedMenuState methods
 
+    /**
+     * Generate the items for this menu.
+     *
+     * @return a new array of GUI buttons
+     */
     @Override
     protected List<Button> createItems() {
         List<Button> result = new ArrayList<>(8);
 
-        Button button = new Button("Grand Tourer");
-        button.addClickCommands(source -> setVehicle(new GrandTourer()));
-        result.add(button);
-
-        button = new Button("GTR Nismo");
-        button.addClickCommands(source -> setVehicle(new GTRNismo()));
-        result.add(button);
-
-        button = new Button("Pickup Truck");
-        button.addClickCommands(source -> setVehicle(new PickupTruck()));
-        result.add(button);
-
-        button = new Button("Hatchback");
-        button.addClickCommands(source -> setVehicle(new HatchBack()));
-        result.add(button);
-
-        button = new Button("Dune Buggy");
-        button.addClickCommands(source -> setVehicle(new DuneBuggy()));
-        result.add(button);
-
-        button = new Button("Rotator");
-        button.addClickCommands(source -> setVehicle(new Rotator()));
-        result.add(button);
-
-        button = new Button("Hover Tank");
-        button.addClickCommands(source -> setVehicle(new HoverTank()));
-        result.add(button);
-
-        button = new Button("<< Back");
-        button.addClickCommands(source -> animateOut(()
-                -> goTo(new MainMenu())
-        ));
-        result.add(button);
+        addButton(result, "Grand Tourer",
+                source -> setVehicle(new GrandTourer()));
+        addButton(result, "GTR Nismo",
+                source -> setVehicle(new GTRNismo()));
+        addButton(result, "Pickup Truck",
+                source -> setVehicle(new PickupTruck()));
+        addButton(result, "Hatchback",
+                source -> setVehicle(new HatchBack()));
+        addButton(result, "Dune Buggy",
+                source -> setVehicle(new DuneBuggy()));
+        addButton(result, "Rotator",
+                source -> setVehicle(new Rotator()));
+        addButton(result, "Hover Tank",
+                source -> setVehicle(new HoverTank()));
+        addButton(result, "<< Back",
+                source -> animateOut(() -> goTo(new MainMenu())));
 
         return result;
     }

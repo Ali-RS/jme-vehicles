@@ -36,27 +36,16 @@ class SpeedometerMenu extends AnimatedMenu {
     protected List<Button> createItems() {
         List<Button> result = new ArrayList<>(5);
 
-        Button button = new Button("Kilometers per hour");
-        button.addClickCommands(source -> setUnits(SpeedUnit.KPH));
-        result.add(button);
-
-        button = new Button("Miles per hour");
-        button.addClickCommands(source -> setUnits(SpeedUnit.MPH));
-        result.add(button);
-
-        button = new Button("World units per second");
-        button.addClickCommands(source -> setUnits(SpeedUnit.WUPS));
-        result.add(button);
-
-        button = new Button("None");
-        button.addClickCommands(source -> setUnits(null));
-        result.add(button);
-
-        button = new Button("<< Back");
-        button.addClickCommands(source -> animateOut(()
-                -> goTo(new CustomizationMenu())
-        ));
-        result.add(button);
+        addButton(result, "Kilometers per hour",
+                source -> setUnits(SpeedUnit.KPH));
+        addButton(result, "Miles per hour",
+                source -> setUnits(SpeedUnit.MPH));
+        addButton(result, "World units per second",
+                source -> setUnits(SpeedUnit.WUPS));
+        addButton(result, "None",
+                source -> setUnits(null));
+        addButton(result, "<< Back",
+                source -> animateOut(() -> goTo(new CustomizationMenu())));
 
         return result;
     }

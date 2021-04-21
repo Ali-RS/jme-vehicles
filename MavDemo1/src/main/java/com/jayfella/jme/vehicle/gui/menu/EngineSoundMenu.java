@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * An AnimatedMenu to choose among the available engine sounds.
+ * An AnimatedMenu to select an engine sound.
  *
  * @author Stephen Gold sgold@sonic.net
  */
@@ -45,33 +45,15 @@ class EngineSoundMenu extends AnimatedMenu {
      */
     @Override
     protected List<Button> createItems() {
-        List<Button> result = new ArrayList<>(5);
+        List<Button> result = new ArrayList<>(6);
 
-        Button button = new Button("Engine-1");
-        button.addClickCommands(source -> setSound(new EngineSound1()));
-        result.add(button);
-
-        button = new Button("Engine-2");
-        button.addClickCommands(source -> setSound(new EngineSound2()));
-        result.add(button);
-
-        button = new Button("Engine-4");
-        button.addClickCommands(source -> setSound(new EngineSound4()));
-        result.add(button);
-
-        button = new Button("Engine-5");
-        button.addClickCommands(source -> setSound(new EngineSound5()));
-        result.add(button);
-
-        button = new Button("Silence");
-        button.addClickCommands(source -> setSound(null));
-        result.add(button);
-
-        button = new Button("<< Back");
-        button.addClickCommands(source -> animateOut(()
-                -> goTo(new CustomizationMenu())
-        ));
-        result.add(button);
+        addButton(result, "Engine-1", source -> setSound(new EngineSound1()));
+        addButton(result, "Engine-2", source -> setSound(new EngineSound2()));
+        addButton(result, "Engine-4", source -> setSound(new EngineSound4()));
+        addButton(result, "Engine-5", source -> setSound(new EngineSound5()));
+        addButton(result, "Silence", source -> setSound(null));
+        addButton(result, "<< Back",
+                source -> animateOut(() -> goTo(new CustomizationMenu())));
 
         return result;
     }

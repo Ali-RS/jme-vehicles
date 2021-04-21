@@ -38,27 +38,16 @@ class WorldMenu extends AnimatedMenu {
     protected List<Button> createItems() {
         List<Button> result = new ArrayList<>(5);
 
-        Button button = new Button("Endless Plain");
-        button.addClickCommands(source -> setWorld(new EndlessPlain()));
-        result.add(button);
-
-        button = new Button("Mountains");
-        button.addClickCommands(source -> setWorld(new Mountains()));
-        result.add(button);
-
-        button = new Button("Playground");
-        button.addClickCommands(source -> setWorld(new Playground()));
-        result.add(button);
-
-        button = new Button("Racetrack");
-        button.addClickCommands(source -> setWorld(new Racetrack()));
-        result.add(button);
-
-        button = new Button("<< Back");
-        button.addClickCommands(source -> animateOut(()
-                -> goTo(new MainMenu())
-        ));
-        result.add(button);
+        addButton(result, "Endless Plain",
+                source -> setWorld(new EndlessPlain()));
+        addButton(result, "Mountains",
+                source -> setWorld(new Mountains()));
+        addButton(result, "Playground",
+                source -> setWorld(new Playground()));
+        addButton(result, "Racetrack",
+                source -> setWorld(new Racetrack()));
+        addButton(result, "<< Back",
+                source -> animateOut(() -> goTo(new MainMenu())));
 
         return result;
     }

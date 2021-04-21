@@ -44,51 +44,28 @@ class WheelMenu extends AnimatedMenu {
     protected List<Button> createItems() {
         List<Button> result = new ArrayList<>(11);
 
-        Button button = new Button("Basic Alloy");
-        button.addClickCommands(source -> setModel(BasicAlloyWheel.class));
-        result.add(button);
-
-        button = new Button("Buggy Front");
-        button.addClickCommands(source -> setModel(BuggyFrontWheel.class));
-        result.add(button);
-
-        button = new Button("Buggy Rear");
-        button.addClickCommands(source -> setModel(BuggyRearWheel.class));
-        result.add(button);
-
-        button = new Button("Cruiser");
-        button.addClickCommands(source -> setModel(CruiserWheel.class));
-        result.add(button);
-
-        button = new Button("Dark Alloy");
-        button.addClickCommands(source -> setModel(DarkAlloyWheel.class));
-        result.add(button);
-
-        button = new Button("Hatchback");
-        button.addClickCommands(source -> setModel(HatchbackWheel.class));
-        result.add(button);
-
-        button = new Button("Invisible");
-        button.addClickCommands(source -> setModel(InvisibleWheel.class));
-        result.add(button);
-
-        button = new Button("Ranger");
-        button.addClickCommands(source -> setModel(RangerWheel.class));
-        result.add(button);
-
-        button = new Button("Rotator Front");
-        button.addClickCommands(source -> setModel(RotatorFrontWheel.class));
-        result.add(button);
-
-        button = new Button("Rotator Rear");
-        button.addClickCommands(source -> setModel(RotatorRearWheel.class));
-        result.add(button);
-
-        button = new Button("<< Back");
-        button.addClickCommands(source -> animateOut(()
-                -> goTo(new CustomizationMenu())
-        ));
-        result.add(button);
+        addButton(result, "Basic Alloy",
+                source -> setModel(BasicAlloyWheel.class));
+        addButton(result, "Buggy Front",
+                source -> setModel(BuggyFrontWheel.class));
+        addButton(result, "Buggy Rear",
+                source -> setModel(BuggyRearWheel.class));
+        addButton(result, "Cruiser",
+                source -> setModel(CruiserWheel.class));
+        addButton(result, "Dark Alloy",
+                source -> setModel(DarkAlloyWheel.class));
+        addButton(result, "Hatchback",
+                source -> setModel(HatchbackWheel.class));
+        addButton(result, "Invisible",
+                source -> setModel(InvisibleWheel.class));
+        addButton(result, "Ranger",
+                source -> setModel(RangerWheel.class));
+        addButton(result, "Rotator Front",
+                source -> setModel(RotatorFrontWheel.class));
+        addButton(result, "Rotator Rear",
+                source -> setModel(RotatorRearWheel.class));
+        addButton(result, "<< Back",
+                source -> animateOut(() -> goTo(new CustomizationMenu())));
 
         return result;
     }

@@ -38,27 +38,16 @@ class SkyMenu extends AnimatedMenu {
     protected List<Button> createItems() {
         List<Button> result = new ArrayList<>(5);
 
-        Button button = new Button("Animated Day");
-        button.addClickCommands(source -> setSky(new AnimatedDaySky()));
-        result.add(button);
-
-        button = new Button("Animated Night");
-        button.addClickCommands(source -> setSky(new AnimatedNightSky()));
-        result.add(button);
-
-        button = new Button("Purple Nebula");
-        button.addClickCommands(source -> setSky(new PurpleNebulaSky()));
-        result.add(button);
-
-        button = new Button("Quarry Day");
-        button.addClickCommands(source -> setSky(new QuarrySky()));
-        result.add(button);
-
-        button = new Button("<< Back");
-        button.addClickCommands(source -> animateOut(()
-                -> goTo(new CustomizationMenu())
-        ));
-        result.add(button);
+        addButton(result, "Animated Day",
+                source -> setSky(new AnimatedDaySky()));
+        addButton(result, "Animated Night",
+                source -> setSky(new AnimatedNightSky()));
+        addButton(result, "Purple Nebula",
+                source -> setSky(new PurpleNebulaSky()));
+        addButton(result, "Quarry Day",
+                source -> setSky(new QuarrySky()));
+        addButton(result, "<< Back",
+                source -> animateOut(() -> goTo(new CustomizationMenu())));
 
         return result;
     }

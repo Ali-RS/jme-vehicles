@@ -35,39 +35,15 @@ class TireSmokeColorMenu extends AnimatedMenu {
     protected List<Button> createItems() {
         List<Button> result = new ArrayList<>(8);
 
-        Button button = new Button("Black");
-        button.addClickCommands(source -> setColor(0f, 0f, 0f));
-        result.add(button);
-
-        button = new Button("Blue");
-        button.addClickCommands(source -> setColor(0f, 0f, 1f));
-        result.add(button);
-
-        button = new Button("Gray");
-        button.addClickCommands(source -> setColor(0.6f, 0.6f, 0.6f));
-        result.add(button);
-
-        button = new Button("Green");
-        button.addClickCommands(source -> setColor(0f, 1f, 0f));
-        result.add(button);
-
-        button = new Button("Red");
-        button.addClickCommands(source -> setColor(1f, 0f, 0f));
-        result.add(button);
-
-        button = new Button("White");
-        button.addClickCommands(source -> setColor(1f, 1f, 1f));
-        result.add(button);
-
-        button = new Button("Yellow");
-        button.addClickCommands(source -> setColor(1f, 1f, 0f));
-        result.add(button);
-
-        button = new Button("<< Back");
-        button.addClickCommands(source -> animateOut(()
-                -> goTo(new CustomizationMenu())
-        ));
-        result.add(button);
+        addButton(result, "Black", source -> setColor(0f, 0f, 0f));
+        addButton(result, "Blue", source -> setColor(0f, 0f, 1f));
+        addButton(result, "Gray", source -> setColor(0.6f, 0.6f, 0.6f));
+        addButton(result, "Green", source -> setColor(0f, 1f, 0f));
+        addButton(result, "Red", source -> setColor(1f, 0f, 0f));
+        addButton(result, "White", source -> setColor(1f, 1f, 1f));
+        addButton(result, "Yellow", source -> setColor(1f, 1f, 0f));
+        addButton(result, "<< Back",
+                source -> animateOut(() -> goTo(new CustomizationMenu())));
 
         return result;
     }
