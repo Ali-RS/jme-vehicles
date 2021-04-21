@@ -61,15 +61,19 @@ public class DebugTabState extends BaseAppState {
         VehicleEditorState editorState = getState(VehicleEditorState.class);
         TabbedPanel tabbedPanel = editorState.getTabbedPanel();
 
-        EnginePowerGraphState enginePowerGraphState = getState(EnginePowerGraphState.class);
+        EnginePowerGraphState enginePowerGraphState
+                = getState(EnginePowerGraphState.class);
         TireDataState tireDataState = getState(TireDataState.class);
         VehiclePointsState vehiclePoints = getState(VehiclePointsState.class);
 
-        PropertyPanel propertyPanel = container.addChild(new PropertyPanel("glass"));
+        PropertyPanel propertyPanel
+                = container.addChild(new PropertyPanel("glass"));
         propertyPanel.addBooleanProperty("Display FPS", this, "displayFps");
         propertyPanel.addBooleanProperty("Display Stats", this, "displayStats");
-        propertyPanel.addBooleanProperty("Engine Graph", enginePowerGraphState, "enabled");
-        propertyPanel.addBooleanProperty("Tire Graph", tireDataState, "enabled");
+        propertyPanel.addBooleanProperty("Engine Graph", enginePowerGraphState,
+                "enabled");
+        propertyPanel.addBooleanProperty("Tire Graph", tireDataState,
+                "enabled");
         propertyPanel.addBooleanProperty("Vehicle Points", vehiclePoints,
                 "enabled");
 
