@@ -23,14 +23,13 @@ dependencies {
     runtimeOnly 'org.jmonkeyengine:jme3-plugins:' + jmonkeyengineVersion
 
     // non-JME dependencies:
-    //implementation 'com.atr:jme-ttf:' + jmeTtfVersion
     implementation 'com.github.stephengold:Garrett:' + garrettVersion
     implementation 'com.github.stephengold:LemurPower:0.4.1'
     implementation 'com.github.stephengold:Minie:' + minieVersion
     implementation 'com.simsilica:lemur-props:1.1.1'
     runtimeOnly 'net.aaaagames:PBRTerrain:' + pbrTerrainVersion
-    runtimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl:2.14.0'
-    runtimeOnly 'org.codehaus.groovy:groovy-jsr223:3.0.7'
+    runtimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl:2.14.1'
+    runtimeOnly 'org.codehaus.groovy:groovy-jsr223:3.0.8'
 
     implementation project(':MavCommon')
     implementation project(':MavLibrary')
