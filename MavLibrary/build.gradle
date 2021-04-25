@@ -75,6 +75,7 @@ publishing {
                     developerConnection = 'scm:git:ssh://github.com:stephengold/jme-vehicles.git'
                     url = 'https://github.com/stephengold/jme-vehicles/tree/master'
                 }
+                suppressPomMetadataWarningsFor('apiElements') // Gradle issue #16555
                 url = 'https://github.com/stephengold/jme-vehicles'
             }
             version project.ext.version
