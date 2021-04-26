@@ -1,5 +1,4 @@
-Material Mountains: /MatDefs/shaders/AfflictedPBRTerrain.j3md {
-
+Material Mountains: /Common/MatDefs/Terrain/PBRTerrain.j3md {
     MaterialParameters {
         AlphaMap: /Textures/Terrain/splat/alpha1.png
         AlphaMap_1: /Textures/Terrain/splat/alpha2.png
@@ -41,5 +40,4 @@ Material Mountains: /MatDefs/shaders/AfflictedPBRTerrain.j3md {
         Metallic_6: 0
         Roughness_6: 1
     }
-
 }
