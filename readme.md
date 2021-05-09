@@ -196,10 +196,9 @@ Add to the project’s "build.gradle" file:
 
     repositories {
         mavenCentral()
-        jcenter()
     }
     dependencies {
-        implementation 'com.github.stephengold:MaVehicles:0.6.0'
+        implementation 'com.github.stephengold:MaVehicles:0.6.1+for33'
         implementation 'com.github.stephengold:Minie:4.1.0+for33'
     }
 
@@ -212,24 +211,18 @@ Add to the project’s "pom.xml" file:
         <id>mvnrepository</id>
         <url>https://repo1.maven.org/maven2/</url>
       </repository>
-      <repository>
-        <id>jcenter</id>
-        <url>https://jcenter.bintray.com/</url>
-      </repository>
     </repositories>
 
     <dependency>
       <groupId>com.github.stephengold</groupId>
       <artifactId>MaVehicles</artifactId>
-      <version>0.6.0</version>
-      <type>pom</type>
+      <version>0.6.1+for33</version>
     </dependency>
 
     <dependency>
       <groupId>com.github.stephengold</groupId>
       <artifactId>Minie</artifactId>
       <version>4.1.0+for33</version>
-      <type>pom</type>
     </dependency>
 
 [Jump to table of contents](#toc)
