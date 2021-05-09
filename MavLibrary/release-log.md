@@ -1,5 +1,10 @@
 # Release log for the MaVehicles library
 
+## Version 0.6.1+for34 released on TBD
+
+Upgrade JME to v3.4.0-beta3, Heart to v6.4.3+for34, Minie to v4.1.0+for34, and
+jme-ttf to v2.2.3+for34.
+
 ## Version 0.6.0 released on 11 February 2021
 
 + API changes:
