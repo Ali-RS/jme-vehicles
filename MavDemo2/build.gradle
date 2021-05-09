@@ -1,0 +1,66 @@
+// Note: "common.gradle" in the root project contains additional initialization
+//   for this project. This initialization is applied in the "build.gradle"
+//   of the root project.
+
+apply plugin: 'application'
+
+description = 'a tech demo for jMonkeyEngine vehicles'
+
+mainClassName = 'com.jayfella.jme.vehicle.niftydemo.MavDemo2'
+if (!hasProperty('mainClass')) {
+    ext.mainClass = mainClassName
+}
+jar.manifest.attributes('Main-Class': mainClassName)
+
+dependencies {
+    runtimeOnly 'org.jmonkeyengine:jme3-desktop:' + jmonkeyengineVersion
+    runtimeOnly 'org.jmonkeyengine:jme3-jogg:' + jmonkeyengineVersion
+    runtimeOnly 'org.jmonkeyengine:jme3-lwjgl3:' + jmonkeyengineVersion
+
+    // Jme-vehicles doesn't use jme3-plugins
+    //  -- it is added solely to avoid warnings from AssetConfig
+    runtimeOnly 'org.jmonkeyengine:jme3-plugins:' + jmonkeyengineVersion
+
+    // non-JME dependencies:
+    runtimeOnly 'com.github.nifty-gui:nifty-style-black:1.4.3'
+    implementation 'com.github.stephengold:jme3-utilities-nifty:0.9.19+for34'
+    implementation 'com.github.stephengold:Garrett:' + garrettVersion
+    implementation 'com.github.stephengold:JmePower:0.4.1'
+    implementation 'com.github.stephengold:Minie:' + minieVersion
+
+    implementation project(':MavCommon')
+    implementation project(':MavLibrary')
+    //implementation 'com.github.stephengold:MaVehicles:' + maVehiclesVersion
+}
+
+task debugForceDialog(type: JavaExec) {
+    args = ['--forceDialog']
+    classpath sourceSets.main.runtimeClasspath
+    debug true
+    main mainClassName
+}
+
+task runForceDialog(type: JavaExec) {
+    args = ['--forceDialog']
+    classpath sourceSets.main.runtimeClasspath
+    main mainClassName
+}
+
+// cleanup tasks
+clean.dependsOn('cleanDLLs', 'cleanDyLibs', 'cleanLogs', 'cleanSOs')
+clean.dependsOn('cleanScreenShots')
+task cleanDLLs(type: Delete) {
+    delete fileTree(dir: '.', include: '*.dll')
+}
+task cleanDyLibs(type: Delete) {
+    delete fileTree(dir: '.', include: '*.dylib')
+}
+task cleanLogs(type: Delete) {
+    delete fileTree(dir: '.', include: 'hs_err_pid*.log')
+}
+task cleanSOs(type: Delete) {
+    delete fileTree(dir: '.', include: '*.so')
+}
+task cleanScreenShots(type: Delete) {
+    delete fileTree(dir: '.', include: 'screen_shot*.png')
+}

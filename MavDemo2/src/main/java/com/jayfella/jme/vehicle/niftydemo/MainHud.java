@@ -1,0 +1,65 @@
+package com.jayfella.jme.vehicle.niftydemo;
+
+import com.jayfella.jme.vehicle.niftydemo.tool.Tools;
+import com.jme3.app.Application;
+import com.jme3.app.state.AppStateManager;
+import java.util.logging.Logger;
+import jme3utilities.nifty.GuiScreenController;
+import jme3utilities.ui.InputMode;
+
+/**
+ * The screen controller for the main heads-up display (HUD) of MavDemo2. The
+ * GUI includes a menu bar and some tool windows.
+ *
+ * @author Stephen Gold sgold@sonic.net
+ */
+public class MainHud extends GuiScreenController {
+    // *************************************************************************
+    // constants and loggers
+
+    /**
+     * message logger for this class
+     */
+    final private static Logger logger
+            = Logger.getLogger(MainHud.class.getName());
+    // *************************************************************************
+    // fields
+
+    /**
+     * controllers for tool windows
+     */
+    final public Tools tools = new Tools(this);
+    // *************************************************************************
+    // constructors
+
+    /**
+     * Instantiate an uninitialized, disabled screen that will be enabled during
+     * initialization.
+     */
+    MainHud() {
+        super("main", "/Interface/Nifty/huds/main.xml", true);
+
+        InputMode dim = MavDemo2.getApplication().getDefaultInputMode();
+        dim.setConfigPath("Interface/bindings/default.properties");
+        setListener(dim);
+        dim.influence(this);
+    }
+    // *************************************************************************
+    // GuiScreenController methods
+
+    /**
+     * Initialize this app state on the first update after it gets attached.
+     *
+     * @param sm application's state manager (not null)
+     * @param app application which owns this state (not null)
+     */
+    @Override
+    public void initialize(AppStateManager sm, Application app) {
+        if (!(app instanceof MavDemo2)) {
+            throw new IllegalArgumentException(
+                    "application should be a MavDemo2 instance");
+        }
+        super.initialize(sm, app);
+        tools.attachAll(stateManager);
+    }
+}
