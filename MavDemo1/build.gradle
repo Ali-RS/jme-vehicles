@@ -17,13 +17,13 @@ dependencies {
     runtimeOnly 'org.jmonkeyengine:jme3-jogg:' + jmonkeyengineVersion
     runtimeOnly 'org.jmonkeyengine:jme3-lwjgl3:' + jmonkeyengineVersion
 
-    // Jme-vehicles doesn't use jme3-plugins
+    // MavDemo1 doesn't use jme3-plugins
     //  -- it is added solely to avoid warnings from AssetConfig
     runtimeOnly 'org.jmonkeyengine:jme3-plugins:' + jmonkeyengineVersion
 
     // non-JME dependencies:
     implementation 'com.github.stephengold:Garrett:' + garrettVersion
-    implementation 'com.github.stephengold:LemurPower:0.4.1'
+    implementation 'com.github.stephengold:LemurPower:0.4.2'
     implementation 'com.github.stephengold:Minie:' + minieVersion
     implementation 'com.simsilica:lemur-props:1.1.1'
     runtimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl:2.14.1'
