@@ -198,8 +198,8 @@ Add to the project’s "build.gradle" file:
         mavenCentral()
     }
     dependencies {
-        implementation 'com.github.stephengold:MaVehicles:0.6.1+for33'
-        implementation 'com.github.stephengold:Minie:4.1.0+for33'
+        implementation 'com.github.stephengold:MaVehicles:0.6.2'
+        implementation 'com.github.stephengold:Minie:4.1.1'
     }
 
 #### Maven-built projects
@@ -216,13 +216,13 @@ Add to the project’s "pom.xml" file:
     <dependency>
       <groupId>com.github.stephengold</groupId>
       <artifactId>MaVehicles</artifactId>
-      <version>0.6.1+for33</version>
+      <version>0.6.2</version>
     </dependency>
 
     <dependency>
       <groupId>com.github.stephengold</groupId>
       <artifactId>Minie</artifactId>
-      <version>4.1.0+for33</version>
+      <version>4.1.1</version>
     </dependency>
 
 [Jump to table of contents](#toc)

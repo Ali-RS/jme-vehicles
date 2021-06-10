@@ -1,6 +1,6 @@
 # Release log for the MaVehicles library
 
-## Version 0.6.2 released on TBD
+## Version 0.6.2 released on 9 June 2021
 
 Upgrade JME to v3.4.0-stable, Garrett to v0.1.3, Heart to v6.4.4,
 LemurPower to v0.4.2, Minie to v4.1.1, SkyControl to v0.9.32,
