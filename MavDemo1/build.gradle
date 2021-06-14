@@ -38,13 +38,13 @@ task debugForceDialog(type: JavaExec) {
     args = ['--forceDialog']
     classpath sourceSets.main.runtimeClasspath
     debug true
-    main mainClassName
+    mainClass = mainClassName
 }
 
 task runForceDialog(type: JavaExec) {
     args = ['--forceDialog']
     classpath sourceSets.main.runtimeClasspath
-    main mainClassName
+    mainClass = mainClassName
 }
 
 // cleanup tasks
