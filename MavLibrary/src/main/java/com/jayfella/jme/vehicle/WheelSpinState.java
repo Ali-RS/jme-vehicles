@@ -109,7 +109,7 @@ public class WheelSpinState extends BaseAppState {
             // multiply that by TWO_PI to get radians.
             float potentialRot = potentialRevsPerSec / FastMath.TWO_PI;
 
-            // should give us a rotation in radians for "extre" rotation as a result
+            // should give us a rotation in radians for "extra" rotation as a result
             // of slip.
             float diff = potentialRot - currentRot;
 

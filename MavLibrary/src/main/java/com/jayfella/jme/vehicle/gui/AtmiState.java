@@ -25,7 +25,7 @@ import jme3utilities.mesh.RectangleOutlineMesh;
 import jme3utilities.mesh.RoundedRectangle;
 
 /**
- * AppState to manage an automatic-transmision mode indicator. This AppState
+ * AppState to manage an automatic-transmission mode indicator. This AppState
  * should be instantiated once and then enabled/disabled as needed.
  *
  * @author Stephen Gold sgold@sonic.net
