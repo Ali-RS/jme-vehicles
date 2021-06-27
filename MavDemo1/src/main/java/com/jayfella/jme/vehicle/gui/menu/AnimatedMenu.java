@@ -212,11 +212,10 @@ abstract class AnimatedMenu extends BaseAppState {
             float x;
             if (in) {
                 x = MyMath.easeInQuartic(easeTime, -maxWidth, 20f, duration);
-                button.setLocalTranslation(x, translation.y, translation.z);
             } else {
                 x = MyMath.easeOutQuartic(easeTime, 20f, -maxWidth, duration);
-                button.setLocalTranslation(x, translation.y, translation.z);
             }
+            button.setLocalTranslation(x, translation.y, translation.z);
 
             if (i == numButtons - 1 && easeTime == duration) {
                 allComplete = true;
