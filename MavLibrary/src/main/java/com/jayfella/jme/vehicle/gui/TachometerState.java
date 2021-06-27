@@ -39,11 +39,6 @@ public class TachometerState extends BaseAppState {
     final private static float theta0 = FastMath.PI - thetaMin; // 0 rpms
     final private static float thetaRedline = 0f;
     /**
-     * color for Lemur debug labels
-     */
-    final public static ColorRGBA labelColor
-            = new ColorRGBA(66 / 255f, 244 / 255f, 241 / 255f, 1f);
-    /**
      * color for dial markings
      */
     final private static ColorRGBA markingColor = ColorRGBA.White.clone();

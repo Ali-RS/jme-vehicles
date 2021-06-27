@@ -184,8 +184,6 @@ public class Wheel {
         // System.out.println(getVehicleWheel().getWheelSpatial().getName() + ": " + rot);
         float vel = vehicleControl.getLinearVelocity().length();
 
-        float minAngle = 0.1f;
-
         float result = rot / vel;
         result *= 10f;
         //angle += minAngle;
