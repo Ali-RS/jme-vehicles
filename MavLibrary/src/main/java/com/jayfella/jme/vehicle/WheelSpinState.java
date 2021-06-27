@@ -123,7 +123,7 @@ public class WheelSpinState extends BaseAppState {
             if (vehicle.accelerateSignal() > 0) {
 
                 // the acceleration force this wheel can apply. 0 = it doesnt give power, 1 = it gives full power.
-                float wheelforce = wheel.getPowerFraction();
+                float powerFraction = wheel.getPowerFraction();
 
                 // the acceleration force of the accelerator pedal in 0-1 range.
                 float acceleration = vehicle.accelerateSignal();
@@ -132,7 +132,7 @@ public class WheelSpinState extends BaseAppState {
                 float skid = 1.0f - wheel.traction();
 
                 // would equal at most 57 degrees in one frame (one radian).
-                float skidForce = (acceleration * wheelforce) * skid;
+                float skidForce = (acceleration * powerFraction) * skid;
 
                 //System.out.println(wheel.getVehicleWheel().getWheelSpatial().getName() + ": " + skidForce);
                 // set this before we do any "scene" modifications to make it look better.
