@@ -29,7 +29,7 @@ ext {
     jmeTtfVersion = '2.2.4'
     jmonkeyengineVersion = '3.4.0-stable'
     maVehiclesVersion = '0.6.3-SNAPSHOT'
-    minieVersion = '4.1.1+big3'
+    minieVersion = '4.2.0+big3'
 }
 
 repositories {
