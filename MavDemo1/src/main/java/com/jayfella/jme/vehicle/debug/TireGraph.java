@@ -129,7 +129,7 @@ public class TireGraph extends Geometry {
             float xUnit = x / (float) width;
             float slipAngle = map(xUnit, 0, 1, 0, maxSlipAngle);
 
-            float lng = tireModel.calcLongtitudeTireForce(slipAngle);
+            float lng = tireModel.calcLongitudeTireForce(slipAngle);
             lng = map(lng, -tireModel.getMaxLoad(), tireModel.getMaxLoad(), 0, height);
             int pixelY = (int) FastMath.clamp(lng, 0, height - 1);
 

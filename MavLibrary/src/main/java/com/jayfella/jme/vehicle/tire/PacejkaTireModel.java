@@ -109,7 +109,7 @@ public class PacejkaTireModel {
         return lateralValue;
     }
 
-    public float calcLongtitudeTireForce(float slipAngle) {
+    public float calcLongitudeTireForce(float slipAngle) {
         longitudinalValue = calcSlipAngleFactor(slipAngle, longitudinal) * calcLoadForce(load, longitudinal);
         return longitudinalValue;
     }
