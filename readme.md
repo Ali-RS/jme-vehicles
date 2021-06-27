@@ -199,7 +199,7 @@ Add to the project’s "build.gradle" file:
     }
     dependencies {
         implementation 'com.github.stephengold:MaVehicles:0.6.2'
-        implementation 'com.github.stephengold:Minie:4.1.1'
+        implementation 'com.github.stephengold:Minie:4.2.0'
     }
 
 #### Maven-built projects
