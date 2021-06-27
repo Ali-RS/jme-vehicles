@@ -168,12 +168,12 @@ public class PacejkaTireModel {
                 lateral.getSlipAngleCoefficientC(), lateral.getSlipAngleCoefficientB(), lateral.getSlipAngleCoefficientE(),
                 lateral.getLoadCoefficientKA(), lateral.getLoadCoefficientKB());
 
-        String lng = String.format(format, getClass().toString(),
+        String lng = String.format(format, getClass(),
                 name, "Longitudinal",
                 longitudinal.getSlipAngleCoefficientC(), longitudinal.getSlipAngleCoefficientB(), longitudinal.getSlipAngleCoefficientE(),
                 longitudinal.getLoadCoefficientKA(), longitudinal.getLoadCoefficientKB());
 
-        String mnt = String.format(format, getClass().toString(),
+        String mnt = String.format(format, getClass(),
                 name, "Align Moment",
                 alignMoment.getSlipAngleCoefficientC(), alignMoment.getSlipAngleCoefficientB(), alignMoment.getSlipAngleCoefficientE(),
                 alignMoment.getLoadCoefficientKA(), alignMoment.getLoadCoefficientKB());
