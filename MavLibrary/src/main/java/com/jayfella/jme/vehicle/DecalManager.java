@@ -61,7 +61,7 @@ public class DecalManager {
     /**
      * Add the specified decal to the queue.
      *
-     * @param active the template (not null, not empty, alias created)
+     * @param decal the decal to add (not null, not empty, alias created)
      */
     void addDecal(Geometry decal) {
         int triangleCount = decal.getTriangleCount();

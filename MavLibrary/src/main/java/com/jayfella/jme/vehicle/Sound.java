@@ -257,9 +257,9 @@ public class Sound implements Loadable {
      * Test whether the specified AudioNode can accurately simulate the
      * specified pitch.
      *
-     * @param node
-     * @param pitch
-     * @return
+     * @param node the AudioNode to test (not null)
+     * @param pitch the desired pitch (in cycles per second, &gt;0)
+     * @return true if possible, otherwise false
      */
     private boolean canAccuratelySimulate(AudioNode node, float pitch) {
         float recorded = recordedPitch(node);
@@ -273,7 +273,7 @@ public class Sound implements Loadable {
     /**
      * Find the best AudioNode for simulating the specified pitch.
      *
-     * @param pitch
+     * @param pitch the desired pitch (in cycles per second, &gt;0)
      * @return a pre-existing instance, or null if none found
      */
     private AudioNode findBestNode(float pitch) {

@@ -145,8 +145,6 @@ public class AttributionMenu extends AnimatedMenu {
 
     /**
      * Create and attach a Quad to hide what's happening in the main scene.
-     *
-     * @return a new instance
      */
     private void setupShutter() {
         AssetManager assetManager = MavDemo1.getApplication().getAssetManager();
