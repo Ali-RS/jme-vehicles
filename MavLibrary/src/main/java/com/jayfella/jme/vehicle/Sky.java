@@ -29,7 +29,8 @@ import jme3utilities.mesh.Octasphere;
  *
  * Derived from the Main class in the Advanced Vehicles project.
  */
-abstract public class Sky implements Loadable {
+abstract public class Sky
+        implements Loadable {
     // *************************************************************************
     // constants and loggers
 
