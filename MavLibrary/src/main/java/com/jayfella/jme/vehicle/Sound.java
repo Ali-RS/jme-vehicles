@@ -22,7 +22,8 @@ import jme3utilities.math.MyMath;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-public class Sound implements Loadable {
+public class Sound
+        implements Loadable {
     // *************************************************************************
     // constants and loggers
 
