@@ -48,7 +48,7 @@ public class HelloMav extends SimpleApplication {
     final private static float maxSteerAngle = 1f;
     final private static float turnRate = 0.5f;
     /**
-     * names for the 3 input signals used to control the Vehicle
+     * names for the 3 input signals used to drive the Vehicle
      */
     final private static String forwardSignalName = "forward";
     final private static String leftSignalName = "left";
@@ -105,19 +105,26 @@ public class HelloMav extends SimpleApplication {
                 new ChunkManager(),
                 new CompassState()
         );
-
+        /*
+         * Create a World and attach it to this Application.
+         */
         World world = new Mountains();
-
         BulletAppState bulletAppState
                 = getStateManager().getState(BulletAppState.class);
+//        bulletAppState.setDebugEnabled(true);
+//        bulletAppState.setDebugAxisLength(1f);
         PhysicsSpace physicsSpace = bulletAppState.getPhysicsSpace();
         world.attach(this, rootNode, physicsSpace);
 
         vehicle.addToWorld(world, () -> {
             return 1f;
         });
+
         Engine engine = vehicle.getEngine();
         engine.setRunning(true);
+        /*
+         * Attach appstates for dials and steering wheel.
+         */
         stateManager.attach(new SpeedometerState(vehicle, SpeedUnit.MPH));
         stateManager.attach(new TachometerState(engine));
 
@@ -130,17 +137,23 @@ public class HelloMav extends SimpleApplication {
         steeringWheel.setVehicle(vehicle);
         steeringWheel.setEnabled(true);
         stateManager.attach(steeringWheel);
-
+        /*
+         * Configure the engine's Sound.
+         */
         Sound engineSound = new EngineSound2();
         engineSound.load(assetManager);
         engine.setSound(engineSound);
-
+        /*
+         * Add a Sky to the World.
+         */
         Sky.setApplication(this);
         Sky.initialize();
         new AnimatedDaySky().addToWorld(world);
 
         initCamera();
-
+        /*
+         * To drive, press the W, A, and D keys on the keyboard.
+         */
         mapKeyToSignal(KeyInput.KEY_W, forwardSignalName);
         mapKeyToSignal(KeyInput.KEY_A, leftSignalName);
         mapKeyToSignal(KeyInput.KEY_D, rightSignalName);
