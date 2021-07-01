@@ -4,11 +4,13 @@ import com.github.stephengold.garrett.ChaseOption;
 import com.github.stephengold.garrett.OrbitCamera;
 import com.github.stephengold.garrett.Target;
 import com.jayfella.jme.vehicle.ChunkManager;
+import com.jayfella.jme.vehicle.PropWorld;
 import com.jayfella.jme.vehicle.Sky;
 import com.jayfella.jme.vehicle.Sound;
 import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.World;
+import com.jayfella.jme.vehicle.examples.props.WarningSign;
 import com.jayfella.jme.vehicle.examples.skies.AnimatedDaySky;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound2;
 import com.jayfella.jme.vehicle.examples.vehicles.HoverTank;
@@ -115,13 +117,17 @@ public class HelloMav extends SimpleApplication {
 //        bulletAppState.setDebugAxisLength(1f);
         PhysicsSpace physicsSpace = bulletAppState.getPhysicsSpace();
         world.attach(this, rootNode, physicsSpace);
-
+        /*
+         * Add the Vehicle to the World and start its Engine. Add props.
+         */
         vehicle.addToWorld(world, () -> {
             return 1f;
         });
 
         Engine engine = vehicle.getEngine();
         engine.setRunning(true);
+
+        addProps(world);
         /*
          * Attach appstates for dials and steering wheel.
          */
@@ -179,6 +185,24 @@ public class HelloMav extends SimpleApplication {
     }
     // *************************************************************************
     // private methods
+
+    /**
+     * Create props and add them to the World.
+     *
+     * @param world where to add the props (not null)
+     */
+    private void addProps(PropWorld world) {
+        int numProps = 5;
+        float scaleFactor = 1f;
+        Vector3f location = new Vector3f(277f, 500f, 2_000f);
+        Vector3f offset = new Vector3f(7f, 0f, 0f);
+        Quaternion orient = new Quaternion();
+
+        for (int propIndex = 0; propIndex < numProps; ++propIndex) {
+            new WarningSign(scaleFactor).addToWorld(world, location, orient);
+            location.addLocal(offset);
+        }
+    }
 
     /**
      * Initialize the default Camera and its controller.
