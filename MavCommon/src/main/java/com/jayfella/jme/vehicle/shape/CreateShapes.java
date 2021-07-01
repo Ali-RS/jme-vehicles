@@ -8,6 +8,7 @@ import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.bullet.util.NativeLibrary;
 import com.jme3.export.binary.BinaryLoader;
 import com.jme3.material.plugins.J3MLoader;
+import com.jme3.math.Transform;
 import com.jme3.scene.Spatial;
 import com.jme3.system.JmeSystem;
 import com.jme3.system.NativeLibraryLoader;
@@ -15,6 +16,7 @@ import com.jme3.system.Platform;
 import com.jme3.texture.plugins.AWTLoader;
 import java.util.logging.Logger;
 import jme3utilities.Heart;
+import jme3utilities.math.MyMath;
 import jme3utilities.minie.PhysicsDumper;
 
 /**
@@ -38,6 +40,10 @@ public class CreateShapes {
      * AssetManager for loading C-G models
      */
     final private static AssetManager assetManager = new DesktopAssetManager();
+    /**
+     * dump debugging information to System.out
+     */
+    final private static PhysicsDumper dumper = new PhysicsDumper();
     // *************************************************************************
     // new methods exposed
 
@@ -66,6 +72,24 @@ public class CreateShapes {
         createChassisShape("hcr2_buggy", "dune-buggy");
         createChassisShape("hcr2_rotator", "chassis");
         createChassisShape("modern_hatchback", "hatchback");
+        /*
+         * Create a convex hull for each Prop model.
+         */
+        createPropHull("barrier_pack", "barrel1");
+        createPropHull("barrier_pack", "barrel2");
+        createPropHull("barrier_pack", "barrier");
+        createPropHull("barrier_pack", "barrier_painted");
+        createPropHull("barrier_pack", "cone1");
+        createPropHull("barrier_pack", "cone2");
+        createPropHull("barrier_pack", "fenced_barrier");
+        createPropHull("barrier_pack", "marker");
+        createPropHull("barrier_pack", "short_barrier");
+        createPropHull("barrier_pack", "short_barrier_painted");
+        createPropHull("barrier_pack", "short_barrier_signed");
+        createPropHull("barrier_pack", "wall_barrier");
+        createPropHull("barrier_pack", "wall_barrier_painted");
+        createPropHull("barrier_pack", "warning_sign");
+        createPropHull("barrier_pack", "weight");
         /*
          * Create a CollisionShape for each World.
          */
@@ -97,13 +121,51 @@ public class CreateShapes {
                 = CollisionShapeFactory.createDynamicMeshShape(cgmRoot);
 
         System.out.printf("done!%n");
+        dumper.dump(collisionShape, "    ");
         System.out.flush();
-        new PhysicsDumper().dump(collisionShape, "    ");
         /*
          * Save the shape in J3O format.
          */
         String writeFilePath = "src/main/resources/Models/" + folderName
                 + "/shapes/chassis-shape.j3o";
+        Heart.writeJ3O(writeFilePath, collisionShape);
+    }
+
+    /**
+     * Create a convex hull for a Prop.
+     *
+     * @param folderName the name of the folder containing the C-G model
+     * @param cgmBaseFileName the base filename of the C-G model
+     */
+    private static void createPropHull(String folderName,
+            String cgmBaseFileName) {
+        assetManager.clearCache(); // to reclaim direct buffer memory
+
+        String cgmAssetPath = String.format("/Models/Props/%s/%s.j3o",
+                folderName, cgmBaseFileName);
+        Spatial cgmRoot = assetManager.loadModel(cgmAssetPath);
+        Transform rootTransform = cgmRoot.getLocalTransform();
+        if (!MyMath.isIdentity(rootTransform)) {
+            throw new RuntimeException(
+                    cgmBaseFileName + " rootTransform = " + rootTransform);
+        }
+
+        System.out.printf("%nCreate convex hull for %s prop ... ",
+                cgmBaseFileName);
+        System.out.flush();
+
+        CollisionShape collisionShape
+                = CollisionShapeFactory.createMergedHullShape(cgmRoot);
+
+        System.out.printf("done!%n");
+        dumper.dump(collisionShape, "    ");
+        System.out.flush();
+        /*
+         * Write the convex hull in J3O format.
+         */
+        String writeFilePath = String.format(
+                "src/main/resources/Models/Props/%s/%s_hull.j3o",
+                folderName, cgmBaseFileName);
         Heart.writeJ3O(writeFilePath, collisionShape);
     }
 
@@ -129,8 +191,8 @@ public class CreateShapes {
                 = CollisionShapeFactory.createMergedMeshShape(cgmRoot);
 
         System.out.printf("done!%n");
+        dumper.dump(collisionShape, "    ");
         System.out.flush();
-        new PhysicsDumper().dump(collisionShape, "    ");
         /*
          * Save the shape in J3O format.
          */
