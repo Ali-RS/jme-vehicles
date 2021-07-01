@@ -222,7 +222,7 @@ Add to the project’s "pom.xml" file:
     <dependency>
       <groupId>com.github.stephengold</groupId>
       <artifactId>Minie</artifactId>
-      <version>4.1.1</version>
+      <version>4.2.0</version>
     </dependency>
 
 [Jump to table of contents](#toc)
