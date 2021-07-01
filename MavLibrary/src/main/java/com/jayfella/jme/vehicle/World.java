@@ -10,8 +10,10 @@ import com.jme3.bullet.objects.PhysicsRigidBody;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import jme3utilities.Loadable;
 import jme3utilities.MyCamera;
@@ -26,7 +28,7 @@ import jme3utilities.math.Vector3i;
  * @author Stephen Gold sgold@sonic.net
  */
 abstract public class World
-        implements Loadable, VehicleWorld {
+        implements Loadable, PropWorld, VehicleWorld {
     // *************************************************************************
     // constants and loggers
 
@@ -53,6 +55,10 @@ abstract public class World
      * manage decals
      */
     final private DecalManager decalManager = new DecalManager();
+    /**
+     * Prop instances, ordered from oldest to newest
+     */
+    final private List<Prop> props = new ArrayList<>(64);
     /**
      * loaded C-G model of a prototypical chunk
      */
@@ -125,6 +131,16 @@ abstract public class World
      */
     public void chunkDimensions(Vector3f storeResult) {
         storeResult.set(1e9f, 1e9f, 1e9f);
+    }
+
+    /**
+     * Count how many props are in this World.
+     *
+     * @return the count (&ge;0)
+     */
+    public int countProps() {
+        int count = props.size();
+        return count;
     }
 
     /**
@@ -253,7 +269,20 @@ abstract public class World
         // do nothing
     }
     // *************************************************************************
-    // VehicleWorld methods
+    // PropWorld/VehicleWorld methods
+
+    /**
+     * Add the specified Prop to this World.
+     *
+     * @param newProp (not null, not already added)
+     */
+    @Override
+    public void addProp(Prop newProp) {
+        Validate.nonNull(newProp, "new prop");
+        Validate.require(!props.contains(newProp), "not been added already");
+
+        props.add(newProp);
+    }
 
     /**
      * Access the AssetManager.
