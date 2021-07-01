@@ -15,6 +15,7 @@ import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.collision.PhysicsRayTestResult;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.VehicleControl;
+import com.jme3.bullet.joints.Constraint;
 import com.jme3.bullet.objects.PhysicsVehicle;
 import com.jme3.bullet.objects.VehicleWheel;
 import com.jme3.bullet.objects.infos.RigidBodyMotionState;
@@ -41,8 +42,9 @@ import jme3utilities.math.MyVector3f;
  *
  * Derived from the Car and Vehicle classes in the Advanced Vehicles project.
  */
-abstract public class Vehicle implements HasNode, Loadable, PhysicsTickListener,
-        VehicleSpeed, VehicleSteering {
+abstract public class Vehicle
+        implements HasNode, Loadable, PhysicsTickListener, VehicleSpeed,
+        VehicleSteering {
     // *************************************************************************
     // constants and loggers
 
@@ -171,7 +173,7 @@ abstract public class Vehicle implements HasNode, Loadable, PhysicsTickListener,
     /**
      * Add this Vehicle to the specified world.
      *
-     * @param world where to attach (not null, alias created)
+     * @param world where to add (not null, alias created)
      * @param globalAudio the global audio controls (not null, alias created)
      */
     public void addToWorld(VehicleWorld world, GlobalAudio globalAudio) {
@@ -433,6 +435,10 @@ abstract public class Vehicle implements HasNode, Loadable, PhysicsTickListener,
         return result;
     }
 
+    public void removeEquipmentConstraint(Constraint constraint) {
+        // TODO
+    }
+
     /**
      * Remove this Vehicle from the world to which it was added.
      */
@@ -442,7 +448,7 @@ abstract public class Vehicle implements HasNode, Loadable, PhysicsTickListener,
         physicsSpace.removeTickListener(this);
         vehicleControl.setPhysicsSpace(null);
         node.removeFromParent();
-        this.world = null;
+        world = null;
     }
 
     /**
@@ -806,13 +812,12 @@ abstract public class Vehicle implements HasNode, Loadable, PhysicsTickListener,
     // HasNode methods
 
     /**
-     * Access the scene-graph subtree that represents this Vehicle.
+     * Access the scene-graph subtree that visualizes this Vehicle.
      *
      * @return the pre-existing instance (not null)
      */
     @Override
     public Node getNode() {
-        assert node != null;
         return node;
     }
     // *************************************************************************
@@ -825,7 +830,7 @@ abstract public class Vehicle implements HasNode, Loadable, PhysicsTickListener,
      */
     @Override
     public void load(AssetManager assetManager) {
-        // do nothing
+        // subclasses should override
     }
     // *************************************************************************
     // PhysicsTickListener methods
