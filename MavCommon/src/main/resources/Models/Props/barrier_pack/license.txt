@@ -1,0 +1,91 @@
+Licensing history for files in "src/main/resources/Models/Props/barrier_pack"
+and its subfolders
+
+Based on "Barrier & Traffic Cone Pack":
+* download file:     barrier__traffic_cone_pack.zip
+* downloaded from:   https://sketchfab.com/3d-models/barrier-traffic-cone-pack-23c4dfca76a24bf0b21894847867af2a
+* download options:  Autoconverted format (glTF)
+* author:            sabriayes (Sabri Ayeş)
+* author URL:        https://sketchfab.com/sabriayes
+* license type:      CC-BY-4.0 (Creative Commons Attribution)
+* license URL:       https://creativecommons.org/licenses/by/4.0/
+
+Extracted files used without modification:
+* barrier_baseColor.jpeg
+* barrier_metallicRoughness.png
+* barrier_normal.jpeg
+* barrier_painted_baseColor.jpeg
+* barrier_painted_normal.jpeg
+* fence_baseColor.png
+* fenced_barrier_baseColor.jpeg
+* fenced_barrier_metallicRoughness.png
+* fenced_barrier_normal.jpeg
+* None.001_baseColor.jpeg
+* None.001_metallicRoughness.png
+* None.001_normal.jpeg
+* None.002_baseColor.jpeg
+* None.002_metallicRoughness.png
+* None.002_normal.jpeg
+* None.003_baseColor.jpeg
+* None.003_metallicRoughness.png
+* None.004_baseColor.jpeg
+* None.004_metallicRoughness.png
+* None.004_normal.jpeg
+* None_baseColor.jpeg
+* None_metallicRoughness.png
+* None_normal.jpeg
+* short_barrier_baseColor.jpeg
+* short_barrier_metallicRoughness.png
+* short_barrier_normal.jpeg
+* short_barrier_painted_baseColor.jpeg
+* short_barrier_painted_metallicRoughness.png
+* short_barrier_painted_normal.jpeg
+* short_barrier_signed_baseColor.jpeg
+* short_barrier_signed_metallicRoughness.png
+* stick_baseColor.jpeg
+* stick_metallicRoughness.png
+* stick_normal.jpeg
+* wall_barrier_baseColor.jpeg
+* wall_barrier_metallicRoughness.png
+* wall_barrier_normal.jpeg
+* wall_barrier_painted_baseColor.jpeg
+* wall_barrier_painted_metallicRoughness.png
+* wall_barrier_painted_normal.jpeg
+* warning_sign_back_baseColor.jpeg
+* warning_sign_back_metallicRoughness.png
+* warning_sign_back_normal.jpeg
+
+Derived files (also licensed CC-BY-4.0):
+* barrel1.j3o
+* barrel1_hull.j3o
+* barrel2.j3o
+* barrel2_hull.j3o
+* barrier.j3o
+* barrier_hull.j3o
+* barrier_painted.j3o
+* barrier_painted_hull.j3o
+* cone1.j3o
+* cone1_hull.j3o
+* cone2.j3o
+* cone2_hull.j3o
+* fenced_barrier.j3o
+* fenced_barrier_hull.j3o
+* marker.j3o
+* marker_hull.j3o
+* short_barrier.j3o
+* short_barrier_hull.j3o
+* short_barrier_painted.j3o
+* short_barrier_painted_hull.j3o
+* short_barrier_signed.j3o
+* short_barrier_signed_hull.j3o
+* wall_barrier.j3o
+* wall_barrier_hull.j3o
+* wall_barrier_painted.j3o
+* wall_barrier_painted_hull.j3o
+* warning_sign.j3o
+* warning_sign_hull.j3o
+* weight.j3o
+* weight_hull.j3o
+
+Added files (also licensed CC-BY-4.0):
+* license.txt
