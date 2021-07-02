@@ -1,7 +1,6 @@
 package com.jayfella.jme.vehicle.niftydemo.tool;
 
 import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
-import com.jayfella.jme.vehicle.niftydemo.view.View;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.renderer.Renderer;
 import com.jme3.renderer.opengl.GLRenderer;
@@ -73,8 +72,6 @@ class ViewTool extends Tool {
      */
     @Override
     protected void toolUpdate() {
-        View view = MavDemo2.findAppState(View.class);
-
         Renderer renderer = MavDemo2.getApplication().getRenderer();
         GLRenderer glRenderer = (GLRenderer) renderer;
         int degree = glRenderer.getDefaultAnisotropicFilter();

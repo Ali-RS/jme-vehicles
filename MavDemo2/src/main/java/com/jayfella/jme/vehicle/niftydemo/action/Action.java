@@ -160,7 +160,7 @@ public class Action {
                 break;
 
             case "select":
-//                handled = SelectAction.processOngoing(actionString);
+                handled = SelectAction.processOngoing(actionString);
                 break;
 
             case "set":

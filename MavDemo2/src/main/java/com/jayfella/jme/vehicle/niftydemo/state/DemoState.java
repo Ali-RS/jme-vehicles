@@ -1,11 +1,16 @@
 package com.jayfella.jme.vehicle.niftydemo.state;
 
+import com.jayfella.jme.vehicle.GlobalAudio;
+import com.jayfella.jme.vehicle.Sky;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.World;
+import com.jayfella.jme.vehicle.examples.skies.AnimatedDaySky;
 import com.jayfella.jme.vehicle.examples.vehicles.GrandTourer;
 import com.jayfella.jme.vehicle.examples.worlds.Mountains;
 import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
 import com.jayfella.jme.vehicle.niftydemo.view.View;
+import com.jme3.app.Application;
+import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
@@ -16,17 +21,17 @@ import com.jme3.scene.Node;
 import com.jme3.system.Timer;
 import java.util.List;
 import java.util.logging.Logger;
-import jme3utilities.NameGenerator;
 import jme3utilities.Validate;
 import jme3utilities.math.MyVector3f;
 import jme3utilities.math.noise.Generator;
 
 /**
- * The "game state" of the demo.
+ * The "game state" of MavDemo2.
  *
  * @author Stephen Gold sgold@sonic.net
  */
-public class DemoState implements PhysicsTickListener {
+public class DemoState
+        implements GlobalAudio, PhysicsTickListener {
     // *************************************************************************
     // constants and loggers
 
@@ -43,10 +48,6 @@ public class DemoState implements PhysicsTickListener {
      */
     private double elapsedTime;
     /**
-     * friction parameter for new rigid bodies TODO multiple values
-     */
-    private float newBodyFriction;
-    /**
      * pseudo-random number generator
      */
     final private Generator prGenerator;
@@ -59,9 +60,9 @@ public class DemoState implements PhysicsTickListener {
      */
     private long preTickCount;
     /**
-     * generate names for actors, blocks, props, etcetera
+     *
      */
-    final private NameGenerator nameGenerator;
+    private Sky sky;
     /**
      * state of all vehicles
      */
@@ -69,7 +70,7 @@ public class DemoState implements PhysicsTickListener {
     /**
      * selected World (not null)
      */
-    private World world = new Mountains();
+    private World world;
     // *************************************************************************
     // constructors
 
@@ -79,16 +80,17 @@ public class DemoState implements PhysicsTickListener {
      * @param physicsSpace (not null)
      */
     public DemoState(PhysicsSpace physicsSpace) {
-        nameGenerator = new NameGenerator();
-
         elapsedTime = 0.0;
-        newBodyFriction = 0.4f;
         prGenerator = new Generator();
         numTicks = 0;
 
         physicsSpace.addTickListener(this);
 
         MavDemo2 application = MavDemo2.getApplication();
+        Sky.setApplication(application);
+        Sky.initialize();
+
+        world = new Mountains();
         Node rootNode = application.getRootNode();
         world.attach(application, rootNode, physicsSpace);
 
@@ -98,6 +100,9 @@ public class DemoState implements PhysicsTickListener {
         vehicles.add(vehicle);
         vehicles.select(vehicle);
         vehicle.getEngine().setRunning(true);
+
+        sky = new AnimatedDaySky();
+        sky.addToWorld(world);
     }
     // *************************************************************************
     // new methods exposed
@@ -110,16 +115,6 @@ public class DemoState implements PhysicsTickListener {
     public double elapsedTime() {
         assert elapsedTime >= 0.0 : elapsedTime;
         return elapsedTime;
-    }
-
-    /**
-     * Access the name generator.
-     *
-     * @return the pre-existing instance (not null)
-     */
-    public NameGenerator getNameGenerator() {
-        assert nameGenerator != null;
-        return nameGenerator;
     }
 
     /**
@@ -150,16 +145,6 @@ public class DemoState implements PhysicsTickListener {
     public World getWorld() {
         assert world != null;
         return world;
-    }
-
-    /**
-     * Determine the friction parameter for new bodies.
-     *
-     * @return the parameter value (&ge;0)
-     */
-    float newBodyFriction() {
-        assert newBodyFriction >= 0f : newBodyFriction;
-        return newBodyFriction;
     }
 
     /**
@@ -223,6 +208,30 @@ public class DemoState implements PhysicsTickListener {
     }
 
     /**
+     * TODO
+     *
+     * @param newWorld
+     */
+    public void setWorld(World newWorld) {
+        AssetManager assetManager = world.getAssetManager();
+        newWorld.load(assetManager);
+
+        Vehicle selectedVehicle = vehicles.getSelected();
+        sky.removeFromWorld();
+        vehicles.removeAll();
+
+        PhysicsSpace physicsSpace = world.getPhysicsSpace();
+        Node parentNode = world.getParentNode();
+        world.detach();
+        world = newWorld;
+        Application application = MavDemo2.getApplication();
+        world.attach(application, parentNode, physicsSpace);
+
+        sky.addToWorld(world);
+        selectedVehicle.addToWorld(world, this);
+    }
+
+    /**
      * Calculate the duration of the most recent physics tick.
      *
      * @return the duration (in seconds, &ge;0)
@@ -234,6 +243,13 @@ public class DemoState implements PhysicsTickListener {
 
         assert result >= 0f : result;
         return result;
+    }
+    // *************************************************************************
+    // GlobalAudio methods
+
+    @Override
+    public float effectiveVolume() {
+        return 1f; // TODO
     }
     // *************************************************************************
     // PhysicsTickListener methods

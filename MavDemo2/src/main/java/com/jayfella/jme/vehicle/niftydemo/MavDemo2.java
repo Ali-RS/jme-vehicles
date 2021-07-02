@@ -1,11 +1,8 @@
 package com.jayfella.jme.vehicle.niftydemo;
 
 import com.jayfella.jme.vehicle.ChunkManager;
-import com.jayfella.jme.vehicle.Sky;
 import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.Vehicle;
-import com.jayfella.jme.vehicle.World;
-import com.jayfella.jme.vehicle.examples.skies.AnimatedDaySky;
 import com.jayfella.jme.vehicle.gui.CompassState;
 import com.jayfella.jme.vehicle.gui.SpeedometerState;
 import com.jayfella.jme.vehicle.gui.SteeringWheelState;
@@ -20,6 +17,7 @@ import com.jme3.app.state.AppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeVersion;
@@ -29,6 +27,7 @@ import jme3utilities.Heart;
 import jme3utilities.MyCamera;
 import jme3utilities.MyString;
 import jme3utilities.debug.PerformanceAppState;
+import jme3utilities.minie.MinieVersion;
 import jme3utilities.minie.PhysicsDumper;
 import jme3utilities.nifty.GuiApplication;
 import jme3utilities.nifty.bind.BindScreen;
@@ -74,9 +73,9 @@ public class MavDemo2 extends GuiApplication {
      * dump state for debugging
      */
     final public static PhysicsDumper dumper = new PhysicsDumper();
-
     // *************************************************************************
     // new methods exposed
+
     /**
      * Find the first attached AppState that's an instance of the specified
      * class.
@@ -163,15 +162,14 @@ public class MavDemo2 extends GuiApplication {
             logger.warning("Assertions are disabled!");
         }
         /*
-         * Log the jMonkeyEngine version string.
+         * Log version strings.
          */
         logger.log(Level.INFO, "jme3-core version is {0}",
                 MyString.quote(JmeVersion.FULL_NAME));
-        /*
-         * Log the jme3-utilities-heart version string.
-         */
         logger.log(Level.INFO, "Heart version is {0}",
                 MyString.quote(Heart.versionShort()));
+        logger.log(Level.INFO, "Minie version is {0}",
+                MyString.quote(MinieVersion.versionShort()));
 
         renderer.setDefaultAnisotropicFilter(8);
         /*
@@ -199,10 +197,9 @@ public class MavDemo2 extends GuiApplication {
         steeringWheel.setEnabled(true);
         stateManager.attach(steeringWheel);
 
-        Sky.setApplication(this);
-        Sky.initialize();
-        World world = demoState.getWorld();
-        new AnimatedDaySky().addToWorld(world);
+        cam.setLocation(new Vector3f(291f, 12f, 2_075f));
+        cam.setRotation(new Quaternion(0f, 0.9987554f, -0.05f, 0f));
+        flyCam.setEnabled(false);
     }
 
     /**
@@ -324,7 +321,7 @@ public class MavDemo2 extends GuiApplication {
          */
         String applicationName = "MavDemo2";
         DisplaySizeLimits dsl = new DisplaySizeLimits(
-                640, 480, // min width, height
+                1_280, 720, // min width, height
                 2_048, 1_080 // max width, height
         );
         DisplaySettings displaySettings

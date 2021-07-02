@@ -77,46 +77,6 @@ public class Vehicles {
     }
 
     /**
-     * Delete the specified Vehicle.
-     */
-    void delete(Vehicle vehicle) {
-        vehicle.removeFromWorld();
-
-        boolean success = vehicles.remove(vehicle);
-        assert success;
-
-        if (selected == vehicle) {
-            selected = null;
-        }
-    }
-
-    /**
-     * Delete all vehicles.
-     */
-    public void deleteAll() {
-        int numVehicles = vehicles.size();
-        Vehicle[] array = new Vehicle[numVehicles];
-        vehicles.toArray(array);
-
-        for (Vehicle vehicle : array) {
-            delete(vehicle);
-        }
-        assert vehicles.isEmpty();
-
-        selected = null;
-    }
-
-    /**
-     * Delete the selected Vehicle (if any).
-     */
-    public void deleteSelected() {
-        if (selected != null) {
-            delete(selected);
-        }
-        assert selected == null;
-    }
-
-    /**
      * Access the indexed Vehicle.
      *
      * @param index the index (&ge;0, &lt;numVehicles, 0=oldest)
@@ -150,6 +110,46 @@ public class Vehicles {
         } else {
             return true;
         }
+    }
+
+    /**
+     * Remove the specified Vehicle.
+     */
+    void remove(Vehicle vehicle) {
+        vehicle.removeFromWorld();
+
+        boolean success = vehicles.remove(vehicle);
+        assert success;
+
+        if (selected == vehicle) {
+            selected = null;
+        }
+    }
+
+    /**
+     * Remove all vehicles.
+     */
+    public void removeAll() {
+        int numVehicles = vehicles.size();
+        Vehicle[] array = new Vehicle[numVehicles];
+        vehicles.toArray(array);
+
+        for (Vehicle vehicle : array) {
+            remove(vehicle);
+        }
+        assert vehicles.isEmpty();
+
+        selected = null;
+    }
+
+    /**
+     * Remove the selected Vehicle (if any).
+     */
+    public void removeSelected() {
+        if (selected != null) {
+            remove(selected);
+        }
+        assert selected == null;
     }
 
     /**

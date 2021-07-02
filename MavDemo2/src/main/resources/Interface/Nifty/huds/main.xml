@@ -11,40 +11,46 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
                 <panel id="menu bar top row" childLayout="horizontal"
                        height="25px">
                     <panel width="2px"/>
-                    <control name="button" label="Settings"
+                    <control name="button" label="Drive"
                              id="id1ToAvoidNiftyWarning"
-                             width="55px">
-                        <interact onRelease="perform(select menuItem Settings)"/>
+                             width="50px">
+                        <interact onRelease="perform(select menuItem Drive)"/>
                     </control>
                     <panel width="2px"/>
-                    <control name="button" label="Cast"
+                    <control name="button" label="World"
                              id="id2ToAvoidNiftyWarning"
-                             width="40px">
-                        <interact onRelease="perform(select menuItem Cast)"/>
+                             width="50px">
+                        <interact onRelease="perform(select menuItem World)"/>
                     </control>
                     <panel width="2px"/>
-                    <control name="button" label="Map"
+                    <control name="button" label="Vehicle"
                              id="id3ToAvoidNiftyWarning"
-                             width="40px">
-                        <interact onRelease="perform(select menuItem Map)"/>
+                             width="70px">
+                        <interact onRelease="perform(select menuItem Vehicle)"/>
                     </control>
                     <panel width="2px"/>
                     <control name="button" label="Props"
                              id="id4ToAvoidNiftyWarning"
-                             width="40px">
+                             width="50px">
                         <interact onRelease="perform(select menuItem Props)"/>
                     </control>
                     <panel width="2px"/>
-                    <control name="button" label="Physics"
+                    <control name="button" label="Settings"
                              id="id5ToAvoidNiftyWarning"
-                             width="55px">
-                        <interact onRelease="perform(select menuItem Physics)"/>
+                             width="70px">
+                        <interact onRelease="perform(select menuItem Settings)"/>
                     </control>
                     <panel width="2px"/>
-                    <control name="button" label="Dump"
+                    <control name="button" label="Tools"
                              id="id6ToAvoidNiftyWarning"
+                             width="50px">
+                        <interact onRelease="perform(select menuItem Tools)"/>
+                    </control>
+                    <panel width="2px"/>
+                    <control name="button" label="Help"
+                             id="id7ToAvoidNiftyWarning"
                              width="40px">
-                        <interact onRelease="perform(select menuItem Dump)"/>
+                        <interact onRelease="perform(select menuItem Help)"/>
                     </control>
                     <panel/>
                     <control name="button" label="Quit"

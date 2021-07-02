@@ -94,7 +94,7 @@ public class Tools {
      *
      * @param toolName which Tool to show or hide (not null, not empty)
      */
-    boolean isEnabled(String toolName) {
+    public static boolean isEnabled(String toolName) {
         Validate.nonEmpty(toolName, "tool name");
 
         boolean result = false;
