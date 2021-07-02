@@ -335,6 +335,8 @@ Resources/assets/media:
   has a CC Attribution license.
 + The [Modern Hatchback - Low Poly model model](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Models/modern_hatchback)
   has a CC Attribution license.
++ The [Barrier & Traffic Cone models](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Models/Props/barrier_pack)
+  have a CC Attribution license.
 + The [Race Track model](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Models/race1)
   has an Unlicense license.
 + The [terrain textures](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Textures/Terrain)
