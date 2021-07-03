@@ -5,3 +5,13 @@ plugins {
 subprojects {
     apply from: rootProject.file('common.gradle')
 }
+
+// publishing tasks
+
+task('publishToMavenLocal') {
+    dependsOn ':MavLibrary:publishToMavenLocal'
+}
+task('release') {
+    dependsOn ':MavLibrary:publishMavenPublicationToOSSRHRepository'
+}
+
