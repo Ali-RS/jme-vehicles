@@ -17,7 +17,7 @@ import jme3utilities.SignalTracker;
 import jme3utilities.Validate;
 
 /**
- * A VehicleCamera to control a forward-facing Camera attached to a Vehicle.
+ * A CameraController to control a forward-facing Camera attached to a Vehicle.
  */
 public class DashCamera
         extends CameraController
@@ -42,7 +42,7 @@ public class DashCamera
     // constructors
 
     /**
-     * Instantiate a VehicleCamera attached to the specified Vehicle.
+     * Instantiate a controller attached to the specified Vehicle.
      *
      * @param vehicle the Vehicle to attach to (not null, alias created)
      * @param camera the Camera to control (not null, alias created)
