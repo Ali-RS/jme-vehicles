@@ -50,8 +50,7 @@ public class ChaseCamera extends CameraController {
     // constructors
 
     /**
-     * Instantiate a VehicleCamera that orbits (and optionally chases) a
-     * Vehicle.
+     * Instantiate a controller that orbits (and optionally chases) a Target.
      *
      * @param chaseOption to configure chase behavior (not null)
      * @param rearBias how much to displace the camera target (0=center of mass,
