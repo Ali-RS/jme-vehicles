@@ -203,7 +203,7 @@ public class Prop
     /**
      * Copy the local-to-world Transform of the named part.
      *
-     * @param partName
+     * @param partName the name of the part
      * @param storeResult storage for the result (modified if not null)
      * @return the extrapolated Transform (either storeResult or a new
      * Transform)
