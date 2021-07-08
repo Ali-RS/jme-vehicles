@@ -11,6 +11,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -260,13 +261,13 @@ abstract public class World
     // Loadable methods
 
     /**
-     * Load the assets of this Vehicle.
+     * Load the assets of this World.
      *
      * @param assetManager for loading assets (not null)
      */
     @Override
     public void load(AssetManager assetManager) {
-        // do nothing
+        // subclasses should override
     }
     // *************************************************************************
     // PropWorld/VehicleWorld methods
@@ -340,5 +341,30 @@ abstract public class World
         AppStateManager result = application.getStateManager();
         assert result != null;
         return result;
+    }
+
+    /**
+     * Enumerate props that have been added to this world and not yet removed.
+     *
+     * @return a new unmodifiable collection of pre-existing instances (not
+     * null)
+     */
+    @Override
+    public Collection<Prop> listProps() {
+        Collection<Prop> result = Collections.unmodifiableCollection(props);
+        return result;
+    }
+
+    /**
+     * Remove the specified Prop from this World.
+     *
+     * @param prop (not null, previously added)
+     */
+    @Override
+    public void removeProp(Prop prop) {
+        Validate.nonNull(prop, "prop");
+        Validate.require(props.contains(prop), "be previously added");
+
+        props.remove(prop);
     }
 }

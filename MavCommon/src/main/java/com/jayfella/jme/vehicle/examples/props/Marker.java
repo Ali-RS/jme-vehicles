@@ -34,12 +34,24 @@ public class Marker extends Prop {
      *
      * @param scaleFactor the desired scale factor (world units per model unit,
      * &gt;0)
+     * @param totalMass the desired total mass (in kilograms, &gt;0)
+     * @return a new instance
      */
-    public Marker(float scaleFactor) {
-        super("Marker", scaleFactor);
+    public Marker(float scaleFactor, float totalMass) {
+        super("Marker", scaleFactor, totalMass);
     }
     // *************************************************************************
     // Prop methods
+
+    /**
+     * Determine the default total mass for scale=1, for this type of Prop.
+     *
+     * @return the mass (in kilograms, &gt;0)
+     */
+    @Override
+    public float defaultDescaledMass() {
+        return 3f;
+    }
 
     /**
      * Load this Prop from assets.
@@ -64,8 +76,7 @@ public class Marker extends Prop {
         }
 
         CollisionShape bodyShape = hullShape;
-        float massKg = 3f;
-        configureSingle(cgmRoot, hullShape, bodyShape, massKg);
+        configureSingle(cgmRoot, hullShape, bodyShape);
 
         PhysicsRigidBody body = getMainBody();
         body.setFriction(5f);
