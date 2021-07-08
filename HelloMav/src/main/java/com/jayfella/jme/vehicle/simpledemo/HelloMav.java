@@ -4,6 +4,7 @@ import com.github.stephengold.garrett.ChaseOption;
 import com.github.stephengold.garrett.OrbitCamera;
 import com.github.stephengold.garrett.Target;
 import com.jayfella.jme.vehicle.ChunkManager;
+import com.jayfella.jme.vehicle.Prop;
 import com.jayfella.jme.vehicle.PropWorld;
 import com.jayfella.jme.vehicle.Sky;
 import com.jayfella.jme.vehicle.Sound;
@@ -194,12 +195,14 @@ public class HelloMav extends SimpleApplication {
     private void addProps(PropWorld world) {
         int numProps = 5;
         float scaleFactor = 1f;
+        float totalMass = new WarningSign(1f, 1f).defaultDescaledMass();
         Vector3f location = new Vector3f(277f, 500f, 2_000f);
         Vector3f offset = new Vector3f(7f, 0f, 0f);
         Quaternion orient = new Quaternion();
 
         for (int propIndex = 0; propIndex < numProps; ++propIndex) {
-            new WarningSign(scaleFactor).addToWorld(world, location, orient);
+            Prop prop = new WarningSign(scaleFactor, totalMass);
+            prop.addToWorld(world, location, orient);
             location.addLocal(offset);
         }
     }

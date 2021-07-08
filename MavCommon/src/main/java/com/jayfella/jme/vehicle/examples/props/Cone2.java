@@ -34,12 +34,24 @@ public class Cone2 extends Prop {
      *
      * @param scaleFactor the desired scale factor (world units per model unit,
      * &gt;0)
+     * @param totalMass the desired total mass (in kilograms, &gt;0)
+     * @return a new instance
      */
-    public Cone2(float scaleFactor) {
-        super("Cone2", scaleFactor);
+    public Cone2(float scaleFactor, float totalMass) {
+        super("Cone2", scaleFactor, totalMass);
     }
     // *************************************************************************
     // Prop methods
+
+    /**
+     * Determine the default total mass for scale=1, for this type of Prop.
+     *
+     * @return the mass (in kilograms, &gt;0)
+     */
+    @Override
+    public float defaultDescaledMass() {
+        return 6f;
+    }
 
     /**
      * Load this Prop from assets.
@@ -64,8 +76,7 @@ public class Cone2 extends Prop {
         }
 
         CollisionShape bodyShape = hullShape;
-        float massKg = 6f;
-        configureSingle(cgmRoot, hullShape, bodyShape, massKg);
+        configureSingle(cgmRoot, hullShape, bodyShape);
 
         PhysicsRigidBody body = getMainBody();
         body.setFriction(5f);

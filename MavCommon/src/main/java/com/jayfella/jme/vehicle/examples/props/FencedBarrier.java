@@ -34,12 +34,24 @@ public class FencedBarrier extends Prop {
      *
      * @param scaleFactor the desired scale factor (world units per model unit,
      * &gt;0)
+     * @param totalMass the desired total mass (in kilograms, &gt;0)
+     * @return a new instance
      */
-    public FencedBarrier(float scaleFactor) {
-        super("FencedBarrier", scaleFactor);
+    public FencedBarrier(float scaleFactor, float totalMass) {
+        super("FencedBarrier", scaleFactor, totalMass);
     }
     // *************************************************************************
     // Prop methods
+
+    /**
+     * Determine the default total mass for scale=1, for this type of Prop.
+     *
+     * @return the mass (in kilograms, &gt;0)
+     */
+    @Override
+    public float defaultDescaledMass() {
+        return 500f;
+    }
 
     /**
      * Load this Prop from assets.
@@ -64,8 +76,7 @@ public class FencedBarrier extends Prop {
         }
 
         CollisionShape bodyShape = hullShape;
-        float massKg = 500f;
-        configureSingle(cgmRoot, hullShape, bodyShape, massKg);
+        configureSingle(cgmRoot, hullShape, bodyShape);
 
         PhysicsRigidBody body = getMainBody();
         body.setFriction(5f);

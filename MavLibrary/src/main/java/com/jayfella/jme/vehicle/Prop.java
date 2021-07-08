@@ -22,7 +22,6 @@ import java.util.logging.Logger;
 import jme3utilities.Loadable;
 import jme3utilities.NameGenerator;
 import jme3utilities.Validate;
-import jme3utilities.math.MyMath;
 import jme3utilities.math.MyVector3f;
 
 /**
@@ -30,7 +29,7 @@ import jme3utilities.math.MyVector3f;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-public class Prop
+abstract public class Prop
         implements HasNode, Loadable {
     // *************************************************************************
     // constants and loggers
@@ -53,9 +52,13 @@ public class Prop
      */
     private ConvexShape sweepShape;
     /**
-     * scale factor (world units per model unit)
+     * scale factor (world units per model unit, &gt;0)
      */
     final private float scaleFactor;
+    /**
+     * total mass (in kilograms, &gt;0)
+     */
+    final private float totalMass;
     /**
      * constraints internal to this Prop
      */
@@ -90,19 +93,24 @@ public class Prop
     // constructors
 
     /**
-     * Instantiate a Prop with the specified name prefix and scale factor.
+     * Instantiate a Prop with the specified name prefix, scale, and mass.
      *
      * @param namePrefix the desired name prefix (not null)
      * @param scaleFactor the desired scale factor (world units per model unit,
      * &gt;0)
+     * @param totalMass the desired total mass (in kilograms, &gt;0)
+     * @return a new instance
      */
-    protected Prop(String namePrefix, float scaleFactor) {
+    protected Prop(String namePrefix, float scaleFactor, float totalMass) {
         Validate.nonNull(namePrefix, "name prefix");
         Validate.positive(scaleFactor, "scale factor");
+        Validate.positive(totalMass, "total mass");
 
         name = nameGenerator.unique(namePrefix);
         node = new Node("Prop: " + name);
+
         this.scaleFactor = scaleFactor;
+        this.totalMass = totalMass;
     }
     // *************************************************************************
     // new methods exposed
@@ -237,6 +245,13 @@ public class Prop
     }
 
     /**
+     * Determine the default total mass for scale=1, for this type of Prop.
+     *
+     * @return the mass (in kilograms, &gt;0)
+     */
+    abstract public float defaultDescaledMass();
+
+    /**
      * Access the main body.
      *
      * @return the pre-existing instance, or null if none
@@ -252,6 +267,15 @@ public class Prop
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Access the world that contains this Prop.
+     *
+     * @return the pre-existing instance, or null if none
+     */
+    public PropWorld getWorld() {
+        return world;
     }
 
     /**
@@ -297,20 +321,19 @@ public class Prop
         for (RigidBodyControl body : partNameToBody.values()) {
             physicsSpace.removeCollisionObject(body);
         }
+        world.removeProp(this);
+        world = null;
         /*
          * This Prop might have been supporting unrelated bodies
          * that had been deactivated.
          */
         physicsSpace.activateAll(true);
-
-        world = null;
     }
 
     /**
      * Determine the scale.
      *
-     * @return the factor to convert model distances to world distances (&gt;0,
-     * default=10)
+     * @return the factor to convert model distances to world distances (&gt;0)
      */
     public float scaleFactor() {
         assert scaleFactor > 0f : scaleFactor;
@@ -328,6 +351,16 @@ public class Prop
 
         equipmentConstraint = constraint;
     }
+
+    /**
+     * Determine the total mass.
+     *
+     * @return the mass (in kilograms, &gt;0)
+     */
+    public float totalMass() {
+        assert totalMass > 0f : totalMass;
+        return totalMass;
+    }
     // *************************************************************************
     // protected methods
 
@@ -340,21 +373,19 @@ public class Prop
      * be the same as unscaledBody)
      * @param bodyShape unscaled collision shape for the rigid body (not null,
      * may be same as unscaledSweep)
-     * @param unscaledKg the desired mass for scaleFactor=1 (in kg, &gt;0)
      */
     protected void configureSingle(Spatial cgmRoot, ConvexShape sweepShape,
-            CollisionShape bodyShape, float unscaledKg) {
+            CollisionShape bodyShape) {
         Validate.nonNull(cgmRoot, "C-G model root");
         Validate.nonNull(sweepShape, "sweep shape");
         Validate.nonNull(bodyShape, "body shape");
-        Validate.positive(unscaledKg, "unscaled kg");
 
         cgmRoot.setLocalScale(scaleFactor);
         bodyShape.setScale(scaleFactor);
         sweepShape.setScale(scaleFactor);
-        float massKg = unscaledKg * MyMath.cube(scaleFactor);
-
         this.sweepShape = sweepShape;
+
+        float massKg = totalMass();
         mainRbc = new RigidBodyControl(bodyShape, massKg);
         mainRbc.setApplicationData(this);
         partNameToBody.put("main", mainRbc);

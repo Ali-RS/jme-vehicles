@@ -4,6 +4,7 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.scene.Node;
+import java.util.Collection;
 
 /**
  * A 3-D world for props.
@@ -48,4 +49,19 @@ public interface PropWorld {
      * @return the pre-existing instance (not null)
      */
     public AppStateManager getStateManager();
+
+    /**
+     * Enumerate props that have been added to this world and not yet removed.
+     *
+     * @return a new unmodifiable collection of pre-existing instances (not
+     * null)
+     */
+    public Collection<Prop> listProps();
+
+    /**
+     * Remove the specified Prop from this World.
+     *
+     * @param prop (not null, previously added)
+     */
+    public void removeProp(Prop prop);
 }
