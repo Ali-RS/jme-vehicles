@@ -99,7 +99,6 @@ abstract public class Prop
      * @param scaleFactor the desired scale factor (world units per model unit,
      * &gt;0)
      * @param totalMass the desired total mass (in kilograms, &gt;0)
-     * @return a new instance
      */
     protected Prop(String namePrefix, float scaleFactor, float totalMass) {
         Validate.nonNull(namePrefix, "name prefix");
