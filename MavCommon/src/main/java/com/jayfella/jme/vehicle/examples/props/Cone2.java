@@ -12,8 +12,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A Prop for a traffic cone, built around a portion of Sabri Ayeş's "Barrier &
- * Traffic Cone Pack". Note: bottomless.
+ * A Prop for a traffic cone with an orange base, built around a portion of
+ * Sabri Ayeş's "Barrier & Traffic Cone Pack". Note: bottomless.
  *
  * @author Stephen Gold sgold@sonic.net
  */
