@@ -181,12 +181,16 @@ public class MavDemo2 extends GuiApplication {
                 .setDumpShadow(true)
                 .setDumpTransform(true);
         /*
-         * Detach a couple app states created by SimpleApplication.
+         * Detach a few app states created by SimpleApplication.
          */
         DebugKeysAppState debugKeys = findAppState(DebugKeysAppState.class);
         stateManager.detach(debugKeys);
+
         AppState flyByCam = findAppState(FlyCamAppState.class);
         stateManager.detach(flyByCam);
+
+        ScreenshotAppState screenShot = findAppState(ScreenshotAppState.class);
+        stateManager.detach(screenShot);
 
         attachAppStates();
     }
