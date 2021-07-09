@@ -69,7 +69,7 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
             <control name="window" id="dumpPhysicsTool" title="Dump Physics Tool"
                      backgroundColor="#663f"
                      hideOnClose="true"
-                     height="260px" width="186px" x="1087" y="274">
+                     height="260px" width="186px" x="908" y="2">
                 <panel childLayout="vertical">
                     <panel height="5px"/>
                     <panel childLayout="horizontal" height="28px">
@@ -141,7 +141,7 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
             <control name="window" id="dumpSceneTool" title="Dump Scene Tool"
                      backgroundColor="#663f"
                      hideOnClose="true"
-                     height="361px" width="180px" x="1730" y="450">
+                     height="361px" width="180px" x="1098" y="29">
                 <panel childLayout="vertical">
                     <panel height="5px"/>
                     <panel childLayout="horizontal" height="28px">
@@ -193,7 +193,7 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
                         <control name="button" label="renderer"
                                  id="id26ToAvoidNiftyWarning"
                                  width="80px">
-                            <interact onRelease="perform(dump renderer)"/>
+                            <interact onRelease="perform(dump renderManager)"/>
                         </control>
                         <control name="label" text="  "/>
                         <control name="button" label="viewport"
@@ -210,20 +210,14 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
                         </control>
                     </panel>
                     <panel childLayout="horizontal" height="28px">
-                        <control name="button" id="dumpSceneActorButton"
-                                 width="80px">
-                            <interact onRelease="perform(dump actorNode)"/>
-                        </control>
-                        <control name="label" text="  "/>
                         <control name="button" id="dumpScenePropButton"
                                  width="80px">
                             <interact onRelease="perform(dump propNode)"/>
                         </control>
-                    </panel>
-                    <panel childLayout="horizontal" height="28px">
-                        <control name="button" id="dumpSceneBlockButton"
-                                 width="160px">
-                            <interact onRelease="perform(dump blockNode)"/>
+                        <control name="label" text="  "/>
+                        <control name="button" id="dumpSceneVehicleButton"
+                                 width="80px">
+                            <interact onRelease="perform(dump vehicleNode)"/>
                         </control>
                     </panel>
                 </panel>
@@ -232,7 +226,7 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
             <control name="window" id="physicsTool" title="Physics Tool"
                      backgroundColor="#663f"
                      hideOnClose="true"
-                     height="145px" width="300px" x="1300" y="860">
+                     height="145px" width="300px" x="978" y="391">
                 <panel childLayout="vertical">
                     <panel height="5px"/>
                     <panel childLayout="horizontal" height="28px">
@@ -298,7 +292,7 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
             <control name="window" id="toolsTool" title="Tools Tool"
                      backgroundColor="#663f"
                      hideOnClose="true"
-                     height="314px" width="230px" x="10" y="580">
+                     height="150px" width="230px" x="2" y="300">
                 <panel childLayout="vertical">
                     <panel height="5px"/>
 
@@ -353,7 +347,7 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
             <control name="window" id="viewTool" title="View Tool"
                      backgroundColor="#663f"
                      hideOnClose="true"
-                     height="312px" width="285px" x="10" y="250">
+                     height="312px" width="285px" x="2" y="456">
                 <panel childLayout="vertical">
                     <panel height="5px"/>
                     <panel childLayout="horizontal" height="28px">

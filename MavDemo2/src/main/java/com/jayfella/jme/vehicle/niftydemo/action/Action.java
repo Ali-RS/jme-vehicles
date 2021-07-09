@@ -33,6 +33,7 @@ public class Action {
     final static String dumpRootNode = "dump rootNode";
     final static String dumpStateManager = "dump stateManager";
     final static String dumpVehicle = "dump vehicle";
+    final static String dumpVehicleNode = "dump vehicleNode";
     final static String dumpViewPort = "dump viewPort";
 
     final static String editBindings = "edit bindings";
@@ -102,6 +103,7 @@ public class Action {
         mode.addActionName(dumpRootNode);
         mode.addActionName(dumpStateManager);
         mode.addActionName(dumpVehicle);
+        mode.addActionName(dumpVehicleNode);
         mode.addActionName(dumpViewPort);
         mode.addActionName(editBindings);
         mode.addActionName(editDisplaySettings);

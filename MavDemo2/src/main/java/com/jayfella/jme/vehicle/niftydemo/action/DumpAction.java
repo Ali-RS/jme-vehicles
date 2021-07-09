@@ -109,6 +109,13 @@ class DumpAction {
                 }
                 break;
 
+            case Action.dumpVehicleNode:
+                if (selectedVehicle != null) {
+                    Node vehicleNode = selectedVehicle.getNode();
+                    dumper.dump(vehicleNode);
+                }
+                break;
+
             case Action.dumpViewPort:
                 ViewPort viewPort = app.getViewPort();
                 dumper.dump(viewPort);

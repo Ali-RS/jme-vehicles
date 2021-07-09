@@ -1,7 +1,7 @@
 package com.jayfella.jme.vehicle.niftydemo.tool;
 
+import com.jayfella.jme.vehicle.Prop;
 import com.jayfella.jme.vehicle.Vehicle;
-import com.jayfella.jme.vehicle.World;
 import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
 import java.util.List;
 import java.util.logging.Logger;
@@ -138,6 +138,13 @@ class DumpSceneTool extends Tool {
         }
         setButtonText("dumpMaxChildren", text);
 
+        Prop selectedProp = MavDemo2.getDemoState().getSelectedProp();
+        text = "";
+        if (selectedProp != null) {
+            text = selectedProp.getName();
+        }
+        setButtonText("dumpSceneProp", text);
+
         Vehicle selectedVehicle
                 = MavDemo2.getDemoState().getVehicles().getSelected();
         text = "";
@@ -145,12 +152,5 @@ class DumpSceneTool extends Tool {
             text = selectedVehicle.getName();
         }
         setButtonText("dumpSceneVehicle", text);
-
-        World world = MavDemo2.getDemoState().getWorld();
-        text = "";
-        if (world != null) {
-            text = world.getClass().getSimpleName();
-        }
-        setButtonText("dumpSceneWorld", text);
     }
 }
