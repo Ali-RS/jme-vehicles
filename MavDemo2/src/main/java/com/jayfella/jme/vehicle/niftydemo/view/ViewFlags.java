@@ -22,10 +22,6 @@ public enum ViewFlags {
      */
     PropSpheres,
     /**
-     * targets of targeted props
-     */
-    PropTargets,
-    /**
      * shadows
      */
     Shadows,
@@ -38,7 +34,7 @@ public enum ViewFlags {
      */
     VehicleSpheres,
     /**
-     * physics shapes for the World
+     * physics shape for the World
      */
     WorldPhysics;
 }

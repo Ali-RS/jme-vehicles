@@ -1,16 +1,16 @@
 package com.jayfella.jme.vehicle.niftydemo.state;
 
 import com.jayfella.jme.vehicle.GlobalAudio;
+import com.jayfella.jme.vehicle.Prop;
 import com.jayfella.jme.vehicle.Sky;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.World;
-import com.jayfella.jme.vehicle.examples.skies.AnimatedDaySky;
-import com.jayfella.jme.vehicle.examples.vehicles.GrandTourer;
 import com.jayfella.jme.vehicle.examples.worlds.Mountains;
 import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
 import com.jayfella.jme.vehicle.niftydemo.view.View;
 import com.jme3.app.Application;
 import com.jme3.asset.AssetManager;
+import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
@@ -19,6 +19,7 @@ import com.jme3.bullet.objects.PhysicsRigidBody;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.system.Timer;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 import jme3utilities.Validate;
@@ -60,9 +61,13 @@ public class DemoState
      */
     private long preTickCount;
     /**
-     *
+     * selected Prop, or null if none
      */
-    private Sky sky;
+    private Prop selectedProp;
+    /**
+     * proposal for the next Prop
+     */
+    private PropProposal propProposal;
     /**
      * state of all vehicles
      */
@@ -70,12 +75,12 @@ public class DemoState
     /**
      * selected World (not null)
      */
-    private World world;
+    private World world = new Mountains();
     // *************************************************************************
     // constructors
 
     /**
-     * Instantiate an initial state with the default settings.
+     * Instantiate an initial state with no vehicle and default settings.
      *
      * @param physicsSpace (not null)
      */
@@ -90,22 +95,42 @@ public class DemoState
         Sky.setApplication(application);
         Sky.initialize();
 
-        world = new Mountains();
         Node rootNode = application.getRootNode();
         world.attach(application, rootNode, physicsSpace);
 
         vehicles = new Vehicles(this);
 
-        Vehicle vehicle = new GrandTourer();
-        vehicles.add(vehicle);
-        vehicles.select(vehicle);
-        vehicle.getEngine().setRunning(true);
-
-        sky = new AnimatedDaySky();
+        View view = MavDemo2.findAppState(View.class);
+        Sky sky = view.getSky();
         sky.addToWorld(world);
     }
     // *************************************************************************
     // new methods exposed
+
+    /**
+     * TODO
+     *
+     * @param vehicle (not null)
+     */
+    final public void addVehicle(Vehicle vehicle) {
+        vehicles.add(vehicle);
+        vehicles.select(vehicle);
+    }
+
+    /**
+     * TODO
+     */
+    public void deleteAllProps() {
+        Collection<Prop> collection = world.listProps();
+        int numProps = collection.size();
+        Prop[] array = new Prop[numProps];
+        collection.toArray(array);
+        for (Prop prop : array) {
+            prop.removeFromWorld();
+        }
+
+        selectedProp = null;
+    }
 
     /**
      * Read the elapsed time.
@@ -128,6 +153,24 @@ public class DemoState
     }
 
     /**
+     * TODO
+     *
+     * @return the pre-existing instance
+     */
+    public PropProposal getPropProposal() {
+        return propProposal;
+    }
+
+    /**
+     * TODO
+     *
+     * @return the pre-existing instance, or null if none
+     */
+    public Prop getSelectedProp() {
+        return selectedProp;
+    }
+
+    /**
      * Access the list of vehicles.
      *
      * @return the pre-existing instance (not null)
@@ -145,6 +188,46 @@ public class DemoState
     public World getWorld() {
         assert world != null;
         return world;
+    }
+
+    /**
+     * Pick the nearest Prop under the mouse cursor using a physics ray.
+     *
+     * @return the pre-existing instance, or null of none found
+     */
+    public static Prop pickProp() {
+        Vector3f near = new Vector3f();
+        Vector3f far = new Vector3f();
+        MavDemo2.findAppState(View.class).mouseRay(near, far);
+
+        BulletAppState bas = MavDemo2.findAppState(BulletAppState.class);
+        PhysicsSpace physicsSpace = bas.getPhysicsSpace();
+        List<PhysicsRayTestResult> results = physicsSpace.rayTest(near, far);
+        /*
+         * Calculate the offset from near end to the far end.
+         */
+        Vector3f offset = far.subtract(near);
+        /*
+         * Collision results are sorted by increasing distance from the camera,
+         * so the first result is also the nearest one.
+         */
+        for (PhysicsRayTestResult result : results) {
+            /*
+             * If the dot product of the normal with the offset is negative,
+             * then the triangle is facing the camera.
+             */
+            Vector3f worldNormal = result.getHitNormalLocal(null);
+            PhysicsCollisionObject pco = result.getCollisionObject();
+            float dotProduct = offset.dot(worldNormal);
+            if (dotProduct < 0f) {
+                Object appData = pco.getApplicationData();
+                if (appData instanceof Prop) {
+                    return (Prop) appData;
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -210,15 +293,40 @@ public class DemoState
     /**
      * TODO
      *
-     * @param newWorld
+     * @param prop
+     */
+    public void selectProp(Prop prop) {
+        selectedProp = prop;
+    }
+
+    /**
+     * TODO
+     *
+     * @param newVehicle (not loaded)
+     */
+    public void setVehicle(Vehicle newVehicle) {
+        AssetManager assetManager = world.getAssetManager();
+        newVehicle.load(assetManager);
+
+        vehicles.removeSelected();
+        addVehicle(newVehicle);
+    }
+
+    /**
+     * TODO
+     *
+     * @param newWorld (not loaded)
      */
     public void setWorld(World newWorld) {
         AssetManager assetManager = world.getAssetManager();
         newWorld.load(assetManager);
 
         Vehicle selectedVehicle = vehicles.getSelected();
-        sky.removeFromWorld();
         vehicles.removeAll();
+
+        View view = MavDemo2.findAppState(View.class);
+        Sky sky = view.getSky();
+        sky.removeFromWorld();
 
         PhysicsSpace physicsSpace = world.getPhysicsSpace();
         Node parentNode = world.getParentNode();
@@ -228,7 +336,9 @@ public class DemoState
         world.attach(application, parentNode, physicsSpace);
 
         sky.addToWorld(world);
-        selectedVehicle.addToWorld(world, this);
+        if (selectedVehicle != null) {
+            addVehicle(selectedVehicle);
+        }
     }
 
     /**
@@ -247,6 +357,11 @@ public class DemoState
     // *************************************************************************
     // GlobalAudio methods
 
+    /**
+     * Determine the effective global audio volume.
+     *
+     * @return the volume (linear scale, &ge;0, &le;1)
+     */
     @Override
     public float effectiveVolume() {
         return 1f; // TODO

@@ -61,9 +61,7 @@ public class Vehicles {
         vehicles.add(newVehicle);
 
         World world = demoState.getWorld();
-        newVehicle.addToWorld(world, () -> {
-            return 1f;
-        });
+        newVehicle.addToWorld(world, demoState);
     }
 
     /**
@@ -129,7 +127,7 @@ public class Vehicles {
     /**
      * Remove all vehicles.
      */
-    public void removeAll() {
+    void removeAll() {
         int numVehicles = vehicles.size();
         Vehicle[] array = new Vehicle[numVehicles];
         vehicles.toArray(array);

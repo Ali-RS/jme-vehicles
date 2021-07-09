@@ -24,30 +24,38 @@ public class Action {
     final static String deleteAllProps = "delete allProps";
     final static String deleteProp = "delete prop";
 
-    final static String dumpAppStates = "dump appStates";
+    final static String dumpCamera = "dump camera";
+    final static String dumpPhysics = "dump physics";
     final static String dumpPhysicsSpace = "dump physicsSpace";
     final static String dumpProp = "dump prop";
     final static String dumpPropNode = "dump propNode";
-    final static String dumpRenderer = "dump renderer";
+    final static String dumpRenderManager = "dump renderManager";
     final static String dumpRootNode = "dump rootNode";
+    final static String dumpStateManager = "dump stateManager";
     final static String dumpViewPort = "dump viewPort";
 
     final static String editBindings = "edit bindings";
     final static String editDisplaySettings = "edit displaySettings";
 
+    final static String loadVehicle = "load vehicle";
+    final static String loadWorld = "load world";
+
     final static String newProp = "new prop";
+    final static String newScreenShot = "new screenShot";
 
     final static String nextPerformanceMode = "next performanceMode";
     final static String nextTimeStep = "next timeStep";
 
-    final static String pickAny = "pick any";
+    final static String pickProp = "pick prop";
 
+    final static String resetCameraFov = "reset cameraFov";
+    final static String resetCameraOffset = "reset cameraOffset";
     final static String resetElapsedTime = "reset elapsedTime";
+    final static String resetVehicle = "reset vehicle";
 
     final static String selectProp = "select prop";
     final static String selectPropType = "select propType";
 
-    final static String setBlinkRate = "set blinkRate";
     final static String setDefaultAniso = "set defaultAniso";
     final static String setDumpIndentSpaces = "set dumpIndentSpaces";
     final static String setDumpMaxChildren = "set dumpMaxChildren";
@@ -56,10 +64,15 @@ public class Action {
     final static String setPhysicsMargin = "set physicsMargin";
     final static String setPhysicsSpeed = "set physicsSpeed";
     final static String setPhysicsTimeStep = "set physicsTimeStep";
+    final static String setPropDescaledMass = "set propDescaledMass";
+    final static String setPropMass = "set propMass";
+    final static String setPropScale = "set propScale";
 
     final static String toggleCamera = "toggle camera";
+    final static String toggleEngine = "toggle engine";
     final static String togglePause = "toggle pause";
     final static String togglePhysicsDebug = "toggle physicsDebug";
+    final static String toggleReverse = "toggle reverse";
     // *************************************************************************
     // constructors
 
@@ -74,18 +87,51 @@ public class Action {
     /**
      * Add actions to the specified InputMode without binding them.
      *
-     * @param m the InputMode to modify (not null)
+     * @param mode the InputMode to modify (not null)
      */
-    public static void addUnbound(InputMode m) {
-        m.addActionName(dumpAppStates);
-        m.addActionName(dumpPhysicsSpace);
-        m.addActionName(dumpRenderer);
-        m.addActionName(editBindings);
-        m.addActionName(editDisplaySettings);
-        m.addActionName(nextPerformanceMode);
-        m.addActionName(pickAny);
-        m.addActionName(togglePause);
-        m.addActionName(togglePhysicsDebug);
+    public static void addUnbound(InputMode mode) {
+        mode.addActionName(deleteAllProps);
+        mode.addActionName(deleteProp);
+        mode.addActionName(dumpCamera);
+        mode.addActionName(dumpPhysics);
+        mode.addActionName(dumpPhysicsSpace);
+        mode.addActionName(dumpProp);
+        mode.addActionName(dumpPropNode);
+        mode.addActionName(dumpRenderManager);
+        mode.addActionName(dumpRootNode);
+        mode.addActionName(dumpStateManager);
+        mode.addActionName(dumpViewPort);
+        mode.addActionName(editBindings);
+        mode.addActionName(editDisplaySettings);
+        mode.addActionName(loadVehicle);
+        mode.addActionName(loadWorld);
+        mode.addActionName(newProp);
+        mode.addActionName(newScreenShot);
+        mode.addActionName(nextPerformanceMode);
+        mode.addActionName(nextTimeStep);
+        mode.addActionName(pickProp);
+        mode.addActionName(resetCameraFov);
+        mode.addActionName(resetCameraOffset);
+        mode.addActionName(resetElapsedTime);
+        mode.addActionName(resetVehicle);
+        mode.addActionName(selectProp);
+        mode.addActionName(selectPropType);
+        mode.addActionName(setDefaultAniso);
+        mode.addActionName(setDumpIndentSpaces);
+        mode.addActionName(setDumpMaxChildren);
+        mode.addActionName(setPhysicsAxes);
+        mode.addActionName(setPhysicsIterations);
+        mode.addActionName(setPhysicsMargin);
+        mode.addActionName(setPhysicsSpeed);
+        mode.addActionName(setPhysicsTimeStep);
+        mode.addActionName(setPropDescaledMass);
+        mode.addActionName(setPropMass);
+        mode.addActionName(setPropScale);
+        mode.addActionName(toggleCamera);
+        mode.addActionName(toggleEngine);
+        mode.addActionName(togglePause);
+        mode.addActionName(togglePhysicsDebug);
+        mode.addActionName(toggleReverse);
         // TODO signals
     }
 
@@ -120,43 +166,35 @@ public class Action {
         String firstWord = words[0];
         switch (firstWord) {
             case "delete":
-//                handled = DeleteAction.processOngoing(actionString);
+                handled = DeleteAction.processOngoing(actionString);
                 break;
 
             case "dump":
-//                handled = DumpAction.processOngoing(actionString);
+                handled = DumpAction.processOngoing(actionString);
                 break;
 
             case "edit":
-//                handled = EditAction.processOngoing(actionString);
+                handled = EditAction.processOngoing(actionString);
                 break;
 
             case "load":
-//                handled = LoadAction.processOngoing(actionString);
+                handled = LoadAction.processOngoing(actionString);
                 break;
 
             case "new":
-//                handled = NewAction.processOngoing(actionString);
+                handled = NewAction.processOngoing(actionString);
                 break;
 
             case "next":
-//                handled = NextAction.processOngoing(actionString);
+                handled = NextAction.processOngoing(actionString);
                 break;
 
             case "pick":
-//                handled = PickAction.processOngoing(actionString);
-                break;
-
-            case "previous":
-//                handled = PreviousAction.processOngoing(actionString);
+                handled = PickAction.processOngoing(actionString);
                 break;
 
             case "reset":
-//                handled = ResetAction.processOngoing(actionString);
-                break;
-
-            case "save":
-//                handled = SaveAction.processOngoing(actionString);
+                handled = ResetAction.processOngoing(actionString);
                 break;
 
             case "select":
@@ -164,11 +202,11 @@ public class Action {
                 break;
 
             case "set":
-//                handled = SetAction.processOngoing(actionString);
+                handled = SetAction.processOngoing(actionString);
                 break;
 
             case "toggle":
-//                handled = ToggleAction.processOngoing(actionString);
+                handled = ToggleAction.processOngoing(actionString);
                 break;
         }
 

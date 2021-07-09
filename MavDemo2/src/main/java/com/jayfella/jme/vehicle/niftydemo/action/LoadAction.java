@@ -1,17 +1,15 @@
 package com.jayfella.jme.vehicle.niftydemo.action;
 
-import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
 import com.jayfella.jme.vehicle.niftydemo.Menus;
-import com.jayfella.jme.vehicle.niftydemo.state.DemoState;
 import java.util.logging.Logger;
 import jme3utilities.MyString;
 
 /**
- * Process actions that start with the word "select".
+ * Process actions that start with the word "load".
  *
  * @author Stephen Gold sgold@sonic.net
  */
-class SelectAction {
+class LoadAction {
     // *************************************************************************
     // constants and loggers
 
@@ -19,41 +17,36 @@ class SelectAction {
      * message logger for this class
      */
     final private static Logger logger
-            = Logger.getLogger(SelectAction.class.getName());
+            = Logger.getLogger(LoadAction.class.getName());
     // *************************************************************************
     // constructors
 
     /**
      * A private constructor to inhibit instantiation of this class.
      */
-    private SelectAction() {
+    private LoadAction() {
     }
     // *************************************************************************
     // new methods exposed
 
     /**
-     * Process an ongoing action that starts with the word "select".
+     * Process an ongoing action that starts with the word "load".
      *
      * @param actionString textual description of the action (not null)
      * @return true if the action is handled, otherwise false
      */
     static boolean processOngoing(String actionString) {
-        boolean handled = true;
-        DemoState demoState = MavDemo2.getDemoState();
-
-        switch (actionString) {
-            default:
-                handled = false;
-        }
-        if (handled) {
-            return true;
-        }
-        handled = true;
+        boolean handled;
 
         String arg;
-        if (actionString.startsWith(ActionPrefix.selectMenuItem)) {
-            arg = MyString.remainder(actionString, ActionPrefix.selectMenuItem);
-            handled = Menus.selectMenuItem(arg);
+        if (actionString.startsWith(ActionPrefix.loadVehicle)) {
+            arg = MyString.remainder(actionString, ActionPrefix.loadVehicle);
+            handled = Menus.menuWorld(arg);
+
+        } else if (actionString.startsWith(ActionPrefix.loadWorld)) {
+            arg = MyString.remainder(actionString, ActionPrefix.loadWorld);
+            handled = Menus.menuWorld(arg);
+
         } else {
             handled = false;
         }

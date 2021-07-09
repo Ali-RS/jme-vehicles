@@ -1,17 +1,15 @@
 package com.jayfella.jme.vehicle.niftydemo.action;
 
 import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
-import com.jayfella.jme.vehicle.niftydemo.Menus;
 import com.jayfella.jme.vehicle.niftydemo.state.DemoState;
 import java.util.logging.Logger;
-import jme3utilities.MyString;
 
 /**
- * Process actions that start with the word "select".
+ * Process actions that start with the word "delete".
  *
  * @author Stephen Gold sgold@sonic.net
  */
-class SelectAction {
+class DeleteAction {
     // *************************************************************************
     // constants and loggers
 
@@ -19,20 +17,20 @@ class SelectAction {
      * message logger for this class
      */
     final private static Logger logger
-            = Logger.getLogger(SelectAction.class.getName());
+            = Logger.getLogger(DeleteAction.class.getName());
     // *************************************************************************
     // constructors
 
     /**
      * A private constructor to inhibit instantiation of this class.
      */
-    private SelectAction() {
+    private DeleteAction() {
     }
     // *************************************************************************
     // new methods exposed
 
     /**
-     * Process an ongoing action that starts with the word "select".
+     * Process an ongoing action that starts with the word "delete".
      *
      * @param actionString textual description of the action (not null)
      * @return true if the action is handled, otherwise false
@@ -42,20 +40,16 @@ class SelectAction {
         DemoState demoState = MavDemo2.getDemoState();
 
         switch (actionString) {
+            case Action.deleteAllProps:
+                demoState.deleteAllProps();
+                break;
+
+            case Action.deleteProp:
+                demoState.getSelectedProp().removeFromWorld();
+                break;
+
             default:
                 handled = false;
-        }
-        if (handled) {
-            return true;
-        }
-        handled = true;
-
-        String arg;
-        if (actionString.startsWith(ActionPrefix.selectMenuItem)) {
-            arg = MyString.remainder(actionString, ActionPrefix.selectMenuItem);
-            handled = Menus.selectMenuItem(arg);
-        } else {
-            handled = false;
         }
 
         return handled;

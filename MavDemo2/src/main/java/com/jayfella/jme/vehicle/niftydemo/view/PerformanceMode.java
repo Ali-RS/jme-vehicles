@@ -1,7 +1,7 @@
-package com.jayfella.jme.vehicle.niftydemo;
+package com.jayfella.jme.vehicle.niftydemo.view;
 
 /**
- * Enumerate the performance-monitoring modes supported by MavDemo2.
+ * Enumerate the performance-monitoring modes in MavDemo2.
  *
  * @author Stephen Gold sgold@sonic.net
  */

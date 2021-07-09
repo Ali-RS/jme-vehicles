@@ -1,12 +1,18 @@
-package com.jayfella.jme.vehicle.niftydemo.menu;
+package com.jayfella.jme.vehicle.niftydemo;
 
+import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.World;
+import com.jayfella.jme.vehicle.examples.vehicles.DuneBuggy;
+import com.jayfella.jme.vehicle.examples.vehicles.GTRNismo;
+import com.jayfella.jme.vehicle.examples.vehicles.GrandTourer;
+import com.jayfella.jme.vehicle.examples.vehicles.HatchBack;
+import com.jayfella.jme.vehicle.examples.vehicles.HoverTank;
+import com.jayfella.jme.vehicle.examples.vehicles.PickupTruck;
+import com.jayfella.jme.vehicle.examples.vehicles.Rotator;
 import com.jayfella.jme.vehicle.examples.worlds.EndlessPlain;
 import com.jayfella.jme.vehicle.examples.worlds.Mountains;
 import com.jayfella.jme.vehicle.examples.worlds.Playground;
 import com.jayfella.jme.vehicle.examples.worlds.Racetrack;
-import com.jayfella.jme.vehicle.niftydemo.MainHud;
-import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
 import com.jayfella.jme.vehicle.niftydemo.action.ActionPrefix;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -64,6 +70,84 @@ public class Menus {
         }
 
         return handled;
+    }
+
+    /**
+     * Handle a "select menuItem" action from the Vehicle menu.
+     *
+     * @param remainder not-yet-parsed portion of the menu path (not null)
+     * @return true if the action is handled, otherwise false
+     */
+    public static boolean menuVehicle(String remainder) {
+        Vehicle vehicle;
+        switch (remainder) {
+            case "Dune Buggy":
+                vehicle = new DuneBuggy();
+                break;
+
+            case "Grand Tourer":
+                vehicle = new GrandTourer();
+                break;
+
+            case "GTR Nismo":
+                vehicle = new GTRNismo();
+                break;
+
+            case "Hatchback":
+                vehicle = new HatchBack();
+                break;
+
+            case "Hovertank":
+                vehicle = new HoverTank();
+                break;
+
+            case "Pickup Truck":
+                vehicle = new PickupTruck();
+                break;
+
+            case "Rotator":
+                vehicle = new Rotator();
+                break;
+
+            default:
+                return false;
+        }
+
+        MavDemo2.getDemoState().setVehicle(vehicle);
+        return true;
+    }
+
+    /**
+     * Handle a "select menuItem" action from the World menu.
+     *
+     * @param remainder not-yet-parsed portion of the menu path (not null)
+     * @return true if the action is handled, otherwise false
+     */
+    public static boolean menuWorld(String remainder) {
+        World world;
+        switch (remainder) {
+            case "Endless Plain":
+                world = new EndlessPlain();
+                break;
+
+            case "Mountains":
+                world = new Mountains();
+                break;
+
+            case "Playground":
+                world = new Playground();
+                break;
+
+            case "Racetrack":
+                world = new Racetrack();
+                break;
+
+            default:
+                return false;
+        }
+
+        MavDemo2.getDemoState().setWorld(world);
+        return true;
     }
     // *************************************************************************
     // private methods
@@ -379,87 +463,5 @@ public class Menus {
         }
 
         return handled;
-    }
-
-    /**
-     * Handle a "select menuItem" action from the Vehicle menu.
-     *
-     * @param remainder not-yet-parsed portion of the menu path (not null)
-     * @return true if the action is handled, otherwise false
-     */
-    private static boolean menuVehicle(String remainder) {
-        boolean handled = true;
-        MainHud hud = MavDemo2.findAppState(MainHud.class);
-
-        switch (remainder) {
-            case "Dune Buggy":
-                // TODO
-                break;
-
-            case "Grand Tourer":
-                // TODO
-                break;
-
-            case "GTR Nismo":
-                // TODO
-                break;
-
-            case "Hatchback":
-                // TODO
-                break;
-
-            case "Hovertank":
-                // TODO
-                break;
-
-            case "Pickup Truck":
-                // TODO
-                break;
-
-            case "Rotator":
-                // TODO
-                break;
-
-            default:
-                handled = false;
-        }
-
-        return handled;
-    }
-
-    /**
-     * Handle a "select menuItem" action from the World menu.
-     *
-     * @param remainder not-yet-parsed portion of the menu path (not null)
-     * @return true if the action is handled, otherwise false
-     */
-    private static boolean menuWorld(String remainder) {
-        boolean handled = true;
-        MainHud hud = MavDemo2.findAppState(MainHud.class);
-
-        World world;
-        switch (remainder) {
-            case "Endless Plain":
-                world = new EndlessPlain();
-                break;
-
-            case "Mountains":
-                world = new Mountains();
-                break;
-
-            case "Playground":
-                world = new Playground();
-                break;
-
-            case "Racetrack":
-                world = new Racetrack();
-                break;
-
-            default:
-                return false;
-        }
-
-        MavDemo2.getDemoState().setWorld(world);
-        return true;
     }
 }

@@ -1,14 +1,14 @@
 package com.jayfella.jme.vehicle.niftydemo.view;
 
 import com.jayfella.jme.vehicle.Sky;
+import com.jayfella.jme.vehicle.VehicleWorld;
 import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
 import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
-import com.jayfella.jme.vehicle.niftydemo.PerformanceMode;
+import com.jayfella.jme.vehicle.niftydemo.state.DemoState;
 import com.jme3.app.Application;
 import com.jme3.app.StatsAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
-import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
@@ -42,18 +42,6 @@ public class View extends SimpleAppState {
     // fields
 
     /**
-     * flag to enable target visualization for props
-     */
-    private boolean enablePropTargets = true;
-    /**
-     * mouse cursor when the ActorProposal is active and not Equipped
-     */
-    private JmeCursor activeCursor;
-    /**
-     * mouse cursor when the ActorProposal is inactive or Equipped
-     */
-    private JmeCursor inactiveCursor;
-    /**
      * scene-graph subtree for visualizing the PropProposal
      */
     final private Node propProposalNode = new Node("prop proposal");
@@ -64,7 +52,7 @@ public class View extends SimpleAppState {
     /**
      * selected sky, including lights and post-processing (not null)
      */
-    private static Sky sky = new QuarrySky();
+    private Sky sky = new QuarrySky();
     /**
      * options for debug visualization of swept spheres
      */
@@ -114,10 +102,6 @@ public class View extends SimpleAppState {
         boolean result;
 
         switch (viewFlag) {
-            case PropTargets:
-                result = enablePropTargets;
-                break;
-
             case PropSpheres:
             case VehicleSpheres:
                 result = ssFilter.isEnabled(viewFlag);
@@ -195,10 +179,6 @@ public class View extends SimpleAppState {
      */
     public void setEnabled(ViewFlags viewFlag, boolean newValue) {
         switch (viewFlag) {
-            case PropTargets:
-                enablePropTargets = newValue;
-                break;
-
             case PropSpheres:
             case VehicleSpheres:
                 ssFilter.setEnabled(viewFlag, newValue);
@@ -207,6 +187,21 @@ public class View extends SimpleAppState {
             default:
                 viewPhysics.setEnabled(viewFlag, newValue);
         }
+    }
+
+    /**
+     * TODO
+     *
+     * @param newSky
+     */
+    public void setSky(Sky newSky) {
+        if (sky != null) {
+            sky.removeFromWorld();
+        }
+        sky = newSky;
+        DemoState demoState = MavDemo2.getDemoState();
+        VehicleWorld world = demoState.getWorld();
+        sky.addToWorld(world);
     }
     // *************************************************************************
     // SimpleAppState methods
@@ -221,11 +216,6 @@ public class View extends SimpleAppState {
     @Override
     public void initialize(AppStateManager sm, Application app) {
         super.initialize(sm, app);
-
-        String defaultCursorPath = "Textures/cursors/default.cur";
-        inactiveCursor = (JmeCursor) assetManager.loadAsset(defaultCursorPath);
-        String menuCursorPath = "Textures/cursors/menu.cur";
-        activeCursor = (JmeCursor) assetManager.loadAsset(menuCursorPath);
 
         BulletAppState bas = MavDemo2.findAppState(BulletAppState.class);
         bas.setDebugEnabled(true);

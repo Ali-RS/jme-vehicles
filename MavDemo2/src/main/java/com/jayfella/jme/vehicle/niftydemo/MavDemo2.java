@@ -3,21 +3,24 @@ package com.jayfella.jme.vehicle.niftydemo;
 import com.jayfella.jme.vehicle.ChunkManager;
 import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.Vehicle;
+import com.jayfella.jme.vehicle.examples.vehicles.GrandTourer;
 import com.jayfella.jme.vehicle.gui.CompassState;
 import com.jayfella.jme.vehicle.gui.SpeedometerState;
 import com.jayfella.jme.vehicle.gui.SteeringWheelState;
 import com.jayfella.jme.vehicle.gui.TachometerState;
 import com.jayfella.jme.vehicle.niftydemo.action.Action;
 import com.jayfella.jme.vehicle.niftydemo.state.DemoState;
+import com.jayfella.jme.vehicle.niftydemo.view.Cameras;
+import com.jayfella.jme.vehicle.niftydemo.view.View;
 import com.jayfella.jme.vehicle.part.Engine;
 import com.jme3.app.BasicProfilerState;
 import com.jme3.app.DebugKeysAppState;
 import com.jme3.app.FlyCamAppState;
 import com.jme3.app.state.AppState;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.app.state.ScreenshotAppState;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
-import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeVersion;
@@ -172,6 +175,11 @@ public class MavDemo2 extends GuiApplication {
                 MyString.quote(MinieVersion.versionShort()));
 
         renderer.setDefaultAnisotropicFilter(8);
+
+        dumper.setDumpBucket(true)
+                .setDumpCull(true)
+                .setDumpShadow(true)
+                .setDumpTransform(true);
         /*
          * Detach a couple app states created by SimpleApplication.
          */
@@ -181,25 +189,6 @@ public class MavDemo2 extends GuiApplication {
         stateManager.detach(flyByCam);
 
         attachAppStates();
-
-        Vehicle vehicle = demoState.getVehicles().getSelected();
-        stateManager.attach(new SpeedometerState(vehicle, SpeedUnit.MPH));
-        Engine engine = vehicle.getEngine();
-        stateManager.attach(new TachometerState(engine));
-
-        float radius = 120f; // pixels
-        float x = 0.5f * cam.getWidth();
-        float y = 0.18f * cam.getHeight();
-        float z = 1f;
-        SteeringWheelState steeringWheel
-                = new SteeringWheelState(radius, new Vector3f(x, y, z));
-        steeringWheel.setVehicle(vehicle);
-        steeringWheel.setEnabled(true);
-        stateManager.attach(steeringWheel);
-
-        cam.setLocation(new Vector3f(291f, 12f, 2_075f));
-        cam.setRotation(new Quaternion(0f, 0.9987554f, -0.05f, 0f));
-        flyCam.setEnabled(false);
     }
 
     /**
@@ -244,7 +233,7 @@ public class MavDemo2 extends GuiApplication {
             startup1();
             didStartup1 = true;
         } else {
-//            Cameras.update();
+            Cameras.update();
         }
     }
     // *************************************************************************
@@ -269,8 +258,17 @@ public class MavDemo2 extends GuiApplication {
                 new CompassState()
         );
 
-        configurePhysics();
-//        Cameras.configure();
+        PhysicsSpace physicsSpace = configurePhysics();
+
+        Cameras.configure();
+        View view = new View();
+        success = stateManager.attach(view);
+        assert success;
+
+        demoState = new DemoState(physicsSpace);
+        Vehicle vehicle = new GrandTourer();
+        vehicle.load(assetManager);
+        demoState.addVehicle(vehicle);
 
         success = stateManager.attach(displaySettingsScreen);
         assert success;
@@ -285,22 +283,50 @@ public class MavDemo2 extends GuiApplication {
         PerformanceAppState pas = new PerformanceAppState();
         success = stateManager.attach(pas);
         assert success;
+
+        String directory = "./";
+        String filenamePrefix = "screen_shot";
+        ScreenshotAppState screenshotAppState
+                = new ScreenshotAppState(directory, filenamePrefix);
+        success = stateManager.attach(screenshotAppState);
+        assert success;
+
+        SpeedometerState speedometer
+                = new SpeedometerState(vehicle, SpeedUnit.MPH);
+        success = stateManager.attach(speedometer);
+        assert success;
+
+        float radius = 120f; // pixels
+        float x = 0.5f * cam.getWidth();
+        float y = 0.18f * cam.getHeight();
+        float z = 1f;
+        SteeringWheelState steeringWheel
+                = new SteeringWheelState(radius, new Vector3f(x, y, z));
+        steeringWheel.setVehicle(vehicle);
+        steeringWheel.setEnabled(true);
+        success = stateManager.attach(steeringWheel);
+        assert success;
+
+        Engine engine = vehicle.getEngine();
+        TachometerState tachometer = new TachometerState(engine);
+        success = stateManager.attach(tachometer);
+        assert success;
     }
 
     /**
      * Configure physics during startup.
      */
-    private void configurePhysics() {
+    private PhysicsSpace configurePhysics() {
         BulletAppState bulletAppState = new BulletAppState();
         boolean success = stateManager.attach(bulletAppState);
         assert success;
 
-        PhysicsSpace physicsSpace = bulletAppState.getPhysicsSpace();
-        physicsSpace.setAccuracy(0.008f);
-        physicsSpace.setGravity(new Vector3f(0f, -9.8f, 0f));
-        physicsSpace.setSolverNumIterations(15);
+        PhysicsSpace result = bulletAppState.getPhysicsSpace();
+        result.setAccuracy(0.008f);
+        result.setGravity(new Vector3f(0f, -9.8f, 0f));
+        result.setSolverNumIterations(15);
 
-        demoState = new DemoState(physicsSpace);
+        return result;
     }
 
     /**

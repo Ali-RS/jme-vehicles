@@ -19,6 +19,14 @@ public class ActionPrefix {
     final private static Logger logger
             = Logger.getLogger(ActionPrefix.class.getName());
     /**
+     * argument is the name of a Vehicle
+     */
+    final static String loadVehicle = "load vehicle ";
+    /**
+     * argument is the name of a World
+     */
+    final static String loadWorld = "load world ";
+    /**
      * argument is the menu path of a menu item
      */
     final public static String selectMenuItem = "select menuItem ";
@@ -26,6 +34,50 @@ public class ActionPrefix {
      * argument is a PropCgm name
      */
     final static String selectPropType = "select propType ";
+    /**
+     * argument is a positive integer
+     */
+    final static String setDefaultAniso = "set defaultAniso ";
+    /**
+     * argument is a non-negative integer
+     */
+    final static String setDumpIndentSpaces = "set dumpIndentSpaces ";
+    /**
+     * argument is a non-negative integer
+     */
+    final static String setDumpMaxChildren = "set dumpMaxChildren ";
+    /**
+     * argument is a non-negative number
+     */
+    final static String setPhysicsAxes = "set physicsAxes ";
+    /**
+     * argument is a positive integer
+     */
+    final static String setPhysicsIterations = "set physicsIterations ";
+    /**
+     * argument is a positive number
+     */
+    final static String setPhysicsMargin = "set physicsMargin ";
+    /**
+     * argument is a non-negative number
+     */
+    final static String setPhysicsSpeed = "set physicsSpeed ";
+    /**
+     * argument is a positive number
+     */
+    final static String setPhysicsTimeStep = "set physicsTimeStep ";
+    /**
+     * argument is a positive number
+     */
+    final static String setPropDescaledMass = "set propDescaledMass ";
+    /**
+     * argument is a positive number
+     */
+    final static String setPropMass = "set propMass ";
+    /**
+     * argument is a positive number
+     */
+    final static String setPropScale = "set propScale ";
     // *************************************************************************
     // constructors
 
