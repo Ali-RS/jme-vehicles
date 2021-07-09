@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle.niftydemo.tool;
 
+import com.jayfella.jme.vehicle.Prop;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
 import com.jayfella.jme.vehicle.niftydemo.state.DemoState;
@@ -74,7 +75,7 @@ class DumpPhysicsTool extends Tool {
                 dumper.setEnabled(DumpFlags.ChildShapes, isChecked);
                 break;
             case "dumpIgnores":
-             ///// TODO   dumper.setEnabled(DumpFlags.Ignores, isChecked);
+                dumper.setEnabled(DumpFlags.Ignores, isChecked);
                 break;
             case "dumpJib":
                 dumper.setEnabled(DumpFlags.JointsInBodies, isChecked);
@@ -108,8 +109,8 @@ class DumpPhysicsTool extends Tool {
         boolean dumpChildShapes = dumper.isEnabled(DumpFlags.ChildShapes);
         setChecked("dumpChildShapes", dumpChildShapes);
 
-       //// TODO boolean dumpIgnores = dumper.isEnabled(DumpFlags.Ignores);
-       //// TODO setChecked("dumpIgnores", dumpIgnores);
+        boolean dumpIgnores = dumper.isEnabled(DumpFlags.Ignores);
+        setChecked("dumpIgnores", dumpIgnores);
 
         boolean dumpJib = dumper.isEnabled(DumpFlags.JointsInBodies);
         setChecked("dumpJib", dumpJib);
@@ -132,6 +133,13 @@ class DumpPhysicsTool extends Tool {
         setButtonText("dumpIndent2", text);
 
         DemoState demoState = MavDemo2.getDemoState();
+        Prop selectedProp = demoState.getSelectedProp();
+        text = "";
+        if (selectedProp != null) {
+            text = selectedProp.getName();
+        }
+        setButtonText("dumpPhysicsProp", text);
+
         Vehicle selectedVehicle = demoState.getVehicles().getSelected();
         text = "";
         if (selectedVehicle != null) {

@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle.niftydemo.action;
 
 import com.jayfella.jme.vehicle.Prop;
+import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
 import com.jayfella.jme.vehicle.niftydemo.state.DemoState;
 import com.jme3.app.state.AppStateManager;
@@ -53,6 +54,7 @@ class DumpAction {
 
         PhysicsSpace physicsSpace = bas.getPhysicsSpace();
         Prop selectedProp = demoState.getSelectedProp();
+        Vehicle selectedVehicle = demoState.getVehicles().getSelected();
 
         boolean handled = true;
         switch (actionString) {
@@ -97,6 +99,14 @@ class DumpAction {
             case Action.dumpStateManager:
                 AppStateManager stateManager = app.getStateManager();
                 dumper.dump(stateManager);
+                break;
+
+            case Action.dumpVehicle:
+                if (selectedVehicle != null) {
+                    AppDataFilter selectedVehicleFilter
+                            = new AppDataFilter(selectedVehicle);
+                    dumper.dump(physicsSpace, "", selectedVehicleFilter);
+                }
                 break;
 
             case Action.dumpViewPort:

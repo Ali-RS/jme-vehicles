@@ -69,7 +69,7 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
             <control name="window" id="dumpPhysicsTool" title="Dump Physics Tool"
                      backgroundColor="#663f"
                      hideOnClose="true"
-                     height="306px" width="186px" x="1530" y="450">
+                     height="260px" width="186px" x="1087" y="274">
                 <panel childLayout="vertical">
                     <panel height="5px"/>
                     <panel childLayout="horizontal" height="28px">
@@ -115,7 +115,7 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
                         <control name="button" label="app states"
                                  id="id20ToAvoidNiftyWarning"
                                  width="80px">
-                            <interact onRelease="perform(dump appStates)"/>
+                            <interact onRelease="perform(dump stateManager)"/>
                         </control>
                         <control name="label" text="    "/>
                         <control name="button" label="phys space"
@@ -125,27 +125,14 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
                         </control>
                     </panel>
                     <panel childLayout="horizontal" height="28px">
-                        <control name="button" id="dumpPhysicsActorButton"
-                                 width="80px">
-                            <interact onRelease="perform(dump actor)"/>
-                        </control>
-                        <control name="label" text="  "/>
                         <control name="button" id="dumpPhysicsPropButton"
                                  width="80px">
                             <interact onRelease="perform(dump prop)"/>
                         </control>
-                    </panel>
-                    <panel childLayout="horizontal" height="28px">
-                        <control name="button" id="dumpPhysicsBlockButton"
-                                 width="160px">
-                            <interact onRelease="perform(dump block)"/>
-                        </control>
-                    </panel>
-                    <panel childLayout="horizontal" height="28px">
-                        <control name="button" label="particles"
-                                 id="id22ToAvoidNiftyWarning"
+                        <control name="label" text="    "/>
+                        <control name="button" id="dumpPhysicsVehicleButton"
                                  width="80px">
-                            <interact onRelease="perform(dump particles)"/>
+                            <interact onRelease="perform(dump vehicle)"/>
                         </control>
                     </panel>
                 </panel>
