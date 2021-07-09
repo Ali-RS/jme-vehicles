@@ -869,13 +869,18 @@ abstract public class Vehicle
     // VehicleSpeed methods
 
     /**
-     * Determine the forward component of the vehicle's inertial velocity.
+     * Determine the forward component of the vehicle's inertial velocity. The
+     * vehicle must be added to some world.
      *
      * @param speedUnit the unit of measurement to use (not null)
      * @return the speed (in the specified units, may be negative)
      */
     @Override
     public float forwardSpeed(SpeedUnit speedUnit) {
+        if (world == null) {
+            throw new IllegalStateException("Vehicle not added to any world.");
+        }
+
         float kph = vehicleControl.getCurrentVehicleSpeedKmHour();
 
         float result;
