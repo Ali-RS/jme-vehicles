@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle.niftydemo.view;
 
+import com.jayfella.jme.vehicle.Prop;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jme3.bullet.CollisionSpace;
 import com.jme3.bullet.PhysicsSpace;
@@ -105,7 +106,8 @@ class SweptSphereFilter implements BulletDebugAppState.DebugAppStateFilter {
         if (physicsObject instanceof PhysicsCollisionObject) {
             PhysicsCollisionObject pco = (PhysicsCollisionObject) physicsObject;
             Object applicationData = pco.getApplicationData();
-            if (applicationData instanceof Vehicle && enableVehicles) {
+            if (applicationData instanceof Prop && enableProps
+                    || applicationData instanceof Vehicle && enableVehicles) {
                 PhysicsRigidBody body = (PhysicsRigidBody) pco;
 
                 CollisionSpace space = body.getCollisionSpace();

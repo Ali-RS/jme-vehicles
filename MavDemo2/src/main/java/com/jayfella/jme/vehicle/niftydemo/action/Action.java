@@ -39,12 +39,14 @@ public class Action {
     final static String editBindings = "edit bindings";
     final static String editDisplaySettings = "edit displaySettings";
 
+    final static String loadSky = "load sky";
     final static String loadVehicle = "load vehicle";
     final static String loadWorld = "load world";
 
     final static String newProp = "new prop";
     final static String newScreenShot = "new screenShot";
 
+    final static String nextCamera = "next camera";
     final static String nextPerformanceMode = "next performanceMode";
     final static String nextTimeStep = "next timeStep";
 
@@ -70,7 +72,6 @@ public class Action {
     final static String setPropMass = "set propMass";
     final static String setPropScale = "set propScale";
 
-    final static String toggleCamera = "toggle camera";
     final static String toggleEngine = "toggle engine";
     final static String togglePause = "toggle pause";
     final static String togglePhysicsDebug = "toggle physicsDebug";
@@ -94,6 +95,7 @@ public class Action {
     public static void addUnbound(InputMode mode) {
         mode.addActionName(deleteAllProps);
         mode.addActionName(deleteProp);
+
         mode.addActionName(dumpCamera);
         mode.addActionName(dumpPhysics);
         mode.addActionName(dumpPhysicsSpace);
@@ -105,21 +107,31 @@ public class Action {
         mode.addActionName(dumpVehicle);
         mode.addActionName(dumpVehicleNode);
         mode.addActionName(dumpViewPort);
+
         mode.addActionName(editBindings);
         mode.addActionName(editDisplaySettings);
+
+        mode.addActionName(loadSky);
         mode.addActionName(loadVehicle);
         mode.addActionName(loadWorld);
+
         mode.addActionName(newProp);
         mode.addActionName(newScreenShot);
+
+        mode.addActionName(nextCamera);
         mode.addActionName(nextPerformanceMode);
         mode.addActionName(nextTimeStep);
+
         mode.addActionName(pickProp);
+
         mode.addActionName(resetCameraFov);
         mode.addActionName(resetCameraOffset);
         mode.addActionName(resetElapsedTime);
         mode.addActionName(resetVehicle);
+
         mode.addActionName(selectProp);
         mode.addActionName(selectPropType);
+
         mode.addActionName(setDefaultAniso);
         mode.addActionName(setDumpIndentSpaces);
         mode.addActionName(setDumpMaxChildren);
@@ -131,7 +143,7 @@ public class Action {
         mode.addActionName(setPropDescaledMass);
         mode.addActionName(setPropMass);
         mode.addActionName(setPropScale);
-        mode.addActionName(toggleCamera);
+
         mode.addActionName(toggleEngine);
         mode.addActionName(togglePause);
         mode.addActionName(togglePhysicsDebug);

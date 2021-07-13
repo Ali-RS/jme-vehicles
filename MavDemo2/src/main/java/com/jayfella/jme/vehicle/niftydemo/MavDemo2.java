@@ -1,18 +1,13 @@
 package com.jayfella.jme.vehicle.niftydemo;
 
 import com.jayfella.jme.vehicle.ChunkManager;
-import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.examples.vehicles.GrandTourer;
 import com.jayfella.jme.vehicle.gui.CompassState;
-import com.jayfella.jme.vehicle.gui.SpeedometerState;
-import com.jayfella.jme.vehicle.gui.SteeringWheelState;
-import com.jayfella.jme.vehicle.gui.TachometerState;
 import com.jayfella.jme.vehicle.niftydemo.action.Action;
 import com.jayfella.jme.vehicle.niftydemo.state.DemoState;
 import com.jayfella.jme.vehicle.niftydemo.view.Cameras;
 import com.jayfella.jme.vehicle.niftydemo.view.View;
-import com.jayfella.jme.vehicle.part.Engine;
 import com.jme3.app.BasicProfilerState;
 import com.jme3.app.DebugKeysAppState;
 import com.jme3.app.FlyCamAppState;
@@ -293,27 +288,6 @@ public class MavDemo2 extends GuiApplication {
         ScreenshotAppState screenshotAppState
                 = new ScreenshotAppState(directory, filenamePrefix);
         success = stateManager.attach(screenshotAppState);
-        assert success;
-
-        SpeedometerState speedometer
-                = new SpeedometerState(vehicle, SpeedUnit.MPH);
-        success = stateManager.attach(speedometer);
-        assert success;
-
-        float radius = 120f; // pixels
-        float x = 0.5f * cam.getWidth();
-        float y = 0.18f * cam.getHeight();
-        float z = 1f;
-        SteeringWheelState steeringWheel
-                = new SteeringWheelState(radius, new Vector3f(x, y, z));
-        steeringWheel.setVehicle(vehicle);
-        steeringWheel.setEnabled(true);
-        success = stateManager.attach(steeringWheel);
-        assert success;
-
-        Engine engine = vehicle.getEngine();
-        TachometerState tachometer = new TachometerState(engine);
-        success = stateManager.attach(tachometer);
         assert success;
     }
 

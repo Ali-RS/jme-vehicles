@@ -107,6 +107,10 @@ public class View extends SimpleAppState {
                 result = ssFilter.isEnabled(viewFlag);
                 break;
 
+            case Shadows:
+                result = true;// TODO sky.areShadowsEnabled();
+                break;
+
             default:
                 result = viewPhysics.isEnabled(viewFlag);
         }
@@ -182,6 +186,10 @@ public class View extends SimpleAppState {
             case PropSpheres:
             case VehicleSpheres:
                 ssFilter.setEnabled(viewFlag, newValue);
+                break;
+
+            case Shadows:
+                // sky.setShadowsEnabled(newValue); TODO
                 break;
 
             default:

@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle.niftydemo.view;
 
+import com.jayfella.jme.vehicle.World;
 import com.jme3.bullet.debug.BulletDebugAppState;
 import com.jme3.bullet.objects.PhysicsRigidBody;
 import java.util.logging.Logger;
@@ -33,7 +34,10 @@ public class ObstructionFilter
     @Override
     public boolean displayObject(Object physicsObject) {
         if (physicsObject instanceof PhysicsRigidBody) {
-            return true; // TODO
+            Object applicationObject = ((PhysicsRigidBody) physicsObject).getApplicationData();
+            if (applicationObject instanceof World) {
+                return true;
+            } // props are never treated as obstructions
         }
 
         return false;

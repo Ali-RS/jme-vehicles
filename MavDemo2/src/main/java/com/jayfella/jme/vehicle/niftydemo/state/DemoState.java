@@ -147,13 +147,13 @@ public class DemoState
      *
      * @return the pre-existing instance (not null)
      */
-    Generator getPrGenerator() {
+    public Generator getPrGenerator() {
         assert prGenerator != null;
         return prGenerator;
     }
 
     /**
-     * TODO
+     * Access the PropProposal.
      *
      * @return the pre-existing instance
      */
@@ -162,7 +162,7 @@ public class DemoState
     }
 
     /**
-     * TODO
+     * Access the selected Prop.
      *
      * @return the pre-existing instance, or null if none
      */
@@ -309,7 +309,9 @@ public class DemoState
         newVehicle.load(assetManager);
 
         vehicles.removeSelected();
+
         addVehicle(newVehicle);
+
     }
 
     /**

@@ -347,45 +347,43 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
             <control name="window" id="viewTool" title="View Tool"
                      backgroundColor="#663f"
                      hideOnClose="true"
-                     height="312px" width="285px" x="2" y="456">
+                     height="192px" width="285px" x="2" y="456">
                 <panel childLayout="vertical">
                     <panel height="5px"/>
                     <panel childLayout="horizontal" height="28px">
-                        <control name="checkbox" id="viewActorTargetsCheckBox"
-                                 width="20px"/>
-                        <control name="label" text="  actor targets    "/>
-                        <control name="checkbox" id="viewFloorCheckBox"
-                                 width="20px"/>
-                        <control name="label" text="  floor    "/>
                         <control name="checkbox" id="viewPhysicsJointsCheckBox"
                                  width="20px"/>
-                        <control name="label" text="  physics joints"/>
+                        <control name="label" text="  physics joints    "/>
+                        <control name="checkbox" id="viewWorldShapesCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  world shapes"/>
                     </panel>
                     <panel childLayout="horizontal" height="28px">
-                        <control name="checkbox" id="viewParticlesCheckBox"
+                        <control name="checkbox" id="viewPropShapesCheckBox"
                                  width="20px"/>
-                        <control name="label" text="  particles    "/>
-                        <control name="checkbox" id="viewParticlePhysicsCheckBox"
+                        <control name="label" text="  prop shapes    "/>
+                        <control name="checkbox" id="viewVehicleShapesCheckBox"
                                  width="20px"/>
-                        <control name="label" text="  particle physics"/>
+                        <control name="label" text="  vehicle shapes"/>
                     </panel>
                     <panel childLayout="horizontal" height="28px">
-                        <control name="checkbox" id="viewPropTargetsCheckBox"
+                        <control name="checkbox" id="viewPropSpheresCheckBox"
                                  width="20px"/>
-                        <control name="label" text="  prop targets    "/>
+                        <control name="label" text="  prop spheres    "/>
+                        <control name="checkbox" id="viewVehicleSpheresCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  vehicle spheres"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
                         <control name="checkbox" id="viewShadowsCheckBox"
                                  width="20px"/>
-                        <control name="label" text="  shadows    "/>
-                        <control name="checkbox" id="viewSkyCheckBox"
-                                 width="20px"/>
-                        <control name="label" text="  sky"/>
+                        <control name="label" text="  shadows"/>
+                        <control name="label" text="    Camera:  "/>
+                        <control name="button" id="viewCameraButton"
+                                 width="60px">
+                            <interact onRelease="perform(next camera)"/>
+                        </control>
                     </panel>
-                    <panel childLayout="horizontal" height="28px">
-                        <control name="checkbox" id="viewWaterCheckBox"
-                                 width="20px"/>
-                        <control name="label" text="  water"/>
-                    </panel>
-
                     <panel childLayout="horizontal" height="28px">
                         <control name="label" text="Anisotropy:  "/>
                         <control name="button" id="viewDefaultAnisoButton"
@@ -399,79 +397,11 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
                         </control>
                     </panel>
                     <panel childLayout="horizontal" height="28px">
-                        <control name="label" text="Block cursor:  "/>
-                        <control name="button" id="viewCursorButton"
-                                 width="40px">
-                            <interact onRelease="perform(next cursor)"/>
+                        <control name="label" text="Sky:  "/>
+                        <control name="button" id="viewSkyButton"
+                                 width="120px">
+                            <interact onRelease="perform(load sky)"/>
                         </control>
-                        <control name="label" text="  "/>
-                        <control name="button" id="viewBlinkRateButton"
-                                 width="50px">
-                            <interact onRelease="perform(set blinkRate)"/>
-                        </control>
-                    </panel>
-
-                    <panel childLayout="horizontal" height="28px">
-                        <control name="label" text="Actors:"
-                                 textHAlign="left"
-                                 width="45px"/>
-                        <control name="button" id="viewSelectedActorButton"
-                                 width="70px">
-                            <interact onRelease="perform(select viewOption SelectedActorStyle)"/>
-                        </control>
-                        <control name="button" id="viewUnselectedActorButton"
-                                 width="70px">
-                            <interact onRelease="perform(select viewOption UnselectedActorStyle)"/>
-                        </control>
-                        <control name="checkbox" id="viewActorPhysicsCheckBox"
-                                 width="20px"/>
-                        <control name="label" text="  "/>
-                        <control name="checkbox" id="viewActorSpheresCheckBox"
-                                 width="20px"/>
-                    </panel>
-                    <panel childLayout="horizontal" height="28px">
-                        <control name="label" text="Blocks:"
-                                 textHAlign="left"
-                                 width="45px"/>
-                        <control name="button" id="viewSelectedBlockButton"
-                                 width="70px">
-                            <interact onRelease="perform(select viewOption SelectedBlockStyle)"/>
-                        </control>
-                        <control name="button" id="viewUnselectedBlockButton"
-                                 width="70px">
-                            <interact onRelease="perform(select viewOption UnselectedBlockStyle)"/>
-                        </control>
-                        <control name="checkbox" id="viewBlockPhysicsCheckBox"
-                                 width="20px"/>
-                    </panel>
-                    <panel childLayout="horizontal" height="28px">
-                        <control name="label" text="Props:"
-                                 textHAlign="left"
-                                 width="45px"/>
-                        <control name="button" id="viewSelectedPropButton"
-                                 width="70px">
-                            <interact onRelease="perform(select viewOption SelectedPropStyle)"/>
-                        </control>
-                        <control name="button" id="viewUnselectedPropButton"
-                                 width="70px">
-                            <interact onRelease="perform(select viewOption UnselectedPropStyle)"/>
-                        </control>
-                        <control name="checkbox" id="viewPropPhysicsCheckBox"
-                                 width="20px"/>
-                        <control name="label" text="  "/>
-                        <control name="checkbox" id="viewPropSpheresCheckBox"
-                                 width="20px"/>
-                    </panel>
-                    <panel childLayout="horizontal" height="28px">
-                        <control name="label" text="Terrain:"
-                                 textHAlign="left"
-                                 width="115px"/>
-                        <control name="button" id="viewTerrainButton"
-                                 width="70px">
-                            <interact onRelease="perform(select viewOption TerrainStyle)"/>
-                        </control>
-                        <control name="checkbox" id="viewTerrainPhysicsCheckBox"
-                                 width="20px"/>
                     </panel>
 
                 </panel>

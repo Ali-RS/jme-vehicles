@@ -1,7 +1,12 @@
 package com.jayfella.jme.vehicle.niftydemo;
 
+import com.jayfella.jme.vehicle.Sky;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.World;
+import com.jayfella.jme.vehicle.examples.skies.AnimatedDaySky;
+import com.jayfella.jme.vehicle.examples.skies.AnimatedNightSky;
+import com.jayfella.jme.vehicle.examples.skies.PurpleNebulaSky;
+import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
 import com.jayfella.jme.vehicle.examples.vehicles.DuneBuggy;
 import com.jayfella.jme.vehicle.examples.vehicles.GTRNismo;
 import com.jayfella.jme.vehicle.examples.vehicles.GrandTourer;
@@ -14,6 +19,7 @@ import com.jayfella.jme.vehicle.examples.worlds.Mountains;
 import com.jayfella.jme.vehicle.examples.worlds.Playground;
 import com.jayfella.jme.vehicle.examples.worlds.Racetrack;
 import com.jayfella.jme.vehicle.niftydemo.action.ActionPrefix;
+import com.jayfella.jme.vehicle.niftydemo.view.View;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jme3utilities.MyString;
@@ -52,6 +58,45 @@ public class Menus {
     // new methods exposed
 
     /**
+     * Build a "Sky" pop-up menu.
+     *
+     * @param builder (not null, modified)
+     */
+    public static void buildSkyMenu(PopupMenuBuilder builder) {
+        builder.add("Animated Day Sky");
+        builder.add("Animated Night Sky");
+        builder.add("Purple Nebula Sky");
+        builder.add("Quarry Sky");
+    }
+
+    /**
+     * Build a "Vehicle" pop-up menu.
+     *
+     * @param builder (not null, modified)
+     */
+    public static void buildVehicleMenu(PopupMenuBuilder builder) {
+        builder.add("Dune Buggy");
+        builder.add("Grand Tourer");
+        builder.add("GTR Nismo");
+        builder.add("Hatchback");
+        builder.add("Hovertank");
+        builder.add("Pickup Truck");
+        builder.add("Rotator");
+    }
+
+    /**
+     * Build a "World" pop-up menu.
+     *
+     * @param builder (not null, modified)
+     */
+    public static void buildWorldMenu(PopupMenuBuilder builder) {
+        builder.add("Endless Plain");
+        builder.add("Mountains");
+        builder.add("Playground");
+        builder.add("Racetrack");
+    }
+
+    /**
      * Handle all "select menuItem " actions.
      *
      * @param menuPath
@@ -70,6 +115,40 @@ public class Menus {
         }
 
         return handled;
+    }
+
+    /**
+     * Handle a "select menuItem" action from the Sky menu.
+     *
+     * @param remainder not-yet-parsed portion of the menu path (not null)
+     * @return true if the action is handled, otherwise false
+     */
+    public static boolean menuSky(String remainder) {
+        Sky sky;
+        switch (remainder) {
+            case "Animated Day Sky":
+                sky = new AnimatedDaySky();
+                break;
+
+            case "Animated Night Sky":
+                sky = new AnimatedNightSky();
+                break;
+
+            case "Purple Nebula Sky":
+                sky = new PurpleNebulaSky();
+                break;
+
+            case "Quarry Sky":
+                sky = new QuarrySky();
+                break;
+
+            default:
+                return false;
+        }
+
+        View view = MavDemo2.findAppState(View.class);
+        view.setSky(sky);
+        return true;
     }
 
     /**
@@ -197,33 +276,6 @@ public class Menus {
         builder.add("Hide all tools");
         builder.add("Show all tools", "Textures/icons/tool.png");
         builder.add("Show the tools tool", "Textures/icons/tool.png");
-    }
-
-    /**
-     * Build a "Vehicle" pop-up menu.
-     *
-     * @param builder (not null, modified)
-     */
-    private static void buildVehicleMenu(PopupMenuBuilder builder) {
-        builder.add("Dune Buggy");
-        builder.add("Grand Tourer");
-        builder.add("GTR Nismo");
-        builder.add("Hatchback");
-        builder.add("Hovertank");
-        builder.add("Pickup Truck");
-        builder.add("Rotator");
-    }
-
-    /**
-     * Build a "World" pop-up menu.
-     *
-     * @param builder (not null, modified)
-     */
-    private static void buildWorldMenu(PopupMenuBuilder builder) {
-        builder.add("Endless Plain");
-        builder.add("Mountains");
-        builder.add("Playground");
-        builder.add("Racetrack");
     }
 
     /**

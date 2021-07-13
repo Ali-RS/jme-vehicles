@@ -4,7 +4,6 @@ import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
 import com.jayfella.jme.vehicle.niftydemo.state.DemoState;
 import com.jayfella.jme.vehicle.niftydemo.state.Vehicles;
-import com.jayfella.jme.vehicle.niftydemo.view.Cameras;
 import com.jayfella.jme.vehicle.niftydemo.view.View;
 import com.jayfella.jme.vehicle.niftydemo.view.ViewFlags;
 import com.jayfella.jme.vehicle.part.Engine;
@@ -51,10 +50,6 @@ class ToggleAction {
         Vehicle vehicle = vehicles.getSelected();
 
         switch (actionString) {
-            case Action.toggleCamera:
-                Cameras.toggle();
-                break;
-
             case Action.toggleEngine:
                 Engine engine = vehicle.getEngine();
                 boolean wasRunning = engine.isRunning();
@@ -105,14 +100,14 @@ class ToggleAction {
         View view = MavDemo2.findAppState(View.class);
 
         boolean wasEnabled = view.isEnabled(ViewFlags.PhysicsJoints)
-                || view.isEnabled(ViewFlags.PropPhysics)
-                || view.isEnabled(ViewFlags.VehiclePhysics)
-                || view.isEnabled(ViewFlags.WorldPhysics);
+                || view.isEnabled(ViewFlags.PropShapes)
+                || view.isEnabled(ViewFlags.VehicleShapes)
+                || view.isEnabled(ViewFlags.WorldShapes);
         boolean enable = !wasEnabled;
 
         view.setEnabled(ViewFlags.PhysicsJoints, enable);
-        view.setEnabled(ViewFlags.PropPhysics, enable);
-        view.setEnabled(ViewFlags.VehiclePhysics, enable);
-        view.setEnabled(ViewFlags.WorldPhysics, enable);
+        view.setEnabled(ViewFlags.PropShapes, enable);
+        view.setEnabled(ViewFlags.VehicleShapes, enable);
+        view.setEnabled(ViewFlags.WorldShapes, enable);
     }
 }

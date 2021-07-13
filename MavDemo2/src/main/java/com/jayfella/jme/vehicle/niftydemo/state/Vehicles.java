@@ -1,7 +1,16 @@
 package com.jayfella.jme.vehicle.niftydemo.state;
 
+import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.World;
+import com.jayfella.jme.vehicle.gui.SpeedometerState;
+import com.jayfella.jme.vehicle.gui.SteeringWheelState;
+import com.jayfella.jme.vehicle.gui.TachometerState;
+import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
+import com.jayfella.jme.vehicle.part.Engine;
+import com.jme3.app.state.AppStateManager;
+import com.jme3.math.Vector3f;
+import com.jme3.renderer.Camera;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -9,7 +18,7 @@ import jme3utilities.Validate;
 import jme3utilities.math.MyMath;
 
 /**
- * The game state containing all vehicles.
+ * The state of all vehicles in MavDemo2.
  *
  * @author Stephen Gold sgold@sonic.net
  */
@@ -32,7 +41,7 @@ public class Vehicles {
     /**
      * list of Vehicle instances, from oldest to newest
      */
-    private List<Vehicle> vehicles = new ArrayList<>(99);
+    final private List<Vehicle> vehicles = new ArrayList<>(99);
     /**
      * selected Vehicle, or null if none
      */
@@ -52,7 +61,7 @@ public class Vehicles {
     // new methods exposed
 
     /**
-     * Add a Vehicle to the game.
+     * Add a Vehicle to the demo.
      */
     void add(Vehicle newVehicle) {
         assert newVehicle != null;
@@ -65,7 +74,7 @@ public class Vehicles {
     }
 
     /**
-     * Count how many vehicles are in the game.
+     * Count how many vehicles are in the demo.
      *
      * @return the count (&ge;0)
      */
@@ -120,7 +129,7 @@ public class Vehicles {
         assert success;
 
         if (selected == vehicle) {
-            selected = null;
+            select(null);
         }
     }
 
@@ -135,9 +144,9 @@ public class Vehicles {
         for (Vehicle vehicle : array) {
             remove(vehicle);
         }
-        assert vehicles.isEmpty();
 
-        selected = null;
+        assert vehicles.isEmpty();
+        assert selected == null;
     }
 
     /**
@@ -156,7 +165,50 @@ public class Vehicles {
      * @param vehicle the Vehicle to select (alias created) or null to deselect
      */
     public void select(Vehicle vehicle) {
-        this.selected = vehicle;
+        MavDemo2 application = MavDemo2.getApplication();
+        AppStateManager stateManager = application.getStateManager();
+
+        if (selected != vehicle) {
+            if (selected != null) {
+                SpeedometerState speedometer
+                        = MavDemo2.findAppState(SpeedometerState.class);
+                stateManager.detach(speedometer);
+
+                SteeringWheelState steeringWheel
+                        = MavDemo2.findAppState(SteeringWheelState.class);
+                stateManager.detach(steeringWheel);
+
+                TachometerState tachometer
+                        = MavDemo2.findAppState(TachometerState.class);
+                stateManager.detach(tachometer);
+            }
+
+            selected = vehicle;
+
+            if (vehicle != null) {
+                SpeedometerState speedometer
+                        = new SpeedometerState(vehicle, SpeedUnit.MPH);
+                boolean success = stateManager.attach(speedometer);
+                assert success;
+
+                float radius = 120f; // pixels
+                Camera camera = application.getCamera();
+                float x = 0.5f * camera.getWidth();
+                float y = 0.18f * camera.getHeight();
+                float z = 1f;
+                SteeringWheelState steeringWheel
+                        = new SteeringWheelState(radius, new Vector3f(x, y, z));
+                steeringWheel.setVehicle(vehicle);
+                steeringWheel.setEnabled(true);
+                success = stateManager.attach(steeringWheel);
+                assert success;
+
+                Engine engine = vehicle.getEngine();
+                TachometerState tachometer = new TachometerState(engine);
+                success = stateManager.attach(tachometer);
+                assert success;
+            }
+        }
     }
 
     /**

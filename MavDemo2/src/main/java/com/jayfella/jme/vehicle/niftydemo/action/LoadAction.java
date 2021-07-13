@@ -1,8 +1,11 @@
 package com.jayfella.jme.vehicle.niftydemo.action;
 
+import com.jayfella.jme.vehicle.niftydemo.MainHud;
+import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
 import com.jayfella.jme.vehicle.niftydemo.Menus;
 import java.util.logging.Logger;
 import jme3utilities.MyString;
+import jme3utilities.nifty.PopupMenuBuilder;
 
 /**
  * Process actions that start with the word "load".
@@ -36,10 +39,34 @@ class LoadAction {
      * @return true if the action is handled, otherwise false
      */
     static boolean processOngoing(String actionString) {
-        boolean handled;
+        boolean handled = true;
+        switch (actionString) {
+            case Action.loadSky:
+                loadSky();
+                break;
+
+            case Action.loadVehicle:
+                loadVehicle();
+                break;
+
+            case Action.loadWorld:
+                loadWorld();
+                break;
+
+            default:
+                handled = false;
+        }
+
+        if (handled) {
+            return true;
+        }
 
         String arg;
-        if (actionString.startsWith(ActionPrefix.loadVehicle)) {
+        if (actionString.startsWith(ActionPrefix.loadSky)) {
+            arg = MyString.remainder(actionString, ActionPrefix.loadSky);
+            handled = Menus.menuSky(arg);
+
+        } else if (actionString.startsWith(ActionPrefix.loadVehicle)) {
             arg = MyString.remainder(actionString, ActionPrefix.loadVehicle);
             handled = Menus.menuWorld(arg);
 
@@ -52,5 +79,40 @@ class LoadAction {
         }
 
         return handled;
+    }
+    // *************************************************************************
+    // private methods
+
+    /**
+     * Handle a "load sky" action.
+     */
+    private static void loadSky() {
+        PopupMenuBuilder builder = new PopupMenuBuilder();
+        Menus.buildSkyMenu(builder);
+
+        MainHud mainHud = MavDemo2.findAppState(MainHud.class);
+        mainHud.showPopupMenu(ActionPrefix.loadSky, builder);
+    }
+
+    /**
+     * Handle a "load vehicle" action.
+     */
+    private static void loadVehicle() {
+        PopupMenuBuilder builder = new PopupMenuBuilder();
+        Menus.buildVehicleMenu(builder);
+
+        MainHud mainHud = MavDemo2.findAppState(MainHud.class);
+        mainHud.showPopupMenu(ActionPrefix.loadVehicle, builder);
+    }
+
+    /**
+     * Handle a "load world" action.
+     */
+    private static void loadWorld() {
+        PopupMenuBuilder builder = new PopupMenuBuilder();
+        Menus.buildWorldMenu(builder);
+
+        MainHud mainHud = MavDemo2.findAppState(MainHud.class);
+        mainHud.showPopupMenu(ActionPrefix.loadWorld, builder);
     }
 }

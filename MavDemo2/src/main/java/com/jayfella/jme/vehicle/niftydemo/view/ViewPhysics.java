@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle.niftydemo.view;
 
+import com.jayfella.jme.vehicle.Prop;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.World;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
@@ -29,15 +30,16 @@ class ViewPhysics implements BulletDebugAppState.DebugAppStateFilter {
      */
     private boolean joints = false;
     /**
-     * true&rarr;visualize prop physics, false&rarr;hide prop physics
+     * true&rarr;visualize prop physics, false&rarr;hide prop collision shapes
      */
     private boolean props = false;
     /**
-     * true&rarr;visualize vehicle physics, false&rarr;hide vehicle physics
+     * true&rarr;visualize vehicle physics, false&rarr;hide vehicle collision
+     * shapes
      */
     private boolean vehicles = false;
     /**
-     * true&rarr;visualize world physics, false&rarr;hide world physics
+     * true&rarr;visualize world physics, false&rarr;hide world collision shapes
      */
     private boolean world = false;
     // *************************************************************************
@@ -65,15 +67,15 @@ class ViewPhysics implements BulletDebugAppState.DebugAppStateFilter {
                 result = joints;
                 break;
 
-            case PropPhysics:
+            case PropShapes:
                 result = props;
                 break;
 
-            case VehiclePhysics:
+            case VehicleShapes:
                 result = vehicles;
                 break;
 
-            case WorldPhysics:
+            case WorldShapes:
                 result = world;
                 break;
 
@@ -95,15 +97,15 @@ class ViewPhysics implements BulletDebugAppState.DebugAppStateFilter {
                 joints = newValue;
                 break;
 
-            case PropPhysics:
+            case PropShapes:
                 props = newValue;
                 break;
 
-            case VehiclePhysics:
+            case VehicleShapes:
                 vehicles = newValue;
                 break;
 
-            case WorldPhysics:
+            case WorldShapes:
                 world = newValue;
                 break;
 
@@ -127,7 +129,9 @@ class ViewPhysics implements BulletDebugAppState.DebugAppStateFilter {
         if (physicsObject instanceof PhysicsCollisionObject) {
             PhysicsCollisionObject pco = (PhysicsCollisionObject) physicsObject;
             Object appData = pco.getApplicationData();
-            if (appData instanceof Vehicle) {
+            if (appData instanceof Prop) {
+                result = props;
+            } else if (appData instanceof Vehicle) {
                 result = vehicles;
             } else if (appData instanceof World) {
                 result = world;

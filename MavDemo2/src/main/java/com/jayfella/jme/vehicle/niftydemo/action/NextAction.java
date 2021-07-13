@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle.niftydemo.action;
 
 import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
+import com.jayfella.jme.vehicle.niftydemo.view.Cameras;
 import com.jayfella.jme.vehicle.niftydemo.view.View;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
@@ -40,6 +41,10 @@ class NextAction {
     static boolean processOngoing(String actionString) {
         boolean handled = true;
         switch (actionString) {
+            case Action.nextCamera:
+                Cameras.next();
+                break;
+
             case Action.nextPerformanceMode:
                 nextPerformanceMode();
                 break;

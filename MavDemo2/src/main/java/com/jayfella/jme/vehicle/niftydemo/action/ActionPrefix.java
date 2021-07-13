@@ -19,6 +19,10 @@ public class ActionPrefix {
     final private static Logger logger
             = Logger.getLogger(ActionPrefix.class.getName());
     /**
+     * argument is the name of a Sky
+     */
+    final static String loadSky = "load sky ";
+    /**
      * argument is the name of a Vehicle
      */
     final static String loadVehicle = "load vehicle ";

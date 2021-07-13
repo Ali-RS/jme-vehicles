@@ -14,9 +14,9 @@ public enum ViewFlags {
      */
     PhysicsJoints,
     /**
-     * physics shapes for props
+     * collision shapes for props
      */
-    PropPhysics,
+    PropShapes,
     /**
      * swept spheres for props
      */
@@ -26,15 +26,15 @@ public enum ViewFlags {
      */
     Shadows,
     /**
-     * physics shapes for vehicles
+     * collision shapes for vehicles
      */
-    VehiclePhysics,
+    VehicleShapes,
     /**
      * swept spheres for vehicles
      */
     VehicleSpheres,
     /**
-     * physics shape for the World
+     * collision shapes for the World
      */
-    WorldPhysics;
+    WorldShapes;
 }

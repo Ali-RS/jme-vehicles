@@ -1,6 +1,11 @@
 package com.jayfella.jme.vehicle.niftydemo.tool;
 
+import com.jayfella.jme.vehicle.Sky;
 import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
+import com.jayfella.jme.vehicle.niftydemo.view.CameraMode;
+import com.jayfella.jme.vehicle.niftydemo.view.Cameras;
+import com.jayfella.jme.vehicle.niftydemo.view.View;
+import com.jayfella.jme.vehicle.niftydemo.view.ViewFlags;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.renderer.Renderer;
 import com.jme3.renderer.opengl.GLRenderer;
@@ -46,24 +51,61 @@ class ViewTool extends Tool {
     @Override
     protected List<String> listCheckBoxes() {
         List<String> result = super.listCheckBoxes();
-        result.add("viewActorPhysics");
-        result.add("viewActorSpheres");
-        result.add("viewActorTargets");
-        result.add("viewBlockPhysics");
-        result.add("viewCursor");
-        result.add("viewFloor");
-        result.add("viewParticles");
-        result.add("viewParticlePhysics");
         result.add("viewPhysicsJoints");
-        result.add("viewPropPhysics");
+        result.add("viewPropShapes");
         result.add("viewPropSpheres");
-        result.add("viewPropTargets");
         result.add("viewShadows");
-        result.add("viewSky");
-        result.add("viewTerrainPhysics");
-        result.add("viewWater");
+        result.add("viewVehicleShapes");
+        result.add("viewVehicleSpheres");
+        result.add("viewWorldShapes");
 
         return result;
+    }
+
+    /**
+     * Update the MVC model based on a check-box event.
+     *
+     * @param boxName the name (unique id prefix) of the check box
+     * @param isChecked the new state of the check box (true&rarr;checked,
+     * false&rarr;unchecked)
+     */
+    @Override
+    public void onCheckBoxChanged(String boxName, boolean isChecked) {
+        BulletAppState bas = MavDemo2.findAppState(BulletAppState.class);
+        View view = MavDemo2.findAppState(View.class);
+
+        switch (boxName) {
+            case "viewPhysicsJoints":
+                view.setEnabled(ViewFlags.PhysicsJoints, isChecked);
+                break;
+
+            case "viewPropShapes":
+                view.setEnabled(ViewFlags.PropShapes, isChecked);
+                break;
+
+            case "viewPropSpheres":
+                view.setEnabled(ViewFlags.PropSpheres, isChecked);
+                break;
+
+            case "viewShadows":
+                view.setEnabled(ViewFlags.Shadows, isChecked);
+                break;
+
+            case "viewVehicleShapes":
+                view.setEnabled(ViewFlags.VehicleShapes, isChecked);
+                break;
+
+            case "viewVehicleSpheres":
+                view.setEnabled(ViewFlags.VehicleSpheres, isChecked);
+                break;
+
+            case "viewWorldShapes":
+                view.setEnabled(ViewFlags.WorldShapes, isChecked);
+                break;
+
+            default:
+                super.onCheckBoxChanged(boxName, isChecked);
+        }
     }
 
     /**
@@ -72,6 +114,30 @@ class ViewTool extends Tool {
      */
     @Override
     protected void toolUpdate() {
+        View view = MavDemo2.findAppState(View.class);
+        boolean flag;
+
+        flag = view.isEnabled(ViewFlags.PhysicsJoints);
+        setChecked("viewPhysicsJoints", flag);
+
+        flag = view.isEnabled(ViewFlags.PropShapes);
+        setChecked("viewPropShapes", flag);
+
+        flag = view.isEnabled(ViewFlags.PropSpheres);
+        setChecked("viewPropSpheres", flag);
+
+        flag = view.isEnabled(ViewFlags.Shadows);
+        setChecked("viewShadows", flag);
+
+        flag = view.isEnabled(ViewFlags.VehicleShapes);
+        setChecked("viewVehicleShapes", flag);
+
+        flag = view.isEnabled(ViewFlags.VehicleSpheres);
+        setChecked("viewVehicleSpheres", flag);
+
+        flag = view.isEnabled(ViewFlags.WorldShapes);
+        setChecked("viewWorldShapes", flag);
+
         Renderer renderer = MavDemo2.getApplication().getRenderer();
         GLRenderer glRenderer = (GLRenderer) renderer;
         int degree = glRenderer.getDefaultAnisotropicFilter();
@@ -80,8 +146,15 @@ class ViewTool extends Tool {
 
         BulletAppState bas = MavDemo2.findAppState(BulletAppState.class);
         float axesLength = bas.debugAxisLength();
-        String axesLengthStatus = String.format("%.0f cm",
-                100f * axesLength);
+        String axesLengthStatus = String.format("%.0f cm", 100f * axesLength); // TODO wuToCm
         setButtonText("viewPhysicsAxes", axesLengthStatus);
+
+        CameraMode mode = Cameras.getMode();
+        String cameraName = mode.toString();
+        setButtonText("viewCamera", cameraName);
+
+        Sky sky = view.getSky();
+        String skyName = sky.getClass().getSimpleName();
+        setButtonText("viewSky", skyName);
     }
 }

@@ -5,6 +5,7 @@ import com.github.stephengold.garrett.ChaseOption;
 import com.github.stephengold.garrett.OrbitCamera;
 import com.github.stephengold.garrett.Target;
 import com.jayfella.jme.vehicle.Vehicle;
+import com.jayfella.jme.vehicle.World;
 import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
 import com.jayfella.jme.vehicle.niftydemo.state.DemoState;
 import com.jayfella.jme.vehicle.niftydemo.state.Vehicles;
@@ -16,6 +17,7 @@ import com.jme3.input.FlyByCamera;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import java.util.logging.Logger;
+import jme3utilities.MyCamera;
 import jme3utilities.SignalTracker;
 import jme3utilities.Validate;
 
@@ -65,7 +67,7 @@ public class Cameras {
     // new methods exposed
 
     /**
-     * Configure the cameras during startup.
+     * Configure the camera controllers and default camera during startup.
      */
     public static void configure() {
         MavDemo2 app = MavDemo2.getApplication();
@@ -86,6 +88,8 @@ public class Cameras {
         chase.setSignalName(CameraSignal.OrbitDown, "FLYCAM_Lower");
         chase.setSignalName(CameraSignal.OrbitUp, "FLYCAM_Rise");
         chase.setSignalName(CameraSignal.Xray, "cameraXray");
+        chase.setSignalName(CameraSignal.ZoomIn, "cameraZoomIn");
+        chase.setSignalName(CameraSignal.ZoomOut, "cameraZoomOut");
         boolean success = stateManager.attach(chase);
         assert success;
 
@@ -95,13 +99,17 @@ public class Cameras {
         orbit.setSignalName(CameraSignal.Back, "FLYCAM_Backward");
         orbit.setSignalName(CameraSignal.DragToOrbit, "cameraDrag");
         orbit.setSignalName(CameraSignal.Forward, "FLYCAM_Forward");
+        orbit.setSignalName(CameraSignal.OrbitCcw, "cameraOrbitCcw");
+        orbit.setSignalName(CameraSignal.OrbitCw, "cameraOrbitCw");
         orbit.setSignalName(CameraSignal.OrbitDown, "FLYCAM_Lower");
         orbit.setSignalName(CameraSignal.OrbitUp, "FLYCAM_Rise");
         orbit.setSignalName(CameraSignal.Xray, "cameraXray");
+        orbit.setSignalName(CameraSignal.ZoomIn, "cameraZoomIn");
+        orbit.setSignalName(CameraSignal.ZoomOut, "cameraZoomOut");
         success = stateManager.attach(orbit);
         assert success;
 
-        setNextMode(CameraMode.Orbit);
+        setDesiredMode(CameraMode.Orbit);
     }
 
     /**
@@ -113,13 +121,13 @@ public class Cameras {
     }
 
     /**
-     * Determine the target entity for ChaseCam/OrbitCam.
+     * Determine the target for ChaseCam/OrbitCam.
      *
      * @return the pre-existing instance, or null if none
      */
     public static Vehicle findTarget() {
-        DemoState gameState = MavDemo2.getDemoState();
-        Vehicles vehicles = gameState.getVehicles();
+        DemoState demoState = MavDemo2.getDemoState();
+        Vehicles vehicles = demoState.getVehicles();
         Vehicle result = vehicles.getSelected();
 
         return result;
@@ -128,18 +136,69 @@ public class Cameras {
     /**
      * TODO
      *
-     * @param nextMode
+     * @return
      */
-    public static void setNextMode(CameraMode nextMode) {
-        Validate.nonNull(nextMode, "next mode");
-        desiredMode = nextMode;
+    public static CameraMode getMode() {
+        return desiredMode;
     }
 
     /**
-     * TODO
+     * Switch to the next applicable camera controller.
      */
-    public static void toggle() {
-        // TODO
+    public static void next() {
+        switch (desiredMode) {
+            case Chase:
+                desiredMode = CameraMode.Orbit;
+                break;
+            case Orbit:
+                desiredMode = CameraMode.Chase;
+                break;
+            default:
+                throw new IllegalStateException("mode = " + desiredMode);
+        }
+    }
+
+    /**
+     * Set the camera's field of view to the default.
+     */
+    public static void resetFov() {
+        Camera camera = MavDemo2.getApplication().getCamera();
+        MyCamera.setYTangent(camera, 1f);
+    }
+
+    /**
+     * Move the camera to a convenient position.
+     */
+    public static void resetOffset() {
+        DemoState demoState = MavDemo2.getDemoState();
+        Vehicle vehicle = demoState.getVehicles().getSelected();
+        if (activeController == chase) {
+            /*
+             * Locate the camera 20 wu behind and 5 wu above
+             * the selected vehicle.
+             */
+            Vector3f offset = vehicle.forwardDirection(null);
+            offset.multLocal(-20f);
+            offset.y += 5f;
+            chase.setOffset(offset);
+
+        } else if (activeController == orbit) {
+            World world = demoState.getWorld();
+            world.resetCameraPosition();
+
+            orbit.setPreferredRange(5f);
+        }
+    }
+
+    /**
+     * Alter the current mode, with changes taking effect during the next
+     * update.
+     *
+     * @param mode the desired mode
+     */
+    public static void setDesiredMode(CameraMode mode) {
+        Validate.nonNull(mode, "mode");
+        desiredMode = mode;
     }
 
     /**
