@@ -8,10 +8,11 @@ subprojects {
 
 // publishing tasks
 
-task('publishToMavenLocal') {
-    dependsOn ':MavLibrary:publishToMavenLocal'
+task('install') {
+    dependsOn ':MavLibrary:install'
+    description 'Installs Maven artifacts to the local repository.'
 }
 task('release') {
-    dependsOn ':MavLibrary:publishMavenPublicationToOSSRHRepository'
+    dependsOn ':MavLibrary:release'
+    description 'Stages Maven artifacts to Sonatype OSSRH.'
 }
-
