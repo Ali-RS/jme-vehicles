@@ -34,7 +34,8 @@ public class ObstructionFilter
     @Override
     public boolean displayObject(Object physicsObject) {
         if (physicsObject instanceof PhysicsRigidBody) {
-            Object applicationObject = ((PhysicsRigidBody) physicsObject).getApplicationData();
+            Object applicationObject
+                    = ((PhysicsRigidBody) physicsObject).getApplicationData();
             if (applicationObject instanceof World) {
                 return true;
             } // props are never treated as obstructions

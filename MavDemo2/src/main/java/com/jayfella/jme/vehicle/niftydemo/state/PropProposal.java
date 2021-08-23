@@ -28,7 +28,7 @@ import jme3utilities.math.MyMath;
 /**
  * A proposed configuration for a new Prop.
  *
- * @author Stephen Gold <sgold@sonic.net>
+ * @author Stephen Gold sgold@sonic.net
  */
 public class PropProposal implements JmeCloneable {
     // *************************************************************************

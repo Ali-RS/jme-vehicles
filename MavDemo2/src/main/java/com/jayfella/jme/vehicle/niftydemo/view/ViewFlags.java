@@ -1,7 +1,7 @@
 package com.jayfella.jme.vehicle.niftydemo.view;
 
 /**
- * Enumerate the flags supported by View.
+ * Enumerate the on/off flags supported by View.
  *
  * @author Stephen Gold sgold@sonic.net
  */
