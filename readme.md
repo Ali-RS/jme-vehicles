@@ -227,23 +227,6 @@ Add to the project’s "pom.xml" file:
 
 [Jump to table of contents](#toc)
 
-
-[adi]: https://github.com/scenemax3d "Adi Barda and SceneMax3D"
-[atryder]: https://github.com/ATryder "Adam T. Ryder"
-[github]: https://github.com "GitHub"
-[gradle]: https://gradle.org "Gradle Project"
-[java]: https://java.com "Java"
-[jme]: http://jmonkeyengine.org  "jMonkeyEngine Project"
-[lemur]: https://github.com/jMonkeyEngine-Contributions/Lemur "Lemur UI Toolkit"
-[mav]: https://github.com/stephengold/jme-vehicles "More Advanced Vehicles Project"
-[openJDK]: https://openjdk.java.net "OpenJDK Project"
-[pspeed]: https://github.com/pspeed42 "Paul Speed"
-[sergej]: https://hdrihaven.com/hdris/?a=Sergej%20Majboroda "HDRIs by Sergej Majboroda"
-[sonatype]: https://www.sonatype.com "Sonatype"
-[tgt]: https://www.tgthorne.com/contact "Thomas Glenn Thorne"
-[yaRnMcDonuts]: https://hub.jmonkeyengine.org/u/yarnmcdonuts/summary "Ryan McDonough"
-[zampaoli]: https://sketchfab.com/mauro.zampaoli "Mauro Zampaoli"
-
 <a name="wishlist"/>
 
 ## Wish list
@@ -445,3 +428,19 @@ If I've misattributed anything or left anyone out, please let me know so I can
 correct the situation: sgold@sonic.net
 
 [Jump to table of contents](#toc)
+
+[adi]: https://github.com/scenemax3d "Adi Barda and SceneMax3D"
+[atryder]: https://github.com/ATryder "Adam T. Ryder"
+[github]: https://github.com "GitHub"
+[gradle]: https://gradle.org "Gradle Project"
+[java]: https://java.com "Java"
+[jme]: http://jmonkeyengine.org  "jMonkeyEngine Project"
+[lemur]: https://github.com/jMonkeyEngine-Contributions/Lemur "Lemur UI Toolkit"
+[mav]: https://github.com/stephengold/jme-vehicles "More Advanced Vehicles Project"
+[openJDK]: https://openjdk.java.net "OpenJDK Project"
+[pspeed]: https://github.com/pspeed42 "Paul Speed"
+[sergej]: https://hdrihaven.com/hdris/?a=Sergej%20Majboroda "HDRIs by Sergej Majboroda"
+[sonatype]: https://www.sonatype.com "Sonatype"
+[tgt]: https://www.tgthorne.com/contact "Thomas Glenn Thorne"
+[yaRnMcDonuts]: https://hub.jmonkeyengine.org/u/yarnmcdonuts/summary "Ryan McDonough"
+[zampaoli]: https://sketchfab.com/mauro.zampaoli "Mauro Zampaoli"
