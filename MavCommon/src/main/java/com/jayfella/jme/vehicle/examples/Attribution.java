@@ -146,7 +146,7 @@ public class Attribution {
 
             String workName = work.workName;
             String workUrl = work.workUrl;
-            String authorName = work.authorName;
+            String authorName = work.authorName.replace("ş", "s");
             String authorUrl = work.authorUrl;
             String licenseType = work.licenseType;
 
@@ -169,10 +169,9 @@ public class Attribution {
                         " (http://creativecommons.org/licenses/by/4.0/)");
             }
             builder.append('.');
-            if (workIndex < numWorks - 1) {
-                builder.append("\n\n");
-            }
+            builder.append("\n\n");
         }
+        builder.append("\n");
 
         return builder.toString();
     }

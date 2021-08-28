@@ -54,7 +54,8 @@ public class AttributionMenu extends AnimatedMenu {
             Attribution.nissanGtr,
             Attribution.hcr2Buggy,
             Attribution.hcr2Rotator,
-            Attribution.modernHatchbackLowPoly);
+            Attribution.modernHatchbackLowPoly,
+            Attribution.batcPack);
     // *************************************************************************
     // fields
 
