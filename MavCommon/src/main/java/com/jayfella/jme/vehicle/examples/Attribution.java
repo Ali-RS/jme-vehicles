@@ -18,7 +18,7 @@ public class Attribution {
             "Sabri Ayeş",
             "https://sketchfab.com/sabriayes",
             "Barrier & Traffic Cone Pack",
-            "https://sketchfab.com/3d-models/barrier-traffic-cone-pack-23c4dfca76a24bf0b21894847867af2a",
+            "https://skfb.ly/6n8ST",
             "CC-BY-4.0");
     /**
      * info for "Ford Ranger"
@@ -34,7 +34,7 @@ public class Attribution {
      */
     final public static LicensedWork hcr2Buggy = new LicensedWork(
             "oakar258",
-            null,
+            "https://sketchfab.com/oakar258",
             "HCR2 Buggy",
             "https://sketchfab.com/3d-models/hcr2-buggy-a65fe5c27464448cbce7fe61c49159ef",
             "CC-BY-4.0");
@@ -61,7 +61,7 @@ public class Attribution {
      */
     final public static LicensedWork nissanGtr = new LicensedWork(
             "iSteven",
-            null,
+            "https://sketchfab.com/Steven007",
             "Nissan GT-R",
             "https://sketchfab.com/3d-models/nissan-gt-r-5f5781614c6f4ff4b7cb1d3cff9d931c",
             "CC-BY-NC-SA");
@@ -70,7 +70,7 @@ public class Attribution {
      */
     final public static LicensedWork opelGtRetopo = new LicensedWork(
             "Thomas Glenn Thorne",
-            null,
+            "https://www.tgthorne.com/contact",
             "Opel GT Retopo",
             "https://sketchfab.com/3d-models/opel-gt-retopo-badcab3c8a3d42359c8416db8a7427fe",
             "CC-BY-NC-SA");
@@ -89,6 +89,48 @@ public class Attribution {
     }
     // *************************************************************************
     // new methods exposed
+
+    /**
+     * Generate a Markdown attribution message for the specified works.
+     *
+     * @param licensedWorks the works to be attributed (not null)
+     * @return the text (not null)
+     */
+    public static String mdMessage(LicensedWork... licensedWorks) {
+        StringBuilder builder = new StringBuilder(512);
+        for (LicensedWork work : licensedWorks) {
+            String workName = work.workName;
+            String workUrl = work.workUrl;
+            String authorName = work.authorName;
+            String authorUrl = work.authorUrl;
+            String licenseType = work.licenseType;
+
+            builder.append("+ This work is based on \"");
+            builder.append(workName);
+            builder.append("\"\n  (");
+            builder.append(workUrl);
+            builder.append(")\n  by ");
+            builder.append(authorName);
+            builder.append(' ');
+            if (authorUrl != null) {
+                builder.append('(');
+                builder.append(authorUrl);
+                builder.append(")\n  ");
+            }
+            builder.append("licensed under ");
+            builder.append(licenseType);
+            if (licenseType.equals("CC-BY-4.0")) {
+                builder.append(
+                        " (http://creativecommons.org/licenses/by/4.0/)");
+            } else if (licenseType.equals("CC-BY-NC-SA")) {
+                builder.append(
+                        " (https://creativecommons.org/licenses/by-nc-sa/4.0/)");
+            }
+            builder.append(".\n");
+        }
+
+        return builder.toString();
+    }
 
     /**
      * Generate a plain-text attribution message for the specified works.
