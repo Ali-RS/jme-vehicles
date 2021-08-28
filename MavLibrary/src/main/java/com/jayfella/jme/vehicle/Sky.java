@@ -213,14 +213,14 @@ abstract public class Sky
         /*
          * Construct the BoundingVolume, a very large sphere.
          */
-        float boundRadius = 9e6f; // finite, to work around issue #1
+        float boundRadius = Float.POSITIVE_INFINITY;
         BoundingVolume boundingSphere
                 = new BoundingSphere(boundRadius, Vector3f.ZERO);
         /*
          * Construct the Mesh, an Octasphere with 32 trianges.
          */
         int numRefineSteps = 1;
-        float meshRadius = 10f;
+        float meshRadius = 1_000f;
         Octasphere sphereMesh = new Octasphere(numRefineSteps, meshRadius);
         MyMesh.reverseNormals(sphereMesh);
         MyMesh.reverseWinding(sphereMesh);

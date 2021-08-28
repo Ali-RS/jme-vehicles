@@ -1,7 +1,6 @@
 package com.jayfella.jme.vehicle.niftydemo.view;
 
 import com.github.stephengold.garrett.CameraSignal;
-import com.github.stephengold.garrett.ChaseOption;
 import com.github.stephengold.garrett.OrbitCamera;
 import com.github.stephengold.garrett.Target;
 import com.jayfella.jme.vehicle.Vehicle;
@@ -80,7 +79,8 @@ public class Cameras {
         ObstructionFilter obstructionFilter = new ObstructionFilter();
 
         chase = new OrbitCamera(camera, tracker);
-        chase.setChaseOption(ChaseOption.StrictFollow);
+        float lagSeconds = 0.5f;
+        chase.setAzimuthTau(lagSeconds);
         chase.setObstructionFilter(obstructionFilter);
         chase.setSignalName(CameraSignal.Back, "FLYCAM_Backward");
         chase.setSignalName(CameraSignal.DragToOrbit, "cameraDrag");
@@ -94,7 +94,6 @@ public class Cameras {
         assert success;
 
         orbit = new OrbitCamera(camera, tracker);
-        orbit.setChaseOption(ChaseOption.FreeOrbit);
         orbit.setObstructionFilter(obstructionFilter);
         orbit.setSignalName(CameraSignal.Back, "FLYCAM_Backward");
         orbit.setSignalName(CameraSignal.DragToOrbit, "cameraDrag");
