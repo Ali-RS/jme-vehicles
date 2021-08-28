@@ -199,8 +199,8 @@ Add to the project’s "build.gradle" file:
         jcenter()
     }
     dependencies {
-        implementation 'com.github.stephengold:MaVehicles:0.6.0'
-        implementation 'com.github.stephengold:Minie:4.1.0+for33'
+        implementation 'com.github.stephengold:MaVehicles:0.6.2'
+        implementation 'com.github.stephengold:Minie:4.2.0'
     }
 
 #### Maven-built projects
@@ -221,14 +221,14 @@ Add to the project’s "pom.xml" file:
     <dependency>
       <groupId>com.github.stephengold</groupId>
       <artifactId>MaVehicles</artifactId>
-      <version>0.6.0</version>
+      <version>0.6.2</version>
       <type>pom</type>
     </dependency>
 
     <dependency>
       <groupId>com.github.stephengold</groupId>
       <artifactId>Minie</artifactId>
-      <version>4.1.0+for33</version>
+      <version>4.2.0</version>
       <type>pom</type>
     </dependency>
 
@@ -325,6 +325,8 @@ Resources/assets/media:
   has a CC Attribution license.
 + The [Modern Hatchback - Low Poly model model](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Models/modern_hatchback)
   has a CC Attribution license.
++ The [Barrier & Traffic Cone models](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Models/Props/barrier_pack)
+  have a CC Attribution license.
 + The [Race Track model](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Models/race1)
   has an Unlicense license.
 + The [terrain textures](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Textures/Terrain)
@@ -398,18 +400,18 @@ The world (and physics-space) units of distance are *meters*.
 + This work is based on "Opel GT Retopo"
   (https://sketchfab.com/3d-models/opel-gt-retopo-badcab3c8a3d42359c8416db8a7427fe)
   by [Thomas Glenn Thorne (aka "systmh")][tgt]
-  licensed under CC-BY-NC-SA.
+  licensed under CC-BY-NC-SA (https://creativecommons.org/licenses/by-nc-sa/4.0/).
 + This work is based on "Ford Ranger"
   (https://sketchfab.com/3d-models/ford-ranger-dade78dc96e34f1a8cbcf14dd47d84de)
   by mauro.zampaoli (https://sketchfab.com/mauro.zampaoli)
   licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).
 + This work is based on "Nissan GT-R"
   (https://sketchfab.com/3d-models/nissan-gt-r-5f5781614c6f4ff4b7cb1d3cff9d931c)
-  by iSteven
-  licensed under CC-BY-NC-SA.
+  by iSteven (https://sketchfab.com/Steven007)
+  licensed under CC-BY-NC-SA (https://creativecommons.org/licenses/by-nc-sa/4.0/).
 + This work is based on "HCR2 Buggy"
   (https://sketchfab.com/3d-models/hcr2-buggy-a65fe5c27464448cbce7fe61c49159ef)
-  by oakar258
+  by oakar258 (https://sketchfab.com/oakar258)
   licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).
 + This work is based on "HCR2 Rotator"
   (https://sketchfab.com/3d-models/hcr2-rotator-f03e95525b4c48cfb659064a76d8cd53)
@@ -418,6 +420,9 @@ The world (and physics-space) units of distance are *meters*.
 + This work is based on "Modern Hatchback - Low Poly model"
   (https://sketchfab.com/3d-models/modern-hatchback-low-poly-model-055ff8a21b8d4d279debca089e2fafcd)
   by Daniel Zhabotinsky (https://sketchfab.com/DanielZhabotinsky)
+  licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).
++ This work is based on "Barrier & Traffic Cone Pack" (https://skfb.ly/6n8ST)
+  by Sabri Ayeş (https://sketchfab.com/sabriayes)
   licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).
 
 ### Hosting
