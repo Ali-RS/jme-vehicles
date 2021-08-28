@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle.gui.menu;
 
+import com.jayfella.jme.vehicle.examples.Attribution;
 import com.jayfella.jme.vehicle.gui.CompassState;
 import com.jayfella.jme.vehicle.gui.lemur.AudioHud;
 import com.jayfella.jme.vehicle.gui.lemur.CameraNameState;
@@ -39,28 +40,13 @@ public class AttributionMenu extends AnimatedMenu {
     /**
      * payload message, to be displayed
      */
-    final private static String attributionMessage
-            = "This work is based on \"Opel GT Retopo\"\n"
-            + "(https://sketchfab.com/3d-models/opel-gt-retopo-badcab3c8a3d42359c8416db8a7427fe)\n"
-            + "by Thomas Glenn Thorne licensed under CC-BY-NC-SA.\n\n"
-            + "This work is based on \"Ford Ranger\"\n"
-            + "(https://sketchfab.com/3d-models/ford-ranger-dade78dc96e34f1a8cbcf14dd47d84de)\n"
-            + "by mauro.zampaoli (https://sketchfab.com/mauro.zampaoli)\n"
-            + "licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).\n\n"
-            + "This work is based on \"Nissan GT-R\"\n"
-            + "(https://sketchfab.com/3d-models/nissan-gt-r-5f5781614c6f4ff4b7cb1d3cff9d931c)\n"
-            + "by iSteven licensed under CC-BY-NC-SA.\n\n"
-            + "This work is based on \"HCR2 Buggy\"\n"
-            + "(https://sketchfab.com/3d-models/hcr2-buggy-a65fe5c27464448cbce7fe61c49159ef)\n"
-            + "by oakar258 licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).\n\n"
-            + "This work is based on \"HCR2 Rotator\"\n"
-            + "(https://sketchfab.com/3d-models/hcr2-rotator-f03e95525b4c48cfb659064a76d8cd53)\n"
-            + "by oakar258 (https://sketchfab.com/oakar258)\n"
-            + "licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).\n\n"
-            + "This work is based on \"Modern Hatchback - Low Poly model\"\n"
-            + "(https://sketchfab.com/3d-models/modern-hatchback-low-poly-model-055ff8a21b8d4d279debca089e2fafcd)\n"
-            + "by Daniel Zhabotinsky (https://sketchfab.com/DanielZhabotinsky)\n"
-            + "licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).";
+    final private static String attributionMessage = Attribution.plainMessage(
+            Attribution.opelGtRetopo,
+            Attribution.fordRanger,
+            Attribution.nissanGtr,
+            Attribution.hcr2Buggy,
+            Attribution.hcr2Rotator,
+            Attribution.modernHatchbackLowPoly);
     // *************************************************************************
     // fields
 
