@@ -1,6 +1,5 @@
 package com.jayfella.jme.vehicle.view;
 
-import com.github.stephengold.garrett.ChaseOption;
 import com.github.stephengold.garrett.OrbitCamera;
 import com.github.stephengold.garrett.Target;
 import com.jayfella.jme.vehicle.Vehicle;
@@ -87,16 +86,6 @@ public class ChaseCamera extends CameraController {
         orbitCamera.setOffset(desiredOffset);
     }
 
-    /**
-     * Alter the preferred range.
-     *
-     * @param range the desired distance (in world units, &gt;0)
-     */
-    public void setPreferredRange(float range) {
-        Validate.positive(range, "range");
-        orbitCamera.setPreferredRange(range);
-    }
-
     @Override
     public void update(float tpf) {
         // do nothing
@@ -107,7 +96,7 @@ public class ChaseCamera extends CameraController {
     @Override
     public void attach() {
         orbitCamera = MavDemo1.findAppState(OrbitCamera.class);
-        orbitCamera.setChaseOption(chaseOption);
+        chaseOption.configure(orbitCamera);
         orbitCamera.setTarget(target);
         orbitCamera.setEnabled(true);
     }

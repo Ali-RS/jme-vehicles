@@ -1,6 +1,5 @@
 package com.jayfella.jme.vehicle.simpledemo;
 
-import com.github.stephengold.garrett.ChaseOption;
 import com.github.stephengold.garrett.OrbitCamera;
 import com.github.stephengold.garrett.Target;
 import com.jayfella.jme.vehicle.ChunkManager;
@@ -216,7 +215,8 @@ public class HelloMav extends SimpleApplication {
         flyCam.setEnabled(false);
 
         OrbitCamera cameraController = new OrbitCamera(cam, signalTracker);
-        cameraController.setChaseOption(ChaseOption.StrictFollow);
+        float lagSeconds = 0.5f;
+        cameraController.setAzimuthTau(lagSeconds);
         Target cameraTarget = new Target() {
             @Override
             public Vector3f forwardDirection(Vector3f storeResult) {

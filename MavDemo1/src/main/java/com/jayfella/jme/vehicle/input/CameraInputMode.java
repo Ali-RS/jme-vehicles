@@ -1,12 +1,12 @@
 package com.jayfella.jme.vehicle.input;
 
 import com.github.stephengold.garrett.CameraSignal;
-import com.github.stephengold.garrett.ChaseOption;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.World;
 import com.jayfella.jme.vehicle.lemurdemo.MavDemo1;
 import com.jayfella.jme.vehicle.view.CameraController;
 import com.jayfella.jme.vehicle.view.ChaseCamera;
+import com.jayfella.jme.vehicle.view.ChaseOption;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.simsilica.lemur.input.FunctionId;
@@ -184,21 +184,17 @@ public class CameraInputMode extends InputMode {
     private void resetCameraOffset() {
         if (activeController instanceof ChaseCamera) {
             ChaseCamera chaseCam = (ChaseCamera) activeController;
-            if (chaseCam.getChaseOption() == ChaseOption.StrictFollow) {
+            if (chaseCam.getChaseOption() != ChaseOption.FreeOrbit) {
                 /*
-                 * Locate the camera 20 wu behind and 5 wu above
+                 * Locate the camera 5 wu above and 20 wu horizontally from
                  * the target vehicle.
                  */
-                Vector3f offset = MavDemo1.getVehicle().forwardDirection(null);
-                offset.multLocal(-20f);
-                offset.y += 5f;
+                Vector3f offset = new Vector3f(20f, 5f, 0f);
                 chaseCam.setOffset(offset);
 
             } else { // orbiting
                 World world = MavDemo1.getWorld();
                 world.resetCameraPosition();
-
-                chaseCam.setPreferredRange(5f);
 
                 Vehicle vehicle = MavDemo1.getVehicle();
                 chaseCam.setVehicle(vehicle);
