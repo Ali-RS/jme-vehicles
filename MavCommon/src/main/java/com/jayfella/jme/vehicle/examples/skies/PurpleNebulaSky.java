@@ -71,8 +71,9 @@ public class PurpleNebulaSky extends Sky {
     public void load(AssetManager assetManager) {
         super.load(assetManager);
 
-        Geometry geometry
-                = MyAsset.createStarMapSphere(assetManager, cubemapName, 100f);
+        float meshRadius = 1_000f;
+        Geometry geometry = MyAsset.createStarMapSphere(assetManager,
+                cubemapName, meshRadius);
         LightProbe probe
                 = (LightProbe) assetManager.loadAsset(lightProbeAssetPath);
         build(geometry, probe);
