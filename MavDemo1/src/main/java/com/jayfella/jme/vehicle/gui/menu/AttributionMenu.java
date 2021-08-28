@@ -33,6 +33,14 @@ public class AttributionMenu extends AnimatedMenu {
     // constants and loggers
 
     /**
+     * scale factor applied to the text nodes
+     */
+    final private static float scaleFactor = 1.6f;
+    /**
+     * cycle interval (in seconds)
+     */
+    final private static int cycleSeconds = 30;
+    /**
      * message logger for this class
      */
     final private static Logger logger
@@ -50,6 +58,14 @@ public class AttributionMenu extends AnimatedMenu {
     // *************************************************************************
     // fields
 
+    /**
+     * first copy of the message
+     */
+    private BitmapText bitmapText1;
+    /**
+     * 2nd copy of the message
+     */
+    private BitmapText bitmapText2;
     /**
      * height of the GUI viewport (in pixels)
      */
@@ -126,6 +142,33 @@ public class AttributionMenu extends AnimatedMenu {
         setupText();
         MavDemo1.getApplication().getGuiNode().attachChild(node);
     }
+
+    /**
+     * Callback to update this AppState, invoked once per frame when the
+     * AppState is both attached and enabled.
+     *
+     * @param tpf the time interval between frames (in seconds, &ge;0)
+     */
+    @Override
+    public void update(float tpf) {
+        super.update(tpf);
+        /*
+         * Re-position the text nodes
+         * to create the illusion of continuous scrolling.
+         */
+        float textWidth = scaleFactor * bitmapText1.getLineWidth();
+        float x = (viewPortWidth - textWidth) / 2;
+        float textHeight = scaleFactor * bitmapText1.getHeight();
+
+        long millis = System.currentTimeMillis();
+        long cycleMillis = 1000L * cycleSeconds;
+        float seconds = 0.001f * (float) (millis % cycleMillis);
+        float y1 = viewPortHeight + textHeight * (seconds / cycleSeconds);
+        bitmapText1.setLocalTranslation(x, y1, 0f);
+
+        float y2 = y1 - textHeight;
+        bitmapText2.setLocalTranslation(x, y2, 0f);
+    }
     // *************************************************************************
     // private methods
 
@@ -154,17 +197,14 @@ public class AttributionMenu extends AnimatedMenu {
         BitmapFont bigFont
                 = assetManager.loadFont("/Interface/Fonts/Default.fnt");
 
-        BitmapText bitmapText = new BitmapText(bigFont);
-        bitmapText.setText(attributionMessage);
-        node.attachChild(bitmapText);
+        bitmapText1 = new BitmapText(bigFont);
+        node.attachChild(bitmapText1);
+        bitmapText1.setLocalScale(scaleFactor);
+        bitmapText1.setText(attributionMessage);
 
-        float scaleFactor = 1.31f;
-        bitmapText.setLocalScale(scaleFactor);
-
-        float textWidth = scaleFactor * bitmapText.getLineWidth();
-        float x = (viewPortWidth - textWidth) / 2;
-        float textHeight = scaleFactor * bitmapText.getHeight();
-        float y = (viewPortHeight + textHeight) / 2;
-        bitmapText.setLocalTranslation(x, y, 0f);
+        bitmapText2 = new BitmapText(bigFont);
+        node.attachChild(bitmapText2);
+        bitmapText2.setLocalScale(scaleFactor);
+        bitmapText2.setText(attributionMessage);
     }
 }
