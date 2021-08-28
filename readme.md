@@ -392,7 +392,7 @@ The world (and physics-space) units of distance are *meters*.
 
 + This work is based on "Opel GT Retopo"
   (https://sketchfab.com/3d-models/opel-gt-retopo-badcab3c8a3d42359c8416db8a7427fe)
-  by [Thomas Glenn Thorne (aka "systmh")][tgt]
+  by Thomas Glenn Thorne (https://www.tgthorne.com/contact)
   licensed under CC-BY-NC-SA (https://creativecommons.org/licenses/by-nc-sa/4.0/).
 + This work is based on "Ford Ranger"
   (https://sketchfab.com/3d-models/ford-ranger-dade78dc96e34f1a8cbcf14dd47d84de)
@@ -414,7 +414,8 @@ The world (and physics-space) units of distance are *meters*.
   (https://sketchfab.com/3d-models/modern-hatchback-low-poly-model-055ff8a21b8d4d279debca089e2fafcd)
   by Daniel Zhabotinsky (https://sketchfab.com/DanielZhabotinsky)
   licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).
-+ This work is based on "Barrier & Traffic Cone Pack" (https://skfb.ly/6n8ST)
++ This work is based on "Barrier & Traffic Cone Pack"
+  (https://skfb.ly/6n8ST)
   by Sabri Ayeş (https://sketchfab.com/sabriayes)
   licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).
 
