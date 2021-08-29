@@ -4,9 +4,9 @@ and provides a library to support driving simulations.
 
 It contains 4 sub-projects:
 
- 1. MavLibrary: the MaVehicle library
+ 1. MavLibrary: the MaVehicles library
  2. MavDemo1: a demo application with a Lemur-based GUI
- 3. HelloMav: a very simple application using the MaVehicle library
+ 3. HelloMav: a very simple application using the MaVehicles library
  4. MavCommon: examples of vehicles, worlds, skies, etcetera
 
 <a name="toc"/>
@@ -388,7 +388,7 @@ The world (and physics-space) units of distance are *meters*.
 + [Ryan McDonough][yaRnMcDonuts] created the PBRTerrain library.
 + Rémy Bouquet (aka "Nehon") created the "Jaime" and "Enhanced HoverTank" models.
 + [Adi Barda (aka "adi.barda")][adi] created the racetrack model
-  and helped shape the MaVehicle library.
+  and helped shape the MaVehicles library.
 + Rob Tuytel created the "marble_01" textures.
 + [Sergej Majboroda][sergej] created the "Quarry 03" texture.
 + Tom Ruen created the "Lunar libration with phase Oct 2007" animation.
