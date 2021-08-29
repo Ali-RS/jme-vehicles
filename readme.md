@@ -90,7 +90,7 @@ the Main Menu appears in the upper-left corner of the window.
      + `cd jme-vehicles`
      + `git checkout -b latest project-1.4.0`
    + using a web browser:
-     + browse to https://github.com/stephengold/jme-vehicles/releases/tag/project-1.4.0
+     + browse to [the latest release][latest]
      + follow the "Source code (zip)" link
      + save the ZIP file
      + extract the contents of the saved ZIP file
@@ -98,26 +98,31 @@ the Main Menu appears in the upper-left corner of the window.
  3. Set the `JAVA_HOME` environment variable:
    + using Bash:  `export JAVA_HOME="` *path to your JDK* `"`
    + using Windows Command Prompt:  `set JAVA_HOME="` *path to your JDK* `"`
- 4. Build the library and the applications:
-   + using Bash:  `./gradlew build`
+   + using PowerShell: `$env:JAVA_HOME = '` *path to your JDK* `'`
+ 4. Run the [Gradle] wrapper:
+   + using Bash or PowerShell:  `./gradlew build`
    + using Windows Command Prompt:  `.\gradlew build`
 
 After a successful build,
 Maven artifacts will be found in `MavLibrary/build/libs`.
-To install the Maven artifacts to your local cache:
+To install the Maven artifacts to your local Maven repository:
 
- + using Bash:  `./gradlew :MavLibrary:publishToMavenLocal`
+ + using Bash or PowerShell:  `./gradlew :MavLibrary:publishToMavenLocal`
  + using Windows Command Prompt:  `.\gradlew :MavLibrary:publishToMavenLocal`
 
 To run the MavDemo1 application:
 
- + using Bash:  `./gradlew :MavDemo1:run`
+ + using Bash or PowerShell:  `./gradlew :MavDemo1:run`
  + using Windows Command Prompt:  `.\gradlew :MavDemo1:run`
 
 To Run the HelloMav application:
 
- + using Bash:  `./gradlew :HelloMav:run`
+ + using Bash or PowerShell:  `./gradlew :HelloMav:run`
  + using Windows Command Prompt:  `.\gradlew :HelloMav:run`
+
+To restore the project to a pristine state:
+ + using Bash or PowerShell: `./gradlew clean`
+ + using Windows Command Prompt: `.\gradlew clean`
 
 [Jump to table of contents](#toc)
 
@@ -421,21 +426,27 @@ The world (and physics-space) units of distance are *meters*.
 
 ### Hosting
 
-I am grateful to [GitHub], [Sonatype], Imgur, JCenter, and YouTube
+I am grateful to [GitHub], [Sonatype], [Imgur], [JFrog], and YouTube
 for providing free hosting for this project
 and many other open-source projects.
 
-If I've misattributed anything or left anyone out, please let me know so I can
+I'm also grateful to my dear Holly, for keeping me sane.
+
+If I've misattributed anything or left anyone out, please let me know, so I can
 correct the situation: sgold@sonic.net
 
 [Jump to table of contents](#toc)
+
 
 [adi]: https://github.com/scenemax3d "Adi Barda and SceneMax3D"
 [atryder]: https://github.com/ATryder "Adam T. Ryder"
 [github]: https://github.com "GitHub"
 [gradle]: https://gradle.org "Gradle Project"
+[imgur]: https://imgur.com/ "Imgur"
+[jfrog]: https://www.jfrog.com "JFrog"
 [java]: https://java.com "Java"
 [jme]: http://jmonkeyengine.org  "jMonkeyEngine Project"
+[latest]: https://github.com/stephengold/jme-vehicles/releases/tag/project-1.4.0 "latest release"
 [lemur]: https://github.com/jMonkeyEngine-Contributions/Lemur "Lemur UI Toolkit"
 [mav]: https://github.com/stephengold/jme-vehicles "More Advanced Vehicles Project"
 [openJDK]: https://openjdk.java.net "OpenJDK Project"
