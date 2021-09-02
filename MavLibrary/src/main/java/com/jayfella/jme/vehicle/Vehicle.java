@@ -616,14 +616,18 @@ abstract public class Vehicle
     }
 
     /**
-     * Warp this vehicle to a suitable start position.
+     * Warp this vehicle to the specified position.
+     *
+     * @param dropLocation the drop location (in physics-space coordinates, not
+     * null)
+     * @param yRotation the Y rotation angle (in radians, measured
+     * counter-clockwise from world +Z as seen from above)
      */
-    public void warpToStart() {
+    public void warp(Vector3f dropLocation, float yRotation) {
+        Validate.nonNull(dropLocation, "drop location");
         /*
          * Cast a physics ray downward from the drop location.
          */
-        Vector3f dropLocation = new Vector3f();
-        world.locateDrop(dropLocation);
         Vector3f endLocation = dropLocation.add(0f, -999f, 0f);
         PhysicsSpace physicsSpace = world.getPhysicsSpace();
         List<PhysicsRayTestResult> rayTest
@@ -667,12 +671,23 @@ abstract public class Vehicle
         }
         Vector3f startLocation = contactLocation.add(0f, yOffset, 0f);
         vehicleControl.setPhysicsLocation(startLocation);
-        float yRotation = world.dropYRotation();
+
         Quaternion orient = new Quaternion().fromAngles(0f, yRotation, 0f);
         vehicleControl.setPhysicsRotation(orient);
 
         vehicleControl.setAngularVelocity(Vector3f.ZERO);
         vehicleControl.setLinearVelocity(Vector3f.ZERO);
+    }
+
+    /**
+     * Warp this vehicle to the world's preferred start position.
+     */
+    public void warpToStart() {
+        Vector3f dropLocation = new Vector3f();
+        world.locateDrop(dropLocation);
+
+        float yRotation = world.dropYRotation();
+        warp(dropLocation, yRotation);
     }
     // *************************************************************************
     // new protected methods
