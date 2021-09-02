@@ -6,6 +6,7 @@ import com.jayfella.jme.vehicle.part.GearBox;
 import com.jayfella.jme.vehicle.part.Suspension;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jayfella.jme.vehicle.skid.SkidMarksState;
+import com.jme3.anim.AnimComposer;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.AssetNotFoundException;
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import jme3utilities.Loadable;
+import jme3utilities.MySpatial;
 import jme3utilities.Validate;
 import jme3utilities.math.MyVector3f;
 
@@ -674,6 +676,35 @@ abstract public class Vehicle
     }
     // *************************************************************************
     // new protected methods
+
+    /**
+     * Add a passenger with bone animation.
+     *
+     * @param assetManager to load assets (not null)
+     * @param assetPath the path to the C-G model asset (not null, not empty)
+     * @param offset the location of the passenger relative to the vehicle (not
+     * null, unaffected)
+     * @param clipName the name of the animation clip to play (not null, not
+     * empty)
+     */
+    protected void addPassenger(AssetManager assetManager, String assetPath,
+            Vector3f offset, String clipName) {
+        Validate.nonNull(assetManager, "asset manager");
+        Validate.nonEmpty(assetPath, "asset path");
+        Validate.nonNull(offset, "offset");
+        Validate.nonEmpty(clipName, "clip name");
+
+        Spatial passengerCgmRoot
+                = assetManager.loadModel("/Models/MakeHuman/driver.j3o");
+        node.attachChild(passengerCgmRoot);
+        passengerCgmRoot.setLocalTranslation(offset);
+
+        List<AnimComposer> composers = MySpatial.listControls(passengerCgmRoot,
+                AnimComposer.class, null);
+        assert composers.size() == 1;
+        AnimComposer composer = composers.get(0);
+        composer.setCurrentAction(clipName);
+    }
 
     /**
      * Should be invoked last, after all parts have been configured and added.
