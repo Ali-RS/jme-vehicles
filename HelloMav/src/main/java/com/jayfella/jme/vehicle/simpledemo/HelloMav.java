@@ -11,6 +11,7 @@ import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.VehicleWorld;
 import com.jayfella.jme.vehicle.World;
+import com.jayfella.jme.vehicle.examples.Attribution;
 import com.jayfella.jme.vehicle.examples.props.WarningSign;
 import com.jayfella.jme.vehicle.examples.skies.AnimatedDaySky;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound2;
@@ -168,6 +169,18 @@ public class HelloMav extends SimpleApplication {
         new AnimatedDaySky().addToWorld(world);
 
         initCamera();
+        /*
+         * Print asset attributions to the console.
+         */
+        String attributionMessage = Attribution.plainMessage(
+                Attribution.opelGtRetopo,
+                Attribution.nissanGtr,
+                Attribution.hcr2Buggy,
+                Attribution.hcr2Rotator,
+                Attribution.modernHatchbackLowPoly,
+                Attribution.batcPack,
+                Attribution.raceSuit);
+        System.out.print(attributionMessage);
         /*
          * To drive, press the W, A, and D keys on the keyboard.
          */
