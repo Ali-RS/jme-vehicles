@@ -179,6 +179,32 @@ abstract public class Vehicle
      * @param globalAudio the global audio controls (not null, alias created)
      */
     public void addToWorld(VehicleWorld world, GlobalAudio globalAudio) {
+        Validate.nonNull(world, "world");
+        Validate.nonNull(globalAudio, "global audio");
+
+        Vector3f dropLocation = new Vector3f();
+        world.locateDrop(dropLocation);
+
+        float yRotation = world.dropYRotation();
+        addToWorld(world, globalAudio, dropLocation, yRotation);
+    }
+
+    /**
+     * Add this Vehicle to the specified world.
+     *
+     * @param world where to add (not null, alias created)
+     * @param globalAudio the global audio controls (not null, alias created)
+     * @param dropLocation the drop location (in physics-space coordinates, not
+     * null)
+     * @param yRotation the Y rotation angle (in radians, measured
+     * counter-clockwise from world +Z as seen from above)
+     */
+    public void addToWorld(VehicleWorld world, GlobalAudio globalAudio,
+            Vector3f dropLocation, float yRotation) {
+        Validate.nonNull(world, "world");
+        Validate.nonNull(globalAudio, "global audio");
+        Validate.finite(dropLocation, "drop location");
+
         this.world = world;
 
         if (vehicleControl == null) {
@@ -189,7 +215,7 @@ abstract public class Vehicle
         Node parentNode = world.getParentNode();
         parentNode.attachChild(node);
 
-        warpToStart();
+        warp(dropLocation, yRotation);
         getNode().setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         vehicleAudioState.setGlobalAudio(globalAudio);
         enable();
