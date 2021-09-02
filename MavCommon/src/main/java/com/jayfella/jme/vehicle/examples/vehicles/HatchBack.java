@@ -162,6 +162,9 @@ public class HatchBack extends Vehicle {
         Sound hornSound = new HornSound1();
         hornSound.load(assetManager);
         setHornSound(hornSound);
+
+        addPassenger(assetManager, "/Models/MakeHuman/driver.j3o",
+                new Vector3f(0.36f, -0.39f, 0f), "driving:modern_hatchback");
         /*
          * build() must be invoked last, to complete the Vehicle
          */

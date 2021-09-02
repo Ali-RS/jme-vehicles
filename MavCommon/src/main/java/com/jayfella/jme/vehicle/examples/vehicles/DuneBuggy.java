@@ -171,6 +171,9 @@ public class DuneBuggy extends Vehicle {
         Sound hornSound = new HornSound1();
         hornSound.load(assetManager);
         setHornSound(hornSound);
+
+        addPassenger(assetManager, "/Models/MakeHuman/driver.j3o",
+                new Vector3f(0f, -0.12f, -0.27f), "driving:hcr2_buggy");
         /*
          * build() must be invoked last, to complete the Vehicle
          */
