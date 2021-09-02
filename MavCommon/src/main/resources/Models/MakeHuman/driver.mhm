@@ -1,0 +1,38 @@
+# Written by MakeHuman 1.2.0 final
+version v1.2.0
+uuid 242c06d2-8e2c-4053-be88-a90a9d4ea110
+name driver
+camera 351.0 345.0 0.09333454257307272 0.8696607045003213 -0.2557329148819817 2.5250000000000004
+modifier torso/torso-scale-horiz-decr|incr 0.648000
+modifier armslegs/r-hand-fingers-distance-decr|incr -0.018000
+modifier armslegs/r-hand-fingers-diameter-decr|incr 0.006000
+modifier armslegs/r-hand-fingers-length-decr|incr -0.338000
+modifier armslegs/r-hand-scale-decr|incr 0.440000
+modifier armslegs/l-hand-fingers-distance-decr|incr -0.018000
+modifier armslegs/l-hand-fingers-diameter-decr|incr 0.006000
+modifier armslegs/l-hand-fingers-length-decr|incr -0.338000
+modifier armslegs/l-hand-scale-decr|incr 0.440000
+modifier breast/BreastSize 0.500000
+modifier breast/BreastFirmness 0.500000
+modifier macrodetails/Gender 1.000000
+modifier macrodetails/Age 0.500000
+modifier macrodetails/African 0.260870
+modifier macrodetails/Asian 0.000000
+modifier macrodetails/Caucasian 0.739130
+modifier macrodetails-universal/Muscle 0.732000
+modifier macrodetails-universal/Weight 0.915000
+modifier macrodetails-height/Height 0.242000
+modifier macrodetails-proportions/BodyProportions 0.000000
+hair short04 e09bfd91-f83f-4f9a-ba8c-4635cd1ae0d8
+skeleton game_engine.mhskel
+eyebrows eyebrow009 55b3b52a-379e-426d-b320-562ed57202b3
+eyes Low-Poly 1cc97a30-85a1-42e6-a9f7-b3e753732baa
+clothes Gloves_Hand db7eb39e-2045-45b8-8173-6c38b77d87a5
+clothes shoes02 8887caca-d6fb-4d73-af10-1d4fb740a936
+clothes elvs_race_suit_male1 9e917db9-44df-44bb-a148-7db1d65cfc00
+clothesHideFaces True
+skinMaterial skins/default.mhmat
+material short04 e09bfd91-f83f-4f9a-ba8c-4635cd1ae0d8 short04.mhmat
+material Low-Poly 1cc97a30-85a1-42e6-a9f7-b3e753732baa eyes/materials/brown.mhmat
+material eyebrow009 55b3b52a-379e-426d-b320-562ed57202b3 eyebrow009.mhmat
+subdivide False

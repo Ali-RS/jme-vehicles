@@ -423,6 +423,9 @@ The world (and physics-space) units of distance are *meters*.
   (https://skfb.ly/6n8ST)
   by Sabri Ayeş (https://sketchfab.com/sabriayes)
   licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).
++ This work is based on "Elvs Racing Fire suit Male1"
+  (http://www.makehumancommunity.org/clothes/elvs_racing_fire_suit_male1.html)
+  by Elvaerwyn licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).
 
 ### Hosting
 
