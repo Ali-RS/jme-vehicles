@@ -3,17 +3,23 @@ package com.jayfella.jme.vehicle.simpledemo;
 import com.github.stephengold.garrett.OrbitCamera;
 import com.github.stephengold.garrett.Target;
 import com.jayfella.jme.vehicle.ChunkManager;
+import com.jayfella.jme.vehicle.GlobalAudio;
 import com.jayfella.jme.vehicle.Prop;
-import com.jayfella.jme.vehicle.PropWorld;
 import com.jayfella.jme.vehicle.Sky;
 import com.jayfella.jme.vehicle.Sound;
 import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.Vehicle;
+import com.jayfella.jme.vehicle.VehicleWorld;
 import com.jayfella.jme.vehicle.World;
 import com.jayfella.jme.vehicle.examples.props.WarningSign;
 import com.jayfella.jme.vehicle.examples.skies.AnimatedDaySky;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound2;
+import com.jayfella.jme.vehicle.examples.vehicles.DuneBuggy;
+import com.jayfella.jme.vehicle.examples.vehicles.GTRNismo;
+import com.jayfella.jme.vehicle.examples.vehicles.GrandTourer;
+import com.jayfella.jme.vehicle.examples.vehicles.HatchBack;
 import com.jayfella.jme.vehicle.examples.vehicles.HoverTank;
+import com.jayfella.jme.vehicle.examples.vehicles.Rotator;
 import com.jayfella.jme.vehicle.examples.worlds.Mountains;
 import com.jayfella.jme.vehicle.gui.CompassState;
 import com.jayfella.jme.vehicle.gui.SpeedometerState;
@@ -28,12 +34,14 @@ import com.jme3.bullet.control.VehicleControl;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
+import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.system.AppSettings;
 import java.util.logging.Level;
 import jme3utilities.Heart;
 import jme3utilities.SignalTracker;
+import jme3utilities.math.MyVector3f;
 
 /**
  * A single-class example of More Advanced Vehicles.
@@ -118,15 +126,18 @@ public class HelloMav extends SimpleApplication {
         PhysicsSpace physicsSpace = bulletAppState.getPhysicsSpace();
         world.attach(this, rootNode, physicsSpace);
         /*
-         * Add the Vehicle to the World and start its Engine. Add props.
+         * Add the main Vehicle to the World and start its Engine.
+         * Add parked vehicles and props.
          */
-        vehicle.addToWorld(world, () -> {
+        GlobalAudio globalAudio = () -> {
             return 1f;
-        });
+        };
+        vehicle.addToWorld(world, globalAudio);
 
         Engine engine = vehicle.getEngine();
         engine.setRunning(true);
 
+        addParkedVehicles(world, globalAudio);
         addProps(world);
         /*
          * Attach appstates for dials and steering wheel.
@@ -187,21 +198,72 @@ public class HelloMav extends SimpleApplication {
     // private methods
 
     /**
-     * Create props and add them to the World.
+     * Create a row of 5 parked vehicles and add them to the World.
+     *
+     * @param world where to add the vehicles (not null)
+     */
+    private void addParkedVehicles(VehicleWorld world,
+            GlobalAudio globalAudio) {
+        int numVehicles = 5;
+
+        Vector3f location = new Vector3f();
+        world.locateDrop(location);
+        location.addLocal(5f, 0f, -5f); // location of row center
+        Vector3f offset = new Vector3f(1f, 0f, 3f);
+        MyVector3f.accumulateScaled(location, offset, -(numVehicles - 1) / 2f);
+
+        float yRotation = world.dropYRotation() + FastMath.HALF_PI;
+
+        for (int vehicleIndex = 0; vehicleIndex < numVehicles; ++vehicleIndex) {
+            Vehicle parkedVehicle;
+            switch (vehicleIndex % 5) {
+                case 0:
+                    parkedVehicle = new DuneBuggy();
+                    break;
+                case 1:
+                    parkedVehicle = new GTRNismo();
+                    break;
+                case 2:
+                    parkedVehicle = new GrandTourer();
+                    break;
+                case 3:
+                    parkedVehicle = new HatchBack();
+                    break;
+                case 4:
+                    parkedVehicle = new Rotator();
+                    break;
+                default:
+                    throw new AssertionError("vehicleIndex = " + vehicleIndex);
+            }
+            parkedVehicle.addToWorld(world, globalAudio, location, yRotation);
+            parkedVehicle.setBrakeSignals(1f, 1f);
+
+            location.addLocal(offset);
+        }
+    }
+
+    /**
+     * Create a row of 5 large warning signs and add them to the World.
      *
      * @param world where to add the props (not null)
      */
-    private void addProps(PropWorld world) {
+    private void addProps(World world) {
         int numProps = 5;
+
+        Vector3f location = new Vector3f();
+        world.locateDrop(location);
+        location.addLocal(0f, 0f, -60f); // location of row center
+        Vector3f offset = new Vector3f(7f, 0f, 0f);
+        MyVector3f.accumulateScaled(location, offset, -(numProps - 1) / 2f);
+
         float scaleFactor = 1f;
         float totalMass = new WarningSign(1f, 1f).defaultDescaledMass();
-        Vector3f location = new Vector3f(277f, 500f, 2_000f);
-        Vector3f offset = new Vector3f(7f, 0f, 0f);
         Quaternion orient = new Quaternion();
 
         for (int propIndex = 0; propIndex < numProps; ++propIndex) {
             Prop prop = new WarningSign(scaleFactor, totalMass);
             prop.addToWorld(world, location, orient);
+
             location.addLocal(offset);
         }
     }
