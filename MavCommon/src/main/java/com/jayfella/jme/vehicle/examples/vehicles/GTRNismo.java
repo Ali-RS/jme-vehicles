@@ -166,6 +166,9 @@ public class GTRNismo extends Vehicle {
         Sound hornSound = new HornSound1();
         hornSound.load(assetManager);
         setHornSound(hornSound);
+
+        addPassenger(assetManager, "/Models/MakeHuman/driver.j3o",
+                new Vector3f(0.36f, -0.34f, -0.1f), "driving:gtr_nismo");
         /*
          * build() must be invoked last, to complete the Vehicle
          */

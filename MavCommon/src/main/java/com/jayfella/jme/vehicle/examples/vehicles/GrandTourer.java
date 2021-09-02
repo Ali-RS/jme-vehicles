@@ -167,6 +167,9 @@ public class GrandTourer extends Vehicle {
         Sound hornSound = new HornSound1();
         hornSound.load(assetManager);
         setHornSound(hornSound);
+
+        addPassenger(assetManager, "/Models/MakeHuman/driver.j3o",
+                new Vector3f(0.48f, 0.03f, -0.36f), "driving:GT");
         /*
          * build() must be invoked last, to complete the Vehicle
          */

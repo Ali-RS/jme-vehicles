@@ -166,6 +166,9 @@ public class Rotator extends Vehicle {
         Sound hornSound = new HornSound1();
         hornSound.load(assetManager);
         setHornSound(hornSound);
+
+        addPassenger(assetManager, "/Models/MakeHuman/driver.j3o",
+                new Vector3f(0f, -0.56f, 0.13f), "driving:hcr2_rotator");
         /*
          * build() must be invoked last, to complete the Vehicle
          */
