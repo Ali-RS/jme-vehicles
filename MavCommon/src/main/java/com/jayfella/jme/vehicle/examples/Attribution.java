@@ -75,6 +75,15 @@ public class Attribution {
             "https://sketchfab.com/3d-models/opel-gt-retopo-badcab3c8a3d42359c8416db8a7427fe",
             "CC-BY-NC-SA");
     /**
+     * info for "Elvs Racing Fire suit Male1"
+     */
+    final public static LicensedWork raceSuit = new LicensedWork(
+            "Elvaerwyn",
+            null,
+            "Elvs Racing Fire suit Male1",
+            "http://www.makehumancommunity.org/clothes/elvs_racing_fire_suit_male1.html",
+            "CC-BY-4.0");
+    /**
      * message logger for this class
      */
     final public static Logger logger

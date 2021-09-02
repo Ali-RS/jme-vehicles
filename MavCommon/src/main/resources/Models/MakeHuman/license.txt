@@ -1,0 +1,41 @@
+Licensing history for files in "src/main/resources/Models/MakeHuman" and its subfolders
+
+Based on "MakeHuman 1.2.0":
+* downloaded from:   http://www.makehumancommunity.org/content/makehuman_120.html
+* download options:  "For linux"
+* license type:      CC0 1.0 Universal
+* license URL:       https://creativecommons.org/publicdomain/zero/1.0/
+
+Extracted files used without modification:
+* brown_eye.png
+* eyebrow009.png
+* shoes02_diffuse.png
+* short04_diffuse.png
+
+
+Based on "Hand Gloves":
+* description URL:   http://www.makehumancommunity.org/clothes/hand_gloves.html
+* author:            MargaretToigo
+* license type:      CC0 - Creative Commons Zero
+* license URL:       https://creativecommons.org/publicdomain/zero/1.0/
+
+Extracted files used without modification:
+* Gloves03UV.png
+
+
+Based on "Elvs Racing Fire suit Male1":
+* description URL:   http://www.makehumancommunity.org/clothes/elvs_racing_fire_suit_male1.html
+* author:            Elvaerwyn
+* license type:      CC-BY - Creative Commons Attribution
+* license URL:       https://creativecommons.org/licenses/by/4.0/
+
+Extracted files used without modification:
+* normals1.png
+* racesuittex10.png
+
+
+Added files (also licensed CC0):
+* driver.blend
+* driver.j3o
+* driver.mhm
+* license.txt
