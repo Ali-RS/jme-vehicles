@@ -17,7 +17,6 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-import jme3utilities.math.MyBuffer;
 
 /**
  * A single continuous skidmark, composed of straight sections and rendered by a
@@ -294,7 +293,7 @@ class WheelSkid {
         uvBuffer.flip();
 
         Mesh result = new Mesh();
-        VertexBuffer.Format ibFormat = MyBuffer.getFormat(indexBuffer);
+        VertexBuffer.Format ibFormat = indexBuffer.getFormat();
         result.setBuffer(VertexBuffer.Type.Index, vpt, ibFormat, buffer);
         result.setBuffer(VertexBuffer.Type.Color, 4, colorBuffer);
         result.setBuffer(VertexBuffer.Type.Normal, numAxes, normalBuffer);
