@@ -25,7 +25,7 @@ gradle.projectsEvaluated {
 ext {
     // current versions of various libraries
     garrettVersion = '0.2.0'
-    heartVersion = '7.0.0'
+    heartVersion = '7.1.0'
     jmeTtfVersion = '2.2.4'
     jmonkeyengineVersion = '3.4.0-stable'
     maVehiclesVersion = '0.6.3-SNAPSHOT'
