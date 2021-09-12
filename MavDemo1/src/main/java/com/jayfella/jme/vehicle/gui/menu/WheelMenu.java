@@ -9,6 +9,8 @@ import com.jayfella.jme.vehicle.examples.wheels.CruiserWheel;
 import com.jayfella.jme.vehicle.examples.wheels.DarkAlloyWheel;
 import com.jayfella.jme.vehicle.examples.wheels.HatchbackWheel;
 import com.jayfella.jme.vehicle.examples.wheels.InvisibleWheel;
+import com.jayfella.jme.vehicle.examples.wheels.MotorcycleFrontWheel;
+import com.jayfella.jme.vehicle.examples.wheels.MotorcycleRearWheel;
 import com.jayfella.jme.vehicle.examples.wheels.RangerWheel;
 import com.jayfella.jme.vehicle.examples.wheels.RotatorFrontWheel;
 import com.jayfella.jme.vehicle.examples.wheels.RotatorRearWheel;
@@ -42,7 +44,7 @@ class WheelMenu extends AnimatedMenu {
      */
     @Override
     protected List<Button> createItems() {
-        List<Button> result = new ArrayList<>(11);
+        List<Button> result = new ArrayList<>(13);
 
         addButton(result, "Basic Alloy",
                 source -> setModel(BasicAlloyWheel.class));
@@ -58,6 +60,10 @@ class WheelMenu extends AnimatedMenu {
                 source -> setModel(HatchbackWheel.class));
         addButton(result, "Invisible",
                 source -> setModel(InvisibleWheel.class));
+        addButton(result, "Motorcycle Front",
+                source -> setModel(MotorcycleFrontWheel.class));
+        addButton(result, "Motorcycle Rear",
+                source -> setModel(MotorcycleRearWheel.class));
         addButton(result, "Ranger",
                 source -> setModel(RangerWheel.class));
         addButton(result, "Rotator Front",
