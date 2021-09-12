@@ -18,6 +18,8 @@ import com.jayfella.jme.vehicle.examples.vehicles.HatchBack;
 import com.jayfella.jme.vehicle.examples.vehicles.HoverTank;
 import com.jayfella.jme.vehicle.examples.vehicles.PickupTruck;
 import com.jayfella.jme.vehicle.examples.vehicles.Rotator;
+import com.jayfella.jme.vehicle.examples.wheels.MotorcycleFrontWheel;
+import com.jayfella.jme.vehicle.examples.wheels.MotorcycleRearWheel;
 import com.jayfella.jme.vehicle.examples.worlds.Mountains;
 import com.jayfella.jme.vehicle.examples.worlds.Playground;
 import com.jayfella.jme.vehicle.examples.worlds.Racetrack;
@@ -89,6 +91,8 @@ public class MavDemo1 extends SimpleApplication {
         new GTRNismo(),
         new HatchBack(),
         new HoverTank(),
+        new MotorcycleFrontWheel(1f),
+        new MotorcycleRearWheel(1f),
         new Mountains(),
         new Playground(),
         new PickupTruck(),

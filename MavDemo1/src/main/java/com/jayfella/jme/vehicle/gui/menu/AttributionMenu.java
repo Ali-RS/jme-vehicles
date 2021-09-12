@@ -56,7 +56,8 @@ public class AttributionMenu extends AnimatedMenu {
             Attribution.hcr2Rotator,
             Attribution.modernHatchbackLowPoly,
             Attribution.batcPack,
-            Attribution.raceSuit);
+            Attribution.raceSuit,
+            Attribution.classicMotorcycle);
     // *************************************************************************
     // fields
 

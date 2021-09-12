@@ -21,6 +21,15 @@ public class Attribution {
             "https://skfb.ly/6n8ST",
             "CC-BY-4.0");
     /**
+     * info for "Classic Motorcycle"
+     */
+    final public static LicensedWork classicMotorcycle = new LicensedWork(
+            "Mora",
+            "https://sketchfab.com/Fopen",
+            "Classic Motorcycle",
+            "https://skfb.ly/6WVHS",
+            "CC-BY-4.0");
+    /**
      * info for "Ford Ranger"
      */
     final public static LicensedWork fordRanger = new LicensedWork(
