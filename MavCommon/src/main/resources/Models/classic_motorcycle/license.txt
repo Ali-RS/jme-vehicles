@@ -1,0 +1,31 @@
+Licensing history for files in "src/main/resources/Models/classic_motorcycle"
+and its subfolders
+
+Based on "Classic Motorcycle":
+* download file:     classic_motorcycle.zip
+* downloaded from:   https://sketchfab.com/3d-models/classic-motorcycle-4b76c94d593b4dc297d91c5c545193da
+* download options:  Autoconverted format (glTF)
+* author:            Hector Mora
+* author URL:        https://sketchfab.com/Fopen
+* license type:      CC-BY-4.0 (Creative Commons Attribution)
+* license URL:       http://creativecommons.org/licenses/by/4.0/
+
+Extracted files used without modification:
+* MTA_Freno_baseColor.png
+* MTA_Freno_metallicRoughness.png
+* MTA_Freno_normal.png
+* MTA_Llanta_baseColor.png
+* MTA_Llanta_metallicRoughness.png
+* MTA_Metales_2_baseColor.png
+* MTA_Metales_2_metallicRoughness.png
+* MTA_Metales_2_normal.png
+* MTA_Metales_baseColor.png
+* MTA_Metales_metallicRoughness.png
+* MTA_Metales_normal.png
+
+Derived files (also licensed CC-BY-4.0):
+* front-wheel.j3o
+* rear-wheel.j3o
+
+Added files (also licensed CC-BY-4.0):
+* license.txt

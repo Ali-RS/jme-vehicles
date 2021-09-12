@@ -320,6 +320,8 @@ Resources/assets/media:
   has a CC Attribution-NonCommercial-ShareAlike license.
 + The [HoverTank model](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Models/Tank)
   has a BSD 3-Clause license.
++ The [Classic Motorcycle model](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Models/classic_motorcycle)
+  has a CC Attribution license.
 + The [Ford Ranger model](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Models/ford_ranger)
   has a CC Attribution license.
 + The [Nissan GT-R model](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Models/gtr_nismo)
@@ -432,6 +434,10 @@ The world (and physics-space) units of distance are *meters*.
 + This work is based on "Elvs Racing Fire suit Male1"
   (http://www.makehumancommunity.org/clothes/elvs_racing_fire_suit_male1.html)
   by Elvaerwyn licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).
++ This work is based on "Classic Motorcycle"
+  (https://skfb.ly/6WVHS)
+  by Mora (https://sketchfab.com/Fopen)
+  licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).
 
 ### Hosting
 
