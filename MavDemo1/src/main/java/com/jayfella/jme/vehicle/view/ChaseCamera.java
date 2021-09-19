@@ -2,10 +2,12 @@ package com.jayfella.jme.vehicle.view;
 
 import com.github.stephengold.garrett.OrbitCamera;
 import com.github.stephengold.garrett.Target;
+import com.jayfella.jme.vehicle.NegativeAppDataFilter;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.lemurdemo.MavDemo1;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.control.VehicleControl;
+import com.jme3.bullet.debug.BulletDebugAppState;
 import com.jme3.math.Vector3f;
 import java.util.logging.Logger;
 import jme3utilities.Validate;
@@ -98,6 +100,9 @@ public class ChaseCamera extends CameraController {
         orbitCamera = MavDemo1.findAppState(OrbitCamera.class);
         chaseOption.configure(orbitCamera);
         orbitCamera.setTarget(target);
+        BulletDebugAppState.DebugAppStateFilter obstructionFilter
+                = new NegativeAppDataFilter(vehicle);
+        orbitCamera.setObstructionFilter(obstructionFilter);
         orbitCamera.setEnabled(true);
     }
 
@@ -137,6 +142,9 @@ public class ChaseCamera extends CameraController {
         };
         if (orbitCamera != null) {
             orbitCamera.setTarget(target);
+            BulletDebugAppState.DebugAppStateFilter obstructionFilter
+                    = new NegativeAppDataFilter(newVehicle);
+            orbitCamera.setObstructionFilter(obstructionFilter);
             orbitCamera.setRangeAndOffset();
         }
     }
