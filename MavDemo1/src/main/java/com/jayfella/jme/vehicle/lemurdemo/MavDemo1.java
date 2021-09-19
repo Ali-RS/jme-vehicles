@@ -51,6 +51,7 @@ import com.jme3.bullet.util.NativeLibrary;
 import com.jme3.input.Joystick;
 import com.jme3.input.JoystickConnectionListener;
 import com.jme3.input.KeyInput;
+import com.jme3.material.Material;
 import com.jme3.system.AppSettings;
 import com.simsilica.lemur.input.Button;
 import java.util.logging.Level;
@@ -194,6 +195,8 @@ public class MavDemo1 extends SimpleApplication {
          * Mute the chatty loggers found in some imported packages.
          */
         Heart.setLoggingLevels(Level.WARNING);
+        Logger materialLogger = Logger.getLogger(Material.class.getName());
+        materialLogger.setLevel(Level.SEVERE);
 
         boolean forceDialog = false;
         /*
