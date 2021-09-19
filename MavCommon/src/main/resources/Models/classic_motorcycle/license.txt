@@ -5,23 +5,38 @@ Based on "Classic Motorcycle":
 * download file:     classic_motorcycle.zip
 * downloaded from:   https://sketchfab.com/3d-models/classic-motorcycle-4b76c94d593b4dc297d91c5c545193da
 * download options:  Autoconverted format (glTF)
+* download date:     2 September 2021
 * author:            Hector Mora
 * author URL:        https://sketchfab.com/Fopen
 * license type:      CC-BY-4.0 (Creative Commons Attribution)
-* license URL:       http://creativecommons.org/licenses/by/4.0/
+* license URL:       https://creativecommons.org/licenses/by/4.0/
 
 Extracted files used without modification:
+* MTA_Asiento_baseColor.png
+* MTA_Asiento_metallicRoughness.png
+* MTA_Asiento_normal.png
+* MTA_Cadena_baseColor.png
+* MTA_Cadena_metallicRoughness.png
 * MTA_Freno_baseColor.png
 * MTA_Freno_metallicRoughness.png
 * MTA_Freno_normal.png
 * MTA_Llanta_baseColor.png
 * MTA_Llanta_metallicRoughness.png
+* MTA_Luces_baseColor.png
+* MTA_Luces_emissive.png
+* MTA_Luces_metallicRoughness.png
 * MTA_Metales_2_baseColor.png
 * MTA_Metales_2_metallicRoughness.png
 * MTA_Metales_2_normal.png
 * MTA_Metales_baseColor.png
 * MTA_Metales_metallicRoughness.png
 * MTA_Metales_normal.png
+* MTA_Motor_baseColor.png
+* MTA_Motor_metallicRoughness.png
+* MTA_Motor_normal.png
+* MTA_Pintura_Metalica_baseColor.png
+* MTA_Pintura_Metalica_metallicRoughness.png
+* MTA_Pintura_Metalica_normal.png
 
 Derived files (also licensed CC-BY-4.0):
 * front-wheel.j3o
