@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 /**
  * A Prop for a Jersey barrier topped with chain-link fence, built around a
- * portion of Sabri Ayeş's "Barrier & Traffic Cone Pack".
+ * portion of Sabri Ayeş's "Barrier &amp; Traffic Cone Pack".
  *
  * @author Stephen Gold sgold@sonic.net
  */
@@ -35,7 +35,6 @@ public class FencedBarrier extends Prop {
      * @param scaleFactor the desired scale factor (world units per model unit,
      * &gt;0)
      * @param totalMass the desired total mass (in kilograms, &gt;0)
-     * @return a new instance
      */
     public FencedBarrier(float scaleFactor, float totalMass) {
         super("FencedBarrier", scaleFactor, totalMass);

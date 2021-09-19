@@ -12,7 +12,7 @@ public class Attribution {
     // constants and loggers
 
     /**
-     * info for "Barrier & Traffic Cone Pack"
+     * info for "Barrier &amp; Traffic Cone Pack"
      */
     final public static LicensedWork batcPack = new LicensedWork(
             "Sabri Ayeş",

@@ -12,8 +12,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A Prop for an iron weight, built around a portion of Sabri Ayeş's "Barrier &
- * Traffic Cone Pack".
+ * A Prop for an iron weight, built around a portion of Sabri Ayeş's "Barrier
+ * &amp; Traffic Cone Pack".
  *
  * @author Stephen Gold sgold@sonic.net
  */
@@ -35,7 +35,6 @@ public class Weight extends Prop {
      * @param scaleFactor the desired scale factor (world units per model unit,
      * &gt;0)
      * @param totalMass the desired total mass (in kilograms, &gt;0)
-     * @return a new instance
      */
     public Weight(float scaleFactor, float totalMass) {
         super("Weight", scaleFactor, totalMass);

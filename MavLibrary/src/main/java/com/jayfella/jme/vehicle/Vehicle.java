@@ -573,7 +573,7 @@ abstract public class Vehicle
     /**
      * Alter the mass of the chassis.
      *
-     * @return the desired mass (in kilograms, &gt;0)
+     * @param mass the desired mass (in kilograms, &gt;0)
      */
     public void setMass(float mass) {
         Validate.positive(mass, "mass");
