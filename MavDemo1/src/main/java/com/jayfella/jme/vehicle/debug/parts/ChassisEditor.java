@@ -24,7 +24,8 @@ public class ChassisEditor extends Container {
 
     private RollupPanel createWeightRollup() {
         PropertyPanel propertyPanel = new PropertyPanel("glass");
-        propertyPanel.addFloatProperty("Weight", vehicle.getVehicleControl(), "mass", 1, 5000, 0.1f);
+        propertyPanel.addFloatProperty("Weight", vehicle, "mass",
+                1f, 5000f, 0.1f);
 
         return new RollupPanel("Weight", propertyPanel, "glass");
     }

@@ -354,6 +354,18 @@ abstract public class Vehicle
     }
 
     /**
+     * Determine the mass of the chassis.
+     *
+     * @return the mass (in kilograms, &gt;0)
+     */
+    public float getMass() {
+        float result = vehicleControl.getMass();
+
+        assert result > 0f : result;
+        return result;
+    }
+
+    /**
      * Determine this vehicle's name.
      *
      * @return the descriptive name (not null)
@@ -556,6 +568,16 @@ abstract public class Vehicle
      */
     public void setHornStatus(boolean isRequested) {
         this.isHornRequested = isRequested;
+    }
+
+    /**
+     * Alter the mass of the chassis.
+     *
+     * @return the desired mass (in kilograms, &gt;0)
+     */
+    public void setMass(float mass) {
+        Validate.positive(mass, "mass");
+        vehicleControl.setMass(mass);
     }
 
     /**
