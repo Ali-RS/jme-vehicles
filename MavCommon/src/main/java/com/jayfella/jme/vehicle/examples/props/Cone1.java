@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 /**
  * A Prop for a traffic cone with a black base, built around a portion of Sabri
- * Ayeş's "Barrier & Traffic Cone Pack". Note: bottomless.
+ * Ayeş's "Barrier &amp; Traffic Cone Pack". Note: bottomless.
  *
  * @author Stephen Gold sgold@sonic.net
  */
@@ -35,7 +35,6 @@ public class Cone1 extends Prop {
      * @param scaleFactor the desired scale factor (world units per model unit,
      * &gt;0)
      * @param totalMass the desired total mass (in kilograms, &gt;0)
-     * @return a new instance
      */
     public Cone1(float scaleFactor, float totalMass) {
         super("Cone1", scaleFactor, totalMass);

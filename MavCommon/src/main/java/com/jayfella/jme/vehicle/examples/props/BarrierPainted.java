@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 /**
  * A Prop for a Jersey barrier painted black and orange, built around a portion
- * of Sabri Ayeş's "Barrier & Traffic Cone Pack".
+ * of Sabri Ayeş's "Barrier &amp; Traffic Cone Pack".
  *
  * @author Stephen Gold sgold@sonic.net
  */
@@ -35,7 +35,6 @@ public class BarrierPainted extends Prop {
      * @param scaleFactor the desired scale factor (world units per model unit,
      * &gt;0)
      * @param totalMass the desired total mass (in kilograms, &gt;0)
-     * @return a new instance
      */
     public BarrierPainted(float scaleFactor, float totalMass) {
         super("BarrierPainted", scaleFactor, totalMass);

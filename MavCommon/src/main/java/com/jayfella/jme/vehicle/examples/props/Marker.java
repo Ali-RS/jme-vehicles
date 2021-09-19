@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 /**
  * A Prop for a tubular lane marker, built around a portion of Sabri Ayeş's
- * "Barrier & Traffic Cone Pack". Note: bottomless.
+ * "Barrier &amp; Traffic Cone Pack". Note: bottomless.
  *
  * @author Stephen Gold sgold@sonic.net
  */
@@ -35,7 +35,6 @@ public class Marker extends Prop {
      * @param scaleFactor the desired scale factor (world units per model unit,
      * &gt;0)
      * @param totalMass the desired total mass (in kilograms, &gt;0)
-     * @return a new instance
      */
     public Marker(float scaleFactor, float totalMass) {
         super("Marker", scaleFactor, totalMass);
