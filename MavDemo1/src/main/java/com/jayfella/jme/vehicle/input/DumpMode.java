@@ -8,6 +8,7 @@ import com.jme3.renderer.ViewPort;
 import com.simsilica.lemur.input.FunctionId;
 import com.simsilica.lemur.input.InputState;
 import java.util.logging.Logger;
+import jme3utilities.minie.DumpFlags;
 import jme3utilities.minie.PhysicsDumper;
 
 /**
@@ -57,7 +58,10 @@ public class DumpMode extends InputMode {
         super("Dump Mode", F_DUMP_APPSTATES, F_DUMP_CAMERA, F_DUMP_GUI_VIEWPORT,
                 F_DUMP_PHYSICS, F_DUMP_RENDER_MANAGER, F_DUMP_VIEWPORT);
 
-        dumper.setDumpBucket(true)
+        dumper.setEnabled(DumpFlags.JointsInBodies, true)
+                .setEnabled(DumpFlags.JointsInSpaces, true)
+                .setEnabled(DumpFlags.Motors, true)
+                .setDumpBucket(true)
                 .setDumpCull(true)
                 .setDumpShadow(true)
                 .setDumpTransform(true);
