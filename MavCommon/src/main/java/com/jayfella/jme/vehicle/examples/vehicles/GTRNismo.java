@@ -45,7 +45,7 @@ public class GTRNismo extends Vehicle {
      */
     @Override
     public void load(AssetManager assetManager) {
-        if (getVehicleControl() != null) {
+        if (isLoaded()) {
             logger.log(Level.SEVERE, "The model is already loaded.");
             return;
         }

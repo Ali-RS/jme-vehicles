@@ -418,6 +418,19 @@ abstract public class Vehicle
     }
 
     /**
+     * Test whether the assets of this Vehicle have been loaded yet.
+     *
+     * @return true if loaded, otherwise false
+     */
+    public boolean isLoaded() {
+        if (vehicleControl == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
      * Enumerate all wheels.
      *
      * @return a new array (not null)
