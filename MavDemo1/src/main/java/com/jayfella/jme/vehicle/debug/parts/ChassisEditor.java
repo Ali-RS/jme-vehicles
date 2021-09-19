@@ -7,26 +7,16 @@ import com.simsilica.lemur.props.PropertyPanel;
 
 public class ChassisEditor extends Container {
     // *************************************************************************
-    // fields
-
-    final private Vehicle vehicle;
-    // *************************************************************************
     // constructors
 
     public ChassisEditor(Vehicle vehicle) {
         super();
 
-        this.vehicle = vehicle;
-        addChild(createWeightRollup());
-    }
-    // *************************************************************************
-    // private methods
-
-    private RollupPanel createWeightRollup() {
-        PropertyPanel propertyPanel = new PropertyPanel("glass");
-        propertyPanel.addFloatProperty("Weight", vehicle, "mass",
+        String styleName = "glass";
+        PropertyPanel propertyPanel = new PropertyPanel(styleName);
+        propertyPanel.addFloatProperty("Mass", vehicle, "mass",
                 1f, 5000f, 0.1f);
-
-        return new RollupPanel("Weight", propertyPanel, "glass");
+        RollupPanel panel = new RollupPanel("Mass", propertyPanel, styleName);
+        addChild(panel);
     }
 }
