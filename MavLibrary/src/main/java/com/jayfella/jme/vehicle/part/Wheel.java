@@ -4,7 +4,7 @@ import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.VehicleWorld;
 import com.jayfella.jme.vehicle.tire.PacejkaTireModel;
 import com.jme3.bullet.PhysicsSpace;
-import com.jme3.bullet.control.VehicleControl;
+import com.jme3.bullet.objects.PhysicsVehicle;
 import com.jme3.bullet.objects.VehicleWheel;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
@@ -76,11 +76,15 @@ public class Wheel {
      */
     private float steeringAngle = 0f;
     /**
-     * index among the vehicle's wheels (&ge;0)
+     * index among the physics body's wheels (&ge;0)
      */
     final private int wheelIndex;
 
     private PacejkaTireModel tireModel;
+    /**
+     * physics body to which this Wheel is added TODO rename
+     */
+    final private PhysicsVehicle vehicleControl;
     /**
      * parameters of the associated suspension spring
      */
@@ -90,10 +94,6 @@ public class Wheel {
      */
     final private Vehicle vehicle;
     /**
-     * vehicle's physics control
-     */
-    final private VehicleControl vehicleControl;
-    /**
      * wheel's physics object
      */
     final private VehicleWheel vehicleWheel;
@@ -101,11 +101,12 @@ public class Wheel {
     // constructors
 
     /**
-     * Instantiate a wheel with the specified parameters.
+     * Instantiate a wheel (added to the engine body) with the specified
+     * parameters.
      *
-     * @param vehicle the vehicle that will contain this Wheel (not null, alias
-     * created)
-     * @param wheelIndex the index among the vehicle's wheels (&ge;0)
+     * @param vehicle the Vehicle to which this Wheel will be added (not null,
+     * alias created)
+     * @param wheelIndex the index among the engine body's wheels (&ge;0)
      * @param isSteering true if used for steering, otherwise false
      * @param steeringFlipped true for rear-wheel steering, otherwise false
      * @param suspension the suspension spring (not null, alias created)
@@ -113,9 +114,33 @@ public class Wheel {
      * @param parkingBrake the parking brake (not null, alias created)
      * @param extraDamping the additional linear damping (&ge;0, &lt;1)
      */
-    public Wheel(Vehicle vehicle, int wheelIndex, boolean isSteering,
-            boolean steeringFlipped, Suspension suspension,
+    public Wheel(Vehicle vehicle, int wheelIndex,
+            boolean isSteering, boolean steeringFlipped, Suspension suspension,
             Brake mainBrake, Brake parkingBrake, float extraDamping) {
+        this(vehicle, vehicle.getVehicleControl(), wheelIndex,
+                isSteering, steeringFlipped, suspension,
+                mainBrake, parkingBrake, extraDamping);
+    }
+
+    /**
+     * Instantiate a wheel with the specified parameters.
+     *
+     * @param vehicle the Vehicle to which this Wheel will be added (not null,
+     * alias created)
+     * @param body the physics body to which this Wheel will be added (not null,
+     * alias created)
+     * @param wheelIndex the index among the body's wheels (&ge;0)
+     * @param isSteering true if used for steering, otherwise false
+     * @param steeringFlipped true for rear-wheel steering, otherwise false
+     * @param suspension the suspension spring (not null, alias created)
+     * @param mainBrake the main brake (not null, alias created)
+     * @param parkingBrake the parking brake (not null, alias created)
+     * @param extraDamping the additional linear damping (&ge;0, &lt;1)
+     */
+    public Wheel(Vehicle vehicle, PhysicsVehicle body, int wheelIndex,
+            boolean isSteering, boolean steeringFlipped, Suspension suspension,
+            Brake mainBrake, Brake parkingBrake, float extraDamping) {
+        Validate.nonNull(vehicle, "vehicle");
         Validate.nonNegative(wheelIndex, "wheel index");
         Validate.nonNull(suspension, "suspension");
         Validate.nonNull(mainBrake, "main brake");
@@ -123,10 +148,9 @@ public class Wheel {
         Validate.fraction(extraDamping, "extra damping");
 
         this.vehicle = vehicle;
-        this.vehicleControl = vehicle.getVehicleControl();
-
+        this.vehicleControl = body;
         this.wheelIndex = wheelIndex;
-        vehicleWheel = vehicleControl.getWheel(wheelIndex);
+        vehicleWheel = body.getWheel(wheelIndex);
         assert vehicleWheel != null;
 
         this.isSteering = isSteering;
