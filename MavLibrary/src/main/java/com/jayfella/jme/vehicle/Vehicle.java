@@ -776,9 +776,10 @@ abstract public class Vehicle
         Validate.nonNull(offset, "offset");
         Validate.nonEmpty(clipName, "clip name");
 
-        Spatial passengerCgmRoot
-                = assetManager.loadModel("/Models/MakeHuman/driver.j3o");
-        node.attachChild(passengerCgmRoot);
+        Spatial passengerCgmRoot = assetManager.loadModel(assetPath);
+
+        Node engineSubtree = (Node) vehicleControl.getSpatial();
+        engineSubtree.attachChild(passengerCgmRoot);
         passengerCgmRoot.setLocalTranslation(offset);
 
         List<AnimComposer> composers = MySpatial.listControls(passengerCgmRoot,
