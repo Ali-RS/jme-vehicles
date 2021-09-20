@@ -13,6 +13,7 @@ import com.jayfella.jme.vehicle.part.GearBox;
 import com.jayfella.jme.vehicle.part.Suspension;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.asset.AssetManager;
+import com.jme3.bullet.control.VehicleControl;
 import com.jme3.math.Vector3f;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -168,8 +169,11 @@ public class GrandTourer extends Vehicle {
         hornSound.load(assetManager);
         setHornSound(hornSound);
 
-        addPassenger(assetManager, "/Models/MakeHuman/driver.j3o",
-                new Vector3f(0.48f, 0.03f, -0.36f), "driving:GT");
+        String assetPath = "/Models/MakeHuman/driver.j3o";
+        VehicleControl body = getVehicleControl();
+        Vector3f offset = new Vector3f(0.48f, 0.03f, -0.36f);
+        String clipName = "driving:GT";
+        addPassenger(assetManager, assetPath, body, offset, clipName);
         /*
          * build() must be invoked last, to complete the Vehicle
          */
