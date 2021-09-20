@@ -113,7 +113,7 @@ public class CreateShapes {
                 cgmBaseFileName);
         Spatial cgmRoot = assetManager.loadModel(cgmAssetPath);
 
-        String description = cgmBaseFileName + " chassis";
+        String description = folderName + " chassis";
         String fileName = "chassis-shape.j3o";
         createDynamicShape(description, cgmRoot, folderName, fileName);
     }
