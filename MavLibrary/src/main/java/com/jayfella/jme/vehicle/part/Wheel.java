@@ -82,9 +82,9 @@ public class Wheel {
 
     private PacejkaTireModel tireModel;
     /**
-     * physics body to which this Wheel is added TODO rename
+     * physics body to which this Wheel is added
      */
-    final private PhysicsVehicle vehicleControl;
+    final private PhysicsVehicle body;
     /**
      * parameters of the associated suspension spring
      */
@@ -148,7 +148,7 @@ public class Wheel {
         Validate.fraction(extraDamping, "extra damping");
 
         this.vehicle = vehicle;
-        this.vehicleControl = body;
+        this.body = body;
         this.wheelIndex = wheelIndex;
         vehicleWheel = body.getWheel(wheelIndex);
         assert vehicleWheel != null;
@@ -171,15 +171,15 @@ public class Wheel {
     // the slip angle is the angle between the direction in which a wheel is pointing
     // and the direction in which the vehicle is traveling.
     public float calculateLateralSlipAngle() {
-        Quaternion wheelRot = vehicleControl.getPhysicsRotation().mult(
+        Quaternion wheelRot = body.getPhysicsRotation().mult(
                 new Quaternion().fromAngles(0f, getSteeringAngle(), 0f));
 
         Vector3f wheelDir = wheelRot.getRotationColumn(2);
         Vector3f vehicleTravel;
-        if (vehicleControl.getCurrentVehicleSpeedKmHour() < 5f) {
-            vehicleTravel = vehicleControl.getPhysicsRotation().getRotationColumn(2);
+        if (body.getCurrentVehicleSpeedKmHour() < 5f) {
+            vehicleTravel = body.getPhysicsRotation().getRotationColumn(2);
         } else {
-            vehicleTravel = vehicleControl.getLinearVelocity().normalizeLocal();
+            vehicleTravel = body.getLinearVelocity().normalizeLocal();
             vehicleTravel.setY(0f);
         }
 
@@ -206,7 +206,7 @@ public class Wheel {
         float rot = wheelSpinRot + normalRot;
 
         // System.out.println(getVehicleWheel().getWheelSpatial().getName() + ": " + rot);
-        float vel = vehicleControl.getLinearVelocity().length();
+        float vel = body.getLinearVelocity().length();
 
         float minAngle = 0.1f;
 
@@ -450,7 +450,7 @@ public class Wheel {
      */
     public float skidFraction() {
         float result;
-        float depth = vehicleControl.castRay(wheelIndex);
+        float depth = body.castRay(wheelIndex);
         if (depth == -1f) {
             result = 0f; // no supporting surface
         } else {
@@ -472,7 +472,7 @@ public class Wheel {
                 steeringAngle = getMaxSteerAngle() * strength;
             }
 
-            vehicleControl.steer(wheelIndex, steeringAngle);
+            body.steer(wheelIndex, steeringAngle);
         }
     }
 
@@ -498,7 +498,7 @@ public class Wheel {
      */
     public float traction() {
         float result;
-        float depth = vehicleControl.castRay(wheelIndex);
+        float depth = body.castRay(wheelIndex);
         if (depth == -1f) {
             result = 0f; // no supporting surface
         } else {
@@ -518,7 +518,7 @@ public class Wheel {
      * @param force the desired drive force (negative if reversing)
      */
     public void updateAccelerate(float force) {
-        vehicleControl.accelerate(wheelIndex, force);
+        body.accelerate(wheelIndex, force);
         assert vehicleWheel.getEngineForce() == force :
                 vehicleWheel.getEngineForce();
     }
@@ -545,7 +545,7 @@ public class Wheel {
         if (impulse != vehicleWheel.getBrake()) {
             //System.out.printf("brake[%d] = %f%n", wheelIndex, impulse);
         }
-        vehicleControl.brake(wheelIndex, impulse);
+        body.brake(wheelIndex, impulse);
 
         assert vehicleWheel.getBrake() == impulse : vehicleWheel.getBrake();
     }
