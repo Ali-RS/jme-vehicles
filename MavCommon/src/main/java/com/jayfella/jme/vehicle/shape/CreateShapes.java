@@ -100,7 +100,7 @@ public class CreateShapes {
     // private methods
 
     /**
-     * Create a CollisionShape for a vehicle chassis.
+     * Create a CollisionShape for a single-body vehicle chassis.
      *
      * @param folderName the name of the folder containing the C-G model
      * @param cgmBaseFileName the base filename of the C-G model
@@ -113,21 +113,47 @@ public class CreateShapes {
                 cgmBaseFileName);
         Spatial cgmRoot = assetManager.loadModel(cgmAssetPath);
 
-        System.out.printf("%nCreate shape for %s chassis ... ",
-                cgmBaseFileName);
+        String description = cgmBaseFileName + " chassis";
+        String fileName = "chassis-shape.j3o";
+        createDynamicShape(description, cgmRoot, folderName, fileName);
+    }
+
+    /**
+     * Create a CollisionShape for a single body in a vehicle chassis.
+     *
+     * @param description a textual description of the body being created (not
+     * null, not empty)
+     * @param subtree the scene-graph subtree on which to base the shape (not
+     * null, unaffected)
+     * @param folderName the name of the folder containing the C-G model (not
+     * null, not empty)
+     * @param fileName the final component of the output filepath (not null,
+     * ending in ".j3o")
+     */
+    private static void createDynamicShape(String description, Spatial subtree,
+            String folderName, String fileName) {
+        assert description != null;
+        assert !description.isEmpty();
+        assert subtree != null;
+        assert folderName != null;
+        assert !folderName.isEmpty();
+        assert fileName != null;
+        assert fileName.endsWith(".j3o");
+
+        System.out.printf("%nCreate shape for %s ... ", description);
         System.out.flush();
 
         CollisionShape collisionShape
-                = CollisionShapeFactory.createDynamicMeshShape(cgmRoot);
+                = CollisionShapeFactory.createDynamicMeshShape(subtree);
 
         System.out.printf("done!%n");
         dumper.dump(collisionShape, "    ");
         System.out.flush();
         /*
-         * Save the shape in J3O format.
+         * Save the collision shape in J3O format.
          */
         String writeFilePath = "src/main/resources/Models/" + folderName
-                + "/shapes/chassis-shape.j3o";
+                + "/shapes/" + fileName;
         Heart.writeJ3O(writeFilePath, collisionShape);
     }
 
