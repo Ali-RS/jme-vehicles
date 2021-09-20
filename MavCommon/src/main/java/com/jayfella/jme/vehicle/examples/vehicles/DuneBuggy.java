@@ -14,6 +14,7 @@ import com.jayfella.jme.vehicle.part.GearBox;
 import com.jayfella.jme.vehicle.part.Suspension;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.asset.AssetManager;
+import com.jme3.bullet.control.VehicleControl;
 import com.jme3.math.Vector3f;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -172,8 +173,11 @@ public class DuneBuggy extends Vehicle {
         hornSound.load(assetManager);
         setHornSound(hornSound);
 
-        addPassenger(assetManager, "/Models/MakeHuman/driver.j3o",
-                new Vector3f(0f, -0.12f, -0.27f), "driving:hcr2_buggy");
+        String assetPath = "/Models/MakeHuman/driver.j3o";
+        VehicleControl body = getVehicleControl();
+        Vector3f offset = new Vector3f(0f, -0.12f, -0.27f);
+        String clipName = "driving:hcr2_buggy";
+        addPassenger(assetManager, assetPath, body, offset, clipName);
         /*
          * build() must be invoked last, to complete the Vehicle
          */

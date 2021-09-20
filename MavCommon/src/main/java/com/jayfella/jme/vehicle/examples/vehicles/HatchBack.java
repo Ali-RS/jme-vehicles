@@ -13,6 +13,7 @@ import com.jayfella.jme.vehicle.part.GearBox;
 import com.jayfella.jme.vehicle.part.Suspension;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.asset.AssetManager;
+import com.jme3.bullet.control.VehicleControl;
 import com.jme3.math.Vector3f;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -163,8 +164,11 @@ public class HatchBack extends Vehicle {
         hornSound.load(assetManager);
         setHornSound(hornSound);
 
-        addPassenger(assetManager, "/Models/MakeHuman/driver.j3o",
-                new Vector3f(0.36f, -0.39f, 0f), "driving:modern_hatchback");
+        String assetPath = "/Models/MakeHuman/driver.j3o";
+        VehicleControl body = getVehicleControl();
+        Vector3f offset = new Vector3f(0.36f, -0.39f, 0f);
+        String clipName = "driving:modern_hatchback";
+        addPassenger(assetManager, assetPath, body, offset, clipName);
         /*
          * build() must be invoked last, to complete the Vehicle
          */

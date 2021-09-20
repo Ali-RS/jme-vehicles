@@ -764,21 +764,21 @@ abstract public class Vehicle
      *
      * @param assetManager to load assets (not null)
      * @param assetPath the path to the C-G model asset (not null, not empty)
-     * @param offset the location of the passenger relative to the vehicle (not
+     * @param body the physics body which moves the passenger (not null)
+     * @param offset the location of the passenger relative to the body (not
      * null, unaffected)
      * @param clipName the name of the animation clip to play (not null, not
      * empty)
      */
     protected void addPassenger(AssetManager assetManager, String assetPath,
-            Vector3f offset, String clipName) {
-        Validate.nonNull(assetManager, "asset manager");
+            VehicleControl body, Vector3f offset, String clipName) {
         Validate.nonEmpty(assetPath, "asset path");
         Validate.nonNull(offset, "offset");
         Validate.nonEmpty(clipName, "clip name");
 
         Spatial passengerCgmRoot = assetManager.loadModel(assetPath);
 
-        Node engineSubtree = (Node) engineBody.getSpatial();
+        Node engineSubtree = (Node) body.getSpatial();
         engineSubtree.attachChild(passengerCgmRoot);
         passengerCgmRoot.setLocalTranslation(offset);
 
