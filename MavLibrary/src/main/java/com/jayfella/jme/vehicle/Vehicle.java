@@ -140,9 +140,9 @@ abstract public class Vehicle
      */
     private VehicleAudioState vehicleAudioState;
     /**
-     * physics body
+     * physics body associated with the Engine
      */
-    private VehicleControl vehicleControl;
+    private VehicleControl engineBody;
     /**
      * VehicleWorld that contains this Vehicle, or null if none
      */
@@ -225,7 +225,7 @@ abstract public class Vehicle
         enable();
 
         PhysicsSpace physicsSpace = world.getPhysicsSpace();
-        vehicleControl.setPhysicsSpace(physicsSpace);
+        engineBody.setPhysicsSpace(physicsSpace);
         physicsSpace.addTickListener(this);
     }
 
@@ -251,7 +251,7 @@ abstract public class Vehicle
         Vector3f axleDirection = new Vector3f(-1f, 0f, 0f);
         float restLength = 0.2f;
         float radius = wheelModel.radius();
-        VehicleWheel vehicleWheel = vehicleControl.addWheel(wheelNode,
+        VehicleWheel vehicleWheel = engineBody.addWheel(wheelNode,
                 connectionLocation, suspensionDirection, axleDirection,
                 restLength, radius, isSteering);
 
@@ -317,7 +317,7 @@ abstract public class Vehicle
      * a new instance)
      */
     public Vector3f forwardDirection(Vector3f storeResult) {
-        Vector3f result = vehicleControl.getForwardVector(storeResult);
+        Vector3f result = engineBody.getForwardVector(storeResult);
         return result;
     }
 
@@ -363,7 +363,7 @@ abstract public class Vehicle
      * @return the total mass (in kilograms, &gt;0)
      */
     public float getMass() {
-        float result = vehicleControl.getMass();
+        float result = engineBody.getMass();
 
         assert result > 0f : result;
         return result;
@@ -393,7 +393,7 @@ abstract public class Vehicle
      * @return the pre-existing instance
      */
     public VehicleControl getVehicleControl() {
-        return vehicleControl;
+        return engineBody;
     }
 
     /**
@@ -439,7 +439,7 @@ abstract public class Vehicle
      * @return true if loaded, otherwise false
      */
     public boolean isLoaded() {
-        if (vehicleControl == null) {
+        if (engineBody == null) {
             return false;
         } else {
             return true;
@@ -478,7 +478,7 @@ abstract public class Vehicle
      */
     public Vector3f locateTarget(float bias, Vector3f storeResult) {
         Vector3f result = (storeResult == null) ? new Vector3f() : storeResult;
-        RigidBodyMotionState motion = vehicleControl.getMotionState();
+        RigidBodyMotionState motion = engineBody.getMotionState();
 
         motion.getOrientation(tmpOrientation);
         Vector3f offset = new Vector3f(); // TODO garbage
@@ -502,9 +502,9 @@ abstract public class Vehicle
     public void removeFromWorld() {
         disable();
 
-        PhysicsSpace physicsSpace = vehicleControl.getPhysicsSpace();
+        PhysicsSpace physicsSpace = engineBody.getPhysicsSpace();
         physicsSpace.removeTickListener(this);
-        vehicleControl.setPhysicsSpace(null);
+        engineBody.setPhysicsSpace(null);
         node.removeFromParent();
         world = null;
     }
@@ -582,7 +582,7 @@ abstract public class Vehicle
      */
     public void setMass(float mass) {
         Validate.positive(mass, "mass");
-        vehicleControl.setMass(mass);
+        engineBody.setMass(mass);
     }
 
     /**
@@ -705,7 +705,7 @@ abstract public class Vehicle
         float closestFraction = 9f;
         for (PhysicsRayTestResult hit : rayTest) {
             PhysicsCollisionObject hitPco = hit.getCollisionObject();
-            if (hitPco != vehicleControl) {
+            if (hitPco != engineBody) {
                 float hitFraction = hit.getHitFraction();
                 if (hitFraction < closestFraction) {
                     closestFraction = hitFraction;
@@ -718,7 +718,7 @@ abstract public class Vehicle
          * Estimate the minimum chassis Y offset to keep
          * the undercarriage off the pavement.
          */
-        CollisionShape shape = vehicleControl.getCollisionShape();
+        CollisionShape shape = engineBody.getCollisionShape();
         BoundingBox aabb
                 = shape.boundingBox(Vector3f.ZERO, Matrix3f.IDENTITY, null);
         float minYOffset = aabb.getYExtent() - aabb.getCenter().y;
@@ -726,7 +726,7 @@ abstract public class Vehicle
          * Estimate chassis Y offset based on an unloaded axle.
          * TODO adjust for the vehicle's weight
          */
-        VehicleWheel w0 = vehicleControl.getWheel(0);
+        VehicleWheel w0 = engineBody.getWheel(0);
         float suspensionLength = w0.getRestLength();
         float yOffset
                 = w0.getRadius() + suspensionLength - w0.getLocation(null).y;
@@ -737,13 +737,13 @@ abstract public class Vehicle
             yOffset = minYOffset;
         }
         Vector3f startLocation = contactLocation.add(0f, yOffset, 0f);
-        vehicleControl.setPhysicsLocation(startLocation);
+        engineBody.setPhysicsLocation(startLocation);
 
         Quaternion orient = new Quaternion().fromAngles(0f, yRotation, 0f);
-        vehicleControl.setPhysicsRotation(orient);
+        engineBody.setPhysicsRotation(orient);
 
-        vehicleControl.setAngularVelocity(Vector3f.ZERO);
-        vehicleControl.setLinearVelocity(Vector3f.ZERO);
+        engineBody.setAngularVelocity(Vector3f.ZERO);
+        engineBody.setLinearVelocity(Vector3f.ZERO);
     }
 
     /**
@@ -778,7 +778,7 @@ abstract public class Vehicle
 
         Spatial passengerCgmRoot = assetManager.loadModel(assetPath);
 
-        Node engineSubtree = (Node) vehicleControl.getSpatial();
+        Node engineSubtree = (Node) engineBody.getSpatial();
         engineSubtree.attachChild(passengerCgmRoot);
         passengerCgmRoot.setLocalTranslation(offset);
 
@@ -866,21 +866,21 @@ abstract public class Vehicle
         this.chassisDamping = damping;
         this.chassis = cgmRoot;
 
-        vehicleControl = new VehicleControl(shape, mass);
-        vehicleControl.setApplicationData(this);
+        engineBody = new VehicleControl(shape, mass);
+        engineBody.setApplicationData(this);
         /*
          * Configure damping for the chassis,
          * to simulate drag due to air resistance.
          */
-        vehicleControl.setLinearDamping(damping);
+        engineBody.setLinearDamping(damping);
         /*
          * Configure continuous collision detection (CCD) for the chassis.
          */
         float radius = shape.maxRadius();
-        vehicleControl.setCcdMotionThreshold(radius);
-        vehicleControl.setCcdSweptSphereRadius(radius);
+        engineBody.setCcdMotionThreshold(radius);
+        engineBody.setCcdSweptSphereRadius(radius);
 
-        node.addControl(vehicleControl);
+        node.addControl(engineBody);
         node.attachChild(chassis);
     }
 
@@ -995,7 +995,7 @@ abstract public class Vehicle
             throw new IllegalStateException("Vehicle not added to any world.");
         }
 
-        float kph = vehicleControl.getCurrentVehicleSpeedKmHour();
+        float kph = engineBody.getCurrentVehicleSpeedKmHour();
 
         float result;
         switch (speedUnit) {
