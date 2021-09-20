@@ -13,6 +13,7 @@ import com.jme3.asset.AssetNotFoundException;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
+import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.collision.PhysicsRayTestResult;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.VehicleControl;
@@ -139,7 +140,7 @@ abstract public class Vehicle
      */
     private VehicleAudioState vehicleAudioState;
     /**
-     * PhysicsCollisionObject
+     * physics body
      */
     private VehicleControl vehicleControl;
     /**
@@ -152,13 +153,16 @@ abstract public class Vehicle
     // constructors
 
     /**
-     * Instantiate a Vehicle with the specified name.
+     * Instantiate an unloaded Vehicle with the specified name.
      *
      * @param name the desired name (not null)
      */
     public Vehicle(String name) {
+        Validate.nonNull(name, "name");
+
         this.name = name;
         node = new Node("Vehicle: " + name);
+        assert !isLoaded();
     }
     // *************************************************************************
     // new methods exposed
@@ -207,7 +211,7 @@ abstract public class Vehicle
 
         this.world = world;
 
-        if (vehicleControl == null) {
+        if (!isLoaded()) {
             AssetManager assetManager = world.getAssetManager();
             load(assetManager);
         }
@@ -226,7 +230,7 @@ abstract public class Vehicle
     }
 
     /**
-     * Add a single Wheel to this Vehicle.
+     * Add a single Wheel to this Vehicle. TODO protect method
      *
      * @param wheelModel the desired WheelModel (not null)
      * @param connectionLocation the location where the suspension connects to
@@ -354,9 +358,9 @@ abstract public class Vehicle
     }
 
     /**
-     * Determine the mass of the chassis.
+     * Determine the mass of the Vehicle.
      *
-     * @return the mass (in kilograms, &gt;0)
+     * @return the total mass (in kilograms, &gt;0)
      */
     public float getMass() {
         float result = vehicleControl.getMass();
@@ -497,6 +501,7 @@ abstract public class Vehicle
      */
     public void removeFromWorld() {
         disable();
+
         PhysicsSpace physicsSpace = vehicleControl.getPhysicsSpace();
         physicsSpace.removeTickListener(this);
         vehicleControl.setPhysicsSpace(null);
@@ -571,9 +576,9 @@ abstract public class Vehicle
     }
 
     /**
-     * Alter the mass of the chassis.
+     * Alter the mass of the Vehicle.
      *
-     * @param mass the desired mass (in kilograms, &gt;0)
+     * @param mass the desired total mass (in kilograms, &gt;0)
      */
     public void setMass(float mass) {
         Validate.positive(mass, "mass");
@@ -699,7 +704,8 @@ abstract public class Vehicle
          */
         float closestFraction = 9f;
         for (PhysicsRayTestResult hit : rayTest) {
-            if (hit.getCollisionObject() != vehicleControl) {
+            PhysicsCollisionObject hitPco = hit.getCollisionObject();
+            if (hitPco != vehicleControl) {
                 float hitFraction = hit.getHitFraction();
                 if (hitFraction < closestFraction) {
                     closestFraction = hitFraction;
@@ -1046,6 +1052,22 @@ abstract public class Vehicle
     @Override
     public float steeringWheelAngle() {
         return steeringWheelAngle;
+    }
+    // *************************************************************************
+    // Object methods
+
+    /**
+     * Represent this instance as a String.
+     *
+     * @return a descriptive string of text (not null, not empty)
+     */
+    @Override
+    public String toString() {
+        String className = getClass().getSimpleName();
+        int hashCode = hashCode();
+        String result = className + "@" + Integer.toHexString(hashCode);
+
+        return result;
     }
     // *************************************************************************
     // private methods
