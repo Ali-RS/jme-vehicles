@@ -367,4 +367,20 @@ abstract public class World
 
         props.remove(prop);
     }
+    // *************************************************************************
+    // Object methods
+
+    /**
+     * Represent this instance as a String.
+     *
+     * @return a descriptive string of text (not null, not empty)
+     */
+    @Override
+    public String toString() {
+        String className = getClass().getSimpleName();
+        int hashCode = hashCode();
+        String result = className + "@" + Integer.toHexString(hashCode);
+
+        return result;
+    }
 }
