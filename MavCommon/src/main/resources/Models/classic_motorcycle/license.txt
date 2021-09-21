@@ -39,8 +39,11 @@ Extracted files used without modification:
 * MTA_Pintura_Metalica_normal.png
 
 Derived files (also licensed CC-BY-4.0):
+* chassis.j3o
+* engine.j3o
 * front-wheel.j3o
 * rear-wheel.j3o
+* steering.j3o
 
 Added files (also licensed CC-BY-4.0):
 * license.txt

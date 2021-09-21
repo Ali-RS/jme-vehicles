@@ -9,6 +9,7 @@ import com.jme3.bullet.util.NativeLibrary;
 import com.jme3.export.binary.BinaryLoader;
 import com.jme3.material.plugins.J3MLoader;
 import com.jme3.math.Transform;
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.system.JmeSystem;
 import com.jme3.system.NativeLibraryLoader;
@@ -63,8 +64,9 @@ public class CreateShapes {
         assetManager.registerLoader(J3MLoader.class, "j3m", "j3md");
         assetManager.registerLocator(null, ClasspathLocator.class);
         /*
-         * Create a CollisionShape for each vehicle chassis.
+         * Create collision shapes for vehicle chassis.
          */
+        createBikeChassisShapes("classic_motorcycle", "chassis");
         createChassisShape("GT", "scene.gltf");
         createChassisShape("Tank", "chassis");
         createChassisShape("ford_ranger", "pickup");
@@ -98,6 +100,30 @@ public class CreateShapes {
     }
     // *************************************************************************
     // private methods
+
+    /**
+     * Create collision shapes for an articulated vehicle where the engine and
+     * the steering are in separate physics bodies.
+     *
+     * @param folderName the name of the folder containing the C-G model
+     * @param cgmBaseFileName the base filename of the C-G model
+     */
+    private static void createBikeChassisShapes(String folderName,
+            String cgmBaseFileName) {
+        assetManager.clearCache(); // to reclaim direct buffer memory
+
+        String cgmAssetPath = String.format("/Models/%s/%s.j3o", folderName,
+                cgmBaseFileName);
+        Node cgmRoot = (Node) assetManager.loadModel(cgmAssetPath);
+
+        String description = folderName + " engine body";
+        Spatial subtree = cgmRoot.getChild("engine subtree");
+        createDynamicShape(description, subtree, folderName, "engine.j3o");
+
+        description = folderName + " steering body";
+        subtree = cgmRoot.getChild("steering subtree");
+        createDynamicShape(description, subtree, folderName, "steering.j3o");
+    }
 
     /**
      * Create a CollisionShape for a single-body vehicle chassis.
