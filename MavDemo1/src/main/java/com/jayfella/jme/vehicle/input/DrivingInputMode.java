@@ -20,7 +20,6 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.VehicleControl;
-import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.simsilica.lemur.input.FunctionId;
@@ -249,23 +248,18 @@ public class DrivingInputMode extends InputMode {
     private void resetVehicle() {
         Vehicle vehicle = MavDemo1.getVehicle();
         VehicleControl control = vehicle.getVehicleControl();
+
         float[] angles = new float[3];
         control.getPhysicsRotation().toAngles(angles);
-
-        Quaternion newRotation = new Quaternion();
-        newRotation.fromAngles(0f, angles[1], 0f);
-        control.setPhysicsRotation(newRotation);
-
-        control.setAngularVelocity(Vector3f.ZERO);
-        control.setLinearVelocity(Vector3f.ZERO);
-
         Vector3f location = control.getPhysicsLocation();
         PhysicsSpace space = (PhysicsSpace) control.getCollisionSpace();
+
         control.setPhysicsSpace(null);
+        vehicle.warpAllBodies(location, angles[1]);
         if (space.contactTest(control, null) > 0) {
             Vector3f newLocation = location.add(0f, 1f, 0f);
             for (int iteration = 0; iteration < 9; ++iteration) {
-                control.setPhysicsLocation(newLocation);
+                vehicle.warpAllBodies(newLocation, angles[1]);
                 if (space.contactTest(control, null) == 0) {
                     break;
                 }

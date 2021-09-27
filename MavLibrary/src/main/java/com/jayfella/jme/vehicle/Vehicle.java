@@ -25,6 +25,7 @@ import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.math.FastMath;
 import com.jme3.math.Matrix3f;
 import com.jme3.math.Quaternion;
+import com.jme3.math.Transform;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
@@ -742,6 +743,23 @@ abstract public class Vehicle
         Quaternion orient = new Quaternion().fromAngles(0f, yRotation, 0f);
         engineBody.setPhysicsRotation(orient);
 
+        engineBody.setAngularVelocity(Vector3f.ZERO);
+        engineBody.setLinearVelocity(Vector3f.ZERO);
+    }
+
+    /**
+     * Warp this vehicle to the specified position.
+     *
+     * @param engineLocation the desired location of the Engine (in world
+     * coordinates, not null)
+     * @param yRotation the desired Y rotation angle (in radians, measured
+     * counter-clockwise from world +Z as seen from above)
+     */
+    public void warpAllBodies(Vector3f engineLocation, float yRotation) {
+        Transform engineToWorld = new Transform(engineLocation);
+        engineToWorld.getRotation().fromAngles(0f, yRotation, 0f);
+
+        engineBody.setPhysicsTransform(engineToWorld);
         engineBody.setAngularVelocity(Vector3f.ZERO);
         engineBody.setLinearVelocity(Vector3f.ZERO);
     }
