@@ -95,6 +95,11 @@ abstract public class Vehicle
      */
     private float chassisDamping;
     /**
+     * ratio of the steeringWheelAngle to the turn angle of any wheels used for
+     * steering
+     */
+    private float steeringRatio = 2f;
+    /**
      * rotation of the steering wheel (in radians, negative&rarr;left,
      * 0&rarr;neutral, positive&rarr;right)
      */
@@ -700,8 +705,14 @@ abstract public class Vehicle
         }
     }
 
+    /**
+     * Update the "steer" control signal, which controls both the orientation of
+     * the steering wheel (or handlebars) and any wheels used for steering.
+     *
+     * @param wheelAngle
+     */
     public void steer(float wheelAngle) {
-        steeringWheelAngle = 2f * wheelAngle;
+        steeringWheelAngle = steeringRatio * wheelAngle;
 
         for (Wheel wheel : wheels) {
             wheel.steer(wheelAngle);
@@ -971,6 +982,16 @@ abstract public class Vehicle
         if (sound != null) {
             sound.attachTo(node);
         }
+    }
+
+    /**
+     * Alter the ratio of the steeringWheelAngle to the turn angle of any wheels
+     * used for steering.
+     *
+     * @param ratio the desired ratio (default=2)
+     */
+    protected void setSteeringRatio(float ratio) {
+        this.steeringRatio = ratio;
     }
     // *************************************************************************
     // HasNode methods
