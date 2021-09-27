@@ -20,6 +20,7 @@ import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.joints.Constraint;
 import com.jme3.bullet.joints.PhysicsJoint;
 import com.jme3.bullet.objects.PhysicsBody;
+import com.jme3.bullet.objects.PhysicsRigidBody;
 import com.jme3.bullet.objects.PhysicsVehicle;
 import com.jme3.bullet.objects.VehicleWheel;
 import com.jme3.bullet.objects.infos.RigidBodyMotionState;
@@ -46,7 +47,8 @@ import jme3utilities.math.MyVector3f;
 
 /**
  * A vehicle based on Bullet's btRaycastVehicle, with a single Engine and a
- * single GearBox.
+ * single GearBox. In order to simulate articulated vehicles such as motorcycles
+ * and semi-trailer trucks, a Vehicle may contain multiple physics bodies.
  *
  * Derived from the Car and Vehicle classes in the Advanced Vehicles project.
  */
@@ -94,6 +96,11 @@ abstract public class Vehicle
      * linear damping due to air resistance on the chassis (&ge;0, &lt;1)
      */
     private float chassisDamping;
+    /**
+     * the fraction of the total mass in each body (each element &ge;0, &le;1)
+     * or null if not determined yet
+     */
+    private float[] massFractions = null;
     /**
      * ratio of the steeringWheelAngle to the turn angle of any wheels used for
      * steering
@@ -145,6 +152,11 @@ abstract public class Vehicle
      * visualize tire smoke
      */
     private TireSmokeEmitter smokeEmitter;
+    /**
+     * default transform of each body relative to the engine body, or null if
+     * transforms have not yet been determined
+     */
+    private Transform[] relativeTransforms = null;
     /**
      * simulate vehicle sounds
      */
@@ -235,7 +247,18 @@ abstract public class Vehicle
         enable();
 
         PhysicsSpace physicsSpace = world.getPhysicsSpace();
-        engineBody.setPhysicsSpace(physicsSpace);
+        VehicleControl[] bodies = listBodies();
+        for (VehicleControl body : bodies) {
+            body.setPhysicsSpace(physicsSpace);
+        }
+
+        if (isArticulated()) {
+            Iterable<PhysicsJoint> joints = listInternalJoints(bodies);
+            for (PhysicsJoint joint : joints) {
+                physicsSpace.addJoint(joint);
+            }
+        }
+
         physicsSpace.addTickListener(this);
     }
 
@@ -532,7 +555,19 @@ abstract public class Vehicle
 
         PhysicsSpace physicsSpace = world.getPhysicsSpace();
         physicsSpace.removeTickListener(this);
-        engineBody.setPhysicsSpace(null);
+
+        VehicleControl[] bodies = listBodies();
+        if (isArticulated()) {
+            Iterable<PhysicsJoint> joints = listInternalJoints(bodies);
+            for (PhysicsJoint joint : joints) {
+                physicsSpace.removeJoint(joint);
+            }
+        }
+
+        for (VehicleControl body : bodies) {
+            body.setPhysicsSpace(null);
+        }
+
         node.removeFromParent();
         world = null;
     }
@@ -610,7 +645,23 @@ abstract public class Vehicle
      */
     public void setMass(float mass) {
         Validate.positive(mass, "mass");
-        engineBody.setMass(mass);
+
+        if (isArticulated()) {
+            VehicleControl[] bodies = listBodies();
+            if (massFractions == null) {
+                updateMassFractions(bodies);
+            }
+            int numBodies = bodies.length;
+            assert massFractions.length == numBodies;
+
+            for (int bodyIndex = 0; bodyIndex < numBodies; ++bodyIndex) {
+                float massFraction = massFractions[bodyIndex];
+                float bodyMass = massFraction * mass;
+                engineBody.setMass(bodyMass);
+            }
+        } else {
+            engineBody.setMass(mass);
+        }
     }
 
     /**
@@ -739,7 +790,7 @@ abstract public class Vehicle
         float closestFraction = 9f;
         for (PhysicsRayTestResult hit : rayTest) {
             PhysicsCollisionObject hitPco = hit.getCollisionObject();
-            if (hitPco != engineBody) {
+            if (!containsPco(hitPco)) {
                 float hitFraction = hit.getHitFraction();
                 if (hitFraction < closestFraction) {
                     closestFraction = hitFraction;
@@ -770,14 +821,8 @@ abstract public class Vehicle
         if (yOffset < minYOffset) {
             yOffset = minYOffset;
         }
-        Vector3f startLocation = contactLocation.add(0f, yOffset, 0f);
-        engineBody.setPhysicsLocation(startLocation);
-
-        Quaternion orient = new Quaternion().fromAngles(0f, yRotation, 0f);
-        engineBody.setPhysicsRotation(orient);
-
-        engineBody.setAngularVelocity(Vector3f.ZERO);
-        engineBody.setLinearVelocity(Vector3f.ZERO);
+        Vector3f engineLocation = contactLocation.add(0f, yOffset, 0f);
+        warpAllBodies(engineLocation, yRotation);
     }
 
     /**
@@ -792,9 +837,18 @@ abstract public class Vehicle
         Transform engineToWorld = new Transform(engineLocation);
         engineToWorld.getRotation().fromAngles(0f, yRotation, 0f);
 
-        engineBody.setPhysicsTransform(engineToWorld);
-        engineBody.setAngularVelocity(Vector3f.ZERO);
-        engineBody.setLinearVelocity(Vector3f.ZERO);
+        PhysicsRigidBody[] bodies = listBodies();
+        int numBodies = bodies.length;
+        for (int bodyIndex = 0; bodyIndex < numBodies; ++bodyIndex) {
+            Transform bodyToEngine = relativeTransforms[bodyIndex];
+            Transform bodyToWorld
+                    = bodyToEngine.clone().combineWithParent(engineToWorld);
+
+            PhysicsRigidBody body = bodies[bodyIndex];
+            body.setPhysicsTransform(bodyToWorld);
+            body.setAngularVelocity(Vector3f.ZERO);
+            body.setLinearVelocity(Vector3f.ZERO);
+        }
     }
 
     /**
@@ -887,11 +941,50 @@ abstract public class Vehicle
      * Should be invoked last, after all parts have been configured and added.
      */
     protected void build() {
+        updateRelativeTransforms();
+
         gearboxState = new AutomaticGearboxState(this);
         skidmarks = new SkidMarksState(this);
         smokeEmitter = new TireSmokeEmitter(this);
         vehicleAudioState = new VehicleAudioState(this);
         wheelSpinState = new WheelSpinState(this);
+    }
+
+    /**
+     * Test whether this Vehicle contains the specified collision object.
+     *
+     * @param collisionObject the object to search for (not null)
+     * @return true if found, otherwise false
+     */
+    protected boolean containsPco(PhysicsCollisionObject collisionObject) {
+        Validate.nonNull(collisionObject, "collision object");
+
+        if (collisionObject == engineBody) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Test whether this Vehicle contains multiple physics bodies.
+     *
+     * @return true if multiple bodies, otherwise false
+     */
+    protected boolean isArticulated() {
+        return false;
+    }
+
+    /**
+     * Enumerate all physics bodies in this Vehicle.
+     *
+     * @return a new array of pre-existing instances with no duplicates
+     */
+    protected VehicleControl[] listBodies() {
+        VehicleControl[] result = new VehicleControl[1];
+        result[0] = engineBody;
+
+        return result;
     }
 
     /**
@@ -985,6 +1078,7 @@ abstract public class Vehicle
         this.chassisDamping = damping;
         this.chassis = cgmRoot;
         node.attachChild(cgmRoot);
+        this.massFractions = null;
         /*
          * Create the physics body associated with the Engine.
          */
@@ -1052,6 +1146,33 @@ abstract public class Vehicle
      */
     protected void setSteeringRatio(float ratio) {
         this.steeringRatio = ratio;
+    }
+
+    /**
+     * Update the mass fractions.
+     *
+     * @param bodies the array of bodies (not null, unaffected)
+     * @return the total mass (&gt;0)
+     */
+    protected float updateMassFractions(VehicleControl[] bodies) {
+        float totalMass = 0f;
+        for (VehicleControl body : bodies) {
+            float mass = body.getMass();
+            totalMass += mass;
+        }
+        assert totalMass > 0f : totalMass;
+
+        int numBodies = bodies.length;
+        massFractions = new float[numBodies];
+        for (int bodyIndex = 0; bodyIndex < numBodies; ++bodyIndex) {
+            VehicleControl body = bodies[bodyIndex];
+            float mass = body.getMass();
+            float fraction = mass / totalMass;
+            assert fraction >= 0f && fraction <= 1f : fraction;
+            massFractions[bodyIndex] = fraction;
+        }
+
+        return totalMass;
     }
     // *************************************************************************
     // HasNode methods
@@ -1226,5 +1347,21 @@ abstract public class Vehicle
         stateManager.attach(smokeEmitter);
         stateManager.attach(vehicleAudioState);
         stateManager.attach(wheelSpinState);
+    }
+
+    private void updateRelativeTransforms() {
+        VehicleControl[] bodies = listBodies();
+        int numBodies = bodies.length;
+        relativeTransforms = new Transform[numBodies];
+
+        Transform e2r = engineBody.getSpatial().getWorldTransform(); // alias
+        Transform rootToEngine = e2r.invert();
+        for (int bodyIndex = 0; bodyIndex < numBodies; ++bodyIndex) {
+            VehicleControl body = bodies[bodyIndex];
+            Transform b2r = body.getSpatial().getWorldTransform(); // alias
+            Transform bodyToEngine
+                    = b2r.clone().combineWithParent(rootToEngine);
+            relativeTransforms[bodyIndex] = bodyToEngine;
+        }
     }
 }
