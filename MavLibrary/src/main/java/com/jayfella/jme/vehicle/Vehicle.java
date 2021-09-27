@@ -530,7 +530,7 @@ abstract public class Vehicle
     public void removeFromWorld() {
         disable();
 
-        PhysicsSpace physicsSpace = engineBody.getPhysicsSpace();
+        PhysicsSpace physicsSpace = world.getPhysicsSpace();
         physicsSpace.removeTickListener(this);
         engineBody.setPhysicsSpace(null);
         node.removeFromParent();
