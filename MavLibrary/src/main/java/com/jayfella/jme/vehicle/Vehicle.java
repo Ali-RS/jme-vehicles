@@ -926,9 +926,36 @@ abstract public class Vehicle
         Validate.positive(mass, "mass");
         Validate.fraction(damping, "damping");
 
+        setChassis(cgmRoot, shape, mass, damping, node);
+    }
+
+    /**
+     * Configure a single-body "chassis". (Bullet refers to everything except
+     * the wheels as the "chassis".)
+     *
+     * @param cgmRoot the root of the C-G model to visualize the chassis (not
+     * null, alias created)
+     * @param shape the shape for the chassis (not null, alias created)
+     * @param mass the mass of the chassis (in kilos, &gt;0)
+     * @param damping the drag on the chassis due to air resistance (&ge;0,
+     * &lt;1)
+     * @param controlledSpatial the Spatial to which the physics control should
+     * be added (not null)
+     */
+    protected void setChassis(Spatial cgmRoot, CollisionShape shape,
+            float mass, float damping, Spatial controlledSpatial) {
+        Validate.nonNull(cgmRoot, "C-G model root");
+        Validate.nonNull(shape, "shape");
+        Validate.positive(mass, "mass");
+        Validate.fraction(damping, "damping");
+        Validate.nonNull(controlledSpatial, "controlled spatial");
+
         this.chassisDamping = damping;
         this.chassis = cgmRoot;
-
+        node.attachChild(cgmRoot);
+        /*
+         * Create the physics body associated with the Engine.
+         */
         engineBody = new VehicleControl(shape, mass);
         engineBody.setApplicationData(this);
         /*
@@ -943,8 +970,7 @@ abstract public class Vehicle
         engineBody.setCcdMotionThreshold(radius);
         engineBody.setCcdSweptSphereRadius(radius);
 
-        node.addControl(engineBody);
-        node.attachChild(chassis);
+        controlledSpatial.addControl(engineBody);
     }
 
     /**
