@@ -91,7 +91,7 @@ abstract public class Vehicle
      */
     private float accelerateSignal;
     /**
-     * linear damping to due air resistance on the chassis (&ge;0, &lt;1)
+     * linear damping due to air resistance on the chassis (&ge;0, &lt;1)
      */
     private float chassisDamping;
     /**
@@ -100,8 +100,8 @@ abstract public class Vehicle
      */
     private float steeringRatio = 2f;
     /**
-     * rotation of the steering wheel (in radians, negative&rarr;left,
-     * 0&rarr;neutral, positive&rarr;right)
+     * rotation of the steering wheel, handlebars, or tiller (in radians,
+     * negative&rarr;left, 0&rarr;neutral, positive&rarr;right)
      */
     private float steeringWheelAngle;
     /**
@@ -187,7 +187,7 @@ abstract public class Vehicle
     }
 
     /**
-     * Add this Vehicle to the specified world.
+     * Add this Vehicle to the specified world at the world's default location.
      *
      * @param world where to add (not null, alias created)
      * @param globalAudio the global audio controls (not null, alias created)
@@ -240,7 +240,8 @@ abstract public class Vehicle
     }
 
     /**
-     * Add a single Wheel to this Vehicle. TODO protect method
+     * Add a single Wheel to the body associated with the Engine. TODO protect
+     * method
      *
      * @param wheelModel the desired WheelModel (not null)
      * @param connectionLocation the location where the suspension connects to
@@ -398,7 +399,7 @@ abstract public class Vehicle
     }
 
     /**
-     * Access the PhysicsControl.
+     * Access the physics body associated with the Engine.
      *
      * @return the pre-existing instance
      */
@@ -614,7 +615,7 @@ abstract public class Vehicle
     }
 
     /**
-     * Alter the mass of the Vehicle.
+     * Alter the mass of the Vehicle proportionally.
      *
      * @param mass the desired total mass (in kilograms, &gt;0)
      */
@@ -726,11 +727,11 @@ abstract public class Vehicle
     }
 
     /**
-     * Warp this vehicle to the specified position.
+     * Warp this vehicle to the specified drop location.
      *
      * @param dropLocation the drop location (in physics-space coordinates, not
      * null)
-     * @param yRotation the Y rotation angle (in radians, measured
+     * @param yRotation the desired Y rotation angle (in radians, measured
      * counter-clockwise from world +Z as seen from above)
      */
     public void warp(Vector3f dropLocation, float yRotation) {
@@ -743,8 +744,8 @@ abstract public class Vehicle
         List<PhysicsRayTestResult> rayTest
                 = physicsSpace.rayTestRaw(dropLocation, endLocation);
         /*
-         * Find the closest contact with another collision object,
-         * typically the pavement.
+         * Find the closest contact with an external collision object,
+         * typically the ground or pavement.
          */
         float closestFraction = 9f;
         for (PhysicsRayTestResult hit : rayTest) {
@@ -775,7 +776,7 @@ abstract public class Vehicle
         float yOffset
                 = w0.getRadius() + suspensionLength - w0.getLocation(null).y;
         /*
-         * Calculate and apply an appropriate start location.
+         * Calculate and apply an appropriate engine location.
          */
         if (yOffset < minYOffset) {
             yOffset = minYOffset;
@@ -870,8 +871,9 @@ abstract public class Vehicle
     abstract protected void locateTarget(Vector3f storeResult);
 
     /**
-     * Configure a "chassis" that's loaded from J3O assets in the usual folders.
-     * (Bullet refers to everything except the wheels as the "chassis".)
+     * Configure a single-body "chassis" that's loaded from J3O assets in the
+     * customary folders. (Bullet refers to everything except the wheels as the
+     * "chassis".)
      *
      * @param folderName the name of the folder containing the C-G model asset
      * (not null, not empty)
@@ -907,8 +909,8 @@ abstract public class Vehicle
     }
 
     /**
-     * Configure the "chassis". (Bullet refers to everything except the wheels
-     * as the "chassis".)
+     * Configure a single-body "chassis". (Bullet refers to everything except
+     * the wheels as the "chassis".)
      *
      * @param cgmRoot the root of the C-G model to visualize the chassis (not
      * null, alias created)
@@ -930,7 +932,7 @@ abstract public class Vehicle
         engineBody = new VehicleControl(shape, mass);
         engineBody.setApplicationData(this);
         /*
-         * Configure damping for the chassis,
+         * Configure damping for the engine body,
          * to simulate drag due to air resistance.
          */
         engineBody.setLinearDamping(damping);
