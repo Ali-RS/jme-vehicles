@@ -257,26 +257,15 @@ abstract public class Vehicle
             boolean isSteering, boolean isSteeringFlipped,
             float mainBrakePeakForce, float parkingBrakePeakForce,
             float extraDamping) {
-        Node wheelNode = wheelModel.getWheelNode();
-        Vector3f suspensionDirection = new Vector3f(0f, -1f, 0f);
-        Vector3f axleDirection = new Vector3f(-1f, 0f, 0f);
-        float restLength = 0.2f;
-        float radius = wheelModel.radius();
-        VehicleWheel vehicleWheel = engineBody.addWheel(wheelNode,
-                connectionLocation, suspensionDirection, axleDirection,
-                restLength, radius, isSteering);
+        Validate.nonNull(wheelModel, "wheel model");
+        Validate.finite(connectionLocation, "connection location");
+        Validate.nonNegative(mainBrakePeakForce, "main brake peak force");
+        Validate.nonNegative(parkingBrakePeakForce, "parking brake peak force");
+        Validate.fraction(extraDamping, "extra damping");
 
-        int wheelIndex = wheels.size();
-        Suspension suspension = new Suspension(vehicleWheel);
-        Brake mainBrake = new Brake(mainBrakePeakForce);
-        Brake parkingBrake = new Brake(parkingBrakePeakForce);
-        Wheel result = new Wheel(this, wheelIndex, isSteering,
-                isSteeringFlipped, suspension, mainBrake, parkingBrake,
-                extraDamping);
-        wheels.add(result);
-
-        getNode().attachChild(wheelNode);
-
+        Wheel result = addWheel(wheelModel, engineBody, connectionLocation,
+                isSteering, isSteeringFlipped, mainBrakePeakForce,
+                parkingBrakePeakForce, extraDamping);
         return result;
     }
 
@@ -849,6 +838,49 @@ abstract public class Vehicle
         assert composers.size() == 1;
         AnimComposer composer = composers.get(0);
         composer.setCurrentAction(clipName);
+    }
+
+    /**
+     * Add a single Wheel to the specified body.
+     *
+     * @param wheelModel the desired WheelModel (not null)
+     * @param body the physics body to which the Wheel will be added (not null,
+     * alias created)
+     * @param connectionLocation the location where the suspension connects to
+     * the chassis (in chassis coordinates, not null, unaffected)
+     * @param isSteering true if used for steering, otherwise false
+     * @param isSteeringFlipped true for rear-wheel steering, otherwise false
+     * @param mainBrakePeakForce (in Newtons, &ge;0)
+     * @param parkingBrakePeakForce (in Newtons, &ge;0)
+     * @param extraDamping (&ge;0, &lt;1)
+     * @return the new Wheel
+     */
+    protected Wheel addWheel(WheelModel wheelModel, VehicleControl body,
+            Vector3f connectionLocation,
+            boolean isSteering, boolean isSteeringFlipped,
+            float mainBrakePeakForce, float parkingBrakePeakForce,
+            float extraDamping) {
+        Node wheelNode = wheelModel.getWheelNode();
+        Vector3f suspensionDirection = new Vector3f(0f, -1f, 0f);
+        Vector3f axleDirection = new Vector3f(-1f, 0f, 0f);
+        float restLength = 0.2f;
+        float radius = wheelModel.radius();
+        int wheelIndex = body.getNumWheels();
+        VehicleWheel vehicleWheel = body.addWheel(wheelNode,
+                connectionLocation, suspensionDirection, axleDirection,
+                restLength, radius, isSteering);
+
+        Suspension suspension = new Suspension(vehicleWheel);
+        Brake mainBrake = new Brake(mainBrakePeakForce);
+        Brake parkingBrake = new Brake(parkingBrakePeakForce);
+        Wheel result = new Wheel(this, body, wheelIndex, isSteering,
+                isSteeringFlipped, suspension, mainBrake, parkingBrake,
+                extraDamping);
+        wheels.add(result);
+
+        getNode().attachChild(wheelNode);
+
+        return result;
     }
 
     /**
