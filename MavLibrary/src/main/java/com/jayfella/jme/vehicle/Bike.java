@@ -110,16 +110,10 @@ abstract public class Bike extends Vehicle {
         Validate.positive(engineMass, "engine mass");
         Validate.positive(steeringMass, "steering mass");
         Validate.fraction(damping, "damping");
-
-        setChassis(cgmRoot, engineShape, engineMass, damping);
         /*
-         * Relocate the engine body to the appropriate subtree.
+         * Configure the physics body associated with the Engine.
          */
-        VehicleControl engineBody = getVehicleControl();
-        Node node = getNode();
-        boolean success = node.removeControl(engineBody);
-        assert success;
-        engineSubtree.addControl(engineBody);
+        setChassis(cgmRoot, engineShape, engineMass, damping, engineSubtree);
         /*
          * Create the physics body associated with steering.
          */
@@ -137,6 +131,7 @@ abstract public class Bike extends Vehicle {
          * Determine the default location and orientation of the steering body
          * and engine body.
          */
+        VehicleControl engineBody = getVehicleControl();
         Vector3f location = engineSubtree.getWorldTranslation();
         Quaternion orientation = engineSubtree.getWorldRotation();
         engineBody.setPhysicsLocation(location);
