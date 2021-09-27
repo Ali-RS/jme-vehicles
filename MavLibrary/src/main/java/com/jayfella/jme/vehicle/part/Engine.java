@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle.part;
 
+import com.jayfella.jme.vehicle.HasNode;
 import com.jayfella.jme.vehicle.Sound;
 import com.jme3.math.FastMath;
 import com.jme3.math.Spline;
@@ -8,7 +9,6 @@ import com.jme3.scene.Node;
 import java.util.List;
 import java.util.logging.Logger;
 import jme3utilities.Validate;
-import com.jayfella.jme.vehicle.HasNode;
 
 /**
  * An engine to propel a Vehicle.
