@@ -18,6 +18,8 @@ import com.jme3.bullet.collision.PhysicsRayTestResult;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.joints.Constraint;
+import com.jme3.bullet.joints.PhysicsJoint;
+import com.jme3.bullet.objects.PhysicsBody;
 import com.jme3.bullet.objects.PhysicsVehicle;
 import com.jme3.bullet.objects.VehicleWheel;
 import com.jme3.bullet.objects.infos.RigidBodyMotionState;
@@ -34,6 +36,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Logger;
 import jme3utilities.Loadable;
 import jme3utilities.MySpatial;
@@ -456,6 +460,34 @@ abstract public class Vehicle
         int numWheels = countWheels();
         Wheel[] result = new Wheel[numWheels];
         wheels.toArray(result);
+
+        return result;
+    }
+
+    /**
+     * Enumerate all physics joints that connect bodies in the specified array.
+     * TODO use the Minie library
+     *
+     * @param bodies the array to search (not null, unaffected)
+     * @return a new Set of pre-existing instances
+     */
+    public static Set<PhysicsJoint> listInternalJoints(PhysicsBody... bodies) {
+        Set<PhysicsJoint> result = new TreeSet<>();
+
+        for (PhysicsBody body : bodies) {
+            PhysicsJoint[] joints = body.listJoints();
+            for (PhysicsJoint joint : joints) {
+                PhysicsBody otherBody = joint.findOtherBody(body);
+
+                // Is otherBody found in the array?
+                for (Object b : bodies) {
+                    if (b == otherBody) {
+                        result.add(joint);
+                        break;
+                    }
+                }
+            }
+        }
 
         return result;
     }
