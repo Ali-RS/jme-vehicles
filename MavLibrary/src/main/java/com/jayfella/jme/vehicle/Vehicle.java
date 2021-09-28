@@ -740,6 +740,9 @@ abstract public class Vehicle
         stateManager.attach(skidmarks);
     }
 
+    /**
+     * If the Engine is not running, start it.
+     */
     public void startEngine() {
         if (!engine.isRunning()) {
             engine.setRunning(true);
@@ -750,7 +753,7 @@ abstract public class Vehicle
      * Update the "steer" control signal, which controls both the orientation of
      * the steering wheel (or handlebars) and any wheels used for steering.
      *
-     * @param wheelAngle
+     * @param wheelAngle the desired angle (in radians)
      */
     public void steer(float wheelAngle) {
         steeringWheelAngle = steeringRatio * wheelAngle;
@@ -760,6 +763,9 @@ abstract public class Vehicle
         }
     }
 
+    /**
+     * If the Engine is running, stop it.
+     */
     public void stopEngine() {
         if (engine.isRunning()) {
             engine.setRunning(false);
