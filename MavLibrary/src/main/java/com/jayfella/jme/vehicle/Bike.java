@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 import jme3utilities.Validate;
 
 /**
- * A vehicle with a steering body separate from the engine body.
+ * A Vehicle that has a steering body distinct from the engine body.
  */
 abstract public class Bike extends Vehicle {
     // *************************************************************************
@@ -78,7 +78,7 @@ abstract public class Bike extends Vehicle {
 
     /**
      * Configure the "chassis" for an articulated vehicle where the engine and
-     * the steering are in separate physics bodies. (Bullet refers to everything
+     * the steering are in distinct physics bodies. (Bullet refers to everything
      * except the wheels as the "chassis".)
      *
      * @param cgmRoot the root of the C-G model to visualize the chassis (not
