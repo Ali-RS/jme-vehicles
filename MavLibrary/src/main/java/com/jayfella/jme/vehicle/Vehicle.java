@@ -24,6 +24,7 @@ import com.jme3.bullet.objects.PhysicsRigidBody;
 import com.jme3.bullet.objects.PhysicsVehicle;
 import com.jme3.bullet.objects.VehicleWheel;
 import com.jme3.bullet.objects.infos.RigidBodyMotionState;
+import com.jme3.bullet.objects.infos.VehicleController;
 import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.math.FastMath;
 import com.jme3.math.Matrix3f;
@@ -245,11 +246,27 @@ abstract public class Vehicle
         getNode().setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         vehicleAudioState.setGlobalAudio(globalAudio);
         enable();
-
+        /*
+         * Add each body to the PhysicsSpace, aligning its vehicle coordinate
+         * system with that of the engine body.
+         */
         PhysicsSpace physicsSpace = world.getPhysicsSpace();
         VehicleControl[] bodies = listBodies();
-        for (VehicleControl body : bodies) {
+        int numBodies = bodies.length;
+        for (int bodyIndex = 0; bodyIndex < numBodies; ++bodyIndex) {
+            VehicleControl body = bodies[bodyIndex];
             body.setPhysicsSpace(physicsSpace);
+
+            VehicleController controller = body.getController();
+            Quaternion b2e = relativeTransforms[bodyIndex].getRotation(); // alias
+            Quaternion e2b = b2e.inverse();
+            Vector3f right = new Vector3f(1f, 0f, 0f);
+            e2b.mult(right, right);
+            Vector3f up = new Vector3f(0f, 1f, 0f);
+            e2b.mult(up, up);
+            Vector3f forward = new Vector3f(0f, 0f, 1f);
+            e2b.mult(forward, forward);
+            controller.setCoordinateSystem(right, up, forward);
         }
 
         if (isArticulated()) {
