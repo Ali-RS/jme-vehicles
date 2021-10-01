@@ -1,4 +1,4 @@
-// Gradle settings and tasks common to all subprojects
+// Gradle settings and tasks common to all jme-vehicles subprojects
 
 apply plugin: 'java'
 
@@ -29,13 +29,13 @@ ext {
     jmeTtfVersion = '2.2.4'
     jmonkeyengineVersion = '3.4.0-stable'
     maVehiclesVersion = '0.6.3-SNAPSHOT'
-    minieVersion = '4.3.0+big3'
+    minieVersion = '4.4.0+big3'
 }
 
 repositories {
     //mavenLocal()
     mavenCentral()
-    maven { url 'https://jcenter.bintray.com/' } // for Lemur
+    maven { url 'https://jcenter.bintray.com/' } // for Lemur and SimMath
 }
 
 // custom tasks for creating source/javadoc JARs
