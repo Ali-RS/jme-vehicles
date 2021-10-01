@@ -2,7 +2,6 @@ package com.jayfella.jme.vehicle.view;
 
 import com.github.stephengold.garrett.OrbitCamera;
 import com.github.stephengold.garrett.Target;
-import com.jayfella.jme.vehicle.NegativeAppDataFilter;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.lemurdemo.MavDemo1;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
@@ -11,6 +10,7 @@ import com.jme3.bullet.debug.BulletDebugAppState;
 import com.jme3.math.Vector3f;
 import java.util.logging.Logger;
 import jme3utilities.Validate;
+import jme3utilities.minie.NegativeAppDataFilter;
 
 /**
  * A CameraController to orbit a target vehicle, jumping forward as needed to
