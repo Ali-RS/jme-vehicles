@@ -18,7 +18,6 @@ import com.jayfella.jme.vehicle.view.DashCamera;
 import com.jayfella.jme.vehicle.view.VehicleCamView;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
-import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.VehicleControl;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
@@ -247,20 +246,19 @@ public class DrivingInputMode extends InputMode {
      */
     private void resetVehicle() {
         Vehicle vehicle = MavDemo1.getVehicle();
-        VehicleControl control = vehicle.getVehicleControl();
+        VehicleControl engineBody = vehicle.getVehicleControl();
 
         float[] angles = new float[3];
-        control.getPhysicsRotation().toAngles(angles);
-        Vector3f location = control.getPhysicsLocation();
-        PhysicsSpace space = (PhysicsSpace) control.getCollisionSpace();
+        engineBody.getPhysicsRotation().toAngles(angles);
+        Vector3f location = engineBody.getPhysicsLocation();
 
-        control.setPhysicsSpace(null);
+        vehicle.removeFromPhysicsSpace();
         vehicle.warpAllBodies(location, angles[1]);
-        if (space.contactTest(control, null) > 0) {
+        if (vehicle.contactTest()) {
             Vector3f newLocation = location.add(0f, 1f, 0f);
             for (int iteration = 0; iteration < 9; ++iteration) {
                 vehicle.warpAllBodies(newLocation, angles[1]);
-                if (space.contactTest(control, null) == 0) {
+                if (vehicle.contactTest()) {
                     break;
                 }
                 Vector3f offset = generator.nextVector3f();
@@ -268,7 +266,7 @@ public class DrivingInputMode extends InputMode {
                 newLocation.addLocal(offset);
             }
         }
-        control.setPhysicsSpace(space);
+        vehicle.addToPhysicsSpace();
     }
 
     private void setCameraControlMode(VehicleCamView controlMode) {
