@@ -19,7 +19,10 @@ import com.jme3.bullet.collision.PhysicsRayTestResult;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.joints.Constraint;
+import com.jme3.bullet.joints.New6Dof;
 import com.jme3.bullet.joints.PhysicsJoint;
+import com.jme3.bullet.joints.motors.MotorParam;
+import com.jme3.bullet.joints.motors.RotationMotor;
 import com.jme3.bullet.objects.PhysicsRigidBody;
 import com.jme3.bullet.objects.PhysicsVehicle;
 import com.jme3.bullet.objects.VehicleWheel;
@@ -198,6 +201,41 @@ abstract public class Vehicle
     }
 
     /**
+     * Add all bodies and internal joints to the world's PhysicsSpace.
+     */
+    public void addToPhysicsSpace() {
+        PhysicsSpace physicsSpace = world.getPhysicsSpace();
+        VehicleControl[] bodies = listBodies();
+
+        int numBodies = bodies.length;
+        for (int bodyIndex = 0; bodyIndex < numBodies; ++bodyIndex) {
+            VehicleControl body = bodies[bodyIndex];
+            body.setPhysicsSpace(physicsSpace);
+            /*
+             * Align the body's vehicle coordinate system
+             * with that of the engine body, which is Y-up and Z-forward.
+             */
+            VehicleController controller = body.getController();
+            Quaternion b2e = relativeTransforms[bodyIndex].getRotation(); // alias
+            Quaternion e2b = b2e.inverse();
+            Vector3f right = new Vector3f(1f, 0f, 0f);
+            e2b.mult(right, right);
+            Vector3f up = new Vector3f(0f, 1f, 0f);
+            e2b.mult(up, up);
+            Vector3f forward = new Vector3f(0f, 0f, 1f);
+            e2b.mult(forward, forward);
+            controller.setCoordinateSystem(right, up, forward);
+        }
+
+        if (isArticulated()) {
+            Iterable<PhysicsJoint> joints = RagUtils.listInternalJoints(bodies);
+            for (PhysicsJoint joint : joints) {
+                physicsSpace.addJoint(joint);
+            }
+        }
+    }
+
+    /**
      * Add this Vehicle to the specified world at the world's default location.
      *
      * @param world where to add (not null, alias created)
@@ -245,35 +283,11 @@ abstract public class Vehicle
         vehicleAudioState.setGlobalAudio(globalAudio);
         enable();
         /*
-         * Add each body to the PhysicsSpace, aligning its vehicle coordinate
-         * system with that of the engine body.
+         * Add bodies and physics joints to the PhysicsSpace.
          */
+        addToPhysicsSpace();
+
         PhysicsSpace physicsSpace = world.getPhysicsSpace();
-        VehicleControl[] bodies = listBodies();
-        int numBodies = bodies.length;
-        for (int bodyIndex = 0; bodyIndex < numBodies; ++bodyIndex) {
-            VehicleControl body = bodies[bodyIndex];
-            body.setPhysicsSpace(physicsSpace);
-
-            VehicleController controller = body.getController();
-            Quaternion b2e = relativeTransforms[bodyIndex].getRotation(); // alias
-            Quaternion e2b = b2e.inverse();
-            Vector3f right = new Vector3f(1f, 0f, 0f);
-            e2b.mult(right, right);
-            Vector3f up = new Vector3f(0f, 1f, 0f);
-            e2b.mult(up, up);
-            Vector3f forward = new Vector3f(0f, 0f, 1f);
-            e2b.mult(forward, forward);
-            controller.setCoordinateSystem(right, up, forward);
-        }
-
-        if (isArticulated()) {
-            Iterable<PhysicsJoint> joints = RagUtils.listInternalJoints(bodies);
-            for (PhysicsJoint joint : joints) {
-                physicsSpace.addJoint(joint);
-            }
-        }
-
         physicsSpace.addTickListener(this);
     }
 
@@ -315,6 +329,23 @@ abstract public class Vehicle
     public float chassisDamping() {
         assert chassisDamping >= 0f && chassisDamping < 1f : chassisDamping;
         return chassisDamping;
+    }
+
+    /**
+     * Perform a yes/no contact test against all physics bodies in this Vehicle.
+     *
+     * @return true if contact, false if no contact
+     */
+    public boolean contactTest() {
+        PhysicsSpace physicsSpace = world.getPhysicsSpace();
+        VehicleControl[] bodies = listBodies();
+        for (VehicleControl body : bodies) {
+            if (physicsSpace.contactTest(body, null) > 0) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -535,14 +566,10 @@ abstract public class Vehicle
     }
 
     /**
-     * Remove this Vehicle from the world to which it was added.
+     * Remove all bodies and internal joints from the world's PhysicsSpace.
      */
-    public void removeFromWorld() {
-        disable();
-
+    public void removeFromPhysicsSpace() {
         PhysicsSpace physicsSpace = world.getPhysicsSpace();
-        physicsSpace.removeTickListener(this);
-
         VehicleControl[] bodies = listBodies();
         if (isArticulated()) {
             Iterable<PhysicsJoint> joints = RagUtils.listInternalJoints(bodies);
@@ -554,7 +581,18 @@ abstract public class Vehicle
         for (VehicleControl body : bodies) {
             body.setPhysicsSpace(null);
         }
+    }
 
+    /**
+     * Remove this Vehicle from the world to which it was added.
+     */
+    public void removeFromWorld() {
+        disable();
+
+        PhysicsSpace physicsSpace = world.getPhysicsSpace();
+        physicsSpace.removeTickListener(this);
+
+        removeFromPhysicsSpace();
         node.removeFromParent();
         world = null;
     }
@@ -841,6 +879,16 @@ abstract public class Vehicle
             body.setPhysicsTransform(bodyToWorld);
             body.setAngularVelocity(Vector3f.ZERO);
             body.setLinearVelocity(Vector3f.ZERO);
+        }
+
+        if (isArticulated()) {
+            Iterable<PhysicsJoint> joints = RagUtils.listInternalJoints(bodies);
+            for (PhysicsJoint joint : joints) {
+                New6Dof sixDof = (New6Dof) joint;
+                RotationMotor motor
+                        = sixDof.getRotationMotor(PhysicsSpace.AXIS_Y);
+                motor.set(MotorParam.ServoTarget, 0f);
+            }
         }
     }
 
