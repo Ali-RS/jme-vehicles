@@ -1,5 +1,31 @@
 # Release log for the MaVehicles library
 
+## Version 0.7.0 released on TBD
+
++ API change: renamed `calcLongtitudeTireForce()` method in `PacejkaTireModel`.
++ Added support for articulated vehicles:  those which include multiple bodies.
++ Added `Bike` subclass of `Vehicle`, for 2-wheeled articulated vehicles,
+  with example asset derived from "Classic Motorcycle" by Hector Mora.
++ Added a subsystem for "props" (non-vehicle rigid bodies) with example assets
+  derived from "Barrier & Traffic Cone Pack" by Sabri Ayeş.
++ Added "passengers" (animated humanoids) to vehicles,
+  with an example asset created using MakeHuman v1.2.0.
++ Added many methods to the `Vehicle` class, including:
+  + `addPassenger()`
+  + `addToPhysicsSpace()`
+  + an `addToWorld()` that specifies position
+  + `contactTest()`
+  + `getMass()`
+  + `isLoaded()`
+  + `removeFromPhysicsSpace()`
+  + `setMass()`
+  + a `setChassis()` that specifies the controlled spatial
+  + `setSteeringRatio()`
+  + `toString()`
+  + a `warp()` that specifies position
+  + `warpAllBodies()`
++ Upgrade Garrett to v0.2.0, Heart to v7.1.0, and Minie to v4.4.0.
+
 ## Version 0.6.2 released on 9 June 2021
 
 Upgrade JME to v3.4.0-stable, Garrett to v0.1.3, Heart to v6.4.4,
