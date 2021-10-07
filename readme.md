@@ -378,6 +378,7 @@ The world (and physics-space) units of distance are *meters*.
 
 ## External links
 
++ October 2021 [Introducing the Classic Motorcycle](https://www.youtube.com/watch?v=byt-a5JN_pA)
 + January 2021 [walkthru video](https://www.youtube.com/watch?v=RnfEhB3xOys)
 + [the More Advanced Vehicles page](https://store.jmonkeyengine.org/2d0fc6de-2e4d-49b1-8372-4f364d79e175)
     at [the JmonkeyStore](https://store.jmonkeyengine.org)
