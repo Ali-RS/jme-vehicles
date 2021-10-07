@@ -60,7 +60,7 @@ abstract public class Prop
      */
     final private float totalMass;
     /**
-     * constraints internal to this Prop
+     * constraints internal to this Prop TODO use RagUtils.listInternalJoints()
      */
     final private List<Constraint> internalConstraints = new ArrayList<>(4);
     /**
