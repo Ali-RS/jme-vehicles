@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle.gui.menu;
 
 import com.jayfella.jme.vehicle.Vehicle;
+import com.jayfella.jme.vehicle.examples.vehicles.ClassicMotorcycle;
 import com.jayfella.jme.vehicle.examples.vehicles.DuneBuggy;
 import com.jayfella.jme.vehicle.examples.vehicles.GTRNismo;
 import com.jayfella.jme.vehicle.examples.vehicles.GrandTourer;
@@ -40,8 +41,10 @@ class VehicleMenu extends AnimatedMenu {
      */
     @Override
     protected List<Button> createItems() {
-        List<Button> result = new ArrayList<>(8);
+        List<Button> result = new ArrayList<>(9);
 
+        addButton(result, "Classic Motorcycle",
+                source -> setVehicle(new ClassicMotorcycle()));
         addButton(result, "Grand Tourer",
                 source -> setVehicle(new GrandTourer()));
         addButton(result, "GTR Nismo",
