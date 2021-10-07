@@ -11,6 +11,7 @@ import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.World;
 import com.jayfella.jme.vehicle.examples.skies.AnimatedNightSky;
 import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
+import com.jayfella.jme.vehicle.examples.vehicles.ClassicMotorcycle;
 import com.jayfella.jme.vehicle.examples.vehicles.DuneBuggy;
 import com.jayfella.jme.vehicle.examples.vehicles.GTRNismo;
 import com.jayfella.jme.vehicle.examples.vehicles.GrandTourer;
@@ -18,8 +19,6 @@ import com.jayfella.jme.vehicle.examples.vehicles.HatchBack;
 import com.jayfella.jme.vehicle.examples.vehicles.HoverTank;
 import com.jayfella.jme.vehicle.examples.vehicles.PickupTruck;
 import com.jayfella.jme.vehicle.examples.vehicles.Rotator;
-import com.jayfella.jme.vehicle.examples.wheels.MotorcycleFrontWheel;
-import com.jayfella.jme.vehicle.examples.wheels.MotorcycleRearWheel;
 import com.jayfella.jme.vehicle.examples.worlds.Mountains;
 import com.jayfella.jme.vehicle.examples.worlds.Playground;
 import com.jayfella.jme.vehicle.examples.worlds.Racetrack;
@@ -87,13 +86,12 @@ public class MavDemo1 extends SimpleApplication {
     private static Loadable[] preloads = new Loadable[]{
         new AnimatedNightSky(),
         new CameraNameState(),
+        new ClassicMotorcycle(),
         new DuneBuggy(),
         new GrandTourer(),
         new GTRNismo(),
         new HatchBack(),
         new HoverTank(),
-        new MotorcycleFrontWheel(1f),
-        new MotorcycleRearWheel(1f),
         new Mountains(),
         new Playground(),
         new PickupTruck(),
