@@ -28,7 +28,7 @@ It contains 4 sub-projects:
 
 ## Important features
 
-+ 4 example worlds, 7 example vehicles, and 4 example skies
++ 4 example worlds, 8 example vehicles, and 4 example skies
 + vehicle customization:
   + engine
   + brakes
@@ -59,7 +59,7 @@ It contains 4 sub-projects:
 ## How to download and run the MavDemo1 application
 
 1. Install [Java], if you don't already have it.
-2. Browse to https://github.com/stephengold/jme-vehicles/releases/tag/project-1.4.0
+2. Browse to https://github.com/stephengold/jme-vehicles/releases/tag/project-1.5.0
 3. Follow the "MavDemo1.zip" link.
 4. Save the ZIP file.
 5. Extract the contents of the saved ZIP file.
@@ -88,7 +88,7 @@ the Main Menu appears in the upper-left corner of the window.
    + using Git:
      + `git clone https://github.com/stephengold/jme-vehicles.git`
      + `cd jme-vehicles`
-     + `git checkout -b latest project-1.4.0`
+     + `git checkout -b latest project-1.5.0`
    + using a web browser:
      + browse to [the latest release][latest]
      + follow the "Source code (zip)" link
@@ -107,8 +107,8 @@ After a successful build,
 Maven artifacts will be found in `MavLibrary/build/libs`.
 To install the Maven artifacts to your local Maven repository:
 
- + using Bash or PowerShell:  `./gradlew :MavLibrary:publishToMavenLocal`
- + using Windows Command Prompt:  `.\gradlew :MavLibrary:publishToMavenLocal`
+ + using Bash or PowerShell:  `./gradlew install`
+ + using Windows Command Prompt:  `.\gradlew install`
 
 To run the MavDemo1 application:
 
@@ -201,10 +201,11 @@ Add to the project’s "build.gradle" file:
 
     repositories {
         mavenCentral()
+        maven { url 'https://jcenter.bintray.com' } // for SimMath
     }
     dependencies {
-        implementation 'com.github.stephengold:MaVehicles:0.6.2'
-        implementation 'com.github.stephengold:Minie:4.2.0'
+        implementation 'com.github.stephengold:MaVehicles:0.7.0'
+        implementation 'com.github.stephengold:Minie:4.4.0'
     }
 
 #### Maven-built projects
@@ -216,18 +217,23 @@ Add to the project’s "pom.xml" file:
         <id>mvnrepository</id>
         <url>https://repo1.maven.org/maven2/</url>
       </repository>
+      <repository>
+        <id>jcenter</id>
+        <name>jcenter</name>
+        <url>https://jcenter.bintray.com</url>
+      </repository>
     </repositories>
 
     <dependency>
       <groupId>com.github.stephengold</groupId>
       <artifactId>MaVehicles</artifactId>
-      <version>0.6.2</version>
+      <version>0.7.0</version>
     </dependency>
 
     <dependency>
       <groupId>com.github.stephengold</groupId>
       <artifactId>Minie</artifactId>
-      <version>4.2.0</version>
+      <version>4.4.0</version>
     </dependency>
 
 [Jump to table of contents](#toc)
@@ -245,15 +251,14 @@ More Advanced Vehicles is a work in progress.  Some ideas for future development
   + Skies, such as TehLeo's SevenSky
   + User interface, such as: joystick and NiftyGUI
   + Vehicle dynamics, such as that used in Murph9's RallyGame
-  + Vehicle types, such as: buses, tanks, golf carts, motorcycles,
+  + Vehicle types, such as: buses, tanks, golf carts,
     rolling chairs, tractors, rail locomotives, palanquins, rickshaws,
     aerial trams, bulldozers, snowmobiles, snowplows, speedboats, airplanes,
     boats, and helicopters
   + Viewpoints, such as: FlyCam, front view, side view, and plan view
 + More obstacles:
-  + Other vehicles (parked or AI-controlled)
+  + AI-controlled vehicles
   + Animated non-vehicles, such as: gates, drawbridges, deer, and pedestrians
-  + Passive non-vehicles, such as: traffic cones, portable barricades, and loose tires
 + More vehicle equipment:
   + Anti-lock braking
   + Artificial horizon
@@ -270,7 +275,7 @@ More Advanced Vehicles is a work in progress.  Some ideas for future development
   + Odometer
   + Oil-temperature gauge
   + Operable doors, hood, and trunk
-  + Passengers, cargo, and visible driver
+  + Passengers and cargo
   + Sirens
   + Speed limiter
   + Starter motor
@@ -456,7 +461,7 @@ correct the situation: sgold@sonic.net
 [jfrog]: https://www.jfrog.com "JFrog"
 [java]: https://java.com "Java"
 [jme]: http://jmonkeyengine.org  "jMonkeyEngine Project"
-[latest]: https://github.com/stephengold/jme-vehicles/releases/tag/project-1.4.0 "latest release"
+[latest]: https://github.com/stephengold/jme-vehicles/releases/tag/project-1.5.0 "latest release"
 [lemur]: https://github.com/jMonkeyEngine-Contributions/Lemur "Lemur UI Toolkit"
 [mav]: https://github.com/stephengold/jme-vehicles "More Advanced Vehicles Project"
 [openJDK]: https://openjdk.java.net "OpenJDK Project"
