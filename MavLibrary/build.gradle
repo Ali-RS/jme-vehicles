@@ -14,6 +14,7 @@ ext {
     artifact = 'MaVehicles'
     version = maVehiclesVersion
     baseName = "${artifact}-${version}"
+    websiteUrl = 'https://github.com/stephengold/jme-vehicles'
 }
 
 jar { archiveBaseName = project.ext.baseName }
@@ -84,10 +85,9 @@ publishing {
                 scm {
                     connection = 'scm:git:git://github.com/stephengold/jme-vehicles.git'
                     developerConnection = 'scm:git:ssh://github.com:stephengold/jme-vehicles.git'
-                    url = 'https://github.com/stephengold/jme-vehicles/tree/master'
+                    url = project.ext.websiteUrl + '/tree/master'
                 }
-                suppressPomMetadataWarningsFor('apiElements') // Gradle issue #16555
-                url = 'https://github.com/stephengold/jme-vehicles'
+                url = project.ext.websiteUrl
             }
             version project.ext.version
         }
