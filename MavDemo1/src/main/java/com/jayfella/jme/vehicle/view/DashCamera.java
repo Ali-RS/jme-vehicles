@@ -11,6 +11,7 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.CameraNode;
+import com.jme3.scene.Node;
 import java.util.logging.Logger;
 import jme3utilities.MyCamera;
 import jme3utilities.SignalTracker;
@@ -90,7 +91,8 @@ public class DashCamera
         Vector3f offset = new Vector3f();
         vehicle.locateDashCam(offset);
         cameraNode.setLocalTranslation(offset);
-        vehicle.getNode().attachChild(cameraNode);
+        Node controlled = (Node) vehicle.getVehicleControl().getSpatial();
+        controlled.attachChild(cameraNode);
         enable();
     }
 
@@ -181,9 +183,11 @@ public class DashCamera
              */
             yDegrees = 30f;
             float aspectRatio = MyCamera.viewAspectRatio(camera);
-            float near = camera.getFrustumNear();
-            float far = camera.getFrustumFar();
+            float near = 0.1f;
+            float far = 3300f;
             camera.setFrustumPerspective(yDegrees, aspectRatio, near, far);
+        } else {
+            MyCamera.setNearFar(camera, 0.1f, 3300f);
         }
         /*
          * Configure the analog inputs.
