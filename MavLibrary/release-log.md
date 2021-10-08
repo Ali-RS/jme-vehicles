@@ -1,6 +1,6 @@
 # Release log for the MaVehicles library
 
-## Version 0.7.0 released on TBD
+## Version 0.7.0 released on 7 October 2021
 
 + API change: renamed `calcLongtitudeTireForce()` method in `PacejkaTireModel`.
 + Added support for articulated vehicles:  those which include multiple bodies.
