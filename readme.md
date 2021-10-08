@@ -28,7 +28,7 @@ It contains 4 sub-projects:
 
 ## Important features
 
-+ 4 example worlds, 7 example vehicles, and 4 example skies
++ 4 example worlds, 8 example vehicles, and 4 example skies
 + vehicle customization:
   + engine
   + brakes
@@ -59,7 +59,7 @@ It contains 4 sub-projects:
 ## How to download and run the MavDemo1 application
 
 1. Install [Java], if you don't already have it.
-2. Browse to https://github.com/stephengold/jme-vehicles/releases/tag/project-1.4.0
+2. Browse to https://github.com/stephengold/jme-vehicles/releases/tag/project-1.5.0
 3. Follow the "MavDemo1.zip" link.
 4. Save the ZIP file.
 5. Extract the contents of the saved ZIP file.
@@ -107,8 +107,8 @@ After a successful build,
 Maven artifacts will be found in `MavLibrary/build/libs`.
 To install the Maven artifacts to your local Maven repository:
 
- + using Bash or PowerShell:  `./gradlew :MavLibrary:publishToMavenLocal`
- + using Windows Command Prompt:  `.\gradlew :MavLibrary:publishToMavenLocal`
+ + using Bash or PowerShell:  `./gradlew install`
+ + using Windows Command Prompt:  `.\gradlew install`
 
 To run the MavDemo1 application:
 
@@ -201,11 +201,11 @@ Add to the project’s "build.gradle" file:
 
     repositories {
         mavenCentral()
-        jcenter()
+        maven { url 'https://jcenter.bintray.com' } // for SimMath
     }
     dependencies {
-        implementation 'com.github.stephengold:MaVehicles:0.6.2'
-        implementation 'com.github.stephengold:Minie:4.2.0'
+        implementation 'com.github.stephengold:MaVehicles:0.7.0'
+        implementation 'com.github.stephengold:Minie:4.4.0'
     }
 
 #### Maven-built projects
@@ -219,22 +219,21 @@ Add to the project’s "pom.xml" file:
       </repository>
       <repository>
         <id>jcenter</id>
-        <url>https://jcenter.bintray.com/</url>
+        <name>jcenter</name>
+        <url>https://jcenter.bintray.com</url>
       </repository>
     </repositories>
 
     <dependency>
       <groupId>com.github.stephengold</groupId>
       <artifactId>MaVehicles</artifactId>
-      <version>0.6.2</version>
-      <type>pom</type>
+      <version>0.7.0</version>
     </dependency>
 
     <dependency>
       <groupId>com.github.stephengold</groupId>
       <artifactId>Minie</artifactId>
-      <version>4.2.0</version>
-      <type>pom</type>
+      <version>4.4.0</version>
     </dependency>
 
 [Jump to table of contents](#toc)
@@ -252,15 +251,14 @@ More Advanced Vehicles is a work in progress.  Some ideas for future development
   + Skies, such as TehLeo's SevenSky
   + User interface, such as: joystick and NiftyGUI
   + Vehicle dynamics, such as that used in Murph9's RallyGame
-  + Vehicle types, such as: buses, tanks, golf carts, motorcycles,
+  + Vehicle types, such as: buses, tanks, golf carts,
     rolling chairs, tractors, rail locomotives, palanquins, rickshaws,
     aerial trams, bulldozers, snowmobiles, snowplows, speedboats, airplanes,
     boats, and helicopters
   + Viewpoints, such as: FlyCam, front view, side view, and plan view
 + More obstacles:
-  + Other vehicles (parked or AI-controlled)
+  + AI-controlled vehicles
   + Animated non-vehicles, such as: gates, drawbridges, deer, and pedestrians
-  + Passive non-vehicles, such as: traffic cones, portable barricades, and loose tires
 + More vehicle equipment:
   + Anti-lock braking
   + Artificial horizon
@@ -277,7 +275,7 @@ More Advanced Vehicles is a work in progress.  Some ideas for future development
   + Odometer
   + Oil-temperature gauge
   + Operable doors, hood, and trunk
-  + Passengers, cargo, and visible driver
+  + Passengers and cargo
   + Sirens
   + Speed limiter
   + Starter motor
@@ -407,7 +405,7 @@ The world (and physics-space) units of distance are *meters*.
 
 + This work is based on "Opel GT Retopo"
   (https://sketchfab.com/3d-models/opel-gt-retopo-badcab3c8a3d42359c8416db8a7427fe)
-  by [Thomas Glenn Thorne (aka "systmh")][tgt]
+  by Thomas Glenn Thorne (https://www.tgthorne.com/contact)
   licensed under CC-BY-NC-SA (https://creativecommons.org/licenses/by-nc-sa/4.0/).
 + This work is based on "Ford Ranger"
   (https://sketchfab.com/3d-models/ford-ranger-dade78dc96e34f1a8cbcf14dd47d84de)
@@ -429,7 +427,8 @@ The world (and physics-space) units of distance are *meters*.
   (https://sketchfab.com/3d-models/modern-hatchback-low-poly-model-055ff8a21b8d4d279debca089e2fafcd)
   by Daniel Zhabotinsky (https://sketchfab.com/DanielZhabotinsky)
   licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).
-+ This work is based on "Barrier & Traffic Cone Pack" (https://skfb.ly/6n8ST)
++ This work is based on "Barrier & Traffic Cone Pack"
+  (https://skfb.ly/6n8ST)
   by Sabri Ayeş (https://sketchfab.com/sabriayes)
   licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).
 + This work is based on "Elvs Racing Fire suit Male1"
@@ -462,7 +461,7 @@ correct the situation: sgold@sonic.net
 [jfrog]: https://www.jfrog.com "JFrog"
 [java]: https://java.com "Java"
 [jme]: http://jmonkeyengine.org  "jMonkeyEngine Project"
-[latest]: https://github.com/stephengold/jme-vehicles/releases/tag/project-1.4.0 "latest release"
+[latest]: https://github.com/stephengold/jme-vehicles/releases/tag/project-1.5.0 "latest release"
 [lemur]: https://github.com/jMonkeyEngine-Contributions/Lemur "Lemur UI Toolkit"
 [mav]: https://github.com/stephengold/jme-vehicles "More Advanced Vehicles Project"
 [openJDK]: https://openjdk.java.net "OpenJDK Project"
