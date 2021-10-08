@@ -8,7 +8,6 @@ plugins {
     id 'signing'
 }
 
-description = 'the More Advanced Vehicles library for jMonkeyEngine'
 ext {
     group = 'com.github.stephengold'
     artifact = 'MaVehicles'
@@ -17,9 +16,7 @@ ext {
     websiteUrl = 'https://github.com/stephengold/jme-vehicles'
 }
 
-jar { archiveBaseName = project.ext.baseName }
-javadocJar { archiveBaseName = project.ext.baseName }
-sourcesJar { archiveBaseName = project.ext.baseName }
+description = 'the More Advanced Vehicles library for jMonkeyEngine'
 
 dependencies {
     api 'org.jmonkeyengine:jme3-core:' + jmonkeyengineVersion
@@ -41,6 +38,10 @@ task('release') {
     dependsOn 'publishMavenPublicationToOSSRHRepository'
     description 'Stages Maven artifacts to Sonatype OSSRH.'
 }
+
+jar { archiveBaseName = project.ext.baseName }
+javadocJar { archiveBaseName = project.ext.baseName }
+sourcesJar { archiveBaseName = project.ext.baseName }
 
 build.dependsOn('pom', 'pomAsc')
 task('pom', type: Copy) {
