@@ -9,8 +9,8 @@ dependencies {
     implementation 'com.github.stephengold:Minie:' + minieVersion
     implementation 'com.github.stephengold:SkyControl:1.0.0'
 
-    implementation project(':MavLibrary')
-    //compileOnly 'com.github.stephengold:MaVehicles:' + maVehiclesVersion
+    //implementation project(':MavLibrary')
+    compileOnly 'com.github.stephengold:MaVehicles:' + maVehiclesVersion
 }
 
 // cleanup tasks
