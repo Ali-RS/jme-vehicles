@@ -10,7 +10,6 @@ ext { // current versions of various libraries:
     maVehiclesVersion = '0.7.1-SNAPSHOT'
     minieVersion = '4.4.0+big3'
 }
-group = 'com.github.stephengold'
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
