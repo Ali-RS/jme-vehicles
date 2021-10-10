@@ -168,7 +168,7 @@ public class HelloMav extends SimpleApplication {
         Sky.initialize();
         new AnimatedDaySky().addToWorld(world);
 
-        initCamera();
+        initializeCamera();
         /*
          * Print asset attributions to the console.
          */
@@ -284,7 +284,7 @@ public class HelloMav extends SimpleApplication {
     /**
      * Initialize the default Camera and its controller.
      */
-    private void initCamera() {
+    private void initializeCamera() {
         cam.setLocation(new Vector3f(291f, 12f, 2_075f));
         cam.setRotation(new Quaternion(0f, 0.9987554f, -0.05f, 0f));
         flyCam.setEnabled(false);
