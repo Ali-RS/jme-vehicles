@@ -165,7 +165,7 @@ public class AttributionMenu extends AnimatedMenu {
 
         long millis = System.currentTimeMillis();
         long cycleMillis = 1000L * cycleSeconds;
-        float seconds = 0.001f * (float) (millis % cycleMillis);
+        float seconds = 0.001f * (millis % cycleMillis);
         float y1 = viewPortHeight + textHeight * (seconds / cycleSeconds);
         bitmapText1.setLocalTranslation(x, y1, 0f);
 
