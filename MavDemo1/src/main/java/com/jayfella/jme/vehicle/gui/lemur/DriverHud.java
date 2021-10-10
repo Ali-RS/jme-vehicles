@@ -259,7 +259,7 @@ public class DriverHud extends BaseAppState {
             showSpeedometer(speedometerUnits);
         }
         showSteeringWheel();
-        showTacho();
+        showTachometer();
     }
 
     /**
@@ -486,7 +486,7 @@ public class DriverHud extends BaseAppState {
     /**
      * Display the tachometer.
      */
-    private void showTacho() {
+    private void showTachometer() {
         hideTachometer();
 
         Engine engine = vehicle.getEngine();
