@@ -139,7 +139,7 @@ public class Attribution {
             builder.append(licenseType);
             if (licenseType.equals("CC-BY-4.0")) {
                 builder.append(
-                        " (http://creativecommons.org/licenses/by/4.0/)");
+                        " (https://creativecommons.org/licenses/by/4.0/)");
             } else if (licenseType.equals("CC-BY-NC-SA")) {
                 builder.append(
                         " (https://creativecommons.org/licenses/by-nc-sa/4.0/)");
