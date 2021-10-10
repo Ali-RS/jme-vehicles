@@ -125,7 +125,7 @@ public class Attribution {
 
             builder.append("+ This work is based on \"");
             builder.append(workName);
-            builder.append("\"\n  (");
+            builder.append("\"\n  ("); // TODO hardcoded line separators
             builder.append(workUrl);
             builder.append(")\n  by ");
             builder.append(authorName);

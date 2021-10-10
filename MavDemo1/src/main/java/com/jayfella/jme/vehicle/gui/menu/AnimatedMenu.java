@@ -137,7 +137,7 @@ abstract class AnimatedMenu extends BaseAppState {
             formatButton(button);
             node.attachChild(button);
 
-            // find the widest button so we can move them all offscreen
+            // Find the widest button, so we can move them all offscreen.
             float width = button.getPreferredSize().x;
             if (width > maxWidth) {
                 maxWidth = width;

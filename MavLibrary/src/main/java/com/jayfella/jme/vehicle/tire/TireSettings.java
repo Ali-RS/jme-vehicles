@@ -12,7 +12,7 @@ public class TireSettings {
     // public static float DEFAULT_COEFF_KA = 2.0f;
     // public static float DEFAULT_COEFF_KB = 0.000055f;
 
-    // a listener for changes so we can re-draw the graph.
+    // a listener for changes, so we can re-draw the graph:
     private ChangeListener changeListener;
 
     private float slipAngleCoefficientC; // coefficient C for the normalised slip-angle curve.

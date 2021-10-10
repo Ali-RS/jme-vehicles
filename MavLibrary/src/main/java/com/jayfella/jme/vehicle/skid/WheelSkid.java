@@ -38,7 +38,7 @@ class WheelSkid {
      */
     final private static float minLength = 0.5f;
     final private static float minLengthSquared = minLength * minLength;
-    final private static float SKID_FX_SPEED = 0.25f; // Min side slip speed in wu/s to start showing a skid
+    final private static float SKID_FX_SPEED = 0.25f; // min sideslip speed in wu/s to start showing a skid
     /**
      * number of axes in the coordinate system
      */

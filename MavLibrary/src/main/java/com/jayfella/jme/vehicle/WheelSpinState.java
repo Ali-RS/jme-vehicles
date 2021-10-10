@@ -109,7 +109,7 @@ public class WheelSpinState extends BaseAppState {
             // multiply that by TWO_PI to get radians.
             float potentialRot = potentialRevsPerSec / FastMath.TWO_PI;
 
-            // should give us a rotation in radians for "extre" rotation as a result
+            // should give us a rotation in radians for "extra" rotation as a result
             // of slip.
             float diff = potentialRot - currentRot;
 
@@ -122,8 +122,8 @@ public class WheelSpinState extends BaseAppState {
             // only calculate wheelspin when the vehicle is actually accelerating.
             if (vehicle.accelerateSignal() > 0) {
 
-                // the acceleration force this wheel can apply. 0 = it doesnt give power, 1 = it gives full power.
-                float wheelforce = wheel.getPowerFraction();
+                // the acceleration force this wheel can apply. 0 = it doesn't give power, 1 = it gives full power.
+                float powerFraction = wheel.getPowerFraction();
 
                 // the acceleration force of the accelerator pedal in 0-1 range.
                 float acceleration = vehicle.accelerateSignal();
@@ -132,14 +132,14 @@ public class WheelSpinState extends BaseAppState {
                 float skid = 1.0f - wheel.traction();
 
                 // would equal at most 57 degrees in one frame (one radian).
-                float skidForce = (acceleration * wheelforce) * skid;
+                float skidForce = (acceleration * powerFraction) * skid;
 
                 //System.out.println(wheel.getVehicleWheel().getWheelSpatial().getName() + ": " + skidForce);
                 // set this before we do any "scene" modifications to make it look better.
                 wheel.setRotationDelta(skidForce);
 
                 // the numbers below alter the scene only. they have no relation to any calculations.
-                // These calculations will add an additional rotation to the wheel to simulate wheelspin.
+                // These calculations will add rotation to the wheel to simulate wheelspin.
                 // so if we mult this by say 10(?) for 570 degrees and then mult it by tpf, we should be about right.
                 // this means if we are slipping 100% it will add ( 57 * x ) degrees per second.
                 // actually we can work this out. get the max revs.
@@ -179,7 +179,7 @@ public class WheelSpinState extends BaseAppState {
                 // multiply it by how much slip the wheel is experiencing
                 // and use that rotation as a counter-rotation to simulate wheel stopping spinning.
                 // at full slip with brakes applied, the wheel should stop spinning completely.
-                // if the wheel it slipping 50% the wheel reduces rotation by 50%.
+                // If the wheel is slipping 50%, reduce rotation by 50%.
                 float slip = 1.0f - wheel.getVehicleWheel().getFrictionSlip();
                 float rotation = calcWheelRotation(wheel) * tpf;
                 rotation *= slip;
