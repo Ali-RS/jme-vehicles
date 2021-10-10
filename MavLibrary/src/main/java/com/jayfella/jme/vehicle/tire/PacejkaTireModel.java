@@ -127,7 +127,7 @@ public class PacejkaTireModel {
             Cut down Fy so that the vector (Fx,Fy) doesn't exceed the maximum magnitude:
             Fy=Fy0*sqrt(1-(Fx/Fx0)^2)
             Where:
-                - Fy is the resulting combined slip lateral force
+                - Fy is the combined slip lateral force
                 - Fy0 is the lateral force as calculated using the normal Fy formula
                 - Fx is the longitudinal force as calculated using the normal Fx formula
                 - Fx0 is the MAXIMUM longitudinal force possible (calculated as D+Sv in the Pacejka Fx formula).

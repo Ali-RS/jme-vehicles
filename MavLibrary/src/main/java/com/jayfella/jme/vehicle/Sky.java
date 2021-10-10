@@ -102,7 +102,7 @@ abstract public class Sky
 
     /**
      * Add lights and shadows to the scene. Should only be invoked once, after
-     * setApplication() but before addToWorld().
+     * setApplication() but before addToWorld(). TODO why synchronized?
      */
     public static synchronized void initialize() {
         if (simpleApp == null) {

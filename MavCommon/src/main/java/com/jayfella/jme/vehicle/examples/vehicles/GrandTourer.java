@@ -131,7 +131,7 @@ public class GrandTourer extends Vehicle {
         }
         /*
          * Distribute drive power across the wheels:
-         *  0 = no power, 1 = all of the power
+         *  0 = no power, 1 = all the power
          *
          * This vehicle has rear-wheel drive.
          */

@@ -394,7 +394,7 @@ public class Wheel {
     }
 
     /**
-     * Alter the fraction of the of the engine's output power that gets
+     * Alter the fraction of the engine's output power that gets
      * transmitted this wheel.
      *
      * @param fraction the desired power fraction (&ge;0, &le;1)

@@ -254,7 +254,7 @@ public class ClassicMotorcycle extends Bike {
         }
         /*
          * Distribute drive power across the wheels:
-         *  0 = no power, 1 = all of the power
+         *  0 = no power, 1 = all the power
          */
         getWheel(0).setPowerFraction(0f); // front wheel
         getWheel(1).setPowerFraction(1f); // rear wheel
