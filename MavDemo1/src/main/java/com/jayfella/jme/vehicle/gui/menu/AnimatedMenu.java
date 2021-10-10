@@ -144,7 +144,7 @@ abstract class AnimatedMenu extends BaseAppState {
             }
         }
 
-        int height = application.getCamera().getHeight() - 20;
+        float height = application.getCamera().getHeight() - 20f;
         for (Button button : buttons) {
             // make all the buttons the same width
             Vector3f preferredSize = button.getPreferredSize();
