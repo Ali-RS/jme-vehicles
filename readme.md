@@ -316,6 +316,9 @@ Resources/assets/media:
   has an Apache License, Version 2.0.
 + The [Opel GT Retopo model](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Models/GT)
   has a CC Attribution-NonCommercial-ShareAlike license.
++ The MakeHuman 1.2.0 textures have a CC0 license.
++ The Hand Gloves textures have a CC0 license.
++ The Elvs Racing Fire suit Male1 textures have a CC Attribution license.
 + The [HoverTank model](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Models/Tank)
   has a BSD 3-Clause license.
 + The [Classic Motorcycle model](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Models/classic_motorcycle)
