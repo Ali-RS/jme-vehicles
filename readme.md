@@ -316,7 +316,7 @@ Resources/assets/media:
   has an Apache License, Version 2.0.
 + The [Opel GT Retopo model](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Models/GT)
   has a CC Attribution-NonCommercial-ShareAlike license.
-+ The MakeHuman 1.2.0 textures have a CC0 license.
++ The [MakeHuman] 1.2.0 textures have a CC0 license.
 + The Hand Gloves textures have a CC0 license.
 + The Elvs Racing Fire suit Male1 textures have a CC Attribution license.
 + The [HoverTank model](https://github.com/stephengold/jme-vehicles/tree/master/MavCommon/src/main/resources/Models/Tank)
@@ -391,11 +391,15 @@ The world (and physics-space) units of distance are *meters*.
 
 ## Acknowledgments
 
+Like most projects, More Advanced Vehicles builds on the work of many who
+have gone before.  I therefore acknowledge the following
+artists and software developers:
+
 + James Khan (aka "jayfella") initiated
   [the Advanced Vehicles Project](https://github.com/jMonkeyEngine-archive/jme-vehicles-jayfella-github),
   on which this project is based.
 + [Paul Speed (aka "pspeed42")][pspeed] created the Lemur libraries.
-+ [Adam T. Ryder (aka "ATryder")][atryder] created the jME-TTF library.
++ [Adam T. Ryder (aka "ATryder")][atryder] created the [jME-TTF] library.
 + [Ryan McDonough][yaRnMcDonuts] created the PBRTerrain library.
 + Rémy Bouquet (aka "Nehon") created the "Jaime" and "Enhanced HoverTank" models.
 + [Adi Barda (aka "adi.barda")][adi] created the racetrack model
@@ -444,7 +448,7 @@ The world (and physics-space) units of distance are *meters*.
 
 ### Hosting
 
-I am grateful to [GitHub], [Sonatype], [Imgur], [JFrog], and YouTube
+I am grateful to [GitHub], [Sonatype], [Imgur], [JFrog], and [YouTube]
 for providing free hosting for this project
 and many other open-source projects.
 
@@ -461,11 +465,13 @@ correct the situation: sgold@sonic.net
 [github]: https://github.com "GitHub"
 [gradle]: https://gradle.org "Gradle Project"
 [imgur]: https://imgur.com/ "Imgur"
-[jfrog]: https://www.jfrog.com "JFrog"
 [java]: https://java.com "Java"
-[jme]: http://jmonkeyengine.org  "jMonkeyEngine Project"
+[jfrog]: https://www.jfrog.com "JFrog"
+[jme]: https://jmonkeyengine.org "jMonkeyEngine Project"
+[jme-ttf]: http://1337atr.weebly.com/jttf.html "jME-TTF Rendering System"
 [latest]: https://github.com/stephengold/jme-vehicles/releases/tag/project-1.5.0 "latest release"
 [lemur]: https://github.com/jMonkeyEngine-Contributions/Lemur "Lemur UI Toolkit"
+[makehuman]: http://www.makehumancommunity.org/ "MakeHuman Community"
 [mav]: https://github.com/stephengold/jme-vehicles "More Advanced Vehicles Project"
 [openJDK]: https://openjdk.java.net "OpenJDK Project"
 [pspeed]: https://github.com/pspeed42 "Paul Speed"
@@ -473,4 +479,5 @@ correct the situation: sgold@sonic.net
 [sonatype]: https://www.sonatype.com "Sonatype"
 [tgt]: https://www.tgthorne.com/contact "Thomas Glenn Thorne"
 [yaRnMcDonuts]: https://hub.jmonkeyengine.org/u/yarnmcdonuts/summary "Ryan McDonough"
+[youtube]: https://www.youtube.com/ "YouTube"
 [zampaoli]: https://sketchfab.com/mauro.zampaoli "Mauro Zampaoli"
