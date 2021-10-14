@@ -73,10 +73,9 @@ It contains 4 sub-projects:
   + Follow the "MavDemo1.zip" link.
   + Save the ZIP file.
   + Extract the contents of the saved ZIP file.
-4. `cd` to the extracted "bin" directory/folder
-  + using Bash:  `cd MavDemo1/bin`
-5. Run the shell script.
-  + using Bash:  `./MavDemo1`
+4. `cd` to the extracted "MavDemo1" directory/folder that contains "bin" and "lib".
+5. Run the MavDemo1 startup script:
+  + using Bash:  `./bin/MavDemo1`
 
 The demo runs in a 1280x720 window.
 After a brief loading animation,
