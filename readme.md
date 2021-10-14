@@ -58,7 +58,8 @@ It contains 4 sub-projects:
 
 ## How to download and run the MavDemo1 application
 
-1. Install [Java], if you don't already have it.
+1. Install a 64-bit [Java], if you don't already have one.
+   (MavDemo1 no longer supports 32-bit Java.)
 2. Browse to https://github.com/stephengold/jme-vehicles/releases/tag/project-1.5.0
 3. Follow the "MavDemo1.zip" link.
 4. Save the ZIP file.
