@@ -68,14 +68,14 @@ It contains 4 sub-projects:
   + using Bash:  `export JAVA_HOME="` *path to installation* `"`
   + using Windows Command Prompt:  `set JAVA_HOME="` *path to installation* `"`
   + using PowerShell: `$env:JAVA_HOME = '` *path to installation* `'`
-3. Browse to https://github.com/stephengold/jme-vehicles/releases/tag/project-1.5.0
-4. Follow the "MavDemo1.zip" link.
-5. Save the ZIP file.
-6. Extract the contents of the saved ZIP file.
-  + using Bash:  `unzip MavDemo1.zip`
-7. `cd` to the extracted "bin" directory/folder
+3. Install the latest MavDemo1 release from GitHub:
+  + Browse to https://github.com/stephengold/jme-vehicles/releases/tag/project-1.5.0
+  + Follow the "MavDemo1.zip" link.
+  + Save the ZIP file.
+  + Extract the contents of the saved ZIP file.
+4. `cd` to the extracted "bin" directory/folder
   + using Bash:  `cd MavDemo1/bin`
-8. Run the shell script.
+5. Run the shell script.
   + using Bash:  `./MavDemo1`
 
 The demo runs in a 1280x720 window.
