@@ -95,9 +95,9 @@ the Main Menu appears in the upper-left corner of the window.
 1. Install a 64-bit [Java Development Kit (JDK)][openJDK],
    if you don't already have one.
 2. Point the `JAVA_HOME` environment variable to your JDK installation.
-  + using Bash:  `export JAVA_HOME="` *path to your JDK* `"`
-  + using Windows Command Prompt:  `set JAVA_HOME="` *path to your JDK* `"`
-  + using PowerShell: `$env:JAVA_HOME = '` *path to your JDK* `'`
+  + using Bash:  `export JAVA_HOME="` *path to installation* `"`
+  + using Windows Command Prompt:  `set JAVA_HOME="` *path to installation* `"`
+  + using PowerShell: `$env:JAVA_HOME = '` *path to installation* `'`
 3. Download and extract the More Advanced Vehicles source code from GitHub:
   + using Git:
     + `git clone https://github.com/stephengold/jme-vehicles.git`
