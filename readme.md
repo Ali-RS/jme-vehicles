@@ -60,14 +60,22 @@ It contains 4 sub-projects:
 
 1. Install a 64-bit [Java], if you don't already have one.
    (MavDemo1 no longer supports 32-bit Java.)
-2. Browse to https://github.com/stephengold/jme-vehicles/releases/tag/project-1.5.0
-3. Follow the "MavDemo1.zip" link.
-4. Save the ZIP file.
-5. Extract the contents of the saved ZIP file.
+2. Point the `JAVA_HOME` environment variable to your Java installation.
+   (In other words, set it to the path of a directory/folder
+   containing a "bin" that contains a Java executable.
+   The path might be something like "C:\Program Files\Java\jre1.8.0_301"
+   or "/usr/lib/jvm/java-11-openjdk-amd64/" .)
+  + using Bash:  `export JAVA_HOME="` *path to installation* `"`
+  + using Windows Command Prompt:  `set JAVA_HOME="` *path to installation* `"`
+  + using PowerShell: `$env:JAVA_HOME = '` *path to installation* `'`
+3. Browse to https://github.com/stephengold/jme-vehicles/releases/tag/project-1.5.0
+4. Follow the "MavDemo1.zip" link.
+5. Save the ZIP file.
+6. Extract the contents of the saved ZIP file.
   + using Bash:  `unzip MavDemo1.zip`
-6. `cd` to the extracted "bin" directory/folder
+7. `cd` to the extracted "bin" directory/folder
   + using Bash:  `cd MavDemo1/bin`
-7. Run the shell script.
+8. Run the shell script.
   + using Bash:  `./MavDemo1`
 
 The demo runs in a 1280x720 window.
