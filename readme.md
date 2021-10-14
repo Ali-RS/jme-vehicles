@@ -92,7 +92,7 @@ the Main Menu appears in the upper-left corner of the window.
 
 ## How to build and run More Advanced Vehicles from source
 
- 1. Install a [Java Development Kit (JDK)][openJDK],
+ 1. Install a 64-bit [Java Development Kit (JDK)][openJDK],
     if you don't already have one.
  2. Point the `JAVA_HOME` environment variable to your JDK installation.
    + using Bash:  `export JAVA_HOME="` *path to your JDK* `"`
