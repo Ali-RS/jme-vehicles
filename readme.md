@@ -74,8 +74,10 @@ It contains 4 sub-projects:
   + Save the ZIP file.
   + Extract the contents of the saved ZIP file.
 4. `cd` to the extracted "MavDemo1" directory/folder that contains "bin" and "lib".
-5. Run the MavDemo1 startup script:
-  + using Bash:  `./bin/MavDemo1`
+5. Run the Maud startup script:
+  + using Bash: `./bin/MavDemo1`
+  + using Windows Command Prompt: `./bin/MavDemo1.bat`
+  + using PowerShell: `.\bin\MavDemo1.bat`
 
 The demo runs in a 1280x720 window.
 After a brief loading animation,
