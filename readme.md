@@ -92,36 +92,35 @@ the Main Menu appears in the upper-left corner of the window.
 
 ## How to build and run More Advanced Vehicles from source
 
- 1. Install a 64-bit [Java Development Kit (JDK)][openJDK],
-    if you don't already have one.
- 2. Point the `JAVA_HOME` environment variable to your JDK installation.
-   + using Bash:  `export JAVA_HOME="` *path to your JDK* `"`
-   + using Windows Command Prompt:  `set JAVA_HOME="` *path to your JDK* `"`
-   + using PowerShell: `$env:JAVA_HOME = '` *path to your JDK* `'`
- 3. Download and extract the More Advanced Vehicles source code from GitHub:
-   + using Git:
-     + `git clone https://github.com/stephengold/jme-vehicles.git`
-     + `cd jme-vehicles`
-     + `git checkout -b latest project-1.4.0`
-   + using a web browser:
-     + browse to [the latest release][latest]
-     + follow the "Source code (zip)" link
-     + save the ZIP file
-     + extract the contents of the saved ZIP file
-     + `cd` to the extracted directory/folder
- 4. Run the [Gradle] wrapper:
-   + using Bash or PowerShell:  `./gradlew build`
-   + using Windows Command Prompt:  `.\gradlew build`
+1. Install a 64-bit [Java Development Kit (JDK)][openJDK],
+   if you don't already have one.
+2. Point the `JAVA_HOME` environment variable to your JDK installation.
+  + using Bash:  `export JAVA_HOME="` *path to your JDK* `"`
+  + using Windows Command Prompt:  `set JAVA_HOME="` *path to your JDK* `"`
+  + using PowerShell: `$env:JAVA_HOME = '` *path to your JDK* `'`
+3. Download and extract the More Advanced Vehicles source code from GitHub:
+  + using Git:
+    + `git clone https://github.com/stephengold/jme-vehicles.git`
+    + `cd jme-vehicles`
+    + `git checkout -b latest project-1.5.0`
+  + using a web browser:
+    + browse to [the latest release][latest]
+    + follow the "Source code (zip)" link
+    + save the ZIP file
+    + extract the contents of the saved ZIP file
+    + `cd` to the extracted directory/folder
+4. Run the [Gradle] wrapper:
+  + using Bash or PowerShell: `./gradlew build`
+  + using Windows Command Prompt: `.\gradlew build`
 
 After a successful build,
 Maven artifacts will be found in `MavLibrary/build/libs`.
-To install the Maven artifacts to your local Maven repository:
 
+To install the Maven artifacts to your local Maven repository:
  + using Bash or PowerShell:  `./gradlew install`
  + using Windows Command Prompt:  `.\gradlew install`
 
 To run the MavDemo1 application:
-
  + using Bash or PowerShell:  `./gradlew :MavDemo1:run`
  + using Windows Command Prompt:  `.\gradlew :MavDemo1:run`
 
