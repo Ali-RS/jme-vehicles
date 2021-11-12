@@ -6,7 +6,7 @@ ext { // current versions of various libraries:
     garrettVersion = '0.2.0'
     heartVersion = '7.1.0'
     jmeTtfVersion = '2.2.4'
-    jmonkeyengineVersion = '3.4.0-stable'
+    jme3Version = '3.4.0-stable'
     maVehiclesVersion = '0.7.1-SNAPSHOT'
     minieVersion = '4.5.0-test1'
 }
@@ -36,6 +36,7 @@ repositories {
 }
 
 // custom tasks for creating source/javadoc JARs
+
 task javadocJar(type: Jar) {
     archiveClassifier = 'javadoc'
     dependsOn 'javadoc'
