@@ -8,6 +8,7 @@ plugins {
     id 'signing'
 }
 
+description = 'the More Advanced Vehicles library for jMonkeyEngine'
 ext {
     group = 'com.github.stephengold'
     artifact = 'MaVehicles'
@@ -15,8 +16,6 @@ ext {
     baseName = "${artifact}-${version}"
     websiteUrl = 'https://github.com/stephengold/jme-vehicles'
 }
-
-description = 'the More Advanced Vehicles library for jMonkeyEngine'
 
 dependencies {
     api 'org.jmonkeyengine:jme3-core:' + jmonkeyengineVersion
