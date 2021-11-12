@@ -15,13 +15,13 @@ if (!hasProperty('mainClass')) {
 jar.manifest.attributes('Main-Class': mainClassName)
 
 dependencies {
-    runtimeOnly 'org.jmonkeyengine:jme3-desktop:' + jmonkeyengineVersion
-    runtimeOnly 'org.jmonkeyengine:jme3-jogg:' + jmonkeyengineVersion
-    runtimeOnly 'org.jmonkeyengine:jme3-lwjgl3:' + jmonkeyengineVersion
+    runtimeOnly 'org.jmonkeyengine:jme3-desktop:' + jme3Version
+    runtimeOnly 'org.jmonkeyengine:jme3-jogg:' + jme3Version
+    runtimeOnly 'org.jmonkeyengine:jme3-lwjgl3:' + jme3Version
 
     // MavDemo1 doesn't use jme3-plugins
     //  -- it is added solely to avoid warnings from AssetConfig
-    runtimeOnly 'org.jmonkeyengine:jme3-plugins:' + jmonkeyengineVersion
+    runtimeOnly 'org.jmonkeyengine:jme3-plugins:' + jme3Version
 
     // non-JME dependencies:
     implementation 'com.github.stephengold:Garrett:' + garrettVersion
