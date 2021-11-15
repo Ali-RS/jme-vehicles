@@ -29,7 +29,7 @@ dependencies {
     implementation 'com.github.stephengold:Minie:' + minieVersion
     implementation 'com.simsilica:lemur-props:1.1.1'
     runtimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl:2.14.1'
-    runtimeOnly 'org.codehaus.groovy:groovy-jsr223:3.0.8'
+    runtimeOnly 'org.codehaus.groovy:groovy-jsr223:3.0.9'
 
     implementation project(':MavCommon')
     implementation project(':MavLibrary')
@@ -50,6 +50,7 @@ task runForceDialog(type: JavaExec) {
 }
 
 // cleanup tasks
+
 clean.dependsOn('cleanDLLs', 'cleanDyLibs', 'cleanLogs', 'cleanSOs')
 clean.dependsOn('cleanScreenShots')
 task cleanDLLs(type: Delete) {
