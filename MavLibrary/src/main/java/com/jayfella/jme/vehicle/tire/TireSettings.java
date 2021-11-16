@@ -47,60 +47,128 @@ public class TireSettings {
         this.loadCoefficientKB = loadCoefficientKB;
     }
 
+    /**
+     * Return the "C" coefficient of the normalized slip-angle curve.
+     *
+     * @return the coefficient value (units?)
+     */
     public float getSlipAngleCoefficientC() {
         return slipAngleCoefficientC;
     }
 
+    /**
+     * Alter the "C" coefficient of the normalized slip-angle curve.
+     *
+     * @param slipAngleCoefficientC the desired coefficient value (units?)
+     */
     public void setSlipAngleCoefficientC(float slipAngleCoefficientC) {
         this.slipAngleCoefficientC = slipAngleCoefficientC;
         changeListener.valueChanged();
     }
 
+    /**
+     * Return the "B" coefficient of the normalized slip-angle curve.
+     *
+     * @return the coefficient value (units?)
+     */
     public float getSlipAngleCoefficientB() {
         return slipAngleCoefficientB;
     }
 
+    /**
+     * Alter the "B" coefficient of the normalized slip-angle curve.
+     *
+     * @param slipAngleCoefficientB the desired coefficient value (units?)
+     */
     public void setSlipAngleCoefficientB(float slipAngleCoefficientB) {
         this.slipAngleCoefficientB = slipAngleCoefficientB;
         changeListener.valueChanged();
     }
 
+    /**
+     * Return the "E" coefficient of the normalized slip-angle curve.
+     *
+     * @return the coefficient value (units?)
+     */
     public float getSlipAngleCoefficientE() {
         return slipAngleCoefficientE;
     }
 
+    /**
+     * Alter the "E" coefficient of the normalized slip-angle curve.
+     *
+     * @param slipAngleCoefficientE the desired coefficient value (units?)
+     */
     public void setSlipAngleCoefficientE(float slipAngleCoefficientE) {
         this.slipAngleCoefficientE = slipAngleCoefficientE;
         changeListener.valueChanged();
     }
 
+    /**
+     * Return the "KA" coefficient used to estimate force based on load.
+     *
+     * @return the coefficient value (units?)
+     */
     public float getLoadCoefficientKA() {
         return loadCoefficientKA;
     }
 
+    /**
+     * Alter the "KA" coefficient used to estimate force based on load.
+     *
+     * @param loadCoefficientKA the desired coefficient value (units?)
+     */
     public void setLoadCoefficientKA(float loadCoefficientKA) {
         this.loadCoefficientKA = loadCoefficientKA;
         changeListener.valueChanged();
     }
 
+    /**
+     * Return the "KB" coefficient used to estimate force based on load.
+     *
+     * @return the coefficient value (units?)
+     */
     public float getLoadCoefficientKB() {
         return loadCoefficientKB;
     }
 
+    /**
+     * Alter the "KB" coefficient used to estimate force based on load.
+     *
+     * @param loadCoefficientKB the desired coefficient value (units?)
+     */
     public void setLoadCoefficientKB(float loadCoefficientKB) {
         this.loadCoefficientKB = loadCoefficientKB;
         changeListener.valueChanged();
     }
 
+    /**
+     * Access the assigned ChangeListener.
+     *
+     * @return the pre-existing object, or null if none assigned
+     */
     public ChangeListener getChangeListener() {
         return changeListener;
     }
 
+    /**
+     * Assign the specified ChangeListener. This cancels any listener previously
+     * assigned.
+     *
+     * @param changeListener the desired listener (alias created) or null for
+     * none
+     */
     public void setChangeListener(ChangeListener changeListener) {
         this.changeListener = changeListener;
     }
 
+    /**
+     * Listen for changes to a curve.
+     */
     abstract public static class ChangeListener {
+        /**
+         * Callback invoked after every coefficient change.
+         */
         abstract public void valueChanged();
     }
 }

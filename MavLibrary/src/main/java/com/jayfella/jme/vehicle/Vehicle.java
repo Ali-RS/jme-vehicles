@@ -561,6 +561,11 @@ abstract public class Vehicle
         return result;
     }
 
+    /**
+     * Not yet implemented.
+     *
+     * @param constraint the Constraint to remove (not null)
+     */
     public void removeEquipmentConstraint(Constraint constraint) {
         // TODO
     }
@@ -698,14 +703,29 @@ abstract public class Vehicle
         this.speedometerUnits = units;
     }
 
+    /**
+     * Enable or disable skid-mark generation.
+     *
+     * @param enabled true to enable, false to disable
+     */
     public void setTireSkidMarksEnabled(boolean enabled) {
         skidmarks.setSkidmarkEnabled(enabled);
     }
 
+    /**
+     * Show or hide any skid marks created by this Vehicle.
+     *
+     * @param enabled true to show, false to hide
+     */
     public void setTireSkidMarksVisible(boolean enabled) {
         skidmarks.setEnabled(enabled);
     }
 
+    /**
+     * Enable or disable tire-smoke emission.
+     *
+     * @param enabled true to enable, false to disable
+     */
     public void setTireSmokeEnabled(boolean enabled) {
         smokeEmitter.setEnabled(enabled);
     }
