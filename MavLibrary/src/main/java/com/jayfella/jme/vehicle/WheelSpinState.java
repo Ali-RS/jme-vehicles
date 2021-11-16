@@ -33,6 +33,11 @@ public class WheelSpinState extends BaseAppState {
     // *************************************************************************
     // constructors
 
+    /**
+     * Construct an AppState for the specified Vehicle.
+     *
+     * @param vehicle the Vehicle to manage (not null)
+     */
     public WheelSpinState(Vehicle vehicle) {
         this.vehicle = vehicle;
     }

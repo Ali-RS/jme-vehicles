@@ -170,6 +170,13 @@ public class Wheel {
     // LATERAL
     // the slip angle is the angle between the direction in which a wheel is pointing
     // and the direction in which the vehicle is traveling.
+    /**
+     * Determine the angle between the forward direction of the wheel and that
+     * of the chassis. At speeds above 5 kilometers per hour, the direction of
+     * motion of the chassis is used in place of its orientation.
+     *
+     * @return the angle (in radians, &ge;0.1, &lt;Pi/4)
+     */
     public float calculateLateralSlipAngle() {
         Quaternion wheelRot = body.getPhysicsRotation().mult(
                 new Quaternion().fromAngles(0f, getSteeringAngle(), 0f));
@@ -194,6 +201,11 @@ public class Wheel {
 
     // the slip angle for this is how much force is being applied to the tire (acceleration force).
     // how much rotation has been applied as a result of acceleration.
+    /**
+     * Estimate the amount of tire rotation caused by acceleration slippage.
+     *
+     * @return the angle (in radians, &ge;0, &lt;2*Pi)
+     */
     public float calculateLongitudinalSlipAngle() {
         // the rotation of the wheel as if it were just following a moving vehicle.
         // that is to say a wheel that is rolling without slip.
@@ -223,6 +235,11 @@ public class Wheel {
         return result;
     }
 
+    /**
+     * Determine the wheel's diameter.
+     *
+     * @return the diameter (in meters)
+     */
     public float getDiameter() {
         return vehicleWheel.getWheelSpatial().getLocalScale().y; // they should all be the same.
     }
@@ -255,6 +272,14 @@ public class Wheel {
         return mainBrake;
     }
 
+    /**
+     * Determine the maximum steering angle for this wheel, relative to the
+     * chassis.
+     *
+     * Wheels are assumed able to turn the same amount in both directions.
+     *
+     * @return the anglular limit (in radians, &ge;0)
+     */
     public float getMaxSteerAngle() {
         assert maxSteerAngle >= 0f : maxSteerAngle;
         return maxSteerAngle;
@@ -271,14 +296,30 @@ public class Wheel {
         return powerFraction;
     }
 
+    /**
+     * Determine the fraction of engine power lost to this wheel's longitudinal
+     * slippage.
+     *
+     * @return the power fraction (&ge;0, &le;1)
+     */
     public float getRotationDelta() {
         return rotationDelta;
     }
 
+    /**
+     * Determine the steering angle between the wheel and the chassis.
+     *
+     * @return the angle (in radians)
+     */
     public float getSteeringAngle() {
         return steeringAngle;
     }
 
+    /**
+     * Access the wheel's Suspension.
+     *
+     * @return the pre-existing instance (not null)
+     */
     public Suspension getSuspension() {
         assert suspension != null;
         return suspension;
@@ -369,6 +410,11 @@ public class Wheel {
         return result;
     }
 
+    /**
+     * Alter the wheel's diameter.
+     *
+     * @param diameter the desired diameter (in meters, &gt;0)
+     */
     public void setDiameter(float diameter) {
         Validate.positive(diameter, "diameter");
 
@@ -376,6 +422,11 @@ public class Wheel {
         vehicleWheel.setRadius(diameter / 2);
     }
 
+    /**
+     * Alter the friction between this wheel's tire and the ground.
+     *
+     * @param friction the desired coefficient of friction
+     */
     public void setFriction(float friction) {
         vehicleWheel.setFrictionSlip(friction);
     }
@@ -390,6 +441,13 @@ public class Wheel {
         this.grip = grip;
     }
 
+    /**
+     * Alter the maximum steering angle for this wheel, relative to the chassis.
+     *
+     * Wheels are assumed able to turn the same amount in both directions.
+     *
+     * @param maxSteerAngle the desired limit (in radians, &ge;0)
+     */
     public void setMaxSteerAngle(float maxSteerAngle) {
         Validate.nonNegative(maxSteerAngle, "max steer angle");
         this.maxSteerAngle = maxSteerAngle;
@@ -406,20 +464,48 @@ public class Wheel {
         powerFraction = fraction;
     }
 
+    /**
+     * Update the fraction of engine power lost to this wheel's longitudinal
+     * slippage.
+     *
+     * @param rotationDelta the power fraction (&ge;0, &le;1)
+     */
     public void setRotationDelta(float rotationDelta) {
         this.rotationDelta = rotationDelta;
     }
 
+    /**
+     * Alter whether the wheel is used for steering.
+     *
+     * @param steering true&rarr;used for steering, false&rarr;not used
+     */
     public void setSteering(boolean steering) {
         this.isSteering = steering;
         vehicleWheel.setFrontWheel(steering);
     }
 
+    /**
+     * Convenience method to alter how the wheel is steered, if at all.
+     *
+     * @param steering true&rarr;used for steering, false&rarr;not used
+     * @param flipped false&rarr; same direction as the steering device,
+     * true&rarr;opposite direction
+     */
     public void setSteering(boolean steering, boolean flipped) {
         setSteering(steering);
         setSteeringFlipped(flipped);
     }
 
+    /**
+     * Alter the direction in which the wheel steers, if it is used for
+     * steering.
+     *
+     * Typically, a front wheel steers in the same direction as the steering
+     * control, and a rear wheel steers in the opposite direction, if at all.
+     *
+     * @param steeringFlipped false&rarr; same direction as the steering
+     * control, true&rarr;opposite direction
+     */
     public void setSteeringFlipped(boolean steeringFlipped) {
         this.isSteeringFlipped = steeringFlipped;
     }
@@ -464,6 +550,20 @@ public class Wheel {
         return result;
     }
 
+    /**
+     * Update the steering angle based on the specified control signal, as
+     * follows:
+     *
+     * If the wheel isn't used for steering, this method has no effect.
+     *
+     * If it's used for steering and flipped, a positive signal turns it to the
+     * right.
+     *
+     * If it's used for steering and not flipped, a positive signal turns it to
+     * the left.
+     *
+     * @param strength the control signal (in radians)
+     */
     public void steer(float strength) {
         if (isSteering()) {
             if (isSteeringFlipped) {
