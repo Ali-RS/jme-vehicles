@@ -4,7 +4,6 @@
 /.gradle/
 /.idea/
 /.nb-gradle/
-/build/
 /HelloMav/build/
 /MavCommon/build/
 /MavDemo1/build/
