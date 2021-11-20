@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle.tire;
 
 import com.jme3.math.FastMath;
+import jme3utilities.math.MyMath;
 
 /**
  * Derived from the PajeckaTireModel class in the Advanced Vehicles project.
@@ -212,10 +213,7 @@ public class PacejkaTireModel {
 
             This method favors longitudinal forces over lateral ones (cuts down the lateral force and leaves Fx intact).
          */
-        frictionCircle = lateralValue * FastMath.sqrt(
-                1.0f - FastMath.pow((longitudinalValue / 7800), 2)
-        );
-
+        frictionCircle = lateralValue * MyMath.circle(longitudinalValue / 7800f);
         frictionCircle = Math.max(0.1f, frictionCircle);
 
         return frictionCircle;
