@@ -6,7 +6,7 @@ description = 'a tech demo for jMonkeyEngine vehicles'
 
 dependencies {
     implementation 'org.jmonkeyengine:jme3-desktop:' + jme3Version
-    implementation 'com.github.stephengold:Minie:' + minieVersion
+    implementation minieCoordinates
     implementation 'com.github.stephengold:SkyControl:1.0.0'
 
     implementation project(':MavLibrary')
