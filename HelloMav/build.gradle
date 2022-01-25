@@ -20,8 +20,8 @@ dependencies {
     runtimeOnly 'org.jmonkeyengine:jme3-lwjgl3:' + jme3Version
 
     // non-JME dependencies:
-    implementation 'com.github.stephengold:Garrett:' + garrettVersion
-    implementation 'com.github.stephengold:Minie:' + minieVersion
+    implementation garrettCoordinates
+    implementation minieCoordinates
 
     implementation project(':MavCommon')
     implementation project(':MavLibrary')
