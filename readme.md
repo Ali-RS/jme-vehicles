@@ -9,7 +9,8 @@ It contains 4 sub-projects:
  3. HelloMav: a very simple application using the MaVehicles library
  4. MavCommon: examples of vehicles, worlds, skies, etcetera
 
-<a name="toc"/>
+
+<a name="toc"></a>
 
 ## Contents of this document
 
@@ -24,7 +25,8 @@ It contains 4 sub-projects:
 + [External links](#links)
 + [Acknowledgments](#acks)
 
-<a name="features"/>
+
+<a name="features"></a>
 
 ## Important features
 
@@ -54,7 +56,8 @@ It contains 4 sub-projects:
 
 <img height="400" src="https://i.imgur.com/TsWukzO.png">
 
-<a name="prebuilt"/>
+
+<a name="prebuilt"></a>
 
 ## How to download and run the MavDemo1 application
 
@@ -88,7 +91,8 @@ the Main Menu appears in the upper-left corner of the window.
 
 [Jump to table of contents](#toc)
 
-<a name="build"/>
+
+<a name="build"></a>
 
 ## How to build and run More Advanced Vehicles from source
 
@@ -134,7 +138,8 @@ To restore the project to a pristine state:
 
 [Jump to table of contents](#toc)
 
-<a name="controls"/>
+
+<a name="controls"></a>
 
 ## Controls
 
@@ -199,7 +204,8 @@ Additional controls when the orbit camera is active:
 
 [Jump to table of contents](#toc)
 
-<a name="add"/>
+
+<a name="add"></a>
 
 ## How to add the MaVehicles library to an existing project
 
@@ -246,7 +252,8 @@ Add to the project’s "pom.xml" file:
 
 [Jump to table of contents](#toc)
 
-<a name="wishlist"/>
+
+<a name="wishlist"></a>
 
 ## Wish list
 
@@ -311,7 +318,8 @@ See also
 
 [Jump to table of contents](#toc)
 
-<a name="licensing"/>
+
+<a name="licensing"></a>
 
 ## Licensing
 
@@ -364,7 +372,8 @@ Resources/assets/media:
 
 [Jump to table of contents](#toc)
 
-<a name="conventions"/>
+
+<a name="conventions"></a>
 
 ## Conventions
 
@@ -383,7 +392,7 @@ The world (and physics-space) units of distance are *meters*.
 [Jump to table of contents](#toc)
 
 
-<a name="links"/>
+<a name="links"></a>
 
 ## External links
 
@@ -395,7 +404,7 @@ The world (and physics-space) units of distance are *meters*.
 [Jump to table of contents](#toc)
 
 
-<a name="acks"/>
+<a name="acks"></a>
 
 ## Acknowledgments
 
