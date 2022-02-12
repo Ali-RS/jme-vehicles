@@ -6,8 +6,6 @@ plugins {
     id 'application'
 }
 
-description = 'example assets for use with the MaVehicles library'
-
 mainClassName = 'com.jayfella.jme.vehicle.simpledemo.HelloMav'
 if (!hasProperty('mainClass')) {
     ext.mainClass = mainClassName

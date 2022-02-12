@@ -2,8 +2,6 @@
 //   for this project. This initialization is applied in the "build.gradle"
 //   of the root project.
 
-description = 'a tech demo for jMonkeyEngine vehicles'
-
 dependencies {
     implementation 'org.jmonkeyengine:jme3-desktop:' + jme3Version
     implementation minieCoordinates

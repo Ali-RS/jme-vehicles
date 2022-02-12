@@ -4,8 +4,6 @@
 
 apply plugin: 'application'
 
-description = 'a tech demo for jMonkeyEngine vehicles'
-
 mainClassName = 'com.jayfella.jme.vehicle.niftydemo.MavDemo2'
 if (!hasProperty('mainClass')) {
     ext.mainClass = mainClassName
