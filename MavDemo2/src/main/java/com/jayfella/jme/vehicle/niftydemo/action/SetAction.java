@@ -12,6 +12,7 @@ import com.jme3.renderer.Renderer;
 import com.jme3.renderer.opengl.GLRenderer;
 import java.util.logging.Logger;
 import jme3utilities.MyString;
+import jme3utilities.nifty.dialog.AllowNull;
 import jme3utilities.nifty.dialog.DialogController;
 import jme3utilities.nifty.dialog.FloatDialog;
 import jme3utilities.nifty.dialog.IntegerDialog;
@@ -193,7 +194,7 @@ class SetAction {
 
         int maxDegree = renderer.getLimits().get(Limits.TextureAnisotropy);
         DialogController controller
-                = new IntegerDialog("Set", 1, maxDegree, false);
+                = new IntegerDialog("Set", 1, maxDegree, AllowNull.No);
         MainHud mainHud = MavDemo2.findAppState(MainHud.class);
         mainHud.showTextEntryDialog("Enter degree of filtering:",
                 defaultText, ActionPrefix.setDefaultAniso, controller);
@@ -207,7 +208,7 @@ class SetAction {
         String defaultText = Integer.toString(numSpaces);
 
         DialogController controller
-                = new IntegerDialog("Set", 0, Integer.MAX_VALUE, false);
+                = new IntegerDialog("Set", 0, Integer.MAX_VALUE, AllowNull.No);
         MainHud mainHud = MavDemo2.findAppState(MainHud.class);
         mainHud.showTextEntryDialog("Enter number of spaces:",
                 defaultText, ActionPrefix.setDumpIndentSpaces, controller);
@@ -229,7 +230,7 @@ class SetAction {
         String defaultText = Integer.toString(maxChildren);
 
         DialogController controller
-                = new IntegerDialog("Set", 0, Integer.MAX_VALUE, false);
+                = new IntegerDialog("Set", 0, Integer.MAX_VALUE, AllowNull.No);
         MainHud mainHud = MavDemo2.findAppState(MainHud.class);
         mainHud.showTextEntryDialog("Enter max number of children:",
                 defaultText, ActionPrefix.setDumpMaxChildren, controller);
@@ -244,7 +245,7 @@ class SetAction {
         String defaultText = Float.toString(length);
 
         DialogController controller = new FloatDialog("Set", 0f,
-                Float.MAX_VALUE, false);
+                Float.MAX_VALUE, AllowNull.No);
         MainHud mainHud = MavDemo2.findAppState(MainHud.class);
         mainHud.showTextEntryDialog("Enter axes length, in world units:",
                 defaultText, ActionPrefix.setPhysicsAxes, controller);
@@ -260,7 +261,7 @@ class SetAction {
         String defaultText = Integer.toString(numIterations);
 
         DialogController controller
-                = new IntegerDialog("Set", 1, Integer.MAX_VALUE, false);
+                = new IntegerDialog("Set", 1, Integer.MAX_VALUE, AllowNull.No);
         MainHud mainHud = MavDemo2.findAppState(MainHud.class);
         mainHud.showTextEntryDialog("Enter number of solver iterations:",
                 defaultText, ActionPrefix.setPhysicsIterations, controller);
@@ -274,7 +275,7 @@ class SetAction {
         String defaultText = Float.toString(margin);
 
         DialogController controller = new FloatDialog("Set", Float.MIN_VALUE,
-                Float.MAX_VALUE, false);
+                Float.MAX_VALUE, AllowNull.No);
         MainHud mainHud = MavDemo2.findAppState(MainHud.class);
         mainHud.showTextEntryDialog(
                 "Enter margin for new shapes, in physics-space units:",
@@ -290,7 +291,7 @@ class SetAction {
         String defaultText = Float.toString(speed);
 
         DialogController controller
-                = new FloatDialog("Set", 0f, Float.MAX_VALUE, false);
+                = new FloatDialog("Set", 0f, Float.MAX_VALUE, AllowNull.No);
         MainHud mainHud = MavDemo2.findAppState(MainHud.class);
         mainHud.showTextEntryDialog("Enter speedup factor:",
                 defaultText, ActionPrefix.setPhysicsSpeed, controller);
@@ -306,7 +307,7 @@ class SetAction {
         String defaultText = Float.toString(timeStep);
 
         DialogController controller = new FloatDialog("Set", Float.MIN_VALUE,
-                Float.MAX_VALUE, false);
+                Float.MAX_VALUE, AllowNull.No);
         MainHud mainHud = MavDemo2.findAppState(MainHud.class);
         mainHud.showTextEntryDialog("Enter timestep, in seconds:", defaultText,
                 ActionPrefix.setPhysicsTimeStep, controller);
@@ -321,7 +322,7 @@ class SetAction {
         String defaultText = Float.toString(mass);
 
         DialogController controller = new FloatDialog("Set", Float.MIN_VALUE,
-                Float.MAX_VALUE, false);
+                Float.MAX_VALUE, AllowNull.No);
         MainHud mainHud = MavDemo2.findAppState(MainHud.class);
         mainHud.showTextEntryDialog("Enter base mass of prop, in kilograms:",
                 defaultText, ActionPrefix.setPropDescaledMass, controller);
@@ -336,7 +337,7 @@ class SetAction {
         String defaultText = Float.toString(mass);
 
         DialogController controller = new FloatDialog("Set", Float.MIN_VALUE,
-                Float.MAX_VALUE, false);
+                Float.MAX_VALUE, AllowNull.No);
         MainHud mainHud = MavDemo2.findAppState(MainHud.class);
         mainHud.showTextEntryDialog("Enter mass of prop, in kilograms:",
                 defaultText, ActionPrefix.setPropMass, controller);
@@ -351,7 +352,7 @@ class SetAction {
         String defaultText = Float.toString(scale);
 
         DialogController controller = new FloatDialog("Set", Float.MIN_VALUE,
-                Float.MAX_VALUE, false);
+                Float.MAX_VALUE, AllowNull.No);
         MainHud mainHud = MavDemo2.findAppState(MainHud.class);
         mainHud.showTextEntryDialog(
                 "Enter scale of prop, in world units per model unit:",
