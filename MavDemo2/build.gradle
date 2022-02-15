@@ -2,7 +2,9 @@
 //   for this project. This initialization is applied in the "build.gradle"
 //   of the root project.
 
-apply plugin: 'application'
+plugins {
+    id 'application'
+}
 
 mainClassName = 'com.jayfella.jme.vehicle.niftydemo.MavDemo2'
 if (!hasProperty('mainClass')) {
@@ -35,16 +37,17 @@ task debugForceDialog(type: JavaExec) {
     args = ['--forceDialog']
     classpath sourceSets.main.runtimeClasspath
     debug true
-    main mainClassName
+    mainClass = mainClassName
 }
 
 task runForceDialog(type: JavaExec) {
     args = ['--forceDialog']
     classpath sourceSets.main.runtimeClasspath
-    main mainClassName
+    mainClass = mainClassName
 }
 
 // cleanup tasks
+
 clean.dependsOn('cleanDLLs', 'cleanDyLibs', 'cleanLogs', 'cleanSOs')
 clean.dependsOn('cleanScreenShots')
 task cleanDLLs(type: Delete) {
