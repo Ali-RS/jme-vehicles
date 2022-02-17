@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.logging.Logger;
 import jme3utilities.Validate;
 import jme3utilities.math.MyMath;
+import jme3utilities.ui.InputMode;
 
 /**
  * The state of all vehicles in MavDemo2.
@@ -186,8 +187,13 @@ public class Vehicles {
             selected = vehicle;
 
             if (vehicle != null) {
+                InputMode dim = MavDemo2.getApplication().getDefaultInputMode();
+                boolean dimEnabled = dim.isEnabled();
+
                 SpeedometerState speedometer
                         = new SpeedometerState(vehicle, SpeedUnit.MPH);
+                speedometer.setEnabled(dimEnabled);
+                dim.influence(speedometer);
                 boolean success = stateManager.attach(speedometer);
                 assert success;
 
@@ -199,12 +205,15 @@ public class Vehicles {
                 SteeringWheelState steeringWheel
                         = new SteeringWheelState(radius, new Vector3f(x, y, z));
                 steeringWheel.setVehicle(vehicle);
-                steeringWheel.setEnabled(true);
+                steeringWheel.setEnabled(dimEnabled);
+                dim.influence(steeringWheel);
                 success = stateManager.attach(steeringWheel);
                 assert success;
 
                 Engine engine = vehicle.getEngine();
                 TachometerState tachometer = new TachometerState(engine);
+                tachometer.setEnabled(dimEnabled);
+                dim.influence(tachometer);
                 success = stateManager.attach(tachometer);
                 assert success;
             }

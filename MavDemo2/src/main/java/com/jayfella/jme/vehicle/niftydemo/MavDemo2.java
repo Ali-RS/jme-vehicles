@@ -1,9 +1,11 @@
 package com.jayfella.jme.vehicle.niftydemo;
 
 import com.jayfella.jme.vehicle.ChunkManager;
+import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.examples.vehicles.GrandTourer;
 import com.jayfella.jme.vehicle.gui.CompassState;
+import com.jayfella.jme.vehicle.gui.SpeedometerState;
 import com.jayfella.jme.vehicle.niftydemo.action.Action;
 import com.jayfella.jme.vehicle.niftydemo.state.DemoState;
 import com.jayfella.jme.vehicle.niftydemo.view.Cameras;
@@ -32,6 +34,7 @@ import jme3utilities.nifty.bind.BindScreen;
 import jme3utilities.nifty.displaysettings.DsScreen;
 import jme3utilities.ui.DisplaySettings;
 import jme3utilities.ui.DisplaySizeLimits;
+import jme3utilities.ui.InputMode;
 
 /**
  * An application with a Nifty GUI to demonstrate the MaVehicles library. The
@@ -252,10 +255,16 @@ public class MavDemo2 extends GuiApplication {
         success = stateManager.attach(bindScreen);
         assert success;
 
-        stateManager.attachAll(
-                new ChunkManager(),
-                new CompassState()
-        );
+        ChunkManager chunk = new ChunkManager();
+        success = stateManager.attach(chunk);
+        assert success;
+
+        CompassState compass = new CompassState();
+        InputMode dim = MavDemo2.getApplication().getDefaultInputMode();
+        compass.setEnabled(dim.isEnabled());
+        dim.influence(compass);
+        success = stateManager.attach(compass);
+        assert success;
 
         PhysicsSpace physicsSpace = configurePhysics();
 
