@@ -78,7 +78,7 @@ public class Cameras {
         SignalTracker tracker = app.getSignals();
         ObstructionFilter obstructionFilter = new ObstructionFilter();
 
-        chase = new OrbitCamera(camera, tracker);
+        chase = new OrbitCamera("chase", camera, tracker);
         float lagSeconds = 0.5f;
         chase.setAzimuthTau(lagSeconds);
         chase.setObstructionFilter(obstructionFilter);
@@ -93,7 +93,7 @@ public class Cameras {
         boolean success = stateManager.attach(chase);
         assert success;
 
-        orbit = new OrbitCamera(camera, tracker);
+        orbit = new OrbitCamera("orbit", camera, tracker);
         orbit.setObstructionFilter(obstructionFilter);
         orbit.setSignalName(CameraSignal.Back, "FLYCAM_Backward");
         orbit.setSignalName(CameraSignal.DragToOrbit, "cameraDrag");

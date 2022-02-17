@@ -428,7 +428,7 @@ public class MavDemo1 extends SimpleApplication {
     private void attachOrbitCamera() {
         SignalMode signalMode = findAppState(SignalMode.class);
         SignalTracker tracker = signalMode.getSignalTracker();
-        OrbitCamera orbitCamera = new OrbitCamera(cam, tracker);
+        OrbitCamera orbitCamera = new OrbitCamera("orbit", cam, tracker);
 
         FilterAll filter = new FilterAll(true);
         orbitCamera.setObstructionFilter(filter);
