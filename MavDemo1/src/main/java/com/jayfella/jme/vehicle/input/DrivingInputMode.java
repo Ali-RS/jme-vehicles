@@ -41,8 +41,6 @@ public class DrivingInputMode extends InputMode {
      */
     final public static FunctionId F_FORWARD
             = new FunctionId("Vehicle Move");
-    final public static FunctionId F_HORN
-            = new FunctionId("Vehicle Horn");
     final public static FunctionId F_MAIN_BRAKE
             = new FunctionId("Vehicle Footbrake");
     final public static FunctionId F_PARKING_BRAKE
