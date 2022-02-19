@@ -194,8 +194,9 @@ public class DrivingInputMode extends InputMode {
         Vehicle vehicle = MavDemo1.getVehicle();
         Vehicle newVehicle;
         try {
-            newVehicle = vehicle.getClass().newInstance();
-        } catch (IllegalAccessException | InstantiationException exception) {
+            Class<? extends Vehicle> clazz = vehicle.getClass();
+            newVehicle = clazz.getDeclaredConstructor().newInstance();
+        } catch (ReflectiveOperationException exception) {
             throw new RuntimeException(exception);
         }
         MavDemo1 main = MavDemo1.getApplication();

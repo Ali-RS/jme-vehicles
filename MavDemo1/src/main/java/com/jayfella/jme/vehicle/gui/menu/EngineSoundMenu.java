@@ -86,8 +86,9 @@ class EngineSoundMenu extends AnimatedMenu {
             selectedSound = null;
         } else {
             try {
-                selectedSound = engineSound.getClass().newInstance();
-            } catch (IllegalAccessException | InstantiationException exception) {
+                Class<? extends Sound> clazz = engineSound.getClass();
+                selectedSound = clazz.getDeclaredConstructor().newInstance();
+            } catch (ReflectiveOperationException exception) {
                 throw new RuntimeException(exception);
             }
             AssetManager assetManager
