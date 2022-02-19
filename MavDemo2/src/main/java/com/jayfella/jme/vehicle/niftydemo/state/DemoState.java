@@ -7,6 +7,7 @@ import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.World;
 import com.jayfella.jme.vehicle.examples.worlds.Mountains;
 import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
+import com.jayfella.jme.vehicle.niftydemo.view.Cameras;
 import com.jayfella.jme.vehicle.niftydemo.view.View;
 import com.jme3.app.Application;
 import com.jme3.asset.AssetManager;
@@ -311,7 +312,7 @@ public class DemoState
         vehicles.removeSelected();
 
         addVehicle(newVehicle);
-
+        Cameras.update();
     }
 
     /**
