@@ -289,7 +289,8 @@ public class HelloMav extends SimpleApplication {
         cam.setRotation(new Quaternion(0f, 0.9987554f, -0.05f, 0f));
         flyCam.setEnabled(false);
 
-        OrbitCamera cameraController = new OrbitCamera(cam, signalTracker);
+        OrbitCamera cameraController
+                = new OrbitCamera("chase", cam, signalTracker);
         float lagSeconds = 0.5f;
         cameraController.setAzimuthTau(lagSeconds);
         Target cameraTarget = new Target() {
