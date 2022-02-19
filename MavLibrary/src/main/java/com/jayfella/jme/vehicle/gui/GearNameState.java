@@ -44,7 +44,7 @@ public class GearNameState extends CartoucheState {
     // CartoucheState methods
 
     /**
-     * Compare the enaged gear name to the displayed text and repopulate the
+     * Compare the engaged gear name to the displayed text and repopulate the
      * Node if they differ.
      */
     @Override

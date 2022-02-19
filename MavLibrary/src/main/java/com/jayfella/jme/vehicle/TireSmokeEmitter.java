@@ -52,7 +52,7 @@ public class TireSmokeEmitter extends BaseAppState {
     // constructors
 
     /**
-     * Instantiate an AppState for the specfied Vehicle.
+     * Instantiate an AppState for the specified Vehicle.
      *
      * @param vehicle which Vehicle to visualize smoke for (not null)
      */

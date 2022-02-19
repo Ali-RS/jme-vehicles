@@ -217,7 +217,7 @@ abstract public class Sky
         BoundingVolume boundingSphere
                 = new BoundingSphere(boundRadius, Vector3f.ZERO);
         /*
-         * Construct the Mesh, an Octasphere with 32 trianges.
+         * Construct the Mesh, an Octasphere with 32 triangles.
          */
         int numRefineSteps = 1;
         float meshRadius = 1_000f;

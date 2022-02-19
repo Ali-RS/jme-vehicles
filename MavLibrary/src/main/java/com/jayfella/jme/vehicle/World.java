@@ -147,7 +147,7 @@ abstract public class World
     /**
      * Create a Node for the identified scene chunk.
      *
-     * @param storeResult storage for the result (not null)
+     * @param chunkId which scene chunk
      */
     Node createChunk(Vector3i chunkId) {
         boolean cloneMaterials = false;

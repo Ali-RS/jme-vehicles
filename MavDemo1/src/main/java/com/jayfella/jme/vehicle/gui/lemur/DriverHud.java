@@ -40,7 +40,7 @@ import jme3utilities.mesh.DiscMesh;
  * </ul>
  * It indirectly manages:
  * <ul>
- * <li>the automatic-transmision mode indicator</li>
+ * <li>the automatic-transmission mode indicator</li>
  * <li>the gear-name indicator</li>
  * <li>the speedometer</li>
  * <li>the steering-wheel indicator</li>
