@@ -1,11 +1,9 @@
 package com.jayfella.jme.vehicle.niftydemo;
 
 import com.jayfella.jme.vehicle.ChunkManager;
-import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.examples.vehicles.GrandTourer;
 import com.jayfella.jme.vehicle.gui.CompassState;
-import com.jayfella.jme.vehicle.gui.SpeedometerState;
 import com.jayfella.jme.vehicle.niftydemo.action.Action;
 import com.jayfella.jme.vehicle.niftydemo.state.DemoState;
 import com.jayfella.jme.vehicle.niftydemo.view.Cameras;
@@ -24,7 +22,6 @@ import com.jme3.system.JmeVersion;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jme3utilities.Heart;
-import jme3utilities.MyCamera;
 import jme3utilities.MyString;
 import jme3utilities.debug.PerformanceAppState;
 import jme3utilities.minie.MinieVersion;
@@ -278,6 +275,9 @@ public class MavDemo2 extends GuiApplication {
         vehicle.load(assetManager);
         demoState.addVehicle(vehicle);
 
+        Cameras.resetFov();
+        demoState.getWorld().resetCameraPosition();
+
         success = stateManager.attach(displaySettingsScreen);
         assert success;
         /*
@@ -386,7 +386,5 @@ public class MavDemo2 extends GuiApplication {
          */
         setDisplayFps(false);
         setDisplayStatView(false);
-
-        MyCamera.setYTangent(cam, 2f);
     }
 }
