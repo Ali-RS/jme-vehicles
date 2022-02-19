@@ -25,7 +25,7 @@ public class TireEditor extends Container {
 
         Button printButton = new Button("Print Data");
         printButton.addClickCommands(source -> {
-            System.out.println(tireModel.toString());
+            System.out.println(tireModel);
         });
 
         addChild(tabbedPanel);
