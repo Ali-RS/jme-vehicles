@@ -598,11 +598,11 @@ public class Menus {
 
         switch (remainder) {
             case "Hide all tools":
-                // TODO
+                hud.tools.setAllEnabled(false);
                 break;
 
             case "Show all tools":
-                // TODO
+                hud.tools.setAllEnabled(true);
                 break;
 
             case "Show the tools tool":

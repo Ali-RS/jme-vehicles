@@ -33,6 +33,8 @@ public class Tools {
     final private PhysicsTool physics;
     final private ToolsTool tools;
     final private ViewTool view;
+
+    final private Tool[] allTools;
     // *************************************************************************
     // constructors
 
@@ -53,6 +55,10 @@ public class Tools {
         tools.setEnabled(true);
 
         view = new ViewTool(screenController);
+
+        allTools = new Tool[]{
+            driving, dumpPhysics, dumpScene, physics, tools, view
+        };
     }
     // *************************************************************************
     // new methods exposed
@@ -63,8 +69,7 @@ public class Tools {
      * @param stateManager (not null, modified)
      */
     public void attachAll(AppStateManager stateManager) {
-        stateManager.attachAll(
-                driving, dumpPhysics, dumpScene, physics, tools, view);
+        stateManager.attachAll(allTools);
     }
 
     /**
@@ -134,9 +139,21 @@ public class Tools {
     }
 
     /**
+     * Show or hide all tools.
+     *
+     * @param newState the desired state
+     */
+    public void setAllEnabled(boolean newState) {
+        for (Tool tool : allTools) {
+            tool.setEnabled(newState);
+        }
+    }
+
+    /**
      * Show or hide the named Tool without selecting it.
      *
      * @param toolName which Tool to show or hide (not null, not empty)
+     * @param newState the desired state
      */
     void setEnabled(String toolName, boolean newState) {
         Validate.nonEmpty(toolName, "tool name");
