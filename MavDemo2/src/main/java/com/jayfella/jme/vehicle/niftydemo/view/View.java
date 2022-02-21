@@ -198,9 +198,9 @@ public class View extends SimpleAppState {
     }
 
     /**
-     * TODO
+     * Replace the currently selected sky with the specified one.
      *
-     * @param newSky
+     * @param newSky (not null)
      */
     public void setSky(Sky newSky) {
         if (sky != null) {

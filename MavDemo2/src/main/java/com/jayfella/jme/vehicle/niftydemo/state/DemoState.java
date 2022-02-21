@@ -109,7 +109,7 @@ public class DemoState
     // new methods exposed
 
     /**
-     * TODO
+     * Add the specified vehicle.
      *
      * @param vehicle (not null)
      */
@@ -122,7 +122,7 @@ public class DemoState
     }
 
     /**
-     * TODO
+     * Delete all props.
      */
     public void deleteAllProps() {
         Collection<Prop> collection = world.listProps();
@@ -295,7 +295,7 @@ public class DemoState
     }
 
     /**
-     * TODO
+     * Select the specified prop.
      *
      * @param prop
      */
@@ -304,7 +304,7 @@ public class DemoState
     }
 
     /**
-     * TODO
+     * Replace the selected vehicle with an unloaded one.
      *
      * @param newVehicle (not loaded)
      */
@@ -319,7 +319,7 @@ public class DemoState
     }
 
     /**
-     * TODO
+     * Replace the current World with an unloaded one.
      *
      * @param newWorld (not loaded)
      */

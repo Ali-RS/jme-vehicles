@@ -133,9 +133,9 @@ public class Cameras {
     }
 
     /**
-     * TODO
+     * Determine the CameraMode to apply during the next update.
      *
-     * @return
+     * @return an enum value
      */
     public static CameraMode getMode() {
         return desiredMode;
@@ -237,7 +237,7 @@ public class Cameras {
     // private methods
 
     /**
-     * TODO
+     * Access the target for chasing/orbiting behavior.
      *
      * @param orbitCam
      * @return
@@ -255,10 +255,10 @@ public class Cameras {
     }
 
     /**
-     * TODO
+     * Reconfigure the specified camera controller for the specified Vehicle.
      *
-     * @param orbitCamera
-     * @param targetVehicle
+     * @param orbitCamera the camera control to reconfigure (not null)
+     * @param targetVehicle the desired target (not null)
      */
     private static void retarget(OrbitCamera orbitCamera,
             Vehicle targetVehicle) {
