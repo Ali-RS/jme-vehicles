@@ -27,6 +27,7 @@ public class Tools {
     // *************************************************************************
     // fields
 
+    final private DrivingTool driving;
     final private DumpPhysicsTool dumpPhysics;
     final private DumpSceneTool dumpScene;
     final private PhysicsTool physics;
@@ -43,6 +44,7 @@ public class Tools {
     public Tools(MainHud screenController) {
         Validate.nonNull(screenController, "screen controller");
 
+        driving = new DrivingTool(screenController);
         dumpPhysics = new DumpPhysicsTool(screenController);
         dumpScene = new DumpSceneTool(screenController);
         physics = new PhysicsTool(screenController);
@@ -61,7 +63,8 @@ public class Tools {
      * @param stateManager (not null, modified)
      */
     public void attachAll(AppStateManager stateManager) {
-        stateManager.attachAll(dumpPhysics, dumpScene, physics, tools, view);
+        stateManager.attachAll(
+                driving, dumpPhysics, dumpScene, physics, tools, view);
     }
 
     /**

@@ -45,6 +45,7 @@ class ToolsTool extends Tool {
     @Override
     protected List<String> listCheckBoxes() {
         List<String> result = super.listCheckBoxes();
+        result.add("toolsDriving");
         result.add("toolsDumpPhysics");
         result.add("toolsDumpScene");
         result.add("toolsPhysics");

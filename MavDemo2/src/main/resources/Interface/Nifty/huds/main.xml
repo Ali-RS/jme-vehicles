@@ -66,6 +66,48 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
 
         <layer id="toolsLayer" childLayout="absolute-inside">
 
+            <control name="window" id="drivingTool" title="Driving Tool"
+                     backgroundColor="#663f"
+                     hideOnClose="true"
+                     height="172px" width="250px" x="262" y="594">
+                <panel childLayout="vertical">
+                    <panel height="5px"/>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="engineRunningCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  engine running"/>
+                    </panel>
+                    <control name="radioButtonGroup" id="atGroup"/>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="radioButton" id="reverseRadioButton"
+                                 group="atGroup"/>
+                        <control name="label" text="    Reverse"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="radioButton" id="driveRadioButton"
+                                 group="atGroup"/>
+                        <control name="label" text="    Drive"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="label" text="Gear engaged:  "/>
+                        <control name="label" id="drivingGear"
+                                 backgroundColor="#ffff"
+                                 color="#000f"
+                                 textHAlign="center"
+                                 width="60px"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="label" text="Brakes engaged:    "/>
+                        <control name="checkbox" id="mainBrakeCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  main    "/>
+                        <control name="checkbox" id="parkingBrakeCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  parking"/>
+                    </panel>
+                </panel>
+            </control>
+
             <control name="window" id="dumpPhysicsTool" title="Dump Physics Tool"
                      backgroundColor="#663f"
                      hideOnClose="true"
@@ -292,10 +334,21 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
             <control name="window" id="toolsTool" title="Tools Tool"
                      backgroundColor="#663f"
                      hideOnClose="true"
-                     height="150px" width="230px" x="2" y="300">
+                     height="174px" width="230px" x="2" y="277">
                 <panel childLayout="vertical">
                     <panel height="5px"/>
 
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="toolsDrivingCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  driving"/>
+                        <panel/>
+                        <control name="label" id="toolsDrivingStatus"
+                                 backgroundColor="#ffff"
+                                 color="#000f"
+                                 textHAlign="center"
+                                 width="104px"/>
+                    </panel>
                     <panel childLayout="horizontal" height="28px">
                         <control name="checkbox" id="toolsDumpPhysicsCheckBox"
                                  width="20px"/>
@@ -347,7 +400,7 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
             <control name="window" id="viewTool" title="View Tool"
                      backgroundColor="#663f"
                      hideOnClose="true"
-                     height="192px" width="285px" x="2" y="456">
+                     height="197px" width="255px" x="2" y="455">
                 <panel childLayout="vertical">
                     <panel height="5px"/>
                     <panel childLayout="horizontal" height="28px">
