@@ -116,6 +116,9 @@ public class DemoState
     final public void addVehicle(Vehicle vehicle) {
         vehicles.add(vehicle);
         vehicles.select(vehicle);
+        
+        Cameras.resetFov();
+        world.resetCameraPosition();
     }
 
     /**

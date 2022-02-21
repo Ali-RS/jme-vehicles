@@ -298,9 +298,6 @@ public class MavDemo2 extends GuiApplication {
         vehicle.load(assetManager);
         demoState.addVehicle(vehicle);
 
-        Cameras.resetFov();
-        demoState.getWorld().resetCameraPosition();
-
         success = stateManager.attach(displaySettingsScreen);
         assert success;
         /*
