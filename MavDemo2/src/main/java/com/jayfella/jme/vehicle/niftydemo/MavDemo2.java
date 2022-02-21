@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import jme3utilities.Heart;
 import jme3utilities.MyString;
+import jme3utilities.SignalTracker;
 import jme3utilities.debug.PerformanceAppState;
 import jme3utilities.minie.MinieVersion;
 import jme3utilities.minie.PhysicsDumper;
@@ -44,6 +45,11 @@ public class MavDemo2 extends GuiApplication {
     // constants and loggers
 
     /**
+     * steering-control parameters
+     */
+    final private static float maxSteerAngle = 1f;
+    final private static float turnRate = 0.5f;
+    /**
      * message logger for this class
      */
     final private static Logger logger
@@ -63,6 +69,10 @@ public class MavDemo2 extends GuiApplication {
      * Nifty screen for editing display settings
      */
     private static DsScreen displaySettingsScreen;
+    /**
+     * steer angle from the previous update
+     */
+    private float steerAngle = 0f;
     /**
      * application instance
      */
@@ -234,6 +244,19 @@ public class MavDemo2 extends GuiApplication {
         } else {
             Cameras.update();
         }
+
+        Vehicle vehicle = MavDemo2.getDemoState().getVehicles().getSelected();
+        if (vehicle.getEngine().isRunning()) {
+            SignalTracker signals = getSignals();
+            float accelerate = signals.test("accelerate") ? 1f : 0f;
+            vehicle.setAccelerateSignal(accelerate);
+
+            float mainBrake = signals.test("mainBrake") ? 1f : 0f;
+            float parkingBrake = signals.test("parkingBrake") ? 1f : 0f;
+            vehicle.setBrakeSignals(mainBrake, parkingBrake);
+
+            updateSteering(tpf);
+        }
     }
     // *************************************************************************
     // private methods
@@ -386,5 +409,29 @@ public class MavDemo2 extends GuiApplication {
          */
         setDisplayFps(false);
         setDisplayStatView(false);
+    }
+
+    /**
+     * Implement progressive steering, for better control and more fun.
+     *
+     * @param tpf the time interval between frames (in seconds, &ge;0)
+     */
+    private void updateSteering(float tpf) {
+        SignalTracker signals = getSignals();
+
+        if (signals.test("steerLeft")) {
+            steerAngle += tpf * turnRate;
+            steerAngle = Math.min(steerAngle, maxSteerAngle);
+
+        } else if (signals.test("steerRight")) {
+            steerAngle -= tpf * turnRate;
+            steerAngle = Math.max(steerAngle, -maxSteerAngle);
+
+        } else {
+            steerAngle = 0f;
+        }
+
+        Vehicle vehicle = MavDemo2.getDemoState().getVehicles().getSelected();
+        vehicle.steer(steerAngle);
     }
 }

@@ -279,6 +279,14 @@ public class Menus {
     }
 
     /**
+     * Drive the selected Vehicle.
+     */
+    private static void drive() {
+        Vehicle vehicle = MavDemo2.getDemoState().getVehicles().getSelected();
+        vehicle.getEngine().setRunning(true);
+    }
+
+    /**
      * Handle a "select menuItem" action for a submenu.
      *
      * @param menuName name of the top-level menu (not null)
@@ -333,20 +341,20 @@ public class Menus {
         PopupMenuBuilder builder = new PopupMenuBuilder();
         switch (menuName) {
             case "Drive":
-                // TODO
-                break;
+                drive();
+                return true;
 
             case "Help":
                 buildHelpMenu(builder);
                 break;
 
-            case "Quit":
-                MavDemo2.getApplication().stop();
-                return true;
-
             case "Props":
                 buildPropsMenu(builder);
                 break;
+
+            case "Quit":
+                MavDemo2.getApplication().stop();
+                return true;
 
             case "Settings":
                 buildSettingsMenu(builder);
