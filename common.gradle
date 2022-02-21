@@ -32,7 +32,7 @@ tasks.withType(JavaExec) { // Java runtime options:
 }
 
 repositories {
-    //mavenLocal()
+    //mavenLocal() // to use local SNAPSHOTs of libraries
     mavenCentral()
     maven { url 'https://jcenter.bintray.com' } // for Lemur and SimMath
 }
