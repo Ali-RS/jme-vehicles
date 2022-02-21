@@ -368,6 +368,9 @@ public class Menus {
     private static void drive() {
         Vehicle vehicle = MavDemo2.getDemoState().getVehicles().getSelected();
         vehicle.getEngine().setRunning(true);
+
+        MainHud mainHud = MavDemo2.findAppState(MainHud.class);
+        mainHud.findTool("driving").setEnabled(true);
     }
 
     /**
