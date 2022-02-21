@@ -5,7 +5,7 @@
 dependencies {
     implementation 'org.jmonkeyengine:jme3-desktop:' + jme3Version
     implementation minieCoordinates
-    implementation 'com.github.stephengold:SkyControl:1.0.1'
+    implementation skyControlCoordinates
 
     implementation project(':MavLibrary')
     //compileOnly 'com.github.stephengold:MaVehicles:' + maVehiclesVersion

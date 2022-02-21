@@ -1,5 +1,7 @@
 package com.jayfella.jme.vehicle.niftydemo;
 
+import com.github.stephengold.garrett.GarrettVersion;
+import com.github.stephengold.jmepower.JmePowerVersion;
 import com.jayfella.jme.vehicle.Sky;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.World;
@@ -20,13 +22,20 @@ import com.jayfella.jme.vehicle.examples.worlds.Playground;
 import com.jayfella.jme.vehicle.examples.worlds.Racetrack;
 import com.jayfella.jme.vehicle.niftydemo.action.ActionPrefix;
 import com.jayfella.jme.vehicle.niftydemo.view.View;
+import com.jme3.system.JmeVersion;
+import de.lessvoid.nifty.Nifty;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jme3utilities.Heart;
 import jme3utilities.MyString;
+import jme3utilities.minie.MinieVersion;
+import jme3utilities.nifty.LibraryVersion;
 import jme3utilities.nifty.PopupMenuBuilder;
 import jme3utilities.nifty.bind.BindScreen;
 import jme3utilities.nifty.displaysettings.DsScreen;
+import jme3utilities.sky.Constants;
 import jme3utilities.ui.InputMode;
+import jme3utilities.ui.UiVersion;
 
 /**
  * Menus in the main heads-up display (HUD) of MavDemo2.
@@ -232,6 +241,58 @@ public class Menus {
     // private methods
 
     /**
+     * Display an "About MavDemo2" dialog.
+     */
+    private static void aboutDialog() {
+        Nifty nifty = MavDemo2.getApplication().getNifty();
+        String niftyVersion = nifty.getVersion();
+        String text = "MavDemo2\n\nYou are currently running MavDemo2, a "
+                + "tech demo for jMonkeyEngine vehicles.\n\nThe version you "
+                + "are using incorporates the following libraries:";
+        text += String.format("%n   jme3-core version=%s hash=%s (BSD license)",
+                MyString.quote(JmeVersion.FULL_NAME),
+                JmeVersion.GIT_SHORT_HASH);
+        text += String.format("%n   nifty version=%s (BSD license)",
+                MyString.quote(niftyVersion));
+        text += String.format("%n   Acorus version=%s (BSD license)",
+                MyString.quote(UiVersion.versionShort()));
+        text += String.format("%n   Garrett version=%s (BSD license)",
+                MyString.quote(GarrettVersion.versionShort()));
+        text += String.format("%n   Heart version=%s (BSD license)",
+                MyString.quote(Heart.versionShort()));
+        text += String.format("%n   JmePower version=%s (BSD license)",
+                MyString.quote(JmePowerVersion.versionShort()));
+        text += String.format("%n   Minie version=%s (BSD license)",
+                MyString.quote(MinieVersion.versionShort()));
+        text += String.format("%n   SkyControl version=%s (BSD license)",
+                MyString.quote(Constants.versionShort()));
+        text += String.format(
+                "%n   jme3-utilities-nifty version=%s (BSD license)",
+                MyString.quote(LibraryVersion.versionShort()));
+
+        text += String.format("%n   jme3-desktop (BSD license)");
+        text += String.format("%n   jme3-effects (BSD license)");
+        text += String.format("%n   jme3-jogg (BSD license)");
+        text += String.format("%n   jme3-lwjgl3 (BSD license)");
+        text += String.format("%n   jme3-plugins (BSD license)");
+        text += String.format("%n   jme3-terrain (BSD license)");
+
+        text += String.format("%n   nifty (BSD license)");
+        text += String.format("%n   nifty-default-controls (BSD license)");
+
+        text += String.format("%n   jme-ttf (%s)",
+                "part FPL license, part BSD license");
+        text += String.format("%n   sfntly (Apache license)");
+        text += String.format("%n   sim-math (BSD license)");
+
+        text += String.format("%n%n");
+
+        MainHud hud = MavDemo2.findAppState(MainHud.class);
+        hud.closeAllPopups();
+        hud.showInfoDialog("About MavDemo2", text);
+    }
+
+    /**
      * Build a "Help" menu.
      *
      * @param builder (not null, modified)
@@ -299,6 +360,10 @@ public class Menus {
 
         boolean handled;
         switch (menuName) {
+            case "Help":
+                handled = menuHelp(remainder);
+                break;
+
             case "Props":
                 handled = menuProps(remainder);
                 break;
@@ -401,7 +466,7 @@ public class Menus {
 
         switch (remainder) {
             case "About":
-                // TODO
+                aboutDialog();
                 break;
 
             case "Attribution":

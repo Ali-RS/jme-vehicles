@@ -27,6 +27,7 @@ dependencies {
     implementation garrettCoordinates
     implementation 'com.github.stephengold:JmePower:0.4.3'
     implementation minieCoordinates
+    implementation skyControlCoordinates
 
     implementation project(':MavCommon')
     implementation project(':MavLibrary')
