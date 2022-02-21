@@ -5,6 +5,7 @@ import com.github.stephengold.jmepower.JmePowerVersion;
 import com.jayfella.jme.vehicle.Sky;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.World;
+import com.jayfella.jme.vehicle.examples.Attribution;
 import com.jayfella.jme.vehicle.examples.skies.AnimatedDaySky;
 import com.jayfella.jme.vehicle.examples.skies.AnimatedNightSky;
 import com.jayfella.jme.vehicle.examples.skies.PurpleNebulaSky;
@@ -51,6 +52,19 @@ public class Menus {
      */
     final private static Logger logger
             = Logger.getLogger(Menus.class.getName());
+    /**
+     * message to be displayed in the attribution dialog
+     */
+    final private static String attributionMessage = Attribution.plainMessage(
+            Attribution.opelGtRetopo,
+            Attribution.fordRanger,
+            Attribution.nissanGtr,
+            Attribution.hcr2Buggy,
+            Attribution.hcr2Rotator,
+            Attribution.modernHatchbackLowPoly,
+            Attribution.batcPack,
+            Attribution.raceSuit,
+            Attribution.classicMotorcycle);
     /**
      * level separator in menu paths
      */
@@ -293,6 +307,15 @@ public class Menus {
     }
 
     /**
+     * Display an attribution dialog.
+     */
+    private static void attributionDialog() {
+        MainHud hud = MavDemo2.findAppState(MainHud.class);
+        hud.closeAllPopups();
+        hud.showInfoDialog("Attribution", attributionMessage);
+    }
+
+    /**
      * Build a "Help" menu.
      *
      * @param builder (not null, modified)
@@ -470,7 +493,7 @@ public class Menus {
                 break;
 
             case "Attribution":
-                // TODO
+                attributionDialog();
                 break;
 
             default:
