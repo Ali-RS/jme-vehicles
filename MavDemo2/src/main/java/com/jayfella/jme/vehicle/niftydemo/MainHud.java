@@ -4,6 +4,7 @@ import com.jayfella.jme.vehicle.niftydemo.tool.Tools;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import java.util.logging.Logger;
+import jme3utilities.InitialState;
 import jme3utilities.nifty.GuiScreenController;
 import jme3utilities.ui.InputMode;
 
@@ -37,7 +38,7 @@ public class MainHud extends GuiScreenController {
      * initialization.
      */
     MainHud() {
-        super("main", "/Interface/Nifty/huds/main.xml", true);
+        super("main", "/Interface/Nifty/huds/main.xml", InitialState.Enabled);
 
         InputMode dim = MavDemo2.getApplication().getDefaultInputMode();
         dim.setConfigPath("Interface/bindings/default.properties");
