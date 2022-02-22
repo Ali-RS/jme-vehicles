@@ -1,25 +1,12 @@
 package com.jayfella.jme.vehicle.niftydemo.state;
 
 import com.jayfella.jme.vehicle.Prop;
-import com.jayfella.jme.vehicle.examples.props.Barrel1;
-import com.jayfella.jme.vehicle.examples.props.Barrel2;
-import com.jayfella.jme.vehicle.examples.props.Barrier;
-import com.jayfella.jme.vehicle.examples.props.BarrierPainted;
-import com.jayfella.jme.vehicle.examples.props.Cone1;
-import com.jayfella.jme.vehicle.examples.props.Cone2;
-import com.jayfella.jme.vehicle.examples.props.FencedBarrier;
-import com.jayfella.jme.vehicle.examples.props.Marker;
-import com.jayfella.jme.vehicle.examples.props.ShortBarrier;
-import com.jayfella.jme.vehicle.examples.props.ShortBarrierPainted;
-import com.jayfella.jme.vehicle.examples.props.ShortBarrierSigned;
-import com.jayfella.jme.vehicle.examples.props.WallBarrier;
-import com.jayfella.jme.vehicle.examples.props.WallBarrierPainted;
 import com.jayfella.jme.vehicle.examples.props.WarningSign;
-import com.jayfella.jme.vehicle.examples.props.Weight;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.util.clone.Cloner;
 import com.jme3.util.clone.JmeCloneable;
+import java.lang.reflect.Constructor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jme3utilities.Validate;
@@ -34,6 +21,11 @@ public class PropProposal implements JmeCloneable {
     // *************************************************************************
     // constants and loggers
 
+    /**
+     * argument-type array for getDeclaredConstructor()
+     */
+    final private static Class[] twoFloats
+            = new Class[]{float.class, float.class};
     /**
      * message logger for this class
      */
@@ -87,45 +79,13 @@ public class PropProposal implements JmeCloneable {
     // public methods
 
     /**
-     * Instantiate a Prop based on this proposal.
+     * Instantiate an unloaded Prop based on this proposal.
      *
      * @return a new instance
      */
     public Prop create() {
-        switch (propType) {
-            case Barrel1:
-                return new Barrel1(scaleFactor, totalMass);
-            case Barrel2:
-                return new Barrel2(scaleFactor, totalMass);
-            case Barrier:
-                return new Barrier(scaleFactor, totalMass);
-            case BarrierPainted:
-                return new BarrierPainted(scaleFactor, totalMass);
-            case Cone1:
-                return new Cone1(scaleFactor, totalMass);
-            case Cone2:
-                return new Cone2(scaleFactor, totalMass);
-            case FencedBarrier:
-                return new FencedBarrier(scaleFactor, totalMass);
-            case Marker:
-                return new Marker(scaleFactor, totalMass);
-            case ShortBarrier:
-                return new ShortBarrier(scaleFactor, totalMass);
-            case ShortBarrierPainted:
-                return new ShortBarrierPainted(scaleFactor, totalMass);
-            case ShortBarrierSigned:
-                return new ShortBarrierSigned(scaleFactor, totalMass);
-            case WallBarrier:
-                return new WallBarrier(scaleFactor, totalMass);
-            case WallBarrierPainted:
-                return new WallBarrierPainted(scaleFactor, totalMass);
-            case WarningSign:
-                return new WarningSign(scaleFactor, totalMass);
-            case Weight:
-                return new Weight(scaleFactor, totalMass);
-            default:
-                throw new IllegalArgumentException("PropType = " + toString());
-        }
+        Prop result = create(propType, scaleFactor, totalMass);
+        return result;
     }
 
     /**
@@ -329,12 +289,19 @@ public class PropProposal implements JmeCloneable {
      *
      * @param type the desired type (not null)
      */
+    @SuppressWarnings("unchecked")
     public void setType(PropType type) {
         Validate.nonNull(type, "type");
 
         if (type != propType) {
             propType = type;
             initialOrientation.loadIdentity();
+
+            float scaleFactor = 1f;
+            float totalMass = 1f;
+            Prop tmpProp = create(type, scaleFactor, totalMass);
+            float descaledMass = tmpProp.defaultDescaledMass();
+            totalMass = descaledMass * MyMath.cube(scaleFactor);
         }
     }
 
@@ -396,6 +363,26 @@ public class PropProposal implements JmeCloneable {
             PropProposal clone = (PropProposal) super.clone();
             return clone;
         } catch (CloneNotSupportedException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+    // *************************************************************************
+    // private methods
+
+    private static Prop create(PropType propType, float scaleFactor,
+            float totalMass) {
+        String className = "com.jayfella.jme.vehicle.examples.props."
+                + propType.toString();
+        try {
+            Prop result;
+            Class<? extends Prop> clazz
+                    = (Class<? extends Prop>) Class.forName(className);
+            Constructor<? extends Prop> constructor
+                    = clazz.getDeclaredConstructor(twoFloats);
+            result = constructor.newInstance(scaleFactor, totalMass);
+            return result;
+
+        } catch (ReflectiveOperationException exception) {
             throw new RuntimeException(exception);
         }
     }
