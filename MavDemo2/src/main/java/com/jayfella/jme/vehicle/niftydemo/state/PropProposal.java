@@ -76,7 +76,7 @@ public class PropProposal implements JmeCloneable {
         reset();
     }
     // *************************************************************************
-    // public methods
+    // new methods exposed
 
     /**
      * Instantiate an unloaded Prop based on this proposal.
@@ -114,7 +114,8 @@ public class PropProposal implements JmeCloneable {
     }
 
     /**
-     * Test whether the Prop will be automatically selected after its creation.
+     * Test whether the proposed Prop will be automatically selected after its
+     * creation.
      *
      * @return true if selected, otherwise false
      */
@@ -132,7 +133,7 @@ public class PropProposal implements JmeCloneable {
     }
 
     /**
-     * Copy the initial location.
+     * Copy the proposed initial location.
      *
      * @param storeResult storage for the result (modified if not null)
      * @return a location vector (in world coordinates, either storeResult or a
@@ -152,7 +153,7 @@ public class PropProposal implements JmeCloneable {
     }
 
     /**
-     * Determine the initial orientation.
+     * Determine the proposed initial orientation.
      *
      * @param storeResult storage for the result (modified if not null)
      * @return a unit quaternion (in world coordinates, either storeResult or a
@@ -289,7 +290,6 @@ public class PropProposal implements JmeCloneable {
      *
      * @param type the desired type (not null)
      */
-    @SuppressWarnings("unchecked")
     public void setType(PropType type) {
         Validate.nonNull(type, "type");
 
@@ -369,17 +369,17 @@ public class PropProposal implements JmeCloneable {
     // *************************************************************************
     // private methods
 
+    @SuppressWarnings("unchecked")
     private static Prop create(PropType propType, float scaleFactor,
             float totalMass) {
         String className = "com.jayfella.jme.vehicle.examples.props."
                 + propType.toString();
         try {
-            Prop result;
             Class<? extends Prop> clazz
                     = (Class<? extends Prop>) Class.forName(className);
             Constructor<? extends Prop> constructor
                     = clazz.getDeclaredConstructor(twoFloats);
-            result = constructor.newInstance(scaleFactor, totalMass);
+            Prop result = constructor.newInstance(scaleFactor, totalMass);
             return result;
 
         } catch (ReflectiveOperationException exception) {
