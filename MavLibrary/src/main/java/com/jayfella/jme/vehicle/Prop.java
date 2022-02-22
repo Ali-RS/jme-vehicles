@@ -142,11 +142,11 @@ abstract public class Prop
         }
 
         Vector3f endLocation = dropLocation.add(0f, -999f, 0f);
-        Transform startTransform = new Transform(dropLocation);
-        Transform endTransform = new Transform(endLocation);
+        Transform startTransform = new Transform(dropLocation, dropOrientation);
+        Transform endTransform = new Transform(endLocation, dropOrientation);
         PhysicsSpace physicsSpace = world.getPhysicsSpace();
-        List<PhysicsSweepTestResult> sweepTest
-                = physicsSpace.sweepTest(sweepShape, startTransform, endTransform);
+        List<PhysicsSweepTestResult> sweepTest = physicsSpace.sweepTest(
+                sweepShape, startTransform, endTransform);
         /*
          * Find the closest contact with another collision object,
          * typically the pavement.
