@@ -141,33 +141,13 @@ abstract public class Prop
             assert mainRbc != null;
         }
 
-        Vector3f endLocation = dropLocation.add(0f, -999f, 0f);
-        Transform startTransform = new Transform(dropLocation, dropOrientation);
-        Transform endTransform = new Transform(endLocation, dropOrientation);
-        PhysicsSpace physicsSpace = world.getPhysicsSpace();
-        List<PhysicsSweepTestResult> sweepTest = physicsSpace.sweepTest(
-                sweepShape, startTransform, endTransform);
-        /*
-         * Find the closest contact with another collision object,
-         * typically the pavement.
-         */
-        float closestFraction = 9f;
-        for (PhysicsSweepTestResult hit : sweepTest) {
-            if (hit.getCollisionObject() != mainRbc) {
-                float hitFraction = hit.getHitFraction();
-                if (hitFraction < closestFraction) {
-                    closestFraction = hitFraction;
-                }
-            }
-        }
-        Vector3f startLocation = MyVector3f.lerp(closestFraction,
-                dropLocation, endLocation, null);
-
+        Vector3f startLocation = findStartLocation(world, dropLocation, dropOrientation);
         mainRbc.setPhysicsLocation(startLocation);
         mainRbc.setPhysicsRotation(dropOrientation);
         mainRbc.setAngularVelocity(Vector3f.ZERO);
         mainRbc.setLinearVelocity(Vector3f.ZERO);
 
+        PhysicsSpace physicsSpace = world.getPhysicsSpace();
         for (RigidBodyControl body : partNameToBody.values()) {
             physicsSpace.addCollisionObject(body);
         }
@@ -249,6 +229,40 @@ abstract public class Prop
      * @return the mass (in kilograms, &gt;0)
      */
     abstract public float defaultDescaledMass();
+
+    /**
+     * Find a good start location for this Prop in the specified world.
+     *
+     * @param world where to add (not null, unaffected)
+     * @param dropLocation (not null, unaffected)
+     * @param dropOrientation (not null, unaffected)
+     */
+    public Vector3f findStartLocation(PropWorld world, Vector3f dropLocation,
+            Quaternion dropOrientation) {
+        Vector3f endLocation = dropLocation.add(0f, -999f, 0f);
+        Transform startTransform = new Transform(dropLocation, dropOrientation);
+        Transform endTransform = new Transform(endLocation, dropOrientation);
+        PhysicsSpace physicsSpace = world.getPhysicsSpace();
+        List<PhysicsSweepTestResult> sweepTest = physicsSpace.sweepTest(
+                sweepShape, startTransform, endTransform);
+        /*
+         * Find the closest contact with another collision object,
+         * typically the pavement.
+         */
+        float closestFraction = 9f;
+        for (PhysicsSweepTestResult hit : sweepTest) {
+            if (hit.getCollisionObject() != mainRbc) {
+                float hitFraction = hit.getHitFraction();
+                if (hitFraction < closestFraction) {
+                    closestFraction = hitFraction;
+                }
+            }
+        }
+        Vector3f startLocation = MyVector3f.lerp(closestFraction,
+                dropLocation, endLocation, null);
+
+        return startLocation;
+    }
 
     /**
      * Access the main body.
