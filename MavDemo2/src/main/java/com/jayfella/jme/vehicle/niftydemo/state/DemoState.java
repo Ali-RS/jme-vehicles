@@ -89,6 +89,7 @@ public class DemoState
         elapsedTime = 0.0;
         prGenerator = new Generator();
         numTicks = 0;
+        propProposal = new PropProposal();
 
         physicsSpace.addTickListener(this);
 
@@ -116,7 +117,7 @@ public class DemoState
     final public void addVehicle(Vehicle vehicle) {
         vehicles.add(vehicle);
         vehicles.select(vehicle);
-        
+
         Cameras.resetFov();
         world.resetCameraPosition();
     }
@@ -159,9 +160,10 @@ public class DemoState
     /**
      * Access the PropProposal.
      *
-     * @return the pre-existing instance
+     * @return the pre-existing instance (not null)
      */
     public PropProposal getPropProposal() {
+        assert propProposal != null;
         return propProposal;
     }
 
