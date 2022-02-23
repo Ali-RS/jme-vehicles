@@ -331,10 +331,44 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
                 </panel>
             </control>
 
+            <control name="window" id="propProposalTool" title="Prop Proposal Tool"
+                     backgroundColor="#663f"
+                     hideOnClose="true"
+                     height="88px" width="250px" x="2" y="157">
+                <panel childLayout="vertical">
+                    <panel height="5px"/>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="label" text="Type:  "/>
+                        <control name="button" id="ppTypeButton"
+                                 width="130px">
+                            <interact onRelease="perform(select propType)"/>
+                        </control>
+                        <panel/>
+                        <control name="button" label="reset"
+                                 id="id32ToAvoidNiftyWarning"
+                                 width="60px">
+                            <interact onRelease="perform(reset propProposal)"/>
+                        </control>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="label" text="Scale:  "/>
+                        <control name="button" id="ppScaleButton"
+                                 width="60px">
+                            <interact onRelease="perform(set propScale)"/>
+                        </control>
+                        <control name="label" text="    Mass:  "/>
+                        <control name="button" id="ppMassButton"
+                                 width="80px">
+                            <interact onRelease="perform(set propMass)"/>
+                        </control>
+                    </panel>
+                </panel>
+            </control>
+
             <control name="window" id="toolsTool" title="Tools Tool"
                      backgroundColor="#663f"
                      hideOnClose="true"
-                     height="174px" width="230px" x="2" y="277">
+                     height="202px" width="230px" x="2" y="249">
                 <panel childLayout="vertical">
                     <panel height="5px"/>
 
@@ -377,6 +411,17 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
                         <control name="label" text="  physics"/>
                         <panel/>
                         <control name="label" id="toolsPhysicsStatus"
+                                 backgroundColor="#ffff"
+                                 color="#000f"
+                                 textHAlign="center"
+                                 width="104px"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="toolsPropProposalCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  prop proposal"/>
+                        <panel/>
+                        <control name="label" id="toolsPropProposalStatus"
                                  backgroundColor="#ffff"
                                  color="#000f"
                                  textHAlign="center"

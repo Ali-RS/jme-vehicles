@@ -49,6 +49,7 @@ class ToolsTool extends Tool {
         result.add("toolsDumpPhysics");
         result.add("toolsDumpScene");
         result.add("toolsPhysics");
+        result.add("toolsPropProposal");
         result.add("toolsView");
 
         return result;

@@ -31,6 +31,7 @@ public class Tools {
     final private DumpPhysicsTool dumpPhysics;
     final private DumpSceneTool dumpScene;
     final private PhysicsTool physics;
+    final private PropProposalTool propProposal;
     final private ToolsTool tools;
     final private ViewTool view;
 
@@ -50,6 +51,7 @@ public class Tools {
         dumpPhysics = new DumpPhysicsTool(screenController);
         dumpScene = new DumpSceneTool(screenController);
         physics = new PhysicsTool(screenController);
+        propProposal = new PropProposalTool(screenController);
 
         tools = new ToolsTool(screenController);
         tools.setEnabled(true);
@@ -57,7 +59,7 @@ public class Tools {
         view = new ViewTool(screenController);
 
         allTools = new Tool[]{
-            driving, dumpPhysics, dumpScene, physics, tools, view
+            driving, dumpPhysics, dumpScene, physics, propProposal, tools, view
         };
     }
     // *************************************************************************
