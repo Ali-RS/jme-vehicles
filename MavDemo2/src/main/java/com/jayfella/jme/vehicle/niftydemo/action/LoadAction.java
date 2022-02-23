@@ -42,7 +42,7 @@ class LoadAction {
         boolean handled = true;
         switch (actionString) {
             case Action.loadSky:
-                loadSky();
+                Menus.loadSky();
                 break;
 
             case Action.loadVehicle:
@@ -82,17 +82,6 @@ class LoadAction {
     }
     // *************************************************************************
     // private methods
-
-    /**
-     * Handle a "load sky" action.
-     */
-    private static void loadSky() {
-        PopupMenuBuilder builder = new PopupMenuBuilder();
-        Menus.buildSkyMenu(builder);
-
-        MainHud mainHud = MavDemo2.findAppState(MainHud.class);
-        mainHud.showPopupMenu(ActionPrefix.loadSky, builder);
-    }
 
     /**
      * Handle a "load vehicle" action.

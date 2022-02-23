@@ -21,7 +21,7 @@ public class ActionPrefix {
     /**
      * argument is the name of a Sky
      */
-    final static String loadSky = "load sky ";
+    final public static String loadSky = "load sky ";
     /**
      * argument is the name of a Vehicle
      */

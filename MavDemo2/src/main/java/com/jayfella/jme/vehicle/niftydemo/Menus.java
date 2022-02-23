@@ -120,6 +120,17 @@ public class Menus {
     }
 
     /**
+     * Handle a "load sky" action.
+     */
+    public static void loadSky() {
+        PopupMenuBuilder builder = new PopupMenuBuilder();
+        buildSkyMenu(builder);
+
+        MainHud mainHud = MavDemo2.findAppState(MainHud.class);
+        mainHud.showPopupMenu(ActionPrefix.loadSky, builder);
+    }
+
+    /**
      * Handle all "select menuItem " actions.
      *
      * @param menuPath
@@ -497,6 +508,7 @@ public class Menus {
     private static boolean menuSettings(String remainder) {
         boolean handled = true;
         MainHud hud = MavDemo2.findAppState(MainHud.class);
+        PopupMenuBuilder builder = new PopupMenuBuilder();
 
         switch (remainder) {
             case "Display":
@@ -517,7 +529,7 @@ public class Menus {
                 break;
 
             case "Sky":
-                // TODO
+                loadSky();
                 break;
 
             case "Speedometer":
