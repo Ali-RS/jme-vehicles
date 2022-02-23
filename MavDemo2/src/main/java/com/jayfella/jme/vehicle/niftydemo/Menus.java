@@ -326,16 +326,6 @@ public class Menus {
     }
 
     /**
-     * Build a "Props" menu.
-     *
-     * @param builder (not null, modified)
-     */
-    private static void buildPropsMenu(PopupMenuBuilder builder) {
-        builder.add("Add prop", "Textures/icons/submenu.png");
-        builder.add("Remove prop", "Textures/icons/submenu.png");
-    }
-
-    /**
      * Build a "Settings" menu.
      *
      * @param builder (not null, modified)
@@ -390,10 +380,6 @@ public class Menus {
                 handled = menuHelp(remainder);
                 break;
 
-            case "Props":
-                handled = menuProps(remainder);
-                break;
-
             case "Settings":
                 handled = menuSettings(remainder);
                 break;
@@ -437,10 +423,6 @@ public class Menus {
 
             case "Help":
                 buildHelpMenu(builder);
-                break;
-
-            case "Props":
-                buildPropsMenu(builder);
                 break;
 
             case "Quit":
@@ -497,31 +479,6 @@ public class Menus {
 
             case "Attribution":
                 attributionDialog();
-                break;
-
-            default:
-                handled = false;
-        }
-
-        return handled;
-    }
-
-    /**
-     * Handle a "select menuItem" action from the Props menu.
-     *
-     * @param remainder not-yet-parsed portion of the menu path (not null)
-     * @return true if the action is handled, otherwise false
-     */
-    private static boolean menuProps(String remainder) {
-        boolean handled = true;
-
-        switch (remainder) {
-            case "Add prop":
-                // TODO
-                break;
-
-            case "Remove prop":
-                // TODO
                 break;
 
             default:

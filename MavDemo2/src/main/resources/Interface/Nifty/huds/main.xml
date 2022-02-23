@@ -29,12 +29,6 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
                         <interact onRelease="perform(select menuItem Vehicle)"/>
                     </control>
                     <panel width="2px"/>
-                    <control name="button" label="Props"
-                             id="id4ToAvoidNiftyWarning"
-                             width="50px">
-                        <interact onRelease="perform(select menuItem Props)"/>
-                    </control>
-                    <panel width="2px"/>
                     <control name="button" label="Settings"
                              id="id5ToAvoidNiftyWarning"
                              width="70px">
