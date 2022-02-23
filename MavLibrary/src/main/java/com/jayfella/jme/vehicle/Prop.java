@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 import jme3utilities.Loadable;
+import jme3utilities.MySpatial;
 import jme3utilities.NameGenerator;
 import jme3utilities.Validate;
 import jme3utilities.math.MyVector3f;
@@ -135,13 +136,14 @@ abstract public class Prop
         this.world = world;
         world.addProp(this);
 
-        if (mainRbc == null) {
+        if (!isLoaded()) {
             AssetManager assetManager = world.getAssetManager();
             load(assetManager);
-            assert mainRbc != null;
+            assert isLoaded();
         }
 
-        Vector3f startLocation = findStartLocation(world, dropLocation, dropOrientation);
+        Vector3f startLocation
+                = findStartLocation(world, dropLocation, dropOrientation);
         mainRbc.setPhysicsLocation(startLocation);
         mainRbc.setPhysicsRotation(dropOrientation);
         mainRbc.setAngularVelocity(Vector3f.ZERO);
@@ -292,6 +294,19 @@ abstract public class Prop
     }
 
     /**
+     * Test whether this Prop has been loaded.
+     *
+     * @return true if loaded, otherwise false
+     */
+    public boolean isLoaded() {
+        if (mainRbc == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
      * Enumerate all constraints.
      *
      * @return a new array (not null)
@@ -341,6 +356,25 @@ abstract public class Prop
          * that had been deactivated.
          */
         physicsSpace.activateAll(true);
+    }
+
+    /**
+     * Determine the height of this loaded Prop in the specified orientation.
+     *
+     * @param orientation the desired orientation relative to the world axes
+     * (not null, unaffected)
+     * @return the height (in world units, &ge;0)
+     */
+    public float scaledHeight(Quaternion orientation) {
+        assert isLoaded() : "Prop isn't loaded yet!";
+
+        Quaternion savedRotation = node.getLocalRotation().clone();
+        MySpatial.setWorldOrientation(node, orientation);
+        Vector3f[] minMax = MySpatial.findMinMaxCoords(node);
+        node.setLocalRotation(savedRotation);
+
+        float result = minMax[1].y - minMax[0].y;
+        return result;
     }
 
     /**
