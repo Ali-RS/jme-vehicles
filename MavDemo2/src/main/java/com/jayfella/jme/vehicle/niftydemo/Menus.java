@@ -545,7 +545,7 @@ public class Menus {
                 break;
 
             case "Wheels":
-                // TODO
+                selectAllWheelModel();
                 break;
 
             default:
@@ -583,5 +583,27 @@ public class Menus {
         }
 
         return handled;
+    }
+
+    /**
+     * Handle a "select menuItem Settings -> Wheels" action.
+     */
+    private static void selectAllWheelModel() {
+        PopupMenuBuilder builder = new PopupMenuBuilder();
+        builder.add("Basic Alloy");
+        builder.add("Buggy Front");
+        builder.add("Buggy Rear");
+        builder.add("Cruiser");
+        builder.add("Dark Alloy");
+        builder.add("Hatchback");
+        builder.add("Invisible");
+        builder.add("Motorcycle Front");
+        builder.add("Motorcycle Rear");
+        builder.add("Ranger");
+        builder.add("Rotator Front");
+        builder.add("Rotator Rear");
+
+        MainHud mainHud = MavDemo2.findAppState(MainHud.class);
+        mainHud.showPopupMenu(ActionPrefix.selectAllWheelModel, builder);
     }
 }

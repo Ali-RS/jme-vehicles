@@ -1,5 +1,7 @@
 package com.jayfella.jme.vehicle.niftydemo.action;
 
+import com.jayfella.jme.vehicle.Vehicle;
+import com.jayfella.jme.vehicle.WheelModel;
 import com.jayfella.jme.vehicle.niftydemo.MainHud;
 import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
 import com.jayfella.jme.vehicle.niftydemo.Menus;
@@ -57,7 +59,11 @@ class SelectAction {
         handled = true;
 
         String arg;
-        if (actionString.startsWith(ActionPrefix.selectMenuItem)) {
+        if (actionString.startsWith(ActionPrefix.selectAllWheelModel)) {
+            arg = MyString.remainder(actionString,
+                    ActionPrefix.selectAllWheelModel);
+            handled = selectAllWheelModel(arg);
+        } else if (actionString.startsWith(ActionPrefix.selectMenuItem)) {
             arg = MyString.remainder(actionString, ActionPrefix.selectMenuItem);
             handled = Menus.selectMenuItem(arg);
         } else if (actionString.startsWith(ActionPrefix.selectPropType)) {
@@ -71,6 +77,33 @@ class SelectAction {
     }
     // *************************************************************************
     // private methods
+
+    /**
+     * Process a "select allWheelModel " action with an argument.
+     *
+     * @param arg the action argument (not null)
+     * @return true if the action was handled, otherwise false
+     */
+    @SuppressWarnings("unchecked")
+    private static boolean selectAllWheelModel(String arg) {
+        String name = arg.replace(" ", "") + "Wheel";
+        String className
+                = "com.jayfella.jme.vehicle.examples.wheels." + name;
+        Class<? extends WheelModel> clazz;
+        try {
+            clazz = (Class<? extends WheelModel>) Class.forName(className);
+        } catch (ReflectiveOperationException exception) {
+            logger.severe(exception.toString());
+            return false;
+        }
+
+        Vehicle vehicle = MavDemo2.getDemoState().getVehicles().getSelected();
+        int numWheels = vehicle.countWheels();
+        for (int wheelIndex = 0; wheelIndex < numWheels; ++wheelIndex) {
+            vehicle.setWheelModel(wheelIndex, clazz);
+        }
+        return true;
+    }
 
     /**
      * Display a menu to set the type of the proposed Prop using the "select

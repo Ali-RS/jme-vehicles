@@ -31,6 +31,10 @@ public class ActionPrefix {
      */
     final static String loadWorld = "load world ";
     /**
+     * argument is a WheelModel name
+     */
+    final public static String selectAllWheelModel = "select allWheelModel ";
+    /**
      * argument is the menu path of a menu item
      */
     final public static String selectMenuItem = "select menuItem ";
