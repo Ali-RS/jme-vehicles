@@ -43,6 +43,11 @@ public class ActionPrefix {
      */
     final static String selectPropType = "select propType ";
     /**
+     * argument is a SpeedUnit name or "None"
+     */
+    final public static String selectSpeedometerUnits
+            = "select speedometerUnits ";
+    /**
      * argument is a positive integer
      */
     final static String setDefaultAniso = "set defaultAniso ";

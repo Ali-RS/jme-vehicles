@@ -3,6 +3,7 @@ package com.jayfella.jme.vehicle.niftydemo;
 import com.github.stephengold.garrett.GarrettVersion;
 import com.github.stephengold.jmepower.JmePowerVersion;
 import com.jayfella.jme.vehicle.Sky;
+import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.World;
 import com.jayfella.jme.vehicle.examples.Attribution;
@@ -533,7 +534,7 @@ public class Menus {
                 break;
 
             case "Speedometer":
-                // TODO
+                selectSpeedometerUnits();
                 break;
 
             case "Tire smoke":
@@ -605,5 +606,21 @@ public class Menus {
 
         MainHud mainHud = MavDemo2.findAppState(MainHud.class);
         mainHud.showPopupMenu(ActionPrefix.selectAllWheelModel, builder);
+    }
+
+    /**
+     * Handle a "select menuItem Settings -> Speedometer" action.
+     */
+    private static void selectSpeedometerUnits() {
+        PopupMenuBuilder builder = new PopupMenuBuilder();
+
+        for (SpeedUnit type : SpeedUnit.values()) {
+            String name = type.toString();
+            builder.add(name);
+        }
+        builder.add("None");
+
+        MainHud mainHud = MavDemo2.findAppState(MainHud.class);
+        mainHud.showPopupMenu(ActionPrefix.selectSpeedometerUnits, builder);
     }
 }

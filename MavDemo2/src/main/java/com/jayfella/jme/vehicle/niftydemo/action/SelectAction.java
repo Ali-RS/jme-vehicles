@@ -1,12 +1,15 @@
 package com.jayfella.jme.vehicle.niftydemo.action;
 
+import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.WheelModel;
+import com.jayfella.jme.vehicle.gui.SpeedometerState;
 import com.jayfella.jme.vehicle.niftydemo.MainHud;
 import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
 import com.jayfella.jme.vehicle.niftydemo.Menus;
 import com.jayfella.jme.vehicle.niftydemo.state.PropProposal;
 import com.jayfella.jme.vehicle.niftydemo.state.PropType;
+import com.jme3.app.state.AppStateManager;
 import java.util.logging.Logger;
 import jme3utilities.MyString;
 import jme3utilities.nifty.PopupMenuBuilder;
@@ -69,6 +72,13 @@ class SelectAction {
         } else if (actionString.startsWith(ActionPrefix.selectPropType)) {
             arg = MyString.remainder(actionString, ActionPrefix.selectPropType);
             handled = selectPropType(arg);
+
+        } else if (actionString.startsWith(
+                ActionPrefix.selectSpeedometerUnits)) {
+            arg = MyString.remainder(actionString,
+                    ActionPrefix.selectSpeedometerUnits);
+            handled = selectSpeedometerUnits(arg);
+
         } else {
             handled = false;
         }
@@ -132,6 +142,36 @@ class SelectAction {
         PropType type = PropType.valueOf(argument);
         PropProposal proposal = MavDemo2.getDemoState().getPropProposal();
         proposal.setType(type);
+
+        return true;
+    }
+
+    /**
+     * Process a "select speedometerUnits" action with an argument.
+     */
+    private static boolean selectSpeedometerUnits(String argument) {
+        SpeedUnit newUnits = null;
+        if (!argument.equals("None")) {
+            newUnits = SpeedUnit.valueOf(argument);
+        }
+
+        Vehicle vehicle = MavDemo2.getDemoState().getVehicles().getSelected();
+        SpeedUnit oldUnits = vehicle.getSpeedometerUnits();
+        if (newUnits != oldUnits) {
+            AppStateManager mgr = MavDemo2.getApplication().getStateManager();
+
+            SpeedometerState oldState = mgr.getState(SpeedometerState.class);
+            if (oldState != null) {
+                mgr.detach(oldState);
+            }
+
+            if (newUnits != null) {
+                SpeedometerState newState
+                        = new SpeedometerState(vehicle, newUnits);
+                mgr.attach(newState);
+            }
+            vehicle.setSpeedometerUnits(newUnits);
+        }
 
         return true;
     }
