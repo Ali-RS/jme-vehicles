@@ -1,14 +1,20 @@
 package com.jayfella.jme.vehicle.niftydemo.view;
 
+import com.jayfella.jme.vehicle.Prop;
+import com.jayfella.jme.vehicle.PropWorld;
 import com.jayfella.jme.vehicle.Sky;
 import com.jayfella.jme.vehicle.VehicleWorld;
 import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
 import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
 import com.jayfella.jme.vehicle.niftydemo.state.DemoState;
+import com.jayfella.jme.vehicle.niftydemo.state.PropProposal;
 import com.jme3.app.Application;
 import com.jme3.app.StatsAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.bullet.objects.PhysicsRigidBody;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
@@ -244,12 +250,14 @@ public class View extends SimpleAppState {
         super.update(elapsedTime);
 
         updatePerformance();
+        updatePropProposal();
     }
     // *************************************************************************
     // private methods
 
     private void updatePerformance() {
-        PerformanceAppState pas = MavDemo2.findAppState(PerformanceAppState.class);
+        PerformanceAppState pas
+                = MavDemo2.findAppState(PerformanceAppState.class);
         StatsAppState sas = stateManager.getState(StatsAppState.class);
         switch (performanceMode) {
             case DebugPas:
@@ -275,5 +283,42 @@ public class View extends SimpleAppState {
                         performanceMode);
                 throw new IllegalStateException(message);
         }
+    }
+
+    /**
+     * Visualize the PropProposal (if active) and update its validity and
+     * location.
+     */
+    private void updatePropProposal() {
+        propProposalNode.detachAllChildren();
+
+        DemoState demoState = MavDemo2.getDemoState();
+        PropProposal proposal = demoState.getPropProposal();
+        if (!proposal.isActive()) {
+            return;
+        }
+
+        float minCosine = 0.8f;
+        float spacing = 0f;
+        Vector3f supportLocation = new Vector3f();
+        PhysicsRigidBody body = demoState.pickSupportBody(minCosine, spacing,
+                supportLocation);
+        if (body == null) {
+            proposal.invalidate();
+            return;
+        }
+
+        Prop prop = proposal.create();
+        prop.load(assetManager);
+        Quaternion orientation = proposal.orientation(null);
+        float dropHeight = 1.5f * prop.scaledHeight(orientation);
+        Vector3f dropLocation = supportLocation.add(0f, dropHeight, 0f);
+        PropWorld world = demoState.getWorld();
+        Vector3f startLocation
+                = prop.findStartLocation(world, dropLocation, orientation);
+        Node cgmRoot = prop.getNode();
+        cgmRoot.removeControl(RigidBodyControl.class);
+        cgmRoot.setLocalTranslation(startLocation);
+        propProposalNode.attachChild(cgmRoot);
     }
 }
