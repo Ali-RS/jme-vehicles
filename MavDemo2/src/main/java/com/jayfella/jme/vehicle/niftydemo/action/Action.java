@@ -55,6 +55,7 @@ public class Action {
     final static String resetCameraFov = "reset cameraFov";
     final static String resetCameraOffset = "reset cameraOffset";
     final static String resetElapsedTime = "reset elapsedTime";
+    final static String resetPropProposal = "reset propProposal";
     final static String resetVehicle = "reset vehicle";
 
     final static String selectProp = "select prop";
@@ -163,7 +164,7 @@ public class Action {
         String firstWord = words[0];
         switch (firstWord) {
             case "new":
-//                handled = NewAction.processNotOngoing(actionString);
+                handled = NewAction.processNotOngoing(actionString);
                 break;
         }
 

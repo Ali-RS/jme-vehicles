@@ -1,10 +1,13 @@
 package com.jayfella.jme.vehicle.niftydemo.action;
 
+import com.jayfella.jme.vehicle.niftydemo.MainHud;
 import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
 import com.jayfella.jme.vehicle.niftydemo.Menus;
-import com.jayfella.jme.vehicle.niftydemo.state.DemoState;
+import com.jayfella.jme.vehicle.niftydemo.state.PropProposal;
+import com.jayfella.jme.vehicle.niftydemo.state.PropType;
 import java.util.logging.Logger;
 import jme3utilities.MyString;
+import jme3utilities.nifty.PopupMenuBuilder;
 
 /**
  * Process actions that start with the word "select".
@@ -39,9 +42,12 @@ class SelectAction {
      */
     static boolean processOngoing(String actionString) {
         boolean handled = true;
-        DemoState demoState = MavDemo2.getDemoState();
 
         switch (actionString) {
+            case Action.selectPropType:
+                selectPropType();
+                break;
+
             default:
                 handled = false;
         }
@@ -54,10 +60,46 @@ class SelectAction {
         if (actionString.startsWith(ActionPrefix.selectMenuItem)) {
             arg = MyString.remainder(actionString, ActionPrefix.selectMenuItem);
             handled = Menus.selectMenuItem(arg);
+        } else if (actionString.startsWith(ActionPrefix.selectPropType)) {
+            arg = MyString.remainder(actionString, ActionPrefix.selectPropType);
+            handled = selectPropType(arg);
         } else {
             handled = false;
         }
 
         return handled;
+    }
+    // *************************************************************************
+    // private methods
+
+    /**
+     * Display a menu to set the type of the proposed Prop using the "select
+     * propType " action prefix.
+     */
+    private static void selectPropType() {
+        PopupMenuBuilder builder = new PopupMenuBuilder();
+
+        PropProposal proposal = MavDemo2.getDemoState().getPropProposal();
+        PropType selectedType = proposal.type();
+        for (PropType type : PropType.values()) {
+            if (type != selectedType) {
+                String name = type.toString();
+                builder.add(name);
+            }
+        }
+
+        MainHud mainHud = MavDemo2.findAppState(MainHud.class);
+        mainHud.showPopupMenu(ActionPrefix.selectPropType, builder);
+    }
+
+    /**
+     * Process a "select propType" action with an argument.
+     */
+    private static boolean selectPropType(String argument) {
+        PropType type = PropType.valueOf(argument);
+        PropProposal proposal = MavDemo2.getDemoState().getPropProposal();
+        proposal.setType(type);
+
+        return true;
     }
 }

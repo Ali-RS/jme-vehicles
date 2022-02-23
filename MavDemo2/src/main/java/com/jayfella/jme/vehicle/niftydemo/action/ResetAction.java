@@ -59,6 +59,10 @@ class ResetAction {
                 demoState.resetElapsedTime();
                 break;
 
+            case Action.resetPropProposal:
+                demoState.getPropProposal().reset();
+                break;
+
             case Action.resetVehicle:
                 resetVehicle();
                 break;

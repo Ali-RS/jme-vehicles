@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle.niftydemo.action;
 
 import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
+import com.jayfella.jme.vehicle.niftydemo.state.DemoState;
 import com.jme3.app.state.ScreenshotAppState;
 import java.util.logging.Logger;
 
@@ -37,11 +38,11 @@ class NewAction {
      */
     static boolean processNotOngoing(String actionString) {
         boolean handled = true;
-        //DemoState demoState = MavDemo2.getDemoState();
 
         switch (actionString) {
             case Action.newProp:
-                //demoState.getProps().add();
+                DemoState demoState = MavDemo2.getDemoState();
+                demoState.addProp();
                 break;
 
             default:
