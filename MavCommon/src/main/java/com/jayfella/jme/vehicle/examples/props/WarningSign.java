@@ -59,7 +59,7 @@ public class WarningSign extends Prop {
      */
     @Override
     public void load(AssetManager assetManager) {
-        if (getMainBody() != null) {
+        if (isLoaded()) {
             logger2.log(Level.SEVERE, "Already loaded.");
             return;
         }
