@@ -48,6 +48,10 @@ public class ActionPrefix {
     final public static String selectSpeedometerUnits
             = "select speedometerUnits ";
     /**
+     * argument is a color name or "None"
+     */
+    final public static String selectTireSmokeColor = "select tireSmokeColor ";
+    /**
      * argument is a positive integer
      */
     final static String setDefaultAniso = "set defaultAniso ";

@@ -538,7 +538,7 @@ public class Menus {
                 break;
 
             case "Tire smoke":
-                // TODO
+                selectTireSmokeColor();
                 break;
 
             case "View":
@@ -622,5 +622,24 @@ public class Menus {
 
         MainHud mainHud = MavDemo2.findAppState(MainHud.class);
         mainHud.showPopupMenu(ActionPrefix.selectSpeedometerUnits, builder);
+    }
+
+    /**
+     * Handle a "select menuItem Settings -> Tire smoke" action.
+     */
+    private static void selectTireSmokeColor() {
+        PopupMenuBuilder builder = new PopupMenuBuilder();
+
+        builder.add("Black");
+        builder.add("Blue");
+        builder.add("Gray");
+        builder.add("Green");
+        builder.add("Red");
+        builder.add("White");
+        builder.add("Yellow");
+        builder.add("None");
+
+        MainHud mainHud = MavDemo2.findAppState(MainHud.class);
+        mainHud.showPopupMenu(ActionPrefix.selectTireSmokeColor, builder);
     }
 }

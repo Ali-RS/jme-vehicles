@@ -9,7 +9,10 @@ import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
 import com.jayfella.jme.vehicle.niftydemo.Menus;
 import com.jayfella.jme.vehicle.niftydemo.state.PropProposal;
 import com.jayfella.jme.vehicle.niftydemo.state.PropType;
+import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.math.ColorRGBA;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import jme3utilities.MyString;
 import jme3utilities.nifty.PopupMenuBuilder;
@@ -78,6 +81,11 @@ class SelectAction {
             arg = MyString.remainder(actionString,
                     ActionPrefix.selectSpeedometerUnits);
             handled = selectSpeedometerUnits(arg);
+
+        } else if (actionString.startsWith(ActionPrefix.selectTireSmokeColor)) {
+            arg = MyString.remainder(actionString,
+                    ActionPrefix.selectTireSmokeColor);
+            handled = selectTireSmokeColor(arg);
 
         } else {
             handled = false;
@@ -172,6 +180,53 @@ class SelectAction {
             }
             vehicle.setSpeedometerUnits(newUnits);
         }
+
+        return true;
+    }
+
+    /**
+     * Process a "select tireSmokeColor" action with an argument.
+     */
+    private static boolean selectTireSmokeColor(String argument) {
+        boolean enableSmoke = true;
+        ColorRGBA color = new ColorRGBA();
+        switch (argument) {
+            case "Black":
+                color.set(0f, 0f, 0f, 1f);
+                break;
+            case "Blue":
+                color.set(0f, 0f, 1f, 1f);
+                break;
+            case "Gray":
+                color.set(0.6f, 0.6f, 0.6f, 1f);
+                break;
+            case "Green":
+                color.set(0f, 1f, 0f, 1f);
+                break;
+            case "None":
+                enableSmoke = false;
+                break;
+            case "Red":
+                color.set(1f, 0f, 0f, 1f);
+                break;
+            case "White":
+                color.set(1f, 1f, 1f, 1f);
+                break;
+            case "Yellow":
+                color.set(1f, 1f, 0f, 1f);
+                break;
+
+            default:
+                logger.log(Level.SEVERE, "unknown color name:  {0}",
+                        MyString.quote(argument));
+                return false;
+        }
+
+        Vehicle vehicle = MavDemo2.getDemoState().getVehicles().getSelected();
+        for (Wheel wheel : vehicle.listWheels()) {
+            wheel.setTireSmokeColor(color);
+        }
+        vehicle.setTireSmokeEnabled(enableSmoke);
 
         return true;
     }
