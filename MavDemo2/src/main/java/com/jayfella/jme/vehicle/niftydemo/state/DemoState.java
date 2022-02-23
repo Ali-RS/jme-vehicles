@@ -17,6 +17,7 @@ import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.collision.PhysicsRayTestResult;
 import com.jme3.bullet.objects.PhysicsRigidBody;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.system.Timer;
@@ -110,7 +111,39 @@ public class DemoState
     // new methods exposed
 
     /**
-     * Add the specified vehicle.
+     * Add a new Prop based on the active proposal, select it, and deactivate
+     * the proposal.
+     */
+    public void addProp() {
+        if (!propProposal.isActive()) {
+            return;
+        }
+
+        float minCosine = 0.8f;
+        float spacing = 0f;
+        Vector3f supportLocation = new Vector3f();
+        PhysicsRigidBody body = pickSupportBody(minCosine, spacing,
+                supportLocation);
+        if (body == null) {
+            propProposal.invalidate();
+            return;
+        }
+
+        Prop prop = propProposal.create();
+        AssetManager assetManager = world.getAssetManager();
+        prop.load(assetManager);
+
+        Quaternion orientation = propProposal.orientation(null);
+        float dropHeight = 1.5f * prop.scaledHeight(orientation);
+        Vector3f dropLocation = supportLocation.add(0f, dropHeight, 0f);
+        prop.addToWorld(world, dropLocation, orientation);
+        selectProp(prop);
+
+        propProposal.setActive(false);
+    }
+
+    /**
+     * Add the specified Vehicle and select it.
      *
      * @param vehicle (not null)
      */
