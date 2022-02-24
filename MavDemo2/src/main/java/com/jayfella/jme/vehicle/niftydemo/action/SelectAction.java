@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle.niftydemo.action;
 
+import com.jayfella.jme.vehicle.Sound;
 import com.jayfella.jme.vehicle.SpeedUnit;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.WheelModel;
@@ -11,6 +12,7 @@ import com.jayfella.jme.vehicle.niftydemo.state.PropProposal;
 import com.jayfella.jme.vehicle.niftydemo.state.PropType;
 import com.jayfella.jme.vehicle.part.Wheel;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -69,6 +71,12 @@ class SelectAction {
             arg = MyString.remainder(actionString,
                     ActionPrefix.selectAllWheelModel);
             handled = selectAllWheelModel(arg);
+
+        } else if (actionString.startsWith(ActionPrefix.selectEngineSound)) {
+            arg = MyString.remainder(actionString,
+                    ActionPrefix.selectEngineSound);
+            handled = selectEngineSound(arg);
+
         } else if (actionString.startsWith(ActionPrefix.selectMenuItem)) {
             arg = MyString.remainder(actionString, ActionPrefix.selectMenuItem);
             handled = Menus.selectMenuItem(arg);
@@ -120,6 +128,41 @@ class SelectAction {
         for (int wheelIndex = 0; wheelIndex < numWheels; ++wheelIndex) {
             vehicle.setWheelModel(wheelIndex, clazz);
         }
+        return true;
+    }
+
+    /**
+     * Process a "select engineSound " action with an argument.
+     *
+     * @param arg the action argument (not null)
+     * @return true if the action was handled, otherwise false
+     */
+    @SuppressWarnings("unchecked")
+    private static boolean selectEngineSound(String arg) {
+        Sound selectedSound;
+        if (arg.equals("Silence")) {
+            selectedSound = null;
+        } else {
+            String name = arg.replace("-", "Sound");
+            String className
+                    = "com.jayfella.jme.vehicle.examples.sounds." + name;
+            try {
+                Class<? extends Sound> clazz
+                        = (Class<? extends Sound>) Class.forName(className);
+                selectedSound = clazz.getConstructor().newInstance();
+            } catch (ReflectiveOperationException exception) {
+                logger.severe(exception.toString());
+                return false;
+            }
+
+            AssetManager assetManager
+                    = MavDemo2.getApplication().getAssetManager();
+            selectedSound.load(assetManager);
+        }
+
+        Vehicle vehicle = MavDemo2.getDemoState().getVehicles().getSelected();
+        vehicle.getEngine().setSound(selectedSound);
+
         return true;
     }
 

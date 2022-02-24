@@ -35,6 +35,10 @@ public class ActionPrefix {
      */
     final public static String selectAllWheelModel = "select allWheelModel ";
     /**
+     * argument is a Sound name or "Silence"
+     */
+    final public static String selectEngineSound = "select engineSound ";
+    /**
      * argument is the menu path of a menu item
      */
     final public static String selectMenuItem = "select menuItem ";

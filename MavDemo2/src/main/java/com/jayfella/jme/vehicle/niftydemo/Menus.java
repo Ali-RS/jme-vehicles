@@ -519,7 +519,7 @@ public class Menus {
                 break;
 
             case "Engine sound":
-                // TODO
+                selectEngineSound();
                 break;
 
             case "Hotkeys":
@@ -622,6 +622,22 @@ public class Menus {
 
         MainHud mainHud = MavDemo2.findAppState(MainHud.class);
         mainHud.showPopupMenu(ActionPrefix.selectSpeedometerUnits, builder);
+    }
+
+    /**
+     * Handle a "select menuItem Settings -> Engine sound" action.
+     */
+    private static void selectEngineSound() {
+        PopupMenuBuilder builder = new PopupMenuBuilder();
+
+        builder.add("Engine-1");
+        builder.add("Engine-2");
+        builder.add("Engine-4");
+        builder.add("Engine-5");
+        builder.add("Silence");
+
+        MainHud mainHud = MavDemo2.findAppState(MainHud.class);
+        mainHud.showPopupMenu(ActionPrefix.selectEngineSound, builder);
     }
 
     /**
