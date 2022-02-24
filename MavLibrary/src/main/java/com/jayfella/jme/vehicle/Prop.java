@@ -238,6 +238,7 @@ abstract public class Prop
      * @param world where to add (not null, unaffected)
      * @param dropLocation (not null, unaffected)
      * @param dropOrientation (not null, unaffected)
+     * @return the suggested location (a new instance, in world coordinates)
      */
     public Vector3f findStartLocation(PropWorld world, Vector3f dropLocation,
             Quaternion dropOrientation) {
