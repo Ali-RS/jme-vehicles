@@ -209,7 +209,17 @@ Additional controls when the orbit camera is active:
 
 ## How to add the MaVehicles library to an existing project
 
-#### Gradle-built projects
+The MaVehicles library depends on [Minie].
+However, the Minie dependency is intentionally omitted from MaVehicles's POM
+so developers can specify *which* Minie library should be used.
+
+For projects built using Maven or [Gradle], it is *not* sufficient to specify the
+dependency on the MaVehicles Library.
+You must also explicitly specify the Minie dependency.
+The following examples specify "+big3",
+but "+debug" or the default Minie library should also work.
+
+### Gradle-built projects
 
 Add to the project’s "build.gradle" file:
 
@@ -219,10 +229,13 @@ Add to the project’s "build.gradle" file:
     }
     dependencies {
         implementation 'com.github.stephengold:MaVehicles:0.7.0'
-        implementation 'com.github.stephengold:Minie:4.4.0'
+        implementation 'com.github.stephengold:Minie:4.6.1+big3'
     }
 
-#### Maven-built projects
+For some older versions of Gradle,
+it's necessary to replace `implementation` with `compile`.
+
+### Maven-built projects
 
 Add to the project’s "pom.xml" file:
 
@@ -247,7 +260,7 @@ Add to the project’s "pom.xml" file:
     <dependency>
       <groupId>com.github.stephengold</groupId>
       <artifactId>Minie</artifactId>
-      <version>4.4.0</version>
+      <version>4.6.1+big3</version>
     </dependency>
 
 [Jump to table of contents](#toc)
@@ -379,7 +392,7 @@ Resources/assets/media:
 
 Package names begin with `com.jayfella.jme.vehicle`
 
-The source code is compatible with JDK 8.
+Both the source code and the pre-built libraries are compatible with JDK 8.
 
 The world (and physics-space) coordinate system is:
 
