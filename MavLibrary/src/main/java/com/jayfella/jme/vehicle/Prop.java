@@ -135,10 +135,10 @@ abstract public class Prop
         this.world = world;
         world.addProp(this);
 
-        if (mainRbc == null) {
+        if (!isLoaded()) {
             AssetManager assetManager = world.getAssetManager();
             load(assetManager);
-            assert mainRbc != null;
+            assert isLoaded();
         }
 
         Vector3f endLocation = dropLocation.add(0f, -999f, 0f);
@@ -275,6 +275,19 @@ abstract public class Prop
      */
     public PropWorld getWorld() {
         return world;
+    }
+
+    /**
+     * Test whether this Prop has been loaded.
+     *
+     * @return true if loaded, otherwise false
+     */
+    public boolean isLoaded() {
+        if (mainRbc == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**
