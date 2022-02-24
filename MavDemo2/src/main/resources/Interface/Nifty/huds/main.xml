@@ -63,7 +63,7 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
             <control name="window" id="audioTool" title="Audio Tool"
                      backgroundColor="#663f"
                      hideOnClose="true"
-                     height="59px" width="270px" x="713" y="2">
+                     height="59px" width="270px" x="806" y="2">
                 <panel childLayout="vertical">
                     <panel height="5px"/>
                     <panel childLayout="horizontal" height="28px">
@@ -74,6 +74,20 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
                         <control name="label" text="    "/>
                         <control name="checkbox" id="masterMuteCheckBox"/>
                         <control name="label" text="  mute"/>
+                    </panel>
+                </panel>
+            </control>
+
+            <control name="window" id="cameraTool" title="Camera Tool"
+                     backgroundColor="#663f"
+                     hideOnClose="true"
+                     height="59px" width="99px" x="703" y="2">
+                <panel childLayout="vertical">
+                    <panel height="5px"/>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="button" id="cameraNameButton" width="*">
+                            <interact onRelease="perform(next camera)"/>
+                        </control>
                     </panel>
                 </panel>
             </control>
@@ -380,7 +394,7 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
             <control name="window" id="toolsTool" title="Tools Tool"
                      backgroundColor="#663f"
                      hideOnClose="true"
-                     height="230px" width="230px" x="2" y="249">
+                     height="258px" width="230px" x="2" y="249">
                 <panel childLayout="vertical">
                     <panel height="5px"/>
 
@@ -390,6 +404,17 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
                         <control name="label" text="  audio"/>
                         <panel/>
                         <control name="label" id="toolsAudioStatus"
+                                 backgroundColor="#ffff"
+                                 color="#000f"
+                                 textHAlign="center"
+                                 width="104px"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="toolsCameraCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  camera"/>
+                        <panel/>
+                        <control name="label" id="toolsCameraStatus"
                                  backgroundColor="#ffff"
                                  color="#000f"
                                  textHAlign="center"

@@ -46,6 +46,7 @@ class ToolsTool extends Tool {
     protected List<String> listCheckBoxes() {
         List<String> result = super.listCheckBoxes();
         result.add("toolsAudio");
+        result.add("toolsCamera");
         result.add("toolsDriving");
         result.add("toolsDumpPhysics");
         result.add("toolsDumpScene");
