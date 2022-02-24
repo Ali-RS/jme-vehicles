@@ -245,18 +245,21 @@ public class MavDemo2 extends GuiApplication {
             Cameras.update();
         }
 
+        SignalTracker signals = getSignals();
         Vehicle vehicle = MavDemo2.getDemoState().getVehicles().getSelected();
         if (vehicle.getEngine().isRunning()) {
-            SignalTracker signals = getSignals();
             float accelerate = signals.test("accelerate") ? 1f : 0f;
             vehicle.setAccelerateSignal(accelerate);
-
-            float mainBrake = signals.test("mainBrake") ? 1f : 0f;
-            float parkingBrake = signals.test("parkingBrake") ? 1f : 0f;
-            vehicle.setBrakeSignals(mainBrake, parkingBrake);
-
-            updateSteering(tpf);
         }
+
+        float mainBrake = signals.test("mainBrake") ? 1f : 0f;
+        float parkingBrake = signals.test("parkingBrake") ? 1f : 0f;
+        vehicle.setBrakeSignals(mainBrake, parkingBrake);
+
+        updateSteering(tpf);
+
+        boolean requested = signals.test("soundHorn");
+        vehicle.setHornStatus(requested);
     }
     // *************************************************************************
     // private methods
