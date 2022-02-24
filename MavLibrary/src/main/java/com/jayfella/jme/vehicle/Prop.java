@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 import jme3utilities.Loadable;
+import jme3utilities.MySpatial;
 import jme3utilities.NameGenerator;
 import jme3utilities.Validate;
 import jme3utilities.math.MyVector3f;
@@ -340,6 +341,25 @@ abstract public class Prop
          * that had been deactivated.
          */
         physicsSpace.activateAll(true);
+    }
+
+    /**
+     * Determine the height of this loaded Prop in the specified orientation.
+     *
+     * @param orientation the desired orientation relative to the world axes
+     * (not null, unaffected)
+     * @return the height (in world units, &ge;0)
+     */
+    public float scaledHeight(Quaternion orientation) {
+        assert isLoaded() : "Prop isn't loaded yet!";
+
+        Quaternion savedRotation = node.getLocalRotation().clone();
+        MySpatial.setWorldOrientation(node, orientation);
+        Vector3f[] minMax = MySpatial.findMinMaxCoords(node);
+        node.setLocalRotation(savedRotation);
+
+        float result = minMax[1].y - minMax[0].y;
+        return result;
     }
 
     /**
