@@ -187,6 +187,7 @@ abstract public class Engine implements EngineSpeed {
      */
     public void setSound(Sound desiredSound) {
         if (sound != null && vehicle != null) {
+            sound.mute();
             sound.detach();
         }
         this.sound = desiredSound;
@@ -203,6 +204,7 @@ abstract public class Engine implements EngineSpeed {
      */
     public void setVehicle(HasNode desiredVehicle) {
         if (sound != null && vehicle != null) {
+            sound.mute();
             sound.detach();
         }
         this.vehicle = desiredVehicle;
