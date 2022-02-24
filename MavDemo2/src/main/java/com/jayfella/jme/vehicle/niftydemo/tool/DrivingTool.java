@@ -99,7 +99,7 @@ class DrivingTool extends Tool {
     }
 
     /**
-     * Update the MVC model based on this tool's radio buttons, if any.
+     * Update the MVC model based on this tool's radio buttons.
      *
      * @param buttonName the name (unique id prefix) of the button (not null)
      */
