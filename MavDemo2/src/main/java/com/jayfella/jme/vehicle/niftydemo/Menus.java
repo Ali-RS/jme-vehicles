@@ -132,27 +132,6 @@ public class Menus {
     }
 
     /**
-     * Handle all "select menuItem " actions.
-     *
-     * @param menuPath
-     * @return true if handled, otherwise false
-     */
-    public static boolean selectMenuItem(String menuPath) {
-        boolean handled;
-        int separatorBegin = menuPath.indexOf(menuPathSeparator);
-        if (separatorBegin == -1) { // top-level menu
-            handled = menuBar(menuPath);
-        } else { // submenu
-            int separatorEnd = separatorBegin + menuPathSeparator.length();
-            String menuName = menuPath.substring(0, separatorBegin);
-            String remainder = menuPath.substring(separatorEnd);
-            handled = menu(menuName, remainder);
-        }
-
-        return handled;
-    }
-
-    /**
      * Handle a "select menuItem" action from the Sky menu.
      *
      * @param remainder not-yet-parsed portion of the menu path (not null)
@@ -262,6 +241,27 @@ public class Menus {
 
         MavDemo2.getDemoState().setWorld(world);
         return true;
+    }
+
+    /**
+     * Handle all "select menuItem " actions.
+     *
+     * @param menuPath
+     * @return true if handled, otherwise false
+     */
+    public static boolean selectMenuItem(String menuPath) {
+        boolean handled;
+        int separatorBegin = menuPath.indexOf(menuPathSeparator);
+        if (separatorBegin == -1) { // top-level menu
+            handled = menuBar(menuPath);
+        } else { // submenu
+            int separatorEnd = separatorBegin + menuPathSeparator.length();
+            String menuName = menuPath.substring(0, separatorBegin);
+            String remainder = menuPath.substring(separatorEnd);
+            handled = menu(menuName, remainder);
+        }
+
+        return handled;
     }
     // *************************************************************************
     // private methods
@@ -609,22 +609,6 @@ public class Menus {
     }
 
     /**
-     * Handle a "select menuItem Settings -> Speedometer" action.
-     */
-    private static void selectSpeedometerUnits() {
-        PopupMenuBuilder builder = new PopupMenuBuilder();
-
-        for (SpeedUnit type : SpeedUnit.values()) {
-            String name = type.toString();
-            builder.add(name);
-        }
-        builder.add("None");
-
-        MainHud mainHud = MavDemo2.findAppState(MainHud.class);
-        mainHud.showPopupMenu(ActionPrefix.selectSpeedometerUnits, builder);
-    }
-
-    /**
      * Handle a "select menuItem Settings -> Engine sound" action.
      */
     private static void selectEngineSound() {
@@ -638,6 +622,22 @@ public class Menus {
 
         MainHud mainHud = MavDemo2.findAppState(MainHud.class);
         mainHud.showPopupMenu(ActionPrefix.selectEngineSound, builder);
+    }
+
+    /**
+     * Handle a "select menuItem Settings -> Speedometer" action.
+     */
+    private static void selectSpeedometerUnits() {
+        PopupMenuBuilder builder = new PopupMenuBuilder();
+
+        for (SpeedUnit type : SpeedUnit.values()) {
+            String name = type.toString();
+            builder.add(name);
+        }
+        builder.add("None");
+
+        MainHud mainHud = MavDemo2.findAppState(MainHud.class);
+        mainHud.showPopupMenu(ActionPrefix.selectSpeedometerUnits, builder);
     }
 
     /**
