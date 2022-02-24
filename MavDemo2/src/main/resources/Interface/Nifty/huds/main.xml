@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Nifty XML to lay out the GUI for the main HUD of MavDemo2.
+-->
+<nifty xmlns="http://nifty-gui.lessvoid.com/nifty-gui">
+    <screen id="main" controller="com.jayfella.jme.vehicle.niftydemo.MainHud">
+
+        <layer childLayout="vertical">
+            <panel id="menu bar" childLayout="vertical">
+                <panel height="3px"/>
+                <panel id="menu bar top row" childLayout="horizontal"
+                       height="25px">
+                    <panel width="2px"/>
+                    <control name="button" label="Drive"
+                             id="id1ToAvoidNiftyWarning"
+                             width="50px">
+                        <interact onRelease="perform(select menuItem Drive)"/>
+                    </control>
+                    <panel width="2px"/>
+                    <control name="button" label="World"
+                             id="id2ToAvoidNiftyWarning"
+                             width="50px">
+                        <interact onRelease="perform(select menuItem World)"/>
+                    </control>
+                    <panel width="2px"/>
+                    <control name="button" label="Vehicle"
+                             id="id3ToAvoidNiftyWarning"
+                             width="70px">
+                        <interact onRelease="perform(select menuItem Vehicle)"/>
+                    </control>
+                    <panel width="2px"/>
+                    <control name="button" label="Settings"
+                             id="id5ToAvoidNiftyWarning"
+                             width="70px">
+                        <interact onRelease="perform(select menuItem Settings)"/>
+                    </control>
+                    <panel width="2px"/>
+                    <control name="button" label="Tools"
+                             id="id6ToAvoidNiftyWarning"
+                             width="50px">
+                        <interact onRelease="perform(select menuItem Tools)"/>
+                    </control>
+                    <panel width="2px"/>
+                    <control name="button" label="Help"
+                             id="id7ToAvoidNiftyWarning"
+                             width="40px">
+                        <interact onRelease="perform(select menuItem Help)"/>
+                    </control>
+                    <panel/>
+                    <control name="button" label="Quit"
+                             id="id10ToAvoidNiftyWarning"
+                             width="40px">
+                        <interact onRelease="perform(select menuItem Quit)"/>
+                    </control>
+                    <panel width="2px"/>
+                </panel>
+            </panel>
+            <panel/>
+        </layer>
+
+        <layer id="toolsLayer" childLayout="absolute-inside">
+
+            <control name="window" id="audioTool" title="Audio Tool"
+                     backgroundColor="#663f"
+                     hideOnClose="true"
+                     height="59px" width="270px" x="806" y="2">
+                <panel childLayout="vertical">
+                    <panel height="5px"/>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="horizontalSlider" id="masterAudioVolumeSlider"
+                                 buttonStepSize="0.5"
+                                 max="1" min="0" stepSize="0.001"
+                                 width="*"/>
+                        <control name="label" text="    "/>
+                        <control name="checkbox" id="masterMuteCheckBox"/>
+                        <control name="label" text="  mute"/>
+                    </panel>
+                </panel>
+            </control>
+
+            <control name="window" id="cameraTool" title="Camera Tool"
+                     backgroundColor="#663f"
+                     hideOnClose="true"
+                     height="59px" width="99px" x="703" y="2">
+                <panel childLayout="vertical">
+                    <panel height="5px"/>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="button" id="cameraNameButton" width="*">
+                            <interact onRelease="perform(next camera)"/>
+                        </control>
+                    </panel>
+                </panel>
+            </control>
+
+            <control name="window" id="drivingTool" title="Driving Tool"
+                     backgroundColor="#663f"
+                     hideOnClose="true"
+                     height="172px" width="250px" x="262" y="594">
+                <panel childLayout="vertical">
+                    <panel height="5px"/>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="engineRunningCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  engine running"/>
+                    </panel>
+                    <control name="radioButtonGroup" id="atGroup"/>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="radioButton" id="reverseRadioButton"
+                                 group="atGroup"/>
+                        <control name="label" text="    Reverse"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="radioButton" id="driveRadioButton"
+                                 group="atGroup"/>
+                        <control name="label" text="    Drive"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="label" text="Gear engaged:  "/>
+                        <control name="label" id="drivingGear"
+                                 backgroundColor="#ffff"
+                                 color="#000f"
+                                 textHAlign="center"
+                                 width="60px"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="label" text="Brakes engaged:    "/>
+                        <control name="checkbox" id="mainBrakeCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  main    "/>
+                        <control name="checkbox" id="parkingBrakeCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  parking"/>
+                    </panel>
+                </panel>
+            </control>
+
+            <control name="window" id="dumpPhysicsTool" title="Dump Physics Tool"
+                     backgroundColor="#663f"
+                     hideOnClose="true"
+                     height="260px" width="186px" x="908" y="63">
+                <panel childLayout="vertical">
+                    <panel height="5px"/>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="dumpPcosCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  collision objects"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="dumpIgnoresCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  ignored objects"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="dumpJibCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  physics joints (in bodies)"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="dumpJisCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  physics joints (in spaces)"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="dumpChildShapesCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  child shapes"/>
+                        <panel/>
+                        <control name="checkbox" id="dumpMotorsCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  motors"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="dumpNativeIDsCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  nativeIDs"/>
+                        <panel/>
+                        <control name="label" text="Indent:  "/>
+                        <control name="button" id="dumpIndent2Button" width="40px">
+                            <interact onRelease="perform(set dumpIndentSpaces)"/>
+                        </control>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="button" label="app states"
+                                 id="id20ToAvoidNiftyWarning"
+                                 width="80px">
+                            <interact onRelease="perform(dump stateManager)"/>
+                        </control>
+                        <control name="label" text="    "/>
+                        <control name="button" label="phys space"
+                                 id="id21ToAvoidNiftyWarning"
+                                 width="80px">
+                            <interact onRelease="perform(dump physicsSpace)"/>
+                        </control>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="button" id="dumpPhysicsPropButton"
+                                 width="80px">
+                            <interact onRelease="perform(dump prop)"/>
+                        </control>
+                        <control name="label" text="    "/>
+                        <control name="button" id="dumpPhysicsVehicleButton"
+                                 width="80px">
+                            <interact onRelease="perform(dump vehicle)"/>
+                        </control>
+                    </panel>
+                </panel>
+            </control>
+
+            <control name="window" id="dumpSceneTool" title="Dump Scene Tool"
+                     backgroundColor="#663f"
+                     hideOnClose="true"
+                     height="361px" width="180px" x="1098" y="29">
+                <panel childLayout="vertical">
+                    <panel height="5px"/>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="dumpBucketsCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  render-queue buckets"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="dumpCullHintsCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  cull hints    "/>
+                        <control name="checkbox" id="dumpUserDataCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  user data"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="dumpMatParamsCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  material parameters"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="dumpMposCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  M-P overrides"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="dumpShadowsCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  shadow modes"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="dumpTransformsCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  coordinate transforms"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="label" text="Indent:  "/>
+                        <control name="button" id="dumpIndentButton" width="40px">
+                            <interact onRelease="perform(set dumpIndentSpaces)"/>
+                        </control>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="label" text="Max children:  "/>
+                        <control name="button" id="dumpMaxChildrenButton" width="*">
+                            <interact onRelease="perform(set dumpMaxChildren)"/>
+                        </control>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="button" label="renderer"
+                                 id="id26ToAvoidNiftyWarning"
+                                 width="80px">
+                            <interact onRelease="perform(dump renderManager)"/>
+                        </control>
+                        <control name="label" text="  "/>
+                        <control name="button" label="viewport"
+                                 id="id27ToAvoidNiftyWarning"
+                                 width="80px">
+                            <interact onRelease="perform(dump viewPort)"/>
+                        </control>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="button" label="root node"
+                                 id="id28ToAvoidNiftyWarning"
+                                 width="80px">
+                            <interact onRelease="perform(dump rootNode)"/>
+                        </control>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="button" id="dumpScenePropButton"
+                                 width="80px">
+                            <interact onRelease="perform(dump propNode)"/>
+                        </control>
+                        <control name="label" text="  "/>
+                        <control name="button" id="dumpSceneVehicleButton"
+                                 width="80px">
+                            <interact onRelease="perform(dump vehicleNode)"/>
+                        </control>
+                    </panel>
+                </panel>
+            </control>
+
+            <control name="window" id="physicsTool" title="Physics Tool"
+                     backgroundColor="#663f"
+                     hideOnClose="true"
+                     height="145px" width="300px" x="978" y="391">
+                <panel childLayout="vertical">
+                    <panel height="5px"/>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="label" text="Rigids:  "/>
+                        <control name="label" id="physicsPrbCount"
+                                 backgroundColor="#ffff"
+                                 color="#000f"
+                                 textHAlign="center"
+                                 width="*"/>
+                        <control name="label" text="    Active:  "/>
+                        <control name="label" id="physicsActiveCount"
+                                 backgroundColor="#ffff"
+                                 color="#000f"
+                                 textHAlign="center"
+                                 width="*"/>
+                        <control name="label" text="    Joints:  "/>
+                        <control name="label" id="physicsJointCount"
+                                 backgroundColor="#ffff"
+                                 color="#000f"
+                                 textHAlign="center"
+                                 width="35px"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="label" text="Speed:  "/>
+                        <control name="button" id="physicsSpeedButton"
+                                 width="*">
+                            <interact onRelease="perform(set physicsSpeed)"/>
+                        </control>
+                        <control name="label" text="    Elapsed:  "/>
+                        <control name="button" id="physicsElapsedTimeButton"
+                                 width="*">
+                            <interact onRelease="perform(reset elapsedTime)"/>
+                        </control>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="label" text="Timestep:  "/>
+                        <control name="button" id="physicsTimestepButton"
+                                 width="*">
+                            <interact onRelease="perform(set physicsTimeStep)"/>
+                        </control>
+                        <control name="label" text="    CPU load:  "/>
+                        <control name="label" id="physicsLoad"
+                                 backgroundColor="#ffff"
+                                 color="#000f"
+                                 textHAlign="center"
+                                 width="*"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="label" text="Default margin:  "/>
+                        <control name="button" id="physicsMarginButton"
+                                 width="*">
+                            <interact onRelease="perform(set physicsMargin)"/>
+                        </control>
+                        <control name="label" text="    Iterations:  "/>
+                        <control name="button" id="physicsIterationsButton"
+                                 width="*">
+                            <interact onRelease="perform(set physicsIterations)"/>
+                        </control>
+                    </panel>
+                </panel>
+            </control>
+
+            <control name="window" id="propProposalTool" title="Prop Proposal Tool"
+                     backgroundColor="#663f"
+                     hideOnClose="true"
+                     height="88px" width="250px" x="2" y="157">
+                <panel childLayout="vertical">
+                    <panel height="5px"/>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="label" text="Type:  "/>
+                        <control name="button" id="ppTypeButton"
+                                 width="130px">
+                            <interact onRelease="perform(select propType)"/>
+                        </control>
+                        <panel/>
+                        <control name="button" label="reset"
+                                 id="id32ToAvoidNiftyWarning"
+                                 width="60px">
+                            <interact onRelease="perform(reset propProposal)"/>
+                        </control>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="label" text="Scale:  "/>
+                        <control name="button" id="ppScaleButton"
+                                 width="60px">
+                            <interact onRelease="perform(set propScale)"/>
+                        </control>
+                        <control name="label" text="    Mass:  "/>
+                        <control name="button" id="ppMassButton"
+                                 width="80px">
+                            <interact onRelease="perform(set propMass)"/>
+                        </control>
+                    </panel>
+                </panel>
+            </control>
+
+            <control name="window" id="toolsTool" title="Tools Tool"
+                     backgroundColor="#663f"
+                     hideOnClose="true"
+                     height="258px" width="230px" x="2" y="249">
+                <panel childLayout="vertical">
+                    <panel height="5px"/>
+
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="toolsAudioCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  audio"/>
+                        <panel/>
+                        <control name="label" id="toolsAudioStatus"
+                                 backgroundColor="#ffff"
+                                 color="#000f"
+                                 textHAlign="center"
+                                 width="104px"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="toolsCameraCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  camera"/>
+                        <panel/>
+                        <control name="label" id="toolsCameraStatus"
+                                 backgroundColor="#ffff"
+                                 color="#000f"
+                                 textHAlign="center"
+                                 width="104px"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="toolsDrivingCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  driving"/>
+                        <panel/>
+                        <control name="label" id="toolsDrivingStatus"
+                                 backgroundColor="#ffff"
+                                 color="#000f"
+                                 textHAlign="center"
+                                 width="104px"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="toolsDumpPhysicsCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  dump physics"/>
+                        <panel/>
+                        <control name="label" id="toolsDumpPhysicsStatus"
+                                 backgroundColor="#ffff"
+                                 color="#000f"
+                                 textHAlign="center"
+                                 width="104px"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="toolsDumpSceneCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  dump scene"/>
+                        <panel/>
+                        <control name="label" id="toolsDumpSceneStatus"
+                                 backgroundColor="#ffff"
+                                 color="#000f"
+                                 textHAlign="center"
+                                 width="104px"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="toolsPhysicsCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  physics"/>
+                        <panel/>
+                        <control name="label" id="toolsPhysicsStatus"
+                                 backgroundColor="#ffff"
+                                 color="#000f"
+                                 textHAlign="center"
+                                 width="104px"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="toolsPropProposalCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  prop proposal"/>
+                        <panel/>
+                        <control name="label" id="toolsPropProposalStatus"
+                                 backgroundColor="#ffff"
+                                 color="#000f"
+                                 textHAlign="center"
+                                 width="104px"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="toolsViewCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  view"/>
+                        <panel/>
+                        <control name="label" id="toolsViewStatus"
+                                 backgroundColor="#ffff"
+                                 color="#000f"
+                                 textHAlign="center"
+                                 width="104px"/>
+                    </panel>
+
+                </panel>
+            </control>
+
+            <control name="window" id="viewTool" title="View Tool"
+                     backgroundColor="#663f"
+                     hideOnClose="true"
+                     height="197px" width="255px" x="2" y="570">
+                <panel childLayout="vertical">
+                    <panel height="5px"/>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="viewPhysicsJointsCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  physics joints    "/>
+                        <control name="checkbox" id="viewWorldShapesCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  world shapes"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="viewPropShapesCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  prop shapes    "/>
+                        <control name="checkbox" id="viewVehicleShapesCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  vehicle shapes"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="viewPropSpheresCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  prop spheres    "/>
+                        <control name="checkbox" id="viewVehicleSpheresCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  vehicle spheres"/>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="viewShadowsCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  shadows"/>
+                        <control name="label" text="    Camera:  "/>
+                        <control name="button" id="viewCameraButton"
+                                 width="60px">
+                            <interact onRelease="perform(next camera)"/>
+                        </control>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="label" text="Anisotropy:  "/>
+                        <control name="button" id="viewDefaultAnisoButton"
+                                 width="30px">
+                            <interact onRelease="perform(set defaultAniso)"/>
+                        </control>
+                        <control name="label" text="    Body axes:  "/>
+                        <control name="button" id="viewPhysicsAxesButton"
+                                 width="55px">
+                            <interact onRelease="perform(set physicsAxes)"/>
+                        </control>
+                    </panel>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="label" text="Sky:  "/>
+                        <control name="button" id="viewSkyButton"
+                                 width="120px">
+                            <interact onRelease="perform(load sky)"/>
+                        </control>
+                    </panel>
+
+                </panel>
+            </control>
+
+        </layer>
+    </screen>
+</nifty>
