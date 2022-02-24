@@ -60,6 +60,24 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
 
         <layer id="toolsLayer" childLayout="absolute-inside">
 
+            <control name="window" id="audioTool" title="Audio Tool"
+                     backgroundColor="#663f"
+                     hideOnClose="true"
+                     height="59px" width="270px" x="713" y="2">
+                <panel childLayout="vertical">
+                    <panel height="5px"/>
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="horizontalSlider" id="masterAudioVolumeSlider"
+                                 buttonStepSize="0.5"
+                                 max="1" min="0" stepSize="0.001"
+                                 width="*"/>
+                        <control name="label" text="    "/>
+                        <control name="checkbox" id="masterMuteCheckBox"/>
+                        <control name="label" text="  mute"/>
+                    </panel>
+                </panel>
+            </control>
+
             <control name="window" id="drivingTool" title="Driving Tool"
                      backgroundColor="#663f"
                      hideOnClose="true"
@@ -105,7 +123,7 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
             <control name="window" id="dumpPhysicsTool" title="Dump Physics Tool"
                      backgroundColor="#663f"
                      hideOnClose="true"
-                     height="260px" width="186px" x="908" y="2">
+                     height="260px" width="186px" x="908" y="63">
                 <panel childLayout="vertical">
                     <panel height="5px"/>
                     <panel childLayout="horizontal" height="28px">
@@ -362,10 +380,21 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
             <control name="window" id="toolsTool" title="Tools Tool"
                      backgroundColor="#663f"
                      hideOnClose="true"
-                     height="202px" width="230px" x="2" y="249">
+                     height="230px" width="230px" x="2" y="249">
                 <panel childLayout="vertical">
                     <panel height="5px"/>
 
+                    <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="toolsAudioCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  audio"/>
+                        <panel/>
+                        <control name="label" id="toolsAudioStatus"
+                                 backgroundColor="#ffff"
+                                 color="#000f"
+                                 textHAlign="center"
+                                 width="104px"/>
+                    </panel>
                     <panel childLayout="horizontal" height="28px">
                         <control name="checkbox" id="toolsDrivingCheckBox"
                                  width="20px"/>
@@ -439,7 +468,7 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
             <control name="window" id="viewTool" title="View Tool"
                      backgroundColor="#663f"
                      hideOnClose="true"
-                     height="197px" width="255px" x="2" y="455">
+                     height="197px" width="255px" x="2" y="570">
                 <panel childLayout="vertical">
                     <panel height="5px"/>
                     <panel childLayout="horizontal" height="28px">

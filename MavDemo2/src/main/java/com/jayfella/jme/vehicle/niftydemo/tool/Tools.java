@@ -27,6 +27,7 @@ public class Tools {
     // *************************************************************************
     // fields
 
+    final private AudioTool audio;
     final private DrivingTool driving;
     final private DumpPhysicsTool dumpPhysics;
     final private DumpSceneTool dumpScene;
@@ -47,6 +48,7 @@ public class Tools {
     public Tools(MainHud screenController) {
         Validate.nonNull(screenController, "screen controller");
 
+        audio = new AudioTool(screenController);
         driving = new DrivingTool(screenController);
         dumpPhysics = new DumpPhysicsTool(screenController);
         dumpScene = new DumpSceneTool(screenController);
@@ -59,7 +61,8 @@ public class Tools {
         view = new ViewTool(screenController);
 
         allTools = new Tool[]{
-            driving, dumpPhysics, dumpScene, physics, propProposal, tools, view
+            audio, driving, dumpPhysics, dumpScene,
+            physics, propProposal, tools, view
         };
     }
     // *************************************************************************
