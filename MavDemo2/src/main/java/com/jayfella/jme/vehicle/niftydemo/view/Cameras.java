@@ -1,5 +1,6 @@
 package com.jayfella.jme.vehicle.niftydemo.view;
 
+import com.github.stephengold.garrett.AffixedCamera;
 import com.github.stephengold.garrett.CameraSignal;
 import com.github.stephengold.garrett.OrbitCamera;
 import com.github.stephengold.garrett.Target;
@@ -12,6 +13,7 @@ import com.jme3.app.state.AppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.control.VehicleControl;
+import com.jme3.bullet.objects.PhysicsRigidBody;
 import com.jme3.input.FlyByCamera;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
@@ -38,6 +40,10 @@ public class Cameras {
     // *************************************************************************
     // fields
 
+    /**
+     * controller for Dash mode
+     */
+    private static AffixedCamera dash;
     /**
      * active controller, or null if none
      */
@@ -66,7 +72,7 @@ public class Cameras {
     // new methods exposed
 
     /**
-     * Configure the camera controllers and default camera during startup.
+     * Configure the camera controllers and main camera during startup.
      */
     public static void configure() {
         MavDemo2 app = MavDemo2.getApplication();
@@ -93,6 +99,12 @@ public class Cameras {
         boolean success = stateManager.attach(chase);
         assert success;
 
+        dash = new AffixedCamera("dash", camera, tracker);
+        dash.setSignalName(CameraSignal.ZoomIn, "cameraZoomIn");
+        dash.setSignalName(CameraSignal.ZoomOut, "cameraZoomOut");
+        success = stateManager.attach(dash);
+        assert success;
+
         orbit = new OrbitCamera("orbit", camera, tracker);
         orbit.setObstructionFilter(obstructionFilter);
         orbit.setSignalName(CameraSignal.Back, "FLYCAM_Backward");
@@ -116,6 +128,7 @@ public class Cameras {
      */
     public static void disableAll() {
         chase.setEnabled(false);
+        dash.setEnabled(false);
         orbit.setEnabled(false);
     }
 
@@ -149,8 +162,11 @@ public class Cameras {
             case Chase:
                 desiredMode = CameraMode.Orbit;
                 break;
-            case Orbit:
+            case Dash:
                 desiredMode = CameraMode.Chase;
+                break;
+            case Orbit:
+                desiredMode = CameraMode.Dash;
                 break;
             default:
                 throw new IllegalStateException("mode = " + desiredMode);
@@ -209,6 +225,9 @@ public class Cameras {
             case Chase:
                 newController = chase;
                 break;
+            case Dash:
+                newController = dash;
+                break;
             case Orbit:
                 newController = orbit;
                 break;
@@ -216,12 +235,23 @@ public class Cameras {
                 throw new IllegalStateException("mode = " + desiredMode);
         }
 
-        if (newController instanceof OrbitCamera) {
+        Vehicle newVehicle = findTarget();
+        if (newController instanceof AffixedCamera) {
+            AffixedCamera affixedCamera = (AffixedCamera) newController;
+            PhysicsRigidBody body = affixedCamera.getRigidBody();
+            PhysicsRigidBody newBody = newVehicle.getVehicleControl();
+            if (body != newBody) {
+                affixedCamera.setRigidBody(newBody);
+
+                Vector3f offset = new Vector3f();
+                newVehicle.locateDashCam(offset);
+                affixedCamera.setOffset(offset);
+            }
+        } else if (newController instanceof OrbitCamera) {
             OrbitCamera orbitCamera = (OrbitCamera) newController;
             Object targetEntity = getTarget(orbitCamera);
-            Vehicle newTargetVehicle = findTarget();
-            if (targetEntity != newTargetVehicle) {
-                retarget(orbitCamera, newTargetVehicle);
+            if (targetEntity != newVehicle) {
+                retarget(orbitCamera, newVehicle);
             }
         }
 
