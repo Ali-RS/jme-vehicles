@@ -1191,6 +1191,7 @@ abstract public class Vehicle
      */
     protected void setHornSound(Sound sound) {
         if (hornSound != null) {
+            hornSound.mute();
             hornSound.detach();
         }
         this.hornSound = sound;
