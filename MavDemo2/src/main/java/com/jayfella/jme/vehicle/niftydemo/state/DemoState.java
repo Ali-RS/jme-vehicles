@@ -17,6 +17,7 @@ import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.collision.PhysicsRayTestResult;
 import com.jme3.bullet.objects.PhysicsRigidBody;
+import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
@@ -47,9 +48,17 @@ public class DemoState
     // fields
 
     /**
+     * true&rarr;audio is globally muted, false&rarr;audio enabled
+     */
+    private boolean isAudioGloballyMuted = false;
+    /**
      * elapsed physics time (in seconds, &ge;0)
      */
     private double elapsedTime;
+    /**
+     * overall audio volume when not muted (log scale, &ge;0, &le;1)
+     */
+    private float maLogVolume = 0.5f;
     /**
      * pseudo-random number generator
      */
@@ -230,6 +239,26 @@ public class DemoState
     }
 
     /**
+     * Test whether audio is globally muted.
+     *
+     * @return true if muted, otherwise false
+     */
+    public boolean isMuted() {
+        return isAudioGloballyMuted;
+    }
+
+    /**
+     * Determine the overall audio volume when not muted
+     *
+     * @return the volume level (log scale, &ge;0, &le;1)
+     */
+    public float masterAudioLogVolume() {
+        assert maLogVolume >= 0f : maLogVolume;
+        assert maLogVolume <= 1f : maLogVolume;
+        return maLogVolume;
+    }
+
+    /**
      * Pick the nearest Prop under the mouse cursor using a physics ray.
      *
      * @return the pre-existing instance, or null of none found
@@ -339,6 +368,25 @@ public class DemoState
     }
 
     /**
+     * Alter the overall audio volume when not muted.
+     *
+     * @param logVolume the desired volume (log scale, &ge;0, &le;1)
+     */
+    public void setMasterAudioLogVolume(float logVolume) {
+        Validate.fraction(logVolume, "log volume");
+        this.maLogVolume = logVolume;
+    }
+
+    /**
+     * Alter whether audio is globally muted.
+     *
+     * @param setting true to mute all audio, false to enable audio
+     */
+    public void setMuted(boolean setting) {
+        this.isAudioGloballyMuted = setting;
+    }
+
+    /**
      * Replace the selected vehicle with an unloaded one.
      *
      * @param newVehicle (not loaded)
@@ -405,7 +453,14 @@ public class DemoState
      */
     @Override
     public float effectiveVolume() {
-        return 1f; // TODO
+        float result;
+        if (isAudioGloballyMuted) {
+            result = 0f;
+        } else {
+            result = FastMath.pow(0.003f, 1f - maLogVolume);
+        }
+
+        return result;
     }
     // *************************************************************************
     // PhysicsTickListener methods
