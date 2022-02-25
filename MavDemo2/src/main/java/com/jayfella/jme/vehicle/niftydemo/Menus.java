@@ -11,6 +11,7 @@ import com.jayfella.jme.vehicle.examples.skies.AnimatedDaySky;
 import com.jayfella.jme.vehicle.examples.skies.AnimatedNightSky;
 import com.jayfella.jme.vehicle.examples.skies.PurpleNebulaSky;
 import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
+import com.jayfella.jme.vehicle.examples.vehicles.ClassicMotorcycle;
 import com.jayfella.jme.vehicle.examples.vehicles.DuneBuggy;
 import com.jayfella.jme.vehicle.examples.vehicles.GTRNismo;
 import com.jayfella.jme.vehicle.examples.vehicles.GrandTourer;
@@ -99,6 +100,7 @@ public class Menus {
      * @param builder (not null, modified)
      */
     public static void buildVehicleMenu(PopupMenuBuilder builder) {
+        builder.add("Classic Motorcycle");
         builder.add("Dune Buggy");
         builder.add("Grand Tourer");
         builder.add("GTR Nismo");
@@ -174,6 +176,10 @@ public class Menus {
     public static boolean menuVehicle(String remainder) {
         Vehicle vehicle;
         switch (remainder) {
+            case "Classic Motorcycle":
+                vehicle = new ClassicMotorcycle();
+                break;
+
             case "Dune Buggy":
                 vehicle = new DuneBuggy();
                 break;
