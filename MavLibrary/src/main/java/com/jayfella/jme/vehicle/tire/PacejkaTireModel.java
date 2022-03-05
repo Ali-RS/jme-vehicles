@@ -158,7 +158,7 @@ public class PacejkaTireModel {
     /**
      * Calculates the lateral cornering force for this tire in N.<br>
      * <br>
-     * <b>CAUTION:</b> this function returns a value in Newton N!
+     * <b>CAUTION:</b> this function returns a value in Newtons (N)!
      *
      * @param slipAngle - the slip angle in degrees (°).
      *
