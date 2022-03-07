@@ -63,11 +63,10 @@ It contains 4 sub-projects:
 
 1. Install a 64-bit [Java], if you don't already have one.
    (MavDemo1 no longer supports 32-bit Java.)
-2. Point the `JAVA_HOME` environment variable to your Java installation.
-   (In other words, set it to the path of a directory/folder
-   containing a "bin" that contains a Java executable.
-   The path might be something like "C:\Program Files\Java\jre1.8.0_301"
-   or "/usr/lib/jvm/java-11-openjdk-amd64/" .)
+2. Point the "JAVA_HOME" environment variable to your Java installation.
+   (The path might be something like "C:\Program Files\Java\jre1.8.0_301"
+   or "/usr/lib/jvm/java-8-openjdk-amd64" or
+   "/Library/Java/JavaVirtualMachines/liberica-jdk-17-full.jdk/Contents/Home" .)
   + using Bash or Zsh: `export JAVA_HOME="` *path to installation* `"`
   + using Windows Command Prompt: `set JAVA_HOME="` *path to installation* `"`
   + using PowerShell: `$env:JAVA_HOME = '` *path to installation* `'`
@@ -96,9 +95,12 @@ the Main Menu appears in the upper-left corner of the window.
 
 ## How to build and run More Advanced Vehicles from source
 
-1. Install a 64-bit [Java Development Kit (JDK)][openJDK],
+1. Install a 64-bit [Java Development Kit (JDK)][adoptium],
    if you don't already have one.
-2. Point the `JAVA_HOME` environment variable to your JDK installation.
+2. Point the "JAVA_HOME" environment variable to your JDK installation.
+   (The path might be something like "C:\Program Files\Java\jre1.8.0_301"
+   or "/usr/lib/jvm/java-8-openjdk-amd64" or
+   "/Library/Java/JavaVirtualMachines/liberica-jdk-17-full.jdk/Contents/Home" .)
   + using Bash or Zsh: `export JAVA_HOME="` *path to installation* `"`
   + using Windows Command Prompt: `set JAVA_HOME="` *path to installation* `"`
   + using PowerShell: `$env:JAVA_HOME = '` *path to installation* `'`
@@ -491,6 +493,7 @@ correct the situation: sgold@sonic.net
 
 
 [adi]: https://github.com/scenemax3d "Adi Barda and SceneMax3D"
+[adoptium]: https://adoptium.net/releases.html "Adoptium Project"
 [atryder]: https://github.com/ATryder "Adam T. Ryder"
 [github]: https://github.com "GitHub"
 [gradle]: https://gradle.org "Gradle Project"
@@ -503,7 +506,6 @@ correct the situation: sgold@sonic.net
 [lemur]: https://github.com/jMonkeyEngine-Contributions/Lemur "Lemur UI Toolkit"
 [makehuman]: http://www.makehumancommunity.org/ "MakeHuman Community"
 [mav]: https://github.com/stephengold/jme-vehicles "More Advanced Vehicles Project"
-[openJDK]: https://openjdk.java.net "OpenJDK Project"
 [pspeed]: https://github.com/pspeed42 "Paul Speed"
 [sergej]: https://hdrihaven.com/hdris/?a=Sergej%20Majboroda "HDRIs by Sergej Majboroda"
 [sonatype]: https://www.sonatype.com "Sonatype"
