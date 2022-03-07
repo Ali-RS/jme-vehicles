@@ -4,10 +4,10 @@ and provides a library to support driving simulations.
 
 It contains 4 sub-projects:
 
- 1. MavLibrary: the MaVehicles library
- 2. MavDemo1: a demo application with a Lemur-based GUI
- 3. HelloMav: a very simple application using the MaVehicles library
- 4. MavCommon: examples of vehicles, worlds, skies, etcetera
+1. MavLibrary: the MaVehicles library
+2. MavDemo1: a demo application with a Lemur-based GUI
+3. HelloMav: a very simple application using the MaVehicles library
+4. MavCommon: examples of vehicles, worlds, skies, etcetera
 
 
 <a name="toc"></a>
@@ -68,8 +68,8 @@ It contains 4 sub-projects:
    containing a "bin" that contains a Java executable.
    The path might be something like "C:\Program Files\Java\jre1.8.0_301"
    or "/usr/lib/jvm/java-11-openjdk-amd64/" .)
-  + using Bash:  `export JAVA_HOME="` *path to installation* `"`
-  + using Windows Command Prompt:  `set JAVA_HOME="` *path to installation* `"`
+  + using Bash or Zsh: `export JAVA_HOME="` *path to installation* `"`
+  + using Windows Command Prompt: `set JAVA_HOME="` *path to installation* `"`
   + using PowerShell: `$env:JAVA_HOME = '` *path to installation* `'`
 3. Install the latest MavDemo1 release from GitHub:
   + Browse to https://github.com/stephengold/jme-vehicles/releases/tag/project-1.5.0
@@ -78,7 +78,7 @@ It contains 4 sub-projects:
   + Extract the contents of the saved ZIP file.
 4. `cd` to the extracted "MavDemo1" directory/folder that contains "bin" and "lib".
 5. Run the Maud startup script:
-  + using Bash: `./bin/MavDemo1`
+  + using Bash or Zsh: `./bin/MavDemo1`
   + using Windows Command Prompt: `./bin/MavDemo1.bat`
   + using PowerShell: `.\bin\MavDemo1.bat`
 
@@ -99,8 +99,8 @@ the Main Menu appears in the upper-left corner of the window.
 1. Install a 64-bit [Java Development Kit (JDK)][openJDK],
    if you don't already have one.
 2. Point the `JAVA_HOME` environment variable to your JDK installation.
-  + using Bash:  `export JAVA_HOME="` *path to installation* `"`
-  + using Windows Command Prompt:  `set JAVA_HOME="` *path to installation* `"`
+  + using Bash or Zsh: `export JAVA_HOME="` *path to installation* `"`
+  + using Windows Command Prompt: `set JAVA_HOME="` *path to installation* `"`
   + using PowerShell: `$env:JAVA_HOME = '` *path to installation* `'`
 3. Download and extract the More Advanced Vehicles source code from GitHub:
   + using Git:
@@ -114,27 +114,27 @@ the Main Menu appears in the upper-left corner of the window.
     + extract the contents of the saved ZIP file
     + `cd` to the extracted directory/folder
 4. Run the [Gradle] wrapper:
-  + using Bash or PowerShell: `./gradlew build`
+  + using Bash or PowerShell or Zsh: `./gradlew build`
   + using Windows Command Prompt: `.\gradlew build`
 
 After a successful build,
-Maven artifacts will be found in `MavLibrary/build/libs`.
+Maven artifacts will be found in "MavLibrary/build/libs".
 
-To install the Maven artifacts to your local Maven repository:
- + using Bash or PowerShell:  `./gradlew install`
- + using Windows Command Prompt:  `.\gradlew install`
+You can install the artifacts to your local Maven repository:
++ using Bash or PowerShell or Zsh: `./gradlew install`
++ using Windows Command Prompt: `.\gradlew install`
 
-To run the MavDemo1 application:
- + using Bash or PowerShell:  `./gradlew :MavDemo1:run`
- + using Windows Command Prompt:  `.\gradlew :MavDemo1:run`
+You can run the MavDemo1 application:
++ using Bash or PowerShell or Zsh: `./gradlew :MavDemo1:run`
++ using Windows Command Prompt: `.\gradlew :MavDemo1:run`
 
-To run the HelloMav application:
- + using Bash or PowerShell:  `./gradlew :HelloMav:run`
- + using Windows Command Prompt:  `.\gradlew :HelloMav:run`
+You can run the HelloMav application:
++ using Bash or PowerShell or Zsh: `./gradlew :HelloMav:run`
++ using Windows Command Prompt: `.\gradlew :HelloMav:run`
 
-To restore the project to a pristine state:
- + using Bash or PowerShell: `./gradlew clean`
- + using Windows Command Prompt: `.\gradlew clean`
+You can restore the project to a pristine state:
++ using Bash or PowerShell or Zsh: `./gradlew clean`
++ using Windows Command Prompt: `.\gradlew clean`
 
 [Jump to table of contents](#toc)
 
