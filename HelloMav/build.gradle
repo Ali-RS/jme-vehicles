@@ -26,17 +26,19 @@ dependencies {
     //implementation 'com.github.stephengold:MaVehicles:' + maVehiclesVersion
 }
 
-// cleanup tasks
+// cleanup tasks:
+
 clean.dependsOn('cleanDLLs', 'cleanDyLibs', 'cleanLogs', 'cleanSOs')
-task cleanDLLs(type: Delete) {
+
+task cleanDLLs(type: Delete) { // extracted Windows native libraries
     delete fileTree(dir: '.', include: '*.dll')
 }
-task cleanDyLibs(type: Delete) {
+task cleanDyLibs(type: Delete) { // extracted macOSX native libraries
     delete fileTree(dir: '.', include: '*.dylib')
 }
-task cleanLogs(type: Delete) {
+task cleanLogs(type: Delete) { // JVM crash logs
     delete fileTree(dir: '.', include: 'hs_err_pid*.log')
 }
-task cleanSOs(type: Delete) {
+task cleanSOs(type: Delete) { // extracted Linux and Android native libraries
     delete fileTree(dir: '.', include: '*.so')
 }
