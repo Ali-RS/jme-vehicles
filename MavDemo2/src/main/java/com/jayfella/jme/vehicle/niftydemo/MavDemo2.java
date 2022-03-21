@@ -148,6 +148,10 @@ public class MavDemo2 extends GuiApplication {
                     showDialog = ShowDialog.Always;
                     break;
 
+                case "--noDialog":
+                    showDialog = ShowDialog.Never;
+                    break;
+
                 case "-v":
                 case "--verbose":
                     Heart.setLoggingLevels(Level.INFO);
