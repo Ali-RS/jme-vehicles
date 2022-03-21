@@ -54,6 +54,11 @@ public class MavDemo2 extends GuiApplication {
      */
     final private static Logger logger
             = Logger.getLogger(MavDemo2.class.getName());
+    /**
+     * application name (for the title bar of the app's window)
+     */
+    final private static String applicationName
+            = MavDemo2.class.getSimpleName();
     // *************************************************************************
     // fields
 
@@ -154,7 +159,8 @@ public class MavDemo2 extends GuiApplication {
             }
         }
 
-        mainStartup(forceDialog);
+        String title = applicationName + " " + MyString.join(arguments);
+        mainStartup(forceDialog, title);
     }
     // *************************************************************************
     // GuiApplication methods
@@ -346,8 +352,9 @@ public class MavDemo2 extends GuiApplication {
      * @param forceDialog true&rarr;force startup to show the JME settings
      * dialog, false&rarr; show the dialog only if persistent settings are
      * missing
+     * @param title for the title bar of the app's window
      */
-    private static void mainStartup(boolean forceDialog) {
+    private static void mainStartup(boolean forceDialog, String title) {
         /*
          * Instantiate the application.
          */
@@ -355,7 +362,6 @@ public class MavDemo2 extends GuiApplication {
         /*
          * Instantiate the display-settings screen.
          */
-        String applicationName = "MavDemo2";
         DisplaySizeLimits dsl = new DisplaySizeLimits(
                 1_280, 720, // min width, height
                 2_048, 1_080 // max width, height
@@ -368,6 +374,7 @@ public class MavDemo2 extends GuiApplication {
 
                 setForceDialog(forceDialog);
                 settings.setGammaCorrection(true);
+                settings.setTitle(title);
                 settings.setVSync(true);
             }
         };
