@@ -5,7 +5,7 @@ import com.jayfella.jme.vehicle.Prop;
 import com.jayfella.jme.vehicle.Sky;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.World;
-import com.jayfella.jme.vehicle.examples.worlds.Mountains;
+import com.jayfella.jme.vehicle.examples.worlds.Playground;
 import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
 import com.jayfella.jme.vehicle.niftydemo.view.Cameras;
 import com.jayfella.jme.vehicle.niftydemo.view.View;
@@ -86,7 +86,7 @@ public class DemoState
     /**
      * selected World (not null)
      */
-    private World world = new Mountains();
+    private World world = new Playground();
     // *************************************************************************
     // constructors
 
