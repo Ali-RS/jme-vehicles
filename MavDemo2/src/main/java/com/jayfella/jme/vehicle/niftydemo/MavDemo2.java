@@ -132,7 +132,7 @@ public class MavDemo2 extends GuiApplication {
      */
     public static void main(String[] arguments) {
         /*
-         * Mute the chatty loggers found in some imported packages.
+         * Mute the chatty loggers found in certain packages.
          */
         Heart.setLoggingLevels(Level.WARNING);
 
@@ -216,9 +216,11 @@ public class MavDemo2 extends GuiApplication {
      */
     @Override
     public void onAction(String actionString, boolean ongoing, float tpf) {
-        logger.log(Level.INFO, "Got action {0} ongoing={1}", new Object[]{
-            MyString.quote(actionString), ongoing
-        });
+        if (logger.isLoggable(Level.INFO)) {
+            logger.log(Level.INFO, "Got action {0} ongoing={1}", new Object[]{
+                MyString.quote(actionString), ongoing
+            });
+        }
 
         boolean handled;
         if (ongoing) {
