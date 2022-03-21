@@ -33,6 +33,7 @@ import jme3utilities.nifty.displaysettings.DsScreen;
 import jme3utilities.ui.DisplaySettings;
 import jme3utilities.ui.DisplaySizeLimits;
 import jme3utilities.ui.InputMode;
+import jme3utilities.ui.ShowDialog;
 
 /**
  * An application with a Nifty GUI to demonstrate the MaVehicles library. The
@@ -136,7 +137,7 @@ public class MavDemo2 extends GuiApplication {
          */
         Heart.setLoggingLevels(Level.WARNING);
 
-        boolean forceDialog = false;
+        ShowDialog showDialog = ShowDialog.FirstTime;
         /*
          * Process any command-line arguments.
          */
@@ -144,7 +145,7 @@ public class MavDemo2 extends GuiApplication {
             switch (arg) {
                 case "-f":
                 case "--forceDialog":
-                    forceDialog = true;
+                    showDialog = ShowDialog.Always;
                     break;
 
                 case "-v":
@@ -160,7 +161,7 @@ public class MavDemo2 extends GuiApplication {
         }
 
         String title = applicationName + " " + MyString.join(arguments);
-        mainStartup(forceDialog, title);
+        mainStartup(showDialog, title);
     }
     // *************************************************************************
     // GuiApplication methods
@@ -351,12 +352,10 @@ public class MavDemo2 extends GuiApplication {
      * Initialization performed immediately after parsing the command-line
      * arguments.
      *
-     * @param forceDialog true&rarr;force startup to show the JME settings
-     * dialog, false&rarr; show the dialog only if persistent settings are
-     * missing
+     * @param showDialog when to show the JME settings dialog (not null)
      * @param title for the title bar of the app's window
      */
-    private static void mainStartup(boolean forceDialog, String title) {
+    private static void mainStartup(ShowDialog showDialog, String title) {
         /*
          * Instantiate the application.
          */
@@ -374,7 +373,7 @@ public class MavDemo2 extends GuiApplication {
             protected void applyOverrides(AppSettings settings) {
                 super.applyOverrides(settings);
 
-                setForceDialog(forceDialog);
+                setShowDialog(showDialog);
                 settings.setGammaCorrection(true);
                 settings.setTitle(title);
                 settings.setVSync(true);
