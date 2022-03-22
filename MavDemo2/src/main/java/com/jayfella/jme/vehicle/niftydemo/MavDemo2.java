@@ -379,6 +379,8 @@ public class MavDemo2 extends GuiApplication {
 
                 setShowDialog(showDialog);
                 settings.setGammaCorrection(true);
+                settings.setResolution(1280, 720);
+                settings.setSamples(8);
                 settings.setTitle(title);
                 settings.setVSync(true);
             }
