@@ -364,6 +364,9 @@ public class MavDemo2 extends GuiApplication {
          * Instantiate the application.
          */
         application = new MavDemo2();
+
+        String status = Heart.areAssertionsEnabled() ? "enabled" : "disabled";
+        logger.log(Level.WARNING, "Assertions are {0}.", status);
         /*
          * Instantiate the display-settings screen.
          */
