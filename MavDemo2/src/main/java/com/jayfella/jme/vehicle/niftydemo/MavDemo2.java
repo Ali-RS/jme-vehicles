@@ -399,9 +399,6 @@ public class MavDemo2 extends GuiApplication {
              */
             application.setShowSettings(false);
 
-            if (displaySettings.isGammaCorrection()) {
-                application.setNiftyColorsAsSrgb();
-            }
             application.start();
             /*
              * ... and onward to MavDemo2.guiInitializeApplication()!
