@@ -35,14 +35,14 @@ dependencies {
     //implementation 'com.github.stephengold:MaVehicles:' + maVehiclesVersion
 }
 
-task debugForceDialog(type: JavaExec) {
+tasks.register('debugForceDialog', JavaExec) {
     args = ['--forceDialog']
     classpath sourceSets.main.runtimeClasspath
     debug true
     mainClass = mainClassName
 }
 
-task runForceDialog(type: JavaExec) {
+tasks.register('runForceDialog', JavaExec) {
     args = ['--forceDialog']
     classpath sourceSets.main.runtimeClasspath
     mainClass = mainClassName
@@ -53,18 +53,18 @@ task runForceDialog(type: JavaExec) {
 clean.dependsOn('cleanDLLs', 'cleanDyLibs', 'cleanLogs', 'cleanSOs')
 clean.dependsOn('cleanScreenShots')
 
-task cleanDLLs(type: Delete) { // extracted Windows native libraries
+tasks.register('cleanDLLs', Delete) { // extracted Windows native libraries
     delete fileTree(dir: '.', include: '*.dll')
 }
-task cleanDyLibs(type: Delete) { // extracted macOSX native libraries
+tasks.register('cleanDyLibs', Delete) { // extracted macOS native libraries
     delete fileTree(dir: '.', include: '*.dylib')
 }
-task cleanLogs(type: Delete) { // JVM crash logs
+tasks.register('cleanLogs', Delete) { // JVM crash logs
     delete fileTree(dir: '.', include: 'hs_err_pid*.log')
 }
-task cleanSOs(type: Delete) { // extracted Linux and Android native libraries
+tasks.register('cleanSOs', Delete) { // extracted Linux and Android native libraries
     delete fileTree(dir: '.', include: '*.so')
 }
-task cleanScreenShots(type: Delete) {
+tasks.register('cleanScreenShots', Delete) {
     delete fileTree(dir: '.', include: 'screen_shot*.png')
 }
