@@ -18,7 +18,7 @@ dependencies {
     runtimeOnly 'org.jmonkeyengine:jme3-lwjgl3:' + jme3Version
 
     // MavDemo2 doesn't use jme3-plugins
-    //  -- it is added solely to avoid warnings from AssetConfig.
+    //  -- it is included solely to avoid warnings from AssetConfig.
     runtimeOnly 'org.jmonkeyengine:jme3-plugins:' + jme3Version
 
     // non-JME dependencies:
@@ -26,7 +26,7 @@ dependencies {
     implementation 'com.github.stephengold:Acorus:0.9.11'
     implementation 'com.github.stephengold:jme3-utilities-nifty:0.9.28'
     implementation garrettCoordinates
-    implementation 'com.github.stephengold:JmePower:0.4.3'
+    implementation 'com.github.stephengold:JmePower:0.4.4'
     implementation minieCoordinates
     implementation skyControlCoordinates
 
