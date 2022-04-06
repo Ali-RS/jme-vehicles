@@ -3,6 +3,7 @@ package com.jayfella.jme.vehicle.lemurdemo;
 import com.atr.jme.font.asset.TrueTypeLoader;
 import com.github.stephengold.garrett.CameraSignal;
 import com.github.stephengold.garrett.OrbitCamera;
+import com.github.stephengold.jmepower.JmePowerVersion;
 import com.github.stephengold.jmepower.lemur.LemurLoadingState;
 import com.jayfella.jme.vehicle.ChunkManager;
 import com.jayfella.jme.vehicle.GlobalAudio;
@@ -52,6 +53,7 @@ import com.jme3.input.JoystickConnectionListener;
 import com.jme3.input.KeyInput;
 import com.jme3.material.Material;
 import com.jme3.system.AppSettings;
+import com.jme3.system.JmeVersion;
 import com.simsilica.lemur.input.Button;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,6 +63,7 @@ import jme3utilities.MyCamera;
 import jme3utilities.MyString;
 import jme3utilities.SignalTracker;
 import jme3utilities.minie.FilterAll;
+import jme3utilities.minie.MinieVersion;
 
 /**
  * A simple application with a Lemur GUI to demonstrate the MaVehicles library.
@@ -282,6 +285,18 @@ public class MavDemo1 extends SimpleApplication {
     @Override
     public void simpleInitApp() {
         NativeLibrary.setStartupMessageEnabled(false);
+        /*
+         * Log library versions.
+         */
+        logger.log(Level.INFO, "jme3-core version is {0}",
+                MyString.quote(JmeVersion.FULL_NAME));
+        logger.log(Level.INFO, "Heart version is {0}",
+                MyString.quote(Heart.versionShort()));
+        logger.log(Level.INFO, "JmePower version is {0}",
+                MyString.quote(JmePowerVersion.versionShort()));
+        logger.log(Level.INFO, "Minie version is {0}",
+                MyString.quote(MinieVersion.versionShort()));
+
         assetManager.registerLoader(TrueTypeLoader.class, "ttf");
         renderer.setDefaultAnisotropicFilter(4);
         findAppState(DetailedProfilerState.class).setEnabled(false);
