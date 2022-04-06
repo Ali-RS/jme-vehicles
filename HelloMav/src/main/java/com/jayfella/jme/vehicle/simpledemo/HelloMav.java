@@ -85,14 +85,24 @@ public class HelloMav extends SimpleApplication {
     /**
      * Main entry point for the HelloMav application.
      *
-     * @param unused array of command-line arguments (not null)
+     * @param args array of command-line arguments (not null)
      */
-    public static void main(String... unused) {
+    public static void main(String... args) {
+        boolean showSettingsDialog = true;
+        /*
+         * Process any command-line arguments.
+         */
+        for (String arg : args) {
+            if (arg.equals("--noDialog")) {
+                showSettingsDialog = false;
+            }
+        }
         /*
          * Mute the chatty loggers found in some imported packages.
          */
         Heart.setLoggingLevels(Level.WARNING);
 
+        boolean loadDefaults = true;
         AppSettings appSettings = new AppSettings(true);
         appSettings.setGammaCorrection(true);
         appSettings.setResolution(1280, 720);
@@ -100,7 +110,7 @@ public class HelloMav extends SimpleApplication {
 
         HelloMav application = new HelloMav();
         application.setSettings(appSettings);
-        application.setShowSettings(false);
+        application.setShowSettings(showSettingsDialog);
         application.start();
     }
     // *************************************************************************
