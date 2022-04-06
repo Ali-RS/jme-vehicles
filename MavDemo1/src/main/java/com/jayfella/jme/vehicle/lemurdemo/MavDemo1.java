@@ -199,15 +199,14 @@ public class MavDemo1 extends SimpleApplication {
         Logger materialLogger = Logger.getLogger(Material.class.getName());
         materialLogger.setLevel(Level.SEVERE);
 
-        boolean forceDialog = false;
+        boolean showSettingsDialog = true;
         /*
          * Process any command-line arguments.
          */
         for (String arg : args) {
             switch (arg) {
-                case "-f":
-                case "--forceDialog":
-                    forceDialog = true;
+                case "--noDialog":
+                    showSettingsDialog = false;
                     break;
 
                 default:
@@ -220,7 +219,8 @@ public class MavDemo1 extends SimpleApplication {
         String status = Heart.areAssertionsEnabled() ? "enabled" : "disabled";
         logger.log(Level.WARNING, "Assertions are {0}.", status);
 
-        AppSettings appSettings = new AppSettings(true);
+        boolean loadDefaults = true;
+        AppSettings appSettings = new AppSettings(loadDefaults);
         appSettings.setGammaCorrection(true);
         appSettings.setResolution(1280, 720);
         appSettings.setSamples(8);
@@ -232,7 +232,7 @@ public class MavDemo1 extends SimpleApplication {
         application.setDisplayFps(false);
         application.setDisplayStatView(false);
         application.setSettings(appSettings);
-        application.setShowSettings(forceDialog);
+        application.setShowSettings(showSettingsDialog);
         application.start();
     }
 

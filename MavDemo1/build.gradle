@@ -34,19 +34,6 @@ dependencies {
     //implementation 'com.github.stephengold:MaVehicles:' + maVehiclesVersion
 }
 
-tasks.register('debugForceDialog', JavaExec) {
-    args = ['--forceDialog']
-    classpath sourceSets.main.runtimeClasspath
-    debug true
-    mainClass = mainClassName
-}
-
-tasks.register('runForceDialog', JavaExec) {
-    args = ['--forceDialog']
-    classpath sourceSets.main.runtimeClasspath
-    mainClass = mainClassName
-}
-
 // cleanup tasks:
 
 clean.dependsOn('cleanDLLs', 'cleanDyLibs', 'cleanLogs', 'cleanSOs')
