@@ -25,13 +25,13 @@ import jme3utilities.Heart;
 import jme3utilities.MyString;
 import jme3utilities.SignalTracker;
 import jme3utilities.debug.PerformanceAppState;
+import jme3utilities.math.RectSizeLimits;
 import jme3utilities.minie.MinieVersion;
 import jme3utilities.minie.PhysicsDumper;
 import jme3utilities.nifty.GuiApplication;
 import jme3utilities.nifty.bind.BindScreen;
 import jme3utilities.nifty.displaysettings.DsScreen;
 import jme3utilities.ui.DisplaySettings;
-import jme3utilities.ui.DisplaySizeLimits;
 import jme3utilities.ui.InputMode;
 import jme3utilities.ui.ShowDialog;
 
@@ -205,9 +205,6 @@ public class MavDemo2 extends GuiApplication {
         AppState flyByCam = findAppState(FlyCamAppState.class);
         stateManager.detach(flyByCam);
 
-        ScreenshotAppState screenShot = findAppState(ScreenshotAppState.class);
-        stateManager.detach(screenShot);
-
         attachAppStates();
     }
 
@@ -370,7 +367,7 @@ public class MavDemo2 extends GuiApplication {
         /*
          * Instantiate the display-settings screen.
          */
-        DisplaySizeLimits dsl = new DisplaySizeLimits(
+        RectSizeLimits dsl = new RectSizeLimits(
                 1_280, 720, // min width, height
                 2_048, 1_080 // max width, height
         );
