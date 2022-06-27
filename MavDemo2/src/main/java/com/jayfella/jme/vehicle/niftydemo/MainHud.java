@@ -39,9 +39,15 @@ public class MainHud extends GuiScreenController {
      */
     MainHud() {
         super("main", "/Interface/Nifty/huds/main.xml", InitialState.Enabled);
-
+        /*
+         * Acorus has already initialized and enabled the default input mode.
+         * Disable it and load the desired bindings.
+         */
         InputMode dim = MavDemo2.getApplication().getDefaultInputMode();
+        dim.setEnabled(false);
         dim.setConfigPath("Interface/bindings/default.properties");
+        dim.loadBindings();
+
         setListener(dim);
         dim.influence(this);
     }

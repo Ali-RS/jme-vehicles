@@ -439,6 +439,9 @@ public class MavDemo2 extends GuiApplication {
          */
         setDisplayFps(false);
         setDisplayStatView(false);
+
+        // Re-enable the default input mode, which was disabled by MainHud.
+        getDefaultInputMode().setEnabled(true);
     }
 
     /**
