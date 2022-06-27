@@ -23,7 +23,7 @@ dependencies {
 
     // non-JME dependencies:
     implementation garrettCoordinates
-    implementation 'com.github.stephengold:LemurPower:0.4.4'
+    implementation 'com.github.stephengold:JmePower:0.4.4'
     implementation minieCoordinates
     implementation 'com.simsilica:lemur-props:1.2.0'
     runtimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl:2.17.2'

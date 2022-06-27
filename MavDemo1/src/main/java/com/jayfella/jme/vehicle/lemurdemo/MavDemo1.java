@@ -4,7 +4,6 @@ import com.atr.jme.font.asset.TrueTypeLoader;
 import com.github.stephengold.garrett.CameraSignal;
 import com.github.stephengold.garrett.OrbitCamera;
 import com.github.stephengold.jmepower.JmePowerVersion;
-import com.github.stephengold.jmepower.lemur.LemurLoadingState;
 import com.jayfella.jme.vehicle.ChunkManager;
 import com.jayfella.jme.vehicle.GlobalAudio;
 import com.jayfella.jme.vehicle.Sky;
