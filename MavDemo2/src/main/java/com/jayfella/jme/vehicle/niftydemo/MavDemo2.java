@@ -1,8 +1,11 @@
 package com.jayfella.jme.vehicle.niftydemo;
 
+import com.github.stephengold.jmepower.JmeLoadingState;
 import com.jayfella.jme.vehicle.ChunkManager;
 import com.jayfella.jme.vehicle.Vehicle;
+import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
 import com.jayfella.jme.vehicle.examples.vehicles.GrandTourer;
+import com.jayfella.jme.vehicle.examples.worlds.Playground;
 import com.jayfella.jme.vehicle.gui.CompassState;
 import com.jayfella.jme.vehicle.niftydemo.action.Action;
 import com.jayfella.jme.vehicle.niftydemo.state.DemoState;
@@ -22,6 +25,7 @@ import com.jme3.system.JmeVersion;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jme3utilities.Heart;
+import jme3utilities.Loadable;
 import jme3utilities.MyString;
 import jme3utilities.SignalTracker;
 import jme3utilities.debug.PerformanceAppState;
@@ -205,7 +209,13 @@ public class MavDemo2 extends GuiApplication {
         AppState flyByCam = findAppState(FlyCamAppState.class);
         stateManager.detach(flyByCam);
 
-        attachAppStates();
+        Loadable[] preloadArray = {
+            new GrandTourer(),
+            new Playground(),
+            new QuarrySky()
+        };
+        JmeLoadingState loading = new JmeLoadingState(preloadArray);
+        stateManager.attach(loading);
     }
 
     /**
@@ -247,6 +257,16 @@ public class MavDemo2 extends GuiApplication {
     @Override
     public void simpleUpdate(float tpf) {
         super.simpleUpdate(tpf);
+
+        AppState loading = stateManager.getState(JmeLoadingState.class);
+        if (loading != null) {
+            if (!loading.isEnabled()) {
+                // The cinematic has completed.
+                stateManager.detach(loading);
+                attachAppStates();
+            }
+            return;
+        }
 
         if (!didStartup1) {
             startup1();
@@ -409,8 +429,7 @@ public class MavDemo2 extends GuiApplication {
     }
 
     /**
-     * Initialization performed during the first invocation of
-     * {@link #simpleUpdate(float)}.
+     * Initialization performed once, after the cinematic completes.
      */
     private void startup1() {
         logger.info("");
