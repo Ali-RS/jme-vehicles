@@ -192,7 +192,7 @@ public class DuneBuggy extends Vehicle {
      */
     @Override
     public void locateDashCam(Vector3f storeResult) {
-        storeResult.set(0f, 1.4f, -0.4f);
+        storeResult.set(0f, 1.4f, -0.1f);
     }
 
     /**
