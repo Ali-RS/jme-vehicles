@@ -4,7 +4,7 @@ apply plugin: 'java'
 
 ext {
     // module coordinates of dependencies:
-    garrettCoordinates = 'com.github.stephengold:Garrett:0.4.1'
+    garrettCoordinates = 'com.github.stephengold:Garrett:0.5.0'
     heartCoordinates = 'com.github.stephengold:Heart:8.0.0'
     jmePowerCoordinates = 'com.github.stephengold:JmePower:1.0.0'
     jmeTtfCoordinates = 'com.github.stephengold:jme-ttf:2.2.4'
