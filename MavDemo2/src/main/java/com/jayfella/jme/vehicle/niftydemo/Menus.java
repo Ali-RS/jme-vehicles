@@ -13,10 +13,10 @@ import com.jayfella.jme.vehicle.examples.skies.PurpleNebulaSky;
 import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
 import com.jayfella.jme.vehicle.examples.vehicles.ClassicMotorcycle;
 import com.jayfella.jme.vehicle.examples.vehicles.DuneBuggy;
-import com.jayfella.jme.vehicle.examples.vehicles.GTRNismo;
 import com.jayfella.jme.vehicle.examples.vehicles.GrandTourer;
 import com.jayfella.jme.vehicle.examples.vehicles.HatchBack;
 import com.jayfella.jme.vehicle.examples.vehicles.HoverTank;
+import com.jayfella.jme.vehicle.examples.vehicles.Nismo;
 import com.jayfella.jme.vehicle.examples.vehicles.PickupTruck;
 import com.jayfella.jme.vehicle.examples.vehicles.Rotator;
 import com.jayfella.jme.vehicle.examples.worlds.EndlessPlain;
@@ -103,9 +103,9 @@ public class Menus {
         builder.add("Classic Motorcycle");
         builder.add("Dune Buggy");
         builder.add("Grand Tourer");
-        builder.add("GTR Nismo");
         builder.add("Hatchback");
         builder.add("Hovertank");
+        builder.add("Nismo");
         builder.add("Pickup Truck");
         builder.add("Rotator");
     }
@@ -188,16 +188,16 @@ public class Menus {
                 vehicle = new GrandTourer();
                 break;
 
-            case "GTR Nismo":
-                vehicle = new GTRNismo();
-                break;
-
             case "Hatchback":
                 vehicle = new HatchBack();
                 break;
 
             case "Hovertank":
                 vehicle = new HoverTank();
+                break;
+
+            case "Nismo":
+                vehicle = new Nismo();
                 break;
 
             case "Pickup Truck":

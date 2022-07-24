@@ -16,10 +16,10 @@ import com.jayfella.jme.vehicle.examples.props.WarningSign;
 import com.jayfella.jme.vehicle.examples.skies.AnimatedDaySky;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound2;
 import com.jayfella.jme.vehicle.examples.vehicles.DuneBuggy;
-import com.jayfella.jme.vehicle.examples.vehicles.GTRNismo;
 import com.jayfella.jme.vehicle.examples.vehicles.GrandTourer;
 import com.jayfella.jme.vehicle.examples.vehicles.HatchBack;
 import com.jayfella.jme.vehicle.examples.vehicles.HoverTank;
+import com.jayfella.jme.vehicle.examples.vehicles.Nismo;
 import com.jayfella.jme.vehicle.examples.vehicles.Rotator;
 import com.jayfella.jme.vehicle.examples.worlds.Mountains;
 import com.jayfella.jme.vehicle.gui.CompassState;
@@ -244,7 +244,7 @@ public class HelloMav extends SimpleApplication {
                     parkedVehicle = new DuneBuggy();
                     break;
                 case 1:
-                    parkedVehicle = new GTRNismo();
+                    parkedVehicle = new Nismo();
                     break;
                 case 2:
                     parkedVehicle = new GrandTourer();

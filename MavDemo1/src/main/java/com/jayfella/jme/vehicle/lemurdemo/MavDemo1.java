@@ -13,10 +13,10 @@ import com.jayfella.jme.vehicle.examples.skies.AnimatedNightSky;
 import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
 import com.jayfella.jme.vehicle.examples.vehicles.ClassicMotorcycle;
 import com.jayfella.jme.vehicle.examples.vehicles.DuneBuggy;
-import com.jayfella.jme.vehicle.examples.vehicles.GTRNismo;
 import com.jayfella.jme.vehicle.examples.vehicles.GrandTourer;
 import com.jayfella.jme.vehicle.examples.vehicles.HatchBack;
 import com.jayfella.jme.vehicle.examples.vehicles.HoverTank;
+import com.jayfella.jme.vehicle.examples.vehicles.Nismo;
 import com.jayfella.jme.vehicle.examples.vehicles.PickupTruck;
 import com.jayfella.jme.vehicle.examples.vehicles.Rotator;
 import com.jayfella.jme.vehicle.examples.worlds.Mountains;
@@ -91,10 +91,10 @@ public class MavDemo1 extends SimpleApplication {
         new ClassicMotorcycle(),
         new DuneBuggy(),
         new GrandTourer(),
-        new GTRNismo(),
         new HatchBack(),
         new HoverTank(),
         new Mountains(),
+        new Nismo(),
         new Playground(),
         new PickupTruck(),
         new QuarrySky(),

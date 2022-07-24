@@ -3,10 +3,10 @@ package com.jayfella.jme.vehicle.gui.menu;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.examples.vehicles.ClassicMotorcycle;
 import com.jayfella.jme.vehicle.examples.vehicles.DuneBuggy;
-import com.jayfella.jme.vehicle.examples.vehicles.GTRNismo;
 import com.jayfella.jme.vehicle.examples.vehicles.GrandTourer;
 import com.jayfella.jme.vehicle.examples.vehicles.HatchBack;
 import com.jayfella.jme.vehicle.examples.vehicles.HoverTank;
+import com.jayfella.jme.vehicle.examples.vehicles.Nismo;
 import com.jayfella.jme.vehicle.examples.vehicles.PickupTruck;
 import com.jayfella.jme.vehicle.examples.vehicles.Rotator;
 import com.jayfella.jme.vehicle.input.CameraInputMode;
@@ -47,8 +47,8 @@ class VehicleMenu extends AnimatedMenu {
                 source -> setVehicle(new ClassicMotorcycle()));
         addButton(result, "Grand Tourer",
                 source -> setVehicle(new GrandTourer()));
-        addButton(result, "GTR Nismo",
-                source -> setVehicle(new GTRNismo()));
+        addButton(result, "Nismo",
+                source -> setVehicle(new Nismo()));
         addButton(result, "Pickup Truck",
                 source -> setVehicle(new PickupTruck()));
         addButton(result, "Hatchback",

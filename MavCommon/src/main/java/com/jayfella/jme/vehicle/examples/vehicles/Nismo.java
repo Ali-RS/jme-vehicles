@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 /**
  * An example Vehicle, built around iSteven's "Nissan GT-R" model.
  */
-public class GTRNismo extends Vehicle {
+public class Nismo extends Vehicle {
     // *************************************************************************
     // constants and loggers
 
@@ -29,12 +29,12 @@ public class GTRNismo extends Vehicle {
      * message logger for this class
      */
     final public static Logger logger2
-            = Logger.getLogger(GTRNismo.class.getName());
+            = Logger.getLogger(Nismo.class.getName());
     // *************************************************************************
     // constructors
 
-    public GTRNismo() {
-        super("GTR Nismo");
+    public Nismo() {
+        super("Nismo");
     }
     // *************************************************************************
     // Vehicle methods
