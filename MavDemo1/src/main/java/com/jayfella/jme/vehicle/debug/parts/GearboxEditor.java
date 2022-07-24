@@ -25,7 +25,7 @@ public class GearboxEditor extends Container {
 
         PropertyPanel propertyPanel = new PropertyPanel("glass");
 
-        for (int i = 1; i <= vehicle.getGearBox().countForwardGears(); i++) {
+        for (int i = 1; i <= vehicle.getGearBox().countForwardGears(); ++i) {
             Gear gear = vehicle.getGearBox().getGear(i);
             propertyPanel.addFloatProperty("Gear Start " + i, gear, "minKph",
                     0f, 250f, 0.1f);

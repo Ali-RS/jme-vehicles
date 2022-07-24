@@ -101,8 +101,8 @@ public class TireGraph extends Geometry {
 
     public void drawGraph() {
         // draw a background with lines
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; ++x) {
+            for (int y = 0; y < height; ++y) {
 
                 if (y == height / 2) {
                     imageRaster.setPixel(x, y, lineColor);
@@ -113,7 +113,7 @@ public class TireGraph extends Geometry {
         }
 
         // lateral
-        for (int x = 0; x < width; x++) {
+        for (int x = 0; x < width; ++x) {
             float xUnit = x / (float) width;
             float slipAngle = map(xUnit, 0, 1, 0, maxSlipAngle);
 
@@ -125,7 +125,7 @@ public class TireGraph extends Geometry {
         }
 
         // longitudinal
-        for (int x = 0; x < width; x++) {
+        for (int x = 0; x < width; ++x) {
             float xUnit = x / (float) width;
             float slipAngle = map(xUnit, 0, 1, 0, maxSlipAngle);
 
@@ -137,7 +137,7 @@ public class TireGraph extends Geometry {
         }
 
         // align moment
-        for (int x = 0; x < width; x++) {
+        for (int x = 0; x < width; ++x) {
             float xUnit = x / (float) width;
             float slipAngle = map(xUnit, 0, 1, 0, maxSlipAngle);
 

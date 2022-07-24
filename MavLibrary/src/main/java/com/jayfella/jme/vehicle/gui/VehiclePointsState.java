@@ -87,7 +87,7 @@ public class VehiclePointsState
     public VehiclePointsState() {
         super("Vehicle Points");
 
-        for (int vertexIndex = 0; vertexIndex < 8; vertexIndex++) {
+        for (int vertexIndex = 0; vertexIndex < 8; ++vertexIndex) {
             dcFrustumVertices[vertexIndex] = new Vector3f();
         }
         WireFrustum dcFrustumMesh = new WireFrustum(dcFrustumVertices);

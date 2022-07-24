@@ -68,7 +68,7 @@ public class TireDataState extends BaseAppState {
         int x = 0;
         int y = 0;
 
-        for (int i = 0; i < tireGraphs.length; i++) {
+        for (int i = 0; i < tireGraphs.length; ++i) {
 
             Node graphNode = new Node("");
             graphNode.setLocalTranslation(x, y, 0);

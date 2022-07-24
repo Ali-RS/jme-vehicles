@@ -68,7 +68,7 @@ public class WheelSpinState extends BaseAppState {
 
         rot = new Quaternion[wheelCount];
 
-        for (int i = 0; i < rot.length; i++) {
+        for (int i = 0; i < rot.length; ++i) {
             rot[i] = new Quaternion();
         }
     }
@@ -101,7 +101,7 @@ public class WheelSpinState extends BaseAppState {
     public void update(float tpf) {
         super.update(tpf);
 
-        for (int i = 0; i < wheelCount; i++) {
+        for (int i = 0; i < wheelCount; ++i) {
             /*
             Wheel wheel = vehicle.getWheel(i);
 

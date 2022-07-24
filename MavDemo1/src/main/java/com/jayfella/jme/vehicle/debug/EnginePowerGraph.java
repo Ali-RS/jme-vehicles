@@ -58,14 +58,14 @@ public class EnginePowerGraph extends Geometry {
 
     public void drawGraph() {
 
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; ++x) {
+            for (int y = 0; y < height; ++y) {
                 imageRaster.setPixel(x, y, ColorRGBA.DarkGray);
             }
         }
 
         float redlineRpm = engine.redlineRpm();
-        for (int x = 0; x < width; x++) {
+        for (int x = 0; x < width; ++x) {
             float rpm = map(x, 0f, width, 0f, redlineRpm);
             float y = FastMath.clamp(engine.powerFraction(rpm) * height, 0, height - 1);
             imageRaster.setPixel(x, (int) y, ColorRGBA.Yellow);

@@ -102,7 +102,7 @@ public class TireSmokeEmitter extends BaseAppState {
         rootNode = ((SimpleApplication) getApplication()).getRootNode();
         AssetManager assetManager = application.getAssetManager();
 
-        for (int wheelIndex = 0; wheelIndex < numWheels; wheelIndex++) {
+        for (int wheelIndex = 0; wheelIndex < numWheels; ++wheelIndex) {
             Wheel wheel = vehicle.getWheel(wheelIndex);
             wheel.tireSmokeColor(tmpColor);
             ParticleEmitter smoke = createEmitter(assetManager, tmpColor);
@@ -122,7 +122,7 @@ public class TireSmokeEmitter extends BaseAppState {
     @Override
     protected void onDisable() {
         int numWheels = vehicle.countWheels();
-        for (int wheelIndex = 0; wheelIndex < numWheels; wheelIndex++) {
+        for (int wheelIndex = 0; wheelIndex < numWheels; ++wheelIndex) {
             emitters[wheelIndex].removeFromParent();
         }
     }
@@ -134,7 +134,7 @@ public class TireSmokeEmitter extends BaseAppState {
     @Override
     protected void onEnable() {
         int numWheels = vehicle.countWheels();
-        for (int wheelIndex = 0; wheelIndex < numWheels; wheelIndex++) {
+        for (int wheelIndex = 0; wheelIndex < numWheels; ++wheelIndex) {
             rootNode.attachChild(emitters[wheelIndex]);
         }
     }
@@ -150,7 +150,7 @@ public class TireSmokeEmitter extends BaseAppState {
         super.update(tpf);
 
         int numWheels = vehicle.countWheels();
-        for (int wheelIndex = 0; wheelIndex < numWheels; wheelIndex++) {
+        for (int wheelIndex = 0; wheelIndex < numWheels; ++wheelIndex) {
             ParticleEmitter emitter = emitters[wheelIndex];
 
             Wheel wheel = vehicle.getWheel(wheelIndex);
