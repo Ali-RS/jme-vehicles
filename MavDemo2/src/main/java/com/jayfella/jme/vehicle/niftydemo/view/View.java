@@ -178,6 +178,8 @@ public class View extends SimpleAppState {
             case DebugPas:
                 performanceMode = PerformanceMode.Off;
                 break;
+
+            default:
         }
     }
 

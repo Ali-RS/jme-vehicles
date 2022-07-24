@@ -166,6 +166,7 @@ public class Action {
             case "new":
                 handled = NewAction.processNotOngoing(actionString);
                 break;
+            default:
         }
 
         return handled;
@@ -225,6 +226,8 @@ public class Action {
             case "toggle":
                 handled = ToggleAction.processOngoing(actionString);
                 break;
+
+            default:
         }
 
         return handled;
