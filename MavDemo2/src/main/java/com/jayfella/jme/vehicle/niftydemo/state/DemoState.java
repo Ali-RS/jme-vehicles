@@ -176,7 +176,7 @@ public class DemoState
             prop.removeFromWorld();
         }
 
-        selectedProp = null;
+        this.selectedProp = null;
     }
 
     /**
@@ -355,7 +355,7 @@ public class DemoState
      * Reset the elapsed-time accumulator.
      */
     public void resetElapsedTime() {
-        elapsedTime = 0.0;
+        this.elapsedTime = 0.0;
     }
 
     /**
@@ -364,7 +364,7 @@ public class DemoState
      * @param prop the desired prop (alias created)
      */
     public void selectProp(Prop prop) {
-        selectedProp = prop;
+        this.selectedProp = prop;
     }
 
     /**
@@ -420,7 +420,7 @@ public class DemoState
         PhysicsSpace physicsSpace = world.getPhysicsSpace();
         Node parentNode = world.getParentNode();
         world.detach();
-        world = newWorld;
+        this.world = newWorld;
         Application application = MavDemo2.getApplication();
         world.attach(application, parentNode, physicsSpace);
 
@@ -476,10 +476,10 @@ public class DemoState
         assert space == world.getPhysicsSpace();
         assert timeStep >= 0f : timeStep;
 
-        elapsedTime += timeStep;
+        this.elapsedTime += timeStep;
 
         Timer timer = MavDemo2.getApplication().getTimer();
-        numTicks = timer.getTime() - preTickCount;
+        this.numTicks = timer.getTime() - preTickCount;
     }
 
     /**
@@ -493,6 +493,6 @@ public class DemoState
         assert space == world.getPhysicsSpace();
 
         Timer timer = MavDemo2.getApplication().getTimer();
-        preTickCount = timer.getTime();
+        this.preTickCount = timer.getTime();
     }
 }
