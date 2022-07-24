@@ -145,13 +145,18 @@ public class PacejkaTireModel {
         // float x = slipAngle * FastMath.DEG_TO_RAD;
         // float x = slipAngle;
 
-        return FastMath.sin(settings.getSlipAngleCoefficientC()
-                * FastMath.atan(settings.getSlipAngleCoefficientB() * slipAngle - settings.getSlipAngleCoefficientE()
-                        * (settings.getSlipAngleCoefficientB() * slipAngle - FastMath.atan(settings.getSlipAngleCoefficientB() * slipAngle))));
+        float b = settings.getSlipAngleCoefficientB();
+        float bsa = b * slipAngle;
+        float c = settings.getSlipAngleCoefficientC();
+        float e = settings.getSlipAngleCoefficientE();
+        float angle = c * FastMath.atan(bsa - e * (bsa - FastMath.atan(bsa)));
+        return FastMath.sin(angle);
     }
 
     private float calcLoadForce(float load, TireSettings settings) {
-        return settings.getLoadCoefficientKA() * (1 - settings.getLoadCoefficientKB() * load) * load;
+        float ka = settings.getLoadCoefficientKA();
+        float kb = settings.getLoadCoefficientKB();
+        return ka * (1 - kb * load) * load;
     }
 
     /**
@@ -295,7 +300,8 @@ public class PacejkaTireModel {
                 alignMoment.getLoadCoefficientKA(),
                 alignMoment.getLoadCoefficientKB());
 
-        return lat + System.lineSeparator() + lng + System.lineSeparator() + mnt;
+        String nl = System.lineSeparator();
+        return lat + nl + lng + nl + mnt;
     }
 
     /**

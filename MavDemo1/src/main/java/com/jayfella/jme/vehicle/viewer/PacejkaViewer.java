@@ -69,7 +69,9 @@ public class PacejkaViewer extends SimpleApplication {
         guiNode.attachChild(tireGraph);
 
         TireEditor tireEditor = new TireEditor(tireModel);
-        tireEditor.setLocalTranslation(cam.getWidth() - tireEditor.getPreferredSize().x, tireEditor.getPreferredSize().y, 1);
+        float x = cam.getWidth() - tireEditor.getPreferredSize().x;
+        float y = tireEditor.getPreferredSize().y;
+        tireEditor.setLocalTranslation(x, y, 1);
         guiNode.attachChild(tireEditor);
     }
 }
