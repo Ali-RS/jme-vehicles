@@ -2,12 +2,20 @@ package com.jayfella.jme.vehicle.examples.tires;
 
 import com.jayfella.jme.vehicle.tire.PacejkaTireModel;
 import com.jayfella.jme.vehicle.tire.TireSettings;
+import java.util.logging.Logger;
 
 /**
  * An example of a Pacejka lateral-force model for a tire.
  */
 public class Tire02 extends PacejkaTireModel {
+    // *************************************************************************
+    // constants and loggers
 
+    /**
+     * message logger for this class
+     */
+    final private static Logger logger2
+            = Logger.getLogger(Tire02.class.getName());
     // *************************************************************************
     // constructors
 
