@@ -3,8 +3,17 @@ package com.jayfella.jme.vehicle.examples.tires;
 import com.jayfella.jme.vehicle.tire.PacejkaTireModel;
 import com.jayfella.jme.vehicle.tire.TireSettings;
 
+/**
+ * An example of a Pacejka lateral-force model for a tire.
+ */
 public class Tire02 extends PacejkaTireModel {
 
+    // *************************************************************************
+    // constructors
+
+    /**
+     * Instantiate a tire model of this type.
+     */
     public Tire02() {
         super("Tire 02",
                 new TireSettings(

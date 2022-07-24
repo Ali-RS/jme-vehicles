@@ -5,6 +5,9 @@ import com.jme3.asset.AssetManager;
 import com.jme3.scene.Spatial;
 import java.util.logging.Logger;
 
+/**
+ * A WheelModel built around the "Wheel_1" C-G model.
+ */
 public class BasicAlloyWheel extends WheelModel {
     // *************************************************************************
     // constants and loggers
