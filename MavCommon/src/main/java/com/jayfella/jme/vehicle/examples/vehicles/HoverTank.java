@@ -71,20 +71,20 @@ public class HoverTank extends Vehicle {
         getVehicleControl().setAngularDamping(0.4f);
 
         float wheelDiameter = 1.5f;
-        WheelModel wheel_fl = new InvisibleWheel(wheelDiameter);
-        WheelModel wheel_fr = new InvisibleWheel(wheelDiameter);
-        WheelModel wheel_rl = new InvisibleWheel(wheelDiameter);
-        WheelModel wheel_rr = new InvisibleWheel(wheelDiameter);
-        wheel_fl.load(assetManager);
-        wheel_fr.load(assetManager);
-        wheel_rl.load(assetManager);
-        wheel_rr.load(assetManager);
+        WheelModel lFrontWheel = new InvisibleWheel(wheelDiameter);
+        WheelModel rFrontWheel = new InvisibleWheel(wheelDiameter);
+        WheelModel lRearWheel = new InvisibleWheel(wheelDiameter);
+        WheelModel rRearWheel = new InvisibleWheel(wheelDiameter);
+        lFrontWheel.load(assetManager);
+        rFrontWheel.load(assetManager);
+        lRearWheel.load(assetManager);
+        rRearWheel.load(assetManager);
         /*
          * By convention, wheels are modeled for the left side, so
          * wheel models for the right side require a 180-degree rotation.
          */
-        wheel_fr.flip();
-        wheel_rr.flip();
+        rFrontWheel.flip();
+        rRearWheel.flip();
         /*
          * Add the (invisible) wheels to the Vehicle.
          */
@@ -98,13 +98,13 @@ public class HoverTank extends Vehicle {
         float mainBrake = 0f;
         float parkingBrake = 0f;
         float extraDamping = 0f;
-        addWheel(wheel_fl, new Vector3f(+frontX, axleY, frontZ), steering,
+        addWheel(lFrontWheel, new Vector3f(+frontX, axleY, frontZ), steering,
                 steeringFlipped, mainBrake, parkingBrake, extraDamping);
-        addWheel(wheel_fr, new Vector3f(-frontX, axleY, frontZ), steering,
+        addWheel(rFrontWheel, new Vector3f(-frontX, axleY, frontZ), steering,
                 steeringFlipped, mainBrake, parkingBrake, extraDamping);
-        addWheel(wheel_rl, new Vector3f(+rearX, axleY, rearZ), steering,
+        addWheel(lRearWheel, new Vector3f(+rearX, axleY, rearZ), steering,
                 steeringFlipped, mainBrake, parkingBrake, extraDamping);
-        addWheel(wheel_rr, new Vector3f(-rearX, axleY, rearZ), steering,
+        addWheel(rRearWheel, new Vector3f(-rearX, axleY, rearZ), steering,
                 steeringFlipped, mainBrake, parkingBrake, extraDamping);
         /*
          * Configure the suspension.

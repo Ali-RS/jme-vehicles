@@ -58,20 +58,20 @@ public class PickupTruck extends Vehicle {
         setChassis("ford_ranger", "pickup", assetManager, mass, linearDamping);
 
         float diameter = 0.8f;
-        WheelModel wheel_fl = new RangerWheel(diameter);
-        WheelModel wheel_fr = new RangerWheel(diameter);
-        WheelModel wheel_rl = new RangerWheel(diameter);
-        WheelModel wheel_rr = new RangerWheel(diameter);
-        wheel_fl.load(assetManager);
-        wheel_fr.load(assetManager);
-        wheel_rl.load(assetManager);
-        wheel_rr.load(assetManager);
+        WheelModel lFrontWheel = new RangerWheel(diameter);
+        WheelModel rFrontWheel = new RangerWheel(diameter);
+        WheelModel lRearWheel = new RangerWheel(diameter);
+        WheelModel rRearWheel = new RangerWheel(diameter);
+        lFrontWheel.load(assetManager);
+        rFrontWheel.load(assetManager);
+        lRearWheel.load(assetManager);
+        rRearWheel.load(assetManager);
         /*
          * By convention, wheels are modeled for the left side, so
          * wheel models for the right side require a 180-degree rotation.
          */
-        wheel_fr.flip();
-        wheel_rr.flip();
+        rFrontWheel.flip();
+        rRearWheel.flip();
         /*
          * Add the wheels to the vehicle.
          * For rear-wheel steering, it will be necessary to "flip" the steering.
@@ -86,13 +86,13 @@ public class PickupTruck extends Vehicle {
         float mainBrake = 4_000f; // all 4 wheels
         float parkingBrake = 25_000f; // in rear only
         float damping = 0.04f; // extra linear damping
-        addWheel(wheel_fl, new Vector3f(+wheelX, axleY, frontZ), front,
+        addWheel(lFrontWheel, new Vector3f(+wheelX, axleY, frontZ), front,
                 steeringFlipped, mainBrake, 0f, damping);
-        addWheel(wheel_fr, new Vector3f(-wheelX, axleY, frontZ), front,
+        addWheel(rFrontWheel, new Vector3f(-wheelX, axleY, frontZ), front,
                 steeringFlipped, mainBrake, 0f, damping);
-        addWheel(wheel_rl, new Vector3f(+wheelX, axleY, rearZ), rear,
+        addWheel(lRearWheel, new Vector3f(+wheelX, axleY, rearZ), rear,
                 steeringFlipped, mainBrake, parkingBrake, damping);
-        addWheel(wheel_rr, new Vector3f(-wheelX, axleY, rearZ), rear,
+        addWheel(rRearWheel, new Vector3f(-wheelX, axleY, rearZ), rear,
                 steeringFlipped, mainBrake, parkingBrake, damping);
         /*
          * Configure the suspension.

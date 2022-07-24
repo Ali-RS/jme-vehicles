@@ -64,17 +64,17 @@ public class Rotator extends Vehicle {
 
         float rearDiameter = 1.087f;
         float frontDiameter = 0.77f;
-        WheelModel wheel_f = new RotatorFrontWheel(frontDiameter);
-        WheelModel wheel_rl = new RotatorRearWheel(rearDiameter);
-        WheelModel wheel_rr = new RotatorRearWheel(rearDiameter);
-        wheel_f.load(assetManager);
-        wheel_rl.load(assetManager);
-        wheel_rr.load(assetManager);
+        WheelModel frontWheel = new RotatorFrontWheel(frontDiameter);
+        WheelModel lRearWheel = new RotatorRearWheel(rearDiameter);
+        WheelModel rRearWheel = new RotatorRearWheel(rearDiameter);
+        frontWheel.load(assetManager);
+        lRearWheel.load(assetManager);
+        rRearWheel.load(assetManager);
         /*
          * By convention, wheels are modeled for the left side, so
          * wheel models for the right side require a 180-degree rotation.
          */
-        wheel_rr.flip();
+        rRearWheel.flip();
         /*
          * Add the wheels to the vehicle.
          */
@@ -89,11 +89,11 @@ public class Rotator extends Vehicle {
         float mainBrake = 3_000f; // in front only
         float parkingBrake = 3_000f; // in front only
         float damping = 0.09f; // extra linear damping
-        addWheel(wheel_f, new Vector3f(0f, frontY, frontZ), front,
+        addWheel(frontWheel, new Vector3f(0f, frontY, frontZ), front,
                 steeringFlipped, mainBrake, parkingBrake, damping);
-        addWheel(wheel_rl, new Vector3f(+wheelX, rearY, rearZ), rear,
+        addWheel(lRearWheel, new Vector3f(+wheelX, rearY, rearZ), rear,
                 steeringFlipped, 0f, 0f, damping);
-        addWheel(wheel_rr, new Vector3f(-wheelX, rearY, rearZ), rear,
+        addWheel(rRearWheel, new Vector3f(-wheelX, rearY, rearZ), rear,
                 steeringFlipped, 0f, 0f, damping);
         /*
          * Configure the suspension.
