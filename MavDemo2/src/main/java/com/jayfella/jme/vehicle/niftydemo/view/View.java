@@ -151,7 +151,7 @@ public class View extends SimpleAppState {
         List<Spatial> list = MySpatial.listSpatials(rootNode);
         for (Spatial spatial : list) {
             int numControls = spatial.getNumControls();
-            for (int controlI = numControls - 1; controlI >= 0; controlI--) {
+            for (int controlI = numControls - 1; controlI >= 0; --controlI) {
                 Control control = spatial.getControl(controlI);
                 spatial.removeControl(control);
             }
