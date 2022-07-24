@@ -27,7 +27,8 @@ public class EnginePowerGraph extends Geometry {
     // fields
 
     final private Engine engine;
-    final private int width, height;
+    final private int height;
+    final private int width;
 
     final private ImageRaster imageRaster;
     final private Texture2D texture;

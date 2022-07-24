@@ -53,13 +53,15 @@ public class AtmiState extends BaseAppState {
     /**
      * dimensions of the GUI viewport (in pixels)
      */
-    private float viewPortHeight, viewPortWidth;
+    private float viewPortHeight;
+    private float viewPortWidth;
 
     private Geometry lightGeometry;
     /**
      * pre-loaded materials
      */
-    private Material backgroundMaterial, lightMaterial;
+    private Material backgroundMaterial;
+    private Material lightMaterial;
     /**
      * Node that represents the indicator
      */

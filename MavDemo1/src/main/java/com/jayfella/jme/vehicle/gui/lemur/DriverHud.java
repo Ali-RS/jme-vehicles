@@ -68,9 +68,13 @@ public class DriverHud extends BaseAppState {
      */
     final private AtmiState atmiState = new AtmiState();
     /**
-     * dimensions of the GUI viewport (in pixels)
+     * height of the GUI viewport (in pixels)
      */
-    private float viewPortHeight, viewPortWidth;
+    private float viewPortHeight;
+    /**
+     * width of the GUI viewport (in pixels)
+     */
+    private float viewPortWidth;
 
     private Geometry exitButton;
     private Geometry hornButton;
@@ -79,8 +83,10 @@ public class DriverHud extends BaseAppState {
      * pre-loaded materials for iconic buttons
      */
     private Material exitMaterial;
-    private Material hornSilentMaterial, hornSoundMaterial;
-    private Material powerOffMaterial, powerOnMaterial;
+    private Material hornSilentMaterial;
+    private Material hornSoundMaterial;
+    private Material powerOffMaterial;
+    private Material powerOnMaterial;
     /**
      * appstates to manage rotary indicators
      */

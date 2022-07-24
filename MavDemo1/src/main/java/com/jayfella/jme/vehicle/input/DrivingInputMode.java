@@ -69,8 +69,11 @@ public class DrivingInputMode extends InputMode {
     final private float returnRate = 2f; // radians per second
     final private float turnRate = 0.5f; // radians per second
 
-    private boolean accelerating, mainBrake, parkingBrake;
-    private boolean turningLeft, turningRight;
+    private boolean accelerating;
+    private boolean mainBrake;
+    private boolean parkingBrake;
+    private boolean turningLeft;
+    private boolean turningRight;
 
     private float steeringAngle = 0f;
     /**

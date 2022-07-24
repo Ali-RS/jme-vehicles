@@ -18,7 +18,8 @@ import com.jme3.util.BufferUtils;
  */
 public class TireGraph extends Geometry {
     final private PacejkaTireModel tireModel;
-    final private int width, height;
+    final private int height;
+    final private int width;
 
     final private ImageRaster imageRaster;
     final private Texture2D texture;

@@ -38,9 +38,13 @@ public class CompassState extends BaseAppState {
     // fields
 
     /**
-     * dimensions of the GUI viewport (in pixels)
+     * height of the GUI viewport (in pixels)
      */
-    private float viewPortHeight, viewPortWidth;
+    private float viewPortHeight;
+    /**
+     * width of the GUI viewport (in pixels)
+     */
+    private float viewPortWidth;
 
     private Geometry geometry;
     /**
