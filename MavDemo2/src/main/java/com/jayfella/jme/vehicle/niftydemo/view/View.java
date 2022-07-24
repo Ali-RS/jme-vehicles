@@ -114,7 +114,7 @@ public class View extends SimpleAppState {
                 break;
 
             case Shadows:
-                result = true;// TODO sky.areShadowsEnabled();
+                result = true; // TODO sky.areShadowsEnabled();
                 break;
 
             default:

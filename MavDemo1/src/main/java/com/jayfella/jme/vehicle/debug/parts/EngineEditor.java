@@ -29,7 +29,8 @@ public class EngineEditor extends Container {
 
         /*
         for (int i = 0; i < vehicle.getNumWheels(); i++) {
-            propertyPanel.addFloatProperty("Wheel " + i, vehicle.getWheel(i), "accelerationForce", 0, 1, 0.01f);
+            propertyPanel.addFloatProperty("Wheel " + i, vehicle.getWheel(i),
+                    "accelerationForce", 0, 1, 0.01f);
         }
          */
         propertyPanel.addFloatProperty("Power", vehicle.getEngine(),

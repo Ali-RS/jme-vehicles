@@ -154,7 +154,8 @@ public class SkidMarksState extends BaseAppState {
         for (WheelSkid skid : skids) {
             Geometry geometry = skid.getGeometry();
 
-            // kind of annoying, but we can't attach a geometry that doesn't exist if the Vehicle hasn't skidded yet.
+            // kind of annoying, but we can't attach a geometry
+            // that doesn't exist if the Vehicle hasn't skidded yet.
             if (geometry != null && geometry.getParent() == null) {
                 vehicle.getNode().getParent().attachChild(geometry);
             }

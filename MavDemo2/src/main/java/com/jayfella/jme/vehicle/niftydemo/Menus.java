@@ -252,7 +252,7 @@ public class Menus {
     /**
      * Handle all "select menuItem " actions.
      *
-     * @param menuPath
+     * @param menuPath the active menu path (not null)
      * @return true if handled, otherwise false
      */
     public static boolean selectMenuItem(String menuPath) {
@@ -430,9 +430,8 @@ public class Menus {
      */
     private static boolean menuBar(String menuName) {
         assert menuName != null;
-        /**
-         * Dynamically generate the menu's list of items.
-         */
+
+        // Dynamically generate the menu's list of items.
         PopupMenuBuilder builder = new PopupMenuBuilder();
         switch (menuName) {
             case "Drive":

@@ -361,7 +361,7 @@ public class DemoState
     /**
      * Select the specified prop.
      *
-     * @param prop
+     * @param prop the desired prop (alias created)
      */
     public void selectProp(Prop prop) {
         selectedProp = prop;

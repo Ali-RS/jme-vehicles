@@ -192,7 +192,8 @@ public class Wheel {
 
         float minAngle = 0.1f;
         float result = minAngle + wheelDir.angleBetween(vehicleTravel);
-        // System.out.println(getVehicleWheel().getWheelSpatial().getName() + ": " + angle * FastMath.RAD_TO_DEG);
+        // System.out.println(getVehicleWheel().getWheelSpatial().getName()
+        //         + ": " + angle * FastMath.RAD_TO_DEG);
 
         result = FastMath.clamp(result, 0f, FastMath.QUARTER_PI);
 

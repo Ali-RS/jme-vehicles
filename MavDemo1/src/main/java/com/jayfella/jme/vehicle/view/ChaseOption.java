@@ -91,7 +91,7 @@ public enum ChaseOption {
 
     /**
      * Configure the specified camera controller.
-     * 
+     *
      * @param cameraController the controller to configure (not null)
      */
     public void configure(OrbitCamera cameraController) {

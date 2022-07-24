@@ -26,7 +26,7 @@ public class WheelSpinState extends BaseAppState {
     // *************************************************************************
     // fields
 
-    private float[][] angles;// = new float[3];
+    private float[][] angles; // = new float[3];
     private int wheelCount;
     private Quaternion[] rot;
     final private Vehicle vehicle;
@@ -114,20 +114,23 @@ public class WheelSpinState extends BaseAppState {
             // multiply that by TWO_PI to get radians.
             float potentialRot = potentialRevsPerSec / FastMath.TWO_PI;
 
-            // should give us a rotation in radians for "extra" rotation as a result
-            // of slip.
+            // should give us a rotation in radians
+            // for "extra" rotation as a result of slip.
             float diff = potentialRot - currentRot;
 
             wheel.setRotationDelta(diff);
 
-            System.out.println(wheel.getVehicleWheel().getWheelSpatial().getName() + ": " + currentRot + " / " + potentialRot + " / " + diff);
+            System.out.println(
+                    wheel.getVehicleWheel().getWheelSpatial().getName() + ": "
+                    + currentRot + " / " + potentialRot + " / " + diff);
              */
             Wheel wheel = vehicle.getWheel(i);
 
-            // only calculate wheelspin when the vehicle is actually accelerating.
+            // only calculate wheelspin
+            // when the vehicle is actually accelerating.
             if (vehicle.accelerateSignal() > 0) {
-
-                // the acceleration force this wheel can apply. 0 = it doesn't give power, 1 = it gives full power.
+                // the acceleration force this wheel can apply.
+                // 0 = it doesn't give power, 1 = it gives full power.
                 float powerFraction = wheel.getPowerFraction();
 
                 // the acceleration force of the accelerator pedal in 0-1 range.
@@ -139,26 +142,37 @@ public class WheelSpinState extends BaseAppState {
                 // would equal at most 57 degrees in one frame (one radian).
                 float skidForce = (acceleration * powerFraction) * skid;
 
-                //System.out.println(wheel.getVehicleWheel().getWheelSpatial().getName() + ": " + skidForce);
-                // set this before we do any "scene" modifications to make it look better.
+                //System.out.println(
+                //        wheel.getVehicleWheel().getWheelSpatial().getName()
+                //        + ": " + skidForce);
+                // set this before we do any "scene" modifications
+                // to make it look better.
                 wheel.setRotationDelta(skidForce);
 
-                // the numbers below alter the scene only. they have no relation to any calculations.
-                // These calculations will add rotation to the wheel to simulate wheelspin.
-                // so if we mult this by say 10(?) for 570 degrees and then mult it by tpf, we should be about right.
-                // this means if we are slipping 100% it will add ( 57 * x ) degrees per second.
+                // the numbers below alter the scene only.
+                // they have no relation to any calculations.
+                // These calculations will add rotation to the wheel
+                // to simulate wheelspin.
+                // so if we mult this by say 10(?) for 570 degrees
+                // and then mult it by tpf, we should be about right.
+                // this means if we are slipping 100%
+                // it will add ( 57 * x ) degrees per second.
                 // actually we can work this out. get the max revs.
                 skidForce *= 10;
                 skidForce *= tpf;
 
-                Node wheelNode = (Node) wheel.getVehicleWheel().getWheelSpatial();
+                Node wheelNode
+                        = (Node) wheel.getVehicleWheel().getWheelSpatial();
                 Spatial wheelGeom = wheelNode.getChild("wheel");
 
-                float[] existingAngles = wheelGeom.getLocalRotation().toAngles(null);
+                float[] existingAngles
+                        = wheelGeom.getLocalRotation().toAngles(null);
 
                 // add the additional rotation for wheelspin.
-                // the wheel model is rotated 180 on the Y axis for the left-side of the vehicle.
-                float[] wheelRot = wheelNode.getChild(0).getLocalRotation().toAngles(null);
+                // the wheel model is rotated 180 on the Y axis
+                // for the left-side of the vehicle.
+                float[] wheelRot = wheelNode.getChild(0).getLocalRotation()
+                        .toAngles(null);
                 // - for left
                 // + for right
                 if (wheelRot[1] == 0) {
@@ -178,25 +192,32 @@ public class WheelSpinState extends BaseAppState {
                 rot[i].fromAngles(angles[i]);
 
                 wheelGeom.setLocalRotation(rot[i]);
-            } else if (wheel.isBraking()) {
 
-                // calculate how fast this wheel should be rotating at the speed it's travelling.
+            } else if (wheel.isBraking()) {
+                // calculate how fast this wheel should be rotating
+                // at the speed it's travelling.
                 // multiply it by how much slip the wheel is experiencing
-                // and use that rotation as a counter-rotation to simulate wheel stopping spinning.
-                // at full slip with brakes applied, the wheel should stop spinning completely.
+                // and use that rotation as a counter-rotation
+                // to simulate wheel stopping spinning.
+                // at full slip with brakes applied,
+                // the wheel should stop spinning completely.
                 // If the wheel is slipping 50%, reduce rotation by 50%.
                 float slip = 1.0f - wheel.getVehicleWheel().getFrictionSlip();
                 float rotation = calcWheelRotation(wheel) * tpf;
                 rotation *= slip;
 
-                Node wheelNode = (Node) wheel.getVehicleWheel().getWheelSpatial();
+                Node wheelNode
+                        = (Node) wheel.getVehicleWheel().getWheelSpatial();
                 Spatial wheelGeom = wheelNode.getChild("wheel");
 
-                float[] existingAngles = wheelGeom.getLocalRotation().toAngles(null);
+                float[] existingAngles
+                        = wheelGeom.getLocalRotation().toAngles(null);
 
                 // add the additional rotation for skidding.
-                // the wheel model is rotated 180 on the Y axis for the left-side of the vehicle.
-                float[] wheelRot = wheelNode.getChild(0).getLocalRotation().toAngles(null);
+                // the wheel model is rotated 180 on the Y axis
+                // for the left-side of the vehicle.
+                float[] wheelRot = wheelNode.getChild(0).getLocalRotation()
+                        .toAngles(null);
                 // + for left
                 // - for right
                 if (wheelRot[1] == 0) {

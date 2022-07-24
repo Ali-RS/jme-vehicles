@@ -269,8 +269,8 @@ public class Cameras {
     /**
      * Access the target for chasing/orbiting behavior.
      *
-     * @param orbitCam
-     * @return
+     * @param orbitCam the camera controller (not null)
+     * @return the pre-existing instance, or null if none
      */
     private static Object getTarget(OrbitCamera orbitCam) {
         Object result = null;

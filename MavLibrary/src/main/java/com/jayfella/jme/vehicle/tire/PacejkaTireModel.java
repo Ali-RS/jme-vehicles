@@ -39,10 +39,9 @@ public class PacejkaTireModel {
      * @param alignMoment TireSettings for the align-moment component
      * @param maxLoad maximum load the tire can handle (in Newtons)
      */
-    public PacejkaTireModel(String name,
-            TireSettings lateral, TireSettings longitudinal, TireSettings alignMoment,
+    public PacejkaTireModel(String name, TireSettings lateral,
+            TireSettings longitudinal, TireSettings alignMoment,
             float maxLoad) {
-
         this.name = name;
         this.lateral = lateral;
         this.longitudinal = longitudinal;
@@ -165,7 +164,8 @@ public class PacejkaTireModel {
      * @return - lateral tire force in N.
      */
     public float calcLateralTireForce(float slipAngle) {
-        lateralValue = calcSlipAngleFactor(slipAngle, lateral) * calcLoadForce(load, lateral);
+        lateralValue = calcSlipAngleFactor(slipAngle, lateral)
+                * calcLoadForce(load, lateral);
         return lateralValue;
     }
 
@@ -177,7 +177,8 @@ public class PacejkaTireModel {
      * @return the estimated force (in Newtons)
      */
     public float calcLongitudeTireForce(float slipAngle) {
-        longitudinalValue = calcSlipAngleFactor(slipAngle, longitudinal) * calcLoadForce(load, longitudinal);
+        longitudinalValue = calcSlipAngleFactor(slipAngle, longitudinal)
+                * calcLoadForce(load, longitudinal);
         return longitudinalValue;
     }
 
@@ -189,7 +190,8 @@ public class PacejkaTireModel {
      * @return the estimated force (in Newtons)
      */
     public float calcAlignMoment(float slipAngle) {
-        momentValue = calcSlipAngleFactor(slipAngle, alignMoment) * calcLoadForce(load, alignMoment);
+        momentValue = calcSlipAngleFactor(slipAngle, alignMoment)
+                * calcLoadForce(load, alignMoment);
         return momentValue;
     }
 
@@ -200,20 +202,29 @@ public class PacejkaTireModel {
      */
     public float calculateFrictionCircle() {
         /*
-            A simple method to combine Fx and Fy (when both are non-zero) is an elliptical approach:
+            A simple method to combine Fx and Fy (when both are non-zero)
+            is an elliptical approach:
 
             Calculate Fx and Fy separately (as usual)
-            Cut down Fy so that the vector (Fx,Fy) doesn't exceed the maximum magnitude:
-            Fy=Fy0*sqrt(1-(Fx/Fx0)^2)
-            Where:
-                - Fy is the combined slip lateral force
-                - Fy0 is the lateral force as calculated using the normal Fy formula
-                - Fx is the longitudinal force as calculated using the normal Fx formula
-                - Fx0 is the MAXIMUM longitudinal force possible (calculated as D+Sv in the Pacejka Fx formula).
+            Cut down Fy so that the vector (Fx,Fy) doesn't exceed
+            the maximum magnitude:
 
-            This method favors longitudinal forces over lateral ones (cuts down the lateral force and leaves Fx intact).
+            Fy = Fy0 * sqrt(1-(Fx/Fx0)^2)
+
+            where:
+                - Fy is the combined slip lateral force
+                - Fy0 is the lateral force
+                    as calculated using the normal Fy formula
+                - Fx is the longitudinal force
+                    as calculated using the normal Fx formula
+                - Fx0 is the MAXIMUM longitudinal force possible
+                    calculated as D+Sv in the Pacejka Fx formula
+
+            This method favors longitudinal forces over lateral ones
+            (cuts down the lateral force and leaves Fx intact).
          */
-        frictionCircle = lateralValue * MyMath.circle(longitudinalValue / 7800f);
+        frictionCircle
+                = lateralValue * MyMath.circle(longitudinalValue / 7800f);
         frictionCircle = Math.max(0.1f, frictionCircle);
 
         return frictionCircle;
@@ -257,22 +268,32 @@ public class PacejkaTireModel {
 
     @Override
     public String toString() {
-        String format = "%s: \"%s\" : %s (C=%.2f, B=%.2f, E=%.2f, KA=%.2f, KB=%.6f)";
+        String format
+                = "%s: \"%s\" : %s (C=%.2f, B=%.2f, E=%.2f, KA=%.2f, KB=%.6f)";
 
         String lat = String.format(format, getClass().toString(),
                 name, "Lateral",
-                lateral.getSlipAngleCoefficientC(), lateral.getSlipAngleCoefficientB(), lateral.getSlipAngleCoefficientE(),
-                lateral.getLoadCoefficientKA(), lateral.getLoadCoefficientKB());
+                lateral.getSlipAngleCoefficientC(),
+                lateral.getSlipAngleCoefficientB(),
+                lateral.getSlipAngleCoefficientE(),
+                lateral.getLoadCoefficientKA(),
+                lateral.getLoadCoefficientKB());
 
         String lng = String.format(format, getClass(),
                 name, "Longitudinal",
-                longitudinal.getSlipAngleCoefficientC(), longitudinal.getSlipAngleCoefficientB(), longitudinal.getSlipAngleCoefficientE(),
-                longitudinal.getLoadCoefficientKA(), longitudinal.getLoadCoefficientKB());
+                longitudinal.getSlipAngleCoefficientC(),
+                longitudinal.getSlipAngleCoefficientB(),
+                longitudinal.getSlipAngleCoefficientE(),
+                longitudinal.getLoadCoefficientKA(),
+                longitudinal.getLoadCoefficientKB());
 
         String mnt = String.format(format, getClass(),
                 name, "Align Moment",
-                alignMoment.getSlipAngleCoefficientC(), alignMoment.getSlipAngleCoefficientB(), alignMoment.getSlipAngleCoefficientE(),
-                alignMoment.getLoadCoefficientKA(), alignMoment.getLoadCoefficientKB());
+                alignMoment.getSlipAngleCoefficientC(),
+                alignMoment.getSlipAngleCoefficientB(),
+                alignMoment.getSlipAngleCoefficientE(),
+                alignMoment.getLoadCoefficientKA(),
+                alignMoment.getLoadCoefficientKB());
 
         return lat + System.lineSeparator() + lng + System.lineSeparator() + mnt;
     }

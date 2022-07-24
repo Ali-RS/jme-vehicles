@@ -48,11 +48,13 @@ public class PacejkaViewer extends SimpleApplication {
 
         tireModel = new Tire01();
 
-        TireGraph tireGraph = new TireGraph(assetManager, tireModel, cam.getWidth(), cam.getHeight());
+        TireGraph tireGraph = new TireGraph(
+                assetManager, tireModel, cam.getWidth(), cam.getHeight());
         tireGraph.setBackgroundColor(ColorRGBA.DarkGray);
         tireGraph.setLineColor(ColorRGBA.LightGray);
 
-        TireSettings.ChangeListener changeListener = new TireSettings.ChangeListener() {
+        TireSettings.ChangeListener changeListener
+                = new TireSettings.ChangeListener() {
             @Override
             public void valueChanged() {
                 tireGraph.drawGraph();

@@ -11,13 +11,21 @@ public class TireSettings {
     // public static float DEFAULT_COEFF_E = -1.6f;
     // public static float DEFAULT_COEFF_KA = 2.0f;
     // public static float DEFAULT_COEFF_KB = 0.000055f;
-
     // a listener for changes, so we can re-draw the graph:
     private ChangeListener changeListener;
 
-    private float slipAngleCoefficientC; // coefficient C for the normalised slip-angle curve.
-    private float slipAngleCoefficientB; // coefficient B for the normalised slip-angle curve.
-    private float slipAngleCoefficientE; // coefficient E for the normalised slip-angle curve.
+    /**
+     * coefficient C for the normalized slip-angle curve
+     */
+    private float slipAngleCoefficientC;
+    /**
+     * coefficient B for the normalized slip-angle curve
+     */
+    private float slipAngleCoefficientB;
+    /**
+     * coefficient E for the normalized slip-angle curve
+     */
+    private float slipAngleCoefficientE;
     private float loadCoefficientKA; // coefficient KA for the load function.
     private float loadCoefficientKB; // coefficient KB for the load function.
 
@@ -39,7 +47,9 @@ public class TireSettings {
      * @param loadCoefficientKA - coefficient KA in the load curve function f2.
      * @param loadCoefficientKB - coefficient KB in the load curve function f2.
      */
-    public TireSettings(float slipAngleCoefficientC, float slipAngleCoefficientB, float slipAngleCoefficientE, float loadCoefficientKA, float loadCoefficientKB) {
+    public TireSettings(float slipAngleCoefficientC,
+            float slipAngleCoefficientB, float slipAngleCoefficientE,
+            float loadCoefficientKA, float loadCoefficientKB) {
         this.slipAngleCoefficientC = slipAngleCoefficientC;
         this.slipAngleCoefficientB = slipAngleCoefficientB;
         this.slipAngleCoefficientE = slipAngleCoefficientE;

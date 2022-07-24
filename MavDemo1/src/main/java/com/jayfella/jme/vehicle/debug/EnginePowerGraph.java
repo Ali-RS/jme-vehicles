@@ -24,13 +24,15 @@ public class EnginePowerGraph extends Geometry {
     final private static Logger logger
             = Logger.getLogger(EnginePowerGraph.class.getName());
     // *************************************************************************
-    // constants and fields
+    // fields
 
     final private Engine engine;
     final private int width, height;
 
     final private ImageRaster imageRaster;
     final private Texture2D texture;
+    // *************************************************************************
+    // constructors
 
     public EnginePowerGraph(AssetManager assetManager, Engine engine, int width, int height) {
         super("Engine Graph");
@@ -55,6 +57,8 @@ public class EnginePowerGraph extends Geometry {
 
         drawGraph();
     }
+    // *************************************************************************
+    // new methods exposed
 
     public void drawGraph() {
 
@@ -71,9 +75,10 @@ public class EnginePowerGraph extends Geometry {
             imageRaster.setPixel(x, (int) y, ColorRGBA.Yellow);
         }
     }
+    // *************************************************************************
+    // private methods
 
     private float map(float value, float oldMin, float oldMax, float newMin, float newMax) {
         return (((value - oldMin) * (newMax - newMin)) / (oldMax - oldMin)) + newMin;
     }
-
 }
