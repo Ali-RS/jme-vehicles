@@ -6,7 +6,7 @@ import com.jayfella.jme.vehicle.WheelModel;
 import com.jayfella.jme.vehicle.examples.engines.PeakyEngine;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound5;
 import com.jayfella.jme.vehicle.examples.sounds.HornSound1;
-import com.jayfella.jme.vehicle.examples.tires.Tire_01;
+import com.jayfella.jme.vehicle.examples.tires.Tire01;
 import com.jayfella.jme.vehicle.examples.wheels.RotatorFrontWheel;
 import com.jayfella.jme.vehicle.examples.wheels.RotatorRearWheel;
 import com.jayfella.jme.vehicle.part.Engine;
@@ -124,7 +124,7 @@ public class Rotator extends Vehicle {
          * Give each wheel a tire with friction.
          */
         for (Wheel wheel : listWheels()) {
-            wheel.setTireModel(new Tire_01());
+            wheel.setTireModel(new Tire01());
             wheel.setFriction(1.3f);
         }
         /*

@@ -1,7 +1,7 @@
 package com.jayfella.jme.vehicle.viewer;
 
 import com.jayfella.jme.vehicle.debug.TireGraph;
-import com.jayfella.jme.vehicle.examples.tires.Tire_01;
+import com.jayfella.jme.vehicle.examples.tires.Tire01;
 import com.jayfella.jme.vehicle.tire.PacejkaTireModel;
 import com.jayfella.jme.vehicle.tire.TireSettings;
 import com.jme3.app.SimpleApplication;
@@ -46,7 +46,7 @@ public class PacejkaViewer extends SimpleApplication {
         BaseStyles.loadGlassStyle();
         GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
 
-        tireModel = new Tire_01();
+        tireModel = new Tire01();
 
         TireGraph tireGraph = new TireGraph(assetManager, tireModel, cam.getWidth(), cam.getHeight());
         tireGraph.setBackgroundColor(ColorRGBA.DarkGray);

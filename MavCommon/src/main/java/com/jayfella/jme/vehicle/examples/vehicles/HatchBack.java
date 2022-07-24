@@ -6,7 +6,7 @@ import com.jayfella.jme.vehicle.WheelModel;
 import com.jayfella.jme.vehicle.examples.engines.FlexibleEngine;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound4;
 import com.jayfella.jme.vehicle.examples.sounds.HornSound1;
-import com.jayfella.jme.vehicle.examples.tires.Tire_02;
+import com.jayfella.jme.vehicle.examples.tires.Tire02;
 import com.jayfella.jme.vehicle.examples.wheels.HatchbackWheel;
 import com.jayfella.jme.vehicle.part.Engine;
 import com.jayfella.jme.vehicle.part.GearBox;
@@ -122,7 +122,7 @@ public class HatchBack extends Vehicle {
          * Give each wheel a tire with friction.
          */
         for (Wheel wheel : listWheels()) {
-            wheel.setTireModel(new Tire_02());
+            wheel.setTireModel(new Tire02());
             wheel.setFriction(0.9f);
         }
         /*

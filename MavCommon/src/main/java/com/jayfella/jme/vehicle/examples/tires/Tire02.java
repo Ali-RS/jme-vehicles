@@ -3,9 +3,9 @@ package com.jayfella.jme.vehicle.examples.tires;
 import com.jayfella.jme.vehicle.tire.PacejkaTireModel;
 import com.jayfella.jme.vehicle.tire.TireSettings;
 
-public class Tire_02 extends PacejkaTireModel {
+public class Tire02 extends PacejkaTireModel {
 
-    public Tire_02() {
+    public Tire02() {
         super("Tire 02",
                 new TireSettings(
                         2.49f,

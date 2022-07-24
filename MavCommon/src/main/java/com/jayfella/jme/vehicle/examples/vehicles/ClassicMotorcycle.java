@@ -6,7 +6,7 @@ import com.jayfella.jme.vehicle.WheelModel;
 import com.jayfella.jme.vehicle.examples.engines.PeakyEngine;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound5;
 import com.jayfella.jme.vehicle.examples.sounds.HornSound1;
-import com.jayfella.jme.vehicle.examples.tires.Tire_02;
+import com.jayfella.jme.vehicle.examples.tires.Tire02;
 import com.jayfella.jme.vehicle.examples.wheels.MotorcycleFrontWheel;
 import com.jayfella.jme.vehicle.examples.wheels.MotorcycleRearWheel;
 import com.jayfella.jme.vehicle.part.Engine;
@@ -250,7 +250,7 @@ public class ClassicMotorcycle extends Bike {
          */
         for (Wheel wheel : listWheels()) {
             wheel.setFriction(4f);
-            wheel.setTireModel(new Tire_02());
+            wheel.setTireModel(new Tire02());
         }
         /*
          * Distribute drive power across the wheels:

@@ -6,7 +6,7 @@ import com.jayfella.jme.vehicle.WheelModel;
 import com.jayfella.jme.vehicle.examples.engines.FlexibleEngine;
 import com.jayfella.jme.vehicle.examples.sounds.EngineSound1;
 import com.jayfella.jme.vehicle.examples.sounds.HornSound1;
-import com.jayfella.jme.vehicle.examples.tires.Tire_01;
+import com.jayfella.jme.vehicle.examples.tires.Tire01;
 import com.jayfella.jme.vehicle.examples.wheels.RangerWheel;
 import com.jayfella.jme.vehicle.part.Engine;
 import com.jayfella.jme.vehicle.part.GearBox;
@@ -117,7 +117,7 @@ public class PickupTruck extends Vehicle {
          * Give each wheel a tire with friction.
          */
         for (Wheel wheel : listWheels()) {
-            wheel.setTireModel(new Tire_01());
+            wheel.setTireModel(new Tire01());
             wheel.setFriction(1f);
         }
         /*

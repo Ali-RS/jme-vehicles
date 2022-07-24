@@ -6,7 +6,7 @@ import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.WheelModel;
 import com.jayfella.jme.vehicle.examples.engines.FlexibleEngine;
 import com.jayfella.jme.vehicle.examples.sounds.HornSound1;
-import com.jayfella.jme.vehicle.examples.tires.Tire_01;
+import com.jayfella.jme.vehicle.examples.tires.Tire01;
 import com.jayfella.jme.vehicle.examples.wheels.InvisibleWheel;
 import com.jayfella.jme.vehicle.part.Engine;
 import com.jayfella.jme.vehicle.part.GearBox;
@@ -125,7 +125,7 @@ public class HoverTank extends Vehicle {
         for (Wheel wheel : listWheels()) {
             wheel.setFriction(0.001f);
             wheel.setPowerFraction(0f);
-            wheel.setTireModel(new Tire_01());
+            wheel.setTireModel(new Tire01());
         }
         /*
          * Specify the name and speed range for each gear.
