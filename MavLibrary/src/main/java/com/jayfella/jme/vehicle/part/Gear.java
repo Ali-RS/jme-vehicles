@@ -41,6 +41,15 @@ public class Gear {
      */
     private String name = "neutral";
     // *************************************************************************
+    // constructors
+
+    /**
+     * A no-arg constructor to avoid javadoc warnings from JDK 18.
+     */
+    public Gear() {
+        // do nothing
+    }
+    // *************************************************************************
     // new methods exposed
 
     /**

@@ -177,6 +177,13 @@ public class TireSettings {
      */
     abstract public static class ChangeListener {
         /**
+         * A no-arg constructor to avoid javadoc warnings from JDK 18.
+         */
+        public ChangeListener() {
+            // do nothing
+        }
+
+        /**
          * Callback invoked after every coefficient change.
          */
         abstract public void valueChanged();

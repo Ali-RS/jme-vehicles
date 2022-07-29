@@ -42,6 +42,15 @@ abstract public class World
         defaultChunkSet.add(Vector3i.zero);
     }
     // *************************************************************************
+    // constructors
+
+    /**
+     * A no-arg constructor to avoid javadoc warnings from JDK 18.
+     */
+    public World() {
+        // do nothing
+    }
+    // *************************************************************************
     // fields
 
     /**

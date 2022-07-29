@@ -22,8 +22,7 @@ import jme3utilities.math.MyMath;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-public class Sound
-        implements Loadable {
+public class Sound implements Loadable {
     // *************************************************************************
     // constants and loggers
 
@@ -62,6 +61,15 @@ public class Sound
      * scene-graph node to which this Sound is attached, or null if unattached
      */
     private Node parent;
+    // *************************************************************************
+    // constructors
+
+    /**
+     * A no-arg constructor to avoid javadoc warnings from JDK 18.
+     */
+    public Sound() {
+        // do nothing
+    }
     // *************************************************************************
     // new methods exposed
 

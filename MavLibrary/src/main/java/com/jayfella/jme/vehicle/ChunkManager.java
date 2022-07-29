@@ -62,6 +62,15 @@ public class ChunkManager extends BaseAppState {
      */
     private World world;
     // *************************************************************************
+    // constructors
+
+    /**
+     * A no-arg constructor to avoid javadoc warnings from JDK 18.
+     */
+    public ChunkManager() {
+        // do nothing
+    }
+    // *************************************************************************
     // new methods exposed
 
     /**

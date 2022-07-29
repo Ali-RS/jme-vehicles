@@ -46,6 +46,15 @@ public class DecalManager {
      */
     final private Node decalNode = new Node("Decal Node");
     // *************************************************************************
+    // constructors
+
+    /**
+     * A no-arg constructor to avoid javadoc warnings from JDK 18.
+     */
+    public DecalManager() {
+        // do nothing
+    }
+    // *************************************************************************
     // new methods exposed
 
     /**

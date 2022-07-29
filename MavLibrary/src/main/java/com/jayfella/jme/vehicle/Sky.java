@@ -29,16 +29,14 @@ import jme3utilities.mesh.Octasphere;
  *
  * Derived from the Main class in the Advanced Vehicles project.
  */
-abstract public class Sky
-        implements Loadable {
+abstract public class Sky implements Loadable {
     // *************************************************************************
     // constants and loggers
 
     /**
      * message logger for this class
      */
-    final private static Logger logger
-            = Logger.getLogger(Sky.class.getName());
+    final private static Logger logger = Logger.getLogger(Sky.class.getName());
     // *************************************************************************
     // fields
 
@@ -66,6 +64,15 @@ abstract public class Sky
      * root of the loaded sky model
      */
     private Spatial loadedCgm;
+    // *************************************************************************
+    // constructors
+
+    /**
+     * A no-arg constructor to avoid javadoc warnings from JDK 18.
+     */
+    public Sky() {
+        // do nothing
+    }
     // *************************************************************************
     // new methods exposed
 
