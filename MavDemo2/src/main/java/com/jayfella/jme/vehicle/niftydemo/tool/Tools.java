@@ -77,6 +77,8 @@ public class Tools {
      */
     public void attachAll(AppStateManager stateManager) {
         stateManager.attachAll(allTools);
+        camera.setEnabled(true);
+        driving.setEnabled(true);
     }
 
     /**
@@ -108,6 +110,7 @@ public class Tools {
      * Test whether the named Tool is enabled.
      *
      * @param toolName which Tool to show or hide (not null, not empty)
+     * @return true if enabled, otherwise false
      */
     public static boolean isEnabled(String toolName) {
         Validate.nonEmpty(toolName, "tool name");
