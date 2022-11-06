@@ -195,6 +195,62 @@ Additional controls when the orbit camera is active:
  + Drag left with MMB : orbit leftward
  + Drag right with MMB : orbit rightward
 
+### In the MavDemo2 application
+
+During the JmePower loading animation:
+
++ Pause : pause the animation
++ Tab : cancel the animation
+
+General controls:
+
++ Esc : quit the application
++ Numpad9 or wheel up : zoom in (narrow the field of view)
++ Numpad3 or wheel down : zoom out (widen the field of view)
++ Numpad6 : reset the field of view (to 90 degrees vertical angle)
++ "." or F7 or Pause : toggle the physics simulation paused/running
++ "/" : toggle physics debug visualization on/off
++ F5 : cycle through various viewpoints
++ F11 : toggle video recording on/off
++ F12 : capture a screenshot to the sandbox directory
++ C : print details about the default `Camera` (viewpoint) to standard output
++ O : print details about the `BulletAppState` (physics) to standard output
++ P : print details about the `RenderManager` (graphics) to standard output
++ I : print details about the `StateManager` to standard output
++ Y : toggle the engine running/off
++ S : apply the main brakes
++ X : apply the parking brake
++ A : steer left
++ D : steer right
++ E : toggle the automatic transmission forward/reverse
++ H : sound the horn
++ Backslash : add a prop at the mouse pointer
++ R : reset the vehicle to a stable state
++ F1 : edit the hotkey bindings
++ F2 : edit the video settings
++ F4 : cycle through various performance displays
+
+Additional controls when the physics simulation is paused:
+
++ "," : single-step the physics simulation
+
+Additional controls when the engine is running:
+
++ W : accelerate forward
+
+Additional controls when the chase camera or orbit camera is active:
+
+ + Numpad7 : dolly forward (toward the vehicle)
+ + Numpad1 : dolly back (away from the vehicle)
+ + Numpad8 or Q or drag upward with MMB : orbit upward (to look down on the vehicle)
+ + Numpad2 or Z or drag downward with MMB : orbit downward (to look up at the vehicle)
+ + Numpad5 or RMB : reset the viewpoint's position relative to the vehicle
+
+Additional controls when the orbit camera is active:
+
+ + RightArrow or drag left with MMB : orbit leftward
+ + Leftarrow or Drag right with MMB : orbit rightward
+
 ### In the HelloMav application
 
 + W : accelerate forward
