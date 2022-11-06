@@ -22,6 +22,7 @@ import com.jme3.bullet.PhysicsSpace;
 import com.jme3.math.Vector3f;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeVersion;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jme3utilities.Heart;
@@ -35,6 +36,7 @@ import jme3utilities.minie.PhysicsDumper;
 import jme3utilities.nifty.GuiApplication;
 import jme3utilities.nifty.bind.BindScreen;
 import jme3utilities.nifty.displaysettings.DsScreen;
+import jme3utilities.ui.ActionApplication;
 import jme3utilities.ui.DisplaySettings;
 import jme3utilities.ui.InputMode;
 import jme3utilities.ui.ShowDialog;
@@ -420,6 +422,15 @@ public class MavDemo2 extends GuiApplication {
              * by DisplaySettings.initialize().
              */
             application.setShowSettings(false);
+            /*
+             * Designate a sandbox directory.
+             * This has to be done *prior to* initialization.
+             */
+            try {
+                ActionApplication.designateSandbox("Written Assets");
+            } catch (IOException exception) {
+                // do nothing
+            }
 
             application.start();
             /*
