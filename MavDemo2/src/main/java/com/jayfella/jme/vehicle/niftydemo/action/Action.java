@@ -76,6 +76,7 @@ public class Action {
     final static String toggleEngine = "toggle engine";
     final static String togglePause = "toggle pause";
     final static String togglePhysicsDebug = "toggle physicsDebug";
+    final static String toggleRecorder = "toggle recorder";
     final static String toggleReverse = "toggle reverse";
     // *************************************************************************
     // constructors
