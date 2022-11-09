@@ -21,11 +21,12 @@ import com.jayfella.jme.vehicle.niftydemo.state.DemoState;
 import com.jayfella.jme.vehicle.niftydemo.view.Cameras;
 import com.jayfella.jme.vehicle.niftydemo.view.View;
 import com.jme3.app.BasicProfilerState;
-import com.jme3.app.DebugKeysAppState;
-import com.jme3.app.FlyCamAppState;
+import com.jme3.app.StatsAppState;
 import com.jme3.app.state.AppState;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.app.state.ConstantVerifierState;
 import com.jme3.app.state.ScreenshotAppState;
+import com.jme3.audio.AudioListenerState;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.math.Vector3f;
@@ -102,6 +103,19 @@ public class MavDemo2 extends GuiApplication {
      * dump state for debugging
      */
     final public static PhysicsDumper dumper = new PhysicsDumper();
+    // *************************************************************************
+    // constructors
+
+    /**
+     * Instantiate the application.
+     */
+    public MavDemo2() {
+        /*
+         * This application doesn't want DebugKeysAppState nor FlyCamAppState.
+         * StatsAppState will be attached AFTER the loading cinematic completes.
+         */
+        super(new AudioListenerState(), new ConstantVerifierState());
+    }
     // *************************************************************************
     // new methods exposed
 
@@ -207,14 +221,6 @@ public class MavDemo2 extends GuiApplication {
                 .setDumpCull(true)
                 .setDumpShadow(true)
                 .setDumpTransform(true);
-        /*
-         * Detach a few app states created by SimpleApplication.
-         */
-        DebugKeysAppState debugKeys = findAppState(DebugKeysAppState.class);
-        stateManager.detach(debugKeys);
-
-        AppState flyByCam = findAppState(FlyCamAppState.class);
-        stateManager.detach(flyByCam);
 
         Loadable[] preloadArray = {
             new ClassicMotorcycle(),
@@ -317,6 +323,10 @@ public class MavDemo2 extends GuiApplication {
 
         BasicProfilerState profiler = new BasicProfilerState();
         success = stateManager.attach(profiler);
+        assert success;
+
+        StatsAppState stats = new StatsAppState();
+        success = stateManager.attach(stats);
         assert success;
 
         BindScreen bindScreen = new BindScreen();
