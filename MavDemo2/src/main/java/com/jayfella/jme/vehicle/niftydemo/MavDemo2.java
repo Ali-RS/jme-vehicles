@@ -228,16 +228,16 @@ public class MavDemo2 extends GuiApplication {
         Loadable[] preloadArray = {
             new ClassicMotorcycle(),
             new DuneBuggy(),
-            new GrandTourer(),
-            new HatchBack(),
             new HoverTank(),
-            new Mountains(),
-            new Nismo(),
+            new GrandTourer(),
             new Playground(),
-            new PickupTruck(),
+            new HatchBack(),
+            new Mountains(),
             new QuarrySky(),
-            new Racetrack(),
-            new Rotator()
+            new Nismo(),
+            new PickupTruck(),
+            new Rotator(),
+            new Racetrack()
         };
         JmeLoadingState loading = new JmeLoadingState(preloadArray);
         stateManager.attach(loading);
