@@ -4,8 +4,17 @@ import com.github.stephengold.jmepower.JmeLoadingState;
 import com.jayfella.jme.vehicle.ChunkManager;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
+import com.jayfella.jme.vehicle.examples.vehicles.ClassicMotorcycle;
+import com.jayfella.jme.vehicle.examples.vehicles.DuneBuggy;
 import com.jayfella.jme.vehicle.examples.vehicles.GrandTourer;
+import com.jayfella.jme.vehicle.examples.vehicles.HatchBack;
+import com.jayfella.jme.vehicle.examples.vehicles.HoverTank;
+import com.jayfella.jme.vehicle.examples.vehicles.Nismo;
+import com.jayfella.jme.vehicle.examples.vehicles.PickupTruck;
+import com.jayfella.jme.vehicle.examples.vehicles.Rotator;
+import com.jayfella.jme.vehicle.examples.worlds.Mountains;
 import com.jayfella.jme.vehicle.examples.worlds.Playground;
+import com.jayfella.jme.vehicle.examples.worlds.Racetrack;
 import com.jayfella.jme.vehicle.gui.CompassState;
 import com.jayfella.jme.vehicle.niftydemo.action.Action;
 import com.jayfella.jme.vehicle.niftydemo.state.DemoState;
@@ -208,9 +217,18 @@ public class MavDemo2 extends GuiApplication {
         stateManager.detach(flyByCam);
 
         Loadable[] preloadArray = {
+            new ClassicMotorcycle(),
+            new DuneBuggy(),
             new GrandTourer(),
+            new HatchBack(),
+            new HoverTank(),
+            new Mountains(),
+            new Nismo(),
             new Playground(),
-            new QuarrySky()
+            new PickupTruck(),
+            new QuarrySky(),
+            new Racetrack(),
+            new Rotator()
         };
         JmeLoadingState loading = new JmeLoadingState(preloadArray);
         stateManager.attach(loading);
