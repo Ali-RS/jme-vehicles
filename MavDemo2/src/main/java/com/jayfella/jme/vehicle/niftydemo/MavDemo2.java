@@ -138,15 +138,12 @@ public class MavDemo2 extends GuiApplication {
      * @param arguments array of command-line arguments (not null)
      */
     public static void main(String[] arguments) {
-        /*
-         * Mute the chatty loggers found in certain packages.
-         */
+        // Mute the chatty loggers found in certain packages.
         Heart.setLoggingLevels(Level.WARNING);
 
         ShowDialog showDialog = ShowDialog.FirstTime;
-        /*
-         * Process any command-line arguments.
-         */
+
+        // Process any command-line arguments.
         for (String arg : arguments) {
             switch (arg) {
                 case "-f":
@@ -186,9 +183,8 @@ public class MavDemo2 extends GuiApplication {
         if (!Heart.areAssertionsEnabled()) {
             logger.warning("Assertions are disabled!");
         }
-        /*
-         * Log version strings.
-         */
+
+        // Log version strings.
         logger.log(Level.INFO, "jme3-core version is {0}",
                 MyString.quote(JmeVersion.FULL_NAME));
         logger.log(Level.INFO, "Heart version is {0}",
@@ -244,9 +240,8 @@ public class MavDemo2 extends GuiApplication {
         }
 
         if (!handled) {
-            /*
-             * Forward unhandled action to the superclass.
-             */
+
+            // Forward unhandled action to the superclass.
             super.onAction(actionString, ongoing, tpf);
         }
     }
@@ -263,7 +258,7 @@ public class MavDemo2 extends GuiApplication {
         AppState loading = stateManager.getState(JmeLoadingState.class);
         if (loading != null) {
             if (!loading.isEnabled()) {
-                // The cinematic has completed.
+                // The loading cinematic has completed.
                 stateManager.detach(loading);
                 attachAppStates();
             }
@@ -379,16 +374,14 @@ public class MavDemo2 extends GuiApplication {
      * @param title for the title bar of the app's window
      */
     private static void mainStartup(ShowDialog showDialog, String title) {
-        /*
-         * Instantiate the application.
-         */
+
+        // Instantiate the application.
         application = new MavDemo2();
 
         String status = Heart.areAssertionsEnabled() ? "enabled" : "disabled";
         logger.log(Level.WARNING, "Assertions are {0}.", status);
-        /*
-         * Instantiate the display-settings screen.
-         */
+
+        // Instantiate the display-settings screen.
         RectSizeLimits dsl = new RectSizeLimits(
                 1_280, 720, // min width, height
                 2_048, 1_080 // max width, height
@@ -433,14 +426,12 @@ public class MavDemo2 extends GuiApplication {
             }
 
             application.start();
-            /*
-             * ... and onward to MavDemo2.guiInitializeApplication()!
-             */
+            // ... and onward to MavDemo2.guiInitializeApplication()!
         }
     }
 
     /**
-     * Initialization performed once, after the cinematic completes.
+     * Initialization performed once, after the loading cinematic completes.
      */
     private void startup1() {
         logger.info("");
