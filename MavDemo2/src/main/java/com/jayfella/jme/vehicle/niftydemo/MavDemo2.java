@@ -81,7 +81,7 @@ public class MavDemo2 extends GuiApplication {
     /**
      * true once {@link #startup1()} has completed, until then false
      */
-    private boolean didStartup1 = false;
+    private static boolean didStartup1 = false;
     /**
      * demo's "game state"
      */
@@ -93,7 +93,7 @@ public class MavDemo2 extends GuiApplication {
     /**
      * steer angle from the previous update
      */
-    private float steerAngle = 0f;
+    private static float steerAngle = 0f;
     /**
      * application instance
      */
