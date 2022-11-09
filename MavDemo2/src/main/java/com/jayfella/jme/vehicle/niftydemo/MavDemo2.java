@@ -1,6 +1,7 @@
 package com.jayfella.jme.vehicle.niftydemo;
 
 import com.github.stephengold.jmepower.JmeLoadingState;
+import com.github.stephengold.jmepower.JmePowerVersion;
 import com.jayfella.jme.vehicle.ChunkManager;
 import com.jayfella.jme.vehicle.Vehicle;
 import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
@@ -214,6 +215,8 @@ public class MavDemo2 extends GuiApplication {
                 MyString.quote(Heart.versionShort()));
         logger.log(Level.INFO, "Minie version is {0}",
                 MyString.quote(MinieVersion.versionShort()));
+        logger.log(Level.INFO, "JmePower version is {0}",
+                MyString.quote(JmePowerVersion.versionShort()));
 
         renderer.setDefaultAnisotropicFilter(8);
 
