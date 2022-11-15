@@ -405,7 +405,6 @@ public class MavDemo2 extends GuiApplication {
      * @param title for the title bar of the app's window
      */
     private static void mainStartup(ShowDialog showDialog, String title) {
-
         // Instantiate the application.
         application = new MavDemo2();
 
