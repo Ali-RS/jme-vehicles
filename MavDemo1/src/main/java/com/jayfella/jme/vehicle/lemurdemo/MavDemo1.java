@@ -446,6 +446,9 @@ public class MavDemo1 extends SimpleApplication {
 
         FilterAll filter = new FilterAll(true);
         orbitCamera.setObstructionFilter(filter);
+        float lowerAngle = 0.2f;
+        float upperAngle = 1.7f;
+        orbitCamera.setPoleExclusionAngles(upperAngle, lowerAngle);
 
         orbitCamera.setSignalName(CameraSignal.Back,
                 SignalMode.F_CAMERA_BACK1.getId());

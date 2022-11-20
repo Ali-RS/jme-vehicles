@@ -88,6 +88,10 @@ public class Cameras {
         float lagSeconds = 0.5f;
         chase.setAzimuthTau(lagSeconds);
         chase.setObstructionFilter(obstructionFilter);
+        float lowerAngle = 0.2f;
+        float upperAngle = 1.7f;
+        chase.setPoleExclusionAngles(upperAngle, lowerAngle);
+
         chase.setSignalName(CameraSignal.Back, "FLYCAM_Backward");
         chase.setSignalName(CameraSignal.DragToOrbit, "cameraDrag");
         chase.setSignalName(CameraSignal.Forward, "FLYCAM_Forward");
