@@ -76,9 +76,6 @@ public class Cameras {
      */
     public static void configure() {
         MavDemo2 app = MavDemo2.getApplication();
-        FlyByCamera flyCam = app.getFlyByCamera();
-        flyCam.setEnabled(false);
-
         AppStateManager stateManager = app.getStateManager();
         Camera camera = app.getCamera();
         SignalTracker tracker = app.getSignals();
