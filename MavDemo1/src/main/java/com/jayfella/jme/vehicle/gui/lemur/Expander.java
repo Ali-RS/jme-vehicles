@@ -47,7 +47,7 @@ abstract class Expander implements MouseListener {
     Expander(Spatial buttonSpatial) {
         this.expandSpatial = buttonSpatial;
 
-        Vector3f scale = buttonSpatial.getLocalScale();
+        Vector3f scale = buttonSpatial.getLocalScale(); // alias
         usualScale.set(scale);
         expandedScale.set(scale).multLocal(1.2f);
     }
