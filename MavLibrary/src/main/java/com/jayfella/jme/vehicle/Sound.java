@@ -248,8 +248,8 @@ public class Sound implements Loadable {
     private AudioNode addAudioNode(String assetPath, float recordedPitch) {
         assert assetManager != null;
 
-        AudioNode result = new AudioNode(assetManager, assetPath,
-                AudioData.DataType.Buffer);
+        AudioNode result = new AudioNode(
+                assetManager, assetPath, AudioData.DataType.Buffer);
         pitchToNode.put(recordedPitch, result);
 
         result.setDirectional(false);

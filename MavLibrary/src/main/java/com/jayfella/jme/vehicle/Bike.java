@@ -60,8 +60,8 @@ abstract public class Bike extends Vehicle {
      * @param extraDamping (&ge;0, &lt;1)
      * @return the new Wheel
      */
-    protected Wheel addSteeringWheel(WheelModel wheelModel,
-            Vector3f connectionLocation,
+    protected Wheel addSteeringWheel(
+            WheelModel wheelModel, Vector3f connectionLocation,
             float mainBrakePeakForce, float parkingBrakePeakForce,
             float extraDamping) {
         Validate.nonNull(wheelModel, "wheel model");

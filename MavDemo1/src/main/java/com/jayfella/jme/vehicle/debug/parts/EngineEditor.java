@@ -24,7 +24,6 @@ public class EngineEditor extends Container {
     // private methods
 
     private RollupPanel createPowerRollup() {
-
         PropertyPanel propertyPanel = new PropertyPanel("glass");
 
         /*

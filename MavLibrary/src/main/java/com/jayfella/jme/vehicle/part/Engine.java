@@ -75,8 +75,8 @@ abstract public class Engine implements EngineSpeed {
      * @param idleRpm the desired idle speed (in RPMs, &ge;0, &lt;redlineRpm)
      * @param redlineRpm the desired redline speed (&gt;0)
      */
-    public Engine(String name, float maxWatts, float idleRpm,
-            float redlineRpm) {
+    public Engine(
+            String name, float maxWatts, float idleRpm, float redlineRpm) {
         Validate.positive(maxWatts, "max Watts");
         Validate.inRange(idleRpm, "idle RPM", 0f, redlineRpm);
         Validate.positive(redlineRpm, "redline RPM");

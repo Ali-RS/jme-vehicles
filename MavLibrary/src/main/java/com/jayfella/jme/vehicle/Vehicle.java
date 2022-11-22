@@ -641,8 +641,7 @@ abstract public class Vehicle
      * @param parkingStrength the desired strength of the parking-brake control
      * signal, between 0 (not applied) and 1 (applied as strongly as possible)
      */
-    public void setBrakeSignals(float mainStrength,
-            float parkingStrength) {
+    public void setBrakeSignals(float mainStrength, float parkingStrength) {
         for (Wheel wheel : wheels) {
             wheel.updateBrakes(mainStrength, parkingStrength);
         }
@@ -736,8 +735,8 @@ abstract public class Vehicle
      * @param modelClass the desired type of wheel (not null)
      */
     @SuppressWarnings("unchecked")
-    public void setWheelModel(int wheelIndex,
-            Class<? extends WheelModel> modelClass) {
+    public void setWheelModel(
+            int wheelIndex, Class<? extends WheelModel> modelClass) {
         Wheel wheel = wheels.get(wheelIndex);
         VehicleWheel vehicleWheel = wheel.getVehicleWheel();
 
@@ -844,8 +843,8 @@ abstract public class Vehicle
                 }
             }
         }
-        Vector3f contactLocation = MyVector3f.lerp(closestFraction,
-                dropLocation, endLocation, null);
+        Vector3f contactLocation = MyVector3f.lerp(
+                closestFraction, dropLocation, endLocation, null);
         /*
          * Estimate the minimum chassis Y offset to keep
          * the undercarriage off the pavement.
@@ -943,8 +942,8 @@ abstract public class Vehicle
         engineSubtree.attachChild(passengerCgmRoot);
         passengerCgmRoot.setLocalTranslation(offset);
 
-        List<AnimComposer> composers = MySpatial.listControls(passengerCgmRoot,
-                AnimComposer.class, null);
+        List<AnimComposer> composers = MySpatial
+                .listControls(passengerCgmRoot, AnimComposer.class, null);
         assert composers.size() == 1;
         AnimComposer composer = composers.get(0);
         composer.setCurrentAction(clipName);
@@ -976,16 +975,16 @@ abstract public class Vehicle
         float restLength = 0.2f;
         float radius = wheelModel.radius();
         int wheelIndex = body.getNumWheels();
-        VehicleWheel vehicleWheel = body.addWheel(wheelNode,
-                connectionLocation, suspensionDirection, axleDirection,
-                restLength, radius, isSteering);
+        VehicleWheel vehicleWheel = body.addWheel(
+                wheelNode, connectionLocation, suspensionDirection,
+                axleDirection, restLength, radius, isSteering);
 
         Suspension suspension = new Suspension(vehicleWheel);
         Brake mainBrake = new Brake(mainBrakePeakForce);
         Brake parkingBrake = new Brake(parkingBrakePeakForce);
-        Wheel result = new Wheel(this, body, wheelIndex, isSteering,
-                isSteeringFlipped, suspension, mainBrake, parkingBrake,
-                extraDamping);
+        Wheel result = new Wheel(
+                this, body, wheelIndex, isSteering, isSteeringFlipped,
+                suspension, mainBrake, parkingBrake, extraDamping);
         wheels.add(result);
 
         getNode().attachChild(wheelNode);

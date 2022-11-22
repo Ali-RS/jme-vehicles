@@ -70,12 +70,12 @@ public class DebugTabState extends BaseAppState {
                 = container.addChild(new PropertyPanel("glass"));
         propertyPanel.addBooleanProperty("Display FPS", this, "displayFps");
         propertyPanel.addBooleanProperty("Display Stats", this, "displayStats");
-        propertyPanel.addBooleanProperty("Engine Graph", enginePowerGraphState,
-                "enabled");
-        propertyPanel.addBooleanProperty("Tire Graph", tireDataState,
-                "enabled");
-        propertyPanel.addBooleanProperty("Vehicle Points", vehiclePoints,
-                "enabled");
+        propertyPanel.addBooleanProperty(
+                "Engine Graph", enginePowerGraphState, "enabled");
+        propertyPanel.addBooleanProperty(
+                "Tire Graph", tireDataState, "enabled");
+        propertyPanel.addBooleanProperty(
+                "Vehicle Points", vehiclePoints, "enabled");
 
         tabbedPanel.addTab("Debug", container);
 

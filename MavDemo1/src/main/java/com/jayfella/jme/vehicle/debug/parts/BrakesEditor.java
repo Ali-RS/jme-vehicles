@@ -28,8 +28,8 @@ public class BrakesEditor extends Container {
 
         for (int i = 0; i < vehicle.countWheels(); ++i) {
             Brake mainBrake = vehicle.getWheel(i).getMainBrake();
-            propertyPanel.addFloatProperty("Wheel " + i, mainBrake, "peakForce",
-                    0f, 1_000f, 0.1f);
+            propertyPanel.addFloatProperty(
+                    "Wheel " + i, mainBrake, "peakForce", 0f, 1_000f, 0.1f);
         }
 
         return new RollupPanel("Strength", propertyPanel, "glass");

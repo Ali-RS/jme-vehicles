@@ -180,14 +180,14 @@ public class TireSmokeEmitter extends BaseAppState {
     // *************************************************************************
     // private methods
 
-    private ParticleEmitter createEmitter(AssetManager assetManager,
-            ColorRGBA startColor) {
+    private ParticleEmitter createEmitter(
+            AssetManager assetManager, ColorRGBA startColor) {
         int numParticles = 80;
-        ParticleEmitter result = new ParticleEmitter("Emitter",
-                ParticleMesh.Type.Triangle, numParticles);
+        ParticleEmitter result = new ParticleEmitter(
+                "Emitter", ParticleMesh.Type.Triangle, numParticles);
 
-        Material material = new Material(assetManager,
-                "Common/MatDefs/Misc/Particle.j3md");
+        Material material = new Material(
+                assetManager, "Common/MatDefs/Misc/Particle.j3md");
         result.setMaterial(material);
         RenderState ars = material.getAdditionalRenderState();
         ars.setBlendMode(RenderState.BlendMode.Alpha);

@@ -261,8 +261,8 @@ abstract public class Prop
                 }
             }
         }
-        Vector3f startLocation = MyVector3f.lerp(closestFraction,
-                dropLocation, endLocation, null);
+        Vector3f startLocation = MyVector3f
+                .lerp(closestFraction, dropLocation, endLocation, null);
 
         return startLocation;
     }
@@ -422,8 +422,8 @@ abstract public class Prop
      * @param bodyShape unscaled collision shape for the rigid body (not null,
      * may be same as unscaledSweep)
      */
-    protected void configureSingle(Spatial cgmRoot, ConvexShape sweepShape,
-            CollisionShape bodyShape) {
+    protected void configureSingle(
+            Spatial cgmRoot, ConvexShape sweepShape, CollisionShape bodyShape) {
         Validate.nonNull(cgmRoot, "C-G model root");
         Validate.nonNull(sweepShape, "sweep shape");
         Validate.nonNull(bodyShape, "body shape");

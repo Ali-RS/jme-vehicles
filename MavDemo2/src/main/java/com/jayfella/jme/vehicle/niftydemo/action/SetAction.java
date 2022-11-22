@@ -321,8 +321,8 @@ class SetAction {
         float mass = proposal.descaledMass();
         String defaultText = Float.toString(mass);
 
-        DialogController controller = new FloatDialog("Set", Float.MIN_VALUE,
-                Float.MAX_VALUE, AllowNull.No);
+        DialogController controller = new FloatDialog(
+                "Set", Float.MIN_VALUE, Float.MAX_VALUE, AllowNull.No);
         MainHud mainHud = MavDemo2.findAppState(MainHud.class);
         mainHud.showTextEntryDialog("Enter base mass of prop, in kilograms:",
                 defaultText, ActionPrefix.setPropDescaledMass, controller);
@@ -336,8 +336,8 @@ class SetAction {
         float mass = proposal.totalMass();
         String defaultText = Float.toString(mass);
 
-        DialogController controller = new FloatDialog("Set", Float.MIN_VALUE,
-                Float.MAX_VALUE, AllowNull.No);
+        DialogController controller = new FloatDialog(
+                "Set", Float.MIN_VALUE, Float.MAX_VALUE, AllowNull.No);
         MainHud mainHud = MavDemo2.findAppState(MainHud.class);
         mainHud.showTextEntryDialog("Enter mass of prop, in kilograms:",
                 defaultText, ActionPrefix.setPropMass, controller);
@@ -351,8 +351,8 @@ class SetAction {
         float scale = proposal.scaleFactor();
         String defaultText = Float.toString(scale);
 
-        DialogController controller = new FloatDialog("Set", Float.MIN_VALUE,
-                Float.MAX_VALUE, AllowNull.No);
+        DialogController controller = new FloatDialog(
+                "Set", Float.MIN_VALUE, Float.MAX_VALUE, AllowNull.No);
         MainHud mainHud = MavDemo2.findAppState(MainHud.class);
         mainHud.showTextEntryDialog(
                 "Enter scale of prop, in world units per model unit:",

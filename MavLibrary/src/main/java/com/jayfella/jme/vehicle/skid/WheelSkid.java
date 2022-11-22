@@ -249,8 +249,8 @@ class WheelSkid {
         assert mesh.getVertexCount() == 0 : mesh.getVertexCount();
     }
 
-    private Geometry createGeometry(AssetManager assetManager,
-            int numSections) {
+    private Geometry createGeometry(
+            AssetManager assetManager, int numSections) {
         Mesh mesh = createMesh(numSections);
         Geometry result = new Geometry("Skidmark", mesh);
 

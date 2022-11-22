@@ -239,8 +239,8 @@ abstract public class Sky implements Loadable {
      * empty)
      * @return a new orphan Geometry
      */
-    protected static Spatial createSky(AssetManager assetManager,
-            String textureAssetPath) {
+    protected static Spatial
+            createSky(AssetManager assetManager, String textureAssetPath) {
         // Load and configure the Texture.
         boolean flipY = true;
         TextureKey textureKey = new TextureKey(textureAssetPath, flipY);

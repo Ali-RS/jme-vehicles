@@ -276,24 +276,24 @@ public class PacejkaTireModel {
         String format
                 = "%s: \"%s\" : %s (C=%.2f, B=%.2f, E=%.2f, KA=%.2f, KB=%.6f)";
 
-        String lat = String.format(format, getClass().toString(),
-                name, "Lateral",
+        String lat = String.format(
+                format, getClass().toString(), name, "Lateral",
                 lateral.getSlipAngleCoefficientC(),
                 lateral.getSlipAngleCoefficientB(),
                 lateral.getSlipAngleCoefficientE(),
                 lateral.getLoadCoefficientKA(),
                 lateral.getLoadCoefficientKB());
 
-        String lng = String.format(format, getClass(),
-                name, "Longitudinal",
+        String lng = String.format(
+                format, getClass(), name, "Longitudinal",
                 longitudinal.getSlipAngleCoefficientC(),
                 longitudinal.getSlipAngleCoefficientB(),
                 longitudinal.getSlipAngleCoefficientE(),
                 longitudinal.getLoadCoefficientKA(),
                 longitudinal.getLoadCoefficientKB());
 
-        String mnt = String.format(format, getClass(),
-                name, "Align Moment",
+        String mnt = String.format(
+                format, getClass(), name, "Align Moment",
                 alignMoment.getSlipAngleCoefficientC(),
                 alignMoment.getSlipAngleCoefficientB(),
                 alignMoment.getSlipAngleCoefficientE(),

@@ -14,8 +14,8 @@ public class ChassisEditor extends Container {
 
         String styleName = "glass";
         PropertyPanel propertyPanel = new PropertyPanel(styleName);
-        propertyPanel.addFloatProperty("Mass", vehicle, "mass",
-                1f, 5000f, 0.1f);
+        propertyPanel.addFloatProperty(
+                "Mass", vehicle, "mass", 1f, 5000f, 0.1f);
         RollupPanel panel = new RollupPanel("Mass", propertyPanel, styleName);
         addChild(panel);
     }

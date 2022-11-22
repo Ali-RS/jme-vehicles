@@ -185,8 +185,8 @@ public class Gear {
      * @param redlineKph the desired signed tread speed at the redline (in
      * kilometers per hour)
      */
-    public void setMinMaxRedKph(float downshiftKph, float upshiftKph,
-            float redlineKph) {
+    public void setMinMaxRedKph(
+            float downshiftKph, float upshiftKph, float redlineKph) {
         setMinKph(downshiftKph);
         setMaxKph(upshiftKph);
         setRedlineKph(redlineKph);

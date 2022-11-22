@@ -263,8 +263,8 @@ public class SpeedometerState extends BaseAppState {
         int height = image.getHeight();
         int width = image.getWidth();
 
-        Geometry backgroundGeom = new Geometry("Speedometer Background",
-                new Quad(width, height));
+        Geometry backgroundGeom = new Geometry(
+                "Speedometer Background", new Quad(width, height));
         backgroundGeom.setLocalTranslation(-width / 2f, -height / 2f, -1f);
 
         Material material = new Material(assetManager, Materials.UNSHADED);
