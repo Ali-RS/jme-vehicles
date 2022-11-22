@@ -189,9 +189,7 @@ class WheelSkid {
         int sectionIndex = numSections - 1;
         Mesh mesh;
         if (numSections - 1 > meshSize) {
-            /*
-             * Recreate the Mesh from sections, making each buffer 4x larger.
-             */
+            // Recreate the Mesh from sections, making each buffer 4x larger.
             mesh = createMesh(4 * meshSize);
             for (int i = 0; i < sectionIndex; ++i) {
                 SkidmarkSection s = sections.get(i);

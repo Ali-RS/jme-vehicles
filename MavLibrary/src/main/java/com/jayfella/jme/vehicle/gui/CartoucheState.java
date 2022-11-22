@@ -115,9 +115,8 @@ abstract public class CartoucheState
         if (text == null) {
             return;
         }
-        /*
-         * Attach a TrueTypeNode for the text.
-         */
+
+        // Attach a TrueTypeNode for the text.
         int kerning = 0;
         ColorRGBA textColor = ColorRGBA.White.clone();
         TrueTypeNode ttNode = droidFont.getText(text, kerning, textColor);
@@ -130,9 +129,8 @@ abstract public class CartoucheState
         float textHeight = ttNode.getHeight();
         float y = textHeight / 2;
         ttNode.setLocalTranslation(x, y, 1f);
-        /*
-         * Attach a rounded-rectangle Geometry for the background.
-         */
+
+        // Attach a rounded-rectangle Geometry for the background.
         float cornerRadius = 0.25f * textHeight;
         float bgWidth = textWidth + 2 * cornerRadius;
         float bgHeight = textHeight + 2 * cornerRadius;
@@ -178,9 +176,8 @@ abstract public class CartoucheState
     protected void initialize(Application application) {
         AssetManager assetManager = application.getAssetManager();
         load(assetManager);
-        /*
-         * Position the Node in the viewport.
-         */
+
+        // Position the Node in the viewport.
         Camera camera = application.getCamera();
         float viewPortHeight = camera.getHeight();
         float viewPortWidth = camera.getWidth();
@@ -196,9 +193,7 @@ abstract public class CartoucheState
      */
     @Override
     protected void onDisable() {
-        /*
-         * Detach the Node from the GUI.
-         */
+        // Detach the Node from the GUI.
         node.removeFromParent();
     }
 
@@ -209,9 +204,8 @@ abstract public class CartoucheState
     @Override
     protected void onEnable() {
         updateNode();
-        /*
-         * Attach the Node to the GUI.
-         */
+
+        // Attach the Node to the GUI.
         SimpleApplication simpleApp = (SimpleApplication) getApplication();
         Node guiNode = simpleApp.getGuiNode();
         guiNode.attachChild(node);
@@ -239,15 +233,12 @@ abstract public class CartoucheState
     @Override
     @SuppressWarnings("unchecked")
     public void load(AssetManager assetManager) {
-        /*
-         * pre-load the Droid font
-         */
+        // pre-load the Droid font
         AssetKey<TrueTypeMesh> assetKey = new TrueTypeKeyMesh(
                 "Interface/Fonts/DroidSerifBold-aMPE.ttf", Style.Plain, 18);
         this.droidFont = assetManager.loadAsset(assetKey);
-        /*
-         * pre-load the background Material
-         */
+
+        // pre-load the background Material
         ColorRGBA bgColor = new ColorRGBA(0.1f, 0.2f, 0.5f, 1f);
         this.bgMaterial = MyAsset.createUnshadedMaterial(assetManager, bgColor);
     }

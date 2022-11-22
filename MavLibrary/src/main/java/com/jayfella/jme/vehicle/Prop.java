@@ -437,9 +437,8 @@ abstract public class Prop
         mainRbc = new RigidBodyControl(bodyShape, massKg);
         mainRbc.setApplicationData(this);
         partNameToBody.put("main", mainRbc);
-        /*
-         * Configure continuous collision detection (CCD).
-         */
+
+        // Configure continuous collision detection (CCD).
         float radius = bodyShape.maxRadius();
         mainRbc.setCcdMotionThreshold(radius);
         mainRbc.setCcdSweptSphereRadius(radius);

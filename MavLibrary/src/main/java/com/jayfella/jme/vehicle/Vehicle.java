@@ -282,9 +282,8 @@ abstract public class Vehicle
         getNode().setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         vehicleAudioState.setGlobalAudio(globalAudio);
         enable();
-        /*
-         * Add bodies and physics joints to the PhysicsSpace.
-         */
+
+        // Add bodies and physics joints to the PhysicsSpace.
         addToPhysicsSpace();
 
         PhysicsSpace physicsSpace = world.getPhysicsSpace();
@@ -612,9 +611,8 @@ abstract public class Vehicle
         Validate.fraction(strength, "strength");
 
         this.accelerateSignal = strength;
-        /*
-         * Determine unsigned speed in world units per second.
-         */
+
+        // Determine unsigned speed in world units per second.
         float speed = forwardSpeed(SpeedUnit.WUPS);
         speed = FastMath.abs(speed);
         if (speed < 0.1f) {
@@ -765,9 +763,8 @@ abstract public class Vehicle
         }
         AssetManager assetManager = world.getAssetManager();
         wheelModel.load(assetManager);
-        /*
-         * Copy the local rotation of the old Spatial.
-         */
+
+        // Copy the local rotation of the old Spatial.
         int numChildren = oldNode.getChildren().size();
         assert numChildren == 1 : numChildren;
         Spatial oldSpatial = oldNode.getChild(0);
@@ -827,9 +824,8 @@ abstract public class Vehicle
      */
     public void warp(Vector3f dropLocation, float yRotation) {
         Validate.nonNull(dropLocation, "drop location");
-        /*
-         * Cast a physics ray downward from the drop location.
-         */
+
+        // Cast a physics ray downward from the drop location.
         Vector3f endLocation = dropLocation.add(0f, -999f, 0f);
         PhysicsSpace physicsSpace = world.getPhysicsSpace();
         List<PhysicsRayTestResult> rayTest
@@ -866,9 +862,8 @@ abstract public class Vehicle
         float suspensionLength = w0.getRestLength();
         float yOffset
                 = w0.getRadius() + suspensionLength - w0.getLocation(null).y;
-        /*
-         * Calculate and apply an appropriate engine location.
-         */
+
+        // Calculate and apply an appropriate engine location.
         if (yOffset < minYOffset) {
             yOffset = minYOffset;
         }
@@ -1149,9 +1144,8 @@ abstract public class Vehicle
          * to simulate drag due to air resistance.
          */
         engineBody.setLinearDamping(damping);
-        /*
-         * Configure continuous collision detection (CCD) for the chassis.
-         */
+
+        // Configure continuous collision detection (CCD) for the chassis.
         float radius = shape.maxRadius();
         engineBody.setCcdMotionThreshold(radius);
         engineBody.setCcdSweptSphereRadius(radius);
@@ -1281,9 +1275,7 @@ abstract public class Vehicle
      */
     @Override
     public void prePhysicsTick(PhysicsSpace space, float timeStep) {
-        /*
-         * Update the linear damping of the chassis.
-         */
+        // Update the linear damping of the chassis.
         float linearDamping = chassisDamping();
         for (Wheel wheel : wheels) {
             linearDamping += wheel.linearDamping();

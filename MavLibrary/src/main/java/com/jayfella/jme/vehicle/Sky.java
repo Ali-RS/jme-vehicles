@@ -144,14 +144,12 @@ abstract public class Sky implements Loadable {
 
         Node rootNode = simpleApp.getRootNode();
         rootNode.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
-        /*
-         * Add an AmbientLight.
-         */
+
+        // Add an AmbientLight.
         ambientLight = new AmbientLight();
         rootNode.addLight(ambientLight);
-        /*
-         * Add a DirectionalLight.
-         */
+
+        // Add a DirectionalLight.
         directionalLight = new DirectionalLight();
         rootNode.addLight(directionalLight);
 
@@ -243,37 +241,31 @@ abstract public class Sky implements Loadable {
      */
     protected static Spatial createSky(AssetManager assetManager,
             String textureAssetPath) {
-        /*
-         * Load and configure the Texture.
-         */
+        // Load and configure the Texture.
         boolean flipY = true;
         TextureKey textureKey = new TextureKey(textureAssetPath, flipY);
         Texture texture = assetManager.loadTexture(textureKey);
         texture.setAnisotropicFilter(1);
-        /*
-         * Construct the Material.
-         */
+
+        // Construct the Material.
         String matDefAssetPath = "/MatDefs/SkyEquirec.j3md";
         Material material = new Material(assetManager, matDefAssetPath);
         material.setTexture("Texture", texture);
         material.setVector3("NormalScale", new Vector3f(1f, 1f, 1f));
-        /*
-         * Construct the BoundingVolume, a very large sphere.
-         */
+
+        // Construct the BoundingVolume, a very large sphere.
         float boundRadius = Float.POSITIVE_INFINITY;
         BoundingVolume boundingSphere
                 = new BoundingSphere(boundRadius, Vector3f.ZERO);
-        /*
-         * Construct the Mesh, an Octasphere with 32 triangles.
-         */
+
+        // Construct the Mesh, an Octasphere with 32 triangles.
         int numRefineSteps = 1;
         float meshRadius = 1_000f;
         Octasphere sphereMesh = new Octasphere(numRefineSteps, meshRadius);
         MyMesh.reverseNormals(sphereMesh);
         MyMesh.reverseWinding(sphereMesh);
-        /*
-         * Construct the Geometry.
-         */
+
+        // Construct the Geometry.
         Geometry result = new Geometry("Sky Sphere", sphereMesh);
         result.setCullHint(Spatial.CullHint.Never);
         result.setMaterial(material);

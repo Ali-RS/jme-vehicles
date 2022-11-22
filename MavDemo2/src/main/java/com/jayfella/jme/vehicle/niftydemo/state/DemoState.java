@@ -271,9 +271,8 @@ public class DemoState
         BulletAppState bas = MavDemo2.findAppState(BulletAppState.class);
         PhysicsSpace physicsSpace = bas.getPhysicsSpace();
         List<PhysicsRayTestResult> results = physicsSpace.rayTest(near, far);
-        /*
-         * Calculate the offset from near end to the far end.
-         */
+
+        // Calculate the offset from near end to the far end.
         Vector3f offset = far.subtract(near);
         /*
          * Collision results are sorted by increasing distance from the camera,
@@ -320,9 +319,8 @@ public class DemoState
 
         PhysicsSpace physicsSpace = world.getPhysicsSpace();
         List<PhysicsRayTestResult> hits = physicsSpace.rayTestRaw(near, far);
-        /*
-         * Find the closest contact that's flat enough.
-         */
+
+        // Find the closest contact that's flat enough.
         Vector3f closestWorldNormal = null;
         float closestFraction = 9f;
         PhysicsRigidBody closestBody = null;

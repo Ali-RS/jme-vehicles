@@ -112,16 +112,14 @@ public class SteeringWheelState
 
         AssetManager assetManager = application.getAssetManager();
         load(assetManager);
-        /*
-         * Construct a Geometry for the steering wheel.
-         */
+
+        // Construct a Geometry for the steering wheel.
         RectangleMesh mesh
                 = new RectangleMesh(-radius, +radius, -radius, +radius, +1f);
         this.geometry = new Geometry("steering wheel", mesh);
         geometry.setMaterial(material);
-        /*
-         * Position the Geometry in the GUI viewport.
-         */
+
+        // Position the Geometry in the GUI viewport.
         geometry.move(center);
     }
 
@@ -152,9 +150,8 @@ public class SteeringWheelState
     @Override
     public void update(float tpf) {
         super.update(tpf);
-        /*
-         * Re-orient the steering wheel.
-         */
+
+        // Re-orient the steering wheel.
         float angle = vehicle.steeringWheelAngle();
         Quaternion orientation = new Quaternion(); // TODO garbage
         orientation.fromAngles(0f, 0f, angle);

@@ -116,9 +116,8 @@ public class AtmiState extends BaseAppState {
         Camera camera = application.getCamera();
         this.viewPortHeight = camera.getHeight();
         this.viewPortWidth = camera.getWidth();
-        /*
-         * pre-load the Droid font
-         */
+
+        // pre-load the Droid font
         AssetManager manager = application.getAssetManager();
         AssetKey<TrueTypeMesh> assetKey = new TrueTypeKeyMesh(
                 "Interface/Fonts/DroidSerifBold-aMPE.ttf", Style.Plain, 18);
@@ -158,9 +157,8 @@ public class AtmiState extends BaseAppState {
     @Override
     public void update(float tpf) {
         super.update(tpf);
-        /*
-         * Indicate the current mode of the automatic transmission.
-         */
+
+        // Indicate the current mode of the automatic transmission.
         GearBox gearBox = vehicle.getGearBox();
         if (gearBox.isInReverse()) {
             setMode("R");
@@ -231,9 +229,8 @@ public class AtmiState extends BaseAppState {
         float maxWidth = 0f;
         int kerning = 0;
         ColorRGBA textColor = ColorRGBA.White.clone();
-        /*
-         * Attach a TrueTypeNode for each mode.
-         */
+
+        // Attach a TrueTypeNode for each mode.
         for (String mode : allModes) {
             TrueTypeNode ttNode = droidFont.getText(mode, kerning, textColor);
             node.attachChild(ttNode);
@@ -248,9 +245,8 @@ public class AtmiState extends BaseAppState {
             }
             yModeCenter -= spacingY;
         }
-        /*
-         * Attach a rounded-rectangle Geometry for the background.
-         */
+
+        // Attach a rounded-rectangle Geometry for the background.
         float bgHeight = (numModes + 1) * spacingY;
         float cornerRadius = 0.01f * viewPortWidth;
         float bgWidth = maxWidth + 2f * cornerRadius;
@@ -260,9 +256,8 @@ public class AtmiState extends BaseAppState {
         node.attachChild(bgGeometry);
         bgGeometry.setLocalTranslation(0f, 0f, -0.1f);
         bgGeometry.setMaterial(backgroundMaterial);
-        /*
-         * Attach a rectangular outline Geometry for the indicator.
-         */
+
+        // Attach a rectangular outline Geometry for the indicator.
         float indWidth = maxWidth + cornerRadius;
         float x1 = -indWidth / 2f;
         float x2 = indWidth / 2f;

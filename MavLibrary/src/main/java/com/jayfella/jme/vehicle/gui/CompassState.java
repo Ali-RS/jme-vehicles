@@ -140,9 +140,8 @@ public class CompassState extends BaseAppState {
         float radius = 180f / FastMath.PI; // in pixels
         float height = 40f; // in pixels
         Mesh mesh = new Cylinder(2, circumferenceSamples, radius, height);
-        /*
-         * Rewrite the 2nd texture coordinate so that it ranges from 0 to 1.
-         */
+
+        // Rewrite the 2nd texture coordinate so that it ranges from 0 to 1.
         int numVertices = mesh.getVertexCount();
         FloatBuffer texCoords = mesh.getFloatBuffer(VertexBuffer.Type.TexCoord);
         FloatBuffer positions = mesh.getFloatBuffer(VertexBuffer.Type.Position);
@@ -165,9 +164,8 @@ public class CompassState extends BaseAppState {
      */
     private void showCompass() {
         attachToGui(geometry);
-        /*
-         * Position the compass in the viewport.
-         */
+
+        // Position the compass in the viewport.
         float x = 0.5f * viewPortWidth;
         float y = 0.95f * viewPortHeight;
         geometry.setLocalTranslation(x, y, 0f);

@@ -164,9 +164,7 @@ public class Sound implements Loadable {
         }
 
         if (activeNode == null || !canAccuratelySimulate(activeNode, pitch)) {
-            /*
-             * Find the best AudioNode for the desired pitch.
-             */
+            // Find the best AudioNode for the desired pitch.
             AudioNode bestNode = findBestNode(pitch);
             if (bestNode != activeNode && activeNode != null) {
                 activeNode.stop();

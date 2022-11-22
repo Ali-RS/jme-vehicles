@@ -110,19 +110,16 @@ abstract public class Bike extends Vehicle {
         Validate.positive(engineMass, "engine mass");
         Validate.positive(steeringMass, "steering mass");
         Validate.fraction(damping, "damping");
-        /*
-         * Configure the physics body associated with the Engine.
-         */
+
+        // Configure the physics body associated with the Engine.
         setChassis(cgmRoot, engineShape, engineMass, damping, engineSubtree);
-        /*
-         * Create the physics body associated with steering.
-         */
+
+        // Create the physics body associated with steering.
         steeringShape.setScale(1f);
         steeringBody = new VehicleControl(steeringShape, steeringMass);
         steeringBody.setApplicationData(this);
-        /*
-         * Configure continuous collision detection (CCD) for the steering body.
-         */
+
+        // Configure continuous collision detection (CCD) for the steering body.
         float radius = steeringShape.maxRadius();
         steeringBody.setCcdMotionThreshold(radius);
         steeringBody.setCcdSweptSphereRadius(radius);
@@ -140,9 +137,8 @@ abstract public class Bike extends Vehicle {
         orientation = steeringSubtree.getWorldRotation();
         steeringBody.setPhysicsLocation(location);
         steeringBody.setPhysicsRotation(orientation);
-        /*
-         * Join the 2 bodies using a physics constraint.
-         */
+
+        // Join the 2 bodies using a physics constraint.
         New6Dof result = New6Dof.newInstance(engineBody, steeringBody, location,
                 orientation, RotationOrder.YXZ);
         result.setCollisionBetweenLinkedBodies(false);

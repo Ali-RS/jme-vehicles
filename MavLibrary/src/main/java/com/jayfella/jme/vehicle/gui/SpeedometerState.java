@@ -193,9 +193,8 @@ public class SpeedometerState extends BaseAppState {
         this.prevTheta = FastMath.clamp(prevTheta, thetaMin, theta0);
         tmpRotation.fromAngles(0f, 0f, prevTheta - FastMath.HALF_PI);
         needleNode.setLocalRotation(tmpRotation);
-        /*
-         * update the Lemur labels, which are mainly for testing
-         */
+
+        // update the Lemur labels, which are mainly for testing
         //String unit = speedUnit.toString().toLowerCase();
         //String labelText = String.format("%.0f %s", FastMath.abs(speed), unit);
         //speedLabel.setText(labelText);
@@ -235,9 +234,8 @@ public class SpeedometerState extends BaseAppState {
             float x = radius * cos - lineWidth / 2;
             float y = radius * sin + lineHeight / 2;
             label.setLocalTranslation(x, y, 0f);
-            /*
-             * Generate a Mesh for the corresponding radial marking.
-             */
+
+            // Generate a Mesh for the corresponding radial marking.
             float innerRadius = 60f;
             innerOffset.x = innerRadius * cos;
             innerOffset.y = innerRadius * sin;

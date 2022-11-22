@@ -132,9 +132,8 @@ public class View extends SimpleAppState {
      */
     public void mouseRay(Vector3f storeNear, Vector3f storeFar) {
         Vector2f screenXY = inputManager.getCursorPosition();
-        /*
-         * Convert screen coordinates to world coordinates.
-         */
+
+        // Convert screen coordinates to world coordinates.
         if (storeNear != null) {
             cam.getWorldCoordinates(screenXY, 0f, storeNear);
         }

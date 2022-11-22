@@ -193,9 +193,8 @@ class SkidmarkSection {
         uvBuffer.put(0f).put(1f);
         uvBuffer.put(1f).put(1f);
         uvBuffer.flip();
-        /*
-         * Update the bounds.
-         */
+
+        // Update the bounds.
         BoundingBox aabb = (BoundingBox) mesh.getBound();
         Vector3f max = new Vector3f(); // TODO garbage
         Vector3f min = new Vector3f();
