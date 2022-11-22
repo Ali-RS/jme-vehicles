@@ -149,10 +149,6 @@ class ViewTool extends Tool {
         String axesLengthStatus = String.format("%.0f cm", 100f * axesLength); // TODO wuToCm
         setButtonText("viewPhysicsAxes", axesLengthStatus);
 
-        CameraMode mode = Cameras.getMode();
-        String cameraName = mode.toString();
-        setButtonText("viewCamera", cameraName);
-
         Sky sky = view.getSky();
         String skyName = sky.getClass().getSimpleName();
         setButtonText("viewSky", skyName);

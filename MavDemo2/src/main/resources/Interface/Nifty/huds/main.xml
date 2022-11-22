@@ -524,11 +524,6 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
                         <control name="checkbox" id="viewShadowsCheckBox"
                                  width="20px"/>
                         <control name="label" text="  shadows"/>
-                        <control name="label" text="    Camera:  "/>
-                        <control name="button" id="viewCameraButton"
-                                 width="60px">
-                            <interact onRelease="perform(next camera)"/>
-                        </control>
                     </panel>
                     <panel childLayout="horizontal" height="28px">
                         <control name="label" text="Anisotropy:  "/>
