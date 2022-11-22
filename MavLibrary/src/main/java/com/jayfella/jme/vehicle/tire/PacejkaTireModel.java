@@ -137,7 +137,7 @@ public class PacejkaTireModel {
      */
     public void setMaxLoad(float maxLoad) {
         this.maxLoad = maxLoad;
-        changeListener.valueChanged();
+        this.changeListener.valueChanged();
     }
 
     // slipAngle is in RADIANS
@@ -169,7 +169,7 @@ public class PacejkaTireModel {
      * @return - lateral tire force in N.
      */
     public float calcLateralTireForce(float slipAngle) {
-        lateralValue = calcSlipAngleFactor(slipAngle, lateral)
+        this.lateralValue = calcSlipAngleFactor(slipAngle, lateral)
                 * calcLoadForce(load, lateral);
         return lateralValue;
     }
@@ -182,7 +182,7 @@ public class PacejkaTireModel {
      * @return the estimated force (in Newtons)
      */
     public float calcLongitudeTireForce(float slipAngle) {
-        longitudinalValue = calcSlipAngleFactor(slipAngle, longitudinal)
+        this.longitudinalValue = calcSlipAngleFactor(slipAngle, longitudinal)
                 * calcLoadForce(load, longitudinal);
         return longitudinalValue;
     }
@@ -195,7 +195,7 @@ public class PacejkaTireModel {
      * @return the estimated force (in Newtons)
      */
     public float calcAlignMoment(float slipAngle) {
-        momentValue = calcSlipAngleFactor(slipAngle, alignMoment)
+        this.momentValue = calcSlipAngleFactor(slipAngle, alignMoment)
                 * calcLoadForce(load, alignMoment);
         return momentValue;
     }
@@ -228,9 +228,9 @@ public class PacejkaTireModel {
             This method favors longitudinal forces over lateral ones
             (cuts down the lateral force and leaves Fx intact).
          */
-        frictionCircle
+        this.frictionCircle
                 = lateralValue * MyMath.circle(longitudinalValue / 7800f);
-        frictionCircle = Math.max(0.1f, frictionCircle);
+        this.frictionCircle = Math.max(0.1f, frictionCircle);
 
         return frictionCircle;
     }

@@ -34,10 +34,10 @@ public class TireDataState extends BaseAppState {
 
     public TireDataState(Vehicle vehicle) {
         this.vehicle = vehicle;
-        tireGraphs = new TireGraph[vehicle.countWheels()];
-        needles = new Geometry[vehicle.countWheels()][3];
+        this.tireGraphs = new TireGraph[vehicle.countWheels()];
+        this.needles = new Geometry[vehicle.countWheels()][3];
 
-        node = new Node("Tire Data Node");
+        this.node = new Node("Tire Data Node");
     }
     // *************************************************************************
     // BaseAppState methods
@@ -61,7 +61,7 @@ public class TireDataState extends BaseAppState {
      */
     @Override
     protected void initialize(Application application) {
-        guiNode = ((SimpleApplication) application).getGuiNode();
+        this.guiNode = ((SimpleApplication) application).getGuiNode();
 
         float space = 10;
 
@@ -104,11 +104,11 @@ public class TireDataState extends BaseAppState {
 
             node.attachChild(graphNode);
 
-            needles[i][0] = lateralNeedle;
-            needles[i][1] = longitudeNeedle;
-            needles[i][2] = momentNeedle;
+            this.needles[i][0] = lateralNeedle;
+            this.needles[i][1] = longitudeNeedle;
+            this.needles[i][2] = momentNeedle;
 
-            tireGraphs[i] = tireGraph;
+            this.tireGraphs[i] = tireGraph;
         }
 
         node.setLocalTranslation(space, (graphHeight) + (space * 2), -1);

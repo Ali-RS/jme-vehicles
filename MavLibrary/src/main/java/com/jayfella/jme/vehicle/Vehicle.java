@@ -777,7 +777,7 @@ abstract public class Vehicle
 
         AppStateManager stateManager = world.getStateManager();
         stateManager.detach(skidmarks);
-        skidmarks = new SkidMarksState(this);
+        this.skidmarks = new SkidMarksState(this);
         stateManager.attach(skidmarks);
     }
 
@@ -797,7 +797,7 @@ abstract public class Vehicle
      * @param wheelAngle the desired angle (in radians)
      */
     public void steer(float wheelAngle) {
-        steeringWheelAngle = steeringRatio * wheelAngle;
+        this.steeringWheelAngle = steeringRatio * wheelAngle;
 
         for (Wheel wheel : wheels) {
             wheel.steer(wheelAngle);
@@ -998,11 +998,11 @@ abstract public class Vehicle
     protected void build() {
         updateRelativeTransforms();
 
-        gearboxState = new AutomaticGearboxState(this);
-        skidmarks = new SkidMarksState(this);
-        smokeEmitter = new TireSmokeEmitter(this);
-        vehicleAudioState = new VehicleAudioState(this);
-        wheelSpinState = new WheelSpinState(this);
+        this.gearboxState = new AutomaticGearboxState(this);
+        this.skidmarks = new SkidMarksState(this);
+        this.smokeEmitter = new TireSmokeEmitter(this);
+        this.vehicleAudioState = new VehicleAudioState(this);
+        this.wheelSpinState = new WheelSpinState(this);
     }
 
     /**
@@ -1217,13 +1217,13 @@ abstract public class Vehicle
         assert totalMass > 0f : totalMass;
 
         int numBodies = bodies.length;
-        massFractions = new float[numBodies];
+        this.massFractions = new float[numBodies];
         for (int bodyIndex = 0; bodyIndex < numBodies; ++bodyIndex) {
             VehicleControl body = bodies[bodyIndex];
             float mass = body.getMass();
             float fraction = mass / totalMass;
             assert fraction >= 0f && fraction <= 1f : fraction;
-            massFractions[bodyIndex] = fraction;
+            this.massFractions[bodyIndex] = fraction;
         }
 
         return totalMass;
@@ -1404,7 +1404,7 @@ abstract public class Vehicle
     private void updateRelativeTransforms() {
         VehicleControl[] bodies = listBodies();
         int numBodies = bodies.length;
-        relativeTransforms = new Transform[numBodies];
+        this.relativeTransforms = new Transform[numBodies];
 
         Transform e2r = engineBody.getSpatial().getWorldTransform(); // alias
         Transform rootToEngine = e2r.invert();

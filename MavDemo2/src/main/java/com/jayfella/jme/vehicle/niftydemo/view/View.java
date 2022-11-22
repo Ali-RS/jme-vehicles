@@ -174,7 +174,7 @@ public class View extends SimpleAppState {
     public void selectNextPerformanceMode() {
         switch (performanceMode) {
             case Off:
-                performanceMode = PerformanceMode.JmeStats;
+                this.performanceMode = PerformanceMode.JmeStats;
                 break;
 
             case JmeStats:

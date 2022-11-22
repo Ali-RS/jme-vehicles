@@ -91,7 +91,7 @@ public class VehiclePointsState
             dcFrustumVertices[vertexIndex] = new Vector3f();
         }
         WireFrustum dcFrustumMesh = new WireFrustum(dcFrustumVertices);
-        dcFrustum = new Geometry("dash camera frustum", dcFrustumMesh);
+        this.dcFrustum = new Geometry("dash camera frustum", dcFrustumMesh);
         dcFrustum.setShadowMode(RenderQueue.ShadowMode.Off);
 
         super.setEnabled(false);
@@ -220,12 +220,12 @@ public class VehiclePointsState
     public void load(AssetManager assetManager) {
         int indicatorSize = 15; // in pixels
 
-        cameraTarget = new PointVisualizer(assetManager, indicatorSize,
-                ColorRGBA.Yellow, "ring");
-        centerOfMass = new PointVisualizer(assetManager, indicatorSize,
-                ColorRGBA.White, "saltire");
-        dashCamera = new PointVisualizer(assetManager, indicatorSize,
-                ColorRGBA.Red, "square");
+        this.cameraTarget = new PointVisualizer(
+                assetManager, indicatorSize, ColorRGBA.Yellow, "ring");
+        this.centerOfMass = new PointVisualizer(
+                assetManager, indicatorSize, ColorRGBA.White, "saltire");
+        this.dashCamera = new PointVisualizer(
+                assetManager, indicatorSize, ColorRGBA.Red, "square");
 
         Material dcfMaterial
                 = MyAsset.createUnshadedMaterial(assetManager, ColorRGBA.Red);

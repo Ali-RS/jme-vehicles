@@ -237,7 +237,7 @@ public class Vehicles {
 
         int numVehicles = vehicles.size();
         int index = MyMath.modulo(cyclicIndex, numVehicles);
-        selected = vehicles.get(index);
+        this.selected = vehicles.get(index);
     }
 
     /**
