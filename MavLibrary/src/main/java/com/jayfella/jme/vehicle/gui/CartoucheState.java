@@ -111,7 +111,7 @@ abstract public class CartoucheState
      */
     protected void repopulateNode(String text) {
         node.detachAllChildren();
-        displayedText = null;
+        this.displayedText = null;
         if (text == null) {
             return;
         }
@@ -147,7 +147,7 @@ abstract public class CartoucheState
         node.attachChild(background);
         background.setMaterial(bgMaterial);
 
-        displayedText = text;
+        this.displayedText = text;
     }
 
     /**
@@ -244,11 +244,11 @@ abstract public class CartoucheState
          */
         AssetKey<TrueTypeMesh> assetKey = new TrueTypeKeyMesh(
                 "Interface/Fonts/DroidSerifBold-aMPE.ttf", Style.Plain, 18);
-        droidFont = assetManager.loadAsset(assetKey);
+        this.droidFont = assetManager.loadAsset(assetKey);
         /*
          * pre-load the background Material
          */
         ColorRGBA bgColor = new ColorRGBA(0.1f, 0.2f, 0.5f, 1f);
-        bgMaterial = MyAsset.createUnshadedMaterial(assetManager, bgColor);
+        this.bgMaterial = MyAsset.createUnshadedMaterial(assetManager, bgColor);
     }
 }

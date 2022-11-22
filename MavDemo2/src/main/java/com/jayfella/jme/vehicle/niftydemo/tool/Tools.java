@@ -49,20 +49,20 @@ public class Tools {
     public Tools(MainHud screenController) {
         Validate.nonNull(screenController, "screen controller");
 
-        audio = new AudioTool(screenController);
-        camera = new CameraTool(screenController);
-        driving = new DrivingTool(screenController);
-        dumpPhysics = new DumpPhysicsTool(screenController);
-        dumpScene = new DumpSceneTool(screenController);
-        physics = new PhysicsTool(screenController);
-        propProposal = new PropProposalTool(screenController);
+        this.audio = new AudioTool(screenController);
+        this.camera = new CameraTool(screenController);
+        this.driving = new DrivingTool(screenController);
+        this.dumpPhysics = new DumpPhysicsTool(screenController);
+        this.dumpScene = new DumpSceneTool(screenController);
+        this.physics = new PhysicsTool(screenController);
+        this.propProposal = new PropProposalTool(screenController);
 
-        tools = new ToolsTool(screenController);
+        this.tools = new ToolsTool(screenController);
         tools.setEnabled(true);
 
-        view = new ViewTool(screenController);
+        this.view = new ViewTool(screenController);
 
-        allTools = new Tool[]{
+        this.allTools = new Tool[]{
             audio, camera, driving, dumpPhysics, dumpScene,
             physics, propProposal, tools, view
         };

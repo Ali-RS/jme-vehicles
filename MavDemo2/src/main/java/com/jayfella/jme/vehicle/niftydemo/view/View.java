@@ -172,11 +172,11 @@ public class View extends SimpleAppState {
                 break;
 
             case JmeStats:
-                performanceMode = PerformanceMode.DebugPas;
+                this.performanceMode = PerformanceMode.DebugPas;
                 break;
 
             case DebugPas:
-                performanceMode = PerformanceMode.Off;
+                this.performanceMode = PerformanceMode.Off;
                 break;
 
             default:
@@ -214,7 +214,7 @@ public class View extends SimpleAppState {
         if (sky != null) {
             sky.removeFromWorld();
         }
-        sky = newSky;
+        this.sky = newSky;
         DemoState demoState = MavDemo2.getDemoState();
         VehicleWorld world = demoState.getWorld();
         sky.addToWorld(world);

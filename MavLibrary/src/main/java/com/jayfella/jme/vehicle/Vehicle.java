@@ -1140,10 +1140,9 @@ abstract public class Vehicle
         this.chassis = cgmRoot;
         node.attachChild(cgmRoot);
         this.massFractions = null;
-        /*
-         * Create the physics body associated with the Engine.
-         */
-        engineBody = new VehicleControl(shape, mass);
+
+        // Create the physics body associated with the Engine.
+        this.engineBody = new VehicleControl(shape, mass);
         engineBody.setApplicationData(this);
         /*
          * Configure damping for the engine body,

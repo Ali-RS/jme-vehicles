@@ -117,7 +117,7 @@ public class SteeringWheelState
          */
         RectangleMesh mesh
                 = new RectangleMesh(-radius, +radius, -radius, +radius, +1f);
-        geometry = new Geometry("steering wheel", mesh);
+        this.geometry = new Geometry("steering wheel", mesh);
         geometry.setMaterial(material);
         /*
          * Position the Geometry in the GUI viewport.
@@ -172,7 +172,7 @@ public class SteeringWheelState
     public void load(AssetManager assetManager) {
         Texture texture
                 = assetManager.loadTexture("/Textures/Georg/steering.png");
-        material = MyAsset.createUnshadedMaterial(assetManager, texture);
+        this.material = MyAsset.createUnshadedMaterial(assetManager, texture);
         RenderState ars = material.getAdditionalRenderState();
         ars.setBlendMode(RenderState.BlendMode.Alpha);
     }

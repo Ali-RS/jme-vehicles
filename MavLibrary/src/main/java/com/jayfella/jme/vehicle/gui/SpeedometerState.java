@@ -186,12 +186,11 @@ public class SpeedometerState extends BaseAppState {
         float maxSpeed = vehicle.maxForwardSpeed(speedUnit);
         float speedFraction = speed / maxSpeed;
         float theta = MyMath.lerp(speedFraction, theta0, thetaMin);
-        /*
-         * a slight lag, because a physical needle cannot pivot instantly
-         */
-        prevTheta = MyMath.lerp(0.5f, prevTheta, theta);
 
-        prevTheta = FastMath.clamp(prevTheta, thetaMin, theta0);
+        // a slight lag, because a physical needle cannot pivot instantly
+        this.prevTheta = MyMath.lerp(0.5f, prevTheta, theta);
+
+        this.prevTheta = FastMath.clamp(prevTheta, thetaMin, theta0);
         tmpRotation.fromAngles(0f, 0f, prevTheta - FastMath.HALF_PI);
         needleNode.setLocalRotation(tmpRotation);
         /*

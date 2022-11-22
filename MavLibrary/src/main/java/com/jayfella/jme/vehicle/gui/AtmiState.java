@@ -114,21 +114,20 @@ public class AtmiState extends BaseAppState {
     @SuppressWarnings("unchecked")
     protected void initialize(Application application) {
         Camera camera = application.getCamera();
-        viewPortHeight = camera.getHeight();
-        viewPortWidth = camera.getWidth();
+        this.viewPortHeight = camera.getHeight();
+        this.viewPortWidth = camera.getWidth();
         /*
          * pre-load the Droid font
          */
         AssetManager manager = application.getAssetManager();
         AssetKey<TrueTypeMesh> assetKey = new TrueTypeKeyMesh(
                 "Interface/Fonts/DroidSerifBold-aMPE.ttf", Style.Plain, 18);
-        droidFont = manager.loadAsset(assetKey);
-        /*
-         * pre-load unshaded materials for the mode indicator
-         */
-        backgroundMaterial
+        this.droidFont = manager.loadAsset(assetKey);
+
+        // pre-load unshaded materials for the mode indicator
+        this.backgroundMaterial
                 = MyAsset.createUnshadedMaterial(manager, ColorRGBA.Black);
-        lightMaterial
+        this.lightMaterial
                 = MyAsset.createUnshadedMaterial(manager, ColorRGBA.Green);
     }
 
@@ -188,7 +187,7 @@ public class AtmiState extends BaseAppState {
     private void hideAtmi() {
         if (node != null) {
             node.removeFromParent();
-            node = null;
+            this.node = null;
         }
     }
 
@@ -219,7 +218,7 @@ public class AtmiState extends BaseAppState {
     private void showAtmi() {
         hideAtmi();
 
-        node = new Node("Automatic-Transmission Mode Indicator");
+        this.node = new Node("Automatic-Transmission Mode Indicator");
         attachToGui(node);
         float centerX = 0.625f * viewPortWidth;
         float bottomY = 0.15f * viewPortHeight;
@@ -270,7 +269,7 @@ public class AtmiState extends BaseAppState {
         float y1 = -spacingY / 2f;
         float y2 = spacingY / 2f;
         Mesh indMesh = new RectangleOutlineMesh(x1, x2, y1, y2);
-        lightGeometry = new Geometry("ind", indMesh);
+        this.lightGeometry = new Geometry("ind", indMesh);
         node.attachChild(lightGeometry);
         lightGeometry.setCullHint(Spatial.CullHint.Always);
         lightGeometry.setMaterial(lightMaterial);

@@ -91,7 +91,7 @@ class WheelSkid {
     WheelSkid(Wheel wheel, AssetManager assetManager, float tireWidth) {
         this.wheel = wheel;
         this.width = tireWidth;
-        geometry = createGeometry(assetManager, 32);
+        this.geometry = createGeometry(assetManager, 32);
     }
     // *************************************************************************
     // new methods exposed
@@ -134,8 +134,8 @@ class WheelSkid {
             Vector3f normal = vehicleWheel.getCollisionNormal();
             assert normal.isUnitVector() : normal;
             Vector3f location = vehicleWheel.getCollisionLocation();
-            lastSectionUsed = addSection(location, normal, skidFraction,
-                    lastSectionUsed);
+            this.lastSectionUsed = addSection(
+                    location, normal, skidFraction, lastSectionUsed);
         }
     }
     // *************************************************************************
@@ -303,7 +303,7 @@ class WheelSkid {
 
         result.updateBound();
         result.updateCounts();
-        meshSize = numSections;
+        this.meshSize = numSections;
 
         return result;
     }

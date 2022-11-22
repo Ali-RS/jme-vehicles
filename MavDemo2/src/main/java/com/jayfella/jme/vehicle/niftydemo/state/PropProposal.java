@@ -174,11 +174,11 @@ public class PropProposal implements JmeCloneable {
      * Reset this proposal to the default values (except the active flag).
      */
     final public void reset() {
-        autoSelect = true;
-        valid = false;
-        scaleFactor = 1f;
-        totalMass = new WarningSign(1f, 1f).defaultDescaledMass();
-        propType = PropType.WarningSign;
+        this.autoSelect = true;
+        this.valid = false;
+        this.scaleFactor = 1f;
+        this.totalMass = new WarningSign(1f, 1f).defaultDescaledMass();
+        this.propType = PropType.WarningSign;
         initialOrientation.loadIdentity();
         initialLocation.zero();
     }

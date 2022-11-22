@@ -152,7 +152,7 @@ public class CompassState extends BaseAppState {
             texCoords.put(2 * vertexIndex + 1, v);
         }
 
-        geometry = new Geometry("compass", mesh);
+        this.geometry = new Geometry("compass", mesh);
         String assetPath = "/Textures/Georg/compass.png";
         Texture texture = assetManager.loadTexture(assetPath);
         Material material
