@@ -26,6 +26,10 @@ public enum ViewFlags {
      */
     Shadows,
     /**
+     * targets and dash-camera frustum for the selected vehicle
+     */
+    VehiclePoints,
+    /**
      * collision shapes for vehicles
      */
     VehicleShapes,

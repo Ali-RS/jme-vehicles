@@ -17,6 +17,7 @@ import com.jayfella.jme.vehicle.examples.worlds.Mountains;
 import com.jayfella.jme.vehicle.examples.worlds.Playground;
 import com.jayfella.jme.vehicle.examples.worlds.Racetrack;
 import com.jayfella.jme.vehicle.gui.CompassState;
+import com.jayfella.jme.vehicle.gui.VehiclePointsState;
 import com.jayfella.jme.vehicle.niftydemo.action.Action;
 import com.jayfella.jme.vehicle.niftydemo.state.DemoState;
 import com.jayfella.jme.vehicle.niftydemo.view.Cameras;
@@ -237,7 +238,8 @@ public class MavDemo2 extends GuiApplication {
             new Nismo(),
             new PickupTruck(),
             new Rotator(),
-            new Racetrack()
+            new Racetrack(),
+            new VehiclePointsState()
         };
         JmeLoadingState loading = new JmeLoadingState(preloadArray);
         stateManager.attach(loading);
@@ -352,6 +354,10 @@ public class MavDemo2 extends GuiApplication {
         Cameras.configure();
         View view = new View();
         success = stateManager.attach(view);
+        assert success;
+
+        VehiclePointsState vehiclePoints = new VehiclePointsState();
+        success = stateManager.attach(vehiclePoints);
         assert success;
 
         demoState = new DemoState(physicsSpace);

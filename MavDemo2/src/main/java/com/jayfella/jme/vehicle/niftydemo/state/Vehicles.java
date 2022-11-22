@@ -6,6 +6,7 @@ import com.jayfella.jme.vehicle.World;
 import com.jayfella.jme.vehicle.gui.SpeedometerState;
 import com.jayfella.jme.vehicle.gui.SteeringWheelState;
 import com.jayfella.jme.vehicle.gui.TachometerState;
+import com.jayfella.jme.vehicle.gui.VehiclePointsState;
 import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
 import com.jayfella.jme.vehicle.part.Engine;
 import com.jme3.app.state.AppStateManager;
@@ -184,7 +185,11 @@ public class Vehicles {
                 stateManager.detach(tachometer);
             }
 
-            selected = vehicle;
+            this.selected = vehicle;
+
+            VehiclePointsState vps
+                    = MavDemo2.findAppState(VehiclePointsState.class);
+            vps.setVehicle(vehicle);
 
             if (vehicle != null) {
                 InputMode dim = MavDemo2.getApplication().getDefaultInputMode();

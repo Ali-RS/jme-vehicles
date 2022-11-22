@@ -521,6 +521,9 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
                         <control name="label" text="  vehicle spheres"/>
                     </panel>
                     <panel childLayout="horizontal" height="28px">
+                        <control name="checkbox" id="viewVehiclePointsCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  points    "/>
                         <control name="checkbox" id="viewShadowsCheckBox"
                                  width="20px"/>
                         <control name="label" text="  shadows"/>

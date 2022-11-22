@@ -117,6 +117,12 @@ public class View extends SimpleAppState {
                 result = Sky.areShadowsEnabled();
                 break;
 
+            case VehiclePoints:
+                VehiclePointsState vps
+                        = stateManager.getState(VehiclePointsState.class);
+                result = vps.isEnabled();
+                break;
+
             default:
                 result = viewPhysics.isEnabled(viewFlag);
         }
@@ -197,6 +203,12 @@ public class View extends SimpleAppState {
 
             case Shadows:
                 Sky.setShadowsEnabled(newValue);
+                break;
+
+            case VehiclePoints:
+                VehiclePointsState vps
+                        = stateManager.getState(VehiclePointsState.class);
+                vps.setEnabled(newValue);
                 break;
 
             default:

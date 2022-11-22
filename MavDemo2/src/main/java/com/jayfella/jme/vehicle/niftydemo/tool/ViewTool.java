@@ -55,6 +55,7 @@ class ViewTool extends Tool {
         result.add("viewPropShapes");
         result.add("viewPropSpheres");
         result.add("viewShadows");
+        result.add("viewVehiclePoints");
         result.add("viewVehicleShapes");
         result.add("viewVehicleSpheres");
         result.add("viewWorldShapes");
@@ -89,6 +90,10 @@ class ViewTool extends Tool {
 
             case "viewShadows":
                 view.setEnabled(ViewFlags.Shadows, isChecked);
+                break;
+
+            case "viewVehiclePoints":
+                view.setEnabled(ViewFlags.VehiclePoints, isChecked);
                 break;
 
             case "viewVehicleShapes":
@@ -128,6 +133,9 @@ class ViewTool extends Tool {
 
         flag = view.isEnabled(ViewFlags.Shadows);
         setChecked("viewShadows", flag);
+
+        flag = view.isEnabled(ViewFlags.VehiclePoints);
+        setChecked("viewVehiclePoints", flag);
 
         flag = view.isEnabled(ViewFlags.VehicleShapes);
         setChecked("viewVehicleShapes", flag);
