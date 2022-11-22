@@ -10,6 +10,7 @@ import com.jme3.light.DirectionalLight;
 import com.jme3.light.LightProbe;
 import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
+import com.jme3.post.SceneProcessor;
 import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
@@ -18,6 +19,7 @@ import com.jme3.scene.Spatial;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.jme3.shadow.EdgeFilteringMode;
 import com.jme3.texture.Texture;
+import java.util.List;
 import java.util.logging.Logger;
 import jme3utilities.Loadable;
 import jme3utilities.MyMesh;
@@ -99,6 +101,24 @@ abstract public class Sky implements Loadable {
     }
 
     /**
+     * Test whether shadows are enabled.
+     *
+     * @return true if enabled, otherwise false
+     */
+    public static boolean areShadowsEnabled() {
+        boolean result;
+        if (shadowRenderer == null) {
+            result = false;
+        } else {
+            ViewPort mainViewPort = simpleApp.getViewPort();
+            List<SceneProcessor> list = mainViewPort.getProcessors();
+            result = list.contains(shadowRenderer);
+        }
+
+        return result;
+    }
+
+    /**
      * Access the C-G model.
      *
      * @return the pre-existing Spatial, or null if not yet loaded
@@ -134,19 +154,9 @@ abstract public class Sky implements Loadable {
          */
         directionalLight = new DirectionalLight();
         rootNode.addLight(directionalLight);
-        /*
-         * Add shadows.
-         */
-        AssetManager assetManager = simpleApp.getAssetManager();
-        shadowRenderer
-                = new DirectionalLightShadowRenderer(assetManager, 4_096, 4);
-        ViewPort viewPort = simpleApp.getViewPort();
-        viewPort.addProcessor(shadowRenderer);
-        shadowRenderer.setEdgeFilteringMode(EdgeFilteringMode.PCFPOISSON);
-        shadowRenderer.setLight(directionalLight);
-        shadowRenderer.setShadowIntensity(0.3f);
-        shadowRenderer.setShadowZExtend(256f);
-        shadowRenderer.setShadowZFadeLength(128f);
+
+        // Add shadows.
+        setShadowsEnabled(true);
     }
 
     /**
@@ -169,6 +179,36 @@ abstract public class Sky implements Loadable {
         }
 
         simpleApp = application;
+    }
+
+    /**
+     * Enable or disable shadows.
+     *
+     * @param newSetting true to enable, false to disable
+     */
+    public static void setShadowsEnabled(boolean newSetting) {
+        ViewPort mainViewPort = simpleApp.getViewPort();
+        boolean isAdded = areShadowsEnabled();
+
+        if (isAdded && !newSetting) {
+            assert shadowRenderer != null;
+            mainViewPort.removeProcessor(shadowRenderer);
+
+        } else if (newSetting && !isAdded) {
+            if (shadowRenderer == null) { // Create the renderer.
+                AssetManager assetManager = simpleApp.getAssetManager();
+                shadowRenderer = new DirectionalLightShadowRenderer(
+                        assetManager, 4_096, 4);
+                shadowRenderer
+                        .setEdgeFilteringMode(EdgeFilteringMode.PCFPOISSON);
+                shadowRenderer.setLight(directionalLight);
+                shadowRenderer.setShadowIntensity(0.3f);
+                shadowRenderer.setShadowZExtend(256f);
+                shadowRenderer.setShadowZFadeLength(128f);
+            }
+
+            mainViewPort.addProcessor(shadowRenderer);
+        }
     }
     // *************************************************************************
     // new protected methods

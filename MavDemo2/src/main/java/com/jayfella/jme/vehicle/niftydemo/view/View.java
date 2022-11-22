@@ -114,7 +114,7 @@ public class View extends SimpleAppState {
                 break;
 
             case Shadows:
-                result = true; // TODO sky.areShadowsEnabled();
+                result = Sky.areShadowsEnabled();
                 break;
 
             default:
@@ -197,7 +197,7 @@ public class View extends SimpleAppState {
                 break;
 
             case Shadows:
-                // sky.setShadowsEnabled(newValue); TODO
+                Sky.setShadowsEnabled(newValue);
                 break;
 
             default:
