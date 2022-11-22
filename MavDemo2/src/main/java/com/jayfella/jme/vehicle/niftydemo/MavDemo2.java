@@ -238,8 +238,7 @@ public class MavDemo2 extends GuiApplication {
             new Nismo(),
             new PickupTruck(),
             new Rotator(),
-            new Racetrack(),
-            new VehiclePointsState()
+            new Racetrack()
         };
         JmeLoadingState loading = new JmeLoadingState(preloadArray);
         stateManager.attach(loading);
