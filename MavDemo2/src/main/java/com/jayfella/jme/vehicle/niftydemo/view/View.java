@@ -5,6 +5,7 @@ import com.jayfella.jme.vehicle.PropWorld;
 import com.jayfella.jme.vehicle.Sky;
 import com.jayfella.jme.vehicle.VehicleWorld;
 import com.jayfella.jme.vehicle.examples.skies.QuarrySky;
+import com.jayfella.jme.vehicle.gui.VehiclePointsState;
 import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
 import com.jayfella.jme.vehicle.niftydemo.state.DemoState;
 import com.jayfella.jme.vehicle.niftydemo.state.PropProposal;
