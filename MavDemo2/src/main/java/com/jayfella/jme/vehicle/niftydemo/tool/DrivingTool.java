@@ -158,7 +158,7 @@ class DrivingTool extends Tool {
 
         boolean parkingBrake = signals.test("parkingBrake");
         setChecked("parkingBrake", parkingBrake);
-        
+
         boolean soundHorn = signals.test("soundHorn");
         setChecked("horn", soundHorn);
     }

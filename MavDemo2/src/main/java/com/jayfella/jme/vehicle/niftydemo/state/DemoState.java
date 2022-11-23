@@ -307,8 +307,8 @@ public class DemoState
      * coordinates (not null)
      * @return a pre-existing rigid body, or null if none found
      */
-    public PhysicsRigidBody pickSupportBody(float minCosine, float spacing,
-            Vector3f storeLocation) {
+    public PhysicsRigidBody pickSupportBody(
+            float minCosine, float spacing, Vector3f storeLocation) {
         Validate.inRange(minCosine, "min cosine", -1f, 1f);
         Validate.nonNull(storeLocation, "storage for location");
 
