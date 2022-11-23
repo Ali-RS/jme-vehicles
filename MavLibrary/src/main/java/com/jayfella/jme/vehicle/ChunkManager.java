@@ -262,9 +262,7 @@ public class ChunkManager extends BaseAppState {
         camera.setLocation(tmpLocation);
     }
 
-    /**
-     * TODO handle parallel physics, characters, ghosts, etcetera
-     */
+    // TODO handle parallel physics, characters, ghosts, etcetera
     private void translatePcos(Vector3f offset) {
         BulletAppState bulletAppState = getState(BulletAppState.class);
         PhysicsSpace physicsSpace = bulletAppState.getPhysicsSpace();
