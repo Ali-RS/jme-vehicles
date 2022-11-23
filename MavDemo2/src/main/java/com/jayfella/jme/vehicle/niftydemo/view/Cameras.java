@@ -126,6 +126,7 @@ final public class Cameras {
         assert success;
 
         orbit = new OrbitCamera("orbit", camera, tracker);
+        orbit.setPoleExclusionAngles(upperAngle, lowerAngle);
         orbit.setObstructionFilter(obstructionFilter);
         orbit.setSignalName(CameraSignal.Back, "FLYCAM_Backward");
         orbit.setSignalName(CameraSignal.DragToOrbit, "cameraDrag");
