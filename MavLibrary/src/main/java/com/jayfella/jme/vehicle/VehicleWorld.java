@@ -21,42 +21,42 @@ public interface VehicleWorld {
      * @return the Y rotation angle (in radians, measured counter-clockwise as
      * seen from above)
      */
-    public float dropYRotation();
+    float dropYRotation();
 
     /**
      * Access the AssetManager.
      *
      * @return the pre-existing instance (not null)
      */
-    public AssetManager getAssetManager();
+    AssetManager getAssetManager();
 
     /**
      * Access the DecalManager.
      *
      * @return the pre-existing instance (not null)
      */
-    public DecalManager getDecalManager();
+    DecalManager getDecalManager();
 
     /**
      * Access the scene-graph node for adding probes and attaching spatials.
      *
      * @return the pre-existing instance (not null)
      */
-    public Node getParentNode();
+    Node getParentNode();
 
     /**
      * Access the PhysicsSpace.
      *
      * @return the pre-existing instance (not null)
      */
-    public PhysicsSpace getPhysicsSpace();
+    PhysicsSpace getPhysicsSpace();
 
     /**
      * Access the AppStateManager.
      *
      * @return the pre-existing instance (not null)
      */
-    public AppStateManager getStateManager();
+    AppStateManager getStateManager();
 
     /**
      * Locate the drop point, which lies directly above the preferred initial
@@ -64,5 +64,5 @@ public interface VehicleWorld {
      *
      * @param storeResult storage for the result (not null)
      */
-    public void locateDrop(Vector3f storeResult);
+    void locateDrop(Vector3f storeResult);
 }

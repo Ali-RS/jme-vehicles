@@ -14,5 +14,5 @@ public interface GlobalAudio {
      *
      * @return the volume (linear scale, &ge;0, &le;1)
      */
-    public float effectiveVolume();
+    float effectiveVolume();
 }

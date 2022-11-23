@@ -20,35 +20,35 @@ public interface PropWorld {
      *
      * @param newProp (not null, not already added)
      */
-    public void addProp(Prop newProp);
+    void addProp(Prop newProp);
 
     /**
      * Access the AssetManager.
      *
      * @return the pre-existing instance (not null)
      */
-    public AssetManager getAssetManager();
+    AssetManager getAssetManager();
 
     /**
      * Access the scene-graph node for adding probes and attaching spatials.
      *
      * @return the pre-existing instance (not null)
      */
-    public Node getParentNode();
+    Node getParentNode();
 
     /**
      * Access the PhysicsSpace.
      *
      * @return the pre-existing instance (not null)
      */
-    public PhysicsSpace getPhysicsSpace();
+    PhysicsSpace getPhysicsSpace();
 
     /**
      * Access the AppStateManager.
      *
      * @return the pre-existing instance (not null)
      */
-    public AppStateManager getStateManager();
+    AppStateManager getStateManager();
 
     /**
      * Enumerate props that have been added to this world and not yet removed.
@@ -56,12 +56,12 @@ public interface PropWorld {
      * @return a new unmodifiable collection of pre-existing instances (not
      * null)
      */
-    public Collection<Prop> listProps();
+    Collection<Prop> listProps();
 
     /**
      * Remove the specified Prop from this World.
      *
      * @param prop (not null, previously added)
      */
-    public void removeProp(Prop prop);
+    void removeProp(Prop prop);
 }

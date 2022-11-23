@@ -80,8 +80,7 @@ public enum ChaseOption {
      * @param deltaAzimuth the desired azimuth difference (in radians)
      * @param cameraName the desired camera name
      */
-    private ChaseOption(float timeConstant, float deltaAzimuth,
-            String cameraName) {
+    ChaseOption(float timeConstant, float deltaAzimuth, String cameraName) {
         this.azimuthTau = timeConstant;
         this.deltaAzimuth = deltaAzimuth;
         this.cameraName = cameraName;
