@@ -94,19 +94,19 @@ class ViewPhysics implements BulletDebugAppState.DebugAppStateFilter {
     void setEnabled(ViewFlags viewFlag, boolean newValue) {
         switch (viewFlag) {
             case PhysicsJoints:
-                joints = newValue;
+                this.joints = newValue;
                 break;
 
             case PropShapes:
-                props = newValue;
+                this.props = newValue;
                 break;
 
             case VehicleShapes:
-                vehicles = newValue;
+                this.vehicles = newValue;
                 break;
 
             case WorldShapes:
-                world = newValue;
+                this.world = newValue;
                 break;
 
             default:

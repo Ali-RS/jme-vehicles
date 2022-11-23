@@ -361,7 +361,7 @@ public class MavDemo2 extends GuiApplication {
         success = stateManager.attach(vehiclePoints);
         assert success;
 
-        demoState = new DemoState(physicsSpace);
+        this.demoState = new DemoState(physicsSpace);
         Vehicle vehicle = new GrandTourer();
         vehicle.load(assetManager);
         demoState.addVehicle(vehicle);

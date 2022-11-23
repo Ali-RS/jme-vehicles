@@ -96,10 +96,10 @@ public class DemoState
      * @param physicsSpace (not null)
      */
     public DemoState(PhysicsSpace physicsSpace) {
-        elapsedTime = 0.0;
-        prGenerator = new Generator();
-        numTicks = 0;
-        propProposal = new PropProposal();
+        this.elapsedTime = 0.0;
+        this.prGenerator = new Generator();
+        this.numTicks = 0;
+        this.propProposal = new PropProposal();
 
         physicsSpace.addTickListener(this);
 
@@ -110,7 +110,7 @@ public class DemoState
         Node rootNode = application.getRootNode();
         world.attach(application, rootNode, physicsSpace);
 
-        vehicles = new Vehicles(this);
+        this.vehicles = new Vehicles(this);
 
         View view = MavDemo2.findAppState(View.class);
         Sky sky = view.getSky();
