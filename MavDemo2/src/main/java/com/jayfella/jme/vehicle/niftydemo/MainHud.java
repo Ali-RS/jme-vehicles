@@ -3,6 +3,7 @@ package com.jayfella.jme.vehicle.niftydemo;
 import com.jayfella.jme.vehicle.niftydemo.tool.Tools;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.bullet.BulletAppState;
 import java.util.logging.Logger;
 import jme3utilities.InitialState;
 import jme3utilities.nifty.GuiScreenController;
@@ -26,6 +27,10 @@ public class MainHud extends GuiScreenController {
     // *************************************************************************
     // fields
 
+    /**
+     * physics simulation speed, saved when the HUD was disabled
+     */
+    private float savedPhysicsSpeed = 1f;
     /**
      * controllers for tool windows
      */
@@ -53,6 +58,31 @@ public class MainHud extends GuiScreenController {
     }
     // *************************************************************************
     // GuiScreenController methods
+
+    /**
+     * Disable the screen controller.
+     */
+    @Override
+    protected void disable() {
+        // pause the physics simulation
+        BulletAppState bas = MavDemo2.findAppState(BulletAppState.class);
+        this.savedPhysicsSpeed = bas.getSpeed();
+        bas.setSpeed(0f);
+
+        super.disable();
+    }
+
+    /**
+     * Enable the screen controller.
+     */
+    @Override
+    protected void enable() {
+        // resume the physics simulation
+        BulletAppState bas = MavDemo2.findAppState(BulletAppState.class);
+        bas.setSpeed(savedPhysicsSpeed);
+
+        super.enable();
+    }
 
     /**
      * Initialize this app state on the first update after it gets attached.
