@@ -160,9 +160,7 @@ final public class DashCamera
      * Disable this camera controller. Assumes it is initialized and enabled.
      */
     private void disable() {
-        /*
-         * Configure the analog inputs.
-         */
+        // Configure the analog inputs.
         InputManager inputManager = MavDemo1.getApplication().getInputManager();
         inputManager.deleteMapping(analogZoomIn);
         inputManager.deleteMapping(analogZoomOut);
@@ -178,9 +176,7 @@ final public class DashCamera
         camera.setName("dash camera");
         float yDegrees;
         if (camera.isParallelProjection()) {
-            /*
-             * Configure perspective.
-             */
+            // Configure perspective.
             yDegrees = 30f;
             float aspectRatio = MyCamera.viewAspectRatio(camera);
             float near = 0.1f;
@@ -189,9 +185,8 @@ final public class DashCamera
         } else {
             MyCamera.setNearFar(camera, 0.1f, 3300f);
         }
-        /*
-         * Configure the analog inputs.
-         */
+
+        // Configure the analog inputs.
         InputManager inputManager = MavDemo1.getApplication().getInputManager();
         inputManager.addMapping(analogZoomIn,
                 new MouseAxisTrigger(MouseInput.AXIS_WHEEL, false));

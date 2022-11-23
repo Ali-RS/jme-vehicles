@@ -157,23 +157,20 @@ public class AudioHud
 
         texture = manager.loadTexture("/Textures/Georg/sound.png");
         soundMaterial = MyAsset.createUnshadedMaterial(manager, texture);
-        /*
-         * pre-load the master-volume materials
-         */
+
+        // pre-load the master-volume materials
         texture = manager.loadTexture("/Textures/Georg/left-triangle.png");
         mvBackgroundMaterial
                 = MyAsset.createUnshadedMaterial(manager, texture);
         ColorRGBA color = new ColorRGBA(1f, 1f, 0f, 1f);
         mvSliderMaterial = MyAsset.createUnshadedMaterial(manager, color);
-        /*
-         * Position the MV control in the viewport.
-         */
+
+        // Position the MV control in the viewport.
         float x = 0.713f * viewPortWidth;
         float y = 0.95f * viewPortHeight;
         mvNode.setLocalTranslation(x, y, guiZ);
-        /*
-         * Attach a rounded-rectangle Geometry for the background.
-         */
+
+        // Attach a rounded-rectangle Geometry for the background.
         sliderTravel = 0.088f * viewPortHeight;
         float cornerRadius = 0.005f * viewPortHeight;
         float bgWidth = 0.1f * viewPortHeight;
@@ -189,9 +186,8 @@ public class AudioHud
         mvNode.attachChild(background);
         background.setMaterial(mvBackgroundMaterial);
         background.move(0f, 0f, -0.1f); // slightly behind the slider
-        /*
-         * Attach a rounded-rectangle Geometry for the slider.
-         */
+
+        // Attach a rounded-rectangle Geometry for the slider.
         float sliderWidth = bgWidth - sliderTravel;
         assert sliderWidth >= 2 * cornerRadius;
         float sliderHeight = bgHeight;
@@ -208,9 +204,8 @@ public class AudioHud
 
         float dx = sliderTravel * (masterVolume - 0.5f);
         mvSlider.setLocalTranslation(dx, 0f, 0f);
-        /*
-         * Add an Expander to the slider, to enable dragging.
-         */
+
+        // Add an Expander to the slider, to enable dragging.
         Expander listener = new Expander(mvSlider) {
             @Override
             public void onClick(boolean isPressed) {
@@ -344,9 +339,8 @@ public class AudioHud
         float x = 0.76f * viewPortWidth;
         float y = 0.95f * viewPortHeight;
         muteButton.setLocalTranslation(x, y, guiZ);
-        /*
-         * Add an Expander to toggle the sound on/muted.
-         */
+
+        // Add an Expander to toggle the sound on/muted.
         Expander listener = new Expander(muteButton) {
             @Override
             public void onClick(boolean isPressed) {

@@ -210,9 +210,8 @@ public class TachometerState extends BaseAppState {
             float x = radius * cos - lineWidth / 2;
             float y = radius * sin + lineHeight / 2;
             label.setLocalTranslation(x, y, 0f);
-            /*
-             * Generate a Mesh for the corresponding radial marking.
-             */
+
+            // Generate a Mesh for the corresponding radial marking.
             float innerRadius = 60f;
             innerOffset.x = innerRadius * cos;
             innerOffset.y = innerRadius * sin;

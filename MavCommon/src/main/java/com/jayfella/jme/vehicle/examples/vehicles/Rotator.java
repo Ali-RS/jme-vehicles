@@ -120,9 +120,8 @@ public class Rotator extends Vehicle {
             // 1 = slow, 0 = fast.
             suspension.setRelaxDamping(0.65f);
         }
-        /*
-         * Give each wheel a tire with friction.
-         */
+
+        // Give each wheel a tire with friction.
         for (Wheel wheel : listWheels()) {
             wheel.setTireModel(new Tire01());
             wheel.setFriction(1.3f);
@@ -173,10 +172,8 @@ public class Rotator extends Vehicle {
         Vector3f offset = new Vector3f(0f, -0.56f, 0.13f);
         String clipName = "driving:hcr2_rotator";
         addPassenger(assetManager, assetPath, body, offset, clipName);
-        /*
-         * build() must be invoked last, to complete the Vehicle
-         */
-        build();
+
+        build(); // must be invoked last, to complete the Vehicle
     }
 
     /**

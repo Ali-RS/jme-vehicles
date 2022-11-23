@@ -173,10 +173,8 @@ public class Nismo extends Vehicle {
         Vector3f offset = new Vector3f(0.36f, -0.34f, -0.1f);
         String clipName = "driving:gtr_nismo";
         addPassenger(assetManager, assetPath, body, offset, clipName);
-        /*
-         * build() must be invoked last, to complete the Vehicle
-         */
-        build();
+
+        build(); // must be invoked last, to complete the Vehicle
     }
 
     /**

@@ -169,10 +169,8 @@ public class HatchBack extends Vehicle {
         Vector3f offset = new Vector3f(0.36f, -0.39f, 0f);
         String clipName = "driving:modern_hatchback";
         addPassenger(assetManager, assetPath, body, offset, clipName);
-        /*
-         * build() must be invoked last, to complete the Vehicle
-         */
-        build();
+
+        build(); // must be invoked last, to complete the Vehicle
     }
 
     /**

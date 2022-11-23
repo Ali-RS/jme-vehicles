@@ -45,20 +45,17 @@ public class PurpleNebulaSky extends Sky {
     @Override
     public void addToWorld(VehicleWorld world) {
         super.addToWorld(world);
-        /*
-         * Configure the AmbientLight that was added by Sky.initialize().
-         */
+
+        // Configure the AmbientLight that was added by Sky.initialize().
         ColorRGBA ambientColor = new ColorRGBA(30f, 50f, 25f, 1f);
         getAmbientLight().setColor(ambientColor);
-        /*
-         * Configure the DirectionalLight that was added by Sky.initialize().
-         */
+
+        // Configure the DirectionalLight that was added by Sky.initialize().
         DirectionalLight directionalLight = getDirectionalLight();
         directionalLight.setColor(ColorRGBA.Black);
         directionalLight.setDirection(Vector3f.UNIT_Y);
-        /*
-         * Configure the shadow renderer that was added by Sky.initialize().
-         */
+
+        // Configure the shadow renderer that was added by Sky.initialize().
         getShadowRenderer().setShadowIntensity(0f);
     }
 

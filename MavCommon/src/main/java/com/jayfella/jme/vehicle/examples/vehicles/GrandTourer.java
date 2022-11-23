@@ -122,9 +122,8 @@ public class GrandTourer extends Vehicle {
             // 1 = slow, 0 = fast.
             suspension.setRelaxDamping(0.45f);
         }
-        /*
-         * Give each wheel a tire with friction.
-         */
+
+        // Give each wheel a tire with friction.
         for (Wheel wheel : listWheels()) {
             wheel.setTireModel(new Tire01());
             wheel.setFriction(1.6f);
@@ -174,10 +173,8 @@ public class GrandTourer extends Vehicle {
         Vector3f offset = new Vector3f(0.48f, 0.03f, -0.36f);
         String clipName = "driving:GT";
         addPassenger(assetManager, assetPath, body, offset, clipName);
-        /*
-         * build() must be invoked last, to complete the Vehicle
-         */
-        build();
+
+        build(); // must be invoked last, to complete the Vehicle
     }
 
     /**

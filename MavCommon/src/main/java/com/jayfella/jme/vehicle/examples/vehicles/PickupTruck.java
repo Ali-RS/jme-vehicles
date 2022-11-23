@@ -113,9 +113,8 @@ public class PickupTruck extends Vehicle {
             // Setting this too low can cause odd behavior.
             suspension.setStiffness(20f);
         }
-        /*
-         * Give each wheel a tire with friction.
-         */
+
+        // Give each wheel a tire with friction.
         for (Wheel wheel : listWheels()) {
             wheel.setTireModel(new Tire01());
             wheel.setFriction(1f);
@@ -158,10 +157,8 @@ public class PickupTruck extends Vehicle {
         Sound hornSound = new HornSound1();
         hornSound.load(assetManager);
         setHornSound(hornSound);
-        /*
-         * build() must be invoked last, to complete the Vehicle
-         */
-        build();
+
+        build(); // must be invoked last, to complete the Vehicle
     }
 
     /**

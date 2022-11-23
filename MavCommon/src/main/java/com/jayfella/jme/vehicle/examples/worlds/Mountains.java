@@ -63,27 +63,24 @@ public class Mountains extends World {
     @Override
     public void load(AssetManager assetManager) {
         assert getCgm() == null : "The model is already loaded.";
-        /*
-         * Load the heightmap image.
-         */
+
+        // Load the heightmap image.
         String assetFolder = "/Textures/Terrain/splat/";
         boolean flipY = false;
         TextureKey textureKey
                 = new TextureKey(assetFolder + "mountains512.png", flipY);
         Texture texture = assetManager.loadTexture(textureKey);
         Image image = texture.getImage();
-        /*
-         * Scale it, smooth it, and convert it to an array.
-         */
+
+        // Scale it, smooth it, and convert it to an array.
         float yScale = 0.3f;
         AbstractHeightMap heightmap = new ImageBasedHeightMap(image, yScale);
         heightmap.load();
         int radius = 1;
         heightmap.smooth(0.9f, radius);
         float[] heightArray = heightmap.getHeightMap();
-        /*
-         * Construct the TerrainQuad.
-         */
+
+        // Construct the TerrainQuad.
         String name = "Mountains";
         int patchSize = 65;
         int totalSize = 513;
@@ -91,15 +88,13 @@ public class Mountains extends World {
                 = new TerrainQuad(name, patchSize, totalSize, heightArray);
         loadedTerrain.scale(10f);
         setCgm(loadedTerrain);
-        /*
-         * Apply a PBR terrain material.
-         */
+
+        // Apply a PBR terrain material.
         String materialAssetPath = "/Materials/Vehicles/Mountains.j3m";
         Material material = assetManager.loadMaterial(materialAssetPath);
         loadedTerrain.setMaterial(material);
-        /*
-         * Generate a CollisionShape.
-         */
+
+        // Generate a CollisionShape.
         CollisionShape shape
                 = CollisionShapeFactory.createMeshShape(loadedTerrain);
         setCollisionShape(shape);

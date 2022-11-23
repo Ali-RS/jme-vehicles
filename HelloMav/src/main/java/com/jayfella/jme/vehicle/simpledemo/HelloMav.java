@@ -89,17 +89,14 @@ public class HelloMav extends SimpleApplication {
      */
     public static void main(String... args) {
         boolean showSettingsDialog = true;
-        /*
-         * Process any command-line arguments.
-         */
+        // Process any command-line arguments.
         for (String arg : args) {
             if (arg.equals("--noDialog")) {
                 showSettingsDialog = false;
             }
         }
-        /*
-         * Mute the chatty loggers found in some imported packages.
-         */
+
+        // Mute the chatty loggers found in some imported packages.
         Heart.setLoggingLevels(Level.WARNING);
 
         boolean loadDefaults = true;
@@ -126,9 +123,8 @@ public class HelloMav extends SimpleApplication {
                 new ChunkManager(),
                 new CompassState()
         );
-        /*
-         * Create a World and attach it to this Application.
-         */
+
+        // Create a World and attach it to this Application.
         World world = new Mountains();
         BulletAppState bulletAppState
                 = getStateManager().getState(BulletAppState.class);
@@ -150,9 +146,8 @@ public class HelloMav extends SimpleApplication {
 
         addParkedVehicles(world, globalAudio);
         addProps(world);
-        /*
-         * Attach appstates for dials and steering wheel.
-         */
+
+        // Attach appstates for dials and steering wheel.
         stateManager.attach(new SpeedometerState(vehicle, SpeedUnit.MPH));
         stateManager.attach(new TachometerState(engine));
 
@@ -165,23 +160,20 @@ public class HelloMav extends SimpleApplication {
         steeringWheel.setVehicle(vehicle);
         steeringWheel.setEnabled(true);
         stateManager.attach(steeringWheel);
-        /*
-         * Configure the engine's Sound.
-         */
+
+        // Configure the engine's Sound.
         Sound engineSound = new EngineSound2();
         engineSound.load(assetManager);
         engine.setSound(engineSound);
-        /*
-         * Add a Sky to the World.
-         */
+
+        // Add a Sky to the World.
         Sky.setApplication(this);
         Sky.initialize();
         new AnimatedDaySky().addToWorld(world);
 
         initializeCamera();
-        /*
-         * Print asset attributions to the console.
-         */
+
+        // Print asset attributions to the console.
         String attributionMessage = Attribution.plainMessage(
                 Attribution.opelGtRetopo,
                 Attribution.nissanGtr,
@@ -191,9 +183,8 @@ public class HelloMav extends SimpleApplication {
                 Attribution.batcPack,
                 Attribution.raceSuit);
         System.out.print(attributionMessage);
-        /*
-         * To drive, press the W, A, and D keys on the keyboard.
-         */
+
+        // To drive, press the W, A, and D keys on the keyboard.
         mapKeyToSignal(KeyInput.KEY_W, forwardSignalName);
         mapKeyToSignal(KeyInput.KEY_A, leftSignalName);
         mapKeyToSignal(KeyInput.KEY_D, rightSignalName);

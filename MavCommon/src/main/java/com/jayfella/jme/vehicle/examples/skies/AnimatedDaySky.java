@@ -81,21 +81,18 @@ public class AnimatedDaySky extends Sky {
     @Override
     public void addToWorld(VehicleWorld world) {
         super.addToWorld(world);
-        /*
-         * Configure the AmbientLight that was added by Sky.initialize().
-         */
+
+        // Configure the AmbientLight that was added by Sky.initialize().
         ColorRGBA ambientColor = new ColorRGBA(0.8f, 0.8f, 0.65f, 1f);
         getAmbientLight().setColor(ambientColor);
-        /*
-         * Configure the DirectionalLight that was added by Sky.initialize().
-         */
+
+        // Configure the DirectionalLight that was added by Sky.initialize().
         Updater updater = skyControl.getUpdater();
         DirectionalLight mainLight = getDirectionalLight();
         updater.setMainLight(mainLight);
         updater.setMainMultiplier(1.2f);
-        /*
-         * Configure the shadow filter that was added by Sky.initialize().
-         */
+
+        // Configure the shadow renderer that was added by Sky.initialize().
         DirectionalLightShadowRenderer shadowRenderer = getShadowRenderer();
         updater.addShadowRenderer(shadowRenderer);
     }

@@ -184,9 +184,8 @@ public class DriverHud extends BaseAppState {
         Camera camera = application.getCamera();
         this.viewPortHeight = camera.getHeight();
         this.viewPortWidth = camera.getWidth();
-        /*
-         * pre-load unshaded materials for buttons
-         */
+
+        // pre-load unshaded materials for buttons
         AssetManager manager = application.getAssetManager();
         Texture texture = manager.loadTexture("Textures/sgold/exit.png");
         this.exitMaterial = MyAsset.createUnshadedMaterial(manager, texture);
@@ -208,16 +207,14 @@ public class DriverHud extends BaseAppState {
 
         AppStateManager stateManager = getApplication().getStateManager();
         stateManager.attach(atmiState);
-        /*
-         * Construct a Geometry for the horn button.
-         */
+
+        // Construct a Geometry for the horn button.
         float radius = 0.05f * viewPortHeight;
         int numVertices = 25;
         Mesh mesh = new DiscMesh(radius, numVertices);
         hornButton = new Geometry("horn button", mesh);
-        /*
-         * Add an Expander to toggle the horn sounding/silent.
-         */
+
+        // Add an Expander to toggle the horn sounding/silent.
         Expander listener = new Expander(hornButton) {
             @Override
             public void onClick(boolean isPressed) {

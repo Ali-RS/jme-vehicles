@@ -164,9 +164,8 @@ public class ClassicMotorcycle extends Bike {
             logger.log(Level.SEVERE, "The model is already loaded.");
             return;
         }
-        /*
-         * Load the C-G model with everything except passengers and wheels.
-         */
+
+        // Load the C-G model with everything except passengers and wheels.
         String assetPath = "Models/classic_motorcycle/chassis.j3o";
         Node cgmRoot = (Node) assetManager.loadModel(assetPath);
 
@@ -196,9 +195,8 @@ public class ClassicMotorcycle extends Bike {
         this.steeringJoint = setBikeChassis(cgmRoot, engineSubtree,
                 steeringSubtree, engineShape, steeringShape, engineMass,
                 steeringMass, linearDamping);
-        /*
-         * Introduce some angular damping to mitigate the tendency to spin.
-         */
+
+        // Introduce some angular damping to mitigate the tendency to spin.
         VehicleControl engineBody = getVehicleControl();
         engineBody.setAngularDamping(0.4f);
 
@@ -208,9 +206,8 @@ public class ClassicMotorcycle extends Bike {
         wheelDiameter = 0.65f;
         WheelModel rearWheel = new MotorcycleRearWheel(wheelDiameter);
         rearWheel.load(assetManager);
-        /*
-         * Add 2 wheels to the Vehicle.
-         */
+
+        // Add 2 wheels to the Vehicle.
         Vector3f connectionLocation = new Vector3f(0f, -0.53f, 0.075f);
         float mainBrake = 1_000f; // both wheels
         float parkingBrake = 3_000f; // in front only
@@ -245,9 +242,8 @@ public class ClassicMotorcycle extends Bike {
             // Setting this too low can cause odd behavior.
             suspension.setStiffness(150f);
         }
-        /*
-         * Give each wheel a tire with plenty of friction.
-         */
+
+        // Give each wheel a tire with plenty of friction.
         for (Wheel wheel : listWheels()) {
             wheel.setFriction(4f);
             wheel.setTireModel(new Tire02());
@@ -286,17 +282,14 @@ public class ClassicMotorcycle extends Bike {
         Sound hornSound = new HornSound1();
         hornSound.load(assetManager);
         setHornSound(hornSound);
-        /*
-         * Add a visible rider.
-         */
+
+        // Add a visible rider.
         assetPath = "Models/MakeHuman/driver.j3o";
         Vector3f offset = new Vector3f(0f, -0.5f, -0.3f);
         String clipName = "driving:classic_motorcycle";
         addPassenger(assetManager, assetPath, engineBody, offset, clipName);
-        /*
-         * build() must be invoked last, to complete the Vehicle
-         */
-        build();
+
+        build(); // must be invoked last, to complete the Vehicle
     }
 
     /**
@@ -386,9 +379,8 @@ public class ClassicMotorcycle extends Bike {
         tmpVelocity.subtract(previousVelocity, tmpAcceleration);
         tmpAcceleration.divideLocal(timeStep);
         previousVelocity.set(tmpVelocity);
-        /*
-         * Apply smoothing to the acceleration estimate.
-         */
+
+        // Apply smoothing to the acceleration estimate.
         MyVector3f.lerp(1f / accelerationLag, previousAcceleration,
                 tmpAcceleration, tmpAcceleration);
         previousAcceleration.set(tmpAcceleration);
@@ -406,32 +398,28 @@ public class ClassicMotorcycle extends Bike {
         tmpDesiredUp.negateLocal();
         tmpDesiredUp.addLocal(tmpAcceleration);
         tmpDesiredUp.normalizeLocal();
-        /*
-         * error = actual X desired
-         */
+
+        // error = actual X desired
         tmpActualUp.cross(tmpDesiredUp, tmpError);
         /*
          * Project the error onto the forward direction
          * in order to ignore wheelies and hill climbing.
          */
         float sinRollError = MyVector3f.scalarProjection(tmpError, tmpForward);
-        /*
-         * Calculate delta, the change in the sine of the roll error.
-         */
+
+        // Calculate delta, the change in the sine of the roll error.
         float deltaSre = sinRollError - previousSre;
         this.previousSre = sinRollError;
-        /*
-         * Calculate a corrective torque impulse about the forward axis.
-         */
+
+        // Calculate a corrective torque impulse about the forward axis.
         float impulseMagnitude = deltaSre * deltaGainFactor
                 + sinRollError * errorGainFactor;
         tmpForward.mult(impulseMagnitude, tmpImpulse);
         engineBody.getInverseInertiaWorld(tmpInertia);
         tmpInertia.invertLocal();
         tmpInertia.mult(tmpImpulse, tmpImpulse);
-        /*
-         * Apply the torque impulse to the engine body.
-         */
+
+        // Apply the torque impulse to the engine body.
         if (Vector3f.isValidVector(tmpImpulse)) {
             engineBody.applyTorqueImpulse(tmpImpulse);
         } else {

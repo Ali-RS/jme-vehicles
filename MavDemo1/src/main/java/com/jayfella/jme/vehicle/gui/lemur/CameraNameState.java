@@ -32,9 +32,8 @@ public class CameraNameState extends CartoucheState {
     @Override
     protected void repopulateNode(String text) {
         super.repopulateNode(text);
-        /*
-         * Add an Expander to advance to the next camera mode.
-         */
+
+        // Add an Expander to advance to the next camera mode.
         Node node = getNode();
         Expander listener = new Expander(node) {
             @Override

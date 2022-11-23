@@ -85,9 +85,8 @@ public class HoverTank extends Vehicle {
          */
         rFrontWheel.flip();
         rRearWheel.flip();
-        /*
-         * Add the (invisible) wheels to the Vehicle.
-         */
+
+        // Add the (invisible) wheels to the Vehicle.
         float frontX = 0.9f; // half of the axle track
         float rearX = 2.4f;
         float axleY = 0f; // height of axles relative to vehicle's CoG
@@ -119,9 +118,8 @@ public class HoverTank extends Vehicle {
             // Setting this too low will make the wheels sink into the ground.
             suspension.setMaxForce(50_000f);
         }
-        /*
-         * Give each wheel a tire with very little friction.
-         */
+
+        // Give each wheel a tire with very little friction.
         for (Wheel wheel : listWheels()) {
             wheel.setFriction(0.001f);
             wheel.setPowerFraction(0f);
@@ -149,10 +147,8 @@ public class HoverTank extends Vehicle {
         Sound hornSound = new HornSound1();
         hornSound.load(assetManager);
         setHornSound(hornSound);
-        /*
-         * build() must be invoked last, to complete the Vehicle
-         */
-        build();
+
+        build(); // must be invoked last, to complete the Vehicle
     }
 
     /**
