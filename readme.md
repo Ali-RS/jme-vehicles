@@ -159,6 +159,7 @@ General controls:
 + Numpad6 : reset the field of view (to 90 degrees vertical angle)
 + "." or Pause : toggle the physics simulation paused/running
 + "/" : toggle physics debug visualization on/off
++ F6 : toggle the detailed profile of per-frame CPU/GPU time
 + F12 : capture a screenshot to the current working directory
 + C : print details about the default `Camera` (viewpoint) to standard output
 + O : print details about the `BulletAppState` (physics) to standard output
@@ -211,6 +212,7 @@ General controls:
 + "." or F7 or Pause : toggle the physics simulation paused/running
 + "/" : toggle physics debug visualization on/off
 + F5 : cycle through various viewpoints
++ F6 : toggle the basic graphical profile of update time versus render time
 + F11 : toggle video recording on/off
 + F12 : capture a screenshot to the sandbox directory
 + C : print details about the default `Camera` (viewpoint) to standard output
