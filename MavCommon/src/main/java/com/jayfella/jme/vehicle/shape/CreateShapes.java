@@ -46,6 +46,14 @@ final public class CreateShapes {
      */
     final private static PhysicsDumper dumper = new PhysicsDumper();
     // *************************************************************************
+    // constructors
+
+    /**
+     * A private constructor to inhibit instantiation of this class.
+     */
+    private CreateShapes() {
+    }
+    // *************************************************************************
     // new methods exposed
 
     /**
