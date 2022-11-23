@@ -31,6 +31,11 @@ final public class MakeQuarryProbe extends SimpleApplication {
     };
     private LightProbe lightProbe;
 
+    /**
+     * Main entry point for the MakeQuarryProbe application.
+     *
+     * @param args array of command-line arguments (not null)
+     */
     public static void main(String[] args) {
         new MakeQuarryProbe().start();
     }

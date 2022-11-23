@@ -30,6 +30,11 @@ final public class MakeNightProbe extends SimpleApplication {
     };
     private LightProbe lightProbe;
 
+    /**
+     * Main entry point for the MakeNightProbe application.
+     *
+     * @param args array of command-line arguments (not null)
+     */
     public static void main(String[] args) {
         new MakeNightProbe().start();
     }

@@ -271,6 +271,11 @@ public class PacejkaTireModel {
         return frictionCircle;
     }
 
+    /**
+     * Represent this instance as a String.
+     *
+     * @return a descriptive string of text (not null, not empty)
+     */
     @Override
     public String toString() {
         String format
