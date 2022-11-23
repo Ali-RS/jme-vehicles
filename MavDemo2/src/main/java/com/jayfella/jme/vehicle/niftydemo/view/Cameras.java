@@ -2,6 +2,7 @@ package com.jayfella.jme.vehicle.niftydemo.view;
 
 import com.github.stephengold.garrett.AffixedCamera;
 import com.github.stephengold.garrett.CameraSignal;
+import com.github.stephengold.garrett.DynamicCamera;
 import com.github.stephengold.garrett.OrbitCamera;
 import com.github.stephengold.garrett.Target;
 import com.jayfella.jme.vehicle.Vehicle;
@@ -11,6 +12,8 @@ import com.jayfella.jme.vehicle.niftydemo.state.DemoState;
 import com.jayfella.jme.vehicle.niftydemo.state.Vehicles;
 import com.jme3.app.state.AppState;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.control.VehicleControl;
 import com.jme3.bullet.objects.PhysicsRigidBody;
@@ -52,6 +55,10 @@ public class Cameras {
      * mode to apply during the next update
      */
     private static CameraMode desiredMode;
+    /**
+     * controller for Dynamic mode
+     */
+    private static DynamicCamera dynamic;
     /**
      * controller for Chase mode
      */
@@ -104,6 +111,19 @@ public class Cameras {
         dash.setSignalName(CameraSignal.ZoomIn, "cameraZoomIn");
         dash.setSignalName(CameraSignal.ZoomOut, "cameraZoomOut");
         success = stateManager.attach(dash);
+        assert success;
+
+        BulletAppState bas = MavDemo2.findAppState(BulletAppState.class);
+        PhysicsSpace physicsSpace = bas.getPhysicsSpace();
+        float usualMass = 0.1f;
+        float ramMass = 100f;
+        dynamic = new DynamicCamera(
+                "dyna", camera, physicsSpace, tracker, usualMass, ramMass);
+        dynamic.setMoveSpeed(20f);
+        dynamic.setSignalName(CameraSignal.Left, "cameraOrbitCcw");
+        dynamic.setSignalName(CameraSignal.PointToLook, "cameraDrag");
+        dynamic.setSignalName(CameraSignal.Right, "cameraOrbitCw");
+        success = stateManager.attach(dynamic);
         assert success;
 
         orbit = new OrbitCamera("orbit", camera, tracker);
@@ -166,8 +186,11 @@ public class Cameras {
             case Dash:
                 desiredMode = CameraMode.Chase;
                 break;
-            case Orbit:
+            case Dynamic:
                 desiredMode = CameraMode.Dash;
+                break;
+            case Orbit:
+                desiredMode = CameraMode.Dynamic;
                 break;
             default:
                 throw new IllegalStateException("mode = " + desiredMode);
@@ -228,6 +251,9 @@ public class Cameras {
                 break;
             case Dash:
                 newController = dash;
+                break;
+            case Dynamic:
+                newController = dynamic;
                 break;
             case Orbit:
                 newController = orbit;
