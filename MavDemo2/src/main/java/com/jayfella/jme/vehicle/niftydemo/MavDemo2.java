@@ -165,6 +165,7 @@ public class MavDemo2 extends GuiApplication {
     public static void main(String[] arguments) {
         // Mute the chatty loggers found in certain packages.
         Heart.setLoggingLevels(Level.WARNING);
+//        Preloader.logger.setLevel(Level.INFO);
 
         ShowDialog showDialog = ShowDialog.FirstTime;
 

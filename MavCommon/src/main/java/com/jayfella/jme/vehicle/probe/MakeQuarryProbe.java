@@ -20,6 +20,8 @@ import java.io.IOException;
  * @author Stephen Gold sgold@sonic.net
  */
 final public class MakeQuarryProbe extends SimpleApplication {
+    // *************************************************************************
+    // fields
 
     final private EnvironmentCamera envCam = new EnvironmentCamera();
     final private JobProgressAdapter<LightProbe> adapter
@@ -30,6 +32,8 @@ final public class MakeQuarryProbe extends SimpleApplication {
         }
     };
     private LightProbe lightProbe;
+    // *************************************************************************
+    // new methods exposed
 
     /**
      * Main entry point for the MakeQuarryProbe application.
@@ -39,6 +43,8 @@ final public class MakeQuarryProbe extends SimpleApplication {
     public static void main(String[] args) {
         new MakeQuarryProbe().start();
     }
+    // *************************************************************************
+    // SimpleApplication methods
 
     @Override
     public void simpleInitApp() {

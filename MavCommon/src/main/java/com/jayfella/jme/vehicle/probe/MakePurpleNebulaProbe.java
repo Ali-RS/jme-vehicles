@@ -20,6 +20,8 @@ import jme3utilities.MyAsset;
  * @author Stephen Gold sgold@sonic.net
  */
 final public class MakePurpleNebulaProbe extends SimpleApplication {
+    // *************************************************************************
+    // fields
 
     final private EnvironmentCamera envCam = new EnvironmentCamera();
     final private JobProgressAdapter<LightProbe> adapter
@@ -30,6 +32,8 @@ final public class MakePurpleNebulaProbe extends SimpleApplication {
         }
     };
     private LightProbe lightProbe;
+    // *************************************************************************
+    // new methods exposed
 
     /**
      * Main entry point for the MakePurpleNebulaProbe application.
@@ -39,6 +43,8 @@ final public class MakePurpleNebulaProbe extends SimpleApplication {
     public static void main(String[] args) {
         new MakePurpleNebulaProbe().start();
     }
+    // *************************************************************************
+    // SimpleApplication methods
 
     @Override
     public void simpleInitApp() {

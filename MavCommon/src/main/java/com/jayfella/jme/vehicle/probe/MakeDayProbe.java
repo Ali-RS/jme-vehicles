@@ -19,6 +19,8 @@ import jme3utilities.sky.SkyControl;
  * @author Stephen Gold sgold@sonic.net
  */
 final public class MakeDayProbe extends SimpleApplication {
+    // *************************************************************************
+    // fields
 
     final private EnvironmentCamera envCam = new EnvironmentCamera();
     final private JobProgressAdapter<LightProbe> adapter
@@ -29,6 +31,8 @@ final public class MakeDayProbe extends SimpleApplication {
         }
     };
     private LightProbe lightProbe;
+    // *************************************************************************
+    // new methods exposed
 
     /**
      * Main entry point for the MakeDayProbe application.
@@ -38,15 +42,16 @@ final public class MakeDayProbe extends SimpleApplication {
     public static void main(String[] args) {
         new MakeDayProbe().start();
     }
+    // *************************************************************************
+    // SimpleApplication methods
 
     @Override
     public void simpleInitApp() {
         stateManager.attach(envCam);
 
         SkyControl skyControl = AnimatedDaySky.createSkyControl(this);
-        /*
-         * Disable cloud motion for reproducibility.
-         */
+
+        // Disable cloud motion for reproducibility.
         skyControl.setCloudsRate(0f);
 
         rootNode.addControl(skyControl);
