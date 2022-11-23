@@ -34,6 +34,7 @@ import com.jme3.bullet.PhysicsSpace;
 import com.jme3.math.Vector3f;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeVersion;
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -379,7 +380,8 @@ public class MavDemo2 extends GuiApplication {
         success = stateManager.attach(pas);
         assert success;
 
-        String directory = "./";
+        String directory
+                = System.getProperty("user.dir") + File.separator;
         String filenamePrefix = "screen_shot";
         ScreenshotAppState screenshotAppState
                 = new ScreenshotAppState(directory, filenamePrefix);
