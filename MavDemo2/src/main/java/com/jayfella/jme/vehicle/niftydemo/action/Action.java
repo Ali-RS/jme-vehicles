@@ -11,7 +11,7 @@ import jme3utilities.ui.InputMode;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-public class Action {
+final public class Action {
     // *************************************************************************
     // constants and loggers
 

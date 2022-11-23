@@ -22,7 +22,7 @@ import jme3utilities.nifty.dialog.IntegerDialog;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-class SetAction {
+final class SetAction {
     // *************************************************************************
     // constants and loggers
 

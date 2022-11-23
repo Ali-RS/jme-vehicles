@@ -14,7 +14,7 @@ import com.jme3.texture.image.ImageRaster;
 import com.jme3.util.BufferUtils;
 import java.util.logging.Logger;
 
-public class EnginePowerGraph extends Geometry {
+final public class EnginePowerGraph extends Geometry {
     // *************************************************************************
     // constants and loggers
 

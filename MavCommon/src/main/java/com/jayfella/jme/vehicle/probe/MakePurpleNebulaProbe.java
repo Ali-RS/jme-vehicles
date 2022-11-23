@@ -19,7 +19,7 @@ import jme3utilities.MyAsset;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-public class MakePurpleNebulaProbe extends SimpleApplication {
+final public class MakePurpleNebulaProbe extends SimpleApplication {
 
     final private EnvironmentCamera envCam = new EnvironmentCamera();
     final private JobProgressAdapter<LightProbe> adapter

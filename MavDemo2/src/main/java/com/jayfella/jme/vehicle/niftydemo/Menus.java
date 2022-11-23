@@ -45,7 +45,7 @@ import jme3utilities.ui.UiVersion;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-public class Menus {
+final public class Menus {
     // *************************************************************************
     // constants and loggers
 

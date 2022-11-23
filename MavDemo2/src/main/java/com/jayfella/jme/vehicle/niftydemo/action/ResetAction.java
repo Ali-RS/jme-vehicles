@@ -16,7 +16,7 @@ import jme3utilities.math.noise.Generator;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-class ResetAction {
+final class ResetAction {
     // *************************************************************************
     // constants and loggers
 

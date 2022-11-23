@@ -19,7 +19,7 @@ import jme3utilities.minie.NegativeAppDataFilter;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-public class ChaseCamera extends CameraController {
+final public class ChaseCamera extends CameraController {
     // *************************************************************************
     // constants and loggers
 

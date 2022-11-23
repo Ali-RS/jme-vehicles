@@ -9,7 +9,7 @@ import java.util.logging.Logger;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-public class ActionPrefix {
+final public class ActionPrefix {
     // *************************************************************************
     // constants and loggers
 

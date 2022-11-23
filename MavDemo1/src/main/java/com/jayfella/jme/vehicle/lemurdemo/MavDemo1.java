@@ -70,7 +70,7 @@ import jme3utilities.minie.MinieVersion;
  *
  * Derived from the Main class in the Advanced Vehicles project.
  */
-public class MavDemo1 extends SimpleApplication {
+final public class MavDemo1 extends SimpleApplication {
     // *************************************************************************
     // constants and loggers
 

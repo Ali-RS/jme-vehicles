@@ -16,7 +16,7 @@ import com.jme3.util.BufferUtils;
 /**
  * Derived from the TireGraph class in the Advanced Vehicles project.
  */
-public class TireGraph extends Geometry {
+final public class TireGraph extends Geometry {
     final private PacejkaTireModel tireModel;
     final private int height;
     final private int width;

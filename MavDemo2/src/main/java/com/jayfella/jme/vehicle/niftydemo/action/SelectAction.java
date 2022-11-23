@@ -24,7 +24,7 @@ import jme3utilities.nifty.PopupMenuBuilder;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-class SelectAction {
+final class SelectAction {
     // *************************************************************************
     // constants and loggers
 

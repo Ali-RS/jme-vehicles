@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-class ToggleAction {
+final class ToggleAction {
     // *************************************************************************
     // constants and loggers
 

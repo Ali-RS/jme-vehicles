@@ -12,7 +12,7 @@ import jme3utilities.nifty.PopupMenuBuilder;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-class LoadAction {
+final class LoadAction {
     // *************************************************************************
     // constants and loggers
 

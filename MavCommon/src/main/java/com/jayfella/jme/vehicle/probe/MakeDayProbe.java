@@ -18,7 +18,7 @@ import jme3utilities.sky.SkyControl;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-public class MakeDayProbe extends SimpleApplication {
+final public class MakeDayProbe extends SimpleApplication {
 
     final private EnvironmentCamera envCam = new EnvironmentCamera();
     final private JobProgressAdapter<LightProbe> adapter

@@ -31,7 +31,7 @@ import jme3utilities.Validate;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-public class Cameras {
+final public class Cameras {
     // *************************************************************************
     // constants and loggers
 

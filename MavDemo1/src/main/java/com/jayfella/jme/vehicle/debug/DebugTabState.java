@@ -8,7 +8,7 @@ import com.simsilica.lemur.Container;
 import com.simsilica.lemur.TabbedPanel;
 import com.simsilica.lemur.props.PropertyPanel;
 
-public class DebugTabState extends BaseAppState {
+final public class DebugTabState extends BaseAppState {
     // *************************************************************************
     // fields
 

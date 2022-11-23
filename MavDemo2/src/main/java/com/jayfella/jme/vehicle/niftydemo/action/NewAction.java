@@ -10,7 +10,7 @@ import java.util.logging.Logger;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-class NewAction {
+final class NewAction {
     // *************************************************************************
     // constants and loggers
 

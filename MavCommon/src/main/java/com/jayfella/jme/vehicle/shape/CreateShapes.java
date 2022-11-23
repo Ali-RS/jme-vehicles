@@ -25,7 +25,7 @@ import jme3utilities.minie.PhysicsDumper;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-public class CreateShapes {
+final public class CreateShapes {
     // *************************************************************************
     // constants and loggers
 

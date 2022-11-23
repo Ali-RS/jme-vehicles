@@ -15,7 +15,7 @@ import com.simsilica.lemur.FillMode;
 import com.simsilica.lemur.TabbedPanel;
 import com.simsilica.lemur.component.SpringGridLayout;
 
-public class VehicleEditorState extends BaseAppState {
+final public class VehicleEditorState extends BaseAppState {
     // *************************************************************************
     // fields
 

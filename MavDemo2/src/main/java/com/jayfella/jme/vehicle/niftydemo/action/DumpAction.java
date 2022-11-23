@@ -20,7 +20,7 @@ import jme3utilities.minie.PhysicsDumper;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-class DumpAction {
+final class DumpAction {
     // *************************************************************************
     // constants and loggers
 

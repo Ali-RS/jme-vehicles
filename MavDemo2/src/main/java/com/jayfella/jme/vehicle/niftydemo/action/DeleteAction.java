@@ -9,7 +9,7 @@ import java.util.logging.Logger;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-class DeleteAction {
+final class DeleteAction {
     // *************************************************************************
     // constants and loggers
 

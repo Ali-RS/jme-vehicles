@@ -7,7 +7,7 @@ import java.util.logging.Logger;
  *
  * @author Stephen Gold sgold@sonic.net
  */
-public class Attribution {
+final public class Attribution {
     // *************************************************************************
     // constants and loggers
 

@@ -11,7 +11,7 @@ import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.style.BaseStyles;
 import java.util.logging.Logger;
 
-public class PacejkaViewer extends SimpleApplication {
+final public class PacejkaViewer extends SimpleApplication {
     // *************************************************************************
     // constants and loggers
 

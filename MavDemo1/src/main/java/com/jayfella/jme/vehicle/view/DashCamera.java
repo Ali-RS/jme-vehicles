@@ -20,7 +20,7 @@ import jme3utilities.Validate;
 /**
  * A CameraController to control a forward-facing Camera attached to a Vehicle.
  */
-public class DashCamera
+final public class DashCamera
         extends CameraController
         implements AnalogListener {
     // *************************************************************************
