@@ -76,9 +76,12 @@ class PhysicsTool extends Tool {
 
         DemoState demoState = MavDemo2.getDemoState();
         double elapsedTime = demoState.elapsedTime();
-        int minutes = (int) Math.floor(elapsedTime / 60.0);
-        double seconds = elapsedTime - 60.0 * minutes;
-        String elapsedText = String.format("%d:%05.3f", minutes, seconds);
+        int minutes = (int) Math.floor(elapsedTime / 60);
+        double residue = elapsedTime - 60 * minutes;
+        int seconds = (int) Math.floor(residue);
+        int milliseconds = (int) Math.floor(1000 * (residue - seconds));
+        String elapsedText
+                = String.format("%d:%02d.%03d", minutes, seconds, milliseconds);
         setButtonText("physicsElapsedTime", elapsedText);
 
         float timestep = space.getAccuracy();
