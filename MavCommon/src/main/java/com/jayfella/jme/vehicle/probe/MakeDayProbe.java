@@ -61,7 +61,8 @@ final public class MakeDayProbe extends SimpleApplication {
     @Override
     public void simpleUpdate(float tpf) {
         if (lightProbe == null) {
-            lightProbe = LightProbeFactory.makeProbe(envCam, rootNode, adapter);
+            this.lightProbe
+                    = LightProbeFactory.makeProbe(envCam, rootNode, adapter);
             lightProbe.setPosition(Vector3f.ZERO);
             lightProbe.getArea().setRadius(9_999f);
 

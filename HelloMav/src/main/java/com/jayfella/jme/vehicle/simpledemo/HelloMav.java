@@ -354,15 +354,15 @@ public class HelloMav extends SimpleApplication {
      */
     private void updateTurn(float tpf) {
         if (signalTracker.test(leftSignalName)) {
-            steerAngle += tpf * turnRate;
-            steerAngle = Math.min(steerAngle, maxSteerAngle);
+            this.steerAngle += tpf * turnRate;
+            this.steerAngle = Math.min(steerAngle, maxSteerAngle);
 
         } else if (signalTracker.test(rightSignalName)) {
-            steerAngle -= tpf * turnRate;
-            steerAngle = Math.max(steerAngle, -maxSteerAngle);
+            this.steerAngle -= tpf * turnRate;
+            this.steerAngle = Math.max(steerAngle, -maxSteerAngle);
 
         } else {
-            steerAngle = 0f;
+            this.steerAngle = 0f;
         }
 
         vehicle.steer(steerAngle);

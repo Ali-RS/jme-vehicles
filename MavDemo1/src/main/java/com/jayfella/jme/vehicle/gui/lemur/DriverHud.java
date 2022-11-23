@@ -182,26 +182,29 @@ public class DriverHud extends BaseAppState {
     @Override
     protected void initialize(Application application) {
         Camera camera = application.getCamera();
-        viewPortHeight = camera.getHeight();
-        viewPortWidth = camera.getWidth();
+        this.viewPortHeight = camera.getHeight();
+        this.viewPortWidth = camera.getWidth();
         /*
          * pre-load unshaded materials for buttons
          */
         AssetManager manager = application.getAssetManager();
         Texture texture = manager.loadTexture("Textures/sgold/exit.png");
-        exitMaterial = MyAsset.createUnshadedMaterial(manager, texture);
+        this.exitMaterial = MyAsset.createUnshadedMaterial(manager, texture);
 
         texture = manager.loadTexture("/Textures/Georg/horn-silent.png");
-        hornSilentMaterial = MyAsset.createUnshadedMaterial(manager, texture);
+        this.hornSilentMaterial
+                = MyAsset.createUnshadedMaterial(manager, texture);
 
         texture = manager.loadTexture("/Textures/Georg/horn-sound.png");
-        hornSoundMaterial = MyAsset.createUnshadedMaterial(manager, texture);
+        this.hornSoundMaterial
+                = MyAsset.createUnshadedMaterial(manager, texture);
 
         texture = manager.loadTexture("/Textures/Georg/power-off.png");
-        powerOffMaterial = MyAsset.createUnshadedMaterial(manager, texture);
+        this.powerOffMaterial
+                = MyAsset.createUnshadedMaterial(manager, texture);
 
         texture = manager.loadTexture("/Textures/Georg/power-on.png");
-        powerOnMaterial = MyAsset.createUnshadedMaterial(manager, texture);
+        this.powerOnMaterial = MyAsset.createUnshadedMaterial(manager, texture);
 
         AppStateManager stateManager = getApplication().getStateManager();
         stateManager.attach(atmiState);
@@ -307,7 +310,7 @@ public class DriverHud extends BaseAppState {
     private void hideExitButton() {
         if (exitButton != null) {
             exitButton.removeFromParent();
-            exitButton = null;
+            this.exitButton = null;
         }
     }
 
@@ -334,7 +337,7 @@ public class DriverHud extends BaseAppState {
     private void hidePowerButton() {
         if (powerButton != null) {
             powerButton.removeFromParent();
-            powerButton = null;
+            this.powerButton = null;
         }
     }
 
@@ -344,7 +347,7 @@ public class DriverHud extends BaseAppState {
     private void hideSteeringWheel() {
         if (steeringWheel != null) {
             getStateManager().detach(steeringWheel);
-            steeringWheel = null;
+            this.steeringWheel = null;
         }
     }
 
@@ -354,7 +357,7 @@ public class DriverHud extends BaseAppState {
     private void hideSpeedometer() {
         if (speedometer != null) {
             getStateManager().detach(speedometer);
-            speedometer = null;
+            this.speedometer = null;
         }
     }
 
@@ -364,7 +367,7 @@ public class DriverHud extends BaseAppState {
     private void hideTachometer() {
         if (tachometer != null) {
             getStateManager().detach(tachometer);
-            tachometer = null;
+            this.tachometer = null;
         }
     }
 

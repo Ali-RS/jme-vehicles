@@ -52,7 +52,7 @@ final public class DashCamera
      */
     public DashCamera(Vehicle vehicle, Camera camera, SignalTracker tracker) {
         super(vehicle, camera, tracker);
-        cameraNode = new CameraNode("Dash Camera Node", camera);
+        this.cameraNode = new CameraNode("Dash Camera Node", camera);
     }
     // *************************************************************************
     // AnalogListener methods
@@ -72,11 +72,11 @@ final public class DashCamera
 
         switch (eventName) {
             case analogZoomIn:
-                zoomAnalogSum += reading;
+                this.zoomAnalogSum += reading;
                 break;
 
             case analogZoomOut:
-                zoomAnalogSum -= reading;
+                this.zoomAnalogSum -= reading;
                 break;
 
             default:
@@ -150,7 +150,7 @@ final public class DashCamera
         if (zoomAnalogSum != 0f) {
             float zoomFactor = FastMath.exp(zoomMultiplier * zoomAnalogSum);
             magnify(zoomFactor);
-            zoomAnalogSum = 0f;
+            this.zoomAnalogSum = 0f;
         }
     }
     // *************************************************************************

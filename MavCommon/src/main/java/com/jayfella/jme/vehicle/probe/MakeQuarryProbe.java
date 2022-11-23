@@ -58,7 +58,8 @@ final public class MakeQuarryProbe extends SimpleApplication {
     @Override
     public void simpleUpdate(float tpf) {
         if (lightProbe == null) {
-            lightProbe = LightProbeFactory.makeProbe(envCam, rootNode, adapter);
+            this.lightProbe
+                    = LightProbeFactory.makeProbe(envCam, rootNode, adapter);
             lightProbe.setPosition(new Vector3f(0f, 3f, 0f));
             lightProbe.getArea().setRadius(100f);
 

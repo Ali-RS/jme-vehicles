@@ -104,7 +104,7 @@ public class AnimatedNightSky extends Sky {
         super.load(assetManager);
 
         LegacyApplication application = getApplication();
-        skyControl = createSkyControl(application);
+        this.skyControl = createSkyControl(application);
 
         Node node = new Node();
         node.addControl(skyControl);

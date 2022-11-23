@@ -148,7 +148,7 @@ public class ClassicMotorcycle extends Bike {
      * Disable stabilization.
      */
     public void destabilize() {
-        isStabilized = false;
+        this.isStabilized = false;
     }
     // *************************************************************************
     // Bike methods
@@ -193,9 +193,9 @@ public class ClassicMotorcycle extends Bike {
         float engineMass = 180f; // in kilograms
         float steeringMass = 40f; // in kilograms
         float linearDamping = 0.001f;
-        steeringJoint = setBikeChassis(cgmRoot, engineSubtree, steeringSubtree,
-                engineShape, steeringShape, engineMass, steeringMass,
-                linearDamping);
+        this.steeringJoint = setBikeChassis(cgmRoot, engineSubtree,
+                steeringSubtree, engineShape, steeringShape, engineMass,
+                steeringMass, linearDamping);
         /*
          * Introduce some angular damping to mitigate the tendency to spin.
          */

@@ -127,7 +127,7 @@ class WheelSkid {
     void update(float tpf) {
         float skidFraction = wheel.skidFraction();
         if (skidFraction < SKID_FX_SPEED) {
-            lastSectionUsed = -1;
+            this.lastSectionUsed = -1;
         } else {
             skidFraction = smoothstep(SKID_FX_SPEED, 1f, skidFraction);
             VehicleWheel vehicleWheel = wheel.getVehicleWheel();
