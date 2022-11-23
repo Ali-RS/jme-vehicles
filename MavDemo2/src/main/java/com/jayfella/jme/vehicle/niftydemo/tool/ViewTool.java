@@ -2,8 +2,6 @@ package com.jayfella.jme.vehicle.niftydemo.tool;
 
 import com.jayfella.jme.vehicle.Sky;
 import com.jayfella.jme.vehicle.niftydemo.MavDemo2;
-import com.jayfella.jme.vehicle.niftydemo.view.CameraMode;
-import com.jayfella.jme.vehicle.niftydemo.view.Cameras;
 import com.jayfella.jme.vehicle.niftydemo.view.View;
 import com.jayfella.jme.vehicle.niftydemo.view.ViewFlags;
 import com.jme3.bullet.BulletAppState;
