@@ -216,8 +216,8 @@ public class HelloMav extends SimpleApplication {
      *
      * @param world where to add the vehicles (not null)
      */
-    private void addParkedVehicles(VehicleWorld world,
-            GlobalAudio globalAudio) {
+    private void addParkedVehicles(
+            VehicleWorld world, GlobalAudio globalAudio) {
         int numVehicles = 5;
 
         Vector3f location = new Vector3f();

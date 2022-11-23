@@ -50,8 +50,8 @@ final public class MakePurpleNebulaProbe extends SimpleApplication {
     public void simpleInitApp() {
         stateManager.attach(envCam);
 
-        Spatial sky = MyAsset.createStarMapSphere(assetManager,
-                PurpleNebulaSky.cubemapName, 100f);
+        Spatial sky = MyAsset.createStarMapSphere(
+                assetManager, PurpleNebulaSky.cubemapName, 100f);
         rootNode.attachChild(sky);
     }
 

@@ -88,7 +88,7 @@ public class DriverHud extends BaseAppState {
     private Material powerOffMaterial;
     private Material powerOnMaterial;
     /**
-     * appstates to manage rotary indicators
+     * app states to manage rotary indicators
      */
     private SpeedometerState speedometer;
     private SteeringWheelState steeringWheel;

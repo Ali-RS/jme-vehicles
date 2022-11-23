@@ -68,8 +68,8 @@ final public class MakeDayProbe extends SimpleApplication {
 
         } else if (lightProbe.isReady()) {
             JmeExporter exporter = BinaryExporter.getInstance();
-            String filePath = "src/main/resources"
-                    + AnimatedDaySky.lightProbeAssetPath;
+            String filePath
+                    = "src/main/resources" + AnimatedDaySky.lightProbeAssetPath;
             File file = new File(filePath);
             try {
                 exporter.save(lightProbe, file);

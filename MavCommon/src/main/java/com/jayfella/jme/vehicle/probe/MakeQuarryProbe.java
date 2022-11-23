@@ -65,8 +65,8 @@ final public class MakeQuarryProbe extends SimpleApplication {
 
         } else if (lightProbe.isReady()) {
             JmeExporter exporter = BinaryExporter.getInstance();
-            String filePath = "src/main/resources"
-                    + QuarrySky.lightProbeAssetPath;
+            String filePath
+                    = "src/main/resources" + QuarrySky.lightProbeAssetPath;
             File file = new File(filePath);
             try {
                 exporter.save(lightProbe, file);

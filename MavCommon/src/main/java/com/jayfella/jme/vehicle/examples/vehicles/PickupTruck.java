@@ -173,8 +173,8 @@ public class PickupTruck extends Vehicle {
     }
 
     /**
-     * Determine the offset of the truck's ChaseCamera target in scaled
-     * shape coordinates.
+     * Determine the offset of the truck's ChaseCamera target in scaled shape
+     * coordinates.
      *
      * @param storeResult storage for the result (not null)
      */

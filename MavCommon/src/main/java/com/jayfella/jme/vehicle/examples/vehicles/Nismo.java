@@ -56,8 +56,8 @@ public class Nismo extends Vehicle {
          */
         float mass = 1_525f; // in kilos
         float linearDamping = 0.002f;
-        setChassis("gtr_nismo", "scene.gltf", assetManager, mass,
-                linearDamping);
+        setChassis(
+                "gtr_nismo", "scene.gltf", assetManager, mass, linearDamping);
 
         float diameter = 0.74f;
         WheelModel lFrontWheel = new DarkAlloyWheel(diameter);
