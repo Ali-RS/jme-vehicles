@@ -66,14 +66,19 @@ class PhysicsTool extends Tool {
         setStatusText("physicsJointCount", numJointsText);
 
         float simulationSpeed = bas.getSpeed();
-        String speedText = String.format("%.0f%%", 100f * simulationSpeed);
+        String speedText;
+        if (simulationSpeed == 0f) {
+            speedText = "paused";
+        } else {
+            speedText = String.format("%.0f%%", 100f * simulationSpeed);
+        }
         setButtonText("physicsSpeed", speedText);
 
         DemoState demoState = MavDemo2.getDemoState();
         double elapsedTime = demoState.elapsedTime();
         int minutes = (int) Math.floor(elapsedTime / 60.0);
         double seconds = elapsedTime - 60.0 * minutes;
-        String elapsedText = String.format("%d:%02.0f", minutes, seconds);
+        String elapsedText = String.format("%d:%05.3f", minutes, seconds);
         setButtonText("physicsElapsedTime", elapsedText);
 
         float timestep = space.getAccuracy();
