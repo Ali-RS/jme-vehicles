@@ -81,13 +81,28 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
             <control name="window" id="cameraTool" title="Camera Tool"
                      backgroundColor="#663f"
                      hideOnClose="true"
-                     height="59px" width="99px" x="703" y="2">
+                     height="116px" width="99px" x="703" y="2">
                 <panel childLayout="vertical">
-                    <panel height="5px"/>
-                    <panel childLayout="horizontal" height="28px">
-                        <control name="button" id="cameraNameButton" width="*">
-                            <interact onRelease="perform(next camera)"/>
-                        </control>
+                    <control name="radioButtonGroup" id="cameraRadio"/>
+                    <panel childLayout="horizontal">
+                        <control name="radioButton" id="cameraChaseRadioButton"
+                                 group="cameraRadio"/>
+                        <control name="label" text="  chase" color="#000f"/>
+                    </panel>
+                    <panel childLayout="horizontal">
+                        <control name="radioButton" id="cameraDashRadioButton"
+                                 group="cameraRadio"/>
+                        <control name="label" text="  dash" color="#000f"/>
+                    </panel>
+                    <panel childLayout="horizontal">
+                        <control name="radioButton" id="cameraDynamicRadioButton"
+                                 group="cameraRadio"/>
+                        <control name="label" text="  dynamic" color="#000f"/>
+                    </panel>
+                    <panel childLayout="horizontal">
+                        <control name="radioButton" id="cameraOrbitRadioButton"
+                                 group="cameraRadio"/>
+                        <control name="label" text="  orbit" color="#000f"/>
                     </panel>
                 </panel>
             </control>
