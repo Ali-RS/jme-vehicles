@@ -116,7 +116,10 @@ Nifty XML to lay out the GUI for the main HUD of MavDemo2.
                     <panel childLayout="horizontal" height="28px">
                         <control name="checkbox" id="engineRunningCheckBox"
                                  width="20px"/>
-                        <control name="label" text="  engine running"/>
+                        <control name="label" text="  engine running    "/>
+                        <control name="checkbox" id="hornCheckBox"
+                                 width="20px"/>
+                        <control name="label" text="  horn"/>
                     </panel>
                     <control name="radioButtonGroup" id="atGroup"/>
                     <panel childLayout="horizontal" height="28px">

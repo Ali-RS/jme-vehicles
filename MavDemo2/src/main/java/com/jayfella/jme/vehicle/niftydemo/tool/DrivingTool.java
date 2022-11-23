@@ -48,6 +48,7 @@ class DrivingTool extends Tool {
     protected List<String> listCheckBoxes() {
         List<String> result = super.listCheckBoxes();
         result.add("engineRunning");
+        result.add("horn");
         result.add("mainBrake");
         result.add("parkingBrake");
 
@@ -88,6 +89,7 @@ class DrivingTool extends Tool {
                 engine.setRunning(isChecked);
                 break;
 
+            case "horn":
             case "mainBrake":
             case "parkingBrake":
                 // no effect - indicator only
@@ -156,5 +158,8 @@ class DrivingTool extends Tool {
 
         boolean parkingBrake = signals.test("parkingBrake");
         setChecked("parkingBrake", parkingBrake);
+        
+        boolean soundHorn = signals.test("soundHorn");
+        setChecked("horn", soundHorn);
     }
 }
