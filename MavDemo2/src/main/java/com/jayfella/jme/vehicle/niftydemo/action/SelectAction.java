@@ -188,6 +188,9 @@ final class SelectAction {
 
     /**
      * Process a "select propType" action with an argument.
+     *
+     * @param argument the argument text (not null, not empty)
+     * @return true
      */
     private static boolean selectPropType(String argument) {
         PropType type = PropType.valueOf(argument);
@@ -199,6 +202,9 @@ final class SelectAction {
 
     /**
      * Process a "select speedometerUnits" action with an argument.
+     *
+     * @param argument the argument text (not null, not empty)
+     * @return true
      */
     private static boolean selectSpeedometerUnits(String argument) {
         SpeedUnit newUnits = null;
@@ -229,6 +235,9 @@ final class SelectAction {
 
     /**
      * Process a "select tireSmokeColor" action with an argument.
+     *
+     * @param argument the argument text (not null, not empty)
+     * @return true if successful, otherwise false
      */
     private static boolean selectTireSmokeColor(String argument) {
         boolean enableSmoke = true;

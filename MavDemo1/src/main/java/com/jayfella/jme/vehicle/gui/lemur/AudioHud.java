@@ -93,7 +93,7 @@ public class AudioHud
      * indicate audio is sounding
      */
     private Material soundMaterial;
-    /*
+    /**
      * visualize the master-volume GUI control
      */
     final private Node mvNode = new Node("Audio Master-Volume Node");

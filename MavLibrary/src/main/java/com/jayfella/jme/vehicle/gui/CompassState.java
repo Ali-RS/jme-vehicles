@@ -134,6 +134,8 @@ public class CompassState extends BaseAppState {
 
     /**
      * Construct the Geometry for the compass.
+     *
+     * @param assetManager for loading assets (not null)
      */
     private void initCompass(AssetManager assetManager) {
         int circumferenceSamples = 40;

@@ -216,6 +216,8 @@ final class SetAction {
 
     /**
      * Process a "set dumpIndentSpaces" action with an argument.
+     *
+     * @param numSpaces the desired number of spaces (&ge;0)
      */
     private static void setDumpIndentSpaces(int numSpaces) {
         String indent = MyString.repeat(" ", numSpaces);

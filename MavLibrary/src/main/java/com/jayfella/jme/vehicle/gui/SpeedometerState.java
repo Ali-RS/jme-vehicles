@@ -255,6 +255,9 @@ public class SpeedometerState extends BaseAppState {
     /**
      * Build the Node for the fixed parts of the speedometer, including the
      * background and numbers.
+     *
+     * @param assetManager for loading assets (not null)
+     * @return the new Node
      */
     private Node createFixedNode(AssetManager assetManager) {
         String path = "/Textures/Georg/speedo_bg_2.png";

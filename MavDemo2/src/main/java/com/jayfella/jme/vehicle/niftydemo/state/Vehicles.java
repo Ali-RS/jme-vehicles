@@ -64,6 +64,8 @@ public class Vehicles {
 
     /**
      * Add a Vehicle to the demo.
+     *
+     * @param newVehicle the vehicle to add (not null, not added)
      */
     void add(Vehicle newVehicle) {
         assert newVehicle != null;
@@ -123,6 +125,8 @@ public class Vehicles {
 
     /**
      * Remove the specified Vehicle.
+     *
+     * @param vehicle the Vehicle to remove
      */
     void remove(Vehicle vehicle) {
         vehicle.removeFromWorld();

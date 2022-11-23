@@ -231,6 +231,9 @@ public class TachometerState extends BaseAppState {
     /**
      * Build the Node for the fixed parts of the tachometer, including the
      * background and numbers.
+     *
+     * @param assetManager for loading assets (not null)
+     * @return the new Node
      */
     private Node buildFixedNode(AssetManager assetManager) {
         String path = "/Textures/Georg/tachometer_bg.png";

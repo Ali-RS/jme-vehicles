@@ -85,6 +85,7 @@ public class Tools {
      * Describe the location of the named Tool.
      *
      * @param toolName which Tool to describe (not null, not empty)
+     * @return textual description
      */
     String describeLocation(String toolName) {
         Validate.nonEmpty(toolName, "tool name");

@@ -215,6 +215,7 @@ public class HelloMav extends SimpleApplication {
      * Create a row of 5 parked vehicles and add them to the World.
      *
      * @param world where to add the vehicles (not null)
+     * @param globalAudio the global audio controls (not null)
      */
     private void addParkedVehicles(
             VehicleWorld world, GlobalAudio globalAudio) {

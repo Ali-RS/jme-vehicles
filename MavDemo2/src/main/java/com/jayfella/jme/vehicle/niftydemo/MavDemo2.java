@@ -391,6 +391,8 @@ public class MavDemo2 extends GuiApplication {
 
     /**
      * Configure physics during startup.
+     *
+     * @return the new physics space
      */
     private PhysicsSpace configurePhysics() {
         BulletAppState bulletAppState = new BulletAppState();
