@@ -370,8 +370,8 @@ public class PropProposal implements JmeCloneable {
     // private methods
 
     @SuppressWarnings("unchecked")
-    private static Prop create(PropType propType, float scaleFactor,
-            float totalMass) {
+    private static Prop create(
+            PropType propType, float scaleFactor, float totalMass) {
         String className = "com.jayfella.jme.vehicle.examples.props."
                 + propType.toString();
         try {

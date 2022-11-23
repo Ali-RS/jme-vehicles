@@ -68,31 +68,32 @@ final class SelectAction {
 
         String arg;
         if (actionString.startsWith(ActionPrefix.selectAllWheelModel)) {
-            arg = MyString.remainder(actionString,
-                    ActionPrefix.selectAllWheelModel);
+            arg = MyString.remainder(
+                    actionString, ActionPrefix.selectAllWheelModel);
             handled = selectAllWheelModel(arg);
 
         } else if (actionString.startsWith(ActionPrefix.selectEngineSound)) {
-            arg = MyString.remainder(actionString,
-                    ActionPrefix.selectEngineSound);
+            arg = MyString.remainder(
+                    actionString, ActionPrefix.selectEngineSound);
             handled = selectEngineSound(arg);
 
         } else if (actionString.startsWith(ActionPrefix.selectMenuItem)) {
             arg = MyString.remainder(actionString, ActionPrefix.selectMenuItem);
             handled = Menus.selectMenuItem(arg);
+
         } else if (actionString.startsWith(ActionPrefix.selectPropType)) {
             arg = MyString.remainder(actionString, ActionPrefix.selectPropType);
             handled = selectPropType(arg);
 
         } else if (actionString.startsWith(
                 ActionPrefix.selectSpeedometerUnits)) {
-            arg = MyString.remainder(actionString,
-                    ActionPrefix.selectSpeedometerUnits);
+            arg = MyString.remainder(
+                    actionString, ActionPrefix.selectSpeedometerUnits);
             handled = selectSpeedometerUnits(arg);
 
         } else if (actionString.startsWith(ActionPrefix.selectTireSmokeColor)) {
-            arg = MyString.remainder(actionString,
-                    ActionPrefix.selectTireSmokeColor);
+            arg = MyString.remainder(
+                    actionString, ActionPrefix.selectTireSmokeColor);
             handled = selectTireSmokeColor(arg);
 
         } else {

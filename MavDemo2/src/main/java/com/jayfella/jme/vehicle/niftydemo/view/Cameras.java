@@ -316,8 +316,8 @@ final public class Cameras {
      * @param orbitCamera the camera control to reconfigure (not null)
      * @param targetVehicle the desired target (not null)
      */
-    private static void retarget(OrbitCamera orbitCamera,
-            Vehicle targetVehicle) {
+    private static void retarget(
+            OrbitCamera orbitCamera, Vehicle targetVehicle) {
         float rearBias;
         if (orbitCamera == chase) {
             rearBias = 1f;

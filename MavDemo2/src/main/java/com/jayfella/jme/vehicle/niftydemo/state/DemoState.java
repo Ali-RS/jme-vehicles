@@ -131,8 +131,8 @@ public class DemoState
         float minCosine = 0.8f;
         float spacing = 0f;
         Vector3f supportLocation = new Vector3f();
-        PhysicsRigidBody body = pickSupportBody(minCosine, spacing,
-                supportLocation);
+        PhysicsRigidBody body
+                = pickSupportBody(minCosine, spacing, supportLocation);
         if (body == null) {
             propProposal.invalidate();
             return;

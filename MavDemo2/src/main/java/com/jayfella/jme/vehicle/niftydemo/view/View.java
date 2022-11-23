@@ -283,8 +283,8 @@ public class View extends SimpleAppState {
                 break;
 
             default:
-                String message = String.format("invalid PerformanceMode: %s",
-                        performanceMode);
+                String message = String
+                        .format("invalid PerformanceMode: %s", performanceMode);
                 throw new IllegalStateException(message);
         }
     }
@@ -305,8 +305,8 @@ public class View extends SimpleAppState {
         float minCosine = 0.8f;
         float spacing = 0f;
         Vector3f supportLocation = new Vector3f();
-        PhysicsRigidBody body = demoState.pickSupportBody(minCosine, spacing,
-                supportLocation);
+        PhysicsRigidBody body = demoState
+                .pickSupportBody(minCosine, spacing, supportLocation);
         if (body == null) {
             proposal.invalidate();
             return;

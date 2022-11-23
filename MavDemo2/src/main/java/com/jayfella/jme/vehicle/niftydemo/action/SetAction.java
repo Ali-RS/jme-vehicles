@@ -112,20 +112,20 @@ final class SetAction {
 
         String arg;
         if (actionString.startsWith(ActionPrefix.setDefaultAniso)) {
-            arg = MyString.remainder(actionString,
-                    ActionPrefix.setDefaultAniso);
+            arg = MyString.remainder(
+                    actionString, ActionPrefix.setDefaultAniso);
             int degree = Integer.parseInt(arg);
             renderer.setDefaultAnisotropicFilter(degree);
 
         } else if (actionString.startsWith(ActionPrefix.setDumpIndentSpaces)) {
-            arg = MyString.remainder(actionString,
-                    ActionPrefix.setDumpIndentSpaces);
+            arg = MyString.remainder(
+                    actionString, ActionPrefix.setDumpIndentSpaces);
             int numSpaces = Integer.parseInt(arg);
             setDumpIndentSpaces(numSpaces);
 
         } else if (actionString.startsWith(ActionPrefix.setDumpMaxChildren)) {
-            arg = MyString.remainder(actionString,
-                    ActionPrefix.setDumpMaxChildren);
+            arg = MyString.remainder(
+                    actionString, ActionPrefix.setDumpMaxChildren);
             int maxChildren = Integer.parseInt(arg);
             MavDemo2.dumper.setMaxChildren(maxChildren);
 
@@ -135,32 +135,32 @@ final class SetAction {
             bas.setDebugAxisLength(length);
 
         } else if (actionString.startsWith(ActionPrefix.setPhysicsIterations)) {
-            arg = MyString.remainder(actionString,
-                    ActionPrefix.setPhysicsIterations);
+            arg = MyString.remainder(
+                    actionString, ActionPrefix.setPhysicsIterations);
             int numIterations = Integer.parseInt(arg);
             physicsSpace.setSolverNumIterations(numIterations);
 
         } else if (actionString.startsWith(ActionPrefix.setPhysicsMargin)) {
-            arg = MyString.remainder(actionString,
-                    ActionPrefix.setPhysicsMargin);
+            arg = MyString.remainder(
+                    actionString, ActionPrefix.setPhysicsMargin);
             float margin = Float.parseFloat(arg);
             CollisionShape.setDefaultMargin(margin);
 
         } else if (actionString.startsWith(ActionPrefix.setPhysicsSpeed)) {
-            arg = MyString.remainder(actionString,
-                    ActionPrefix.setPhysicsSpeed);
+            arg = MyString.remainder(
+                    actionString, ActionPrefix.setPhysicsSpeed);
             float speed = Float.parseFloat(arg);
             bas.setSpeed(speed);
 
         } else if (actionString.startsWith(ActionPrefix.setPhysicsTimeStep)) {
-            arg = MyString.remainder(actionString,
-                    ActionPrefix.setPhysicsTimeStep);
+            arg = MyString.remainder(
+                    actionString, ActionPrefix.setPhysicsTimeStep);
             float timeStep = Float.parseFloat(arg);
             physicsSpace.setAccuracy(timeStep);
 
         } else if (actionString.startsWith(ActionPrefix.setPropDescaledMass)) {
-            arg = MyString.remainder(actionString,
-                    ActionPrefix.setPropDescaledMass);
+            arg = MyString.remainder(
+                    actionString, ActionPrefix.setPropDescaledMass);
             float descaledMass = Float.parseFloat(arg);
             propProposal.setDescaledMass(descaledMass);
 
@@ -246,8 +246,8 @@ final class SetAction {
         float length = bas.debugAxisLength();
         String defaultText = Float.toString(length);
 
-        DialogController controller = new FloatDialog("Set", 0f,
-                Float.MAX_VALUE, AllowNull.No);
+        DialogController controller
+                = new FloatDialog("Set", 0f, Float.MAX_VALUE, AllowNull.No);
         MainHud mainHud = MavDemo2.findAppState(MainHud.class);
         mainHud.showTextEntryDialog("Enter axes length, in world units:",
                 defaultText, ActionPrefix.setPhysicsAxes, controller);
@@ -276,8 +276,8 @@ final class SetAction {
         float margin = CollisionShape.getDefaultMargin();
         String defaultText = Float.toString(margin);
 
-        DialogController controller = new FloatDialog("Set", Float.MIN_VALUE,
-                Float.MAX_VALUE, AllowNull.No);
+        DialogController controller = new FloatDialog(
+                "Set", Float.MIN_VALUE, Float.MAX_VALUE, AllowNull.No);
         MainHud mainHud = MavDemo2.findAppState(MainHud.class);
         mainHud.showTextEntryDialog(
                 "Enter margin for new shapes, in physics-space units:",
@@ -308,8 +308,8 @@ final class SetAction {
         float timeStep = physicsSpace.getAccuracy();
         String defaultText = Float.toString(timeStep);
 
-        DialogController controller = new FloatDialog("Set", Float.MIN_VALUE,
-                Float.MAX_VALUE, AllowNull.No);
+        DialogController controller = new FloatDialog(
+                "Set", Float.MIN_VALUE, Float.MAX_VALUE, AllowNull.No);
         MainHud mainHud = MavDemo2.findAppState(MainHud.class);
         mainHud.showTextEntryDialog("Enter timestep, in seconds:", defaultText,
                 ActionPrefix.setPhysicsTimeStep, controller);
