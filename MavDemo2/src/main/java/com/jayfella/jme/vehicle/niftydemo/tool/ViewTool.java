@@ -70,7 +70,6 @@ class ViewTool extends Tool {
      */
     @Override
     public void onCheckBoxChanged(String boxName, boolean isChecked) {
-        BulletAppState bas = MavDemo2.findAppState(BulletAppState.class);
         View view = MavDemo2.findAppState(View.class);
 
         switch (boxName) {
