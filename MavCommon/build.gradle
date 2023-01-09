@@ -6,6 +6,7 @@ dependencies {
     implementation 'org.jmonkeyengine:jme3-desktop:' + jme3Version
     implementation minieCoordinates
     implementation skyControlCoordinates
+    runtimeOnly 'org.jmonkeyengine:jme3-lwjgl3:' + jme3Version
 
     implementation project(':MavLibrary')
     //compileOnly 'com.github.stephengold:MaVehicles:' + maVehiclesVersion
