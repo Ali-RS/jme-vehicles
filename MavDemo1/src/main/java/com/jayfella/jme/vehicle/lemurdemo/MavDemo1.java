@@ -298,7 +298,7 @@ final public class MavDemo1 extends SimpleApplication {
                 MyString.quote(MinieVersion.versionShort()));
 
         assetManager.registerLoader(TrueTypeLoader.class, "ttf");
-        renderer.setDefaultAnisotropicFilter(4);
+        renderer.setDefaultAnisotropicFilter(8);
         findAppState(DetailedProfilerState.class).setEnabled(false);
         Sky.setApplication(this);
 
